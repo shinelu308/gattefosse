@@ -972,9 +972,13 @@ const QUILL_TOOLBAR = [
                       </div>
                       <!-- 文件下载 -->
                       <div v-show="block.blockType === 'files'">
-                        <div v-for="(file, fi) in block._fileList" :key="fi" class="block-entry-row">
-                          <input type="text" class="form-control" v-model="file.title" placeholder="文件标题（如：技术数据表）">
-                          <input type="text" class="form-control" v-model="file.url" placeholder="文件 URL">
+                        <div v-for="(file, fi) in block._fileList" :key="fi" class="block-entry-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px;">
+                          <input type="text" class="form-control" v-model="file.title" placeholder="文件标题" style="flex:1;min-width:120px;">
+                          <input type="text" class="form-control" v-model="file.url" placeholder="文件 URL 或从文档库选择" style="flex:2;min-width:160px;">
+                          <select class="form-control" style="width:auto;max-width:160px;font-size:13px;" @change="onDocSelect(bi, fi, $event)">
+                            <option value="">从文档库选择...</option>
+                            <option v-for="d in docList" :key="d.id" :value="d.id">{{ d.title }}</option>
+                          </select>
                           <button class="btn btn-sm btn-danger" @click="removeFile(bi, fi)">×</button>
                         </div>
                         <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
@@ -1347,41 +1351,115 @@ const QUILL_TOOLBAR = [
         <!-- ==================== 文档列表 ==================== -->
         <div v-if="currentPage === 'doc-list'">
           <h1 class="page-title">文档资源</h1>
-          <p class="page-subtitle">管理技术文档，支持上传 PDF 并关联至产品或配方</p>
+          <p class="page-subtitle">全局文件库，产品可在详情页通过「文件下载」区块引用</p>
           <div class="card">
             <div class="card-header">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                 <input type="text" class="form-control" style="max-width:240px;" placeholder="搜索文档标题..." v-model="docFilter.keyword" @keyup.enter="loadDocList()">
-                <select class="form-control" style="max-width:140px;" v-model="docFilter.type" @change="loadDocList()">
-                  <option value="">全部类型</option>
-                  <option value="TDS">技术数据表（TDS）</option>
-                  <option value="SDS">安全数据表（SDS）</option>
-                  <option value="Brochure">产品手册</option>
-                  <option value="Formula">配方资料</option>
-                  <option value="Other">其他</option>
-                </select>
-                <select class="form-control" style="max-width:120px;" v-model="docFilter.isPublic" @change="loadDocList()">
-                  <option value="">全部权限</option>
-                  <option value="true">公开</option>
-                  <option value="false">需登录</option>
-                </select>
-                <button class="btn btn-primary" @click="showDocUpload=true">+ 上传文档</button>
+                <button class="btn btn-primary" @click="addDocRow">+ 新建文档</button>
               </div>
             </div>
             <div class="card-body" style="padding:0;">
               <table class="table">
-                <thead><tr><th>标题</th><th>类型</th><th>语言</th><th>下载次数</th><th>权限</th><th>操作</th></tr></thead>
+                <thead><tr><th>标题</th><th>类型</th><th>语言</th><th>文件</th><th>权限</th><th style="min-width:120px;white-space:nowrap;">操作</th></tr></thead>
                 <tbody>
-                  <tr v-if="docList.length===0"><td colspan="6" class="cell-center">暂无文档</td></tr>
-                  <tr v-for="item in docList">
-                    <td><strong>{{ item.title }}</strong></td>
-                    <td><span class="tag" :class="item.type==='TDS'||item.type==='SDS'?'tag-blue':'tag-slate'">{{ item.type }}</span></td>
-                    <td>{{ item.language === 'zh' ? '中文' : item.language === 'en' ? '英文' : item.language === 'fr' ? '法文' : item.language }}</td>
-                    <td>{{ item.downloadCount }}</td>
-                    <td><span class="badge" :class="item.isPublic?'badge-success':'badge-secondary'">{{ item.isPublic ? '公开' : '需登录' }}</span></td>
+                  <tr v-if="docList.length===0 && !docEditing && docEditing !== -1"><td colspan="6" class="cell-center">暂无文档，点击「新建文档」添加</td></tr>
+                  <!-- 新建文档行 -->
+                  <tr v-if="docEditing === -1">
+                    <td><input type="text" class="form-control" v-model="docEditForm.title" placeholder="文档标题"></td>
                     <td>
-                      <button class="btn btn-sm btn-outline" @click="editDoc(item)">编辑</button>
-                      <button class="btn btn-sm btn-danger" @click="deleteDoc(item.id)">删除</button>
+                      <select class="form-control" v-model="docEditForm.type">
+                        <option value="TDS">技术数据表（TDS）</option>
+                        <option value="SDS">安全数据表（SDS）</option>
+                        <option value="Brochure">产品手册</option>
+                        <option value="Formula">配方资料</option>
+                        <option value="Other">其他</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-control" v-model="docEditForm.language">
+                        <option value="zh">中文</option>
+                        <option value="en">英文</option>
+                        <option value="fr">法文</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div style="display:flex;gap:4px;align-items:center;">
+                        <input type="text" class="form-control" v-model="docEditForm.filePath" placeholder="文件 URL 或上传" style="flex:1;min-width:100px;">
+                        <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" @change="onDocFileSelected" style="font-size:12px;max-width:140px;">
+                      </div>
+                    </td>
+                    <td>
+                      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+                        <input type="checkbox" v-model="docEditForm.isPublic"> 公开
+                      </label>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" @click="saveDocRow(-1)" :disabled="docSaving">{{ docSaving ? '保存中...' : '新增保存' }}</button>
+                      <button class="btn btn-sm btn-outline" @click="docEditing = null">取消</button>
+                    </td>
+                  </tr>
+                  <tr v-for="(item, di) in docList" :key="item.id || di">
+                    <td>
+                      <template v-if="docEditing === item.id">
+                        <input type="text" class="form-control" v-model="docEditForm.title" placeholder="文档标题">
+                      </template>
+                      <template v-else><strong>{{ item.title }}</strong></template>
+                    </td>
+                    <td>
+                      <template v-if="docEditing === item.id">
+                        <select class="form-control" v-model="docEditForm.type">
+                          <option value="TDS">技术数据表（TDS）</option>
+                          <option value="SDS">安全数据表（SDS）</option>
+                          <option value="Brochure">产品手册</option>
+                          <option value="Formula">配方资料</option>
+                          <option value="Other">其他</option>
+                        </select>
+                      </template>
+                      <template v-else><span class="tag" :class="item.type==='TDS'||item.type==='SDS'?'tag-blue':'tag-slate'">{{ docLabel(item.type) }}</span></template>
+                    </td>
+                    <td>
+                      <template v-if="docEditing === item.id">
+                        <select class="form-control" v-model="docEditForm.language">
+                          <option value="zh">中文</option>
+                          <option value="en">英文</option>
+                          <option value="fr">法文</option>
+                        </select>
+                      </template>
+                      <template v-else>{{ item.language === 'zh' ? '中文' : item.language === 'en' ? '英文' : item.language === 'fr' ? '法文' : item.language }}</template>
+                    </td>
+                    <td>
+                      <template v-if="docEditing === item.id">
+                        <div style="display:flex;gap:4px;align-items:center;">
+                          <input type="text" class="form-control" v-model="docEditForm.filePath" placeholder="文件 URL 或上传" style="flex:1;min-width:100px;">
+                          <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" @change="onDocFileSelected" style="font-size:12px;max-width:140px;">
+                        </div>
+                        <div v-if="docEditForm.fileUrl" style="margin-top:4px;font-size:12px;color:var(--text-muted);">当前: {{ docEditForm.fileUrl }}</div>
+                      </template>
+                      <template v-else>
+                        <a v-if="item.filePath" :href="fileUrl(item.filePath)" target="_blank" style="font-size:12px;color:var(--blue-link);">查看文件</a>
+                        <span v-else style="font-size:12px;color:var(--text-muted);">无文件</span>
+                      </template>
+                    </td>
+                    <td>
+                      <template v-if="docEditing === item.id">
+                        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+                          <input type="checkbox" v-model="docEditForm.isPublic"> 公开
+                        </label>
+                      </template>
+                      <template v-else><span class="badge" :class="item.isPublic?'badge-success':'badge-secondary'">{{ item.isPublic ? '公开' : '需登录' }}</span></template>
+                    </td>
+                    <td>
+                      <template v-if="docEditing === item.id">
+                        <button class="btn btn-sm btn-primary" @click="saveDocRow(item.id)" :disabled="docSaving">{{ docSaving ? '保存中...' : '保存' }}</button>
+                        <button class="btn btn-sm btn-outline" @click="docEditing = null">取消</button>
+                      </template>
+                      <template v-else>
+                        <div style="display:flex;gap:4px;">
+                          <button class="btn btn-sm btn-outline" @click="editDoc(item)">编辑</button>
+                          <button class="btn btn-sm btn-danger" @click="deleteDoc(item.id)">删除</button>
+                        </div>
+                      </template>
                     </td>
                   </tr>
                 </tbody>
@@ -1396,127 +1474,7 @@ const QUILL_TOOLBAR = [
               </div>
             </div>
           </div>
-
-          <!-- 文档上传弹窗 -->
-          <div class="modal-overlay" v-if="showDocUpload" @click.self="showDocUpload=false">
-            <div class="modal" style="max-width:500px;">
-              <div class="modal-header">
-                <h3>上传文档</h3>
-                <button class="btn-icon" @click="showDocUpload=false">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <label>文档标题 <span class="hint">（必填）</span></label>
-                  <input type="text" class="form-control" v-model="uploadDocForm.title">
-                </div>
-                <div class="form-group">
-                  <label>文档类型</label>
-                  <select class="form-control" v-model="uploadDocForm.type">
-                    <option value="TDS">技术数据表（TDS）</option>
-                    <option value="SDS">安全数据表（SDS）</option>
-                    <option value="Brochure">产品手册</option>
-                    <option value="Formula">配方资料</option>
-                    <option value="Other">其他</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>语言</label>
-                  <select class="form-control" v-model="uploadDocForm.language">
-                    <option value="zh">中文</option>
-                    <option value="en">英文</option>
-                    <option value="fr">法文</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>选择文件</label>
-                  <input type="file" ref="docFileInput" @change="onDocFileSelected" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
-                </div>
-                <div class="form-group">
-                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
-                    <input type="checkbox" v-model="uploadDocForm.isPublic"> 公开（无需登录即可下载）
-                  </label>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-outline" @click="showDocUpload=false">取消</button>
-                <button class="btn btn-primary" @click="doUploadDoc()" :disabled="uploading">{{ uploading ? '上传中...' : '上传' }}</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- 文档编辑弹窗 -->
-          <div class="modal-overlay" v-if="showDocEdit" @click.self="showDocEdit=false">
-            <div class="modal" style="max-width:600px;">
-              <div class="modal-header">
-                <h3>编辑文档信息</h3>
-                <button class="btn-icon" @click="showDocEdit=false">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <label>标题</label>
-                  <input type="text" class="form-control" v-model="editingDoc.title">
-                </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>类型</label>
-                    <select class="form-control" v-model="editingDoc.type">
-                      <option value="TDS">TDS</option><option value="SDS">SDS</option><option value="Brochure">产品手册</option><option value="Formula">配方资料</option><option value="Other">其他</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>语言</label>
-                    <select class="form-control" v-model="editingDoc.language">
-                      <option value="zh">中文</option><option value="en">英文</option><option value="fr">法文</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
-                    <input type="checkbox" v-model="editingDoc.isPublic"> 公开
-                  </label>
-                </div>
-                <div class="form-group" v-if="editingDoc.id">
-                  <label>关联操作</label>
-                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <select class="form-control" v-model="linkForm.pcId" style="max-width:200px;">
-                      <option value="">关联个人护理原料...</option>
-                      <option v-for="p in pcList" :value="p.id">{{ p.name }}</option>
-                    </select>
-                    <button class="btn btn-sm btn-outline" @click="linkDocToPc()" :disabled="!linkForm.pcId">关联</button>
-                  </div>
-                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
-                    <select class="form-control" v-model="linkForm.formulaId" style="max-width:200px;">
-                      <option value="">关联配方...</option>
-                      <option v-for="f in formulaList" :value="f.id">{{ f.name }}</option>
-                    </select>
-                    <button class="btn btn-sm btn-outline" @click="linkDocToFormula()" :disabled="!linkForm.formulaId">关联</button>
-                  </div>
-                  <div style="margin-top:8px;" v-if="editingDoc.docProducts&&editingDoc.docProducts.length">
-                    <span style="font-size:12px;color:var(--slate);">已关联产品：</span>
-                    <span class="tag tag-green" v-for="dp in editingDoc.docProducts" style="margin:2px;">
-                      {{ dp.productType==='pc'?'PC':'Pharma' }} #{{ dp.productId }}
-                      <span style="cursor:pointer;margin-left:4px;" @click="unlinkDocProduct(dp.id)">×</span>
-                    </span>
-                  </div>
-                  <div style="margin-top:4px;" v-if="editingDoc.docFormulations&&editingDoc.docFormulations.length">
-                    <span style="font-size:12px;color:var(--slate);">已关联配方：</span>
-                    <span class="tag tag-amber" v-for="df in editingDoc.docFormulations" style="margin:2px;">
-                      #{{ df.formulationId }}
-                      <span style="cursor:pointer;margin-left:4px;" @click="unlinkDocFormulation(df.id)">×</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-outline" @click="showDocEdit=false">取消</button>
-                <button class="btn btn-primary" @click="saveDoc()" :disabled="saving">保存</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== 新闻列表 ==================== -->
-        <div v-if="currentPage === 'news-list'">
+<div v-if="currentPage === 'news-list'">
           <h1 class="page-title">新闻与活动</h1>
           <p class="page-subtitle">管理公司新闻、行业动态和展会活动</p>
           <div class="card">
@@ -2257,12 +2215,9 @@ createApp({
       docList: [],
       docFilter: { page: 1, limit: 20, keyword: '', type: '', isPublic: '' },
       docPagination: { total: 0, totalPages: 0 },
-      showDocUpload: false,
-      showDocEdit: false,
-      uploading: false,
-      uploadDocForm: { title: '', type: 'TDS', language: 'zh', isPublic: false },
-      editingDoc: { id: null, title: '', type: 'TDS', language: 'zh', isPublic: false, docProducts: [], docFormulations: [] },
-      linkForm: { pcId: '', formulaId: '' },
+      docEditing: null,
+      docSaving: false,
+      docEditForm: { title: '', type: 'TDS', language: 'zh', isPublic: false, filePath: '', fileUrl: '' },
       // News
       newsList: [],
       newsFilter: { page: 1, limit: 20, keyword: '', type: 'all', category: '', isPublished: '' },
@@ -2471,6 +2426,8 @@ createApp({
     editPc(item) {
       this.pcEditTab = 'basic';
       this.destroyAllQuills();
+      // 加载文档列表供文件区块选择
+      this.loadDocList();
       const spec = item.specInfo ? (typeof item.specInfo === 'string' ? JSON.parse(item.specInfo) : item.specInfo) : {};
       this.editingPc = {
         id: item.id, name: item.name, inciName: item.inciName, description: item.description || '', dosage: item.dosage || '',
@@ -2774,6 +2731,17 @@ createApp({
     removeFile(bi, fi) {
       this.editingPc.blocks[bi]._fileList.splice(fi, 1);
     },
+    onDocSelect(bi, fi, event) {
+      var docId = parseInt(event.target.value);
+      if (!docId) return;
+      var doc = this.docList.find(function(d) { return d.id === docId; });
+      if (doc) {
+        this.editingPc.blocks[bi]._fileList[fi].title = doc.title;
+        this.editingPc.blocks[bi]._fileList[fi].url = this.fileUrl(doc.filePath);
+      }
+      // 重置下拉框
+      event.target.value = '';
+    },
     onBlockTypeChange(bi) {
       const block = this.editingPc.blocks[bi];
       // 彻底销毁旧 Quill（含 imagetext 左列）
@@ -3049,100 +3017,105 @@ createApp({
         this.docList = data.list; this.docPagination = data.pagination;
       } catch (e) { console.error(e); }
     },
-    onDocFileSelected(e) {
-      this._docFile = e.target.files[0];
+    docLabel(type) {
+      var map = { 'TDS': '技术数据表', 'SDS': '安全数据表', 'Brochure': '产品手册', 'Formula': '配方资料', 'Other': '其他' };
+      return map[type] || type;
     },
-    async doUploadDoc() {
-      if (!this.uploadDocForm.title) { this.showAlert('文档标题为必填项'); return; }
-      if (!this._docFile) { this.showAlert('请选择文件'); return; }
-      this.uploading = true;
-      try {
-        const formData = new FormData();
-        formData.append('file', this._docFile);
-        formData.append('title', this.uploadDocForm.title);
-        formData.append('type', this.uploadDocForm.type);
-        formData.append('language', this.uploadDocForm.language);
-        formData.append('isPublic', this.uploadDocForm.isPublic);
-        const headers = this.token ? { 'Authorization': 'Bearer ' + this.token } : {};
-        const res = await fetch(API + '/documents/upload', { method: 'POST', headers, body: formData });
-        const data = await res.json();
-        if (data.code !== 0) throw new Error(data.message);
-        this.showDocUpload = false;
-        this.uploadDocForm = { title: '', type: 'TDS', language: 'zh', isPublic: false };
-        this._docFile = null;
-        if (this.$refs.docFileInput) this.$refs.docFileInput.value = '';
-        this.loadDocList();
-      } catch (e) { this.showAlert('上传失败：' + e.message); }
-      finally { this.uploading = false; }
+    fileUrl(path) {
+      if (!path) return '';
+      if (path.indexOf('://') !== -1) return path;
+      var host = API.replace('/api', '').replace(/\/+$/, '');
+      return host + path;
+    },
+    addDocRow() {
+      this.docEditForm = { title: '', type: 'TDS', language: 'zh', isPublic: false, filePath: '', fileUrl: '' };
+      this.docEditing = -1;
     },
     editDoc(item) {
-      this.editingDoc = {
-        id: item.id, title: item.title, type: item.type,
-        language: item.language, isPublic: item.isPublic,
-        docProducts: item.docProducts || [], docFormulations: item.docFormulations || [],
+      // 如果在新建文档模式，先取消新建
+      if (this.docEditing === -1) {
+        this.docEditing = null;
+      }
+      this.docEditForm = {
+        title: item.title, type: item.type, language: item.language,
+        isPublic: item.isPublic, filePath: item.filePath || '', fileUrl: item.filePath || ''
       };
-      this.linkForm = { pcId: '', formulaId: '' };
-      this.showDocEdit = true;
-      // 加载产品列表供关联选择
-      if (this.pcList.length === 0) this.loadPcList();
-      if (this.formulaList.length === 0) this.loadFormulaList();
+      this.docEditing = item.id;
     },
-    async saveDoc() {
-      this.saving = true;
+    onDocFileSelected(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var form = new FormData();
+      form.append('file', file);
+      var self = this;
+      var xhr = new XMLHttpRequest();
+      var baseHost = API.replace('/api', '').replace(/\/+$/, '');
+      xhr.open('POST', baseHost + '/api/upload/document');
+      xhr.setRequestHeader('Authorization', 'Bearer ' + this.token);
+      xhr.onload = function() {
+        var respBody = xhr.responseText;
+        var respStatus = xhr.status;
+        try {
+          var res = JSON.parse(respBody);
+          if (res.code === 0) {
+            var host = API.replace('/api', '').replace(/\/+$/, '');
+            var urlPath = res.data.url.replace(host, '');
+            self.docEditForm.filePath = urlPath;
+            self.docEditForm.fileUrl = res.data.url;
+          } else {
+            self.showAlert('上传失败[' + respStatus + ']: ' + (res.message || res.error || '未知错误'));
+          }
+        } catch (err) {
+          self.showAlert('上传失败[' + respStatus + ']: 返回: ' + respBody.substring(0, 100));
+        }
+      };
+      xhr.onerror = function() { self.showAlert('网络错误，无法连接服务器'); };
+      xhr.send(form);
+    },
+    async saveDocRow(id) {
+      if (!this.docEditForm.title) { this.showAlert('文档标题为必填项'); return; }
+      // 状态保护：如果新建行但 docEditing 不匹配，提示刷新
+      if (id === -1 && this.docEditing !== -1) {
+        this.showAlert('状态异常，请重新点击「+ 新建文档」后再试');
+        return;
+      }
+      this.docSaving = true;
       try {
-        await this.api('/documents/' + this.editingDoc.id, {
-          method: 'PUT',
-          body: JSON.stringify({ title: this.editingDoc.title, type: this.editingDoc.type, language: this.editingDoc.language, isPublic: this.editingDoc.isPublic })
-        });
-        this.showDocEdit = false;
+        if (id === -1) {
+          // 新建文档 → POST
+          await this.api('/documents', {
+            method: 'POST',
+            body: JSON.stringify({
+              title: this.docEditForm.title,
+              type: this.docEditForm.type,
+              language: this.docEditForm.language,
+              isPublished: this.docEditForm.isPublic,
+              fileUrl: this.docEditForm.filePath
+            })
+          });
+        } else {
+          // 编辑已有文档 → PUT
+          await this.api('/documents/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({
+              title: this.docEditForm.title,
+              type: this.docEditForm.type,
+              language: this.docEditForm.language,
+              isPublic: this.docEditForm.isPublic,
+              filePath: this.docEditForm.filePath
+            })
+          });
+        }
+        this.docEditing = null;
         this.loadDocList();
-      } catch (e) { this.showAlert('保存失败：' + e.message); }
-      finally { this.saving = false; }
+      } catch (e) { this.showAlert('保存失败[id=' + id + ',docEditing=' + this.docEditing + ']: ' + e.message); }
+      finally { this.docSaving = false; }
     },
     async deleteDoc(id) {
       this.showConfirm('确认删除', '确定删除该文档？文件也将被删除。', async () => {
         try { await this.api('/documents/' + id, { method: 'DELETE' }); this.loadDocList(); }
         catch (e) { this.showAlert('删除失败：' + e.message); }
       });
-    },
-    async linkDocToPc() {
-      try {
-        await this.api('/documents/' + this.editingDoc.id + '/link-product', {
-          method: 'POST',
-          body: JSON.stringify({ productId: parseInt(this.linkForm.pcId), productType: 'pc' })
-        });
-        this.linkForm.pcId = '';
-        // 刷新关联列表
-        const data = await this.api('/documents/' + this.editingDoc.id);
-        this.editingDoc.docProducts = data.docProducts || [];
-        this.editingDoc.docFormulations = data.docFormulations || [];
-      } catch (e) { this.showAlert('关联失败：' + e.message); }
-    },
-    async linkDocToFormula() {
-      try {
-        await this.api('/documents/' + this.editingDoc.id + '/link-formulation', {
-          method: 'POST',
-          body: JSON.stringify({ formulationId: parseInt(this.linkForm.formulaId) })
-        });
-        this.linkForm.formulaId = '';
-        const data = await this.api('/documents/' + this.editingDoc.id);
-        this.editingDoc.docProducts = data.docProducts || [];
-        this.editingDoc.docFormulations = data.docFormulations || [];
-      } catch (e) { this.showAlert('关联失败：' + e.message); }
-    },
-    async unlinkDocProduct(linkId) {
-      try {
-        await this.api('/documents/' + this.editingDoc.id + '/link-product/' + linkId, { method: 'DELETE' });
-        const data = await this.api('/documents/' + this.editingDoc.id);
-        this.editingDoc.docProducts = data.docProducts || [];
-      } catch (e) { this.showAlert('取消关联失败：' + e.message); }
-    },
-    async unlinkDocFormulation(linkId) {
-      try {
-        await this.api('/documents/' + this.editingDoc.id + '/link-formulation/' + linkId, { method: 'DELETE' });
-        const data = await this.api('/documents/' + this.editingDoc.id);
-        this.editingDoc.docFormulations = data.docFormulations || [];
-      } catch (e) { this.showAlert('取消关联失败：' + e.message); }
     },
     // News CRUD
     async loadNewsList() {

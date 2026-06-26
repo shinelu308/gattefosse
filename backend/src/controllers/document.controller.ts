@@ -100,7 +100,7 @@ export async function getDocument(req: Request, res: Response) {
  */
 export async function createDocument(req: Request, res: Response) {
   try {
-    const { title, type, summary, fileUrl, isPublished } = req.body;
+    const { title, type, summary, fileUrl, isPublished, language } = req.body;
     if (!title) return res.status(400).json(fail('文档标题不能为空'));
 
     const item = await prisma.document.create({
@@ -109,7 +109,7 @@ export async function createDocument(req: Request, res: Response) {
         type: type || 'Other',
         filePath: fileUrl || '',
         fileSize: 0,
-        language: 'zh',
+        language: language || 'zh',
         isPublic: isPublished !== false,
         createdById: (req as any).userId || null,
       },
@@ -180,12 +180,13 @@ export async function updateDocument(req: Request, res: Response) {
       return res.status(404).json(fail('文档不存在'));
     }
 
-    const { title, type, language, isPublic } = req.body;
+    const { title, type, language, isPublic, filePath } = req.body;
     const updateData: Record<string, unknown> = {};
     if (title !== undefined) updateData.title = title;
     if (type !== undefined) updateData.type = type;
     if (language !== undefined) updateData.language = language;
     if (isPublic !== undefined) updateData.isPublic = isPublic;
+    if (filePath !== undefined) updateData.filePath = filePath;
 
     const item = await prisma.document.update({
       where: { id },
@@ -193,10 +194,12 @@ export async function updateDocument(req: Request, res: Response) {
       include: DOCUMENT_INCLUDE,
     });
 
-    return res.json(success(item, '更新成功'));
-  } catch (error) {
+    // 序列化 BigInt
+    const result = sanitize(item);
+    return res.json(success(result, '更新成功'));
+  } catch (error: any) {
     console.error('更新文档失败:', error);
-    return res.status(500).json(fail('更新文档失败'));
+    return res.status(500).json(fail('更新文档失败: ' + (error.message || '未知错误')));
   }
 }
 
@@ -211,10 +214,15 @@ export async function deleteDocument(req: Request, res: Response) {
       return res.status(404).json(fail('文档不存在'));
     }
 
-    // 删除物理文件
-    const fullPath = path.resolve(__dirname, '../../', existing.filePath.replace(/^\//, ''));
-    if (fs.existsSync(fullPath)) {
-      fs.unlinkSync(fullPath);
+    // 删除物理文件（仅当有文件路径且文件存在时）
+    if (existing.filePath) {
+      const fullPath = path.resolve(__dirname, '../../', existing.filePath.replace(/^\//, ''));
+      if (fs.existsSync(fullPath)) {
+        const stat = fs.statSync(fullPath);
+        if (stat.isFile()) {
+          fs.unlinkSync(fullPath);
+        }
+      }
     }
 
     await prisma.document.delete({ where: { id } });

@@ -88,6 +88,18 @@
       "isPublished": true,
       "createdAt": "2026-06-25T17:12:54.957Z",
       "updatedAt": "2026-06-25T18:41:49.434Z"
+    },
+    {
+      "id": 10,
+      "productId": 59,
+      "productType": "pc",
+      "blockType": "files",
+      "title": "文件下载",
+      "content": "{\"files\":[]}",
+      "sortOrder": 5,
+      "isPublished": true,
+      "createdAt": "2026-06-26T17:14:27.052Z",
+      "updatedAt": "2026-06-26T17:14:27.052Z"
     }
   ],
   "tagDictionary": [
@@ -2788,99 +2800,7 @@
       "updatedAt": "2026-06-24T14:39:44.688Z"
     }
   ],
-  "documents": [
-    {
-      "id": 1,
-      "title": "Preparation and characterization of liquid crystal emulsions based on a wax ester emulsifier",
-      "type": "publication",
-      "filePath": "/sites/default/files/2025/poster-liquid-crystal.pdf",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:44:52.298Z",
-      "updatedAt": "2026-06-24T14:44:52.298Z"
-    },
-    {
-      "id": 2,
-      "title": "Construction of spheroids from melanocytes of different ethnic origins",
-      "type": "publication",
-      "filePath": "/sites/default/files/2025/poster-melanocytes.pdf",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:44:52.372Z",
-      "updatedAt": "2026-06-24T14:44:52.372Z"
-    },
-    {
-      "id": 3,
-      "title": "Test Doc",
-      "type": "publication",
-      "filePath": "/test.pdf",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:45:02.830Z",
-      "updatedAt": "2026-06-24T14:45:02.830Z"
-    },
-    {
-      "id": 4,
-      "title": "Preparation and characterization of liquid crystal emulsions based on a wax ester emulsifier",
-      "type": "publication",
-      "filePath": "/sites/default/files/2025/poster-liquid-crystal.pdf",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:45:31.934Z",
-      "updatedAt": "2026-06-24T14:45:31.934Z"
-    },
-    {
-      "id": 5,
-      "title": "Test",
-      "type": "Other",
-      "filePath": "",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:45:40.560Z",
-      "updatedAt": "2026-06-24T14:45:40.560Z"
-    },
-    {
-      "id": 6,
-      "title": "Preparation and characterization of liquid crystal emulsions based on a wax ester emulsifier",
-      "type": "publication",
-      "filePath": "/files/poster-lc.pdf",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:46:31.549Z",
-      "updatedAt": "2026-06-24T14:46:31.549Z"
-    },
-    {
-      "id": 7,
-      "title": "Construction of spheroids from melanocytes of different ethnic origins",
-      "type": "publication",
-      "filePath": "/files/poster-mel.pdf",
-      "fileSize": 0,
-      "language": "zh",
-      "isPublic": true,
-      "downloadCount": 0,
-      "createdById": null,
-      "createdAt": "2026-06-24T14:46:31.625Z",
-      "updatedAt": "2026-06-24T14:46:31.625Z"
-    }
-  ],
+  "documents": [],
   "formulations": [
     {
       "id": 1,

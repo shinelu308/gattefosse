@@ -325,16 +325,50 @@
                         </figure>
                       </div>
                     </div>
-                    <!-- 文件下载区块 -->
+                    <!-- 文件下载区块 — 相关资料样式 -->
                     <div v-if="block.blockType === 'files' && block.content && block.content.files" class="block-files">
-                      <ul style="list-style:none;padding:0;margin:0;">
-                        <li v-for="(file, fi) in block.content.files" :key="fi" style="margin-bottom:8px;">
-                          <a :href="file.url" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:#f5f5f5;border-radius:6px;text-decoration:none;color:#A52458;">
-                            <span>📄</span>
-                            <span>{{ file.title || file.url }}</span>
-                          </a>
-                        </li>
-                      </ul>
+                      <!-- 三列布局 -->
+                      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+                        <!-- 技术文件列 -->
+                        <div>
+                          <h3 style="font-size:1.5rem;font-family:'Din Next Slab Pro Bold',sans-serif;color:#A52458;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">技术文件</h3>
+                          <ul style="list-style:none;padding:0;margin:0;">
+                            <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
+                              <li v-if="isTdsDoc(file)" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;">
+                                <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
+                                <a :href="file.url" target="_blank" style="color:#333;text-decoration:none;font-size:14px;line-height:1.5;">{{ file.title || file.url }}</a>
+                              </li>
+                            </template>
+                            <li v-if="!hasTdsDocs(block.content.files)" style="color:#999;font-size:14px;">暂无技术文件</li>
+                          </ul>
+                        </div>
+                        <!-- 产品手册列 -->
+                        <div>
+                          <h3 style="font-size:1.5rem;font-family:'Din Next Slab Pro Bold',sans-serif;color:#A52458;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">产品手册</h3>
+                          <ul style="list-style:none;padding:0;margin:0;">
+                            <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
+                              <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;">
+                                <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
+                                <a :href="file.url" target="_blank" style="color:#333;text-decoration:none;font-size:14px;line-height:1.5;">{{ file.title || file.url }}</a>
+                              </li>
+                            </template>
+                            <li v-if="!hasBrochureDocs(block.content.files)" style="color:#999;font-size:14px;">暂无产品手册</li>
+                          </ul>
+                        </div>
+                        <!-- 配方资料列 -->
+                        <div>
+                          <h3 style="font-size:1.5rem;font-family:'Din Next Slab Pro Bold',sans-serif;color:#A52458;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">配方资料</h3>
+                          <ul style="list-style:none;padding:0;margin:0;">
+                            <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
+                              <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;">
+                                <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
+                                <a :href="file.url" target="_blank" style="color:#333;text-decoration:none;font-size:14px;line-height:1.5;">{{ file.title || file.url }}</a>
+                              </li>
+                            </template>
+                            <li v-if="!hasFormulaDocs(block.content.files)" style="color:#999;font-size:14px;">暂无配方资料</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                     <!-- 左：文字/图片/视频，右：文字/视频 -->
                     <div v-if="block.blockType === 'imagetext' && block.content" class="block-imagetext">
@@ -372,84 +406,7 @@
                   <div class="s-product-content">
                     <div class="container">
                       <div class="s-product-content__inside">
-                        <div class="s-product-content__item" id="product-document">
-                          <h2 class="s-product-content__title">相关资料</h2>
-                          <div class="s-product-document">
-                            <div class="s-product-document__type">
-                              <h3 class="s-product-document__title">技术文件</h3>
-                              <ul class="s-product-document__list">
-                                <li class="c-link c-link--document" v-for="item in data.targetFileList1">
-                                  <a class="c-link__link" :href="item.url" target="_blank">
-                                    <div class="c-link__params">
-                                      <span class="c-link__name">{{item.name}}</span>
-                                    </div>
-                                  </a>
-                                </li>
-                              </ul>
-                              <ul class="s-product-document__list" v-for="item in data.targetFileList1Lock">
-                                <li
-                                  :class="!data.isLoginedAndEnabled ?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
-                                  <a class="c-link__link" :href="item.url" target="_blank">
-                                    <div class="c-link__params">
-                                      <span class="c-link__name">{{item.name}}</span>
-                                    </div>
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                            <div class="s-product-document__type">
-                              <h3 class="s-product-document__title">产品手册</h3>
-                              <ul class="s-product-document__list">
-                                <li class="c-link c-link--document" v-for="item in data.targetFileList2">
-                                  <a class="c-link__link" :href="item.url" target="_blank">
-                                    <div class="c-link__params">
-                                      <span class="c-link__name">{{item.name}}</span>
-                                    </div>
-                                  </a>
-                                </li>
-                              </ul>
-                              <ul class="s-product-document__list" v-for="item in data.targetFileList2Lock">
-                                <li
-                                  :class="!data.isLoginedAndEnabled ?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
-                                  <a class="c-link__link" :href="item.url" target="_blank">
-                                    <div class="c-link__params">
-                                      <span class="c-link__name">{{item.name}}</span>
-                                    </div>
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                            <div class="s-product-document__type" v-if="data.targetFileList3.length > 0">
-                              <h3 class="s-product-document__title">配方资料</h3>
-                              <ul class="s-product-document__list">
-                                <li class="c-link c-link--document" v-for="item in data.targetFileList3">
-                                  <a class="c-link__link" :href="item.url" target="_blank">
-                                    <div class="c-link__params">
-                                      <span class="c-link__name">{{item.name}}</span>
-                                    </div>
-                                  </a>
-                                </li>
-                              </ul>
-                              <ul class="s-product-document__list" v-for="item in data.targetFileList3Lock">
-                                <li
-                                  :class="!data.isLoginedAndEnabled ?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
-                                  <a class="c-link__link" :href="item.url" target="_blank">
-                                    <div class="c-link__params">
-                                      <span class="c-link__name">{{item.name}}</span>
-                                    </div>
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
+                    <div class="s-product-linked" v-if="data.relatedContents.length > 0">
         <div class="s-product-linked" v-if="data.relatedContents.length > 0">
           <div class="container">
             <h2 class="s-product-linked__title u-title-styled">相关内容</h2>
@@ -599,12 +556,6 @@
           contentBlocks: [],
           productSpecs: null,
           relatedContents: [],
-          targetFileList1: [],
-          targetFileList1Lock: [],
-          targetFileList2: [],
-          targetFileList2Lock: [],
-          targetFileList3: [],
-          targetFileList3Lock: [],
           isLoginedAndEnabled: false,
           loading: true,
         });
@@ -678,54 +629,15 @@
             }
             data.loading = false;
             // 加载关联文档
-            if (product.id) loadDocuments(product.id);
-            // 加载内容区块
-            if (product.id) loadContentBlocks(product.id);
-            // 加载相关推荐
-            if (product.id) loadRelatedProducts(product.id);
+            if (product.id) {
+              // 加载内容区块
+              if (product.id) loadContentBlocks(product.id);
+              // 加载相关推荐
+              if (product.id) loadRelatedProducts(product.id);
+            }
           }).catch(function (err) {
             console.error('获取产品详情失败:', err);
             data.loading = false;
-          });
-        };
-
-        // 加载关联文档
-        const loadDocuments = function (productId) {
-          GatteAPI.Document.list({ productId: productId, productType: 'pc', limit: 50 }).then(function (res) {
-            var body = res.data || res;
-            var docList = body.list || (Array.isArray(body) ? body : []);
-            data.targetFileList1 = [];
-            data.targetFileList2 = [];
-            data.targetFileList3 = [];
-            data.targetFileList1Lock = [];
-            data.targetFileList2Lock = [];
-            data.targetFileList3Lock = [];
-            docList.forEach(function (doc) {
-              var docUrl = doc.filePath;
-              if (docUrl && !docUrl.startsWith('http') && !docUrl.startsWith('/')) {
-                docUrl = '/' + docUrl;
-              }
-              var docObj = {
-                fileSet: doc.fileSet || 1,
-                ID: doc.id,
-                name: doc.title,
-                url: doc.isPublic ? docUrl : '/account.html?url=/personal-care/product-finder/product-detail.html?id=' + id,
-                lock: !doc.isPublic
-              };
-              switch (doc.fileSet || doc.type) {
-                case 'TDS': case 'tds': case 1:
-                  doc.isPublic || data.isLoginedAndEnabled ? data.targetFileList1.push(docObj) : data.targetFileList1Lock.push(docObj);
-                  break;
-                case 'SDS': case 'sds': case 2:
-                  doc.isPublic || data.isLoginedAndEnabled ? data.targetFileList2.push(docObj) : data.targetFileList2Lock.push(docObj);
-                  break;
-                default:
-                  doc.isPublic || data.isLoginedAndEnabled ? data.targetFileList3.push(docObj) : data.targetFileList3Lock.push(docObj);
-                  break;
-              }
-            });
-          }).catch(function (err) {
-            console.error('加载文档失败:', err);
           });
         };
 
@@ -873,66 +785,63 @@
           return url;
         }
 
-        return { data, addProductFav, addCart, loading, items, getBlockContent, formatSpecText, convertVideoUrl };
+        var _isTdsDoc = function(f) { return f.title && (f.title.indexOf('TDS') !== -1 || f.title.indexOf('技术') !== -1 || f.title.indexOf('数据') !== -1); };
+        var _isBrochureDoc = function(f) { return f.title && (f.title.indexOf('手册') !== -1 || f.title.indexOf('Brochure') !== -1 || f.title.indexOf('介绍') !== -1); };
+        var _hasDocs = function(files, fn) { if (!files) return false; for (var i = 0; i < files.length; i++) { if (fn(files[i])) return true; } return false; };
+        return {
+          data, addProductFav, addCart, getBlockContent, formatSpecText, convertVideoUrl,
+          isTdsDoc: _isTdsDoc,
+          isBrochureDoc: _isBrochureDoc,
+          isFormulaDoc: function(f) { return !_isTdsDoc(f) && !_isBrochureDoc(f); },
+          hasTdsDocs: function(files) { return _hasDocs(files, _isTdsDoc); },
+          hasBrochureDocs: function(files) { return _hasDocs(files, _isBrochureDoc); },
+          hasFormulaDocs: function(files) { return _hasDocs(files, function(f) { return !_isTdsDoc(f) && !_isBrochureDoc(f); }); }
+        };
       }
     });
     app.mount("#app");
-</script>        function htmlencode(s) {
-          var div = document.createElement('div');
-          div.appendChild(document.createTextNode(s));
-          return div.innerHTML;
-        }
-        function htmldecode(s) {
-          var div = document.createElement('div');
-          div.innerHTML = s;
-          return div.innerText || div.textContent;
-        }
-        /*3.用正则表达式实现html转码*/
-        function htmlEncodeByRegExp(str) {
-          var s = "";
-          if (str.length == 0) return "";
-          s = str.replace(/&/g, "&");
-          s = s.replace(/</g, "<");
-          s = s.replace(/>/g, ">");
-          s = s.replace(/ /g, " ");
-          s = s.replace(/\'/g, "'");
-          s = s.replace(/\"/g, '"');
-          return s;
-        }
-        /*4.用正则表达式实现html解码*/
-        function htmlDecodeByRegExp(str) {
-          var s = "";
-          if (str.length == 0) return "";
-          s = str.replace(/&/g, "&");
-          s = s.replace(/</g, "<");
-          s = s.replace(/>/g, ">");
-          s = s.replace(/ /g, " ");
-          s = s.replace(/'/g, "\'");
-          s = s.replace(/"/g, "\"");
-          return s;
-        }
-        return {
-          data,
-          items,
-          getProductDetail,
-          htmldecode,
-          htmlencode,
-          htmlDecodeByRegExp,
-          addProductFav,
-          addCart
-        };
-      },
-    });
-    let result = app.mount("#app");
+
+    function htmlencode(s) {
+      var div = document.createElement('div');
+      div.appendChild(document.createTextNode(s));
+      return div.innerHTML;
+    }
+    function htmldecode(s) {
+      var div = document.createElement('div');
+      div.innerHTML = s;
+      return div.innerText || div.textContent;
+    }
+    /*3.用正则表达式实现html转码*/
+    function htmlEncodeByRegExp(str) {
+      var s = "";
+      if (str.length == 0) return "";
+      s = str.replace(/&/g, "&");
+      s = s.replace(/</g, "<");
+      s = s.replace(/>/g, ">");
+      s = s.replace(/ /g, " ");
+      s = s.replace(/\'/g, "'");
+      s = s.replace(/\"/g, '"');
+      return s;
+    }
+    /*4.用正则表达式实现html解码*/
+    function htmlDecodeByRegExp(str) {
+      var s = "";
+      if (str.length == 0) return "";
+      s = str.replace(/&/g, "&");
+      s = s.replace(/</g, "<");
+      s = s.replace(/>/g, ">");
+      s = s.replace(/ /g, " ");
+      s = s.replace(/'/g, "\'");
+      s = s.replace(/"/g, "\"");
+      return s;
+    }
     function sleep(time) {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
     function checkLoginStatus() {
       if (localStorage.getItem('isLoggedIn') === 'true') {
         return true;
-        // 执行进入首页的逻辑
       } else {
-        // 执行未登录的逻辑，比如跳转到登录页面
         return false;
       }
     }
