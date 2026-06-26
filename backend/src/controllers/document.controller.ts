@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
 import { config } from '../config';
+import { verifyToken } from '../utils/jwt';
 import fs from 'fs';
 import path from 'path';
 
@@ -248,8 +249,15 @@ export async function downloadDocument(req: Request, res: Response) {
     // 检查权限
     if (!item.isPublic) {
       const authHeader = req.headers.authorization;
-      if (!authHeader) {
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json(fail('此文档需要登录后才能下载', 401));
+      }
+      // 验证 token 有效性
+      try {
+        const token = authHeader.split(' ')[1];
+        verifyToken(token);
+      } catch (e) {
+        return res.status(401).json(fail('登录已过期，请重新登录', 401));
       }
     }
 

@@ -334,9 +334,15 @@
                           <h3 style="font-size:1.5rem;font-family:'Din Next Slab Pro Bold',sans-serif;color:#A52458;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">技术文件</h3>
                           <ul style="list-style:none;padding:0;margin:0;">
                             <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
-                              <li v-if="isTdsDoc(file)" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;">
-                                <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
-                                <a :href="file.url" target="_blank" style="color:#333;text-decoration:none;font-size:14px;line-height:1.5;">{{ file.title || file.url }}</a>
+                              <li v-if="isTdsDoc(file)" style="margin-bottom:10px;">
+                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:flex-start;gap:8px;color:#333;text-decoration:none;font-size:14px;line-height:1.5;">
+                                  <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
+                                  <span>{{ file.title || file.url }}</span>
+                                </a>
+                                <span v-else style="display:flex;align-items:flex-start;gap:8px;color:#bbb;font-size:14px;line-height:1.5;cursor:not-allowed;">
+                                  <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#ccc;display:inline-block;margin-top:6px;"></span>
+                                  <span>🔒 {{ file.title || file.url }}</span>
+                                </span>
                               </li>
                             </template>
                             <li v-if="!hasTdsDocs(block.content.files)" style="color:#999;font-size:14px;">暂无技术文件</li>
@@ -347,9 +353,15 @@
                           <h3 style="font-size:1.5rem;font-family:'Din Next Slab Pro Bold',sans-serif;color:#A52458;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">产品手册</h3>
                           <ul style="list-style:none;padding:0;margin:0;">
                             <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
-                              <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;">
-                                <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
-                                <a :href="file.url" target="_blank" style="color:#333;text-decoration:none;font-size:14px;line-height:1.5;">{{ file.title || file.url }}</a>
+                              <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;">
+                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:flex-start;gap:8px;color:#333;text-decoration:none;font-size:14px;line-height:1.5;">
+                                  <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
+                                  <span>{{ file.title || file.url }}</span>
+                                </a>
+                                <span v-else style="display:flex;align-items:flex-start;gap:8px;color:#bbb;font-size:14px;line-height:1.5;cursor:not-allowed;">
+                                  <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#ccc;display:inline-block;margin-top:6px;"></span>
+                                  <span>🔒 {{ file.title || file.url }}</span>
+                                </span>
                               </li>
                             </template>
                             <li v-if="!hasBrochureDocs(block.content.files)" style="color:#999;font-size:14px;">暂无产品手册</li>
@@ -360,9 +372,15 @@
                           <h3 style="font-size:1.5rem;font-family:'Din Next Slab Pro Bold',sans-serif;color:#A52458;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">配方资料</h3>
                           <ul style="list-style:none;padding:0;margin:0;">
                             <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
-                              <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;">
-                                <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
-                                <a :href="file.url" target="_blank" style="color:#333;text-decoration:none;font-size:14px;line-height:1.5;">{{ file.title || file.url }}</a>
+                              <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;">
+                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:flex-start;gap:8px;color:#333;text-decoration:none;font-size:14px;line-height:1.5;">
+                                  <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#A52458;display:inline-block;margin-top:6px;"></span>
+                                  <span>{{ file.title || file.url }}</span>
+                                </a>
+                                <span v-else style="display:flex;align-items:flex-start;gap:8px;color:#bbb;font-size:14px;line-height:1.5;cursor:not-allowed;">
+                                  <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:#ccc;display:inline-block;margin-top:6px;"></span>
+                                  <span>🔒 {{ file.title || file.url }}</span>
+                                </span>
                               </li>
                             </template>
                             <li v-if="!hasFormulaDocs(block.content.files)" style="color:#999;font-size:14px;">暂无配方资料</li>
@@ -400,14 +418,12 @@
                 </div>
               </div>
             </div>
-            <div class="s-product-content">
-              <div class="container">
-                <div class="s-product-content__inside">
-                  <div class="s-product-content">
-                    <div class="container">
-                      <div class="s-product-content__inside">
-                    <div class="s-product-linked" v-if="data.relatedContents.length > 0">
-        <div class="s-product-linked" v-if="data.relatedContents.length > 0">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 相关推荐产品 -->
+    <div class="s-product-linked" v-if="data.relatedContents.length > 0">
           <div class="container">
             <h2 class="s-product-linked__title u-title-styled">相关内容</h2>
             <div class="c-cards">
@@ -649,6 +665,26 @@
               data.contentBlocks = body.list;
             } else if (Array.isArray(body)) {
               data.contentBlocks = body;
+            }
+            // 自动同步文件区块中文档的最新权限状态
+            var blocks = data.contentBlocks || [];
+            for (var bi = 0; bi < blocks.length; bi++) {
+              var block = blocks[bi];
+              if (block.blockType === 'files' && block.content && block.content.files) {
+                for (var fi = 0; fi < block.content.files.length; fi++) {
+                  var file = block.content.files[fi];
+                  if (file.fileId) {
+                    (function(f) {
+                      GatteAPI.Document.detail(f.fileId).then(function(res) {
+                        var doc = res.data || res;
+                        if (doc && doc.isPublic !== undefined) {
+                          f.isPublic = doc.isPublic;
+                        }
+                      }).catch(function() {});
+                    })(file);
+                  }
+                }
+              }
             }
           }).catch(function (err) {
             console.error('加载内容区块失败:', err);

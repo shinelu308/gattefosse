@@ -118,6 +118,8 @@ body {
   overflow-y: auto;
   position: relative;
 }
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 .sidebar-logo {
   padding: 14px 20px;
   border-bottom: 1px solid var(--border-light);
@@ -130,7 +132,9 @@ body {
   font-size: 14px; font-weight: 500; color: var(--slate);
   letter-spacing: 0.5px;
 }
-.sidebar-nav { flex: 1; padding: 12px 0; }
+.sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; min-height: 0; }
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
 .nav-section { padding: 0 16px; margin-bottom: 4px; }
 .nav-section-title {
   font-size: 11px; font-weight: 500; color: var(--text-muted);
@@ -1474,7 +1478,8 @@ const QUILL_TOOLBAR = [
               </div>
             </div>
           </div>
-<div v-if="currentPage === 'news-list'">
+        </div>
+        <div v-if="currentPage === 'news-list'">
           <h1 class="page-title">新闻与活动</h1>
           <p class="page-subtitle">管理公司新闻、行业动态和展会活动</p>
           <div class="card">
@@ -2726,7 +2731,7 @@ createApp({
       this.editingPc.blocks[bi]._imageList.splice(ii, 1);
     },
     addFile(bi) {
-      this.editingPc.blocks[bi]._fileList.push({ title: '', url: '' });
+      this.editingPc.blocks[bi]._fileList.push({ title: '', url: '', fileId: null, isPublic: true });
     },
     removeFile(bi, fi) {
       this.editingPc.blocks[bi]._fileList.splice(fi, 1);
@@ -2736,8 +2741,16 @@ createApp({
       if (!docId) return;
       var doc = this.docList.find(function(d) { return d.id === docId; });
       if (doc) {
-        this.editingPc.blocks[bi]._fileList[fi].title = doc.title;
-        this.editingPc.blocks[bi]._fileList[fi].url = this.fileUrl(doc.filePath);
+        var entry = this.editingPc.blocks[bi]._fileList[fi];
+        entry.title = doc.title;
+        entry.fileId = doc.id;
+        entry.isPublic = doc.isPublic;
+        // 非公开文件使用带权限验证的下载接口
+        if (doc.isPublic) {
+          entry.url = this.fileUrl(doc.filePath);
+        } else {
+          entry.url = '/api/documents/' + doc.id + '/download';
+        }
       }
       // 重置下拉框
       event.target.value = '';
