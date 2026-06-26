@@ -40,9 +40,12 @@ body {
   color: var(--text);
   background: var(--bg);
   line-height: 1.6;
-  display: flex;
-  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+}
+#app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
 }
 
 /* ===== 登录页 ===== */
@@ -104,15 +107,16 @@ body {
 
 /* ===== 侧边栏 ===== */
 .sidebar {
-  width: var(--sidebar-w);
+  flex: 0 0 25%;
+  min-width: 200px;
+  max-width: 320px;
   background: var(--white);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  z-index: 100;
+  height: 100vh;
   overflow-y: auto;
+  position: relative;
 }
 .sidebar-logo {
   padding: 14px 20px;
@@ -169,8 +173,9 @@ body {
 
 /* ===== 主区域 ===== */
 .main {
-  margin-left: var(--sidebar-w);
-  flex: 1; display: flex; flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 .topbar {
@@ -672,7 +677,7 @@ const QUILL_TOOLBAR = [
                 <h3>快捷操作</h3>
               </div>
               <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
-                <button class="btn btn-primary" @click="goPage('pc-edit')">+ 新增个人护理原料</button>
+                <button class="btn btn-primary" @click="resetPcEdit();goPage('pc-edit')">+ 新增个人护理原料</button>
                 <button class="btn btn-primary" style="background:var(--slate);border-color:var(--slate);" @click="goPage('pharma-edit')">+ 新增药用辅料</button>
               </div>
             </div>
@@ -722,7 +727,7 @@ const QUILL_TOOLBAR = [
                 <span v-if="selectedPcIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedPcIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeletePc" :disabled="selectedPcIds.length === 0">批量删除 ({{ selectedPcIds.length }})</button>
                 <button class="btn btn-outline btn-sm">导出 Excel</button>
-                <button class="btn btn-primary btn-sm" @click="goPage('pc-edit')">+ 新增产品</button>
+                <button class="btn btn-primary btn-sm" @click="resetPcEdit();goPage('pc-edit')">+ 新增产品</button>
               </div>
             </div>
             <div class="table-wrap">
@@ -782,7 +787,7 @@ const QUILL_TOOLBAR = [
           <div class="tabs">
             <button class="tab" :class="{ active: pcEditTab === 'basic' }" @click="pcEditTab = 'basic'; destroyAllQuills()">基本信息</button>
             <button class="tab" :class="{ active: pcEditTab === 'tags' }" @click="pcEditTab = 'tags'; destroyAllQuills()">标签与分类</button>
-            <button class="tab" :class="{ active: pcEditTab === 'blocks' }" @click="switchToBlocksTab" v-if="editingPc.id">详情页内容</button>
+            <button class="tab" :class="{ active: pcEditTab === 'blocks' }" @click="switchToBlocksTab()" v-if="editingPc.id">详情页内容</button>
           </div>
           <!-- 基本信息 -->
           <div v-show="pcEditTab === 'basic'" class="card">
@@ -885,7 +890,7 @@ const QUILL_TOOLBAR = [
             </div>
           </div>
           <!-- 详情页内容区块 -->
-          <div v-show="pcEditTab === 'blocks'" class="card">
+          <div v-if="pcEditTab === 'blocks'" class="card">
             <div class="card-header"><h3>详情页内容区块</h3></div>
             <div class="card-body">
               <div v-if="!editingPc.id" class="alert-info">请先保存产品基本信息，然后可以管理详情页内容区块。</div>
@@ -2172,7 +2177,7 @@ const QUILL_TOOLBAR = [
   </template>
 </div>
 
-<script src="static/js/vue.global.prod.js"></script>
+<script src="/admin/static/js/vue.global.prod.js"></script>
 <script>
 const { createApp } = Vue;
 const API = 'http://localhost:3000/api';
@@ -2223,6 +2228,7 @@ createApp({
       loggingIn: false,
       // Nav
       currentPage: 'dashboard',
+      pcEditTab: 'basic',
       globalSearch: '',
       // Stats
       stats: { pcCount: 0, pcPublished: 0, pharmaCount: 0, pharmaPublished: 0, formulaCount: 0, formulaPublished: 0, userCount: 0, pendingUsers: 0 },
@@ -2463,6 +2469,8 @@ createApp({
       this.pcEditTab = 'basic';
     },
     editPc(item) {
+      this.pcEditTab = 'basic';
+      this.destroyAllQuills();
       const spec = item.specInfo ? (typeof item.specInfo === 'string' ? JSON.parse(item.specInfo) : item.specInfo) : {};
       this.editingPc = {
         id: item.id, name: item.name, inciName: item.inciName, description: item.description || '', dosage: item.dosage || '',
@@ -2622,11 +2630,16 @@ createApp({
     destroyAllQuills() {
       (this.editingPc.blocks || []).forEach(function(block) {
         block._quill = null;
+        block._quillL = null;
       });
-      // 清理页面上残留的 Quill 工具栏
+      // 清理页面上残留的 Quill 工具栏和编辑器 DOM
       document.querySelectorAll('.ql-toolbar, .ql-container').forEach(function(el) {
         el.remove();
       });
+      // 清理所有重试状态，下次切回时从零开始
+      Object.keys(this).forEach(function(k) {
+        if (k.indexOf('_qled_retry_') === 0) delete this[k];
+      }.bind(this));
     },
     async switchToBlocksTab() {
       this.pcEditTab = 'blocks';
@@ -2637,13 +2650,8 @@ createApp({
           await this.loadBlocks();
           this._blocksLoaded = true;
         }
-        // 延迟初始化 Quill，确保 v-show 切换后 DOM 已完成布局渲染
-        // 并使用高度检查 + 重试防止编辑器初始化为 0 高度
-        this.$nextTick(function() {
-          requestAnimationFrame(function() {
-            setTimeout(() => this.initQuillEditors(), 80);
-          }.bind(this));
-        }.bind(this));
+        // v-if 切换后 DOM 完全重建，需要等到 DOM 就绪后初始化 Quill
+        this.$nextTick(() => this.initQuillEditors());
       }
     },
     async loadBlocks() {
@@ -2841,6 +2849,7 @@ createApp({
         if (block.blockType === 'richtext') {
           // 标准单 Quill
           this._initSingleQuill(block, 'qled-' + block._key, function(ql, blk) {
+            blk._quill = ql;
             if (blk.content && blk.content.html) {
               ql.root.innerHTML = blk.content.html;
             }
