@@ -2172,7 +2172,7 @@ const QUILL_TOOLBAR = [
   </template>
 </div>
 
-<script src="/static/js/vue.global.prod.js"></script>
+<script src="static/js/vue.global.prod.js"></script>
 <script>
 const { createApp } = Vue;
 const API = 'http://localhost:3000/api';
@@ -2493,7 +2493,7 @@ createApp({
           : undefined;
         const payload = { ...this.editingPc, specInfo: specPayload, blocks: this.editingPc.blocks.map(b => ({
           ...b, specDosage: undefined, specCertification: undefined, specInci: undefined,
-          _quill: undefined,
+          _quill: undefined, _quillL: undefined,
           _imageList: undefined, _fileList: undefined,
           _videoUrl: undefined, _key: undefined, _saved: undefined,
           _leftType: undefined, _leftUrl: undefined, _rightText: undefined, _rightType: undefined, _rightUrl: undefined,
