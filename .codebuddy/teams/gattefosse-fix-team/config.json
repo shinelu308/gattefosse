@@ -1,0 +1,33 @@
+{
+  "name": "gattefosse-fix-team",
+  "leadAgentId": "f597914cfeb6409582387b91a7564d98",
+  "workspacePath": "e:/项目开发区/嘉法狮网站重建",
+  "createdAt": "2026-06-23T21:31:45.400Z",
+  "options": {
+    "workspacePath": "e:/项目开发区/嘉法狮网站重建",
+    "isAutoTeam": false
+  },
+  "members": [
+    {
+      "memberId": "team-lead@gattefosse-fix-team",
+      "name": "team-lead",
+      "role": "Team Lead - coordinates the team and interacts with the user"
+    },
+    {
+      "memberId": "fixer-simple-pages@gattefosse-fix-team",
+      "name": "fixer-simple-pages",
+      "role": "Fix simple page API calls"
+    },
+    {
+      "memberId": "fixer-pc-pages@gattefosse-fix-team",
+      "name": "fixer-pc-pages",
+      "role": "Fix personal-care subpages"
+    },
+    {
+      "memberId": "fixer-pharma-pages@gattefosse-fix-team",
+      "name": "fixer-pharma-pages",
+      "role": "Fix pharma subpages"
+    }
+  ],
+  "isAutoTeam": false
+}

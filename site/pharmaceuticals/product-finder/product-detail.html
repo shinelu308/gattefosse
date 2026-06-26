@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>产品详情 | 嘉法狮</title>
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_1DVUkvXE9JpoQ1xLdVdzs-hgmcfdlNmPGwZO5WfAX5c.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_hx-izN24pfJl4Ip2Kx7sPVQzqooEE63N9jGUuXDePTE.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1712750673.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_zCDCU-o2LKXngtpj6DBjU0-DPPFPfqZNHXrxn4tmXuY.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_WXsVlvolEM36iHFvMW3UgPgsEh7mPKjCJ_ucwbLENX8.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_EmY_sxerr-TNvoyioQly5tba1LJdvC1mnkhyeygX5Gg.css" />
+  <script src="/static/js/vue.global.js"></script>
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <style>
+    .product-detail-loading { text-align: center; padding: 100px 20px; font-size: 18px; color: #666; }
+    .s-product-detail-error { text-align: center; padding: 80px 20px; }
+    .s-product-detail-error h2 { color: #c0392b; }
+    .s-product-detail-error a { color: #004b87; text-decoration: underline; }
+    .product-gallery { position: relative; }
+    .product-gallery img { width: 100%; height: auto; max-height: 400px; object-fit: cover; border-radius: 8px; }
+    .info-label { font-weight: 600; color: #004b87; min-width: 100px; }
+    .product-info-table td { padding: 8px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+    .product-info-table td:first-child { font-weight: 600; color: #004b87; white-space: nowrap; }
+    .product-tag { display: inline-block; background: #e8f0fe; color: #004b87; padding: 4px 12px; border-radius: 20px; font-size: 13px; margin: 3px; }
+    .s-product-content section { margin-bottom: 40px; }
+    .s-product-content section h2 { font-size: 22px; color: #004b87; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #004b87; }
+    .tech-file-list { list-style: none; padding: 0; }
+    .tech-file-list li { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .tech-file-list li a { color: #333; text-decoration: none; display: flex; align-items: center; }
+    .tech-file-list li a:hover { color: #004b87; }
+    .tech-file-list li a::before { content: "📄"; margin-right: 8px; }
+    @media (max-width: 768px) { .product-info-table td { display: block; } .product-info-table td:first-child { padding-bottom: 0; } }
+  </style>
+</head>
+<body class="theme-pharma">
+<div id="app">
+  <!-- Loading state -->
+  <div v-if="!data.loaded" class="product-detail-loading">
+    <p>正在加载产品信息...</p>
+  </div>
+  <!-- Error state -->
+  <div v-else-if="data.error" class="s-product-detail-error">
+    <h2>产品未找到</h2>
+    <p>抱歉，未找到ID为 {{data.error.id}} 的产品信息。</p>
+    <a href="/pharmaceuticals/product-finder.html">返回产品列表</a>
+  </div>
+  <!-- Product content -->
+  <div v-else>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="/">首页</a> &gt;
+      <a href="/pharmaceuticals/product-finder.html">药用辅料</a> &gt;
+      <a href="/pharmaceuticals/product-finder.html">产品目录</a> &gt;
+      <span>{{data.productDetail.goodsName}}</span>
+    </div>
+
+    <!-- Product header -->
+    <div class="s-product-header" style="display:flex; flex-wrap:wrap; gap:30px; margin:30px 0; align-items:flex-start;">
+      <div class="product-gallery" style="flex:1; min-width:300px;">
+        <div style="width:100%; max-width:500px; height:300px; border-radius:8px; background:linear-gradient(135deg,#004b87,#0075BB); display:flex; align-items:center; justify-content:center; color:white; font-size:24px; font-weight:bold; text-align:center; padding:20px;">
+  <div>
+    <div style="font-size:36px; margin-bottom:10px;">{{data.productDetail.goodsName}}</div>
+    <div style="font-size:14px; opacity:0.8;">{{data.productDetail.cardCode || ''}}</div>
+  </div>
+</div>
+      </div>
+      <div style="flex:1; min-width:300px;">
+        <h1 class="s-product-header__title" style="font-size:28px; color:#004b87; margin-bottom:10px;">{{data.productDetail.goodsName}}</h1>
+        <p style="font-size:16px; color:#555; margin-bottom:15px;" v-if="data.productDetail.cardCode">{{data.productDetail.cardCode}}</p>
+        <div class="product-info-table" style="margin-bottom:20px;">
+          <table style="width:100%;">
+            <tr><td>INCI / 名称</td><td>{{data.productDetail.cardCode || '—'}}</td></tr>
+            <tr><td>CAS号</td><td>{{data.productDetail.casNo || '—'}}</td></tr>
+            <tr><td>产品编码</td><td>{{data.productDetail.goodsCode || data.productDetail.ID}}</td></tr>
+          </table>
+        </div>
+        <div class="s-product-header__btns" style="display:flex; gap:10px; margin-top:20px;">
+          <button class="btn btn-primary" @click="addCart">申请样品</button>
+          <a class="btn btn-outline-primary" :href="data.productDetail.url">查看产品文档</a>
+          <a class="btn btn-outline-primary" href="/pharmaceuticals/product-finder.html">返回产品列表</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="s-product-description" style="margin:30px 0; padding:20px; background:#f8f9fa; border-radius:8px;">
+      <h2 style="font-size:20px; color:#004b87; margin-bottom:15px;">产品描述</h2>
+      <div class="s-product-description__main-content" v-html="data.productDetail.description"></div>
+    </div>
+
+    <!-- Main content (extended description) -->
+    <div class="s-product-content" style="margin:30px 0;">
+      <div v-if="data.productDetail.mainContent" v-html="data.productDetail.mainContent"></div>
+
+      <!-- Technical Files Section -->
+      <section id="product-document" style="margin-top:40px;">
+        <h2>相关资料</h2>
+        <div v-if="data.targetFileList1 && data.targetFileList1.length > 0">
+          <h3 style="font-size:18px; color:#004b87; margin-bottom:12px;">技术文件</h3>
+          <ul class="tech-file-list">
+            <li v-for="item in data.targetFileList1"><a :href="item.url">{{item.name}}</a></li>
+          </ul>
+        </div>
+        <div v-if="data.targetFileList2 && data.targetFileList2.length > 0" style="margin-top:20px;">
+          <h3 style="font-size:18px; color:#004b87; margin-bottom:12px;">产品手册</h3>
+          <ul class="tech-file-list">
+            <li v-for="item in data.targetFileList2"><a :href="item.url">{{item.name}}</a></li>
+          </ul>
+        </div>
+        <div v-if="data.targetFileList3 && data.targetFileList3.length > 0" style="margin-top:20px;">
+          <h3 style="font-size:18px; color:#004b87; margin-bottom:12px;">科学文献</h3>
+          <ul class="tech-file-list">
+            <li v-for="item in data.targetFileList3"><a :href="item.url">{{item.name}}</a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+const id = new URLSearchParams(window.location.search).get('id') || '11032';
+
+const { createApp, reactive } = Vue;
+
+createApp({
+  setup() {
+    const data = reactive({
+      loaded: false,
+      error: null,
+      productDetail: {},
+      targetFileList1: [],
+      targetFileList2: [],
+      targetFileList3: [],
+      inCart: false,
+      inFav: false,
+      isLoginedAndEnabled: false
+    });
+
+    async function getProductDetail() {
+      try {
+        const product = await GatteAPI.PharmaProduct.detail(parseInt(id));
+        if (!product) {
+          data.error = { id: id };
+          data.loaded = true;
+          return;
+        }
+        data.productDetail = {
+          ID: product.id,
+          goodsName: product.name,
+          subtitle: product.description || '',
+          goodsCarousel: product.imageUrl || '',
+          goodsIntro: product.description || '',
+          compositionHtml: product.compositionHtml || '',
+          applicationHtml: product.applicationHtml || '',
+          regulatoryHtml: product.regulatoryHtml || '',
+          bg: product.imageUrl ? 'background-image: url(' + product.imageUrl + ')' : '',
+          url: '/pharmaceuticals/product-finder/product-detail.html?id=' + product.id,
+          cardCode: product.inci || '',
+          goodsCode: product.code || '',
+          casNo: product.casNo || '',
+          description: product.description || ''
+        };
+        data.loaded = true;
+      } catch (err) {
+        console.error('Failed to load product detail:', err);
+        data.error = { id: id };
+        data.loaded = true;
+      }
+    }
+
+    async function loadDocuments() {
+      try {
+        const result = await GatteAPI.Document.list({ productId: parseInt(id), productType: 'pharma' });
+        const docs = result.list || [];
+        data.targetFileList1 = docs.filter(function(d) { return d.category === 'technical'; }).map(function(d) { return { name: d.name, url: d.url }; });
+        data.targetFileList2 = docs.filter(function(d) { return d.category === 'brochure'; }).map(function(d) { return { name: d.name, url: d.url }; });
+        data.targetFileList3 = docs.filter(function(d) { return d.category === 'scientific'; }).map(function(d) { return { name: d.name, url: d.url }; });
+      } catch (err) {
+        console.error('Failed to load documents:', err);
+      }
+    }
+
+    async function checkCartFavStatus() {
+      var loggedIn = checkLoginStatus();
+      data.isLoginedAndEnabled = loggedIn;
+      if (!loggedIn) return;
+
+      try {
+        var cartList = await GatteAPI.Cart.list();
+        var favList = await GatteAPI.Favorite.list({ itemType: 'pharma' });
+        data.inCart = (cartList || []).some(function(item) { return String(item.productId) === String(id); });
+        data.inFav = (favList || []).some(function(item) { return String(item.itemId) === String(id); });
+      } catch (err) {
+        console.error('Failed to check cart/fav status:', err);
+      }
+    }
+
+    async function addCart() {
+      if (!checkLoginStatus()) {
+        alert('请先注册会员后申请样品。\n请访问注册页面成为会员。');
+        return;
+      }
+      try {
+        await GatteAPI.Cart.add({
+          productType: 'pharma',
+          productId: parseInt(id),
+          productName: data.productDetail.goodsName
+        });
+        data.inCart = true;
+        alert('已加入样品申请列表。');
+      } catch (err) {
+        console.error('Failed to add to cart:', err);
+        alert('操作失败，请稍后重试。');
+      }
+    }
+
+    async function addProductFav() {
+      if (!checkLoginStatus()) {
+        alert('请先登录后再收藏。');
+        return;
+      }
+      try {
+        await GatteAPI.Favorite.add({
+          itemType: 'pharma',
+          itemId: parseInt(id)
+        });
+        data.inFav = true;
+        alert('已加入收藏。');
+      } catch (err) {
+        console.error('Failed to add to favorites:', err);
+        alert('操作失败，请稍后重试。');
+      }
+    }
+
+    getProductDetail();
+    loadDocuments();
+    checkCartFavStatus();
+
+    return { data, addCart, addProductFav };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<script>
+    
+    // 登出函数
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('nickname');
+        localStorage.removeItem('userEnabled');
+        localStorage.removeItem('_token');
+        // 执行登出后的其他操作，比如跳转到登录页面
+        
+    }
+    logout();
+    window.location.href = "/";
+    </script>

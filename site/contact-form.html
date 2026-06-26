@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.gattefosse.com/contact-form" />
+  <meta http-equiv="content-language" content="en" />
+  <link rel="image_src" href="/sites/default/files/styles/medium/public/2023-06/nous-trouver.jpg.webp?itok=1gLhDA_U" />
+  <meta property="og:site_name" content="Gattefossé" />
+  <meta property="og:type" content="page" />
+  <meta property="og:url" content="https://www.gattefosse.com/contact-form" />
+  <meta property="og:title" content="Contact form" />
+  <meta property="og:image"
+    content="/sites/default/files/styles/facebook/public/2023-06/nous-trouver.jpg.webp?itok=A2O5EB9v" />
+  <meta property="og:image:type" content="image/webp" />
+  <meta property="og:image:height" content="467" />
+  <meta property="og:updated_time" content="2023-07-19T09:39:11+0200" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact form" />
+  <meta name="twitter:url" content="https://www.gattefosse.com/contact-form" />
+  <meta name="twitter:image:width" content="280" />
+  <meta name="twitter:image:height" content="109" />
+  <meta name="twitter:image"
+    content="/sites/default/files/styles/twitter/public/2023-06/nous-trouver.jpg.webp?itok=et-me_gj" />
+  <meta name="google-site-verification"
+    content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default" href="https://www.gattefosse.com/contact-form" />
+  <link rel="alternate" hreflang="en" href="https://www.gattefosse.com/contact-form" />
+  <link rel="alternate" hreflang="fr" href="https://www.gattefosse.com/fr/formulaire-de-contact" />
+  <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      "Pagetype": "page",
+      "LEVEL1": "Contact form",
+      "LEVEL2": "",
+      "LEVEL3": "",
+      "Pays": "en",
+      "Thematique": "",
+      "Connexion": "Oui"
+    });
+  </script>
+  
+  <style>
+    .form-item--error-message {
+      display: none;
+    }
+    .goodsListForSampleList {
+      list-style: none;
+      overflow: hidden;
+      margin-top: 10px;
+      width: 100rem;
+    }
+
+    .keyword-item {
+      box-sizing: border-box;
+      float: left;
+      padding-left: 15px;
+      padding-right: 15px;
+      line-height: 28px;
+      display: inline-block;
+      width: 29.9rem;
+      color: #333;
+    }
+
+    .keyword-item:nth-child(2n - 1) {
+      /* 奇数 */
+      /*border-right: 1px solid #e8e8e8;*/
+    }
+
+    .keyword-item:nth-child(1),
+    .keyword-item:nth-child(2) {
+      /*border-top: 1px solid #e8e8e8;*/
+    }
+
+    .one-line {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /*word-wrap: break-word;
+      white-space: nowrap;*/
+    }
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 30px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: rgba(248, 244, 244, 1);  
+      min-width: 400px;
+    }
+
+    .dialog-content {
+      text-align: center;
+    }
+    .dialog-content a {
+      color:#8eb73c;
+      font-style: bold;
+    }
+
+    #dialog-close {
+      margin-top: 100px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+    
+  </style>
+  <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <title>申请样品或资料 ⋅ 嘉法狮</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/themes/custom/gattefosse/images/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_vqWmjB6oruqI2MakysAeR4lsbDeSypkZO4nbiKMengQ.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_6OdAyCxXQ9apok5XYugnSuFCJUurpAwUrZCZupF0Clw.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1712750673.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_Bc8VeJkBG-Pu0dbz-Qyt_SmOu0Y1rddU12nl5l2tIyY.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_ZcQL3CAyj8uaaIvc7jGqTRfQTR5hOofxPJqY2At4yLc.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css__gZAW51T_8yjiRTZ0DzUdNiMM4ZqkLuoqtY3KqRp5xQ.css" />
+</head>
+
+<body class="user-logged-in path-node page-node-type-page    bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header"></header>
+    <main role="main" class="s-page--inner main  " data-bs-spy="scroll"><!-- theme-pharma | theme-cosm -->
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
+          <strong>快捷链接</strong>
+        </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
+      </nav>
+      <a id="main-content" tabindex="-1"></a>
+      <div class="page-top">
+        <div class="region region-breadcrumb">
+          <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+            class="block block-system block-system-breadcrumb-block">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="/">首页</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="/contact-form.html">联系我们</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <div class="page-top__image " style="background-image: url(/sites/default/files/styles/page_banner_desktop_full/public/2023-06/nous-trouver.jpg.jpg)">
+        </div>
+      </div>
+      <div class="region region-content">
+        <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+          class="block block-system block-system-main-block">
+          <article role="article" about="/contact-form" typeof="schema:WebPage"
+            class="node node--type-page node--view-mode-full">
+            <div class="container">
+              <div class="node__wrapper">
+                <div class="node__content-wrapper">
+                  <div class="block-title">
+                    <h1 class="page-title u-title-styled">申请样品或资料</h1>
+                  </div>
+                  <div class="block-accroche">
+                  </div>
+                  <div class="node__content">
+                    <div class="paragraph paragraph--type--formulaire paragraph--view-mode--default" id="p3980">
+                      <div
+                        class="field field--name-field-formulaire field--type-webform field--label-hidden field__item">
+                        <span id="webform-submission-contact-form-paragraph-3980-form-ajax-content"></span>
+                        <div id="webform-submission-contact-form-paragraph-3980-form-ajax"
+                          class="webform-ajax-form-wrapper" data-effect="fade" data-progress-type="throbber">
+                          <form class="webform-submission-form webform-submission-add-form webform-submission-contact-form-form webform-submission-contact-form-add-form webform-submission-contact-form-paragraph-3980-form webform-submission-contact-form-paragraph-3980-add-form js-webform-details-toggle webform-details-toggle"
+                            data-drupal-selector="webform-submission-contact-form-paragraph-3980-add-form-2"
+                            action="/api/webCareer/createWebCareer" method="post"
+                            id="webform-submission-contact-form-paragraph-3980-add-form--2" accept-charset="UTF-8">
+                            <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-first-name form-item-first-name">
+                              <label for="edit-first-name--2" class="js-form-required form-required">姓名</label>
+                              <input data-drupal-selector="edit-first-name" type="text" id="edit-first-name--2" name="first_name" value="" size="60" maxlength="255" class="form-text required form-control" required="required" aria-required="true" />
+                              <p id="edit-first-name--2-error" class="form-item--error-message">请输入姓名</p>
+                            </div>
+                            <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-phone form-item-phone">
+                              <label for="edit-phone--2" class="js-form-required form-required">手机</label>
+                              <input data-drupal-selector="edit-phone" type="tel" id="edit-phone--2" name="phone" value="" size="30" maxlength="128" class="form-tel form-control" />
+                              <p id="edit-phone--2-error" class="form-item--error-message">请输入手机号</p>
+                            </div>
+                            <div class="js-form-item form-item js-form-type-email form-type-email js-form-item-email form-item-email">
+                              <label for="edit-email--2" class="js-form-required form-required">邮件</label>
+                              <input data-webform-required-error="This field is mandatory" data-drupal-selector="edit-email" type="email" id="edit-email--2" name="email" value="" size="60" maxlength="254" class="form-email required form-control" required="required" aria-required="true" />
+                              <p id="edit-email--2-error" class="form-item--error-message">请输入邮件</p>
+                            </div>
+                            <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-company form-item-company">
+                              <label for="edit-company--2" class="js-form-required form-required">公司/机构名称</label>
+                              <input data-drupal-selector="edit-company" type="text" id="edit-company--2" value="" size="60" maxlength="255" class="form-text required form-control" required="required" aria-required="true" />
+                              <p id="edit-company--2-error" class="form-item--error-message">请输入公司/机构名称</p>
+                            </div>
+                            <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-address form-item-address">
+                              <label for="edit-address--2" class="js-form-required form-required">地址</label>
+                              <input data-drupal-selector="edit-address" type="text" id="edit-address--2" value="" size="60" maxlength="255" class="form-text required form-control" required="required" aria-required="true" />
+                              <p id="edit-address--2-error" class="form-item--error-message">请输入地址</p>
+                            </div>
+                            <div class="js-form-item form-item js-form-type-select form-type-select js-form-item-registration-department form-item-registration-department">
+                              <label for="edit-department--2" class="js-form-required form-required">工作职能</label>
+                              <select data-drupal-selector="edit-department--2"
+                                id="edit-department--2" name="registration-department"
+                                class="form-select required form-control" required="required" aria-required="true">
+                                <option value="" selected="selected">请选择工作职能</option>
+                                <option value="研发">研发</option>
+                                <option value="生产">生产</option>
+                                <option value="采购">采购</option>
+                                <option value="质量保证">质量保证</option>
+                                <option value="质量控制">质量控制</option>
+                                <option value="业务拓展">业务拓展</option>
+                                <option value="销售">销售</option>
+                                <option value="财务">财务</option>
+                                <option value="法务">法务</option>
+                                <option value="物流">物流</option>
+                                <option value="市场营销">市场营销</option>
+                                <option value="运营">运营</option>
+                                <option value="法规事务">法规事务</option>
+                                <option value="安全管理">安全管理</option>
+                                <option value="企业社会责任">企业社会责任</option>
+                                <option value="其他">其他</option>
+                              </select>
+                              <p id="edit-department--2-error" class="form-item--error-message">请选择工作职能</p>
+                            </div>
+                            <span id="app">
+                            <div class="js-form-item form-item js-form-type-select form-type-select js-form-item-business-unit form-item-business-unit">
+                              <label for="edit-business-unit--2" class="js-form-required form-required">感兴趣的领域</label>
+                              <select data-drupal-selector="edit-business-unit" id="edit-business-unit--2" name="business_unit" class="form-select required form-control" required="required" @change="getProductList" v-model="data.selectedValue" aria-required="true">
+                                <option value="" selected="selected">- 请选择 -</option>
+                                <option value="个人护理">化妆品原料</option>
+                                <option value="药用辅料">药用辅料</option>
+                              </select>
+                              <p id="edit-business-unit--2-error" class="form-item--error-message">请选择感兴趣的领域</p>
+                            </div>
+                            <div class="js-form-item form-item js-form-type-select form-type-select js-form-item-business-unit form-item-business-unit"
+                             >
+                              <ul class="goodsListForSampleList">
+                                <li class="keyword-item" v-for="item in data.productList">
+                                  <input type="checkbox" :id="item.inputID" :value="item.goodsName" v-model="data.selectedOptions">
+                                  <label :for="item.inputID">{{item.goodsName}}</label>
+                                </li>
+                              </ul>
+                              <label for="sampleList">您希望申请的样品或资料</label>
+                             <textarea id="sampleList" rows="5" cols="60"> {{data.selectedOptions.join(',')}} </textarea> 
+                            </div>
+                            </span>
+                            <div class="js-form-item form-item js-form-type-textarea form-type-textarea js-form-item-your-message form-item-your-message">
+                              <label for="edit-your-message--2">请描述拟申请样品的具体应用</label>
+                              <div class="form-textarea-wrapper">
+                                <textarea data-drupal-selector="edit-your-message" id="edit-your-message--2" name="your_message" rows="5" cols="60" class="form-textarea form-control resize-vertical"></textarea>
+                                <p id="edit-your-message--2-error" class="form-item--error-message">请描述拟申请样品的具体应用</p>
+                              </div>
+                            </div>
+                            <div data-drupal-selector="edit-actions" class="form-actions js-form-wrapper form-wrapper" id="edit-actions--2">
+                              <input class="webform-button--submit button button--primary js-form-submit form-submit btn btn-primary" data-drupal-selector="edit-submit" data-disable-refocus="true" id="edit-submit--2" name="op" value="提交" />
+                            </div>
+                            <div class="url-textfield js-form-wrapper form-wrapper" style="display: none !important;">
+                              <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-url form-item-url">
+                                <label for="edit-url--2">Leave this field blank</label>
+                                <input autocomplete="off" data-drupal-selector="edit-url" type="text" id="edit-url--2" name="url" value="" size="20" maxlength="128" class="form-text form-control" />
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
+        class="c-back-to-top smoothHide d-none"></a>
+    </main>
+    <footer role="contentinfo" class="footer" id="footer"></footer>
+    <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            <span>关闭</span>
+          </button>
+          <form action="/search.html" method="GET" class="modal--search__form">
+            <h2 class="modal-title">
+              您在查找......?
+            </h2>
+            <div class="form-item">
+              <label class="visually-hidden" for="key">请输入关键词...</label>
+              <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key" name="keyword"
+                value="">
+              <button type="submit" class="js-form-submit form-submit btn">
+                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+              </button>
+            </div>
+            <a href="/search.html" class="u-link">高级搜索</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+    </div>
+  </div>
+  <div id="dialog" class="dialog">
+    <div class="dialog-content">
+      <p id="dialog-message"></p>
+      <button id="dialog-close" class="btn btn-primary">关闭</button>
+    </div>
+  </div>
+  <script src="/sites/default/files/js/js_239FU9VRaRkrFbJCQkFZSda2SLNuvZCJrE70KGeILik.js"></script>
+  <script src="/sites/default/files/js/js_who-SxFrRexB_joAU_UBbmSZd-6ch88cfsv4w_vQyPs.js"></script>
+  <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1712770076"></script>
+  <script src="/sites/default/files/js/js_PMDC6iC9an9qnUG_SnPQzLe1eSkt6OV4NgJH6MVBqX8.js"></script>
+  <script src="static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    $(document).ready(function () {
+      $("#header").load("/header.html", function () {
+        let tmp = checkLoginStatus();
+        if (!tmp) {
+          $("#collapseAccMenu").load("/account-menu.html");
+        } else {
+          $("#collapseAccMenu").load("/account-menu-after-login.html");
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+    
+    // 获取对话框元素和关闭按钮
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
+
+    // 替代alert函数
+    function showDialog(message) {
+      dialogMessage.innerHTML = message;
+      dialog.style.display = 'block';
+    }
+
+    // 关闭对话框
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
+    });
+
+    $("#edit-submit--2").click(function () {
+      var raw = {
+        name: $("#edit-first-name--2").val(),
+        phone: $('#edit-phone--2').val(),
+        email: $('#edit-email--2').val(),
+        companyName: $('#edit-company--2').val(),
+        address: $('#edit-address--2').val(),
+        department: $('#edit-department--2').val(),
+        market: $('#edit-business-unit--2').val(),
+        sampleList: $('#sampleList').val(),
+        comment: $('#edit-your-message--2').val(),
+        dft: true,
+      };
+      var allowSubmit = true;      
+      if (raw.comment == '') {
+        $("#edit-your-message--2-error").css('display', 'block');
+        $("#edit-your-message--2").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-business-unit--2").val() == '') {
+        $("#edit-business-unit--2-error").css('display', 'block');
+        $("#edit-business-unit--2").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-department--2").val() == '') {
+        $("#edit-department--2-error").css('display', 'block');
+        $("#edit-department--2").focus();
+        allowSubmit = false;
+      } 
+      if ($("#edit-address--2").val() == '') {
+        $("#edit-address--2-error").css('display', 'block');
+        $("#edit-address--2").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-company--2").val() == '') {
+        $("#edit-company--2-error").css('display', 'block');
+        $("#edit-company--2").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-email--2").val() == '') {
+        $("#edit-email--2-error").css('display', 'block');
+        $("#edit-email--2").focus();
+        allowSubmit = false;
+      }else {
+         // 新增：判断邮箱格式
+        var email = $("#edit-email--2").val() || '';
+        var emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          showDialog("请输入正确的邮箱地址");
+          $("#edit-email--2").focus();
+          allowSubmit = false;
+        }
+        // 新增：判断邮箱后缀
+        var email = $("#edit-email--2").val() || '';
+        var forbiddenDomains = ['163.com', '126.com', 'qq.com', '139.com', '189.cn'];
+        if (forbiddenDomains.some(function(domain) { return email.endsWith('@' + domain); })) {
+          showDialog("请输入公司邮箱");
+          $("#edit-email--2").focus();
+          allowSubmit = false;
+        }
+      }
+      if ($("#edit-phone--2").val() == '') {
+        $("#edit-phone--2-error").css('display', 'block');
+        $("#edit-phone--2").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-first-name--2").val() == '') {
+        $("#edit-first-name--2-error").css('display', 'block');
+        $("#edit-first-name--2").focus();
+        allowSubmit = false;
+      }
+      if (raw.comment != '') {
+        $("#edit-your-message--2-error").css('display', 'none');
+      }
+      if ($("#edit-business-unit--2").val() != '') {
+        $("#edit-business-unit--2-error").css('display', 'none');
+      }
+      if ($("#edit-department--2").val() != '') {
+        $("#edit-department--2-error").css('display', 'none');
+      }
+      if ($("#edit-address--2").val() != '') {
+        $("#edit-address--2-error").css('display', 'none');
+      }
+      if ($("#edit-company--2").val() != '') {
+        $("#edit-company--2-error").css('display', 'none');
+      }
+      if ($("#edit-email--2").val() != '') {
+        $("#edit-email--2-error").css('display', 'none');
+      }
+      if ($("#edit-phone--2").val() != '') {
+        $("#edit-phone--2-error").css('display', 'none');
+      }
+      if ($("#edit-first-name--2").val() != '') {
+        $("#edit-first-name--2-error").css('display', 'none');
+      }
+      if (!allowSubmit) {
+        return false;
+      }
+
+      var productInterest = [raw.market, raw.sampleList].filter(function (v) { return v; }).join(' | ');
+      var message = raw.comment;
+      if (raw.address) {
+        message = (message ? message + '\n' : '') + '地址: ' + raw.address;
+      }
+      if (raw.department) {
+        message = (message ? message + '\n' : '') + '工作职能: ' + raw.department;
+      }
+      var payload = {
+        fullName: raw.name,
+        email: raw.email,
+        phone: raw.phone,
+        company: raw.companyName,
+        message: message,
+        productInterest: productInterest
+      };
+
+      GatteAPI.Order.submitFeedback(payload).then(function () {
+        showDialog("您的申请已提交，我们将尽快安排嘉法狮代表与您联系");
+        allowSubmit = false;
+        $("#edit-your-message--2").val("");
+        $("#edit-business-unit--2").val("");
+        $("#edit-department--2").val("");
+        $("#edit-address--2").val("");
+        $("#edit-company--2").val("");
+        $("#edit-email--2").val("");
+        $("#edit-phone--2").val("");
+        $("#edit-first-name--2").val("");
+      }).catch(function (err) {
+        console.error('Feedback submit failed:', err);
+        showDialog("申请提交失败");
+        allowSubmit = false;
+      });
+    });
+  </script>
+  <script setup>
+    let userId = localStorage.getItem("userid");
+    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
+    const app = createApp({
+      setup() {
+        let randomNum = Math.floor(Math.random() * 100);
+        const data = reactive({
+          formData: [],
+          selectedValue: "",
+          selectedOptions: []
+        });
+        const getMallUserFunc = async () => {
+            let token = localStorage.getItem("_token");
+            let userId = localStorage.getItem("userId");
+            var api = "/api/mallUser/getMallUser";
+            showDialog("您的申请已提交");
+                if (res.data.code == 0) {
+                    data.formData = res.data.data.remallUser
+                    console.log(data.formData)
+                } else {
+                }
+            });
+        }
+        if (localStorage.getItem('isLoggedIn') == 'true') {
+          getMallUserFunc(); // 此处调回的功能只是作为预备，并未正式生效 2024-11-04
+        }
+        // 查询
+        const getProductList = () => {
+          var api = "/api/mallGoodsInfo/getMallGoodsInfoList";
+          api += "?pageSize=10000";
+          api += "&page=1";
+          if (data.selectedValue == "药用辅料" ) {
+            api += "&goodsCategoryId=117";
+          }
+          if (data.selectedValue == "化妆品原料" ) {
+            api += "&goodsCategoryId=121";
+          }
+          if (data.selectedValue == "" ) {
+            data.productList = []
+            return
+          }
+          console.log("API call disabled");
+            for (var i = 0; i < data.productList.length; i++) {
+              data.productList[i].inputID = "inputID_" + data.productList[i].ID;
+            }
+            nextTick(() => {
+              console.log("ok");
+            });
+          }).catch((err, res) => {
+            console.log(err)
+          })
+        }
+        return {
+          data,
+          getProductList
+        };
+      },
+    });
+    let result = app.mount("#app");
+  </script>
+  <script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+
+<script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
+</body>
+
+</html>
+<style>
+  
+    .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        background-color: rgba(248, 244, 244, 1);
+        min-width: 400px;
+    }
+
+    .dialog-content {
+        text-align: center;
+    }
+
+    .dialog-content p {
+        text-align: center;
+        font-size: 16px;
+        line-height: 30px;
+    }
+
+    .dialog-content a {
+        color: #8eb73c;
+        font-style: bold;
+    }
+
+    #dialog-close {
+        margin-top: 100px;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+</style>

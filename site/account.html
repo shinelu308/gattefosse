@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+
+
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="account.html" />
+  <meta name="google-site-verification"
+    content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default" href="account.html" />
+  <link rel="alternate" hreflang="en" href="account.html" />
+  <link rel="alternate" hreflang="fr" href="fr/account.html" />
+  <link rel="icon" href="themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      "Pagetype": "page",
+      "LEVEL1": "My Account",
+      "LEVEL2": "",
+      "LEVEL3": "",
+      "Pays": "France",
+      "Thematique": "",
+      "Connexion": "Non"
+    });
+  </script>
+  <script setup>
+    const params = new URLSearchParams(window.location.search);
+    const tokenStr = params.get('_token');
+    var url = params.get('url');
+    if (url == null) {
+      url = "/";
+    }
+
+    const gotoFront = async () => {
+      let host = "/samllogin.html?url=";
+      window.location.href = host + url;
+    }
+  </script>
+  <title>会员登录 | 嘉法狮</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="themes/custom/gattefosse/images/favicons/site.html">
+  <link rel="mask-icon" href="themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_VReceDAmMvwZ-zGjf3J2Cz04lQy72pkaj4cVAETXvtc.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_q87ucVt3rnFopj3ZmA--fl7PQC4tROomRfVer8ewsiI.css" />
+  <link rel="stylesheet" media="all" href="sites/default/files/css/menu_icons_1701865611.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_Zhmy6RKhhmBnFiwP0LT1tlhYmmVI_M6EDUqy6GEDwSA.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_CfAqE8UjmFObeJ-EWQr7CuI8o5xv3bQTdu0Ee6hJ1P0.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_dkOFhq_9X734fPD7dLXkRMMA7X9jWxPleJsPlb151xk.css" />
+</head>
+
+<body class="path-account    bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header"></header>
+    <div class="region region-highlight">
+      <div data-drupal-messages-fallback class="hidden"></div>
+    </div>
+    <main role="main" class="main " data-bs-spy="scroll">
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
+          <strong>快捷链接</strong>
+        </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
+      </nav>
+      <div class="page-content">
+        <div class="region region-breadcrumb">
+          <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+            class="block block-system block-system-breadcrumb-block">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="index.html">首頁</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="about-us.html">关于我们</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="account.html">登录</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <a id="main-content" tabindex="-1"></a>
+        <div class="region region-content" id="app">
+          <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+            class="block block-system block-system-main-block">
+            <div class="s-account">
+              <div class="s-account__container">
+                <h1 class="s-account__title u-title-styled">会员</h1>
+                <div class="s-account__wrapper">
+                  <ul class="c-tabs" id="account-tab" role="tablist">
+                    <li class="c-tabs__item" role="presentation">
+                      <button class="c-tabs__btn active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+                        type="button" role="tab" aria-controls="login" aria-selected="true">已有账号</button>
+                    </li>
+                    <li class="c-tabs__item" role="presentation">
+                      <button class="c-tabs__btn" id="registration-tab" data-bs-toggle="tab"
+                        data-bs-target="#registration" type="button" role="tab" aria-controls="registration"
+                        aria-selected="false">创建账号</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="account-tab-content">
+                    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                      <div class="s-account__tab-content">
+                        <form id="login-form" class="login-form">
+                          <div class="js-form-item form-item js-form-type-email form-type-email js-form-item-login-email form-item-login-email">
+                            <label for="login-email" class="js-form-required form-required">邮箱</label>
+                            <input type="email" id="login-email" name="login-email" class="form-email form-control" placeholder="请输入邮箱" required="required" aria-required="true" />
+                            <p id="login-email-error" class="form-item--error-message">请输入邮箱</p>
+                          </div>
+                          <div class="js-form-item form-item js-form-type-password form-type-password js-form-item-login-password form-item-login-password">
+                            <label for="login-password" class="js-form-required form-required">密码</label>
+                            <input type="password" id="login-password" name="login-password" class="form-control" placeholder="请输入密码" required="required" aria-required="true" />
+                            <p id="login-password-error" class="form-item--error-message">请输入密码</p>
+                          </div>
+                          <div class="form-actions">
+                            <button type="submit" class="button btn btn-primary">登录</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="registration" role="tabpanel" aria-labelledby="registration-tab">
+                      <div class="s-account__tab-content">
+                        <form class="salesforce-registration-form" data-drupal-selector="salesforce-registration-form"
+                          action="/account.html" method="post" id="salesforce-registration-form" accept-charset="UTF-8">                     
+                          <div
+                          class="js-form-item form-item js-form-type-tel form-type-tel js-form-item-registration-username form-item-registration-username">
+                          <label for="edit-registration-username" class="js-form-required form-required">用户名（邮箱）</label>
+                          <input type="text"
+                            id="edit-registration-username" value="" size="30"
+                            maxlength="128" placeholder="用户名" class="form-tel form-control" required="required"
+                            aria-required="true" />
+                            <p id="edit-registration-username-error" class="form-item--error-message">请输入用户名</p>
+                        </div>
+                            <div
+                              class="js-form-item form-item js-form-type-select form-type-select js-form-item-registration-password form-item-registration-password">
+                              <label for="edit-registration-state">密码</label>
+                              <input data-drupal-selector="edit-registration-password" type="password" id="edit-registration-password"
+                                name="registration-password" class="form-control" />
+                            </div>
+                            <div
+                              class="js-form-item form-item js-form-type-select form-type-select js-form-item-registration-password form-item-registration-password">
+                              <label for="edit-registration-state">确认密码</label>
+                              <input data-drupal-selector="edit-registration-password" type="password" id="edit-registration-password-confirm"
+                                name="registration-password" class="form-control" />
+                                <p id="registration-password-error" class="form-item--error-message">请输入密码</p>
+                                <p id="registration-password-confirm-error" class="form-item--error-message">两次输入的密码不一样</p>
+                            </div>
+                          <div
+                            class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-registration-firstname form-item-registration-firstname">
+                            <label for="edit-registration-firstname" class="js-form-required form-required">姓名</label>
+                            <input data-drupal-selector="edit-registration-firstname" type="text"
+                              id="edit-registration-firstname" name="registration-firstname" value="" size="60"
+                              maxlength="128" placeholder="请输入姓名" class="form-text required form-control"
+                              required="required" aria-required="true" />
+                            <p id="edit-registration-firstname-error" class="form-item--error-message">请输入姓名</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-registration-street form-item-registration-street">
+                            <label for="edit-registration-street form-required"
+                              class="js-form-required form-required">联系地址</label>
+                            <input data-drupal-selector="edit-registration-street" type="text"
+                              id="edit-registration-street" name="registration-street" value="" size="60"
+                              maxlength="128" placeholder="请输入联系地址" class="form-text form-control" />
+                            <p id="edit-registration-street-error" class="form-item--error-message">请输入联系地址</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-registration-phone form-item-registration-phone">
+                            <label for="edit-registration-phone form-required"
+                            class="js-form-required form-required">联系电话</label>
+                            <input type="text"
+                              id="edit-registration-phone" value="" 
+                              maxlength="128" placeholder="联系电话号码" class="form-tel required form-control" required="required"
+                              aria-required="true"  />
+                              <p id="edit-registration-phone-error" class="form-item--error-message">请输入联系电话</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-email form-type-email js-form-item-registration-mail form-item-registration-mail">
+                            <label for="edit-registration-mail" class="js-form-required form-required">工作邮箱</label>
+                            <input data-drupal-selector="edit-registration-mail"
+                              aria-describedby="edit-registration-mail--description" type="email"
+                              id="edit-registration-mail" name="registration-mail" value="" size="60" maxlength="254"
+                              placeholder="请输入您的工作邮箱" class="form-email required form-control" required="required"
+                              aria-required="true" />
+                            <p id="edit-registration-mail-error" class="form-item--error-message">请输入您的工作邮箱</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-registration-company form-item-registration-company">
+                            <label for="edit-registration-company" class="js-form-required form-required">公司/机构名称</label>
+                            <input data-drupal-selector="edit-registration-company" type="text"
+                              id="edit-registration-company" name="registration-company" value="" size="60"
+                              maxlength="128" placeholder="请输入公司/机构名称" class="form-text required form-control"
+                              required="required" aria-required="true" />
+                            <p id="edit-registration-company-error" class="form-item--error-message">请输入公司/机构名称</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-select form-type-select js-form-item-registration-market form-item-registration-market">
+                            <label for="edit-registration-market" class="js-form-required form-required">行业</label>
+                            <select data-drupal-selector="edit-registration-market" id="edit-registration-market"
+                              name="registration-market" class="form-select required form-control" required="required"
+                              aria-required="true">
+                              <option value="" selected="selected">请选择行业</option>
+                              <option value="个人护理">个人护理</option>
+                              <option value="药用辅料">药用辅料</option>
+                              <option value="个人护理;药用辅料">全选两者</option>
+                            </select>
+                            <p id="edit-registration-company-error" class="form-item--error-message">请选择行业</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-select form-type-select js-form-item-registration-department form-item-registration-department">
+                            <label for="edit-registration-department" class="js-form-required form-required">工作职能</label>
+                            <select data-drupal-selector="edit-registration-department"
+                              id="edit-registration-department" name="registration-department"
+                              class="form-select required form-control" required="required" aria-required="true">
+                              <option value="" selected="selected">请选择工作职能</option>
+                              <option value="研发">研发</option>
+                              <option value="生产">生产</option>
+                              <option value="采购">采购</option>
+                              <option value="质量保证">质量保证</option>
+                              <option value="质量控制">质量控制</option>
+                              <option value="业务拓展">业务拓展</option>
+                              <option value="销售">销售</option>
+                              <option value="财务">财务</option>
+                              <option value="法务">法务</option>
+                              <option value="物流">物流</option>
+                              <option value="市场营销">市场营销</option>
+                              <option value="运营">运营</option>
+                              <option value="法规事务">法规事务</option>
+                              <option value="安全管理">安全管理</option>
+                              <option value="企业社会责任">企业社会责任</option>
+                              <option value="其他">其他</option>
+                            </select>
+                            <p id="edit-registration-department-error" class="form-item--error-message">请选择工作职能</p>
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-checkbox form-type-checkbox js-form-item-registration-rgpd form-item-registration-rgpd">
+                            <input data-drupal-selector="edit-registration-rgpd" type="checkbox"
+                              id="edit-registration-rgpd" name="registration-rgpd" value="1"
+                              class="form-checkbox required form-check-input" required="required"
+                              aria-required="true" />
+                            <label for="edit-registration-rgpd" class="option js-form-required form-required">我同意 <a
+                                href="/article-normal-template-notop.html?id=144">隐私政策</a>和 <a
+                                href="/article-normal-template-notop.html?id=210">条款和条件</a>。</label>
+                            <p id="registration-rgpd-error" class="form-item--error-message">请勾选前面的复选框</p>
+                          </div>
+                          <input data-drupal-selector="edit-captcha-sid" type="hidden" name="captcha_sid"
+                            value="49239" />
+                          <input data-drupal-selector="edit-captcha-token" type="hidden" name="captcha_token"
+                            value="Hka1Jt1w6Jde475ULX2QMTVqlr6Js55-3CkK940J7pY" />
+                          <input id="recaptcha-v3-token" class="recaptcha-v3-token"
+                            data-recaptcha-v3-action="contact_form"
+                            data-recaptcha-v3-site-key="6LetMiEoAAAAALOmTwdjNJ2u207IjeYy1DJ3dzol"
+                            data-drupal-selector="edit-captcha-response" type="hidden" name="captcha_response"
+                            value="" />
+                          <input data-drupal-selector="edit-is-recaptcha-v3" type="hidden" name="is_recaptcha_v3"
+                            value="1" />
+                          <input autocomplete="off"
+                            data-drupal-selector="form-yqc3ypzlk9yfibksncmm1r5iobthxngsvzrrv0-fdmc" type="hidden"
+                            name="form_build_id" value="form-YQc3ypZLk9YFIBkSnCMm1R5IOBThxNgSvZRRV0-fDMc" />
+                          <input data-drupal-selector="edit-salesforce-registration-form" type="hidden" name="form_id"
+                            value="salesforce_registration_form" />
+                          <div data-drupal-selector="edit-actions" class="form-actions js-form-wrapper form-wrapper"
+                            id="edit-actions">
+                            <input class="js-create-lead button js-form-submit form-submit btn btn-primary"
+                              data-drupal-selector="edit-submit" id="edit-submit" name="op" value="提交注册" />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal modal--registration" id="registration-modal" tabindex="-1" aria-label="Registration form"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close"
+                      data-bs-dismiss="modal">
+                      <i class="o-icon --cross" aria-hidden="true"></i>
+                      <span>关闭</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="modal-message success-message">
+                      <p>Thank you for your request.</p>
+                      <p>You will receive a confirmation email as soon as your account is validated.</p>
+                    </div>
+                    <div class="modal-message duplicate-message" style="display:none;">
+                      <p>The account already exists, please login with the following link.</p>
+                      <p><a href="account.html">Log in</a></p>
+                      <p><a
+                          href="https://gattefosssas--preprod.sandbox.my.site.com/privatespace/s/login/ForgotPassword?language=en_US&amp;startURL=%2Fprivatespace%2Fidp%2Flogin%3Fapp%3D0sp1j0000004DpK&amp;RelayState=https%3A%2F%2Fprodtmp.gattefosse.com%2Faccount&amp;binding=HttpPost&amp;inresponseto=_70b97974d85f07f5539e8cca3fdee235ccee91537e">Forgot
+                          your password?</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
+        class="c-back-to-top smoothHide d-none"></a>
+    </main>
+    <footer role="contentinfo" class="footer" id="footer"></footer>
+    <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            <span>关闭</span>
+          </button>
+          <form action="/search.html" method="GET" class="modal--search__form">
+            <h2 class="modal-title">
+              您在找寻什么?
+            </h2>
+            <div class="form-item">
+              <label class="visually-hidden" for="key">请输入关键词......</label>
+              <input class="form-text form-control" placeholder="请输入关键词......" type="text" id="key" name="keyword"
+                value="">
+              <button type="submit" class="js-form-submit form-submit btn">
+                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+              </button>
+            </div>
+            <a href="search.html" class="u-link">高级搜索</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+    </div>
+  </div>
+  <div id="dialog" class="dialog">
+    <div class="dialog-content">
+      <p id="dialog-message"></p>
+      <button id="dialog-close" class="btn btn-primary">关闭</button>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $("#header").load("/header.html", function () {
+        let tmp = checkLoginStatus();
+        if (!tmp) {
+          $("#collapseAccMenu").load("/account-menu.html");
+        } else {
+          window.location.href = "account-after-login.html";
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+  </script>
+  <script>
+
+    // 获取对话框元素和关闭按钮
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
+
+    // 替代alert函数
+    function showDialog(message) {
+      dialogMessage.innerHTML = message;
+      dialog.style.display = 'block';
+    }
+
+    // 关闭对话框
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
+    });
+
+    $("#edit-submit").click(async function (e) {
+      e.preventDefault();
+      
+      var body = {
+        email: $("#edit-registration-mail").val(),
+        password: $("#edit-registration-password").val(),
+        fullName: $("#edit-registration-firstname").val(),
+        company: $("#edit-registration-company").val(),
+        phone: $("#edit-registration-phone").val()
+      };
+
+      let allowSubmit = true;
+      if (body.password == '') {  
+        $("#registration-password-error").css('display', 'block');
+        $("#edit-registration-password").focus();      
+        allowSubmit = false;
+      } else {        
+        $("#registration-password-error").css('display', 'none');
+        if (body.password != $("#edit-registration-password-confirm").val()) {  
+          $("#registration-password-confirm-error").css('display', 'block');
+          $("#edit-registration-password-confirm").focus();      
+          allowSubmit = false;
+        } else {          
+          $("#registration-password-confirm-error").css('display', 'none');
+        }
+      }
+      if (!$("#edit-registration-rgpd").prop('checked')) {
+        $("#registration-rgpd-error").css('display', 'block');
+        $("#edit-registration-rgpd").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-mail").val() == '') {
+        $("#edit-registration-mail-error").css('display', 'block');
+        $("#edit-registration-mail").focus();
+        allowSubmit = false;
+      } else {
+         // 判断邮箱格式
+        var email = $("#edit-registration-mail").val() || '';
+        var emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          showDialog("请输入正确的邮箱地址");
+          $("#edit-registration-mail").focus();
+          allowSubmit = false;
+        }
+        // 判断邮箱后缀
+        var forbiddenDomains = ['163.com', '126.com', 'qq.com', '139.com', '189.cn'];
+        if (forbiddenDomains.some(function(domain) { return email.endsWith('@' + domain); })) {
+          showDialog("请输入公司邮箱");
+          $("#edit-registration-mail").focus();
+          allowSubmit = false;
+        }
+      }
+      if ($("#edit-registration-department").val() == '') {
+        $("#edit-registration-department-error").css('display', 'block');
+        $("#edit-registration-department").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-phone").val() == '') {
+        $("#edit-registration-phone-error").css('display', 'block');
+        $("#edit-registration-phone").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-street").val() == '') {
+        $("#edit-registration-street-error").css('display', 'block');
+        $("#edit-registration-street").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-company").val() == '') {
+        $("#edit-registration-company-error").css('display', 'block');
+        $("#edit-registration-company").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-firstname").val() == '') {
+        $("#edit-registration-firstname-error").css('display', 'block');
+        $("#edit-registration-firstname").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-username").val() == '') {
+        $("#edit-registration-username-error").css('display', 'block');
+        $("#edit-registration-username").focus();
+        allowSubmit = false;
+      }
+      if ($("#edit-registration-firstname").val() != '') {
+        $("#edit-registration-firstname-error").css('display', 'none');
+      }
+      if ($("#edit-registration-company").val() != '') {
+        $("#edit-registration-company-error").css('display', 'none');
+      }
+      if ($("#edit-registration-mail").val() != '') {
+        $("#edit-registration-mail-error").css('display', 'none');
+      }
+      if ($("#edit-registration-phone").val() != '') {
+        $("#edit-registration-phone-error").css('display', 'none');
+      }
+      if ($("#edit-registration-street").val() != '') {
+        $("#edit-registration-street-error").css('display', 'none');
+      }
+      if ($("#edit-registration-market").val() != '') {
+        $("#edit-registration-market-error").css('display', 'none');
+      }
+      if ($("#edit-registration-department").val() != '') {
+        $("#edit-registration-department-error").css('display', 'none');
+      }
+      if ($("#edit-registration-rgpd").prop('checked')) {
+        $("#registration-rgpd-error").css('display', 'none');
+      }
+      
+      if (!allowSubmit) {
+        return false;
+      }
+
+      try {
+        const result = await GatteAPI.Auth.register(body);
+        $('#registration-modal').modal('show');
+      } catch (error) {
+        showDialog("注册失败：" + (error.message || "请稍后重试"));
+      }
+    });
+
+    // 登录表单提交处理
+    $("#login-form").submit(async function(e) {
+      e.preventDefault();
+      
+      var email = $("#login-email").val();
+      var password = $("#login-password").val();
+      
+      let allowSubmit = true;
+      
+      if (email == '') {
+        $("#login-email-error").css('display', 'block');
+        $("#login-email").focus();
+        allowSubmit = false;
+      } else {
+        $("#login-email-error").css('display', 'none');
+      }
+      
+      if (password == '') {
+        $("#login-password-error").css('display', 'block');
+        $("#login-password").focus();
+        allowSubmit = false;
+      } else {
+        $("#login-password-error").css('display', 'none');
+      }
+      
+      if (!allowSubmit) {
+        return false;
+      }
+      
+      try {
+        const result = await GatteAPI.Auth.login(email, password);
+        const { token, user } = result;
+        saveLogin(token, user);
+        
+        // 重定向到目标页面
+        let urlParams = new URLSearchParams(window.location.search);
+        let returnUrl = urlParams.get('url') || 'account-after-login.html';
+        window.location.href = returnUrl;
+      } catch (error) {
+        showDialog("登录失败：" + (error.message || "邮箱或密码错误"));
+      }
+    });
+  </script>
+  <script src="/sites/default/files/js/js_9H6SPlMlyZ9EyjY2MwCDt9q3QzVmFZunCan9fow0dBU.js"></script>
+  <script src="/sites/default/files/js/js_LTKAN3sFbDc5sT7m4u9gaorav7wUoRiGzL5fg7SCVw0.js"></script>
+  <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron1860.js?1702896652"></script>
+  <script src="/sites/default/files/js/js_oWUeHxL8JB5yaJTGLbJhyH4vRq_OE3MfzTUmaeBxwC0.js"></script>
+  <!--script src="https://cdn.jsdelivr.net/gh/jackocnr/intl-tel-input@v16.1.0/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jackocnr/intl-tel-input@v16.1.0/build/js/intlTelInput-jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script-->
+  <script src="/sites/default/files/js/js_PLxeUfv4vMJjdLutOIApYRHnzE83T6_IT_YWQ44rWxY.js"></script>
+
+  <!--script src="/static/js/intlTelInput.min.js"></script>
+  <script src="/static/js/intlTelInput-jquery.min.js"></script>
+  <script src="/static/js/jquery.validate.min.js"></script-->
+  <script defer src="https://umami.onlystyle.com.cn/script.js"
+    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+  <style>
+    .form-item--error-message {
+      display: none;
+    }
+  </style>
+
+</body>
+
+</html>
+
+<style>
+  
+    .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        background-color: rgba(248, 244, 244, 1);
+        min-width: 400px;
+    }
+
+    .dialog-content {
+        text-align: center;
+    }
+
+    .dialog-content p {
+        text-align: center;
+        font-size: 16px;
+        line-height: 30px;
+    }
+
+    .dialog-content a {
+        color: #8eb73c;
+        font-style: bold;
+    }
+
+    #dialog-close {
+        margin-top: 100px;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+</style>

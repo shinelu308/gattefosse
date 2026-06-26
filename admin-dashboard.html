@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>嘉法狮后台管理系统</title>
+<style>
+  :root {
+    --green: #8EB73C;
+    --green-hover: #7aa030;
+    --green-light: #f4f9e9;
+    --green-lighter: #fafcf5;
+    --slate: #54616C;
+    --slate-light: #6b7a87;
+    --slate-lighter: #e8ebed;
+    --slate-lightest: #f5f6f7;
+    --blue-link: #003CC5;
+    --red: #d9534f;
+    --red-light: #fdf2f2;
+    --amber: #ba7517;
+    --amber-light: #fef9f0;
+    --text: #333333;
+    --text-secondary: #666666;
+    --text-muted: #949494;
+    --border: #e0e0e0;
+    --border-light: #f0f0f0;
+    --white: #ffffff;
+    --bg: #f6f6f6;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --sidebar-w: 240px;
+    --header-h: 56px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: var(--header-h);
+  }
+  .sidebar-logo svg { width: 36px; height: auto; }
+  .sidebar-logo span {
+    font-size: 14px; font-weight: 500; color: var(--slate);
+    letter-spacing: 0.5px;
+  }
+
+  .sidebar-nav { flex: 1; padding: 12px 0; }
+  .nav-section { padding: 0 16px; margin-bottom: 4px; }
+  .nav-section-title {
+    font-size: 11px; font-weight: 500; color: var(--text-muted);
+    letter-spacing: 0.8px;
+    padding: 8px 0 6px 0;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; margin: 1px 8px;
+    border-radius: var(--radius);
+    color: var(--text-secondary); text-decoration: none;
+    transition: all 0.15s; cursor: pointer;
+    font-size: 13px; font-weight: 400;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--slate-lightest); color: var(--text); }
+  .nav-item.active { background: var(--green-light); color: var(--green); font-weight: 500; }
+  .nav-item .badge {
+    margin-left: auto; font-size: 11px; background: var(--slate-lighter);
+    color: var(--slate); padding: 2px 8px; border-radius: 10px; font-weight: 500;
+  }
+  .nav-item.active .badge { background: var(--green); color: white; }
+  .nav-icon {
+    width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-icon svg { width: 16px; height: 16px; stroke: currentColor; }
+
+  .sidebar-footer {
+    padding: 12px 20px; border-top: 1px solid var(--border-light);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sidebar-footer .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--green); color: white; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500;
+  }
+  .sidebar-footer .user-info { flex: 1; min-width: 0; }
+  .sidebar-footer .user-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .sidebar-footer .user-role { font-size: 11px; color: var(--text-muted); }
+
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1; display: flex; flex-direction: column;
+  }
+  .topbar {
+    height: var(--header-h); background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px; gap: 16px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-breadcrumb {
+    font-size: 13px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .topbar-breadcrumb .sep { color: var(--border); }
+  .topbar-breadcrumb .current { color: var(--text); font-weight: 500; }
+  .topbar-search {
+    margin-left: auto; position: relative;
+    display: flex; align-items: center;
+  }
+  .topbar-search input {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 6px 12px 6px 32px; font-size: 13px; width: 220px;
+    outline: none; font-family: var(--font); color: var(--text);
+    transition: border-color 0.15s;
+  }
+  .topbar-search input:focus { border-color: var(--green); }
+  .topbar-search .search-icon {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); pointer-events: none;
+  }
+  .topbar-actions { display: flex; align-items: center; gap: 6px; }
+  .topbar-btn {
+    width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius); border: none; background: transparent;
+    cursor: pointer; color: var(--text-secondary); transition: all 0.15s;
+  }
+  .topbar-btn:hover { background: var(--slate-lightest); color: var(--text); }
+
+  .content { flex: 1; padding: 24px; overflow-y: auto; }
+  .page-title {
+    font-size: 18px; font-weight: 500; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .page-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .stat-card .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+  .stat-card .stat-value { font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .stat-card .stat-change {
+    font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .stat-card .stat-change.up { color: var(--green); }
+  .stat-card .stat-change.down { color: var(--red); }
+
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 20px; border-bottom: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-header h3 { font-size: 14px; font-weight: 500; color: var(--text); }
+  .card-body { padding: 20px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px; border-radius: var(--radius);
+    font-size: 13px; font-weight: 500; font-family: var(--font);
+    cursor: pointer; border: 1px solid transparent;
+    transition: all 0.15s; text-decoration: none;
+    line-height: 1.4;
+  }
+  .btn-primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn-primary:hover { background: var(--green-hover); border-color: var(--green-hover); }
+  .btn-outline { background: white; color: var(--text-secondary); border-color: var(--border); }
+  .btn-outline:hover { background: var(--slate-lightest); color: var(--text); }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+  .btn-danger { background: white; color: var(--red); border-color: var(--red); }
+  .btn-danger:hover { background: var(--red-light); }
+
+  table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  table th {
+    text-align: left; padding: 10px 14px; font-weight: 500;
+    color: var(--text-muted); font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border-light);
+    color: var(--text); vertical-align: middle;
+  }
+  table tbody tr:hover { background: var(--slate-lightest); }
+  table tbody tr:last-child td { border-bottom: none; }
+
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 10px;
+    font-size: 11px; font-weight: 500; line-height: 1.6;
+  }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-blue { background: #e8f0fd; color: var(--blue-link); }
+  .tag-slate { background: var(--slate-lighter); color: var(--slate); }
+  .tag-amber { background: var(--amber-light); color: var(--amber); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 13px; font-weight: 500; color: var(--text);
+    margin-bottom: 6px;
+  }
+  .form-group .hint { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+  .form-control {
+    width: 100%; padding: 8px 12px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 13px; font-family: var(--font);
+    color: var(--text); background: var(--white); outline: none;
+    transition: border-color 0.15s; line-height: 1.5;
+  }
+  .form-control:focus { border-color: var(--green); }
+  textarea.form-control { resize: vertical; min-height: 80px; }
+  select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23949494' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .check-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .check-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 5px 12px; border: 1px solid var(--border); border-radius: 20px;
+    font-size: 12px; color: var(--text-secondary); cursor: pointer;
+    transition: all 0.15s; user-select: none;
+  }
+  .check-tag.checked { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .check-tag:hover { border-color: var(--green); }
+
+  .pagination {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 12px;
+  }
+  .pagination-info { font-size: 12px; color: var(--text-muted); }
+  .pagination-btns { display: flex; gap: 4px; }
+  .pagination-btns button {
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: white; color: var(--text-secondary); cursor: pointer; font-size: 12px;
+    transition: all 0.15s;
+  }
+  .pagination-btns button:hover { border-color: var(--green); color: var(--green); }
+  .pagination-btns button.active { background: var(--green); color: white; border-color: var(--green); }
+
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab {
+    padding: 10px 18px; font-size: 13px; font-weight: 400;
+    color: var(--text-secondary); cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all 0.15s;
+    background: none; border-top: none; border-left: none; border-right: none;
+    font-family: var(--font);
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--green); border-bottom-color: var(--green); font-weight: 500; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .action-links { display: flex; gap: 8px; }
+  .action-links a {
+    font-size: 12px; color: var(--blue-link); text-decoration: none; cursor: pointer;
+  }
+  .action-links a:hover { text-decoration: underline; }
+  .action-links a.danger { color: var(--red); }
+
+  @media (max-width: 1280px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 1024px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .form-row { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <svg width="93" height="52" viewBox="0 0 93 52" fill="none">
+      <path d="M43.8104 18.0694C43.8104 28.0451 35.765 36.1388 25.8276 36.1388C15.8902 36.1388 7.85434 28.0451 7.85434 18.0694C7.85434 8.0938 15.8998 0 25.8372 0C35.7745 0 43.82 8.0842 43.82 18.0694H43.8104Z" fill="#54616C"/>
+      <path d="M54.2638 16.6388C54.2064 17.2053 54.1873 17.7814 54.1969 18.3575L51.3877 18.9143C51.3494 18.0694 51.3685 17.2053 51.4545 16.3316C51.9992 10.6861 54.9517 5.88552 59.1082 2.97637C56.2895 1.13294 52.9165 0.0480061 49.2951 0.0480061C39.3577 0.0480061 31.3123 8.1418 31.3123 18.1174C31.3123 28.0931 39.3577 36.1869 49.2951 36.1869C59.2325 36.1869 67.2779 28.1027 67.2779 18.1174C67.2779 12.8752 65.0515 8.1514 61.497 4.8486C57.6367 7.44092 54.7224 11.9247 54.2638 16.6388Z" fill="#8EB73C"/>
+      <path d="M15.6227 42.8885H17.0846L21.3367 51.8272H19.2632L18.1835 49.5229H14.5525L13.4728 51.8272H11.3993L15.6227 42.8885Z" fill="#8EB73C"/>
+      <path d="M51.1679 25.8272C51.1679 23.0428 53.4134 20.7866 56.1748 20.7866C58.9362 20.7866 61.1817 23.0428 61.1817 25.8272C61.1817 28.6115 58.9362 30.8582 56.1748 30.8582C53.4134 30.8582 51.1679 28.6019 51.1679 25.8272Z" fill="#54616C"/>
+    </svg>
+    <span>后台管理</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section"><div class="nav-section-title">主菜单</div></div>
+    <a class="nav-item active" onclick="switchPage('dashboard')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      总览
+    </a>
+    <div class="nav-section"><div class="nav-section-title">产品管理</div></div>
+    <a class="nav-item" onclick="switchPage('pc-products')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+      个人护理原料
+      <span class="badge">82</span>
+    </a>
+    <a class="nav-item" onclick="switchPage('pharma-products')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+      药用辅料
+      <span class="badge">57</span>
+    </a>
+    <a class="nav-item" onclick="switchPage('formulations')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-5"/><path d="M9 2v5h6V2"/></svg></span>
+      配方管理
+      <span class="badge">119</span>
+    </a>
+    <div class="nav-section"><div class="nav-section-title">内容管理</div></div>
+    <a class="nav-item" onclick="switchPage('news')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+      新闻与活动
+    </a>
+    <a class="nav-item" onclick="switchPage('documents')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></span>
+      文档资源
+    </a>
+    <div class="nav-section"><div class="nav-section-title">运营</div></div>
+    <a class="nav-item" onclick="switchPage('orders')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+      样品订单
+      <span class="badge">12</span>
+    </a>
+    <a class="nav-item" onclick="switchPage('users')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      用户管理
+    </a>
+    <a class="nav-item" onclick="switchPage('settings')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+      站点设置
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="avatar">SL</div>
+    <div class="user-info">
+      <div class="user-name">Shine Lu</div>
+      <div class="user-role">超级管理员</div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-breadcrumb" id="breadcrumb">
+      <span>后台管理</span><span class="sep">/</span><span class="current">总览</span>
+    </div>
+    <div class="topbar-search">
+      <span class="search-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" placeholder="搜索产品、订单、用户...">
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" title="通知">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="topbar-btn" title="退出登录">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="content" id="page-content">
+  </div>
+</main>
+
+<script>
+const pages = {
+  dashboard: {
+    breadcrumb: '总览',
+    render() {
+      return `
+        <h1 class="page-title">总览</h1>
+        <p class="page-subtitle">嘉法狮产品与内容管理总览</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">个人护理原料</div>
+            <div class="stat-value">82</div>
+            <div class="stat-change up">↑ 3 本周新增</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">药用辅料</div>
+            <div class="stat-value">57</div>
+            <div class="stat-change up">↑ 1 本周新增</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">待处理样品订单</div>
+            <div class="stat-value">12</div>
+            <div class="stat-change down">↓ 5 较上周</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">注册用户</div>
+            <div class="stat-value">1,247</div>
+            <div class="stat-change up">+18 本周</div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header">
+              <h3>最近更新产品</h3>
+              <button class="btn btn-outline btn-sm">查看全部</button>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <table>
+                <thead><tr><th>产品名称</th><th>分类</th><th>更新时间</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:500;">Emulium Mellifera MB</td>
+                    <td><span class="tag tag-green">个人护理</span></td>
+                    <td style="font-size:12px;color:var(--text-muted);">2026-06-24 14:30</td>
+                    <td><a href="javascript:void(0)" onclick="switchPage('pc-edit')" style="color:var(--blue-link);font-size:12px;text-decoration:none;">编辑</a></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;">Gelucire 50/13</td>
+                    <td><span class="tag tag-blue">药用辅料</span></td>
+                    <td style="font-size:12px;color:var(--text-muted);">2026-06-23 10:15</td>
+                    <td><a href="javascript:void(0)" style="color:var(--blue-link);font-size:12px;text-decoration:none;">编辑</a></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;">Apifil CG</td>
+                    <td><span class="tag tag-green">个人护理</span></td>
+                    <td style="font-size:12px;color:var(--text-muted);">2026-06-22 16:42</td>
+                    <td><a href="javascript:void(0)" onclick="switchPage('pc-edit')" style="color:var(--blue-link);font-size:12px;text-decoration:none;">编辑</a></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;">Labrafil M 2130 CS</td>
+                    <td><span class="tag tag-blue">药用辅料</span></td>
+                    <td style="font-size:12px;color:var(--text-muted);">2026-06-22 09:08</td>
+                    <td><a href="javascript:void(0)" style="color:var(--blue-link);font-size:12px;text-decoration:none;">编辑</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>待处理样品订单</h3>
+              <button class="btn btn-outline btn-sm">查看全部</button>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <table>
+                <thead><tr><th>订单号</th><th>申请人</th><th>公司</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:500;color:var(--blue-link);">SO-2026-0187</td>
+                    <td>张伟</td><td>上海医药集团</td>
+                    <td><span class="tag tag-amber">待审核</span></td>
+                    <td><div class="action-links"><a href="javascript:void(0)">通过</a><a class="danger">拒绝</a></div></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:var(--blue-link);">SO-2026-0186</td>
+                    <td>李娜</td><td>广州白云山</td>
+                    <td><span class="tag tag-amber">待审核</span></td>
+                    <td><div class="action-links"><a href="javascript:void(0)">通过</a><a class="danger">拒绝</a></div></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:var(--blue-link);">SO-2026-0185</td>
+                    <td>王芳</td><td>珀莱雅化妆品</td>
+                    <td><span class="tag tag-green">已通过</span></td>
+                    <td><div class="action-links"><a href="javascript:void(0)">发货</a></div></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:var(--blue-link);">SO-2026-0184</td>
+                    <td>陈刚</td><td>华润三九</td>
+                    <td><span class="tag tag-green">已发货</span></td>
+                    <td><div class="action-links"><a href="javascript:void(0)">查看</a></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>`;
+    }
+  },
+
+  'pc-products': {
+    breadcrumb: '产品管理 / 个人护理原料',
+    render() {
+      return `
+        <h1 class="page-title">个人护理原料</h1>
+        <p class="page-subtitle">管理个人护理产品线全部 82 个原料产品</p>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <h3>产品列表</h3>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部功能分类</option>
+                <option>乳化剂</option>
+                <option>活性成分</option>
+                <option>增溶剂</option>
+                <option>质地调节剂</option>
+                <option>成膜剂</option>
+              </select>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部应用领域</option>
+                <option>面部</option>
+                <option>身体</option>
+                <option>头发</option>
+                <option>防晒</option>
+                <option>彩妆</option>
+              </select>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部天然认证</option>
+                <option>COSMOS 认证</option>
+                <option>RSPO 质量平衡</option>
+                <option>ERI 360</option>
+                <option>中国合规</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm">导出 Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="switchPage('pc-edit')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                新增产品
+              </button>
+            </div>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>产品名称</th>
+                  <th>INCI 名称</th>
+                  <th>功能分类</th>
+                  <th>应用领域</th>
+                  <th>天然认证</th>
+                  <th>状态</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;">Emulium Mellifera MB</td>
+                  <td style="color:var(--text-secondary);font-size:12px;">Polyglyceryl-6 Distearate...</td>
+                  <td><span class="tag tag-green">乳化剂</span></td>
+                  <td style="font-size:12px;">面部、身体、防晒</td>
+                  <td><span class="tag tag-slate" style="font-size:11px;">COSMOS</span> <span class="tag tag-slate" style="font-size:11px;margin-left:4px;">RSPO MB</span></td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-24</td>
+                  <td><div class="action-links"><a onclick="switchPage('pc-edit')">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Apifil CG</td>
+                  <td style="color:var(--text-secondary);font-size:12px;">PEG-8 Beeswax</td>
+                  <td><span class="tag tag-green">增溶剂</span></td>
+                  <td style="font-size:12px;">面部、头发、彩妆</td>
+                  <td><span class="tag tag-slate" style="font-size:11px;">ERI 360</span></td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-23</td>
+                  <td><div class="action-links"><a onclick="switchPage('pc-edit')">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Emulium Dolcea MB</td>
+                  <td style="color:var(--text-secondary);font-size:12px;">Polyglyceryl-6 Distearate...</td>
+                  <td><span class="tag tag-green">乳化剂</span></td>
+                  <td style="font-size:12px;">面部、身体</td>
+                  <td><span class="tag tag-slate" style="font-size:11px;">COSMOS</span></td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-20</td>
+                  <td><div class="action-links"><a onclick="switchPage('pc-edit')">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Gatuline IN-TENSE</td>
+                  <td style="color:var(--text-secondary);font-size:12px;">Acmella Oleracea Extract</td>
+                  <td><span class="tag tag-amber">活性成分</span></td>
+                  <td style="font-size:12px;">面部、眼周</td>
+                  <td><span class="tag tag-slate" style="font-size:11px;">中国合规</span></td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-18</td>
+                  <td><div class="action-links"><a onclick="switchPage('pc-edit')">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Liposense MB</td>
+                  <td style="color:var(--text-secondary);font-size:12px;">Sucrose Stearate...</td>
+                  <td><span class="tag tag-green">乳化剂</span></td>
+                  <td style="font-size:12px;">面部、身体、头发</td>
+                  <td><span class="tag tag-slate" style="font-size:11px;">RSPO MB</span></td>
+                  <td><span class="tag tag-slate">草稿</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-15</td>
+                  <td><div class="action-links"><a onclick="switchPage('pc-edit')">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination" style="padding:12px 20px;">
+              <div class="pagination-info">共 82 条，显示第 1-5 条</div>
+              <div class="pagination-btns">
+                <button disabled>‹</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>…</button>
+                <button>17</button>
+                <button>›</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+  },
+
+  'pc-edit': {
+    breadcrumb: '产品管理 / 个人护理原料 / 编辑产品',
+    render() {
+      return `
+        <h1 class="page-title">编辑产品 — Emulium Mellifera MB</h1>
+        <p class="page-subtitle">个人护理原料详细信息编辑</p>
+        <div class="tabs">
+          <button class="tab active">基本信息</button>
+          <button class="tab">标签与分类</button>
+          <button class="tab">感官评估</button>
+          <button class="tab">临床数据</button>
+          <button class="tab">关联文档</button>
+        </div>
+        <div class="card" style="max-width:900px;">
+          <div class="card-header"><h3>基本信息</h3></div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>产品名称 <span class="hint">（必填）</span></label>
+              <input type="text" class="form-control" value="Emulium Mellifera MB">
+            </div>
+            <div class="form-group">
+              <label>INCI 名称</label>
+              <input type="text" class="form-control" value="Polyglyceryl-6 Distearate (and) Jojoba Esters (and) Polyglyceryl-3 Beeswax (and) Cetyl Alcohol">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>建议用量</label>
+                <input type="text" class="form-control" value="1-5%" placeholder="例：1-5%">
+              </div>
+              <div class="form-group">
+                <label>产品图片</label>
+                <div style="border:1px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--text-muted);font-size:12px;cursor:pointer;">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1" style="margin-bottom:6px;display:inline-block;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <br>点击上传或拖拽图片到此处<br><span style="color:var(--text-muted);">支持 JPG/PNG，建议 800×600px</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>产品描述</label>
+              <textarea class="form-control" rows="4">Emulium Mellifera MB 是一款 100% 天然来源的 O/W 乳化剂，由荷荷巴酯与蜂蜡协同复配而成……</textarea>
+            </div>
+            <div style="border-top:1px solid var(--border-light);padding-top:16px;margin-top:8px;display:flex;gap:8px;justify-content:flex-end;">
+              <button class="btn btn-outline">取消</button>
+              <button class="btn btn-outline">保存草稿</button>
+              <button class="btn btn-primary">保存并发布</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="max-width:900px;margin-top:20px;">
+          <div class="card-header"><h3>标签与分类</h3></div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>功能分类</label>
+              <div class="check-group">
+                <span class="check-tag checked">乳化剂</span>
+                <span class="check-tag">活性成分</span>
+                <span class="check-tag">增溶剂</span>
+                <span class="check-tag">质地调节剂</span>
+                <span class="check-tag">成膜剂</span>
+                <span class="check-tag">脂质</span>
+                <span class="check-tag">蜡类</span>
+                <span class="check-tag">润肤剂</span>
+                <span class="check-tag">增稠剂</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>应用领域</label>
+              <div class="check-group">
+                <span class="check-tag checked">面部</span>
+                <span class="check-tag checked">身体</span>
+                <span class="check-tag">防晒</span>
+                <span class="check-tag">头发</span>
+                <span class="check-tag">彩妆</span>
+                <span class="check-tag">唇部护理</span>
+                <span class="check-tag">眼周</span>
+                <span class="check-tag">婴儿护理</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>产品概念</label>
+              <div class="check-group">
+                <span class="check-tag checked">蜡/黄油</span>
+                <span class="check-tag">升级回收</span>
+                <span class="check-tag">天然低共熔溶剂</span>
+                <span class="check-tag">仿生</span>
+                <span class="check-tag">Ω脂肪酸</span>
+                <span class="check-tag">副产品高值化</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>功效宣称</label>
+              <div class="check-group">
+                <span class="check-tag checked">保湿</span>
+                <span class="check-tag">舒缓</span>
+                <span class="check-tag checked">抗衰老</span>
+                <span class="check-tag">提亮</span>
+                <span class="check-tag">控油</span>
+                <span class="check-tag">紧致</span>
+                <span class="check-tag">细致毛孔</span>
+                <span class="check-tag">柔滑</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>天然认证与标签</label>
+              <div class="check-group">
+                <span class="check-tag checked">COSMOS 认证</span>
+                <span class="check-tag checked">RSPO 质量平衡</span>
+                <span class="check-tag">ERI 360</span>
+                <span class="check-tag">中国合规</span>
+                <span class="check-tag">无PEG</span>
+                <span class="check-tag">纯素</span>
+                <span class="check-tag">非转基因</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+  },
+
+  'pharma-products': {
+    breadcrumb: '产品管理 / 药用辅料',
+    render() {
+      return `
+        <h1 class="page-title">药用辅料</h1>
+        <p class="page-subtitle">管理药用辅料产品线全部 57 个产品</p>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <h3>产品列表</h3>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部给药途径</option>
+                <option>口服</option>
+                <option>外用</option>
+                <option>直肠</option>
+                <option>阴道</option>
+                <option>注射</option>
+              </select>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部剂型</option>
+                <option>胶囊</option>
+                <option>片剂</option>
+                <option>乳膏</option>
+                <option>栓剂</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm">导出 Excel</button>
+              <button class="btn btn-primary btn-sm">新增产品</button>
+            </div>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead>
+                <tr><th>产品名称</th><th>给药途径</th><th>剂型</th><th>功能</th><th>状态</th><th>更新时间</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;">Gelucire 50/13</td>
+                  <td><span class="tag tag-blue">口服</span></td>
+                  <td>胶囊、片剂</td>
+                  <td style="font-size:12px;">生物增效剂、SEDDS</td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-23</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Labrafil M 2130 CS</td>
+                  <td><span class="tag tag-blue">口服</span></td>
+                  <td>胶囊、液体</td>
+                  <td style="font-size:12px;">增溶剂、SEDDS</td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-22</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Suppocire AML</td>
+                  <td><span class="tag tag-blue">直肠</span></td>
+                  <td>栓剂</td>
+                  <td style="font-size:12px;">栓剂基质</td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-20</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Compritol 888 ATO</td>
+                  <td><span class="tag tag-blue">外用</span></td>
+                  <td>乳膏、凝胶</td>
+                  <td style="font-size:12px;">增稠剂、稳定剂</td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-19</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination" style="padding:12px 20px;">
+              <div class="pagination-info">共 57 条</div>
+              <div class="pagination-btns">
+                <button disabled>‹</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>…</button>
+                <button>12</button>
+                <button>›</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+  },
+
+  formulations: {
+    breadcrumb: '产品管理 / 配方管理',
+    render() {
+      return `
+        <h1 class="page-title">配方管理</h1>
+        <p class="page-subtitle">个人护理配方库 — 共 119 个配方</p>
+        <div class="card">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <h3>配方列表</h3>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部类型</option>
+                <option>乳膏</option>
+                <option>精华</option>
+                <option>乳液</option>
+                <option>凝胶</option>
+              </select>
+              <select class="form-control" style="width:auto;min-width:140px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部应用领域</option>
+                <option>面部</option>
+                <option>身体</option>
+                <option>防晒</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm">新增配方</button>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead>
+                <tr><th>配方编号</th><th>名称</th><th>类型</th><th>关联原料</th><th>天然指数</th><th>更新时间</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">GL-2024-012</td>
+                  <td>天然 BB 霜 SPF 30</td>
+                  <td><span class="tag tag-amber">乳膏</span></td>
+                  <td style="font-size:12px;">Emulium Mellifera + Gatuline IN-TENSE</td>
+                  <td style="color:var(--green);font-weight:500;">97%</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-20</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">GL-2024-011</td>
+                  <td>丝绒保湿霜</td>
+                  <td><span class="tag tag-amber">乳膏</span></td>
+                  <td style="font-size:12px;">Emulium Dolcea + Apifil CG</td>
+                  <td style="color:var(--green);font-weight:500;">95%</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-18</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">GL-2024-010</td>
+                  <td>抗衰老晚安精华</td>
+                  <td><span class="tag tag-green">精华</span></td>
+                  <td style="font-size:12px;">Gatuline IN-TENSE + Liposense MB</td>
+                  <td style="color:var(--green);font-weight:500;">92%</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-15</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+  },
+
+  news: {
+    breadcrumb: '内容管理 / 新闻与活动',
+    render() {
+      return `
+        <h1 class="page-title">新闻与活动</h1>
+        <p class="page-subtitle">管理新闻动态、展会活动、研讨会等内容</p>
+        <div class="card">
+          <div class="card-header">
+            <h3>内容列表</h3>
+            <button class="btn btn-primary btn-sm">新建内容</button>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead><tr><th>标题</th><th>类型</th><th>分类</th><th>发布日期</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;">嘉法狮亮相 2026 In-Cosmetics Global</td>
+                  <td><span class="tag tag-blue">活动</span></td>
+                  <td>展会</td>
+                  <td>2026-06-22</td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">Emulium Mellifera MB 新品上市</td>
+                  <td><span class="tag tag-green">新闻</span></td>
+                  <td>产品动态</td>
+                  <td>2026-06-15</td>
+                  <td><span class="tag tag-green">已发布</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">可持续采购白皮书发布</td>
+                  <td><span class="tag tag-green">新闻</span></td>
+                  <td>企业责任</td>
+                  <td>2026-06-08</td>
+                  <td><span class="tag tag-slate">草稿</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+  },
+
+  documents: {
+    breadcrumb: '内容管理 / 文档资源',
+    render() {
+      return `
+        <h1 class="page-title">文档资源管理</h1>
+        <p class="page-subtitle">管理技术数据表（TDS）、安全数据表（SDS）、产品手册等 PDF 文档</p>
+        <div class="card">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <h3>文档列表</h3>
+              <select class="form-control" style="width:auto;min-width:120px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部类型</option>
+                <option>技术数据表（TDS）</option>
+                <option>安全数据表（SDS）</option>
+                <option>产品手册</option>
+                <option>配方资料</option>
+              </select>
+              <select class="form-control" style="width:auto;min-width:120px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部权限</option>
+                <option>公开</option>
+                <option>需登录</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm">上传文档</button>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead><tr><th>文件名</th><th>类型</th><th>关联产品</th><th>访问权限</th><th>大小</th><th>上传时间</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">TDS_Emulium_Mellifera_MB.pdf</td>
+                  <td><span class="tag tag-green">TDS</span></td>
+                  <td>Emulium Mellifera MB</td>
+                  <td><span class="tag tag-slate">公开</span></td>
+                  <td>2.3 MB</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-24</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">SDS_Emulium_Mellifera_MB.pdf</td>
+                  <td><span class="tag tag-amber">SDS</span></td>
+                  <td>Emulium Mellifera MB</td>
+                  <td><span class="tag tag-amber">需登录</span></td>
+                  <td>1.8 MB</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-24</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">Gelucire_50-13_Brochure.pdf</td>
+                  <td><span class="tag tag-blue">手册</span></td>
+                  <td>Gelucire 50/13</td>
+                  <td><span class="tag tag-slate">公开</span></td>
+                  <td>3.5 MB</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-22</td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">删除</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+  },
+
+  orders: {
+    breadcrumb: '运营 / 样品订单',
+    render() {
+      return `
+        <h1 class="page-title">样品订单管理</h1>
+        <p class="page-subtitle">审核和管理所有样品申请订单</p>
+        <div class="card">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <h3>订单列表</h3>
+              <select class="form-control" style="width:auto;min-width:120px;padding:5px 30px 5px 10px;font-size:12px;">
+                <option>全部状态</option><option>待审核</option><option>已通过</option><option>已发货</option><option>已完成</option><option>已拒绝</option>
+              </select>
+            </div>
+            <button class="btn btn-outline btn-sm">导出 Excel</button>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead><tr><th>订单号</th><th>申请人</th><th>公司</th><th>产品</th><th>数量</th><th>提交时间</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">SO-2026-0187</td>
+                  <td>张伟</td><td>上海医药集团</td><td>Gelucire 50/13</td><td>2</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-24 14:32</td>
+                  <td><span class="tag tag-amber">待审核</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">通过</a><a class="danger">拒绝</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">SO-2026-0186</td>
+                  <td>李娜</td><td>广州白云山</td><td>Compritol 888 ATO</td><td>1</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-24 10:15</td>
+                  <td><span class="tag tag-amber">待审核</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">通过</a><a class="danger">拒绝</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;color:var(--blue-link);">SO-2026-0185</td>
+                  <td>王芳</td><td>珀莱雅化妆品</td><td>Emulium Mellifera MB</td><td>3</td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-23 16:08</td>
+                  <td><span class="tag tag-green">已通过</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">发货</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+  },
+
+  users: {
+    breadcrumb: '运营 / 用户管理',
+    render() {
+      return `
+        <h1 class="page-title">用户管理</h1>
+        <p class="page-subtitle">管理注册用户、编辑权限和审核新用户申请</p>
+        <div class="card">
+          <div class="card-header">
+            <h3>用户列表</h3>
+            <button class="btn btn-primary btn-sm">新建用户</button>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table>
+              <thead><tr><th>姓名</th><th>邮箱</th><th>公司</th><th>角色</th><th>注册时间</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:500;">Shine Lu</td>
+                  <td style="color:var(--blue-link);">shine@example.com</td>
+                  <td>嘉法狮中国</td>
+                  <td><span class="tag tag-green">超级管理员</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2025-01-10</td>
+                  <td><span class="tag tag-green">激活</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">张伟</td>
+                  <td style="color:var(--blue-link);">zhangwei@shpharm.com</td>
+                  <td>上海医药集团</td>
+                  <td><span class="tag tag-slate">注册用户</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-05-20</td>
+                  <td><span class="tag tag-green">激活</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">编辑</a><a class="danger">禁用</a></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:500;">李明</td>
+                  <td style="color:var(--blue-link);">liming@cosmax.com</td>
+                  <td>科丝美诗</td>
+                  <td><span class="tag tag-slate">待审核</span></td>
+                  <td style="font-size:12px;color:var(--text-muted);">2026-06-22</td>
+                  <td><span class="tag tag-amber">待审核</span></td>
+                  <td><div class="action-links"><a href="javascript:void(0)">审核</a><a class="danger">拒绝</a></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+  },
+
+  settings: {
+    breadcrumb: '运营 / 站点设置',
+    render() {
+      return `
+        <h1 class="page-title">站点设置</h1>
+        <p class="page-subtitle">管理全局配置、分公司信息、SEO 等</p>
+        <div class="tabs">
+          <button class="tab active">基本设置</button>
+          <button class="tab">分公司信息</button>
+          <button class="tab">SEO 设置</button>
+          <button class="tab">管理员</button>
+        </div>
+        <div class="card" style="max-width:700px;">
+          <div class="card-header"><h3>基本设置</h3></div>
+          <div class="card-body">
+            <div class="form-group"><label>站点名称</label><input type="text" class="form-control" value="嘉法狮中国"></div>
+            <div class="form-group"><label>站点域名</label><input type="text" class="form-control" value="www.gattefossechina.cn"></div>
+            <div class="form-group">
+              <label>默认语言</label>
+              <select class="form-control">
+                <option>中文</option>
+                <option>English</option>
+                <option>Français</option>
+              </select>
+            </div>
+            <div class="form-group"><label>页脚版权信息</label><input type="text" class="form-control" value="© 2026 Gattefossé. 保留所有权利。"></div>
+            <div style="border-top:1px solid var(--border-light);padding-top:16px;margin-top:8px;display:flex;gap:8px;justify-content:flex-end;">
+              <button class="btn btn-outline">恢复默认</button>
+              <button class="btn btn-primary">保存设置</button>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+};
+
+function switchPage(key) {
+  if (!pages[key]) return;
+  const page = pages[key];
+  document.getElementById('breadcrumb').innerHTML = '<span>后台管理</span><span class="sep">/</span><span class="current">' + page.breadcrumb + '</span>';
+  document.getElementById('page-content').innerHTML = page.render();
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const navItems = document.querySelectorAll('.nav-item');
+  for (let i = 0; i < navItems.length; i++) {
+    if (navItems[i].getAttribute('onclick') === "switchPage('" + key + "')") {
+      navItems[i].classList.add('active');
+      break;
+    }
+  }
+  // 重新绑定 tab 点击事件
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  // 重新绑定 check-tag 点击切换
+  document.querySelectorAll('.check-tag').forEach(tag => {
+    tag.addEventListener('click', function() {
+      this.classList.toggle('checked');
+    });
+  });
+}
+
+switchPage('dashboard');
+</script>
+</body>
+</html>

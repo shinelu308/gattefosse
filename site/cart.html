@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.gattefosse.com/cart" />
+  <meta name="google-site-verification"
+    content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default" href="https://www.gattefosse.com/cart" />
+  <link rel="alternate" hreflang="en" href="https://www.gattefosse.com/cart" />
+  <link rel="alternate" hreflang="fr" href="https://www.gattefosse.com/fr/cart" />
+  <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      "Pagetype": "page",
+      "LEVEL1": "Samples request",
+      "LEVEL2": "",
+      "LEVEL3": "",
+      "Pays": "en",
+      "Thematique": "",
+      "Connexion": "Non"
+    });
+  </script>
+  <title>申请样品 | 嘉法狮</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/themes/custom/gattefosse/images/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_VReceDAmMvwZ-zGjf3J2Cz04lQy72pkaj4cVAETXvtc.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_q87ucVt3rnFopj3ZmA--fl7PQC4tROomRfVer8ewsiI.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1708957448.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_P-B1OiN1dVBgQFS8CDY9LpJo9pPm1kstOPVwXZlf_9A.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_CfAqE8UjmFObeJ-EWQr7CuI8o5xv3bQTdu0Ee6hJ1P0.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_dkOFhq_9X734fPD7dLXkRMMA7X9jWxPleJsPlb151xk.css" />
+</head>
+
+<body class="path-cart    bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header"></header>
+    <div class="region region-highlight">
+      <div data-drupal-messages-fallback class="hidden"></div>
+    </div>
+    <main role="main" class="main " data-bs-spy="scroll" id="app">
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
+          <strong>快捷链接</strong>
+        </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
+      </nav>
+      <div class="page-content">
+        <div class="region region-breadcrumb">
+          <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+            class="block block-system block-system-breadcrumb-block">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="/">首页</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="/cart.html">购物车</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <a id="main-content" tabindex="-1"></a>
+        <div class="region region-content">
+          <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+            class="block block-system block-system-main-block">
+            <section class="s-page s-page--cart has-aside">
+              <div class="s-page__header">
+                <div class="container">
+                  <h1 class="s-page__title u-title-styled">
+                    购物车
+                  </h1>
+                </div>
+              </div>
+              <div class="s-page__wrapper">
+                <div class="s-page__content">
+                  <div class="s-block-cart theme-cosm" v-if="data.personalCare.count > 0" :style="data.show">
+                    <div class="c-search-result">
+                      <p class="c-search-result__value" role="heading" aria-level="2"><span
+                          class="num">{{data.personalCare.count}}</span>
+                        份成分样品</p>
+                    </div>
+                    <ul class="s-block-cart__list c-cards c-cards--vertical">
+                      <li class="c-card c-card--horizontal c-card--product" v-for="item in data.personalCare.list"
+                        :style="item.show">
+                        <div class="c-card__content">
+                          <h3 class="c-card__title">{{item.goodsName}}</h3>
+                          <p class="c-card__baseline">{{item.subtitle}}</p>
+                          <p class="c-card__code">{{item.code}}</p>
+                          <p class="c-card__summary" v-html="item.goodsIntro"></p>
+                          <div class="c-card__cta d-none d-sm-block">
+                            <button class="btn btn-outline-primary btn-icon--r js-remove-card" data-nid="515"
+                              @click="removeFromCart(item)" data-uid="0">移除<i class="o-icon --delete"
+                                aria-hidden="true"></i></button>
+                          </div>
+                        </div>
+                        <div class="c-card__image">
+                          <img :src="item.goodsCoverImg" alt="" width="268" height="201">
+                        </div>
+                        <div class="c-card__cta d-block d-sm-none">
+                          <button class="btn btn-outline-primary btn-icon--r js-remove-card"
+                            @click="removeFromCart(item)">移除
+                            <i class="o-icon --delete" aria-hidden="true"></i></button>
+                        </div>
+                      </li>
+                    </ul>
+                    <a href="/personal-care/product-finder.html" class="btn btn-primary s-block-cart__button">去选更多样品</a>
+                  </div>
+                  <div class="s-block-cart theme-pharma" v-if="data.pharmaceuticals.count > 0" :style="data.show">
+                    <div class="c-search-result">
+                      <p class="c-search-result__value" role="heading" aria-level="2"><span
+                          class="num">{{data.pharmaceuticals.count}}</span>份产品样品
+                      </p>
+                    </div>
+                    <ul class="s-block-cart__list c-cards c-cards--vertical">
+                      <li class="c-card c-card--bordered-bot c-card--horizontal c-card--product"
+                        v-for="item in data.pharmaceuticals.list" :style="item.show">
+                        <div class="c-card__content">
+                          <h3 class="c-card__title">{{item.goodsName}}</h3>
+                          <p class="c-card__summary" v-html="item.goodsIntro">
+                          </p>
+                          <div class="c-card__cta">
+                            <button class="btn btn-outline-primary js-remove-card" @click="removeFromCart(item)">移除
+                              <i class="o-icon --delete" aria-hidden="true"></i></button>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <a href="/pharmaceuticals/product-finder.html"
+                      class="btn btn-primary s-block-cart__button">去选更多样品</a>
+                  </div>
+                  <div class="d-md-none">
+                    <a class="btn btn-primary btn-icon--r s-block-sample__btn-order" @click="handleClick">确认下单<i
+                        class="o-icon --tote-bag" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+                <aside class="s-page__aside s-page__aside--r">
+                  <div class="s-block-sample">
+                    <div class="s-block-sample__cont pt-0">
+                      <p class="s-block-sample__count">
+                        <span class="num">{{data.total}}</span>
+                        <span class="text">
+                          <strong>件样品</strong>
+                        </span>
+                        在购物车内
+                      </p>
+                    </div>
+                    <button class="btn btn-tertiary js-clear-cart s-block-sample__btn" data-uid="0" :style="data.show"
+                      @click="clearCart()"><i class="o-icon --delete" aria-hidden="true"></i>清空购物车</button>
+                  </div>
+                    <span :style="data.show">
+                  <textarea rows="5" class="s-block-sample" style="margin-top: 30px; height: 271px; color: gray"
+                    id="cart_comment"  v-model="formData.comment" placeholder="请描述拟申请样品的具体应用....." @focus="setComment"> </textarea>*</span>
+                    
+                  <a class="btn btn-primary btn-icon--r s-block-sample__order" :style="data.show"
+                  @click="handleClick">确认下单 <i class="o-icon --tote-bag" aria-hidden="true"></i></a>
+                </aside>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
+        class="c-back-to-top smoothHide d-none"></a>
+    </main>
+    <footer role="contentinfo" class="footer" id="footer"></footer>
+    <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            <span>关闭</span>
+          </button>
+          <form action="/search.html" method="GET" class="modal--search__form">
+            <h2 class="modal-title">
+              您在查找......?
+            </h2>
+            <div class="form-item">
+              <label class="visually-hidden" for="key">请输入关键词...</label>
+              <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key" name="keyword"
+                value="">
+              <button type="submit" class="js-form-submit form-submit btn">
+                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+              </button>
+            </div>
+            <a href="/search.html" class="u-link">高级搜索</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+    </div>
+  </div>
+  <div id="dialog" class="dialog">
+    <div class="dialog-content">
+      <p id="dialog-message"></p>
+      <button id="dialog-close" class="btn btn-primary">关闭</button>
+    </div>
+  </div>
+  <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
+  <script src="/sites/default/files/js/js_IXdvu5Q2KH8heCdfhxI7QbZR8XbUORsqt0EMWpEkQT4.js"></script>
+  <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1712650818"></script>
+  <script src="/sites/default/files/js/js_fvK3KXKeRUyxbhECdSVtPhzVcBujcPEehnt5TgZ0MoI.js"></script>
+  <script src="/sites/default/files/js/js_3yh_9EOOTBX3sACViTkWAZgJwFycoghGqdTCUxHbyeM.js"></script>
+  <script src="static/js/jquery-3.7.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#header").load("/header.html", function () {
+        let tmp = checkLoginStatus();
+        if (!tmp) {
+          alert("请先登录");
+          window.location.href = "/account.html";
+          return;
+          // $("#collapseAccMenu").load("/account-menu.html");
+        } else {
+          $("#collapseAccMenu").load("/account-menu-after-login.html");
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+    function getCartNum() {
+      if (checkLoginStatus()) {
+        GatteAPI.Cart.count().then(res => {
+          $("#cartNum").html(res.data.count || 0);
+        }).catch(err => {
+          $("#cartNum").html(0);
+        });
+      } else {
+        $("#cartNum").html(0);
+      }
+    }
+
+    // 获取对话框元素和关闭按钮
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
+
+    // 替代alert函数
+    function showDialog(message) {
+      dialogMessage.innerHTML = message;
+      dialog.style.display = 'block';
+    }
+
+    // 关闭对话框
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
+    });
+
+  </script>
+  <script setup>
+    const params = new URLSearchParams(window.location.search);
+    const tokenStr = params.get('_token');
+    const goodsCategoryId = params.get('i'); // "关联产品分类ID"
+    var w = params.get('keyword'); //搜索关键词
+    var atype = params.get('type'); //0所有，1新闻，2活动
+    var curPage = params.get('page');
+    var curUrl = window.location.href;
+    var hasParam = curUrl.indexOf('?');
+    var hasTypeParam = curUrl.indexOf('i=');
+    var total = 0, count_0 = 0, count_1 = 0, count_2 = 0;
+    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
+    const app = createApp({
+      data() {
+        return { formData: [] }
+      },
+      setup() {
+        let randomNum = Math.floor(Math.random() * 100);
+        const data = reactive({
+          name: "aa",
+          formData: [],
+          total: 0,
+          count_0: 0,
+          count_1: 0,
+          count_2: 0,
+          cur_page: curPage == null ? 1 : curPage,
+          page_size: 100000,
+          total_page: 1,
+          prev_url: '',
+          next_url: '',
+          keyword: w,
+          type: atype,
+          goodsCategoryId: goodsCategoryId,
+          hasParam: hasParam,
+          hasTypeParam: hasTypeParam,
+          randomNum: randomNum,
+          personalCare: { list: [], count: 0 },
+          pharmaceuticals: { list: [], count: 0 },
+          show: ""
+        });
+        const formData = ref({
+          address: '',
+          cityId: 0,
+          cityName: '',
+          comment: '请描述拟申请样品的具体应用.....',
+          companyName: '',
+          department: '',
+          sampleList: '',
+          dft: false,
+          districtId: 0,
+          districtName: '',
+          email: '',
+          jobTitle: '',
+          market: '',
+          mobile: '',
+          name: '',
+          phone: '',
+          position: '',
+          provinceId: 0,
+          provinceName: '',
+          updateTime: new Date(),
+          userId: 0,
+          zipcode: 0,
+        })
+        getInformation();
+        //方法1
+        function getInformation() {
+          //方法的实现
+          data.name = "引入的html文件";
+        }
+        const setComment = () => {
+          if (formData.value.comment == '请描述拟申请样品的具体应用.....') {
+            formData.value.comment = '';
+          }
+        }
+        //  方法2
+        const handleClick = (val) => {
+          var api = 'api/mallSampleOrder/createMallSampleOrder';
+          if (data.personalCare.list.length <= 0 && data.pharmaceuticals.list.length <= 0) {
+            alert("请先选择样品");
+            return null;
+          }
+          var simpleList = "";
+          for (var i = 0; i < data.personalCare.list.length; i++) {
+            simpleList += data.personalCare.list[i].goodsName + ",";
+          }
+          for (var i = 0; i < data.pharmaceuticals.list.length; i++) {
+            simpleList += data.pharmaceuticals.list[i].goodsName + ",";
+          }
+          if (simpleList.charAt(simpleList.length - 1) == ',') {
+            simpleList = simpleList.substring(0, simpleList.length - 1);
+          }
+          // 新增：判断邮箱后缀
+          const email = formData.value.email || '';
+          const forbiddenDomains = ['163.com', '126.com', 'qq.com', '139.com', '189.cn'];
+          if (forbiddenDomains.some(domain => email.endsWith('@' + domain))) {
+            alert("请使用公司邮箱");
+            return;
+          }
+          formData.value.sampleList = simpleList
+          setComment() // 置空
+          if(formData.value.comment == '') {
+            alert("请描述拟申请样品的具体应用");
+            return;
+          }
+          // 使用新的 Order API 提交订单
+          const orderData = {
+            companyName: formData.value.companyName,
+            contactName: formData.value.name,
+            phone: formData.value.phone || formData.value.mobile,
+            address: formData.value.address,
+            notes: formData.value.comment
+          };
+          
+          GatteAPI.Order.create(orderData).then((res) => {
+            if (res.code == 0 || res.data && res.data.code == 0) {
+              clearCart()
+              alert("您的预定信息已经提交，我们的工作人员会与您联系确认！");
+            } else {
+              alert("预定失败！");
+            }
+          }).catch(err => {
+            console.error('提交订单失败:', err);
+            alert("预定失败，请重试！");
+          });
+        };
+        const removeFromCart = (item) => {
+          let tmp = checkLoginStatus();
+          if (!tmp) {
+            alert("请先登录");
+            return
+          }
+          // 使用新的 Cart API 删除商品
+          GatteAPI.Cart.remove(item.ID).then((res) => {
+            console.log(res);
+            if (res.code == 0 || res.data && res.data.code == 0) {
+              item.show = "display:none";
+              if (item.goodsCategoryId == 117) {
+                const index = data.pharmaceuticals.list.findIndex(i => i.ID === item.ID);
+                if (index > -1) {
+                  data.pharmaceuticals.list.splice(index, 1);
+                  data.pharmaceuticals.count -= 1;
+                }
+              } else {
+                const index = data.personalCare.list.findIndex(i => i.ID === item.ID);
+                if (index > -1) {
+                  data.personalCare.list.splice(index, 1);
+                  data.personalCare.count -= 1;
+                }
+              }
+              data.total = data.personalCare.count + data.pharmaceuticals.count;
+              if (data.total == 0) {
+                data.show = "display:none";
+              }
+              getCartNum();
+            }
+          }).catch(err => {
+            console.error('删除失败:', err);
+            alert('删除失败，请重试');
+          });
+        }
+        const clearCart = () => {
+          let tmp = checkLoginStatus();
+          if (!tmp) {
+            alert("请先登录");
+            return
+          }
+          // 使用新的 Cart API 逐个删除商品
+          const allItems = [...data.personalCare.list, ...data.pharmaceuticals.list];
+          if (allItems.length === 0) {
+            data.show = "display:none";
+            data.pharmaceuticals.count = 0;
+            data.personalCare.count = 0;
+            data.total = 0;
+            document.getElementById("cartNum").innerHTML = 0;
+            return;
+          }
+          
+          let deletedCount = 0;
+          allItems.forEach((item) => {
+            GatteAPI.Cart.remove(item.ID).then((res) => {
+              deletedCount++;
+              if (deletedCount === allItems.length) {
+                // 所有商品都已删除
+                data.show = "display:none";
+                data.pharmaceuticals.list = [];
+                data.pharmaceuticals.count = 0;
+                data.personalCare.list = [];
+                data.personalCare.count = 0;
+                data.total = 0;
+                document.getElementById("cartNum").innerHTML = 0;
+              }
+            }).catch(err => {
+              console.error('删除商品失败:', err);
+            });
+          });
+        }
+        // 查询
+        const getTableData = () => {
+          // 使用新的 Cart API
+          GatteAPI.Cart.list().then((res) => {
+            // 请求成功的回调函数
+            const cartItems = res.data || [];
+            data.formData = cartItems.map(item => {
+              // 映射 API 响应到模板字段
+              return {
+                ID: item.id,
+                goodsName: item.product.name,
+                subtitle: item.product.inciName || '',
+                code: item.productId || '',
+                goodsIntro: item.product.description || '',
+                goodsCoverImg: item.product.imageUrl || '',
+                goodsCategoryId: item.productType === 'pharmaceuticals' ? 117 : 1,
+                quantity: item.quantity,
+                show: ''
+              };
+            });
+            
+            // 清空现有列表
+            data.personalCare.list = [];
+            data.personalCare.count = 0;
+            data.pharmaceuticals.list = [];
+            data.pharmaceuticals.count = 0;
+            
+            // 重新分类产品
+            for (var i = 0; i < data.formData.length; i++) {
+              if (data.formData[i].goodsCategoryId == 117) {
+                data.pharmaceuticals.list.push(data.formData[i]);
+                data.pharmaceuticals.count += 1;
+              } else {
+                data.personalCare.list.push(data.formData[i]);
+                data.personalCare.count += 1;
+              }
+            }
+            
+            data.total = data.personalCare.count + data.pharmaceuticals.count;
+            if (data.total == 0) {
+              data.show = "display:none";
+            }
+          }).catch((err, res) => {
+            console.log(err)
+          })
+        }
+        const loading = ref(false);
+        const items = ref([]);
+        getTableData()
+        return {
+          data,
+          handleClick,
+          items,
+          getTableData,
+          removeFromCart,
+          clearCart,
+          formData,
+          setComment
+        };
+      },
+    });
+    let result = app.mount("#app");
+  </script>
+  <script defer src="https://umami.onlystyle.com.cn/script.js"
+    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+
+<script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
+</body>
+
+</html>
+
+<style>
+  
+    .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        background-color: rgba(248, 244, 244, 1);
+        min-width: 400px;
+    }
+
+    .dialog-content {
+        text-align: center;
+    }
+
+    .dialog-content p {
+        text-align: center;
+        font-size: 16px;
+        line-height: 30px;
+    }
+
+    .dialog-content a {
+        color: #8eb73c;
+        font-style: bold;
+    }
+
+    #dialog-close {
+        margin-top: 100px;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+</style>

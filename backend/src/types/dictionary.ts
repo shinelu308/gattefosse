@@ -1,0 +1,253 @@
+/**
+ * 种子数据：标签字典（中文显示，英文 value 用于数据存储）
+ * 基于 gattefossechina.cn 中文站 + gattefosse.com 英文总站的标签体系
+ */
+
+// 个人护理原料标签字典
+export const PC_TAG_DICTIONARY: Record<string, { value: string; label: string }[]> = {
+  functionality: [
+    { value: 'actives', label: '活性物' },
+    { value: 'bioactive', label: '生物活性物' },
+    { value: 'efficacy_booster', label: '功效增强剂' },
+    { value: 'emollient', label: '润肤剂' },
+    { value: 'emulsifier', label: '乳化剂' },
+    { value: 'o_w_emulsifier', label: '水包油乳化剂' },
+    { value: 'wo_emulsifier', label: '油包水乳化剂' },
+    { value: 'rheology_modifier', label: '流变调节剂' },
+    { value: 'solubilizer', label: '增溶剂' },
+    { value: 'surfactant', label: '表面活性剂' },
+    { value: 'sun_care', label: '防晒剂' },
+    { value: 'texturizing_agent', label: '质感修饰剂' },
+    { value: 'plant_fruit_extracts', label: '植物/果实提取物' },
+    { value: 'wetting_agent', label: '润湿剂' },
+  ],
+  application: [
+    { value: 'baby_child_care', label: '婴幼儿护理' },
+    { value: 'body_care', label: '身体护理' },
+    { value: 'eye_care', label: '眼部护理' },
+    { value: 'face_care', label: '面部护理' },
+    { value: 'hair_scalp_care', label: '头发与头皮护理' },
+    { value: 'hygiene', label: '卫生用品' },
+    { value: 'lips', label: '唇部' },
+    { value: 'make_up', label: '彩妆' },
+    { value: 'men_care', label: '男士护理' },
+    { value: 'scalp', label: '头皮' },
+    { value: 'sun_care_app', label: '防晒护理' },
+  ],
+  concept: [
+    { value: 'biomimetic', label: '仿生学' },
+    { value: 'biotechnology', label: '生物技术' },
+    { value: 'gourmand_ingredients', label: '美食原料' },
+    { value: 'inflam_aging', label: '炎症性衰老' },
+    { value: 'lipid_chemistry', label: '脂质化学' },
+    { value: 'local_sourcing_france', label: '法国本地采购' },
+    { value: 'marine', label: '海洋来源' },
+    { value: 'nades_lttm_solvents', label: '天然深共熔溶剂（NaDES）' },
+    { value: 'phytochemistry', label: '植物化学' },
+    { value: 'plant_based', label: '植物基' },
+    { value: 'plant_traditional_medicine', label: '传统药用植物' },
+    { value: 'reunion_island_origin', label: '留尼汪岛原产' },
+    { value: 'skin_health_longevity', label: '皮肤健康与长寿' },
+    { value: 'upcycling_zero_waste', label: '升级再造与零废弃' },
+    { value: 'wax_butter_technology', label: '蜡脂技术' },
+  ],
+  claim: [
+    { value: 'anti_acne', label: '抗痘' },
+    { value: 'anti_aging', label: '抗衰老' },
+    { value: 'anti_dandruff', label: '去屑' },
+    { value: 'anti_dark_circles_eye_bags', label: '抗黑眼圈与眼袋' },
+    { value: 'anti_hair_loss', label: '防脱发' },
+    { value: 'anti_oxidative', label: '抗氧化' },
+    { value: 'anti_pollution', label: '抗污染' },
+    { value: 'anti_sagging', label: '抗松弛' },
+    { value: 'anti_spots', label: '淡斑' },
+    { value: 'anti_wrinkles', label: '抗皱' },
+    { value: 'apaisant', label: '舒缓' },
+    { value: 'brightening', label: '提亮' },
+    { value: 'cell_renewal', label: '细胞更新' },
+    { value: 'color_protection', label: '护色' },
+    { value: 'cooling', label: '清凉' },
+    { value: 'curl_definition', label: '卷曲定型' },
+    { value: 'energizing', label: '活能焕采' },
+    { value: 'firming', label: '紧致' },
+    { value: 'hair_discipline', label: '头发定型' },
+    { value: 'heat_protection', label: '热防护' },
+    { value: 'mattifying', label: '控油' },
+    { value: 'microbiome_friendly', label: '微生态友好' },
+    { value: 'minimalist', label: '极简配方' },
+    { value: 'moisturizing', label: '保湿' },
+    { value: 'nourishing', label: '滋养' },
+    { value: 'photo_aging', label: '光老化防护' },
+    { value: 'purifying', label: '净化' },
+    { value: 'refreshing', label: '清爽' },
+    { value: 'repairing', label: '修复' },
+    { value: 'sebum_control', label: '控油平衡' },
+    { value: 'sensitive_skin', label: '敏感肌肤' },
+    { value: 'shine', label: '光泽' },
+    { value: 'skin_radiance', label: '肌肤光泽' },
+    { value: 'smoothing', label: '顺滑' },
+    { value: 'soothing', label: '舒缓' },
+    { value: 'uv_protection', label: '紫外线防护' },
+    { value: 'volumizing', label: '蓬松' },
+    { value: 'warming', label: '温热' },
+  ],
+  characteristic: [
+    { value: 'china_compliant_iecic', label: '中国合规（IECIC）' },
+    { value: 'cold_processable', label: '可冷配' },
+    { value: 'halal', label: '清真认证' },
+    { value: 'peg_free', label: '无 PEG' },
+    { value: 'preservative_free', label: '无防腐剂' },
+    { value: 'readily_biodegradable', label: '易生物降解' },
+    { value: 'silicone_free', label: '无硅' },
+    { value: 'vegan', label: '纯素' },
+  ],
+  naturality: [
+    { value: 'cosmos_approved', label: 'COSMOS 批准' },
+    { value: 'cosmos_certified', label: 'COSMOS 认证' },
+    { value: 'eri_360_bronze', label: 'ERI 360 铜级' },
+    { value: 'eri_360_silver', label: 'ERI 360 银级' },
+    { value: 'iso_16128', label: 'ISO 16128 天然指数' },
+    { value: 'natrue', label: 'NATRUE 天然认证' },
+    { value: 'noi_100', label: '天然来源指数 = 100%（ISO 16128）' },
+    { value: 'noi_gt_99', label: '天然来源指数 > 99%（ISO 16128）' },
+    { value: 'noi_gt_95', label: '天然来源指数 > 95%（ISO 16128）' },
+    { value: 'noi_gt_90', label: '天然来源指数 > 90%（ISO 16128）' },
+    { value: 'rspo_mass_balance', label: 'RSPO 物料平衡' },
+  ],
+};
+
+// 药用辅料标签字典
+export const PHARMA_TAG_DICTIONARY: Record<string, { value: string; label: string }[]> = {
+  market: [
+    { value: 'all_markets', label: '全部市场' },
+    { value: 'human_health', label: '人类健康' },
+    { value: 'animal_health', label: '动物健康' },
+    { value: 'dietary_supplements', label: '膳食补充剂' },
+  ],
+  route: [
+    { value: 'oral', label: '口服' },
+    { value: 'parenteral_veterinary', label: '注射（兽用）' },
+    { value: 'rectal', label: '直肠' },
+    { value: 'topical_transdermal', label: '外用/透皮' },
+    { value: 'vaginal', label: '阴道' },
+  ],
+  functionality: [
+    { value: 'api_protection', label: 'API 保护' },
+    { value: 'bioenhancer', label: '生物利用度增强剂' },
+    { value: 'co_emulsifier', label: '助乳化剂' },
+    { value: 'co_surfactant', label: '助表面活性剂' },
+    { value: 'emulsifier', label: '乳化剂' },
+    { value: 'hard_fat', label: '硬脂' },
+    { value: 'lubricant', label: '润滑剂' },
+    { value: 'lymphatic_promoter', label: '淋巴吸收促进剂' },
+    { value: 'oily_vehicle', label: '油性载体' },
+    { value: 'permeation_enhancer', label: '渗透增强剂' },
+    { value: 'sedds', label: '自乳化药物递送系统（SEDDS）' },
+    { value: 'skin_penetration_enhancer', label: '皮肤渗透增强剂' },
+    { value: 'solubilizer', label: '增溶剂' },
+    { value: 'solvent', label: '溶剂' },
+    { value: 'stabilizing_agent', label: '稳定剂' },
+    { value: 'surfactant', label: '表面活性剂' },
+    { value: 'sustained_release', label: '缓释' },
+    { value: 'taste_masking', label: '掩味' },
+    { value: 'thickener', label: '增稠剂' },
+  ],
+  dosageForm: [
+    { value: 'bi_gel', label: '双凝胶' },
+    { value: 'cream', label: '乳膏' },
+    { value: 'emulgel', label: '乳凝胶' },
+    { value: 'foam', label: '泡沫' },
+    { value: 'gel', label: '凝胶' },
+    { value: 'granule', label: '颗粒' },
+    { value: 'hard_capsule', label: '硬胶囊' },
+    { value: 'lotion', label: '洗剂' },
+    { value: 'microemulsion', label: '微乳' },
+    { value: 'ointment', label: '软膏' },
+    { value: 'patch', label: '贴剂' },
+    { value: 'pessary', label: '阴道栓' },
+    { value: 'pour_on_spot_on', label: '浇泼剂/点滴剂' },
+    { value: 'powder', label: '粉末' },
+    { value: 'soft_capsule', label: '软胶囊' },
+    { value: 'solution', label: '溶液' },
+    { value: 'stick', label: '棒剂' },
+    { value: 'suppository', label: '栓剂' },
+    { value: 'suspension', label: '混悬剂' },
+    { value: 'tablet', label: '片剂' },
+  ],
+};
+
+// 配方标签字典
+export const FORMULATION_TAG_DICTIONARY: Record<string, { value: string; label: string }[]> = {
+  application: [
+    { value: 'body_care', label: '身体护理' },
+    { value: 'face_care', label: '面部护理' },
+    { value: 'hair_care', label: '头发护理' },
+    { value: 'sun_care', label: '防晒护理' },
+    { value: 'make_up', label: '彩妆' },
+    { value: 'lip_care', label: '唇部护理' },
+    { value: 'eye_care', label: '眼部护理' },
+  ],
+  form: [
+    { value: 'cream', label: '乳霜' },
+    { value: 'serum', label: '精华' },
+    { value: 'gel', label: '凝胶' },
+    { value: 'lotion', label: '乳液' },
+    { value: 'ointment', label: '软膏' },
+    { value: 'balm', label: '膏霜' },
+    { value: 'stick', label: '棒状' },
+    { value: 'emulsion', label: '乳状液' },
+    { value: 'milk', label: '乳液' },
+    { value: 'oil', label: '油' },
+    { value: 'butter', label: '黄油质地' },
+    { value: 'paste', label: '糊状' },
+    { value: 'powder', label: '粉状' },
+    { value: 'spray', label: '喷雾' },
+    { value: 'wipe', label: '湿巾' },
+  ],
+  naturalityIndex: [
+    { value: 'gt_99', label: '> 99%' },
+    { value: 'gt_98', label: '> 98%' },
+    { value: 'gt_95', label: '> 95%' },
+    { value: 'gt_90', label: '> 90%' },
+  ],
+};
+
+// 新闻分类
+export const NEWS_CATEGORY: { value: string; label: string }[] = [
+  { value: 'corporate', label: '企业新闻' },
+  { value: 'pc', label: '个人护理' },
+  { value: 'pharma', label: '药用辅料' },
+];
+
+// 文档类型
+export const DOCUMENT_TYPE: { value: string; label: string }[] = [
+  { value: 'TDS', label: '技术数据表（TDS）' },
+  { value: 'SDS', label: '安全数据表（SDS）' },
+  { value: 'Brochure', label: '产品手册' },
+  { value: 'Formula', label: '配方资料' },
+  { value: 'Other', label: '其他' },
+];
+
+// 用户角色
+export const USER_ROLE: { value: string; label: string }[] = [
+  { value: 'super_admin', label: '超级管理员' },
+  { value: 'editor', label: '内容编辑' },
+  { value: 'user', label: '普通用户' },
+];
+
+// 用户状态
+export const USER_STATUS: { value: string; label: string }[] = [
+  { value: 'pending', label: '待审核' },
+  { value: 'active', label: '已激活' },
+  { value: 'disabled', label: '已禁用' },
+];
+
+// 订单状态
+export const ORDER_STATUS: { value: string; label: string }[] = [
+  { value: 'draft', label: '草稿' },
+  { value: 'submitted', label: '已提交' },
+  { value: 'processing', label: '处理中' },
+  { value: 'shipped', label: '已发货' },
+  { value: 'completed', label: '已完成' },
+  { value: 'cancelled', label: '已取消' },
+];

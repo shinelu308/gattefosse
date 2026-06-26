@@ -1,0 +1,36 @@
+{
+    "files.watcherExclude": {
+        "**/site/sites/**": true,
+        "**/site/files/**": true,
+        "**/site/themes/**": true,
+        "**/site/static/**": true,
+        "**/site/wx/**": true,
+        "**/site/user/**": true,
+        "**/site/personal-care/**": true,
+        "**/site/pharmaceuticals/**": true,
+        "**/site/formulation-technologies/**": true,
+        "**/.git/objects/**": true,
+        "**/node_modules/**": true
+    },
+    "search.exclude": {
+        "**/site/sites/**": true,
+        "**/site/files/**": true,
+        "**/site/themes/**": true,
+        "**/.git/objects/**": true
+    },
+    "git.enabled": true,
+    "git.autofetch": false,
+    "git.autorefresh": false,
+    "git.countBadge": "off",
+    "git.decorations.enabled": false,
+    "git.openRepositoryCount": 1,
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+        "*.html": "html"
+    },
+    "files.exclude": {
+        "**/.git/objects/**": true,
+        "**/site/sites": true,
+        "**/site/files": true
+    }
+}

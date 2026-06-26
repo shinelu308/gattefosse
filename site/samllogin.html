@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="description"
+        content="Fournisseur d&#039;ingrédients cosmétiques et d&#039;excipients pharmaceutiques, Gattefossé explore ce que la nature et la science ont de meilleur depuis 1880." />
+    <link rel="shortlink" href="https://www.gattefosse.com/" />
+    <link rel="stylesheet" href="/sites/default/files/logincss/button-5b8a838d.css" />
+    <link rel="stylesheet" href="/sites/default/files/logincss/form-item-b393c25c.css" />
+    <link rel="stylesheet" href="/sites/default/files/logincss/index-4016fc56.css" />
+    <link rel="stylesheet" href="/sites/default/files/logincss/input-95e37c0b.css" />
+    <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+    <style>
+        :root {
+            --accent-color-light: #D2E1B4;
+            --accent-color: #8EB73C;
+            --accent-color-dark: #598305;
+            --accent-background-color-light: #E6EED5;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--accent-color);
+        }
+
+        .btn {
+            --bs-navbar-toggler-focus-width: 0.2rem;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: var(--accent-color-dark);
+            --bs-btn-active-border-color: var(--accent-color-dark);
+            display: inline-flex;
+            place-items: center;
+            place-content: center;
+            gap: 0 0.95rem;
+            margin: 0;
+            height: 3.4rem;
+            font-family: "Din Next Lt Pro Medium", sans-serif;
+            letter-spacing: 0.04em;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            width: 120px;
+            border-radius: 10px;
+        }
+
+        button.uiButton:hover {
+            background-color: var(--lwc-colorBackgroundButtonBrandHover, #70912f);
+        }
+        .asterisk-left a:hover a:active a:visited {
+            color:black;
+        }
+        .uiButton {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            color: var(--lwc-colorTextButtonBrand, rgb(35, 36, 38));
+            cursor: pointer;
+            background-color: var(--lwc-colorBackgroundButtonBrand, rgb(142, 183, 60));
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            background-image: none;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            padding: 10px 12px;
+            font-size: 16px;
+            font-family: var(--lwc-fontFamily, Montserrat);
+            font-weight: 700;
+            line-height: 1.42857143;
+            border-radius: 2px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none;
+        }
+
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background-color: rgba(248, 244, 244, 1);
+            min-width: 400px;
+        }
+
+        .dialog-content {
+            text-align: center;
+        }
+
+        .dialog-content p {
+            text-align: center;
+            font-size: 16px;
+            line-height: 30px;
+        }
+
+        .dialog-content a {
+            color: #8eb73c;
+            font-style: bold;
+        }
+
+        #dialog-close {
+            margin-top: 100px;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <title>会员登录 | 嘉法狮</title>
+
+</head>
+
+<body>
+    <div id="app" data-v-app="">
+        <div>
+            <div id="userLayout" class="w-full h-full relative">
+                <div
+                    class="rounded-lg flex items-center justify-evenly w-full h-full bg-white md:w-screen md:h-screen md:bg-[#194bfb]">
+                    <div class="md:w-3/5 w-10/12 h-full flex items-center justify-evenly">
+                        <div class="oblique h-[130%] w-3/5 bg-white transform -rotate-12 absolute -ml-52">
+                        </div>
+                        <div
+                            class="z-[999] pt-12 pb-10 md:w-96 w-full rounded-lg flex flex-col justify-between box-border">
+                            <div>
+                                <div class="flex items-center justify-center">
+                                    <img class="w-24"
+                                        src="https://www.gattefosse.com/sites/default/files/2023-02/logo.svg" alt="">
+                                </div>
+                                <div class="mb-9">
+                                </div>
+                                <form class="el-form el-form--default el-form--label-right">
+                                    <div class="el-form-item asterisk-left mb-6">
+                                        <!--v-if-->
+                                        <div class="el-form-item__content">
+                                            <div class="el-input el-input--large el-input--suffix">
+                                                <!-- input -->
+                                                <!-- prepend slot -->
+                                                <!--v-if-->
+                                                <div class="el-input__wrapper" tabindex="-1">
+                                                    <input type="hidden" v-model="loginFormData.captchaId"
+                                                        value="xxx" />
+                                                    <input class="el-input__inner" type="text" autocomplete="off"
+                                                        v-model="loginFormData.username" tabindex="0"
+                                                        placeholder="请输入用户名" id="el-id-688-4">
+                                                    <!-- suffix slot -->
+                                                    <span class="el-input__suffix">
+                                                        <span class="el-input__suffix-inner">
+                                                            <i class="el-icon el-input__icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 1024 1024">
+                                                                    <path fill="currentColor"
+                                                                        d="M512 512a192 192 0 1 0 0-384 192 192 0 0 0 0 384m0 64a256 256 0 1 1 0-512 256 256 0 0 1 0 512m320 320v-96a96 96 0 0 0-96-96H288a96 96 0 0 0-96 96v96a32 32 0 1 1-64 0v-96a160 160 0 0 1 160-160h448a160 160 0 0 1 160 160v96a32 32 0 1 1-64 0">
+                                                                    </path>
+                                                                </svg>
+                                                            </i>
+                                                            <!--v-if-->
+                                                            <!--v-if-->
+                                                            <!--v-if-->
+                                                            <!--v-if-->
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <!-- append slot -->
+                                                <!--v-if-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="el-form-item is-success asterisk-left mb-6">
+                                        <!--v-if-->
+                                        <div class="el-form-item__content">
+                                            <div class="el-input el-input--large el-input--suffix">
+                                                <!-- input -->
+                                                <!-- prepend slot -->
+                                                <!--v-if-->
+                                                <div class="el-input__wrapper" tabindex="-1">
+                                                    <!-- prefix slot -->
+                                                    <!--v-if-->
+                                                    <input class="el-input__inner mi-input" type="password"
+                                                        autocomplete="off" v-model="loginFormData.password" tabindex="0"
+                                                        placeholder="请输入密码" id="el-id-688-5">
+                                                    <!-- suffix slot -->
+                                                    <span class="el-input__suffix">
+                                                        <span class="el-input__suffix-inner">
+                                                            <!--v-if-->
+                                                            <!--v-if-->
+                                                            <i
+                                                                class="el-icon el-input__icon el-input__password mi-password">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 1024 1024">
+                                                                    <path fill="currentColor"
+                                                                        d="M876.8 156.8c0-9.6-3.2-16-9.6-22.4-6.4-6.4-12.8-9.6-22.4-9.6-9.6 0-16 3.2-22.4 9.6L736 220.8c-64-32-137.6-51.2-224-60.8-160 16-288 73.6-377.6 176C44.8 438.4 0 496 0 512s48 73.6 134.4 176c22.4 25.6 44.8 48 73.6 67.2l-86.4 89.6c-6.4 6.4-9.6 12.8-9.6 22.4 0 9.6 3.2 16 9.6 22.4 6.4 6.4 12.8 9.6 22.4 9.6 9.6 0 16-3.2 22.4-9.6l704-710.4c3.2-6.4 6.4-12.8 6.4-22.4Zm-646.4 528c-76.8-70.4-128-128-153.6-172.8 28.8-48 80-105.6 153.6-172.8C304 272 400 230.4 512 224c64 3.2 124.8 19.2 176 44.8l-54.4 54.4C598.4 300.8 560 288 512 288c-64 0-115.2 22.4-160 64s-64 96-64 160c0 48 12.8 89.6 35.2 124.8L256 707.2c-9.6-6.4-19.2-16-25.6-22.4Zm140.8-96c-12.8-22.4-19.2-48-19.2-76.8 0-44.8 16-83.2 48-112 32-28.8 67.2-48 112-48 28.8 0 54.4 6.4 73.6 19.2zM889.599 336c-12.8-16-28.8-28.8-41.6-41.6l-48 48c73.6 67.2 124.8 124.8 150.4 169.6-28.8 48-80 105.6-153.6 172.8-73.6 67.2-172.8 108.8-284.8 115.2-51.2-3.2-99.2-12.8-140.8-28.8l-48 48c57.6 22.4 118.4 38.4 188.8 44.8 160-16 288-73.6 377.6-176C979.199 585.6 1024 528 1024 512s-48.001-73.6-134.401-176Z">
+                                                                    </path>
+                                                                    <path fill="currentColor"
+                                                                        d="M511.998 672c-12.8 0-25.6-3.2-38.4-6.4l-51.2 51.2c28.8 12.8 57.6 19.2 89.6 19.2 64 0 115.2-22.4 160-64 41.6-41.6 64-96 64-160 0-32-6.4-64-19.2-89.6l-51.2 51.2c3.2 12.8 6.4 25.6 6.4 38.4 0 44.8-16 83.2-48 112-32 28.8-67.2 48-112 48Z">
+                                                                    </path>
+                                                                </svg>
+                                                            </i>
+                                                            <!--v-if-->
+                                                            <!--v-if-->
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <!-- append slot -->
+                                                <!--v-if-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="el-form-item asterisk-left mb-6">
+                                        <!--v-if-->
+                                        <div class="el-form-item__content">
+                                            <button aria-disabled="false" type="button" @click="submitForm"
+                                                class="slds-button slds-button--brand loginButton uiButton--none uiButton">
+                                                <!--v-if-->
+                                                <span class="">
+                                                    登 录
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="el-form-item asterisk-left mb-6">
+                                        <a href="/account-forget-pwd.html" style="color:black">忘记密码</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog z-[999]">
+        <div class="dialog-content">
+            <p id="dialog-message"></p>
+            <div id="countdown" class="countdownClass" style="display: none;">0:05</div>
+            <button id="dialog-close" class="btn btn-primary">关闭</button>
+        </div>
+    </div>
+    <!--script type="module" crossorigin="" src="/sites/default/files/logincss/index-956510c7.js" ></script-->
+    <!-- script src="/sites/default/files/logincss/index-56e8acea.js" ></script>
+<script src="/sites/default/files/logincss/form-item-702102d2.js" ></script -->
+    <script defer src="https://umami.onlystyle.com.cn/script.js"
+        data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+</body>
+<script setup>
+    const params = new URLSearchParams(window.location.search);
+    const tokenStr = params.get('_token');
+    var url = params.get('url');
+    if (url == null) {
+        url = "/account.html";
+    }
+    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
+    const app = createApp({
+        data() {
+            return {
+                formData: [],
+                eventData: []
+            }
+        },
+        setup() {
+            const data = reactive({})
+            // 验证函数
+            const checkUsername = (rule, value, callback) => {
+                if (value.length < 5) {
+                    return callback(new Error('请输入正确的用户名'))
+                } else {
+                    callback()
+                }
+            }
+            const checkPassword = (rule, value, callback) => {
+                if (value.length < 6) {
+                    return callback(new Error('请输入正确的密码'))
+                } else {
+                    callback()
+                }
+            }
+            // 登录相关操作
+            const loginForm = ref(null)
+            const picPath = ref('')
+            const loginFormData = reactive({
+                username: '',
+                password: '',
+                captcha: '',
+                captchaId: 'xxxx',
+                openCaptcha: false,
+            })
+            const rules = reactive({
+                username: [{ validator: checkUsername, trigger: 'blur' }],
+                password: [{ validator: checkPassword, trigger: 'blur' }],
+                captcha: [
+                    {
+                        message: '验证码格式不正确',
+                        trigger: 'blur',
+                    },
+                ],
+            })
+            const submitForm = () => {
+                var api = "/api/mallUser/login";
+                alert("演示模式：登录功能已禁用");
+                        localStorage.setItem('username', loginFormData.username);
+                        localStorage.setItem('userId', res.data.data.user.id);
+                        localStorage.setItem('nickname', res.data.data.user.nickname);
+                        localStorage.setItem('userEnabled', res.data.data.user.enable);
+                        localStorage.setItem('_token', res.data.data.token);
+                        showDialog("登录中,请稍候......");
+                        // setCountdownClass("block");
+                        delayURL(url, 3000);
+                        // const intervalId = setInterval(updateCountdown, 1000);
+                    } else {
+                        showDialog(res.data.msg);
+                    }
+                    data.session = res.data.data.token
+                })
+            }
+            return {
+                loginFormData,
+                data,
+                submitForm,
+            };
+        }
+    });
+    app.mount("#app");
+    function setUrlParam(url, paramName, paramValue) {
+        paramName = paramName.replace(/[\[\]]/g, '\\$&');
+        let regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
+        let val = regular.exec(url);
+        if (val && val[2]) {
+            url = url.replace(new RegExp(paramName + '=' + val[2]), `${paramName}=${paramValue}`);
+        } else {
+            if (url.indexOf('?') < 0) {
+                url += `?${paramName}=${paramValue}`;
+            } else {
+                url += `&${paramName}=${paramValue}`;
+            }
+        }
+        return url;
+    }
+    // 检查登录状态
+    function checkLoginStatus() {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            console.log('用户已登录，欢迎', localStorage.getItem('username'));
+            // 执行进入首页的逻辑
+        } else {
+            // 执行未登录的逻辑，比如跳转到登录页面
+        }
+    }
+    // 登出函数
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('nickname');
+        localStorage.removeItem('userEnabled');
+        localStorage.removeItem('_token');
+        // 执行登出后的其他操作，比如跳转到登录页面
+    }
+    // 在页面加载时检查登录状态
+    window.onload = function () {
+        checkLoginStatus();
+    };
+
+    // 对要变换效果的地方进行定义，方便后面使用
+    let inputEle = document.querySelector(".mi-input");  //密码输入框
+    //let labelEle = document.querySelector("label");  //密码提示文字
+    let miEle = document.querySelector(".mi-password");  //眼睛图片
+    // 密码提示文字效果
+    inputEle.addEventListener("focus", function () {
+        //labelEle.classList.add("active");
+    });
+    inputEle.addEventListener("blur", function () {
+        if (inputEle == null) {
+            //labelEle.classList.remove("active");
+        }
+    });
+    // 密码文字和眼睛图片切换
+    miEle.addEventListener("click", function () {
+        inputEle.type == "text";
+        if (inputEle.type == "text") {
+            inputEle.type = "password";
+        } else {
+            inputEle.type = "text";
+        }
+        miEle.classList.toggle("active");
+    });
+    // 获取对话框元素和关闭按钮
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
+
+    // 替代alert函数
+    function showDialog(message) {
+        dialogMessage.innerHTML = message;
+        dialog.style.display = 'block';
+    }
+
+    // 关闭对话框
+    dialogClose.addEventListener('click', function () {
+        dialog.style.display = 'none';
+    });
+
+    // 延迟跳转
+    function delayURL(url, time) {
+        setTimeout("top.location.href = '" + url + "'", time);
+    }
+
+    function setCountdownClass(displ) {
+        var countdown = document.getElementById('countdown');
+        if (countdown != null && countdown != undefined) {
+            countdown.style.display = displ;
+        }
+    }
+
+    // 倒计时
+    // 设置倒计时的初始值（毫秒）
+    const countdownDuration = 5 * 1000; // 10分钟
+    let countdown = countdownDuration;
+
+    // 更新倒计时的函数
+    function updateCountdown() {
+        const minutes = Math.floor(countdown / 60 / 1000);
+        const seconds = Math.floor((countdown % 60000) / 1000);
+
+        // 输出到页面上的元素
+        document.getElementById('countdown').textContent = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+
+        // 如果倒计时结束，清除interval并显示消息
+        if (countdown <= 0) {
+            // clearInterval(intervalId);
+            document.getElementById('countdown').textContent = "时间到！";
+        }
+
+        // 减少倒计时的时间
+        countdown -= 1000;
+    }
+
+</script>
+
+</html>

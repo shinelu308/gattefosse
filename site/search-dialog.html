@@ -1,0 +1,34 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+        <i class="o-icon --cross" aria-hidden="true"></i>
+        <span>关闭</span>
+      </button>
+      <form action="/search.html" method="GET" class="modal--search__form">
+        <h2 class="modal-title">
+          您在找寻什么?
+        </h2>
+        <div class="form-item">
+          <label class="visually-hidden" for="key">请输入关键词......</label>
+          <input class="form-text form-control" placeholder="请输入关键词......" type="text" id="key" name="keyword"
+            value="">
+            <br>
+              <p style="display:flex;font-size: 1.8rem;">选择内容分类：
+              <input type="radio" id="apple" name="searchType" value="news">
+              <label for="apple">公司动态</label><br>
+              <input type="radio" id="orange" name="searchType" value="goods">
+              <label for="orange">产品</label><br>
+              <input type="radio" id="banana" name="searchType" value="articles">
+              <label for="banana">文章</label><br>
+              <input type="radio" id="grape" name="searchType" value="Publications">
+              <label for="grape">出版物</label><br>
+              <input type="radio" id="brochures" name="searchType" value="brochures">
+              <label for="brochures">出版物</label>
+          <button type="submit" class="js-form-submit form-submit btn">
+            <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+          </button></p>
+        </div>
+        <a href="search.html" class="u-link">高级搜索</a>
+      </form>
+    </div>
+  </div>

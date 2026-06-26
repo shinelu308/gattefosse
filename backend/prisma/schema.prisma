@@ -1,0 +1,353 @@
+// Prisma Schema - SQLite 开发环境兼容版本
+// 生产环境请使用 schema.pg.prisma (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./gattefosse.db"
+}
+
+// ===== 用户表 =====
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  fullName      String    @map("full_name")
+  company       String?
+  industry      String?
+  jobFunction   String?   @map("job_function")
+  phone         String?
+  role          String    @default("user")
+  status        String    @default("pending")
+  samlEnabled   Boolean   @default(false) @map("saml_enabled")
+  samlIdp       String?   @map("saml_idp")
+  lastLogin     DateTime? @map("last_login")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  // 关联
+  pcIngredients      PcIngredient[]      @relation("PcIngredientCreator")
+  pharmaProducts     PharmaProduct[]     @relation("PharmaProductCreator")
+  formulations       Formulation[]       @relation("FormulationCreator")
+  newsEvents         NewsEvent[]         @relation("NewsEventCreator")
+  documents          Document[]          @relation("DocumentCreator")
+  favorites          UserFavorite[]
+  cartItems          CartItem[]
+  sampleOrders       SampleOrder[]       @relation("UserSampleOrders")
+  createdOrders      SampleOrder[]       @relation("OrderCreator")
+
+  @@map("users")
+}
+
+// ===== 个人护理原料表 =====
+model PcIngredient {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  inciName           String    @map("inci_name")
+  description        String?
+  dosage             String?
+  imageUrl           String?   @map("image_url")
+  detailImageUrl     String?   @map("detail_image_url")
+  videoUrl           String?   @map("video_url")
+  tagline            String?   // 宣传标语
+  intlUrl            String?   @map("intl_url") // 国际站URL
+  // SQLite 不支持数组，用逗号分隔字符串存储标签
+  functionalityTag   String    @map("functionality_tag") // 逗号分隔
+  applicationTag     String    @map("application_tag")
+  conceptTag         String    @map("concept_tag")
+  claimTag           String    @map("claim_tag")
+  characteristicTag  String    @map("characteristic_tag")
+  naturalityLabel    String    @map("naturality_label")
+  compositionHtml    String?   @map("composition_html")
+  sensoryHtml        String?   @map("sensory_html")
+  clinicalHtml       String?   @map("clinical_html")
+  sortOrder          Int       @default(0) @map("sort_order")
+  isPublished        Boolean   @default(false) @map("is_published")
+  specInfo           String?   @map("spec_info") // JSON: { dosage, certification, inci }
+  createdById        Int?      @map("created_by")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  createdBy          User?     @relation("PcIngredientCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("pc_ingredients")
+}
+
+// ===== 药用辅料产品表 =====
+model PharmaProduct {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  slug               String?
+  description        String?
+  imageUrl           String?   @map("image_url")
+  tagline            String?   // 宣传标语
+  intlUrl            String?   @map("intl_url") // 国际站URL
+  marketTag          String    @map("market_tag")
+  routeTag           String    @map("route_tag")
+  functionalityTag   String    @map("functionality_tag")
+  dosageFormTag      String    @map("dosage_form_tag")
+  compositionHtml    String?   @map("composition_html")
+  applicationHtml    String?   @map("application_html")
+  regulatoryHtml     String?   @map("regulatory_html")
+  sortOrder          Int       @default(0) @map("sort_order")
+  isPublished        Boolean   @default(false) @map("is_published")
+  createdById        Int?      @map("created_by")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  createdBy          User?     @relation("PharmaProductCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("pharma_products")
+}
+
+// ===== 配方表 =====
+model Formulation {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  code               String?
+  description        String?
+  imageUrl           String?   @map("image_url")
+  pdfPath            String?   @map("pdf_path")
+  applicationTag     String    @map("application_tag")
+  formTag            String    @map("form_tag")
+  claimTag           String    @map("claim_tag")
+  naturalityIndex    String?   @map("naturality_index")
+  compositionText    String?   @map("composition_text")
+  preparationSteps   String?   @map("preparation_steps")
+  sortOrder          Int       @default(0) @map("sort_order")
+  isPublished        Boolean   @default(false) @map("is_published")
+  createdById        Int?      @map("created_by")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  createdBy          User?     @relation("FormulationCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  // 关联
+  docFormulations     DocFormulation[]
+
+  @@map("formulations")
+}
+
+// ===== 文档表 =====
+model Document {
+  id             Int       @id @default(autoincrement())
+  title          String
+  type           String    // TDS/SDS/Brochure/Formula/Other
+  filePath       String    @map("file_path")
+  fileSize       BigInt    @map("file_size")
+  language       String    @default("zh")
+  isPublic       Boolean   @default(false) @map("is_public")
+  downloadCount  Int       @default(0) @map("download_count")
+  createdById    Int?      @map("created_by")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  createdBy      User?     @relation("DocumentCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  // 关联
+  docProducts     DocProduct[]
+  docFormulations DocFormulation[]
+
+  @@map("documents")
+}
+
+// ===== 文档-产品关联表 =====
+model DocProduct {
+  id          Int      @id @default(autoincrement())
+  documentId  Int      @map("document_id")
+  productId   Int      @map("product_id")
+  productType String   @map("product_type") // pc / pharma
+
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("doc_products")
+}
+
+// ===== 文档-配方关联表 =====
+model DocFormulation {
+  id             Int      @id @default(autoincrement())
+  documentId     Int      @map("document_id")
+  formulationId  Int      @map("formulation_id")
+
+  document       Document    @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  formulation    Formulation @relation(fields: [formulationId], references: [id], onDelete: Cascade)
+
+  @@map("doc_formulations")
+}
+
+// ===== 新闻与活动表 =====
+model NewsEvent {
+  id             Int       @id @default(autoincrement())
+  type           String    // news / event
+  category       String    // corporate / pc / pharma
+  title          String
+  slug           String?
+  summary        String?
+  contentHtml    String?   @map("content_html")
+  imageUrl       String?   @map("image_url")
+  readingTime    Int?      @map("reading_time")
+  publishedDate  DateTime  @map("published_date")
+  eventEndDate   DateTime? @map("event_end_date")
+  location       String?
+  booth          String?
+  isPublished    Boolean   @default(false) @map("is_published")
+  createdById    Int?      @map("created_by")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  createdBy      User?     @relation("NewsEventCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("news_events")
+}
+
+// ===== 用户收藏表 =====
+model UserFavorite {
+  id       Int       @id @default(autoincrement())
+  userId   Int       @map("user_id")
+  itemType String    @map("item_type") // pc_ingredient / pharma / formulation
+  itemId   Int       @map("item_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemType, itemId])
+  @@map("user_favorites")
+}
+
+// ===== 样品订单表 =====
+model SampleOrder {
+  id           Int       @id @default(autoincrement())
+  userId       Int?      @map("user_id")
+  orderNumber  String    @unique @map("order_number")
+  status       String    @default("draft")
+  companyName  String?   @map("company_name")
+  contactName  String?   @map("contact_name")
+  email        String?
+  phone        String?
+  address      String?
+  notes        String?
+  submittedAt  DateTime? @map("submitted_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  user         User?     @relation("UserSampleOrders", fields: [userId], references: [id], onDelete: SetNull)
+  creator      User?     @relation("OrderCreator", fields: [userId], references: [id], onDelete: SetNull)
+  items        SampleOrderItem[]
+
+  @@map("sample_orders")
+}
+
+// ===== 样品订单明细表 =====
+model SampleOrderItem {
+  id          Int       @id @default(autoincrement())
+  orderId     Int       @map("order_id")
+  productType String    @map("product_type") // pc_ingredient / pharma
+  productId   Int       @map("product_id")
+  quantity    Int       @default(1)
+
+  order       SampleOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("sample_order_items")
+}
+
+// ===== 分公司信息表 =====
+model Subsidiary {
+  id          Int       @id @default(autoincrement())
+  name        String
+  country     String?
+  city        String?
+  address     String?
+  phone       String?
+  email       String?
+  website     String?
+  imageUrl    String?    @map("image_url")
+  description String?
+  sortOrder   Int       @default(0) @map("sort_order")
+
+  @@map("subsidiaries")
+}
+
+// ===== 静态页面内容表 =====
+model PageContent {
+  id           Int       @id @default(autoincrement())
+  pageKey      String    @unique @map("page_key")
+  title        String
+  contentHtml  String?   @map("content_html")
+  metaTitle    String?   @map("meta_title")
+  metaDescription String? @map("meta_description")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@map("page_contents")
+}
+
+// ===== 系统设置表 =====
+model Setting {
+  id        Int       @id @default(autoincrement())
+  key       String    @unique
+  value     String?
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+// ===== 购物车表 =====
+model CartItem {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  productType String    @map("product_type") // pc_ingredient / pharma
+  productId   Int       @map("product_id")
+  productName String    @map("product_name")
+  quantity    Int       @default(1)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productType, productId])
+  @@map("cart_items")
+}
+
+// ===== 求职申请表 =====
+model CareerApplication {
+  id          Int       @id @default(autoincrement())
+  fullName    String    @map("full_name")
+  email       String
+  phone       String?
+  position    String?
+  message     String?
+  resumePath  String?   @map("resume_path")
+  status      String    @default("new") // new / reviewed / contacted / archived
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("career_applications")
+}
+
+// ===== 内容区块表（产品详情页模块化编辑）=====
+model ContentBlock {
+  id          Int       @id @default(autoincrement())
+  productId   Int       @map("product_id")
+  productType String    @map("product_type") // pc / pharma
+  blockType   String    @map("block_type")   // richtext / video / images / files
+  title       String?                        // 区块标题（如"成分构成"、"临床评估"）
+  content     String?                        // JSON 格式的区块内容（按 blockType 不同结构）
+  sortOrder   Int       @default(0) @map("sort_order")
+  isPublished Boolean   @default(true) @map("is_published")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("content_blocks")
+}
+
+// ===== 标签字典表 =====
+model TagDictionary {
+  id          Int       @id @default(autoincrement())
+  category    String    // 分类: functionality / application / concept / claim / characteristic / naturality (PC) 或 market / route / functionality / dosage_form (Pharma)
+  productLine String    @map("product_line") // pc / pharma
+  label       String    // 显示文本
+  value       String    // 选项值
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("tag_dictionary")
+}

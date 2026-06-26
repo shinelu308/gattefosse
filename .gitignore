@@ -1,0 +1,7 @@
+site/www/
+node_modules/
+.env
+*.log
+backend/uploads/
+.workbuddy/memory/*.md
+.workbuddy/blobs/

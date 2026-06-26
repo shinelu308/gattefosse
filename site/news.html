@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="news.html" />
+  <meta name="google-site-verification"
+    content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default" href="news.html" />
+  <link rel="alternate" hreflang="en" href="news.html" />
+  <link rel="alternate" hreflang="fr" href="fr/actualites.html" />
+  <link rel="icon" href="themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      "Pagetype": "page",
+      "LEVEL1": "News & Events",
+      "LEVEL2": "",
+      "LEVEL3": "",
+      "Pays": "France",
+      "Thematique": "",
+      "Connexion": "Non"
+    });
+  </script>
+  <script type="text/javascript" src="static/js/vue.global.js"></script>
+  <script src="static/js/axios.min.js"></script>
+  <title>公司动态 | 嘉法狮</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="themes/custom/gattefosse/images/favicons/site.html">
+  <link rel="mask-icon" href="themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css" />
+  <link rel="stylesheet" media="all" href="sites/default/files/css/menu_icons_1701865611.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_pPfrrsOwLXxDLw7-UYKDqFONEmjyh_dCi89ZBWzLKGc.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
+  <link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+  <link rel="stylesheet" href="static/css/custom.css" />
+  <script src="static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+   $(document).ready(function () {
+      $("#header").load("/header.html", function(){
+        let tmp = checkLoginStatus();
+        if (!tmp) {
+          $("#collapseAccMenu").load("/account-menu.html");
+        } else {
+          $("#collapseAccMenu").load("/account-menu-after-login.html");
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+  </script>
+</head>
+<body class="path-news    bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header"></header>
+    <div class="region region-highlight">
+      <div data-drupal-messages-fallback class="hidden"></div>
+    </div>
+    <main role="main" class="main" data-bs-spy="scroll">
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
+          <strong>快捷链接</strong>
+        </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
+      </nav>
+      <div class="page-content">
+        <div class="region region-breadcrumb">
+          <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+            class="block block-system block-system-breadcrumb-block">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="index.html">主页</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="about-us.html">关于我们</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="news.html">公司动态</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <a id="main-content" tabindex="-1"></a>
+        <div class="region region-content">
+          <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+            class="block block-system block-system-main-block">
+            <div class="views-element-container">
+              <section
+                class="view view-news view-id-news view-display-id-list js-view-dom-id-646aebdff81067bb40aa90af2036d7d867d2f830b6c098edfba49113991bbc30 s-page has-aside s-page--filter">
+                <div class="s-page__header">
+                  <div class="container" id="app3">
+                    <h1 class="s-page__title u-title-styled">
+                      公司动态
+                    </h1>
+                  </div>
+                </div>
+                <div class="s-page__wrapper">
+                  <aside class="s-page__aside s-page__aside--l" aria-label="filters" role="complementary">                    
+                    <div class="c-filter e-form js-filter">
+                      <div class="facet-inactive block-facet--links block block-facets block-facet-blockbusiness-unit"
+                        data-block-plugin-id="facet_block:business_unit">
+                        <div id="app2">
+                          <div class="facets-widget-links">
+                            <ul data-drupal-facet-id="business_unit" data-drupal-facet-alias="business_unit"
+                              class="facet-inactive js-facets-links facet-list item-list__links">
+                              <li class="facet-item">
+                                <a class="btn btn-outline-secondary"
+                                  :class="data.goodsCategoryId == 0 ? 'is-active' : ''" href="/news.html?i=0">公司资讯
+                                  </a>
+                              </li>
+                              <li class="facet-item">
+                                <a class="btn btn-outline-secondary"
+                                  :class="data.goodsCategoryId == 1 ? 'is-active' : ''" href="/news.html?i=1">个人护理</a>
+                              </li>
+                              <li class="facet-item">
+                                <a class="btn btn-outline-secondary"
+                                  :class="data.goodsCategoryId == 117 ? 'is-active' : ''" href="/news.html?i=117">药用辅料
+                                  </a>
+                              </li>
+                              <li class="facet-item facets-reset">
+                                <a class="btn btn-outline-secondary"
+                                  :class="data.type == 2 ? 'is-active' : ''" href="/news.html?type=2">遇见我们
+                                  </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="facet-inactive hidden block-facet--checkbox block block-facets block-facet-blockarea"
+                        data-block-plugin-id="facet_block:area">
+                        <div data-drupal-facet-id="area" class="facet-empty facet-hidden">
+                          <div class="accordion facets-widget-checkbox"> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+                  <div id="app">
+                    <div class="s-page__content">
+                      <div class="c-cards c-cards--vertical">
+                        <div v-for='item in data.formData' :class="item.class">
+                          <div class="c-card__content" v-if="item.type == 1">
+                            <h3 class="c-card__title">
+                              <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
+                              {{item.eventAddress}}
+                            </h3>
+                            <ul class="c-card__breadcrumb">
+                              <li class="category">{{item.goodsCatName}}</li>
+                            </ul>
+                            <p class="c-card__info">
+                              <span class="c-card__date"><time :datetime="item.eventTime"
+                                  class="datetime" v-if="item.eventTime != null && item.eventTime != ''">{{item.eventTimeYear}}年{{item.eventTimeDate}}日</time>
+                              </span>
+                            </p>
+                            <p class="c-card__summary" style="color: rgb(136, 135, 135);">{{item.summary}}</p>
+                          </div>
+                          <div class="c-card__image" v-if="item.type == 1">
+                            <img :src="item.thumb" alt="incos-awards-dermolea" style="width:369px;height:208px"
+                              width="369" height="208" class="card__image img-fluid" loading="lazy">
+                          </div>
+                          <div class="c-card__content" v-if="item.type == 2">
+                            <ul class="c-card__breadcrumb">
+                              <li class="category">{{item.goodsCatName}}</li>
+                            </ul>
+                            <h3 class="c-card__title">{{item.title}}</h3>
+                            <div class="c-card__left">
+                              <p class="c-card__date">
+                                <span class="date">{{item.eventTimeDate}}日~{{item.eventEndTimeDate}}日</span>
+                                <span class="year">{{item.eventTimeYear}}</span>
+                              </p>
+                              <div class="c-card__event-info">
+                                <p class="c-card__place">
+                                  {{item.eventAddress}}
+                                </p>
+                              </div>
+                            </div>
+                            <div class="c-card__right">
+                              <p class="c-card__summary">{{item.summary}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
+                        v-if="data.total_page > 1">
+                        <h4 id="pagination-heading" class="pager__heading visually-hidden">页码</h4>
+                        <ul class="pager__items js-pager__items">
+                          <li class="pager__item pager__item--previous pager__item">
+                            <a :href="data.prev_url" title="Go to previous page" rel="prev">
+                              <span class="visually-hidden">上一页</span>
+                              <i class="o-icon --caret-right" aria-hidden="true"></i>
+                            </a>
+                          </li>
+                          <li class="pager__item is-active">
+                            {{data.cur_page}}<sub>/{{data.total_page}}</sub>
+                          </li>
+                          <li class="pager__item pager__item--next">
+                            <a :href="data.next_url" title="Go to next page" rel="next">
+                              <span class="visually-hidden">下一页</span>
+                              <i class="o-icon --caret-right" aria-hidden="true"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div> <!-- vue app end-->
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
+        class="c-back-to-top smoothHide d-none"></a>
+    </main>
+    <footer role="contentinfo" class="footer" id="footer"></footer>
+    <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            <span>关闭</span>
+          </button>
+          <form action="/search.html" method="GET" class="modal--search__form">
+            <h2 class="modal-title">
+              您在找寻什么?
+            </h2>
+            <div class="form-item">
+              <label class="visually-hidden" for="key">请输入关键词......</label>
+              <input class="form-text form-control" placeholder="请输入关键词......" type="text" id="key" name="keyword"
+                value="">
+              <button type="submit" class="js-form-submit form-submit btn">
+                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+              </button>
+            </div>
+            <a href="search.html" class="u-link">高级搜索</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+    </div>
+  </div>
+  <script src="sites/default/files/js/js_N81plmNQLshwK5FABanM0cbfGmnGryAOF7WftT2a97I.js"></script>
+  <script src="sites/default/files/js/js_UZbwTSK8mg1ekvwEemvRQaYDsYrEeazeJ2Jkf1cict0.js"></script>
+  <script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitronac5f.js?1702896749"></script>
+  <script src="sites/default/files/js/js_-YsAXWEB4twbIcIo_-Yc1WeAgi9b2E4Oba79--lmNQ0.js"></script>
+  <script src="sites/default/files/js/js_W8q5R4oIsmRhsRjsbPGB5rAGV5-VpUYHfAmsY7Pxc74.js"></script>
+  <script>
+  function checkLoginStatus() { return false; }
+  const { createApp, reactive, onMounted } = Vue;
+  var atype = new URLSearchParams(window.location.search).get('type');
+  var goodsCategoryId = new URLSearchParams(window.location.search).get('i');
+  var w = new URLSearchParams(window.location.search).get('keyword');
+  var page = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
+  var limit = 9;
+
+  function formatDateParts(iso) {
+    if (!iso) return { year: '', date: '', endDate: '' };
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return { year: '', date: '', endDate: '' };
+    var y = d.getFullYear();
+    var m = ('0' + (d.getMonth() + 1)).slice(-2);
+    var day = ('0' + d.getDate()).slice(-2);
+    return { year: y, date: m + '月' + day, endDate: m + '月' + day };
+  }
+
+  function mapNewsItem(item) {
+    var d = formatDateParts(item.publishedDate);
+    // type 1 = 资讯, type 2 = 遇见我们(活动)
+    var isEvent = item.type === 2 || item.type === 'event' || item.type === 'meet';
+    var themeClass = (item.category && item.category.indexOf('药用') >= 0) ? 'theme-pharma' : 'theme-cosm';
+    var catName = item.category || (isEvent ? '遇见我们' : '公司资讯');
+    var baseCls = 'c-card c-card--horizontal' + (isEvent ? ' c-card--bordered c-card--event ' + themeClass : '');
+    return {
+      ID: item.id,
+      id: item.id,
+      title: item.title,
+      summary: item.summary || '',
+      thumb: item.imageUrl || '',
+      url: 'news-detail.html?id=' + item.id,
+      type: isEvent ? 2 : 1,
+      eventAddress: '',
+      eventTime: item.publishedDate,
+      eventTimeYear: d.year + '年',
+      eventTimeDate: d.date,
+      eventEndTimeDate: d.endDate,
+      goodsCatName: catName,
+      class: baseCls
+    };
+  }
+
+  function buildPageUrl(p) {
+    var qs = new URLSearchParams();
+    if (atype) qs.set('type', atype);
+    if (goodsCategoryId) qs.set('i', goodsCategoryId);
+    if (w) qs.set('keyword', w);
+    if (p) qs.set('page', p);
+    var s = qs.toString();
+    return s ? '/news.html?' + s : '/news.html';
+  }
+
+  const app = createApp({
+    setup() {
+      const data = reactive({
+        formData: [],
+        total: 0,
+        type: atype,
+        goodsCategoryId: goodsCategoryId,
+        keyword: w,
+        cur_page: page,
+        page_size: limit,
+        total_page: 1,
+        prev_url: buildPageUrl(Math.max(1, page - 1)),
+        next_url: buildPageUrl(page + 1)
+      });
+
+      const loadNews = async () => {
+        var params = { limit: limit, page: page, isPublished: 'true' };
+        if (atype) params.type = atype;
+        if (goodsCategoryId) params.categoryId = goodsCategoryId;
+        if (w) params.keyword = w;
+        try {
+          var res = await GatteAPI.News.list(params);
+          var payload = res.data || {};
+          var list = payload.list || payload.items || (Array.isArray(payload) ? payload : []);
+          var pagination = payload.pagination || {};
+          data.formData = list.map(mapNewsItem);
+          data.total = pagination.total || list.length;
+          data.cur_page = pagination.page || page;
+          data.page_size = pagination.limit || limit;
+          data.total_page = pagination.totalPages || Math.max(1, Math.ceil(data.total / limit));
+          data.prev_url = buildPageUrl(Math.max(1, data.cur_page - 1));
+          data.next_url = buildPageUrl(data.cur_page + 1);
+        } catch (err) {
+          console.error('News list load failed:', err);
+          data.formData = [];
+          data.total = 0;
+          data.total_page = 1;
+        }
+      };
+
+      onMounted(loadNews);
+      return { data };
+    }
+  });
+  app.mount("#app");
+</script>
+  <script defer src="https://umami.onlystyle.com.cn/script.js"
+    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+
+<script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
+</body>
+</html>

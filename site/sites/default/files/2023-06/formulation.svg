@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <g id="Planche">
+    <g>
+      <rect width="48" height="48" style="fill: none;"/>
+      <path d="m24.16,24.11c.4-1.87,2.02-4.36,6.26-4.98m11.4,17.23h-10.09m9.99-2.7h-5.35m-3.52-5.49h-11.01c-.81,0-1.33-.47-1.27-1.31v-.05c.56-13.29,21.15-11,21.15-11,0,0-4.84,2.91,1.21,7.06,2.21,1.52,2.24,3.36,2.1,4.25-.09.58-.58,1.05-1.15,1.06,0,0-.02,0-.02,0h-11.01Zm-11.42,16.03c-1.29-.02-2.09-.7-2.31-1.95-.52-3.53-.06-8.67.55-11.27.16-.68.48-1.31.97-1.66.37.17.79.25,1.2.25h22.02c.4,0,.83-.08,1.2-.25.49.35.81.97.97,1.66.61,2.59,1.07,7.74.55,11.27-.22,1.25-1.02,1.93-2.31,1.95h-22.84Z" style="fill: none; stroke: #cb2e51; stroke-linejoin: round;"/>
+      <path d="m17.04,11.44c0,1.81-1.47,3.28-3.28,3.28s-3.28-1.47-3.28-3.28,1.47-3.28,3.28-3.28,3.28,1.47,3.28,3.28Z" style="fill: none; stroke: #cb2e51; stroke-miterlimit: 10;"/>
+      <path d="m26.89,5.98c0,1.21-.98,2.19-2.19,2.19s-2.19-.98-2.19-2.19.98-2.19,2.19-2.19,2.19.98,2.19,2.19Z" style="fill: none; stroke: #cb2e51; stroke-miterlimit: 10;"/>
+      <circle cx="33.45" cy="10.35" r="2.19" style="fill: none; stroke: #cb2e51; stroke-miterlimit: 10;"/>
+      <path d="m3.13,26.04c2.6,0,5.21,4.03,10.42,4.03,2.26,0,3.86-.76,5.24-1.61" style="fill: none; stroke: #cb2e51; stroke-linejoin: round;"/>
+      <path d="m1.19,15.7h1.94v23.68c0,2.67,2.16,4.83,4.83,4.83h9.74" style="fill: none; stroke: #cb2e51; stroke-linejoin: round;"/>
+      <line x1="5.68" y1="36.36" x2="3.28" y2="36.36" style="fill: none; stroke: #cb2e51; stroke-linejoin: round;"/>
+      <line x1="5.68" y1="32.11" x2="3.28" y2="32.11" style="fill: none; stroke: #cb2e51; stroke-linejoin: round;"/>
+    </g>
+  </g>
+</svg>

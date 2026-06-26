@@ -1,0 +1,850 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.gattefosse.com/personal-care/product-finder" />
+  <meta name="google-site-verification"
+    content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default" href="https://www.gattefosse.com/personal-care/product-finder" />
+  <link rel="alternate" hreflang="en" href="https://www.gattefosse.com/personal-care/product-finder" />
+  <link rel="alternate" hreflang="fr" href="https://www.gattefosse.com/fr/cosmetique/product-finder" />
+  <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      "Pagetype": "page",
+      "LEVEL1": "Personal Care",
+      "LEVEL2": "Ingredients",
+      "LEVEL3": "",
+      "Pays": "en",
+      "Thematique": "",
+      "Connexion": "Non"
+    });
+  </script>
+  <title>产品导览 | 嘉法狮</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/themes/custom/gattefosse/images/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1708957448.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_pPfrrsOwLXxDLw7-UYKDqFONEmjyh_dCi89ZBWzLKGc.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body class="path-personal-care    bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header">
+    </header>
+    <div class="region region-highlight">
+      <div data-drupal-messages-fallback class="hidden"></div>
+    </div>
+    <main role="main" class="main theme-cosm" data-bs-spy="scroll">
+      <!-- theme-pharma | theme-cosm -->
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
+          <strong>快捷链接</strong>
+        </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
+      </nav>
+      <div class="page-content">
+        <div class="region region-breadcrumb">
+          <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+            class="block block-system block-system-breadcrumb-block">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="/">首页</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="/personal-care.html">个人护理</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="/personal-care/product-finder.html">产品导览</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <a id="main-content" tabindex="-1"></a>
+        <div class="region region-content">
+          <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+            class="block block-system block-system-main-block">
+            <div class="views-element-container" id="app">
+              <section
+                class="view view-ingredients-personal-care view-id-ingredients_personal_care view-display-id-list js-view-dom-id-f9e56d377d1d89ab7938c71d3d5c390e18757c2432458cf6e22c591039313330 s-page has-aside s-page--filter">
+                <div class="s-page__header">
+                  <div class="container">
+                    <h1 class="s-page__title u-title-styled">
+                      产品导览
+                    </h1>
+                    <div class="view-filters">
+                      <form class="views-exposed-form bef-exposed-form"
+                        data-drupal-selector="views-exposed-form-ingredients-personal-care-list"
+                        action="/personal-care/product-finder.html" method="get"
+                        id="views-exposed-form-ingredients-personal-care-list" accept-charset="UTF-8"
+                        @submit.prevent="doSearch">
+                        <div class="modal--search__form s-page__header-search">
+                          <div class="form-item">
+                            <div
+                              class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-keyword form-item-keyword">
+                              <label for="edit-keyword">关键词</label>
+                              <input placeholder="您在找的是?" data-drupal-selector="edit-keyword" type="text"
+                                id="edit-keyword" name="keyword" :value="data.keyword"
+                                @input="data.keyword = $event.target.value"
+                                size="30" maxlength="128"
+                                class="form-text form-control" />
+                            </div>
+                            <button type="submit" id="edit-submit-ingredients-personal-care"
+                              class="js-form-submit form-submit btn"
+                              data-drupal-selector="edit-submit-ingredients-personal-care">
+                              <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                          <input data-drupal-selector="edit-order" type="hidden" name="order" value="" />
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="s-page__wrapper">
+                  <aside class="s-page__aside s-page__aside--l" aria-label="filters" role="complementary">
+                    <button type="button" class="c-filter__mobile-btn btn btn-primary js-filter-btn-mobile">
+                      <span class="c-filter__txt-open">过滤搜索结果</span>
+                      <span class="c-filter__txt-close">关闭过滤器</span>
+                      <i class="o-icon --caret-circle-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="c-filter e-form js-filter">
+                      <button type="button" class="js-filter-btn-close c-filter__close-btn"><i class="o-icon --cross"
+                          aria-hidden="true"></i>关闭</button>
+                      <div class="c-filter__header">
+                        <h2 class="c-filter__main-title">过滤器</h2>
+                        <button type="button" target="/personal-care/product-finder.html"
+                          class="c-filter__reset-btn btn btn-outline-secondary" @click="clearFilters">取消过滤
+                          <i class="o-icon --reset" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <div data-drupal-facets-summary-id="ingredients_personal_care_active_filters"
+                        data-block-plugin-id="facets_summary_block:ingredients_personal_care_active_filters"
+                        class="block block-facets-summary block-facets-summary-blockingredients-personal-care-active-filters" :class="data.activeFilterClass">
+                        <h3 class="c-filter__subtitle">当前过滤项 :</h3>
+                        <ul class="o-tag-list o-tag-list--wrap">
+                          <li class="facet-summary-item--facet o-tag-list__item">
+                            {{data.curFilter}}
+                            <a href="/personal-care/product-finder.html" class="c-filter__delete">
+                              <span class="visually-hidden">移除过滤</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div v-for="(item, index) in data.tagList" :class="item.class"
+                        :data-block-plugin-id="item.dataBlockPluginId">
+                        <div class="accordion facets-widget-checkbox">
+                          <div class="accordion-item panel-group" :id="item.accordionNameId"
+                            aria-multiselectable="true">
+                            <h3 role="tab" :id="item.headerNameId">
+                              <button type="button" aria-expanded="false" class="panel-title accordion-button collapsed"
+                                data-bs-toggle="collapse" :data-bs-target="item.sharpeNameId"
+                                id="nav-filtre-accordion">{{item.tagName}}</button>
+                            </h3>
+                            <div :id="item.nameId" class="panel-collapse collapse" role="region"
+                              :aria-labelledby="item.headerNameId">
+                              <div class="panel-body accordion-body">
+                                <ul :data-drupal-facet-id="item.dataDrupalFacetId"
+                                  data-drupal-facet-alias="functionalities"
+                                  class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
+                                  <li v-for="item2 in item.children" :class="item2.facetItemClass">
+                                    <label class="gatte-facet-label" @click.prevent="goToUrl(item2)">
+                                      <input type="checkbox"
+                                        class="gatte-facet-cb"
+                                        :id="item2.dataDrupalFacetItemId"
+                                        :checked="item2.active"
+                                        @change="goToUrl(item2)">
+                                      <span class="gatte-cb-icon" :class="{ 'is-checked': item2.active }"></span>
+                                      <span class="facet-item__value">{{item2.tagName}}</span>
+                                    </label>
+                                  </li>
+                                </ul>
+                                <button class="link-more js-see-all" data-show="查看所有" @click.prevent="seeAll($event)"
+                                  data-hide="收起" data-aria-expanded="true">收起</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+                  <div class="s-page__content">
+                    <div class="view-header">
+                      <div class="c-search-result">
+                        <p class="c-search-result__value" role="heading" aria-level="2"><span
+                            class="num">{{data.total}}</span>
+                          产品</p>
+                        <div class="form-item">
+                          <label for="order-by" class="visually-hidden">排序依据</label>
+                          <select class="form-select js-order-by" id="order-by" name="sort_order">
+                            <option value="">默认排序</option>
+                            <option value="ASC">A-Z</option>
+                            <option value="DESC">Z-A</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="c-cards c-cards--vertical">
+                      <div class="c-card c-card--horizontal theme-cosm" v-for="(item, index) in data.productList">
+                        <div class="c-card__content">
+                          <h3 class="c-card__title"><a :href="item.url">{{item.goodsName}}</a></h3>
+                          <p class="c-card__baseline">{{item.tagline}}</p>
+                          <p class="c-card__subtitle" style="font-size:13px;color:var(--text-muted);margin:4px 0;">{{item.subtitle}}</p>
+                          <p class="c-card__summary">{{item.goodsIntro}}</p>
+                          <div class="c-card__cta">
+                            <button class="btn btn-primary btn-icon--r js-request-sample" data-uid="0"
+                              :data-nid="item.ID" data-type="ingredients" :data-title="item.goodsName"
+                              data-thumbnail="1257" @click="addCart(item, index)" data-baseline="" data-usp_nf=""
+                              data-inci="" :data-short_description="item.goodsIntro" :style="item.flex">申请样品<i
+                                class="o-icon --tote-bag" aria-hidden="true"></i></button>
+                            <a class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html"
+                              :style="item.show">查看购物车</a>
+                            <a :href="item.url" class="btn btn-outline-primary">阅读更多</a>
+                          </div>
+                        </div>
+                        <div class="c-card__image">
+                          <a :href="item.url"><img :src="item.goodsCoverImg" alt="Thumbnail Image Emulium Dermolea MB"
+                              width="268" height="201" class="card__image img-fluid" loading="lazy"></a>
+                        </div>
+                        <a @click="addProductFav(item)" :class="item.inFav ? 'c-card__favorite is-active':'c-card__favorite'" >
+                          <i aria-hidden="true" class="o-icon --star" :data-fav-id="item.ID" :data-goods-name="item.goodsName" :data-cat-id="item.goodsCategoryId"></i>
+                          <span class="visually-hidden">收藏</span>
+                        </a>
+                      </div>
+                    </div>
+                    <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
+                      v-if="data.total_page > 1">
+                      <h4 id="pagination-heading" class="pager__heading visually-hidden">页码</h4>
+                      <ul class="pager__items js-pager__items">
+                        <li class="pager__item pager__item--previous" v-if="data.cur_page > 1">
+                          <a href="#" @click.prevent="changePage(data.cur_page - 1)" title="上一页" rel="prev">
+                            <span class="visually-hidden">上一页</span>
+                            <i class="o-icon --caret-right" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                        <li class="pager__item" v-for="p in data.total_page" :key="p" :class="p === data.cur_page ? 'pager__item is-active' : 'pager__item'">
+                          <a href="#" @click.prevent="changePage(p)">{{p}}</a>
+                        </li>
+                        <li class="pager__item pager__item--next" v-if="data.cur_page < data.total_page">
+                          <a href="#" @click.prevent="changePage(data.cur_page + 1)" title="下一页" rel="next">
+                            <span class="visually-hidden">下一页</span>
+                            <i class="o-icon --caret-right" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
+        class="c-back-to-top smoothHide d-none"></a>
+    </main>
+    <footer role="contentinfo" class="footer" id="footer"> </footer>
+    <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            <span>关闭</span>
+          </button>
+          <form action="/search.html" method="GET" class="modal--search__form">
+            <h2 class="modal-title">
+              您在查找......?
+            </h2>
+            <div class="form-item">
+              <label class="visually-hidden" for="key">请输入关键词...</label>
+              <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key" name="keyword"
+                value="">
+              <button type="submit" class="js-form-submit form-submit btn">
+                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+              </button>
+            </div>
+            <a href="/search.html" class="u-link">高级搜索</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+    </div>
+  </div>
+
+  <div id="dialog" class="dialog">
+    <div class="dialog-content">
+      <p id="dialog-message"></p>
+      <button id="dialog-close" class="btn btn-primary">关闭</button>
+    </div>
+  </div>
+  <style>
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 30px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: rgba(248, 244, 244, 1);
+      min-width: 400px;
+    }
+
+    .dialog-content {
+      text-align: center;
+    }
+
+    .dialog-content a {
+      color: #8eb73c;
+      font-style: bold;
+    }
+
+    #dialog-close {
+      margin-top: 100px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .moreBt {
+      display: none;
+      margin: 0.8rem 0 0 2.4rem;
+      font-size: 1.4rem;
+      color: var(--accent-color);
+      text-decoration: underline;
+      line-height: 1.2;
+      border: 0;
+      background: none;
+      padding: 0;
+    }
+
+    .showDiv {
+      display: block
+    }
+
+    .hidden {
+      display: none
+    }
+
+    .facet-item1 {
+      font-family: "Din Next Lt Pro Regular", sans-serif;
+      font-size: 1.6rem;
+      color: #58616B;
+    }
+
+    /* 隐藏原生 checkbox — 多重保险 */
+    .item-list__checkbox .facets-checkbox {
+      display: none !important;
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* 复选框 — 完全本地渲染，不依赖外部 CSS */
+    .gatte-facet-label {
+      display: flex !important;
+      align-items: flex-start !important;
+      cursor: pointer;
+      padding: 4px 0;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gatte-facet-cb {
+      /* 隐藏原生 checkbox，用 .gatte-cb-icon 代替 */
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      pointer-events: none !important;
+    }
+    .gatte-cb-icon {
+      display: inline-block !important;
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      border: 2px solid #bbb !important;
+      background: #fff !important;
+      border-radius: 3px !important;
+      margin-right: 8px !important;
+      margin-top: 2px !important;
+      box-sizing: border-box !important;
+      transition: all 0.15s ease !important;
+      position: relative !important;
+      flex-shrink: 0 !important;
+    }
+    .gatte-cb-icon.is-checked {
+      border-color: #A52458 !important;
+      background: #A52458 !important;
+    }
+    .gatte-cb-icon.is-checked::after {
+      content: "✓" !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      color: #fff !important;
+      font-size: 12px !important;
+      font-weight: bold !important;
+      line-height: 1 !important;
+    }
+
+    /* 「查看所有」按钮 — 覆盖外部 CSS 的 display:none */
+    .c-filter .accordion-body .link-more {
+      display: inline-block !important;
+      margin: 0.8rem 0 0 2.4rem !important;
+      font-size: 1.4rem;
+      color: #A52458;
+      text-decoration: underline;
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+    }
+    .c-filter .accordion-body .link-more:hover {
+      color: #7a1b42;
+    }
+
+    /* ===== 子标签列表样式 — 覆盖外部 Drupal CSS（不干扰折叠/收起）===== */
+    /* 只强制「已展开」的面板显示，收起的面板仍然可以 display:none */
+    .c-filter .panel-collapse.show {
+      display: block !important;
+    }
+    .c-filter .panel-collapse.show .panel-body,
+    .c-filter .panel-collapse.show .accordion-body {
+      display: block !important;
+    }
+    .c-filter .facet-list,
+    .c-filter .item-list__checkbox,
+    .c-filter .facet-inactive {
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+    }
+    .c-filter .facet-list li,
+    .c-filter .item-list__checkbox li,
+    .c-filter .facet-inactive li,
+    .c-filter .facet-item {
+      line-height: 1.8 !important;
+      padding: 2px 0 !important;
+      display: block !important;
+      visibility: visible !important;
+    }
+    /* 被收起隐藏的子标签 */
+    .c-filter .facet-inactive li.tag-collapsed {
+      display: none !important;
+    }
+    /* 收起/查看所有按钮 — 可见可点击 */
+    .c-filter .js-see-all,
+    .c-filter .link-more {
+      display: inline-block !important;
+      margin: 0.5rem 0 0 2.4rem !important;
+      font-size: 1.4rem !important;
+      color: #A52458 !important;
+      text-decoration: underline !important;
+      border: none !important;
+      background: none !important;
+      padding: 0 !important;
+      cursor: pointer !important;
+    }
+  </style>
+  <script>
+    // 获取对话框元素和关闭按钮
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
+
+    // 替代alert函数
+    function showDialog(message) {
+      dialogMessage.innerHTML = message;
+      dialog.style.display = 'block';
+    }
+
+    // 关闭对话框
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
+    });
+
+  </script>
+  <script>
+  // checkLoginStatus 由 /static/js/auth.js 统一管理，此处不再覆盖
+  </script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+  const { createApp, reactive, onMounted, nextTick } = Vue;
+  const pageSize = 9;
+
+  // 标签分类中文名 — 必须与原网站格式完全一致（2025-06-25 按原网站截图修正）
+  const TAG_LABELS = {
+    functionality: '功能',
+    application: '应用领域',
+    claim: '声明',
+    concept: '概念',
+    characteristic: '特征',
+    naturality: '自然性和标签'
+  };
+
+  // 分类显示顺序 — 严格按原网站从上到下排列
+  const TAG_ORDER = ['functionality', 'application', 'concept', 'claim', 'characteristic', 'naturality'];
+
+  const app = createApp({
+    setup() {
+      var params = new URLSearchParams(window.location.search);
+      var curPage = parseInt(params.get('page')) || 1;
+      var curKeyword = params.get('keyword') || '';
+
+      var data = reactive({
+        tagList: [],
+        productList: [],
+        total: 0,
+        total_page: 1,
+        cur_page: curPage,
+        page_size: pageSize,
+        curFilter: '',
+        activeFilterClass: 'hidden',
+        keyword: curKeyword,
+        loading: false
+      });
+
+      // 加载标签列表
+      // 后端返回格式: { data: { functionality:[], application:[], claim:[], ... } }
+      function loadTags() {
+        GatteAPI.Tag.list({ productLine: 'pc', limit: 100 }).then(function (res) {
+          var body = res.data || res;
+          console.log('[Tags] 原始返回数据 keys:', Object.keys(body), '各分类数量:', Object.keys(body).map(function(k) { return k + ':' + (body[k] ? body[k].length : 0); }).join(', '));
+          // body 可能是 { functionality:[...], application:[...], ... } 格式
+          var groups = {};
+          if (Array.isArray(body)) {
+            // 数组格式：每个元素有 category 属性
+            body.forEach(function (tag) {
+              var cat = tag.category;
+              if (!groups[cat]) { groups[cat] = { tagName: TAG_LABELS[cat] || cat, children: [] }; }
+              groups[cat].children.push({ ID: tag.id, tagName: tag.label, value: tag.value, active: false });
+            });
+          } else if (typeof body === 'object' && body !== null) {
+            // 对象格式：key=分类名, value=标签数组
+            Object.keys(body).forEach(function (cat) {
+              var tags = Array.isArray(body[cat]) ? body[cat] : [];
+              groups[cat] = {
+                tagName: TAG_LABELS[cat] || cat,
+                children: tags.map(function (t, idx) {
+                  return {
+                    ID: t.id || t.value,
+                    tagName: t.label || t.name || t.value,
+                    value: t.value,
+                    active: false,
+                    facetItemClass: 'facet-item',
+                    dataDrupalFacetItemId: 'facet-' + cat + '-' + idx,
+                    tagUrl: '?tag=' + encodeURIComponent(t.value)
+                  };
+                })
+              };
+            });
+          }
+          // 为每个分组补充模板所需的属性 — 按 TAG_ORDER 固定顺序排列
+          data.tagList = TAG_ORDER.map(function (cat, gIdx) {
+            var group = groups[cat];
+            if (!group) return null;
+            return {
+              tagName: group.tagName,
+              children: group.children,
+              class: 'block block-facets',
+              dataBlockPluginId: 'facets_block:' + gIdx,
+              accordionNameId: 'accordion-' + gIdx,
+              headerNameId: 'heading-' + gIdx,
+              sharpeNameId: '#body-' + gIdx,
+              nameId: 'body-' + gIdx,
+              dataDrupalFacetId: ''
+            };
+          }).filter(Boolean); // 过滤掉不存在的分类
+          console.log('[Tags] 最终 tagList:', JSON.stringify(data.tagList, null, 2));
+          // 数据已更新，等 Vue 渲染完 DOM 后再初始化「查看所有」按钮状态
+          nextTick(function () {
+            setTimeout(setTagStyle, 300);
+          });
+        }).catch(function (err) {
+          console.error('加载标签失败:', err);
+        });
+      }
+
+      // 加载产品列表
+      function loadProducts(page) {
+        if (data.loading) return;
+        data.loading = true;
+        var queryParams = {
+          page: page || data.cur_page,
+          limit: pageSize,
+          isPublished: 'true'
+        };
+        if (data.keyword) queryParams.keyword = data.keyword;
+
+        // 收集激活的标签
+        var activeTags = [];
+        var activeByCategory = {};
+        var catMap = { '功能': 'functionality', '应用领域': 'application', '概念': 'concept', '声明': 'claim', '特征': 'characteristic', '自然性和标签': 'naturality' };
+        data.tagList.forEach(function (group) {
+          group.children.forEach(function (tag) {
+            if (tag.active) {
+              activeTags.push(tag.value);
+              var apiParam = catMap[group.tagName] || group.tagName;
+              if (!activeByCategory[apiParam]) activeByCategory[apiParam] = [];
+              activeByCategory[apiParam].push(tag.value);
+            }
+          });
+        });
+        // 按分类映射到后端 API 参数（如 functionality=actives）
+        for (var apiParam in activeByCategory) {
+          queryParams[apiParam] = activeByCategory[apiParam].join(',');
+        }
+
+        GatteAPI.PcProduct.list(queryParams).then(function (res) {
+          // res 是 axios response, res.data = 业务数据 { list:[], pagination:{} }
+          var body = res.data || res;
+          var items = (body.list || []).map(function (p) {
+            var img = p.imageUrl || '';
+            // 图片路径确保有前导 /
+            if (img && img.length > 0 && img[0] !== '/' && img.substring(0, 7) !== 'http://' && img.substring(0, 8) !== 'https://') {
+              img = '/' + img;
+            }
+            return {
+              ID: p.id,
+              goodsName: p.name,
+              subtitle: p.inciName || '',
+              tagline: p.tagline || '',
+              cardCode: 'INCI: ' + (p.inciName || ''),
+              goodsIntro: p.description || '',
+              goodsCoverImg: img || '/sites/default/files/styles/card_default/public/2023-07/gatuline-radiance_1.jpg.jpg',
+              url: '/personal-care/product-finder/product-detail.html?id=' + p.id,
+              flex: 'display:flex',
+              show: 'display:none',
+              inCart: false,
+              inFav: false
+            };
+          });
+          data.productList = items;
+          data.total = body.pagination ? body.pagination.total : items.length;
+          data.total_page = Math.ceil(data.total / pageSize);
+          data.cur_page = body.pagination ? body.pagination.page : data.cur_page;
+          data.loading = false;
+        }).catch(function (err) {
+          console.error('加载产品失败:', err);
+          data.productList = [];
+          data.loading = false;
+        });
+      }
+
+      function changePage(newPage) {
+        if (newPage < 1 || newPage > data.total_page) return;
+        data.cur_page = newPage;
+        loadProducts(newPage);
+        history.pushState({}, '', '?page=' + newPage + (data.keyword ? '&keyword=' + encodeURIComponent(data.keyword) : ''));
+      }
+
+      // 点击筛选标签 — 切换激活状态并重新加载产品
+      function goToUrl(tagItem) {
+        // 切换标签激活状态
+        if (tagItem && tagItem.value) {
+          tagItem.active = !tagItem.active;
+        }
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      function toggleTag(groupIdx, tagIdx) {
+        var tag = data.tagList[groupIdx].children[tagIdx];
+        tag.active = !tag.active;
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      function clearFilters() {
+        data.tagList.forEach(function (g) { g.children.forEach(function (t) { t.active = false; }); });
+        data.keyword = '';
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      function doSearch() {
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      // 收起/查看所有 — 切换子标签显示数量
+      function seeAll(event) {
+        event.preventDefault();
+        var btn = event.currentTarget;
+        var body = btn.closest('.panel-body');
+        if (!body) body = btn.parentElement;  // 兼容 DOM 结构差异
+        var ul = body.querySelector('ul');
+        if (!ul) return;
+        var items = ul.querySelectorAll('li');
+        var isCollapsed = btn.getAttribute('data-aria-expanded') === 'false';
+        if (isCollapsed) {
+          // 当前是收起状态 → 展开所有
+          items.forEach(function(li, idx) { li.classList.remove('tag-collapsed'); });
+          btn.textContent = '收起';
+          btn.setAttribute('data-aria-expanded', 'true');
+        } else {
+          // 当前是展开状态 → 收起到前6个
+          items.forEach(function(li, idx) { if (idx >= 6) li.classList.add('tag-collapsed'); });
+          btn.textContent = '查看所有';
+          btn.setAttribute('data-aria-expanded', 'false');
+        }
+      }
+
+      // 加入收藏
+      function addProductFav(item) {
+        if (item.inFav) return;
+        if (!checkLoginStatus()) {
+          showDialog('请先<a href="/account.html">登录</a>后再收藏');
+          return;
+        }
+        GatteAPI.Favorite.add({
+          targetId: item.ID,
+          goodsCategoryId: 1,
+          goodsName: item.goodsName,
+          type: 6
+        }).then(function (res) {
+          item.inFav = true;
+        }).catch(function (err) {
+          alert('加入收藏失败：' + (err.message || '未知错误'));
+        });
+      }
+
+      // 申请样品（加入购物车）
+      function addCart(item, index) {
+        if (!checkLoginStatus()) {
+          showDialog('您可以<a href="/account.html#registration">注册会员</a>后申请样品，或者点“<a href="/contact-form.html">申请样品/资料</a>”直接申请！');
+          return;
+        }
+        GatteAPI.Cart.add({
+          goodsId: item.ID,
+          goodsCategoryId: 1,
+          goodsName: item.goodsName,
+          goodsCoverImg: item.goodsCoverImg,
+          goodsIntro: item.goodsIntro,
+          subtitle: item.subtitle,
+          type: 6
+        }).then(function (res) {
+          item.inCart = true;
+          item.flex = 'display:none';
+          item.show = 'display:flex';
+          if (typeof updateCartCount === 'function') updateCartCount();
+        }).catch(function (err) {
+          alert('加入购物车失败：' + (err.message || '未知错误'));
+        });
+      }
+
+      // 初始化子标签显示状态：默认收起，超过6个的显示「查看所有」按钮
+      function setTagStyle() {
+        nextTick(function () {
+          setTimeout(function() {
+            document.querySelectorAll('.panel-body').forEach(function(body) {
+              var ul = body.querySelector('ul');
+              if (!ul) return;
+              var items = ul.querySelectorAll('li');
+              var btn = body.querySelector('.js-see-all');
+              // 默认收起超过6个的标签
+              items.forEach(function(li, idx) {
+                li.classList.remove('hidden');
+                if (idx >= 6) li.classList.add('tag-collapsed');
+                else li.classList.remove('tag-collapsed');
+              });
+              // 按钮初始化
+              if (btn) {
+                if (items.length > 6) {
+                  btn.style.display = '';
+                  btn.textContent = '查看所有';
+                  btn.setAttribute('data-aria-expanded', 'false');
+                  btn.setAttribute('data-hide', '收起');
+                } else {
+                  btn.style.display = 'none';
+                }
+              }
+            });
+          }, 100);
+        });
+      }
+
+      onMounted(function () {
+        loadTags();
+        loadProducts(curPage);
+        setTagStyle();
+      });
+
+      return { data, changePage, toggleTag, clearFilters, doSearch, seeAll, addCart, addProductFav, goToUrl };
+    }
+  });
+  app.mount("#app");
+</script>
+
+  <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
+  <script src="/sites/default/files/js/js_IXdvu5Q2KH8heCdfhxI7QbZR8XbUORsqt0EMWpEkQT4.js"></script>
+  <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1712454877"></script>
+  <script src="/sites/default/files/js/js_HjijG7-o7JXaM0iPkTo4h98Ws0CAvM9MsofLwYnRqtc.js"></script>
+  <!--script src="/sites/default/files/js/js_W8q5R4oIsmRhsRjsbPGB5rAGV5-VpUYHfAmsY7Pxc74.js"></script-->
+  <script src="b.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#header").load("/header.html", function () {
+        if (checkLoginStatus()) {
+          $("#collapseAccMenu").load("/account-menu-after-login.html");
+        } else {
+          $("#collapseAccMenu").load("/account-menu.html");
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+  </script>
+  <script defer src="https://umami.onlystyle.com.cn/script.js"
+    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+    
+</body>
+
+</html>

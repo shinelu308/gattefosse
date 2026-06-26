@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta http-equiv="content-language" content="en" />
+  <meta property="og:site_name" content="Gattefossé" />
+  <meta property="og:type" content="page" />
+  <meta property="og:url" content="https://www.gattefosse.com/personal-care/product-finder/solastemis" />
+  <meta property="og:updated_time" content="2023-09-26T21:03:30+0200" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://www.gattefosse.com/personal-care/product-finder/solastemis" />
+  <meta name="google-site-verification"
+    content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default"
+    href="https://www.gattefosse.com/personal-care/product-finder/solastemis" />
+  <link rel="alternate" hreflang="en" href="https://www.gattefosse.com/personal-care/product-finder/solastemis" />
+  <link rel="alternate" hreflang="fr" href="https://www.gattefosse.com/fr/cosmetique/product-finder/solastemis" />
+  <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <style>
+    html, body {
+      background: #F7F5F0;
+      margin: 0;
+      padding: 0;
+    }
+    .main {
+      background: #F7F5F0;
+    }
+    /* 产品详情页顶部横幅 */
+    .s-product-header__img {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .ul-li li {
+      line-height: 30px;
+    }
+    /* 内容区块样式 */
+    .block-content, .block-content p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555;
+    }
+    .block-content ul {
+      padding-left: 20px;
+    }
+    .block-content ul li {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #555;
+      list-style: disc;
+    }
+    .s-product-content__title {
+      font-size: 4.8rem;
+      font-family: "Din Next Slab Pro Bold", sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+      position: relative;
+      padding-right: 2.8rem;
+      color: #3E3E3E;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    /* 产品规格 — 图标左 + 文字右 */
+    .s-product-specs {
+      padding: 40px 0;
+      background: transparent;
+    }
+    .s-product-specs__grid {
+      display: flex;
+      justify-content: center;
+      gap: 6rem;
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 1170px;
+    }
+    .s-product-specs__item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .s-product-specs__icon {
+      flex-shrink: 0;
+      width: 8rem;
+      min-width: 8rem;
+      height: 8rem;
+      background-color: #F0DCE4;
+      border-radius: 100%;
+      padding: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .s-product-specs__icon svg {
+      width: 3.2rem;
+      height: 3.2rem;
+      display: block;
+    }
+    .s-product-specs__text {
+      font-size: 14px;
+      color: #3C4248;
+      line-height: 1.6;
+    }
+    /* 图文并排区块：双列排版 */
+    .block-imagetext {
+      margin: 20px 0;
+    }
+    .block-imagetext__layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .block-imagetext__col {
+      flex: 1;
+      min-width: 0;
+    }
+    .block-imagetext__col p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555;
+    }
+  </style>
+
+  <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <title>嘉法狮</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/themes/custom/gattefosse/images/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1708957448.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_zCDCU-o2LKXngtpj6DBjU0-DPPFPfqZNHXrxn4tmXuY.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
+  <link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" />
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body class="path-node page-node-type-ingredients-personal-care    bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header">
+    </header>
+    <div class="region region-highlight">
+      <div data-drupal-messages-fallback class="hidden"></div>
+    </div>
+    <main role="main" class="main theme-cosm  " data-bs-spy="scroll" id="app"><!-- theme-pharma | theme-cosm -->
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
+          <strong>快捷链接</strong>
+        </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
+      </nav>
+      <a id="main-content" tabindex="-1"></a>
+      <div class="s-product-header">
+        <div class="region region-breadcrumb">
+          <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+            class="block block-system block-system-breadcrumb-block">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="/">首页</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="/personal-care.html">个人护理</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="/personal-care/product-finder.html">成分</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a :href="data.productDetail.url">{{data.productDetail.goodsName}}</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <div class="s-product-header__img" :style="data.productDetail.bg">
+          <a @click="addProductFav(data.productDetail)" :class="data.inFav ? 's-product-header__fav is-active' : 's-product-header__fav'">
+            <i aria-hidden="true" class="o-icon --star" :data-fav-id="data.productDetail.ID" :data-goods-name="data.productDetail.goodsName" :data-cat-id="data.productDetail.goodsCategoryId"></i>
+            <span class="visually-hidden">收藏</span>
+          </a>
+        </div>
+        <div class="s-product-header__content">
+          <h1 class="s-product-header__title">{{data.productDetail.goodsName}} </h1>
+          <p class="s-product-header__subtitle">{{data.productDetail.subtitle}}</p>
+          <p class="s-product-header__tagline" style="font-size:15px;color:#555;margin:6px 0 10px;">{{data.productDetail.tagline}}</p>
+          <div class="s-product-header__btns">
+            <button class="btn btn-primary btn-icon--r js-request-sample" id="applySampleBt"
+              @click="addCart(data.productDetail)" data-type="ingredients" :data-title="data.productDetail.goodsName"
+              data-thumbnail="1130" :data-baseline="data.productDetail.subtitle" data-usp_nf="" 
+              :style="data.inCart ? 'display:none' :'display:flex;'">申请样品<i class="o-icon --envelope"
+                aria-hidden="true"></i></button>
+            <a class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html"  id="seeCartBt"
+              :style="data.inCart ? 'display:block' :'display:none;'">查看购物车</a>
+            <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document">
+              <i aria-hidden="true" class="o-icon --document"></i>
+              访问资源
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="region region-content">
+        <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+          class="block block-system block-system-main-block">
+          <article role="article" :about="data.productDetail.url"
+            class="node node--type-ingredients-personal-care node--view-mode-full">
+            <div class="s-product-description">
+              <div class="s-product-description__container">
+                <div class="s-product-description__main">
+                  <h2 class="u-title-styled s-product-description__main-title">描述</h2>
+                  <div class="s-product-description__main-content">
+                    <div class="page-cosmetic-product-intro m-t">
+                      <div class="content" v-html="getBlockContent('描述') || data.productDetail.description">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="s-product-description__side">
+                  <div class="s-product-description__revendication">
+                    <h3 class="s-product-description__revendication-title">宣称</h3>
+                    <span class="ul-li" v-html="getBlockContent('产品宣称') || data.productDetail.claims"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 产品规格区 — 圆图标左 + 文字右 -->
+            <div v-if="data.productSpecs" class="s-product-specs">
+              <div class="s-product-specs__grid">
+                <div class="s-product-specs__item">
+                  <div class="s-product-specs__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#8EB73C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:3.2rem;height:3.2rem;">
+                      <circle cx="12" cy="12" r="9.5"/>
+                      <path d="M8 12.5l3 3 5-6"/>
+                    </svg>
+                  </div>
+                  <div class="s-product-specs__text" v-html="formatSpecText(data.productSpecs.dosage || data.productDetail.dosage)"></div>
+                </div>
+                <div class="s-product-specs__item">
+                  <div class="s-product-specs__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#8EB73C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:3.2rem;height:3.2rem;">
+                      <circle cx="12" cy="12" r="9.5"/>
+                      <path d="M12 5C9 8 7 11 7 14c0 3.3 2.2 6 5 6s5-2.7 5-6c0-3-2-6-5-10z"/>
+                      <path d="M12 5v14"/>
+                    </svg>
+                  </div>
+                  <div class="s-product-specs__text" v-html="formatSpecText(data.productSpecs.certification)"></div>
+                </div>
+                <div class="s-product-specs__item">
+                  <div class="s-product-specs__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#8EB73C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:3.2rem;height:3.2rem;">
+                      <circle cx="12" cy="12" r="9.5"/>
+                      <text x="12" y="15" text-anchor="middle" font-size="5.5" font-weight="800" fill="#8EB73C" stroke="none" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">INCI</text>
+                    </svg>
+                  </div>
+                  <div class="s-product-specs__text" v-html="formatSpecText(data.productSpecs.inci)"></div>
+                </div>
+              </div>
+            </div>
+            <!-- 产品视频区 — 固定在规格区下方、内容区块上方（左文字 + 右视频） -->
+            <div v-if="data.productDetail.videoUrl" class="s-product-video" style="padding:40px 0;">
+              <div class="container" style="max-width:1170px;margin:0 auto;">
+                <div style="display:flex;gap:40px;align-items:flex-start;">
+                  <div style="flex:1;min-width:0;">
+                    <p style="font-size:4.8rem;font-family:'Din Next Slab Pro Bold',sans-serif;font-weight:400;letter-spacing:0;position:relative;padding-right:2.8rem;color:#3E3E3E;line-height:1.3;margin:0;">
+                      <span style="color:#8EB73C;">●</span>
+                      The ingredient video summary
+                    </p>
+                  </div>
+                  <div style="flex:1;min-width:0;">
+                    <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                      <iframe :src="convertVideoUrl(data.productDetail.videoUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="s-product-content">
+              <div class="container">
+                <div class="s-product-content__inside" style="max-width: 1170px; margin: 0 auto;">
+                  <!-- 模块化内容区块渲染（跳过顶部已显示的描述和宣称） -->
+                  <template v-for="(block, bi) in data.contentBlocks" :key="block.id || bi">
+                    <div v-if="block.title !== '描述' && block.title !== '产品宣称'" class="s-product-content__item" style="margin-bottom: 40px;">
+                    <!-- 区块标题 -->
+                    <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
+                    <!-- 富文本区块 -->
+                    <div v-if="block.blockType === 'richtext' && block.content" v-html="block.content.html" class="block-content"></div>
+                    <!-- 视频区块 -->
+                    <div v-if="block.blockType === 'video' && block.content && block.content.url" class="block-video">
+                      <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                        <iframe :src="block.content.url" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                      </div>
+                    </div>
+                    <!-- 图片集区块 -->
+                    <div v-if="block.blockType === 'images' && block.content && block.content.images" class="block-images">
+                      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+                        <figure v-for="(img, ii) in block.content.images" :key="ii" style="margin:0;">
+                          <img :src="img.url" :alt="img.caption || ''" style="width:100%;height:auto;border-radius:8px;">
+                          <figcaption v-if="img.caption" style="margin-top:8px;font-size:14px;color:#666;text-align:center;">{{ img.caption }}</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                    <!-- 文件下载区块 -->
+                    <div v-if="block.blockType === 'files' && block.content && block.content.files" class="block-files">
+                      <ul style="list-style:none;padding:0;margin:0;">
+                        <li v-for="(file, fi) in block.content.files" :key="fi" style="margin-bottom:8px;">
+                          <a :href="file.url" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:#f5f5f5;border-radius:6px;text-decoration:none;color:#A52458;">
+                            <span>📄</span>
+                            <span>{{ file.title || file.url }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- 左：文字/图片/视频，右：文字/视频 -->
+                    <div v-if="block.blockType === 'imagetext' && block.content" class="block-imagetext">
+                      <div class="block-imagetext__layout">
+                        <div class="block-imagetext__col">
+                          <!-- 左：富文本 -->
+                          <div v-if="block.content.leftType === 'richtext' && block.content.leftHtml" v-html="block.content.leftHtml" class="block-content"></div>
+                          <!-- 左：图片 -->
+                          <div v-if="block.content.leftType === 'image' && block.content.leftUrl">
+                            <img :src="block.content.leftUrl" :alt="block.title || ''" style="width:100%;height:auto;border-radius:8px;display:block;">
+                          </div>
+                          <!-- 左：视频 -->
+                          <div v-if="block.content.leftType === 'video' && block.content.leftUrl" class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                            <iframe :src="convertVideoUrl(block.content.leftUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                          </div>
+                        </div>
+                        <div class="block-imagetext__col">
+                          <!-- 右：文字 -->
+                          <div v-if="block.content.rightType === 'text' && block.content.rightText" style="white-space:pre-line;font-size:16px;line-height:1.7;color:#555;">{{ block.content.rightText }}</div>
+                          <!-- 右：视频 -->
+                          <div v-if="block.content.rightType === 'video' && block.content.rightUrl" class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                            <iframe :src="convertVideoUrl(block.content.rightUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div class="s-product-content">
+              <div class="container">
+                <div class="s-product-content__inside">
+                  <div class="s-product-content">
+                    <div class="container">
+                      <div class="s-product-content__inside">
+                        <div class="s-product-content__item" id="product-document">
+                          <h2 class="s-product-content__title">相关资料</h2>
+                          <div class="s-product-document">
+                            <div class="s-product-document__type">
+                              <h3 class="s-product-document__title">技术文件</h3>
+                              <ul class="s-product-document__list">
+                                <li class="c-link c-link--document" v-for="item in data.targetFileList1">
+                                  <a class="c-link__link" :href="item.url" target="_blank">
+                                    <div class="c-link__params">
+                                      <span class="c-link__name">{{item.name}}</span>
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                              <ul class="s-product-document__list" v-for="item in data.targetFileList1Lock">
+                                <li
+                                  :class="!data.isLoginedAndEnabled ?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
+                                  <a class="c-link__link" :href="item.url" target="_blank">
+                                    <div class="c-link__params">
+                                      <span class="c-link__name">{{item.name}}</span>
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="s-product-document__type">
+                              <h3 class="s-product-document__title">产品手册</h3>
+                              <ul class="s-product-document__list">
+                                <li class="c-link c-link--document" v-for="item in data.targetFileList2">
+                                  <a class="c-link__link" :href="item.url" target="_blank">
+                                    <div class="c-link__params">
+                                      <span class="c-link__name">{{item.name}}</span>
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                              <ul class="s-product-document__list" v-for="item in data.targetFileList2Lock">
+                                <li
+                                  :class="!data.isLoginedAndEnabled ?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
+                                  <a class="c-link__link" :href="item.url" target="_blank">
+                                    <div class="c-link__params">
+                                      <span class="c-link__name">{{item.name}}</span>
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="s-product-document__type" v-if="data.targetFileList3.length > 0">
+                              <h3 class="s-product-document__title">配方资料</h3>
+                              <ul class="s-product-document__list">
+                                <li class="c-link c-link--document" v-for="item in data.targetFileList3">
+                                  <a class="c-link__link" :href="item.url" target="_blank">
+                                    <div class="c-link__params">
+                                      <span class="c-link__name">{{item.name}}</span>
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                              <ul class="s-product-document__list" v-for="item in data.targetFileList3Lock">
+                                <li
+                                  :class="!data.isLoginedAndEnabled ?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
+                                  <a class="c-link__link" :href="item.url" target="_blank">
+                                    <div class="c-link__params">
+                                      <span class="c-link__name">{{item.name}}</span>
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="s-product-linked" v-if="data.relatedContents.length > 0">
+          <div class="container">
+            <h2 class="s-product-linked__title u-title-styled">相关内容</h2>
+            <div class="c-cards">
+              <div class="c-card c-card--bordered" v-for="item in data.relatedContents">
+                <div class="c-card__content">
+                  <h3 class="c-card__title">
+                    <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
+                  </h3>
+                  <ul class="c-card__breadcrumb">
+                    <li class="category"></li>
+                  </ul>
+                  <p class="c-card__summary">{{item.summary}}</p>
+                  <ul class="c-card__tag">
+                    <li class="c-card__tag-item"></li>
+                    <li class="c-card__tag-item"></li>
+                    <li class="c-card__tag-item"></li>
+                  </ul>
+                </div>
+                <div class="c-card__image">
+                  <img :src="item.thumb" :data-src="item.thumb" alt="the-new-normal-in-skin-care" width="369"
+                    height="208" class="card__image img-fluid" loading="lazy">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </article>
+      </div>
+  </div>
+  <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
+    class="c-back-to-top smoothHide d-none"></a>
+  </main>
+  <footer role="contentinfo" class="footer" id="footer">
+  </footer>
+  <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+          <i class="o-icon --cross" aria-hidden="true"></i>
+          <span>关闭</span>
+        </button>
+        <form action="/search.html" method="GET" class="modal--search__form">
+          <h2 class="modal-title">
+            您在查找......?
+          </h2>
+          <div class="form-item">
+            <label class="visually-hidden" for="key">请输入关键词...</label>
+            <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key" name="keyword" value="">
+            <button type="submit" class="js-form-submit form-submit btn">
+              <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+            </button>
+          </div>
+          <a href="/search.html" class="u-link">高级搜索</a>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+    </div>
+  </div>
+
+  <div id="dialog" class="dialog">
+    <div class="dialog-content">
+      <p id="dialog-message"></p>
+      <button id="dialog-close" class="btn btn-primary">关闭</button>
+    </div>
+  </div>
+  <style>
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 30px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: rgba(248, 244, 244, 1);
+      min-width: 400px;
+    }
+
+    .dialog-content {
+      text-align: center;
+    }
+
+    .dialog-content a {
+      color: #8eb73c;
+      font-style: bold;
+    }
+
+    #dialog-close {
+      margin-top: 100px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    var inCart = false;
+    // 获取对话框元素和关闭按钮
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
+
+    // 替代alert函数
+    function showDialog(message) {
+      dialogMessage.innerHTML = message;
+      dialog.style.display = 'block';
+    }
+
+    // 关闭对话框
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
+      if (!inCart) {
+        var applySampleBt = document.getElementById('applySampleBt');
+        var seeCartBt = document.getElementById('seeCartBt');
+        seeCartBt.style.display = 'none';
+        applySampleBt.style.display = 'flex';
+      }
+    });
+
+  </script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    var id = params.get('id');
+    if (id == null) {
+      id = 10920;
+    }
+    var isLogin = checkLoginStatus();
+    let userEnabled = localStorage.getItem("userEnabled");
+    var t = {};
+    const { createApp, reactive, ref, nextTick } = Vue;
+    const app = createApp({
+      data() {
+        return { productDetail: null }
+      },
+      setup() {
+        const data = reactive({
+          worldList: '',
+          productDetail: {}, inCart: false, inFav: false,
+          contentBlocks: [],
+          productSpecs: null,
+          relatedContents: [],
+          targetFileList1: [],
+          targetFileList1Lock: [],
+          targetFileList2: [],
+          targetFileList2Lock: [],
+          targetFileList3: [],
+          targetFileList3Lock: [],
+          isLoginedAndEnabled: false,
+          loading: true,
+        });
+        if (localStorage.getItem('isLoggedIn') == 'true' && localStorage.getItem('userEnabled') == "1") {
+          data.isLoginedAndEnabled = true;
+        }
+
+        const addProductFav = function (productDetail) {
+          if (!checkLoginStatus()) {
+            showDialog("请先<a href=\"/account.html\">登录</a>");
+            return;
+          }
+          if (data.inFav) return;
+          GatteAPI.Favorite.add({
+            itemType: 'pc_ingredient',
+            itemId: parseInt(id)
+          }).then(function (res) {
+            data.inFav = true;
+            showDialog("已添加到收藏");
+          }).catch(function (err) {
+            console.error('收藏失败:', err);
+            showDialog("收藏失败，请重试");
+          });
+        };
+
+        const addCart = function (item) {
+          if (!checkLoginStatus()) {
+            showDialog("您可以<a href=\"/account.html#registration\">注册会员</a>后申请样品，或者点\"<a href=\"/contact-form.html\">申请样品/资料</a>\"直接申请！");
+            return;
+          }
+          GatteAPI.Cart.add({
+            productType: 'pc_ingredient',
+            productId: parseInt(id),
+            productName: data.productDetail.goodsName || data.productDetail.name || ''
+          }).then(function (res) {
+            data.inCart = true;
+            var applySampleBt = document.getElementById('applySampleBt');
+            var seeCartBt = document.getElementById('seeCartBt');
+            if (applySampleBt) applySampleBt.style.display = 'none';
+            if (seeCartBt) seeCartBt.style.display = 'block';
+            showDialog("已添加到购物车");
+            if (typeof getCartNum === 'function') getCartNum();
+          }).catch(function (err) {
+            console.error('添加购物车失败:', err);
+            showDialog("添加购物车失败，请重试");
+          });
+        };
+
+        // 获取产品详情
+        const getProductDetail = function () {
+          data.loading = true;
+          GatteAPI.PcProduct.detail(parseInt(id)).then(function (res) {
+            var product = res.data || res;
+            data.productDetail = {
+              ID: product.id,
+              goodsName: product.name,
+              subtitle: product.inciName || '',
+              goodsCarousel: product.imageUrl || '',
+              goodsIntro: product.description || '',
+              dosage: product.dosage || '',
+              tagline: product.tagline || '',
+              videoUrl: product.videoUrl || '',
+              bg: product.detailImageUrl ? 'background-image: url(' + product.detailImageUrl + ')' : (product.imageUrl ? 'background-image: url(' + product.imageUrl + ')' : ''),
+              url: '/personal-care/product-finder/product-detail.html?id=' + product.id,
+              favUrl: '/account.html?url=/personal-care/product-finder/product-detail.html?id=' + id,
+            };
+            // 加载产品规格（specInfo 是 JSON 字符串或对象）
+            if (product.specInfo) {
+              var spec = typeof product.specInfo === 'string' ? JSON.parse(product.specInfo) : product.specInfo;
+              data.productSpecs = spec;
+            }
+            data.loading = false;
+            // 加载关联文档
+            if (product.id) loadDocuments(product.id);
+            // 加载内容区块
+            if (product.id) loadContentBlocks(product.id);
+            // 加载相关推荐
+            if (product.id) loadRelatedProducts(product.id);
+          }).catch(function (err) {
+            console.error('获取产品详情失败:', err);
+            data.loading = false;
+          });
+        };
+
+        // 加载关联文档
+        const loadDocuments = function (productId) {
+          GatteAPI.Document.list({ productId: productId, productType: 'pc', limit: 50 }).then(function (res) {
+            var body = res.data || res;
+            var docList = body.list || (Array.isArray(body) ? body : []);
+            data.targetFileList1 = [];
+            data.targetFileList2 = [];
+            data.targetFileList3 = [];
+            data.targetFileList1Lock = [];
+            data.targetFileList2Lock = [];
+            data.targetFileList3Lock = [];
+            docList.forEach(function (doc) {
+              var docUrl = doc.filePath;
+              if (docUrl && !docUrl.startsWith('http') && !docUrl.startsWith('/')) {
+                docUrl = '/' + docUrl;
+              }
+              var docObj = {
+                fileSet: doc.fileSet || 1,
+                ID: doc.id,
+                name: doc.title,
+                url: doc.isPublic ? docUrl : '/account.html?url=/personal-care/product-finder/product-detail.html?id=' + id,
+                lock: !doc.isPublic
+              };
+              switch (doc.fileSet || doc.type) {
+                case 'TDS': case 'tds': case 1:
+                  doc.isPublic || data.isLoginedAndEnabled ? data.targetFileList1.push(docObj) : data.targetFileList1Lock.push(docObj);
+                  break;
+                case 'SDS': case 'sds': case 2:
+                  doc.isPublic || data.isLoginedAndEnabled ? data.targetFileList2.push(docObj) : data.targetFileList2Lock.push(docObj);
+                  break;
+                default:
+                  doc.isPublic || data.isLoginedAndEnabled ? data.targetFileList3.push(docObj) : data.targetFileList3Lock.push(docObj);
+                  break;
+              }
+            });
+          }).catch(function (err) {
+            console.error('加载文档失败:', err);
+          });
+        };
+
+        // 加载内容区块（详情页模块化区块）
+        const loadContentBlocks = function (productId) {
+          GatteAPI.Blocks.list({ productId: productId, productType: 'pc' }).then(function (res) {
+            var body = res.data || res;
+            if (body && body.list) {
+              data.contentBlocks = body.list;
+            } else if (Array.isArray(body)) {
+              data.contentBlocks = body;
+            }
+          }).catch(function (err) {
+            console.error('加载内容区块失败:', err);
+          });
+        };
+
+        // 加载相关推荐产品
+        const loadRelatedProducts = function (productId) {
+          GatteAPI.PcProduct.related(productId).then(function (res) {
+            var body = res.data || res;
+            var items = body && body.list ? body.list : (Array.isArray(body) ? body : []);
+            data.relatedContents = items.map(function (p) {
+              return {
+                title: p.name,
+                summary: p.description || '',
+                thumb: p.imageUrl || '/static/images/default-thumb.jpg',
+                url: '/personal-care/product-finder/product-detail.html?id=' + p.id,
+                category: 'pc_ingredient',
+              };
+            });
+          }).catch(function (err) {
+            console.error('加载相关推荐失败:', err);
+          });
+        };
+
+        // 初始化 — 获取产品详情
+        getProductDetail();
+
+        // 检查购物车
+        if (isLogin) {
+          GatteAPI.Cart.list().then(function (res) {
+            var cartItems = (res.list || res || []);
+            for (var i = 0; i < cartItems.length; i++) {
+              if (cartItems[i].productId == id) {
+                data.inCart = true;
+                break;
+              }
+            }
+          }).catch(function () {});
+
+          // 检查收藏
+          GatteAPI.Favorite.list({ itemType: 'pc_ingredient', limit: 100 }).then(function (res) {
+            var favItems = (res.list || res || []);
+            for (var i = 0; i < favItems.length; i++) {
+              if (favItems[i].itemId == id) {
+                data.inFav = true;
+                break;
+              }
+            }
+          }).catch(function () {});
+        }
+
+        // 滑块初始化（保持原有DOM逻辑）
+        nextTick(function () {
+          function mm(s) {
+            var r = 1400, n = 1200, o = 1024, d = 768, l = 576;
+            t = {
+              init: function () {
+                var e = $('.js-product-slider');
+                e.each(function () {
+                  var t = $(this).find('.js-product-slide').length, s = !1,
+                    e = $(this), r = $(this).parent().find('.js-slick-next'),
+                    n = $(this).parent().find('.js-slick-prev'),
+                    o = $(this).parent().find('.js-slick-dots-wrapper');
+                  if (t > 1) { s = !0; }
+                });
+              }
+            };
+            var e = {
+              init: function () {
+                var n = $('.js-related-product'), r = $('.js-related-product-slider'),
+                  t = $('.js-related-product-slider .c-card').length, e = !1;
+                $(window).on('load resize', function () {
+                  if ($(window).width() > 1220 && t > 3) { e = !0; }
+                  else if ($(window).width() > 576 && t > 2) { e = !0; }
+                  else if ($(window).width() < 576 && t > 1) { e = !0; }
+                  if (n.length && !r.hasClass('slick-initialized') && e) {
+                    r.slick({
+                      accessibility: !0, infinite: !1, centerMode: !1,
+                      slidesToShow: 3, slidesToScroll: 1, dots: !0,
+                      nextArrow: $('.js-related-product .js-slick-next'),
+                      prevArrow: $('.js-related-product .js-slick-prev'),
+                      appendDots: $('.js-related-product .js-slick-dots-wrapper'),
+                      variableWidth: !0,
+                      responsive: [
+                        { breakpoint: 9999, settings: { slidesToShow: 3 } },
+                        { breakpoint: 1220, settings: { slidesToShow: 2 } },
+                        { breakpoint: 576, settings: { slidesToShow: 1 } }
+                      ]
+                    });
+                  }
+                });
+              }
+            };
+            t.init();
+            e.init();
+          }
+          mm();
+        });
+
+        const loading = ref(false);
+        const items = ref([]);
+
+        // 从 contentBlocks 中按标题取区块的 HTML 内容
+        function getBlockContent(title) {
+          for (var i = 0; i < data.contentBlocks.length; i++) {
+            var b = data.contentBlocks[i];
+            if (b.title === title && b.blockType === 'richtext' && b.content && b.content.html) {
+              return b.content.html;
+            }
+          }
+          return '';
+        }
+
+        // 规格文字：将 \n 换行为 <br>，保持前端换行显示
+        function formatSpecText(text) {
+          if (!text) return '';
+          return text.replace(/\n/g, '<br>');
+        }
+
+        // 视频链接转换：支持 iframe 代码 / B站链接 / 直接嵌入链接
+        function convertVideoUrl(url) {
+          if (!url) return '';
+          // 1. 如果是 iframe 标签，提取 src
+          var match = url.match(/<iframe[^>]*\ssrc=["']([^"']+)["']/i);
+          if (match) return match[1];
+          // 2. B站视频页 → 嵌入链接
+          //    https://www.bilibili.com/video/BVxxx → //player.bilibili.com/player.html?bvid=BVxxx
+          var bvMatch = url.match(/(?:https?:)?\/\/(?:www\.)?bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/i);
+          if (bvMatch) return '//player.bilibili.com/player.html?bvid=' + bvMatch[1] + '&autoplay=0';
+          // 3. B站嵌入链接已含 player.bilibili.com，直接返回
+          if (url.indexOf('player.bilibili.com') !== -1) return url;
+          // 4. 其他直接返回
+          return url;
+        }
+
+        return { data, addProductFav, addCart, loading, items, getBlockContent, formatSpecText, convertVideoUrl };
+      }
+    });
+    app.mount("#app");
+</script>        function htmlencode(s) {
+          var div = document.createElement('div');
+          div.appendChild(document.createTextNode(s));
+          return div.innerHTML;
+        }
+        function htmldecode(s) {
+          var div = document.createElement('div');
+          div.innerHTML = s;
+          return div.innerText || div.textContent;
+        }
+        /*3.用正则表达式实现html转码*/
+        function htmlEncodeByRegExp(str) {
+          var s = "";
+          if (str.length == 0) return "";
+          s = str.replace(/&/g, "&");
+          s = s.replace(/</g, "<");
+          s = s.replace(/>/g, ">");
+          s = s.replace(/ /g, " ");
+          s = s.replace(/\'/g, "'");
+          s = s.replace(/\"/g, '"');
+          return s;
+        }
+        /*4.用正则表达式实现html解码*/
+        function htmlDecodeByRegExp(str) {
+          var s = "";
+          if (str.length == 0) return "";
+          s = str.replace(/&/g, "&");
+          s = s.replace(/</g, "<");
+          s = s.replace(/>/g, ">");
+          s = s.replace(/ /g, " ");
+          s = s.replace(/'/g, "\'");
+          s = s.replace(/"/g, "\"");
+          return s;
+        }
+        return {
+          data,
+          items,
+          getProductDetail,
+          htmldecode,
+          htmlencode,
+          htmlDecodeByRegExp,
+          addProductFav,
+          addCart
+        };
+      },
+    });
+    let result = app.mount("#app");
+    function sleep(time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+    function checkLoginStatus() {
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        return true;
+        // 执行进入首页的逻辑
+      } else {
+        // 执行未登录的逻辑，比如跳转到登录页面
+        return false;
+      }
+    }
+  </script>
+  <script src="/sites/default/files/js/js_CgNyoAz4OLa5vvP3hfEm88q-44JjhKSP85sJZiRBSH0.js"></script>
+<script src="/sites/default/files/js/js_aMnLMGSG2CsdZriZXsPE0C6OPSZlxF9gZKkFabaxKnQ.js"></script>
+<script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1724144171"></script>
+<script src="/sites/default/files/js/js_AGtGO5-z4j5_wdQKvTl9_lxubjwgGGoHPEhvmhh8dnk.js"></script>
+<script src="/sites/default/files/js/js_cVVQ78Ym14r4j6aYTQP6iZV8nVYAb2Ei1yjBmEJshZg.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#header").load("/header.html", function () {
+        let tmp = checkLoginStatus();
+        if (!tmp) {
+          $("#collapseAccMenu").load("/account-menu.html");
+        } else {
+          $("#collapseAccMenu").load("/account-menu-after-login.html");
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+    function getCartNum() {
+      var api = "/api/mallShoppingCartItem/getMallShoppingCartItemList?1=1";
+      if (checkLoginStatus()) {
+        $.ajax({
+          url: api,
+          type: "GET",  //默认值: "GET"请求方式 ("POST" 或 "GET")
+          dataType: "json",   //服务器返回的类型json,xml,text,html等
+          contentType: "application/json",
+          headers: {
+            Accept: 'application/json, text/plain, */*'
+          },
+          success: function (result, status, xhr) {
+            $("#cartNum").html(result.data.total);
+          },
+          error: function (xhr, status, error) {
+          }
+        });
+      } else {
+        $("#cartNum").html(0);
+      }
+    }
+  </script>
+  <script defer src="https://umami.onlystyle.com.cn/script.js"
+    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+</body>
+
+</html>

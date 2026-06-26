@@ -1,0 +1,420 @@
+<div class="region region-header-top d-none d-lg-block">
+  <div class="container-wide">
+    <button type="button" class="btn btn-icon--l btn--affiliates" data-bs-toggle="modal"
+      data-bs-target="#affiliates-modal" aria-label="Our Affiliates">
+      <i class="o-icon --caret-circle-down" aria-hidden="true"></i>
+      全球分公司
+    </button>
+    <div
+      class="language-switcher-language-url block block-language-switcher-langcode-block block-language-switcher-langcode-blocklanguage-interface"
+      id="block-languageswitcherlangcode" data-block-plugin-id="language_switcher_langcode_block:language_interface">
+      <ul data-block="header_top" class="links">
+        <li hreflang="en" data-drupal-link-system-path="node" class="en"><a href="https://www.gattefosse.com/"
+            class="language-link" title="English" hreflang="en" data-drupal-link-system-path="node">en</a>
+        </li>
+        <li hreflang="fr" data-drupal-link-system-path="node" class="fr"><a href="https://www.gattefosse.com/fr/"
+            class="language-link" title="French" hreflang="fr" data-drupal-link-system-path="node">fr</a></li>
+        <li hreflang="cn"><a href="/" class="language-link is-active" title="Chinese" hreflang="cn"
+            target="_blank">中文</a></li>
+      </ul>
+    </div>
+    <div class="fixed-item">
+      <nav aria-labelledby="block-myaccountmenu-menu" id="block-myaccountmenu"
+        data-block-plugin-id="menu_block:my-account" class="block block-menu navigation menu--my-account">
+        <div class="account-menu">
+          <button type="button" class="btn btn-icon btn--account" aria-label="Open/Close my account menu"
+            data-bs-toggle="collapse" data-bs-target="#collapseAccMenu" aria-expanded="false"
+            aria-controls="collapseAccMenu">
+            <i class="o-icon --user" aria-hidden="true"></i>
+          </button>
+          <ul data-block="header_top" class="collapse account-menu__cont" id="collapseAccMenu">
+
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div id="block-cartmenublock" data-block-plugin-id="cart_menu_block"
+      class="block block-gattefosse-cart block-cart-menu-block">
+      <a href="/cart.html" class="btn btn-icon btn--cart" aria-label="See cart">
+        <i class="o-icon --tote-bag" aria-hidden="true"></i>
+        <span class="num" id="cartNum">{{data.cartNum}}</span>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="region region-header">
+  <div class="d-block d-lg-none">
+    <button role="button" class="navbar-toggler btn js-menu-btn" id="menuButton" aria-label="Open/Close navigation menu"
+      aria-expanded="false">
+      <i class="navbar-toggler__icon o-icon --list" aria-hidden="true"></i>
+      <span class="navbar-toggler__text" data-show="Menu" data-hide="Close">Menu</span>
+    </button>
+  </div>
+  <div id="block-gattefosse-branding" data-block-plugin-id="system_branding_block"
+    class="block block-system block-system-branding-block">
+    <div class="navbar-brand d-flex align-items-center">
+      <a href="/" title="Home" rel="home" class="site-logo d-block">
+        <img src="/sites/default/files/2023-02/logo.svg" alt="Home" class="o-logo" width="93" height="52" />
+      </a>
+    </div>
+  </div>
+  <nav aria-labelledby="block-gattefosse-main-navigation-menu" id="block-gattefosse-main-navigation"
+    data-block-plugin-id="system_menu_block:main" class="block block-menu navigation menu--main">
+    <p class="visually-hidden" id="block-gattefosse-main-navigation-menu">导航</p>
+    <ul data-region="header" data-block="header" class="navbar-nav menu--main">
+      <li class="menu-icon menu-icon-19 expanded dropdown nav-item lvl_1">
+        <button role="button" class="nav-link" data-bs-toggle="dropdown">
+          <span role="heading" aria-level="2">个人护理</span>
+        </button>
+        <div class="dropdown-menu mega-menu" data-bs-popper="none">
+          <div class="mega-menu__header container">
+            <a href="/personal-care.html" class="btn btn-primary sub-title">关于个人护理</a>
+            <button role="button" title="Close the menu" aria-label="Close" class="btn btn-icon--l o-btn-close"><i
+                class="o-icon --cross" aria-hidden="true"></i>关闭</button>
+          </div>
+          <ul data-region="header" data-block="header" class="container mega-menu__list">
+            <li class="menu-icon menu-icon-20 lvl_2">
+              <a class="item" href="/personal-care/product-finder.html"><span class="mega-menu__link">成分</span></a>
+            </li>
+            <li class="menu-icon menu-icon-21 lvl_2">
+              <a class="item" href="/personal-care/formulation-finder.html"><span class="mega-menu__link">配方</span></a>
+            </li>
+            <li class="menu-icon menu-icon-22 expanded lvl_2">
+              <a class="item" href="/personal-care/get-inspired.html"><span class="mega-menu__link">获取灵感</span></a>
+              <ul data-region="header" data-block="header">
+                <li class="menu-icon menu-icon-23 lvl_3">
+                  <a href="/personal-care/get-inspired/articles.html" class="mega-menu__link">文章</a>
+                </li>
+                <li class="menu-icon menu-icon-24 lvl_3">
+                  <a href="/personal-care/get-inspired/webinars.html" class="mega-menu__link">在线研讨会</a>
+                </li>
+                <li class="menu-icon menu-icon-25 lvl_3">
+                  <a href="/personal-care/get-inspired/publications.html" class="mega-menu__link">出版物</a>
+                </li>
+                <li class="menu-icon menu-icon-26 lvl_3">
+                  <a href="/personal-care/get-inspired/addiactive.html" class="mega-menu__link">杂志</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="menu-icon menu-icon-4 expanded dropdown nav-item lvl_1">
+        <button role="button" class="nav-link" data-bs-toggle="dropdown">
+          <span role="heading" aria-level="2">药用辅料</span>
+        </button>
+        <div class="dropdown-menu mega-menu" data-bs-popper="none">
+          <div class="mega-menu__header container">
+            <a href="/pharmaceuticals.html" class="btn btn-primary sub-title">关于药用辅料</a>
+            <button role="button" title="Close the menu" aria-label="Close" class="btn btn-icon--l o-btn-close"><i
+                class="o-icon --cross" aria-hidden="true"></i>关闭</button>
+          </div>
+          <ul data-region="header" data-block="header" class="container mega-menu__list">
+            <li class="menu-icon menu-icon-27 lvl_2">
+              <a class="item" href="/pharmaceuticals/product-finder.html"><span class="mega-menu__link">产品检索</span></a>
+            </li>
+            <li class="menu-icon menu-icon-30 lvl_2">
+              <a class="item" href="/markets.html"><span class="mega-menu__link">市场分类</span></a>
+            </li>
+            <li class="menu-icon menu-icon-28 expanded lvl_2">
+              <span class="item"><span class="mega-menu__link">给药途径</span></span>
+              <ul data-region="header" data-block="header">
+                <li class="menu-icon menu-icon-33 lvl_3">
+                  <a href="/oral-drug-delivery.html" class="mega-menu__link">口服给药</a>
+                </li>
+                <li class="menu-icon menu-icon-34 lvl_3">
+                  <a href="/topical-drug-delivery.html" class="mega-menu__link">外用给药</a>
+                </li>
+                <li class="menu-icon menu-icon-35 lvl_3">
+                  <a href="/rectal-and-vaginal-drug-delivery.html" class="mega-menu__link">直肠和阴道给药</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-icon menu-icon-29 lvl_2">
+              <a class="item" href="/formulation-technologies.html"><span class="mega-menu__link">配方技术</span></a>
+            </li>
+            <li class="menu-icon menu-icon-31 expanded lvl_2">
+              <span class="item"><span class="mega-menu__link">技术中心</span></span>
+              <ul data-region="header" data-block="header">
+                <li class="menu-icon menu-icon-42 lvl_3">
+                  <a href="/formulation-development.html" class="mega-menu__link">处方开发</a>
+                </li>
+                <li class="menu-icon menu-icon-107 lvl_3">
+                  <a href="/characterization-methods.html" class="mega-menu__link">表征方法</a>
+                </li>
+                <li class="menu-icon menu-icon-43 lvl_3">
+                  <a href="/regulatory-toxicology.html" class="mega-menu__link">法规支持</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-icon menu-icon-32 expanded lvl_2">
+              <a class="item" href="/pharmaceuticals/learn-more.html"><span class="mega-menu__link">了解更多</span></a>
+              <ul data-region="header" data-block="header">
+                <li class="menu-icon menu-icon-45 lvl_3">
+                  <a href="/pharmaceuticals/learn-more/hot-topics.html" class="mega-menu__link">热点话题</a>
+                </li>
+                <li class="menu-icon menu-icon-46 lvl_3">
+                  <a href="/pharmaceuticals/learn-more/webinar.html" class="mega-menu__link">网络研讨会</a>
+                </li>
+                <li class="menu-icon menu-icon-106 lvl_3">
+                  <a href="/pharmaceuticals/learn-more/publications.html" class="mega-menu__link">出版物</a>
+                </li>
+                <li class="menu-icon menu-icon-47 lvl_3">
+                  <a href="/pharmaceuticals/learn-more/brochures.html" class="mega-menu__link">资料手册</a>
+                </li>
+                <li class="menu-icon menu-icon-48 lvl_3">
+                  <a href="/journees-galeniques-saint-remy-de-provence.html" class="mega-menu__link">Journées
+                    Galéniques论坛</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="menu-icon menu-icon-102 nav-item lvl_1">
+        <a class="nav-link" href="/corporate-social-responsability.html">社会责任</a>
+      </li>
+      <li class="menu-icon menu-icon-101 expanded dropdown nav-item lvl_1">
+        <button role="button" class="nav-link" data-bs-toggle="dropdown">
+          <span role="heading" aria-level="2">专业知识</span>
+        </button>
+        <div class="dropdown-menu mega-menu" data-bs-popper="none">
+          <div class="mega-menu__header container">
+            <a href="/expertise.html" class="btn btn-primary sub-title">专业知识</a>
+            <button role="button" title="Close the menu" aria-label="Close" class="btn btn-icon--l o-btn-close"><i
+                class="o-icon --cross" aria-hidden="true"></i>关闭</button>
+          </div>
+          <ul data-region="header" data-block="header" class="container mega-menu__list">
+            <li class="menu-icon menu-icon-110 expanded lvl_2">
+              <span class="item"><span class="mega-menu__link">核心竞争力</span></span>
+              <ul data-region="header" data-block="header">
+                <li class="menu-icon menu-icon-57 lvl_3">
+                  <a href="/lipid-chemistry.html" class="mega-menu__link">油脂化学</a>
+                </li>
+                <li class="menu-icon menu-icon-58 lvl_3">
+                  <a href="/plant-chemistry.html" class="mega-menu__link">植物化学</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-icon menu-icon-59 lvl_2">
+              <a class="item" href="/skin-biology.html"><span class="mega-menu__link">皮肤生物学</span></a>
+            </li>
+            <li class="menu-icon menu-icon-62 lvl_2">
+              <a class="item" href="/sustainable-sourcing.html"><span class="mega-menu__link">可持续采购</span></a>
+            </li>
+            <li class="menu-icon menu-icon-61 lvl_2">
+              <a class="item" href="/sensory-analysis.html"><span class="mega-menu__link">感官分析</span></a>
+            </li>
+            <li class="menu-icon menu-icon-108 lvl_2">
+              <a class="item" href="/application-laboratories.html"><span class="mega-menu__link">应用实验室</span></a>
+            </li>
+            <li class="menu-icon menu-icon-56 lvl_2">
+              <a class="item" href="/regulatory-toxicology.html"><span class="mega-menu__link">监管与毒理学</span></a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="menu-icon menu-icon-3 expanded dropdown nav-item lvl_1">
+        <button role="button" class="nav-link" data-bs-toggle="dropdown">
+          <span role="heading" aria-level="2">关于我们</span>
+        </button>
+        <div class="dropdown-menu mega-menu" data-bs-popper="none">
+          <div class="mega-menu__header container">
+            <a href="/about-us.html" class="btn btn-primary sub-title">关于我们</a>
+            <button role="button" title="Close the menu" aria-label="Close" class="btn btn-icon--l o-btn-close"><i
+                class="o-icon --cross" aria-hidden="true"></i>关闭</button>
+          </div>
+          <ul data-region="header" data-block="header" class="container mega-menu__list">
+            <li class="menu-icon menu-icon-68 lvl_2">
+              <a class="item" href="/history.html"><span class="mega-menu__link">发展历史</span></a>
+            </li>
+            <li class="menu-icon menu-icon-69 lvl_2">
+              <a class="item" href="/international-presence.html"><span class="mega-menu__link">国际影响力</span></a>
+            </li>
+            <li class="menu-icon menu-icon-105 lvl_2">
+              <a class="item" href="/news.html"><span class="mega-menu__link">公司动态</span></a>
+            </li>
+            <li class="menu-icon menu-icon-113 lvl_2">
+              <a class="item" href="/working-gattefosse.html"><span class="mega-menu__link">职业发展</span></a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    <div class="menu--mobile__extra">
+      <ul class="navbar-nav--extra">
+        <li class="lvl_1--extra">
+          <button type="button" class="nav-link" data-bs-toggle="modal"
+            data-bs-target="#affiliates-modal">全球分公司</button>
+        </li>
+      </ul>
+      <div class=" menu--mobile__extra-header">
+        <a href="/cart.html" class="btn btn-outline-primary btn-icon--r">
+          See cart
+          <i class="o-icon --tote-bag" aria-hidden="true"></i>
+        </a>
+      </div>
+      <ul class="c-quick-links">
+        <li>
+          <a href="/personal-care/product-finder.html" class="c-quick-links__item">
+            <span class="menu-title">个人护理成分</span>
+            <picture class="o-icon">
+              <img src="/sites/default/files/menu_icons/ingredients.svg" width="40" height="40" loading="lazy"
+                class="img-fluid menu-icon" />
+            </picture>
+          </a>
+        </li>
+        <li>
+          <a href="/personal-care/formulation-finder.html" class="c-quick-links__item">
+            <span class="menu-title">个人护理配方</span>
+            <picture class="o-icon">
+              <img src="/sites/default/files/menu_icons/formules.svg" width="40" height="40" loading="lazy"
+                class="img-fluid menu-icon" />
+            </picture>
+          </a>
+        </li>
+        <li>
+          <a href="/pharmaceuticals/product-finder.html" class="c-quick-links__item">
+            <span class="menu-title">医药产品</span>
+            <picture class="o-icon">
+              <img src="/sites/default/files/menu_icons/pillsbleu.svg" width="40" height="40" loading="lazy"
+                class="img-fluid menu-icon" />
+            </picture>
+          </a>
+        </li>
+        <li>
+          <a href="/formulation-technologies.html" class="c-quick-links__item">
+            <span class="menu-title">药品配方技术</span>
+            <picture class="o-icon">
+              <img src="/sites/default/files/menu_icons/formulation-technologies.svg" width="40" height="40"
+                loading="lazy" class="img-fluid menu-icon" />
+            </picture>
+          </a>
+        </li>
+        <li>
+          <a href="/corporate-social-responsability.html" class="c-quick-links__item">
+            <span class="menu-title">我们的社会责任</span>
+            <picture class="o-icon">
+              <img src="/sites/default/files/menu_icons/plantvert.svg" width="40" height="40" loading="lazy"
+                class="img-fluid menu-icon" />
+            </picture>
+          </a>
+        </li>
+      </ul>
+      <div class="menu--mobile__extra-footer">
+        <a href="/contact-form.html" class="btn btn-primary btn-icon--r">
+          联系我们
+          <i class="o-icon --chat-teardrop-text" aria-hidden="true"></i>
+        </a>
+        <select class="form-select" onchange="location=this.value;">
+          <option value="https://www.gattefosse.com/" selected>English</option>
+          <option value="https://www.gattefosse.com/fr/">French</option>
+          <option value="/">中文</option>
+        </select>
+      </div>
+    </div>
+  </nav>
+  <div class="header__tools">
+    <div class="block-search" role="search">
+      <button type="button" class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#search-modal"
+        aria-label="Search form">
+        <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="d-none d-lg-block" id="loginButton">
+      <button onclick="gotoUrl()" class="btn btn-primary">
+        <span class="btn__text" id="buttonTxt">登录/注册</span>
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+  // 检查登录状态 — 基于 JWT Token
+  function checkLoginStatus() {
+    // 使用 auth.js 中的实现（如果已加载）
+    if (typeof window._checkLoginStatus === 'function') {
+      return window._checkLoginStatus();
+    }
+    // 备用实现
+    var token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.setItem('isLoggedIn', 'false');
+      return false;
+    }
+    try {
+      var payload = JSON.parse(atob(token.split('.')[1]));
+      var now = Math.floor(Date.now() / 1000);
+      if (payload.exp && payload.exp < now) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.setItem('isLoggedIn', 'false');
+        return false;
+      }
+      localStorage.setItem('isLoggedIn', 'true');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function showMenuInPhone() {
+    var menuDivBlock = document.getElementById("block-gattefosse-main-navigation");
+    if (menuDivBlock != null && menuDivBlock != undefined) {
+      menuDivBlock.style.display = "block";
+    }
+  }
+  var menuButton = document.getElementById("menuButton");
+  if (menuButton) {
+    menuButton.addEventListener('click', function () {
+      showMenuInPhone();
+    });
+  }
+  function gotoUrl() {
+    var curUrl = window.location.href;
+    if (checkLoginStatus()) {
+      // 已登录，跳转到会员中心
+      window.location.href = "/account-my-favorite.html";
+    } else {
+      var url = "/account.html?url=" + encodeURIComponent(curUrl);
+      window.location.href = url;
+    }
+  }
+
+  // 更新登录按钮文字
+  function updateLoginButton() {
+    var btnTxt = document.getElementById("buttonTxt");
+    if (btnTxt) {
+      if (checkLoginStatus()) {
+        btnTxt.textContent = "会员中心";
+      } else {
+        btnTxt.textContent = "登录/注册";
+      }
+    }
+    // 加载对应菜单
+    if (checkLoginStatus()) {
+      $("#collapseAccMenu").load("/account-menu-logged-in.html");
+    } else {
+      $("#collapseAccMenu").load("/account-menu-logged-out.html");
+    }
+  }
+
+  function getCartNum() {
+    if (checkLoginStatus() && typeof GatteAPI !== 'undefined') {
+      GatteAPI.Cart.count().then(function (res) {
+        $("#cartNum").html(res.count || 0);
+      }).catch(function () {
+        $("#cartNum").html(0);
+      });
+    } else {
+      $("#cartNum").html(0);
+    }
+  }
+
+  // 页面加载完成后执行
+  $(document).ready(function () {
+    updateLoginButton();
+    getCartNum();
+  });
+  
+</script>
+<script src="/static/js/js.cookie.min.js"></script>

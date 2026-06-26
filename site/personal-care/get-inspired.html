@@ -1,0 +1,551 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="/personal-care/formulation-finder" />
+    <meta name="google-site-verification"
+        content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="alternate" hreflang="x-default" href="/personal-care/formulation-finder" />
+    <link rel="alternate" hreflang="en" href="/personal-care/formulation-finder" />
+    <link rel="alternate" hreflang="fr" href="/fr/cosmetique/formulation-finder" />
+    <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+    <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <!-- axios removed - using hardcoded data -->
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            "Pagetype": "page",
+            "LEVEL1": "Personal Care",
+            "LEVEL2": "Formulations",
+            "LEVEL3": "",
+            "Pays": "en",
+            "Thematique": "",
+            "Connexion": "Non"
+        });
+    </script>
+    <title>获取灵感 | 嘉法狮</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/themes/custom/gattefosse/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/gattefosse/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/themes/custom/gattefosse/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css" />
+    <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1701865611.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_pPfrrsOwLXxDLw7-UYKDqFONEmjyh_dCi89ZBWzLKGc.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+</head>
+
+<body class="path-personal-care    bg- d-flex flex-column">
+    <nav role="navigation" aria-label="Accès rapide au contenu">
+        <a href="#main-content" class="visually-hidden focusable skip__link">
+            <span class="skip__link__text">Saut au contenu</span>
+        </a>
+    </nav>
+    <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas id="app">
+        <header role="banner" class="header" id="header"></header>
+        <div class="region region-highlight">
+            <div data-drupal-messages-fallback class="hidden"></div>
+        </div>
+        <main role="main" class="main theme-cosm" data-bs-spy="scroll">
+            <nav role="navigation" class="quick-access">
+                <button class="quick-access__button quick-access__button--open js-open">
+                    <i class="o-icon --list" aria-hidden="true"></i>
+                    <strong>快捷链接</strong>
+                </button>
+                <div class="quick-access__menu">
+                    <button class="quick-access__button quick-access__button--close js-close">
+                        <i class="o-icon --cross" aria-hidden="true"></i>
+                        关闭
+                    </button>
+                    <div id="quickLinks"></div>
+                </div>
+            </nav>
+            <div class="page-content">
+                <div class="region region-breadcrumb">
+                    <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
+                        class="block block-system block-system-breadcrumb-block">
+                        <nav aria-label="面包屑">
+                            <h2 id="system-breadcrumb" class="visually-hidden">
+                                面包屑
+                            </h2>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/">首页
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="/personal-care.html">个人护理
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="/personal-care/get-inspired.html">{{data.formData.title}}
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <a id="main-content" tabindex="-1"></a>
+                <div class="region region-content">
+                    <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
+                        class="block block-system block-system-main-block">
+                        <section class="s-page s-page--get-inspired">
+                            <div class="s-page__header">
+                                <div class="container">
+                                    <h1 class="s-page__title u-title-styled">
+                                        {{data.formData.title}}
+                                    </h1>
+                                    <div class="s-page__description">
+                                        <p>
+                                            {{data.formData.summary}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="s-page__wrapper">
+                                <div class="s-page--bgd">
+                                    <div class="s-page__cont container">
+                                        <div class="s-block s-block--articles">
+                                            <h2 class="s-block__title block-title u-title-styled">最新的文章
+                                            </h2>
+                                            <div class="s-tunnel-news__grid block-content">
+                                                <div class="s-tunnel-news__card" v-for="item in data.articleList">
+                                                    <div class="c-card c-card--bordered">
+                                                        <div class="c-card__content">
+                                                            <h3 class="c-card__title">
+                                                                    <a class="c-card__title-link" :href="item.url" target="_blank">
+                                                                        {{item.title}}
+                                                                </a>
+                                                            </h3>
+                                                            <ul class="c-card__breadcrumb">
+                                                                <li class="category">{{item.typeName}}</li>
+                                                                </li>
+                                                            </ul>
+                                                            <p class="c-card__info" v-if="item.eventTime != null && item.eventTime != ''">
+                                                                <span class="c-card__date">{{item.eventTimeYear}}年{{item.eventTimeDate}}日
+                                                                </span>
+                                                            </p>
+                                                            <p class="c-card__summary">
+                                                                {{item.summary}}
+                                                            </p>
+                                                            <ul class="c-card__tag">
+                                                                <li v-for="item2 in item.tagList" class="c-card__tag-item">{{item2}}</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="c-card__image">
+                                                            <img :src="item.thumb" :data-src="item.thumb" alt="缩略图 眼睛"
+                                                                width="369" height="208" class="card__image img-fluid"
+                                                                loading="lazy">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a class="s-block__btn-more btn btn-outline-primary"
+                                                href="/personal-care/get-inspired/articles.html">查看更多
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" s-page--bgd">
+                                    <div class="s-block s-block--webinar">
+                                        <div class="container">
+                                            <h2 class="s-block__title block-title u-title-styled">网络研讨会
+                                            </h2>
+                                        </div>
+                                        <div class="s-block__content block-content" v-if="data.webinarsList.length > 0">
+                                            <div class="s-tunnel-news__card">
+                                                <div v-if="data.webinarsList.length > 0"
+                                                    class="c-cards c-cards--vertical c-cards--2nd-inversed c-cards--webinar">
+                                                    <div :class="(data.webinarsList[0].lock == true && (data.userEnabled == 0 || data.userEnabled == null)) ? 'c-card c-card--webinar c-card--horizontal theme-cosm c-card--private' : 'c-card c-card--webinar c-card--horizontal theme-cosm'">
+                                                        <a href="/account.html?url=/personal-care/get-inspired.html"
+                                                            class="c-card__private-btn">
+                                                            <span class="c-card__private-icon" aria-hidden="true"
+                                                            v-if="(data.webinarsList[0].lock == true && (data.userEnabled == 0 || data.userEnabled == null))"></span>
+                                                        </a>
+                                                        <div class="c-card__content">
+                                                            <h3 class="c-card__title">
+                                                                <a class="c-card__title-link" :href="(data.webinarsList[0].lock == true && (data.userEnabled == 0 || data.userEnabled == null)) ? '/account.html?url=/personal-care/get-inspired.html' : data.webinarsList[0].url" target="_blank" rel="noopener noreferrer">
+                                                                {{data.webinarsList[0].title}}</a>
+                                                            </h3>
+                                                            <ul class="c-card__breadcrumb">
+                                                                <li class="category">{{data.webinarsList[0].typeName}}</li>
+                                                            </ul>
+                                                            <p class="c-card__summary">
+                                                                {{data.webinarsList[0].summary}}
+                                                            </p>
+                                                            <ul class="c-card__tag">
+                                                                <li v-for="item2 in data.webinarsList[0].tagList" class="c-card__tag-item">{{item2}}</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="c-card__image">
+                                                            <img :src="data.webinarsList[0].topBackground"
+                                                                :data-src="data.webinarsList[0].topBackground"
+                                                                alt="戴眼影的亚洲女人" width="955" height="538"
+                                                                class="card__image img-fluid" loading="lazy">
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="data.webinarsList.length > 1" :class="(data.webinarsList[1].lock == true && (data.userEnabled == 0 || data.userEnabled == null)) ? 'c-card c-card--webinar c-card--horizontal theme-cosm c-card--private' : 'c-card c-card--webinar c-card--horizontal theme-cosm'">
+                                                        <a href="/account.html?url=/personal-care/get-inspired.html"
+                                                            class="c-card__private-btn">
+                                                            <span class="c-card__private-icon"
+                                                                aria-hidden="true" v-if="(data.webinarsList[1].lock == true && (data.userEnabled == 0 || data.userEnabled == null))"></span>
+                                                        </a>
+                                                        <div class="c-card__content">
+                                                            <h3 class="c-card__title">
+                                                                <a class="c-card__title-link" :href="(data.webinarsList[1].lock == true && (data.userEnabled == 0 || data.userEnabled == null)) ? '/account.html?url=/personal-care/get-inspired.html' : data.webinarsList[1].url" target="_blank" rel="noopener noreferrer">
+                                                                {{data.webinarsList[1].title}}</a>
+                                                            </h3>
+                                                            <ul class="c-card__breadcrumb">
+                                                                <li class="category">{{data.webinarsList[1].typeName}}</li>
+                                                            </ul>
+                                                            <p class="c-card__summary">
+                                                                {{data.webinarsList[1].summary}}
+                                                            </p>
+                                                            <ul class="c-card__tag">
+                                                                <li v-for="item2 in data.webinarsList[1].tagList" class="c-card__tag-item">{{item2}}</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="c-card__image">
+                                                            <img :src="data.webinarsList[1].topBackground"
+                                                                :data-src="data.webinarsList[1].topBackground"
+                                                                class="card__image img-fluid" loading="lazy">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <a class="s-block__btn-more btn btn-outline-primary"
+                                                href="/personal-care/get-inspired/webinars.html">查看更多
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="s-page--bgd">
+                                    <div class="s-page__cont container">
+                                        <div class="s-block s-block--publication">
+                                            <h2 class="s-block__title block-title u-title-styled">最新出版物
+                                            </h2>
+                                            <div class="s-block__content block-content row">
+                                                <div class="s-tunnel-news__card col"
+                                                    v-for="item in data.publicationList">
+                                                    <div class="c-card c-card--bordered c-card--pub">
+                                                        <div class="c-card__content">
+                                                            <h3 class="c-card__title">{{item.title}}</h3>
+                                                            <ul class="c-card__breadcrumb">
+                                                                <li class="category">{{item.typeName}}</li>
+                                                            </ul>
+                                                            <p class="c-card__info">
+                                                                <span class="c-card__date">{{item.eventTimeYear}}</span>
+                                                            </p>
+                                                            <p class="c-card__summary">{{item.summary}}
+                                                            </p>
+                                                            <ul class="c-card__tag">
+                                                                <li v-for="item2 in item.tagList" class="c-card__tag-item">{{item2}}</li>
+                                                            </ul>
+                                                            <div class="c-card__cta">
+                                                                <a class="btn btn-primary" :href="item.url"
+                                                                    :title="item.title" target="_blank">
+                                                                    下载 (.pdf)
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a class="s-block__btn-more btn btn-outline-primary"
+                                                href="/personal-care/get-inspired/publications.html">查看更多
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="s-page--bgd" v-if="data.webBrochuresList.length > 0">
+                                    <div class="s-block s-block--addiactive">
+                                        <div class="container">
+                                            <h2 class="s-block__title block-title u-title-styled d-block d-md-none">杂志
+                                            </h2>
+                                            <div class="s-block--addiactive-list">
+                                                <div class="item-big">
+                                                    <div
+                                                        class="c-card c-card--addiactive c-card--bordered c-card--private">
+                                                        <a href="/account.html?url=/personal-care/get-inspired.html"
+                                                            class="c-card__private-btn">
+                                                            <span class="c-card__private-icon" aria-hidden="true"
+                                                                v-if="(data.webBrochuresList[0].lock == true && (data.userEnabled == 0 || data.userEnabled == null))"></span>
+                                                        </a>
+                                                        <div class="c-card__content">
+                                                            <h3 class="c-card__title">{{data.webBrochuresList[0].title}}
+                                                            </h3>
+                                                            <ul class="c-card__breadcrumb">
+                                                                <li>杂志
+                                                                </li>
+                                                            </ul>
+                                                            <p class="c-card__info">
+                                                                <span class="c-card__date">
+                                                                    {{data.webBrochuresList[0].eventTimeYear}}年{{data.webBrochuresList[0].eventTimeDate}}日
+                                                                </span>
+                                                            </p>
+                                                            <div class="c-card__cta"
+                                                                v-if="(data.webBrochuresList[0].lock == true && (data.userEnabled == 0 || data.userEnabled == null))">
+                                                                <span
+                                                                    class="private-link btn btn-primary btn-disabled">浏览
+                                                                </span>
+                                                                <span
+                                                                    class="private-file btn btn-primary btn-disabled">下载
+                                                                </span>
+                                                            </div>
+                                                            <div class="c-card__cta" v-else>
+                                                                <a class="btn btn-primary" target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    :href="data.webBrochuresList[0].url">浏览</a>
+                                                                <a class="btn btn-primary"
+                                                                    :href="data.webBrochuresList[0].url"
+                                                                    title="addiactive #126: Spotted!" target="_blank">
+                                                                    下载
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="c-card__image">
+                                                            <img :src="data.webBrochuresList[0].thumb"
+                                                                :data-src="data.webBrochuresList[0].thumb"
+                                                                alt="杂志 125 往事" width="469" height="482"
+                                                                class="card__image img-fluid" loading="lazy">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item-other">
+                                                    <h2
+                                                        class="s-block__title block-title u-title-styled d-none d-md-block">
+                                                        杂志
+                                                    </h2>
+                                                    <div class="c-cards">
+                                                        <div v-if="data.webBrochuresList.length > 1"
+                                                            class="c-card c-card--addiactive c-card--bordered c-card--private">
+                                                            <a href="/account.html?url=/personal-care/get-inspired.html"
+                                                                class="c-card__private-btn">
+                                                                <span class="c-card__private-icon" aria-hidden="true"
+                                                                    v-if="(data.webBrochuresList[1].lock == true && (data.userEnabled == 0 || data.userEnabled == null || data.userEnabled == false))"></span>
+                                                            </a>
+                                                            <div class="c-card__content">
+                                                                <h3 class="c-card__title">
+                                                                    {{data.webBrochuresList[1].title}}
+                                                                </h3>
+                                                                <ul class="c-card__breadcrumb">
+                                                                    <li>杂志
+                                                                    </li>
+                                                                </ul>
+                                                                <p class="c-card__info">
+                                                                    <span class="c-card__date">
+                                                                        {{data.webBrochuresList[1].eventTimeYear}}年{{data.webBrochuresList[1].eventTimeDate}}日
+                                                                    </span>
+                                                                </p>
+                                                                <div class="c-card__cta"
+                                                                    v-if="(data.webBrochuresList[1].lock == true && (data.userEnabled == 0 || data.userEnabled == null || data.userEnabled == false))">
+                                                                    <span
+                                                                        class="private-link btn btn-primary btn-disabled">浏览
+                                                                    </span>
+                                                                    <span
+                                                                        class="private-file btn btn-primary btn-disabled">下载
+                                                                    </span>
+                                                                </div>
+                                                                <div class="c-card__cta" v-else>
+                                                                    <a
+                                                                        class="btn btn-primary" target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        :href="data.webBrochuresList[1].url">浏览</a>
+                                                                    <a class="btn btn-primary"
+                                                                        :href="data.webBrochuresList[1].url"
+                                                                        title="Once Upon a Time" target="_blank">
+                                                                        下载
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="c-card__image">
+                                                                <img :src="data.webBrochuresList[1].thumb"
+                                                                    :data-src="data.webBrochuresList[1].thumb"
+                                                                    alt="杂志-124-欣快症" width="369" height="208"
+                                                                    class="card__image img-fluid" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="data.webBrochuresList.length > 2"
+                                                            class="c-card c-card--addiactive c-card--bordered c-card--private">
+                                                            <a href="/account.html?url=/personal-care/get-inspired.html"
+                                                                class="c-card__private-btn">
+                                                                <span class="c-card__private-icon"
+                                                                    aria-hidden="true"
+                                                                    v-if="(data.webBrochuresList[2].lock == true && (data.userEnabled == 0 || data.userEnabled == null || data.userEnabled == false))"></span>
+                                                            </a>
+                                                            <div class="c-card__content">
+                                                                <h3 class="c-card__title">
+                                                                    {{data.webBrochuresList[2].title}}
+                                                                </h3>
+                                                                <ul class="c-card__breadcrumb">
+                                                                    <li>杂志
+                                                                    </li>
+                                                                </ul>
+                                                                <p class="c-card__info">
+                                                                    <span class="c-card__date">
+                                                                        {{data.webBrochuresList[2].eventTimeYear}}年{{data.webBrochuresList[2].eventTimeDate}}日
+                                                                    </span>
+                                                                </p>
+                                                                <div class="c-card__cta"
+                                                                    v-if="(data.webBrochuresList[2].lock == true && (data.userEnabled == 0 || data.userEnabled == null || data.userEnabled == false))">
+                                                                    <span
+                                                                        class="private-link btn btn-primary btn-disabled">浏览
+                                                                    </span>
+                                                                    <span
+                                                                        class="private-file btn btn-primary btn-disabled">下载
+                                                                    </span>
+                                                                </div>
+                                                                <div class="c-card__cta" v-else>
+                                                                    <a
+                                                                        class="btn btn-primary" target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        :href="data.webBrochuresList[2].url">浏览</a>
+                                                                    <a class="btn btn-primary"
+                                                                        :href="data.webBrochuresList[2].url"
+                                                                        title="Once Upon a Time" target="_blank">
+                                                                        下载
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="c-card__image">
+                                                                <img :src="data.webBrochuresList[2].thumb"
+                                                                    :data-src="data.webBrochuresList[2].thumb"
+                                                                    alt="杂志-123-现象" width="369" height="208"
+                                                                    class="card__image img-fluid" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a class="s-block__btn-more btn btn-outline-primary"
+                                                href="/personal-care/get-inspired/addiactive.html">查看更多
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <a href="#main-content" id="js_back-to-top" title="上页的复兴" class="c-back-to-top smoothHide d-none"></a>
+        </main>
+        <footer role="contentinfo" class="footer" id="footer"> </footer>
+        <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close"
+                        data-bs-dismiss="modal">
+                        <i class="o-icon --cross" aria-hidden="true"></i>
+                        <span>关闭</span>
+                    </button>
+                    <form action="/search.html" method="GET" class="modal--search__form">
+                        <h2 class="modal-title">
+                            您在查找......?
+                        </h2>
+                        <div class="form-item">
+                            <label class="visually-hidden" for="key">请输入关键词...</label>
+                            <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key"
+                                name="keyword" value="">
+                            <button type="submit" class="js-form-submit form-submit btn">
+                                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <a href="/search.html" class="u-link">高级搜索</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
+        </div>
+    </div>
+    <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
+    <script src="/sites/default/files/js/js_cIUKHmKr1kWXi06l4jrQ8vSQ793pffiw2dzBkQNlquo.js"></script>
+    <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1713167250"></script>
+    <script src="/sites/default/files/js/js_HjijG7-o7JXaM0iPkTo4h98Ws0CAvM9MsofLwYnRqtc.js"></script>
+    <script src="/sites/default/files/js/js_W8q5R4oIsmRhsRjsbPGB5rAGV5-VpUYHfAmsY7Pxc74.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#header").load("/header.html", function () {
+                let tmp = checkLoginStatus();
+                if (!tmp) {
+                    $("#collapseAccMenu").load("/account-menu.html");
+                } else {
+                    $("#collapseAccMenu").load("/account-menu-after-login.html");
+                }
+            });
+            $("#footer").load("/footer.html");
+            $("#quickLinks").load("/quickLinks.html");
+            $("#worldList").load("/world.html");
+        });
+    </script>
+    <script defer src="https://umami.onlystyle.com.cn/script.js"
+        data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+    <script>
+    function checkLoginStatus() { return false; }
+    const { createApp, reactive } = Vue;
+    var formData = { title: '获取灵感', summary: '发现我们精心挑选的文章、网络研讨会、出版物和杂志，助您洞察行业趋势和创新方向。' };
+    var articleList = [
+      {ID:7181,title:'\u52a9\u529b\u808c\u80a4\u4ece\u5bb9\u5e94\u5bf9\u591a\u53d8\u73af\u5883\u7684\u6d3b\u6027\u6210\u5206',typeName:'\u7075\u611f\u548c\u8d8b\u52bf',eventTime:'2026-05-28',eventTimeYear:'2026',eventTimeDate:'5\u670828\u65e5',summary:'\u5168\u65b0\u767b\u573a\uff1aSilkaress\u2122 \u4e1d\u60a6',tagList:[],url:'/personal-care/get-inspired/articles.html?keyword='+encodeURIComponent('\u52a9\u529b\u808c\u80a4\u4ece\u5bb9\u5e94\u5bf9'),thumb:'https://www.gattefossechina.cn/uploads/file/7ae1f74e60160bb3183a96c3d242cd29_20260528111907.jpg'},
+      {ID:7144,title:'\u4ece\u4e9a\u592a\u5230\u4e16\u754c\uff1a\u4e9a\u6d32\u7f8e\u5986\u4e3a\u4f55\u6210\u4e3a\u5168\u7403\u521b\u65b0\u98ce\u5411\u6807\uff1f',typeName:'\u4e13\u4e1a\u77e5\u8bc6',eventTime:'2026-02-07',eventTimeYear:'2026',eventTimeDate:'2\u67087\u65e5',summary:'\u4e9a\u6d32\u7f8e\u5986\u6b63\u5f53\u7ea2\uff0c\u8fd9\u80cc\u540e\u7684\u5173\u952e\u539f\u56e0\u7684\u4e3a\u4f60\u4e00\u4e00\u62c6\u89e3\u3002',tagList:['\u5305\u5bb9\u6027','\u5934\u53d1\u62a4\u7406','\u5934\u76ae\u62a4\u7406','\u5f69\u5986'],url:'/personal-care/get-inspired/articles.html?keyword='+encodeURIComponent('\u4e9a\u6d32\u7f8e\u5986\u521b\u65b0\u98ce\u5411\u6807'),thumb:'https://www.gattefossechina.cn/uploads/file/1a5fcefe2601425bd491a541438e5f9b_20260207173522.jpg'},
+      {ID:7090,title:'2025 \u4e07\u5723\u8282\u7f8e\u5986\u201c\u602a\u7f8e\u201d\u98ce\u5411',typeName:'\u7075\u611f\u548c\u8d8b\u52bf',eventTime:'2025-11-11',eventTimeYear:'2025',eventTimeDate:'11\u670811\u65e5',summary:'\u5f53\u5986\u5bb9\u6210\u4e3a\u8bb2\u6545\u4e8b\u7684\u9053\u5177\uff0c\u5609\u6cd5\u72ee\u628a\u201c\u6781\u81f4\u5986\u6548\uff0b\u6e29\u548c\u6cc4\u517b\u201d\u4e00\u6b21\u5949\u4e0a',tagList:['\u7075\u611f','\u5b63\u8282','\u5f69\u5986'],url:'/personal-care/get-inspired/articles.html?keyword='+encodeURIComponent('\u4e07\u5723\u8282\u7f8e\u5986'),thumb:'https://www.gattefossechina.cn/uploads/file/4f8b9bac13ba43de53379a662fcf82a0_20251111054057.jpg'}
+    ];
+    var webinarsList = [
+      {ID:46,title:'Color catwalk',typeName:'\u4e13\u4e1a\u77e5\u8bc6',summary:'\u4e86\u89e3\u5f53\u4eca\u5f69\u5986\u8d8b\u52bf\u7684\u4e24\u6781\u5206\u5316\u4ee5\u53ca\u80fd\u5e2e\u52a9\u60a8\u4e3a\u4efb\u4f55\u5986\u5bb9\u6253\u9020\u7f8e\u4e3d\u4ea7\u54c1\u7684\u9ad8\u6027\u80fd\u6210\u5206\u3002',tagList:[],topBackground:'https://www.gattefossechina.cn/uploads/file/257d919e332ebbe96cec3879e555d106_20240726125935.webp',lock:true,url:'https://us02web.zoom.us/rec/component-page?hasValidToken=false&clusterId=us02&action=play&filePlayId=&componentName=recording-register&meetingId=3Kfoy8SuZCTGMYG02c9BuQDDl8aCsDpQFakyWa0TBD_PG9'},
+      {ID:44,title:'Biodegradability in cosmetics',typeName:'\u4e13\u4e1a\u77e5\u8bc6',summary:'\u5728 20 \u5206\u949f\u5185\u4e86\u89e3\u5316\u5986\u54c1\u751f\u7269\u964d\u89e3\u6027\u6240\u9700\u7684\u6240\u6709\u77e5\u8bc6\u3002',tagList:[],topBackground:'https://www.gattefossechina.cn/uploads/file/dcc8d188fb21a502826898453e707109_20240726125944.webp',lock:true,url:'https://us02web.zoom.us/rec/component-page?hasValidToken=false&clusterId=us02&action=play&filePlayId=&componentName=recording-register&meetingId=8ZKE6nRJqmI-tMfZsldEc9-Oyn217XnNO68uL-RDyhZ-Je'}
+    ];
+    var publicationList = [
+      {ID:334,title:'Preparation and characterization of liquid crystal emulsions based on a wax ester emulsifier',typeName:'\u6d77\u62a5',eventTimeYear:'2025',summary:'\u4ecb\u7ecd\u5229\u7528\u5929\u7136\u6765\u6e90\u7684\u8721\u916f\u4e73\u5316\u5242\u5236\u5907\u6db2\u6676\u4e73\u6db2\u7684\u7814\u7a76\u3002',tagList:[],url:'https://www.gattefosse.com/files/2841/poster_ifsccbrazil_emulium_dolcea_mb_9c_0.pdf'},
+      {ID:335,title:'Construction of spheroids from melanocytes of different ethnic origins',typeName:'\u6d77\u62a5',eventTimeYear:'2025',summary:'\u6bd4\u8f83\u4e09\u79cd\u4f53\u5916\u9ad8\u901a\u91cf\u7cfb\u7edf\u7528\u4e8e\u7f8e\u767d\u4ea7\u54c1\u529f\u6548\u7b5b\u9009\u7684\u6548\u679c\u3002',tagList:[],url:'https://www.gattefosse.com/files/2739/bechetoille_nicolas_p472.pdf'}
+    ];
+        var webBrochuresList = [
+      {ID:161,title:'addiactive #126: Spotted!',eventTimeYear:'2024',eventTimeDate:'7\u670826\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/3085d34979e5d5c8fdd9f2e15409e75c_20240726123130.jpg',url:'https://www.gattefosse.com/files/2730/addiactive-126-en-v3.pdf',lock:false},
+      {ID:139,title:'Once Upon a Time',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/c9691a3e96ae30036a852ee8a95e1a2c_20240524101101.png',url:'https://www.gattefosse.com/files/2691/addiactive-125-en.pdf',lock:false},
+      {ID:140,title:'addiactive #124 : EuphorIA',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/7bd8623d9fa65a57e314e6eefc86e3c8_20240524101131.jpg',url:'https://www.gattefosse.com/files/2583/addiactive-124-en-vf.pdf',lock:false},
+      {ID:141,title:'addiactive #123',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/9598b8a3bc3e9589e14265f423d2f4a3_20240524101153.jpg',url:'https://www.gattefosse.com/files/2266/addiactive-123-en-bd.pdf',lock:false},
+      {ID:142,title:'addiactive #122',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/916b936d73f26f04dcfd5d7988526b0e_20240524101214.jpg',url:'https://www.gattefosse.com/files/350/addiactive-122-en-v3.pdf',lock:false},
+      {ID:143,title:'addiactive #121',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/526e6f0753a49a269d7136248097dcc1_20240524101233.jpg',url:'https://www.gattefosse.com/files/1205/addiactive-121-en-v3.pdf',lock:false},
+      {ID:144,title:'addiactive #120',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/c77edabfda7ab194c5cd6b2b2b018105_20240524101250.jpg',url:'https://www.gattefosse.com/files/1201/addiactive-120-en.pdf',lock:false},
+      {ID:145,title:'addiactive #116',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/dd7e1f58eea6a6e7ed5079d29c580ab7_20240524101325.jpg',url:'https://www.gattefosse.com/files/1192/addiactive-116-en-v4.pdf',lock:false},
+      {ID:146,title:'addiactive #115',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/95e80a0d51c7d0a4b96f13fa3601818e_20240524101438.jpg',url:'https://www.gattefosse.com/files/1188/addiactive-115-en-bd.pdf',lock:false},
+      {ID:147,title:'addiactive #114',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/25231d990fbc1a6cffc915170bc73d70_20240524101444.jpg',url:'https://www.gattefosse.com/files/1184/addiactive-114-en-bd-1.pdf',lock:false},
+      {ID:148,title:'addiactive #113',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/f60313fc28ec7b0dd9592fa802364647_20240524101518.jpg',url:'https://www.gattefosse.com/files/727/addiactive-113-en-bd.pdf',lock:false},
+      {ID:149,title:'addiactive #112',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/71e4c32675c39ae07ed855eed94f3a83_20240524101523.jpg',url:'https://www.gattefosse.com/files/346/addiactive-112-en-bd-2.pdf',lock:false}
+    ];
+    const app = createApp({
+      setup() {
+        var data = reactive({
+          formData: formData,
+          articleList: articleList,
+          webinarsList: webinarsList,
+          publicationList: publicationList,
+          webBrochuresList: webBrochuresList,
+          userEnabled: null
+        });
+        return { data };
+      }
+    });
+    app.mount('#app');
+    </script>
+
+</html>
