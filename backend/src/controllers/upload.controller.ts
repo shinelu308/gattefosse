@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import path from 'path';
+import fs from 'fs';
 import sharp from 'sharp';
 import { success, fail } from '../utils/response';
 import { config } from '../config';
 
 /**
- * 图片上传（自动缩放到 268x201）
+ * 图片上传（保留原始高清图，同时生成缩略图用于列表页）
  */
 export async function uploadImage(req: Request, res: Response) {
   try {
@@ -15,16 +16,23 @@ export async function uploadImage(req: Request, res: Response) {
 
     const filePath = req.file.path;
     const ext = path.extname(req.file.filename);
-    const resizedName = `${path.basename(req.file.filename, ext)}_268x201${ext}`;
-    const resizedPath = path.join(path.dirname(filePath), resizedName);
+    const basename = path.basename(req.file.filename, ext);
+    const dir = path.dirname(filePath);
 
-    // 缩放到 268x201（cover 模式，会裁剪填充）
-    await sharp(filePath)
+    // 原文件名就是 multer 生成的临时文件，直接重命名为 _original 后缀保留原图
+    const originalName = `${basename}_original${ext}`;
+    const originalPath = path.join(dir, originalName);
+    fs.renameSync(filePath, originalPath);
+
+    // 从原图生成缩略图（268x201）
+    const thumbName = `${basename}_thumb${ext}`;
+    const thumbPath = path.join(dir, thumbName);
+    await sharp(originalPath)
       .resize(268, 201, { fit: 'cover', position: 'centre' })
-      .toFile(resizedPath);
+      .toFile(thumbPath);
 
-    const url = `${config.baseUrl}/uploads/images/${resizedName}`;
-    return res.json(success({ url, filename: resizedName }, '上传成功'));
+    const url = `${config.baseUrl}/uploads/images/${originalName}`;
+    return res.json(success({ url, filename: originalName, thumbnail: thumbName }, '上传成功'));
   } catch (error) {
     console.error('图片上传失败:', error);
     return res.status(500).json(fail('图片上传失败'));
@@ -32,7 +40,7 @@ export async function uploadImage(req: Request, res: Response) {
 }
 
 /**
- * 多图上传（也缩放）
+ * 多图上传（也生成原图 + 缩略图）
  */
 export async function uploadImages(req: Request, res: Response) {
   try {
@@ -44,14 +52,25 @@ export async function uploadImages(req: Request, res: Response) {
     const urls = await Promise.all(files.map(async (f) => {
       const filePath = f.path;
       const ext = path.extname(f.filename);
-      const resizedName = `${path.basename(f.filename, ext)}_268x201${ext}`;
-      const resizedPath = path.join(path.dirname(filePath), resizedName);
-      await sharp(filePath)
+      const basename = path.basename(f.filename, ext);
+      const dir = path.dirname(filePath);
+
+      // 重命名原文件为 _original
+      const originalName = `${basename}_original${ext}`;
+      const originalPath = path.join(dir, originalName);
+      fs.renameSync(filePath, originalPath);
+
+      // 生成缩略图
+      const thumbName = `${basename}_thumb${ext}`;
+      const thumbPath = path.join(dir, thumbName);
+      await sharp(originalPath)
         .resize(268, 201, { fit: 'cover', position: 'centre' })
-        .toFile(resizedPath);
+        .toFile(thumbPath);
+
       return {
-        url: `${config.baseUrl}/uploads/images/${resizedName}`,
-        filename: resizedName,
+        url: `${config.baseUrl}/uploads/images/${originalName}`,
+        filename: originalName,
+        thumbnail: thumbName,
       };
     }));
 
