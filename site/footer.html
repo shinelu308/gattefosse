@@ -68,60 +68,46 @@ class="block block-gattefosse-core block-footer-block">
 <nav aria-labelledby="block-bottommenu-menu" id="block-bottommenu" data-block-plugin-id="menu_block:bottom"
 class="block block-menu navigation menu--bottom">
 <p class="visually-hidden" id="block-bottommenu-menu">底部菜单</p>
-<div class="footer__bottom">
-  <div class="container">
-    <ul data-block="footer" class="nav navbar-nav menu--bottom">
+<div class="footer__bottom" style="padding:1.6rem 0;text-align:center;">
+  <div class="container" style="display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 20px;">
+    <ul data-block="footer" class="nav navbar-nav menu--bottom" style="list-style:none;padding:0;margin:0;display:flex;gap:16px;font-size:1.3rem;color:#888;">
       <li class="menu-icon menu-icon-16 nav-item">
-        <a href="/legal-notice.html" class="nav-link" data-drupal-link-system-path="node/208">法律声明</a>
+        <a href="/legal-notice.html" class="nav-link" data-drupal-link-system-path="node/208" style="color:#888;text-decoration:none;">法律声明</a>
       </li>
       <li class="menu-icon menu-icon-103 nav-item">
-        <a href="/article-normal-template-notop.html?id=210" class="nav-link"
-          data-drupal-link-system-path="node/503">条款和条件</a>
+        <a href="/article-normal-template-notop.html?id=210" class="nav-link" data-drupal-link-system-path="node/503" style="color:#888;text-decoration:none;">条款和条件</a>
       </li>
       <li class="menu-icon menu-icon-49 nav-item">
-        <a href="/article-normal-template-notop.html?id=144" class="nav-link"
-          data-drupal-link-system-path="node/209">隐私政策</a>
+        <a href="/article-normal-template-notop.html?id=144" class="nav-link" data-drupal-link-system-path="node/209" style="color:#888;text-decoration:none;">隐私政策</a>
       </li>
       <li class="menu-icon menu-icon-17 nav-item">
-        <a href="/sitemap.html" class="nav-link" data-drupal-link-system-path="sitemap">全站导航</a>
+        <a href="/sitemap.html" class="nav-link" data-drupal-link-system-path="sitemap" style="color:#888;text-decoration:none;">全站导航</a>
       </li>
     </ul>
-  </div>
-</div>
-</nav>
-<nav aria-labelledby="block-bottommenu-menu" id="block-bottommenu" data-block-plugin-id="menu_block:bottom"
-class="block block-menu navigation menu--bottom">
-<div class="footer__bottom" style="border: none;">
-  <div class="container">
-    <p><a href="https://beian.miit.gov.cn">沪ICP备2020030140号</a> <img src="/themes/custom/gattefosse/images/gonganbeianlogo.png" class="w-full" style="width: 16px;"><a href="https://beian.mps.gov.cn/#/query/webSearch?code=31011502401615" rel="noreferrer" target="_blank">沪公网安备31011502401615</a></p>
+    <div style="font-size:1.2rem;color:#999;display:flex;align-items:center;gap:4px;">
+      <a href="https://beian.miit.gov.cn" style="color:#999;text-decoration:none;">沪ICP备2020030140号</a>
+      <span style="margin:0 4px;">|</span>
+      <img src="/themes/custom/gattefosse/images/gonganbeianlogo.png" style="width:14px;vertical-align:middle;">
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=31011502401615" rel="noreferrer" target="_blank" style="color:#999;text-decoration:none;">沪公网安备31011502401615</a>
+    </div>
   </div>
 </div>
 </nav>
 <style>
-  .menu--social-network {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer__bottom li {
-  display: flex;
-  flex-wrap: wrap; /* 允许在窄屏时换行 */
-}
-
-.box {
-  width: 100px;
-  height: 100px;
-  margin: 5px;
-}
-
-/* 在屏幕宽度小于600px时，将div改为竖排 */
-@media (max-width: 600px) {
-  li {
-    flex-direction: column;
-    align-items: center; /* 居中对齐 */
-    margin-bottom: 2rem;
+  .footer__bottom li {
+    display: flex;
+    flex-wrap: wrap;
   }
-}
-
-  </style>
+  .box {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+  }
+  @media (max-width: 600px) {
+    li {
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+  }
+</style>
