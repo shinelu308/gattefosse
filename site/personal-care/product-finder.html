@@ -160,9 +160,9 @@
                         class="block block-facets-summary block-facets-summary-blockingredients-personal-care-active-filters" :class="data.activeFilterClass">
                         <h3 class="c-filter__subtitle">当前过滤项 :</h3>
                         <ul class="o-tag-list o-tag-list--wrap">
-                          <li class="facet-summary-item--facet o-tag-list__item">
-                            {{data.curFilter}}
-                            <a href="/personal-care/product-finder.html" class="c-filter__delete">
+                          <li class="facet-summary-item--facet o-tag-list__item" v-for="(af, afi) in data.activeFilters" :key="afi">
+                            <span class="c-filter__tag">{{ af.label }}</span>
+                            <a href="javascript:void(0)" class="c-filter__delete" @click.prevent="removeFilter(af)">
                               <span class="visually-hidden">移除过滤</span>
                             </a>
                           </li>
@@ -490,6 +490,25 @@
       padding: 0 !important;
       cursor: pointer !important;
     }
+    /* 已选过滤项标签 */
+    .c-filter__tag {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 1.3rem;
+    }
+    .c-filter__delete {
+      display: inline-block;
+      margin-left: 6px;
+      color: #999;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .facet-summary-item--facet.o-tag-list__item {
+      display: inline-flex;
+      align-items: center;
+      margin: 4px 8px 4px 0;
+    }
   </style>
   <script>
     // 获取对话框元素和关闭按钮
@@ -546,6 +565,7 @@
         page_size: pageSize,
         curFilter: '',
         activeFilterClass: 'hidden',
+        activeFilters: [],
         keyword: curKeyword,
         loading: false
       });
@@ -601,6 +621,8 @@
               dataDrupalFacetId: ''
             };
           }).filter(Boolean); // 过滤掉不存在的分类
+          // 标签加载完成后，同步生成已选过滤项
+          buildActiveFilters();
           console.log('[Tags] 最终 tagList:', JSON.stringify(data.tagList, null, 2));
           // 数据已更新，等 Vue 渲染完 DOM 后再初始化「查看所有」按钮状态
           nextTick(function () {
@@ -691,6 +713,7 @@
           tagItem.active = !tagItem.active;
         }
         data.cur_page = 1;
+        buildActiveFilters();
         loadProducts(1);
       }
 
@@ -705,6 +728,8 @@
         data.tagList.forEach(function (g) { g.children.forEach(function (t) { t.active = false; }); });
         data.keyword = '';
         data.cur_page = 1;
+        data.activeFilters = [];
+        data.activeFilterClass = 'hidden';
         loadProducts(1);
       }
 
@@ -734,6 +759,33 @@
           btn.textContent = '查看所有';
           btn.setAttribute('data-aria-expanded', 'false');
         }
+      }
+
+      // 构建已选过滤项列表
+      function buildActiveFilters() {
+        var list = [];
+        data.tagList.forEach(function (g) {
+          if (g.children) {
+            g.children.forEach(function (t) {
+              if (t.active) {
+                list.push({ groupIndex: data.tagList.indexOf(g), tagIndex: g.children.indexOf(t), groupName: g.tagName, label: t.tagName, value: t.value });
+              }
+            });
+          }
+        });
+        data.activeFilters = list;
+        data.activeFilterClass = list.length > 0 ? '' : 'hidden';
+      }
+
+      // 移除单个过滤项
+      function removeFilter(af) {
+        var group = data.tagList[af.groupIndex];
+        if (group && group.children[af.tagIndex]) {
+          group.children[af.tagIndex].active = false;
+        }
+        buildActiveFilters();
+        data.cur_page = 1;
+        loadProducts(1);
       }
 
       // 加入收藏
@@ -816,7 +868,7 @@
         setTagStyle();
       });
 
-      return { data, changePage, toggleTag, clearFilters, doSearch, seeAll, addCart, addProductFav, goToUrl };
+      return { data, changePage, toggleTag, clearFilters, doSearch, seeAll, addCart, addProductFav, goToUrl, buildActiveFilters, removeFilter };
     }
   });
   app.mount("#app");
