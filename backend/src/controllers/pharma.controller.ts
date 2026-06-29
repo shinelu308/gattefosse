@@ -216,6 +216,46 @@ export async function batchPublishPharmaProducts(req: Request, res: Response) {
 }
 
 /**
+ * 获取药用辅料关联文档
+ */
+export async function getPharmaDocuments(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json(fail('无效的产品ID'));
+
+    const docProducts = await prisma.docProduct.findMany({
+      where: { productId: id, productType: 'pharma' },
+      include: {
+        document: {
+          include: { docProducts: true },
+        },
+      },
+    });
+
+    const documents = (docProducts || []).map(function(dp) {
+      const doc = dp.document;
+      return {
+        id: doc.id,
+        title: doc.title,
+        type: doc.type,
+        language: doc.language,
+        fileUrl: doc.fileUrl,
+        fileName: doc.fileName,
+        fileSize: doc.fileSize,
+        isPublic: doc.isPublic,
+        createdAt: doc.createdAt,
+        updatedAt: doc.updatedAt,
+      };
+    });
+
+    return res.json(success(documents));
+  } catch (error) {
+    console.error('获取辅料关联文档失败:', error);
+    return res.status(500).json(fail('获取辅料关联文档失败'));
+  }
+}
+
+/**
  * 批量删除药用辅料
  */
 export async function batchDeletePharmaProducts(req: Request, res: Response) {

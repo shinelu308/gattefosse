@@ -33,6 +33,8 @@ export async function listDocuments(req: Request, res: Response) {
       type,
       language,
       isPublic,
+      productId,
+      productType,
     } = req.query;
 
     const pageNum = Math.max(1, parseInt(String(page)));
@@ -52,6 +54,16 @@ export async function listDocuments(req: Request, res: Response) {
     }
     if (isPublic !== undefined && isPublic !== '') {
       where.isPublic = String(isPublic) === 'true';
+    }
+
+    // 按产品关联过滤
+    if (productId && productType) {
+      where.docProducts = {
+        some: {
+          productId: parseInt(String(productId)),
+          productType: String(productType),
+        },
+      };
     }
 
     const [total, items] = await Promise.all([

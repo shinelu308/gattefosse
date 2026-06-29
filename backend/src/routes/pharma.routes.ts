@@ -4,6 +4,7 @@ import { requireRole } from '../middleware/role';
 import {
   listPharmaProducts,
   getPharmaProduct,
+  getPharmaDocuments,
   createPharmaProduct,
   updatePharmaProduct,
   deletePharmaProduct,
@@ -16,6 +17,7 @@ const router = Router();
 // 公开接口
 router.get('/', listPharmaProducts);
 router.get('/:id', getPharmaProduct);
+router.get('/:id/documents', getPharmaDocuments);
 
 // 后台管理接口
 router.post('/', authMiddleware, requireRole('editor', 'super_admin'), createPharmaProduct);
