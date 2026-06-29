@@ -5,241 +5,605 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <title>产品详情 | 嘉法狮</title>
-  <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
-  <link rel="stylesheet" media="all"
-    href="/sites/default/files/css/css_1DVUkvXE9JpoQ1xLdVdzs-hgmcfdlNmPGwZO5WfAX5c.css" />
-  <link rel="stylesheet" media="all"
-    href="/sites/default/files/css/css_hx-izN24pfJl4Ip2Kx7sPVQzqooEE63N9jGUuXDePTE.css" />
-  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1712750673.css" />
-  <link rel="stylesheet" media="all"
-    href="/sites/default/files/css/css_zCDCU-o2LKXngtpj6DBjU0-DPPFPfqZNHXrxn4tmXuY.css" />
-  <link rel="stylesheet" media="all"
-    href="/sites/default/files/css/css_WXsVlvolEM36iHFvMW3UgPgsEh7mPKjCJ_ucwbLENX8.css" />
-  <link rel="stylesheet" media="all"
-    href="/sites/default/files/css/css_EmY_sxerr-TNvoyioQly5tba1LJdvC1mnkhyeygX5Gg.css" />
+  <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
   <script src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api.js"></script>
   <script src="/static/js/auth.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .product-detail-loading { text-align: center; padding: 120px 20px; }
-    .product-detail-loading .spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #e0e0e0; border-top-color: #004b87; border-radius: 50%; animation: pd-spin 0.6s linear infinite; margin-bottom: 10px; }
+    /* ===== Gattefossé Pharma Theme ===== */
+    :root {
+      --accent-color-light: #D7E6EF;
+      --accent-color: #0075BB;
+      --accent-color-dark: #00588D;
+      --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --bs-body-font-size: 1.6rem;
+      --bs-body-color: #3C4248;
+      --bs-body-bg: #fff;
+      --bs-link-color: #0075BB;
+      --bs-link-hover-color: #00588D;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 62.5%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--bs-body-font-family);
+      font-size: var(--bs-body-font-size);
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
+      line-height: 1.5;
+    }
+    a { color: var(--bs-link-color); text-decoration: none; }
+    a:hover { color: var(--bs-link-hover-color); text-decoration: underline; }
+    img { max-width: 100%; height: auto; vertical-align: middle; }
+    h1, h2, h3, h4 { margin-top: 0; }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+      text-decoration: none;
+      vertical-align: middle;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      color: #fff;
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+    .btn-primary:hover {
+      color: #fff;
+      background-color: var(--accent-color-dark);
+      border-color: var(--accent-color-dark);
+    }
+    .btn-tertiary {
+      color: var(--accent-color);
+      background: none;
+      border: none;
+      padding-left: 0;
+      gap: 0.4rem;
+    }
+    .btn-tertiary:hover { color: var(--accent-color-dark); }
+    .btn-icon--r { gap: 0.8rem; }
+    .btn-see-cart { display: none; }
+
+    /* ===== Breadcrumb ===== */
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1.2rem 2.4rem;
+      margin: 0;
+      list-style: none;
+      font-size: 1.3rem;
+    }
+    .breadcrumb-item + .breadcrumb-item { padding-left: 0.5rem; }
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: "\BB";
+      padding-right: 0.5rem;
+      color: #6c757d;
+    }
+    .breadcrumb-item.active { color: #6c757d; }
+    .breadcrumb a { color: var(--accent-color); }
+
+    /* ===== Main Layout ===== */
+    .dialog-off-canvas-main-canvas { display: flex; flex-direction: column; }
+    .main { flex: 1; }
+
+    /* ===== s-product-header ===== */
+    .s-product-header {
+      display: flex;
+      background-color: #fff;
+      min-height: 50.8rem;
+      position: relative;
+    }
+    .s-product-header .region-breadcrumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      background: rgba(255,255,255,0.6);
+      z-index: 2;
+    }
+    .s-product-header__img {
+      position: relative;
+      width: 58%;
+      min-width: 58%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .s-product-header__fav {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 0 0 0 4px;
+      border: none;
+      color: #8EB73C;
+      width: 5rem;
+      height: 5rem;
+      font-size: 2.4rem;
+      display: inline-flex;
+      place-content: center;
+      place-items: center;
+      cursor: pointer;
+      z-index: 3;
+    }
+    .s-product-header__fav:hover { color: #8EB73C; }
+    .s-product-header__fav .o-icon { font-size: 2.4rem; }
+    .s-product-header__fav.is-active .o-icon--star::before { content: "\2605"; }
+    .s-product-header__content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding-left: 7%;
+      padding-right: 2.4rem;
+    }
+    .s-product-header__title {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #232426;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .s-product-header__subtitle {
+      font-size: 2.6rem;
+      color: #3C4248;
+      margin: 0.8rem 0 0;
+    }
+    .s-product-header__btns {
+      margin-top: 3.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      align-items: flex-start;
+    }
+    .s-product-header__btn-document { text-align: left; padding-left: 0; }
+
+    /* ===== s-product-description ===== */
+    .s-product-description {
+      padding: 6.8rem 0 8rem;
+      background-color: #F7F5F0;
+    }
+    .s-product-description a { text-decoration: underline; color: var(--accent-color); }
+    .s-product-description a:hover { color: var(--accent-color-dark); }
+    .s-product-description__container {
+      margin-left: 2.4rem;
+      margin-right: 2.4rem;
+      display: flex;
+      gap: 3.2rem;
+      align-items: flex-start;
+      position: relative;
+      min-height: 10rem;
+    }
+    .s-product-description__container::before {
+      content: "";
+      width: 8rem;
+      height: 17.5rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 0 L100 50 L100 150 L50 200 L0 150 L0 50 Z' fill='%23D2E1B4' opacity='0.3'/%3E%3C/svg%3E") no-repeat top left;
+      background-size: contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .s-product-description__main {
+      margin-left: 10rem;
+      padding-left: 4rem;
+      border-left: 2px solid #fff;
+      width: 100%;
+    }
+    .s-product-description__main-content {
+      font-size: 2.4rem;
+      color: #3C4248;
+      line-height: 1.6;
+    }
+    .s-product-description__main-content p { margin: 0 0 1.2rem; }
+    .s-product-description__revendication {
+      background: #fff;
+      border-top: 4px solid var(--accent-color);
+      box-shadow: 0 0.4rem 3rem rgba(0,0,0,0.1);
+      padding: 3.2rem;
+      min-width: 26.8rem;
+    }
+    .s-product-description__revendication-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 1.6rem;
+    }
+    .s-product-description__revendication-list {
+      font-size: 1.6rem;
+      color: #3C4248;
+      margin: 0;
+      padding-left: 2rem;
+    }
+    .s-product-description__revendication-list li::marker { color: var(--accent-color); }
+
+    /* ===== s-product-content ===== */
+    .s-product-content { background-color: #F7F5F0; width: 100%; }
+    .s-product-content a:not(.btn) { text-decoration: underline; color: var(--accent-color); }
+    .s-product-content a:not(.btn):hover { color: var(--accent-color-dark); }
+    .s-product-content__inside {
+      background-color: #fff;
+      margin-bottom: 10rem;
+      margin-left: -2.4rem;
+      margin-right: -2.4rem;
+    }
+    .s-product-content__item {
+      padding: 8rem 10rem;
+      width: 100%;
+    }
+    .s-product-content__item:not(:last-child) { border-bottom: 1px solid #F0EBE3; }
+    .s-product-content__item li::marker { color: var(--accent-color); }
+    .s-product-content__title {
+      margin-bottom: 2.6rem;
+      font-weight: 700;
+      font-size: 2.3rem;
+      color: var(--accent-color);
+    }
+    .s-product-content__cols { display: flex; gap: 3.2rem; }
+    .s-product-content__col { flex: 1 1 0; }
+    .s-product-content__col img { width: auto; max-width: 100%; height: auto; }
+    .s-product-content__txt { font-size: 1.6rem; color: #3C4248; }
+    .s-product-content__txt p { margin: 0 0 1rem; }
+
+    /* ===== s-product-document ===== */
+    .s-product-document { display: flex; gap: 4rem; flex-wrap: wrap; }
+    .s-product-document a { text-decoration: none; }
+    .s-product-document a:hover { text-decoration: underline; }
+    .s-product-document__type { flex: 1 1 calc(33.333% - 2.7rem); min-width: 20rem; }
+    .s-product-document__title {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #232426;
+      margin-bottom: 2.4rem;
+    }
+    .s-product-document__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .s-product-document .c-link { margin: 0; padding-right: 0; width: 100%; }
+    .c-link { display: block; margin-bottom: 1rem; }
+    .c-link--locked { opacity: 0.6; }
+    .c-link__link { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 0; color: #3C4248; text-decoration: none; border-bottom: 1px solid #F0EBE3; }
+    .c-link__link:hover { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+    .c-link__name { font-size: 1.4rem; }
+
+    /* ===== s-product-linked ===== */
+    .s-product-linked { background-color: #F7F5F0; width: 100%; padding-bottom: 10rem; }
+    .s-product-linked .s-product-linked__title {
+      margin-bottom: 4rem;
+      font-weight: 700;
+      font-size: 3.3rem;
+      text-align: center;
+      line-height: 1.2;
+      padding: 0;
+    }
+    .c-cards { display: flex; gap: 3.2rem; flex-wrap: wrap; justify-content: center; }
+    .c-card {
+      background: #fff;
+      border: 1px solid #F0EBE3;
+      border-radius: 0.8rem;
+      padding: 2.4rem;
+      max-width: 30.4rem;
+      flex: 1 1 28rem;
+    }
+    .c-card__title { font-size: 1.8rem; margin-bottom: 1.2rem; }
+    .c-card__title-link { color: #232426; text-decoration: none; }
+    .c-card__title-link:hover { color: var(--accent-color); }
+    .c-card__summary { font-size: 1.4rem; color: #3C4248; line-height: 1.5; }
+
+    /* ===== Back to top ===== */
+    .c-back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 4rem;
+      height: 4rem;
+      background: var(--accent-color);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      text-decoration: none;
+      z-index: 100;
+      opacity: 0.8;
+    }
+    .c-back-to-top:hover { opacity: 1; color: #fff; }
+
+    /* ===== Icons ===== */
+    .o-icon { font-style: normal; }
+    .o-icon--star::before { content: "\2606"; }
+    .o-icon--envelope::before { content: "\2709"; }
+    .o-icon--document::before { content: "\1F4C4"; }
+    .o-icon--list::before { content: "\2630"; }
+    .o-icon--cross::before { content: "\2715"; }
+    .o-icon--magnifying-glass::before { content: "\1F50D"; }
+    .o-icon--caret-right::before { content: "\203A"; }
+
+    /* ===== Dialog ===== */
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 30px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      background-color: #f8f4f4;
+      min-width: 400px;
+      z-index: 9999;
+    }
+    .dialog-content { text-align: center; }
+    .dialog-content a { color: #8eb73c; font-weight: bold; }
+    #dialog-close { margin-top: 20px; padding: 5px 10px; border: none; cursor: pointer; }
+
+    /* ===== Loading ===== */
+    .product-detail-loading {
+      text-align: center;
+      padding: 120px 20px;
+    }
+    .product-detail-loading .spinner {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border: 3px solid #e0e0e0;
+      border-top-color: var(--accent-color);
+      border-radius: 50%;
+      animation: pd-spin 0.6s linear infinite;
+      margin-bottom: 10px;
+    }
     @keyframes pd-spin { to { transform: rotate(360deg); } }
     .s-product-detail-error { text-align: center; padding: 80px 20px; }
-    .s-product-detail-error h2 { color: #c0392b; font-size: 24px; margin-bottom: 10px; }
-    .s-product-detail-error a { color: #004b87; text-decoration: underline; }
+    .s-product-detail-error h2 { color: #c0392b; font-size: 2.4rem; margin-bottom: 10px; }
 
-    .s-product-header { display: flex; flex-wrap: wrap; gap: 40px; margin: 30px 0; align-items: flex-start; }
-    .s-product-header__gallery { flex: 0 0 400px; max-width: 400px; }
-    .s-product-header__gallery img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .s-product-header__gallery-placeholder { width: 100%; height: 300px; border-radius: 12px; background: linear-gradient(135deg, #004b87, #0075BB); display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 30px; }
-    .s-product-header__gallery-placeholder .name { font-size: 32px; font-weight: bold; margin-bottom: 8px; word-break: break-word; }
-    .s-product-header__gallery-placeholder .tagline { font-size: 14px; opacity: 0.85; }
-    .s-product-header__info { flex: 1; min-width: 300px; }
-    .s-product-header__title { font-size: 28px; color: #004b87; margin-bottom: 8px; line-height: 1.3; }
-    .s-product-header__tagline { font-size: 16px; color: #555; margin-bottom: 20px; font-style: italic; }
-
-    .s-product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-    .s-product-tag { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 13px; font-weight: 500; }
+    /* ===== Tags ===== */
+    .s-product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 1.6rem 0; }
+    .s-product-tag { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 1.2rem; font-weight: 500; }
     .s-product-tag.market { background: #e8f5e9; color: #2e7d32; }
     .s-product-tag.route { background: #e8f0fe; color: #004b87; }
     .s-product-tag.functionality { background: #fff8e1; color: #f57f17; }
     .s-product-tag.dosage-form { background: #f3e5f5; color: #7b1fa2; }
 
-    .s-product-info-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    .s-product-info-table td { padding: 10px 14px; border-bottom: 1px solid #eee; vertical-align: top; }
-    .s-product-info-table td:first-child { font-weight: 600; color: #004b87; white-space: nowrap; width: 140px; }
+    /* ===== Quick Access ===== */
+    .quick-access {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      z-index: 999;
+    }
+    .quick-access__button--open {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 1rem 0.6rem;
+      writing-mode: vertical-rl;
+      cursor: pointer;
+      border-radius: 0 4px 4px 0;
+      font-size: 1.2rem;
+    }
 
-    .s-product-header__btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-    .s-product-header__btns .btn { min-width: 140px; }
+    /* ===== Modal ===== */
+    .modal--search .modal-dialog { max-width: 600px; margin: 10vh auto; }
+    .modal--search .form-item { display: flex; gap: 1rem; margin-top: 2rem; }
+    .modal--search input { flex: 1; padding: 1rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1.6rem; }
 
-    .s-product-content { margin: 40px 0; }
-    .s-product-section { margin-bottom: 40px; }
-    .s-product-section h2 { font-size: 22px; color: #004b87; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #004b87; }
-    .s-product-section__body { line-height: 1.8; color: #333; }
-    .s-product-section__body p { margin-bottom: 12px; }
-    .s-product-section__body img { max-width: 100%; height: auto; border-radius: 8px; }
-
-    .s-content-block { margin-bottom: 40px; }
-    .s-content-block h3 { font-size: 20px; color: #004b87; margin-bottom: 16px; }
-    .s-content-block__body { line-height: 1.8; color: #333; }
-    .s-content-block--image-text { display: flex; gap: 24px; flex-wrap: wrap; }
-    .s-content-block--image-text .text-col { flex: 1; min-width: 250px; }
-    .s-content-block--image-text .image-col { flex: 0 0 300px; }
-    .s-content-block--image-text .image-col img { width: 100%; border-radius: 8px; }
-
-    .s-tech-file-list { list-style: none; padding: 0; }
-    .s-tech-file-list li { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
-    .s-tech-file-list li a { color: #333; text-decoration: none; display: flex; align-items: center; transition: color 0.2s; }
-    .s-tech-file-list li a:hover { color: #004b87; }
-    .s-tech-file-list li a::before { content: "\1F4C4"; margin-right: 8px; font-size: 18px; }
-    .s-tech-file-list li .file-meta { margin-left: auto; font-size: 12px; color: #999; }
-
-    .breadcrumb { padding: 12px 0; }
-    .breadcrumb a { color: #004b87; text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-
-    .s-back-link { display: inline-flex; align-items: center; gap: 4px; color: #004b87; text-decoration: none; margin-bottom: 20px; font-size: 14px; }
-    .s-back-link:hover { text-decoration: underline; }
-
-    .dialog { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 30px; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.2); background-color: rgba(248,244,244,1); min-width: 400px; z-index: 9999; }
-    .dialog-content { text-align: center; }
-    .dialog-content a { color: #8eb73c; font-weight: bold; }
-    #dialog-close { margin-top: 20px; padding: 5px 10px; border: none; cursor: pointer; }
-
-    @media (max-width: 768px) {
-      .s-product-header { flex-direction: column; }
-      .s-product-header__gallery { flex: 0 0 auto; max-width: 100%; }
-      .s-product-info-table td { display: block; }
-      .s-product-info-table td:first-child { padding-bottom: 0; width: auto; }
-      .s-content-block--image-text { flex-direction: column; }
-      .s-content-block--image-text .image-col { flex: 0 0 auto; }
+    /* ===== Responsive ===== */
+    @media (max-width: 991px) {
+      .s-product-header { min-height: auto; flex-direction: column; }
+      .s-product-header__img { width: 100%; min-width: 100%; height: 26rem; }
+      .s-product-header__content { margin: 2.4rem; padding-left: 0; }
+      .s-product-header__title { font-size: 2.6rem; }
+      .s-product-header__subtitle { font-size: 2rem; }
+      .s-product-header__btns { margin-top: 0.8rem; align-items: stretch; width: 100%; }
+    }
+    @media (max-width: 767px) {
+      .s-product-header__img { height: 18rem; }
+      .s-product-header__title { font-size: 2.2rem; }
+      .s-product-description { padding-top: 2.4rem; padding-bottom: 2.4rem; }
+      .s-product-description__container { flex-direction: column; align-items: stretch; min-height: auto; }
+      .s-product-description__container::before { content: none; }
+      .s-product-description__main { margin-left: 0; padding-left: 1.6rem; }
+      .s-product-description__main-content { font-size: 1.8rem; }
+      .s-product-content__item { padding: 4rem 2.4rem; }
+      .s-product-content__title { font-size: 1.8rem; }
+      .s-product-content__cols { flex-direction: column; gap: 1.6rem; }
+      .s-product-content__txt { font-size: 1.4rem; }
+      .s-product-document { flex-direction: column; gap: 2.6rem; }
+      .s-product-document__title { font-size: 1.6rem; margin-bottom: 1.6rem; }
+      .s-product-linked { padding-bottom: 3.2rem; }
+      .s-product-linked .s-product-linked__title { font-size: 2.3rem; margin-bottom: 1.6rem; }
+      .c-card { max-width: 100%; }
     }
   </style>
 </head>
 <body class="theme-pharma path-pharmaceuticals bg- d-flex flex-column">
-  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100">
     <header role="banner" class="header" id="header"></header>
 
-    <main role="main" class="main theme-pharma">
-      <div class="page-content">
-        <div class="region region-breadcrumb">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/">首页</a></li>
-              <li class="breadcrumb-item"><a href="/pharmaceuticals.html">药用辅料</a></li>
-              <li class="breadcrumb-item"><a href="/pharmaceuticals/product-finder.html">产品导览</a></li>
-              <li class="breadcrumb-item active" aria-current="page">{{ data.product.name }}</li>
-            </ol>
-          </nav>
+    <main role="main" class="main theme-pharma" id="app">
+      <!-- Quick access -->
+      <nav role="navigation" class="quick-access">
+        <button class="quick-access__button quick-access__button--open js-open">
+          <strong>快捷链接</strong>
+        </button>
+      </nav>
+
+      <a id="main-content" tabindex="-1"></a>
+
+      <div v-if="loading" class="product-detail-loading">
+        <div class="spinner"></div>
+        <p style="color:#999;font-size:16px;">正在加载产品信息...</p>
+      </div>
+
+      <div v-else-if="error" class="s-product-detail-error">
+        <h2>产品未找到</h2>
+        <p style="color:#666;margin-bottom:20px;">抱歉，未找到产品信息。</p>
+        <a href="/pharmaceuticals/product-finder.html" class="btn btn-primary">返回产品列表</a>
+      </div>
+
+      <template v-else>
+        <!-- s-product-header -->
+        <div class="s-product-header">
+          <div class="region region-breadcrumb">
+            <nav aria-label="breadcrumb">
+              <h2 id="system-breadcrumb" class="visually-hidden" style="position:absolute;overflow:hidden;clip:rect(1px,1px,1px,1px);width:1px;height:1px;">Breadcrumb</h2>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/pharmaceuticals.html">药用辅料</a></li>
+                <li class="breadcrumb-item"><a href="/pharmaceuticals/product-finder.html">产品目录</a></li>
+                <li class="breadcrumb-item active">{{ product.name }}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="s-product-header__img" :style="headerBgStyle">
+            <button :class="['s-product-header__fav', { 'is-active': inFav }]" @click="addProductFav">
+              <i aria-hidden="true" class="o-icon o-icon--star"></i>
+              <span class="visually-hidden" style="position:absolute;overflow:hidden;clip:rect(1px,1px,1px,1px);width:1px;height:1px;">收藏</span>
+            </button>
+          </div>
+          <div class="s-product-header__content">
+            <h1 class="s-product-header__title">{{ product.name }}</h1>
+            <p class="s-product-header__subtitle" v-if="product.tagline">{{ product.tagline }}</p>
+            <div class="s-product-tags">
+              <span v-for="tag in tags" :key="tag.label" :class="['s-product-tag', tag.category]">{{ tag.label }}</span>
+            </div>
+            <div class="s-product-header__btns">
+              <button v-if="!inCart" class="btn btn-primary btn-icon--r" @click="addCart">
+                申请样品<i aria-hidden="true" class="o-icon o-icon--envelope"></i>
+              </button>
+              <a v-else class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html" style="display:flex;">查看购物车</a>
+              <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document">
+                <i aria-hidden="true" class="o-icon o-icon--document"></i>访问文档和技术信息
+              </a>
+            </div>
+          </div>
         </div>
 
-        <div id="app">
-          <div v-if="!data.loaded" class="product-detail-loading">
-            <div class="spinner"></div>
-            <p style="color:#999;font-size:16px;">正在加载产品信息...</p>
+        <!-- s-product-description -->
+        <div class="s-product-description" v-if="product.description">
+          <div class="s-product-description__container">
+            <div class="s-product-description__main">
+              <div class="s-product-description__main-content" v-html="product.description"></div>
+            </div>
           </div>
+        </div>
 
-          <div v-else-if="data.error" class="s-product-detail-error">
-            <h2>产品未找到</h2>
-            <p style="color:#666;margin-bottom:20px;">抱歉，未找到ID为 {{ data.errorId }} 的产品信息。</p>
-            <a href="/pharmaceuticals/product-finder.html" class="btn btn-outline-primary">返回产品列表</a>
-          </div>
+        <!-- s-product-content -->
+        <div class="s-product-content">
+          <div class="container">
+            <div class="s-product-content__inside">
+              <!-- Main content from API (compositionHtml, applicationHtml, regulatoryHtml, blocks) -->
+              <div class="container" v-html="product.mainContent"></div>
 
-          <div v-else>
-            <a href="/pharmaceuticals/product-finder.html" class="s-back-link">
-              <i class="o-icon --caret-right" aria-hidden="true" style="transform:rotate(180deg);"></i>
-              返回产品列表
-            </a>
-
-            <div class="s-product-header">
-              <div class="s-product-header__gallery">
-                <img v-if="data.product.imageUrl" :src="data.product.imageUrl" :alt="data.product.name" />
-                <div v-else class="s-product-header__gallery-placeholder">
-                  <div>
-                    <div class="name">{{ data.product.name }}</div>
-                    <div class="tagline" v-if="data.product.tagline">{{ data.product.tagline }}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="s-product-header__info">
-                <h1 class="s-product-header__title">{{ data.product.name }}</h1>
-                <p class="s-product-header__tagline" v-if="data.product.tagline">{{ data.product.tagline }}</p>
-
-                <div class="s-product-tags" v-if="data.allTags.length > 0">
-                  <span class="s-product-tag market" v-for="t in data.product.marketTag">{{ t }}</span>
-                  <span class="s-product-tag route" v-for="t in data.product.routeTag">{{ t }}</span>
-                  <span class="s-product-tag functionality" v-for="t in data.product.functionalityTag">{{ t }}</span>
-                  <span class="s-product-tag dosage-form" v-for="t in data.product.dosageFormTag">{{ t }}</span>
-                </div>
-
-                <table class="s-product-info-table">
-                  <tr v-if="data.product.slug"><td>产品标识</td><td>{{ data.product.slug }}</td></tr>
-                  <tr v-if="data.product.description"><td>产品描述</td><td>{{ data.product.description }}</td></tr>
-                  <tr><td>发布状态</td><td><span v-if="data.product.isPublished" style="color:#2e7d32;">已发布</span><span v-else style="color:#999;">草稿</span></td></tr>
-                </table>
-
-                <div class="s-product-header__btns">
-                  <button class="btn btn-primary" @click="addCart"><i class="o-icon --tote-bag" aria-hidden="true"></i> 申请样品</button>
-                  <a v-if="data.product.intlUrl" :href="data.product.intlUrl" target="_blank" class="btn btn-outline-primary">查看国际站详情</a>
-                  <button class="btn btn-outline-primary" @click="addProductFav"><i class="o-icon --star" aria-hidden="true"></i> {{ data.inFav ? '已收藏' : '收藏' }}</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="s-product-content" v-if="data.product.description">
-              <div class="s-product-section">
-                <h2>产品概述</h2>
-                <div class="s-product-section__body">{{ data.product.description }}</div>
-              </div>
-            </div>
-
-            <div class="s-product-content" v-if="data.product.compositionHtml">
-              <div class="s-product-section"><h2>组成成分</h2><div class="s-product-section__body" v-html="data.product.compositionHtml"></div></div>
-            </div>
-            <div class="s-product-content" v-if="data.product.applicationHtml">
-              <div class="s-product-section"><h2>应用领域</h2><div class="s-product-section__body" v-html="data.product.applicationHtml"></div></div>
-            </div>
-            <div class="s-product-content" v-if="data.product.regulatoryHtml">
-              <div class="s-product-section"><h2>法规信息</h2><div class="s-product-section__body" v-html="data.product.regulatoryHtml"></div></div>
-            </div>
-
-            <div class="s-product-content" v-if="data.contentBlocks && data.contentBlocks.length > 0">
-              <div class="s-content-block" v-for="block in data.contentBlocks" :key="block.id">
-                <div v-if="block.blockType === 'richtext'">
-                  <h3 v-if="block.title">{{ block.title }}</h3>
-                  <div class="s-content-block__body" v-html="block.content.html"></div>
-                </div>
-                <div v-else-if="block.blockType === 'image-text'">
-                  <h3 v-if="block.title">{{ block.title }}</h3>
-                  <div class="s-content-block--image-text">
-                    <div class="text-col" v-html="block.content.html"></div>
-                    <div class="image-col" v-if="block.content.imageUrl"><img :src="block.content.imageUrl" :alt="block.title || ''" /></div>
-                  </div>
-                </div>
-                <div v-else-if="block.blockType === 'specs'">
-                  <h3 v-if="block.title">{{ block.title }}</h3>
-                  <div class="s-content-block__body">
-                    <div v-for="(spec, si) in block.content.specs" :key="si" style="display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #f0f0f0;">
-                      <span style="font-weight:600;color:#004b87;min-width:120px;">{{ spec.label }}</span>
-                      <span>{{ spec.value }}</span>
+              <!-- Document section -->
+              <div class="container" id="product-document">
+                <div class="s-product-content__item">
+                  <h2 class="s-product-content__title">相关资料</h2>
+                  <div class="s-product-document">
+                    <div class="s-product-document__type" v-if="docTech.length > 0">
+                      <h3 class="s-product-document__title">技术文件</h3>
+                      <ul class="s-product-document__list">
+                        <li class="c-link c-link--document" v-for="item in docTech" :key="item.id">
+                          <a class="c-link__link" :href="item.url" target="_blank">
+                            <span class="c-link__name">{{ item.name }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="s-product-document__type" v-if="docBrochure.length > 0">
+                      <h3 class="s-product-document__title">产品手册</h3>
+                      <ul class="s-product-document__list">
+                        <li class="c-link c-link--document" v-for="item in docBrochure" :key="item.id">
+                          <a class="c-link__link" :href="item.url" target="_blank">
+                            <span class="c-link__name">{{ item.name }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="s-product-document__type" v-if="docScientific.length > 0">
+                      <h3 class="s-product-document__title">科学文献</h3>
+                      <ul class="s-product-document__list">
+                        <li class="c-link c-link--document" v-for="item in docScientific" :key="item.id">
+                          <a class="c-link__link" :href="item.url" target="_blank">
+                            <span class="c-link__name">{{ item.name }}</span>
+                          </a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
-                <div v-else-if="block.blockType === 'files'">
-                  <h3 v-if="block.title">{{ block.title }}</h3>
-                  <ul class="s-tech-file-list">
-                    <li v-for="file in block.content.files" :key="file.fileId">
-                      <a :href="file.url" target="_blank">{{ file.name || file.title || '文件' }}<span class="file-meta" v-if="file.isPublic === false">需登录</span></a>
-                    </li>
-                  </ul>
-                </div>
-                <div v-else-if="block.blockType === 'video'">
-                  <h3 v-if="block.title">{{ block.title }}</h3>
-                  <iframe v-if="block.content.url" :src="block.content.url" style="width:100%;min-height:400px;border:none;border-radius:8px;" allowfullscreen></iframe>
-                </div>
-              </div>
-            </div>
-
-            <div class="s-product-content" v-if="data.documents.length > 0">
-              <div class="s-product-section">
-                <h2>相关资料</h2>
-                <ul class="s-tech-file-list">
-                  <li v-for="doc in data.documents" :key="doc.id">
-                    <a :href="doc.url" target="_blank">{{ doc.name }}<span class="file-meta" v-if="doc.category">{{ doc.categoryLabel }}</span></a>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
         </div>
-      </div>
+
+        <!-- s-product-linked (related content) -->
+        <div class="s-product-linked" v-if="related.length > 0">
+          <div class="container">
+            <h2 class="s-product-linked__title">延伸内容</h2>
+            <div class="c-cards">
+              <div class="c-card" v-for="item in related" :key="item.id">
+                <div class="c-card__content">
+                  <h3 class="c-card__title">
+                    <a class="c-card__title-link" :href="item.url">{{ item.title }}</a>
+                  </h3>
+                  <p class="c-card__summary" v-html="item.summary"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <a href="#main-content" class="c-back-to-top" title="返回顶部">&#8593;</a>
     </main>
 
     <footer role="contentinfo" class="footer" id="footer"></footer>
+
+    <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
+            <i class="o-icon o-icon--cross" aria-hidden="true"></i>
+            <span>关闭</span>
+          </button>
+          <form action="/search.html" method="GET" class="modal--search__form">
+            <h2 class="modal-title">您在查找......?</h2>
+            <div class="form-item">
+              <label class="visually-hidden" for="key">请输入关键词...</label>
+              <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key" name="keyword" value="">
+              <button type="submit" class="js-form-submit form-submit btn btn-primary">
+                <i class="o-icon o-icon--magnifying-glass" aria-hidden="true"></i>
+              </button>
+            </div>
+            <a href="/search.html" class="u-link">高级搜索</a>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="dialog" class="dialog">
@@ -250,130 +614,276 @@
   </div>
 
   <script>
-    var { createApp, reactive, onMounted } = Vue;
-    var productId = parseInt(new URLSearchParams(window.location.search).get('id')) || 0;
+    // Dialog helpers
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    var dialogMessage = document.getElementById('dialog-message');
 
-    var app = createApp({
-      setup: function () {
-        var data = reactive({
-          loaded: false, error: false, errorId: '', product: {}, contentBlocks: [], documents: [], allTags: [], inCart: false, inFav: false
-        });
-
-        var tagLabelMap = {};
-
-        function loadProductDetail() {
-          GatteAPI.PharmaProduct.detail(productId).then(function (res) {
-            var p = res.data || res;
-            if (!p || !p.id) { data.error = true; data.errorId = productId; data.loaded = true; return; }
-            data.product = p;
-            data.loaded = true;
-            loadContentBlocks(p.id);
-            loadDocuments(p.id);
-            loadTagDict();
-          }).catch(function (err) {
-            console.error('获取产品详情失败:', err);
-            data.error = true; data.errorId = productId; data.loaded = true;
-          });
-        }
-
-        function loadContentBlocks(pid) {
-          GatteAPI.Blocks.list({ productId: pid, productType: 'pharma' }).then(function (res) {
-            var body = res.data || res;
-            if (body && body.list) data.contentBlocks = body.list;
-            else if (Array.isArray(body)) data.contentBlocks = body;
-          }).catch(function () {});
-        }
-
-        function loadDocuments(pid) {
-          GatteAPI.Document.list({ productId: pid, productType: 'pharma' }).then(function (res) {
-            var body = res.data || res;
-            var docs = (body && body.list) ? body.list : (Array.isArray(body) ? body : []);
-            var catLabels = { technical: '技术文件', brochure: '产品手册', scientific: '科学文献', other: '其他' };
-            data.documents = docs.map(function (d) {
-              return { id: d.id, name: d.name || d.title || '未命名文件', url: d.url || d.fileUrl || '#', category: d.category || 'other', categoryLabel: catLabels[d.category] || '文档', isPublic: d.isPublic };
-            });
-          }).catch(function () {});
-        }
-
-        function loadTagDict() {
-          GatteAPI.Tag.list({ productLine: 'pharma', limit: 200 }).then(function (res) {
-            var body = res.data || res;
-            var tags = (body && body.list) ? body.list : (Array.isArray(body) ? body : []);
-            tags.forEach(function (t) { tagLabelMap[t.value] = t.label || t.value; });
-            convertTagsToLabels();
-          }).catch(function () {});
-        }
-
-        function convertTagsToLabels() {
-          var p = data.product;
-          var allTags = [];
-          var fields = ['marketTag', 'routeTag', 'functionalityTag', 'dosageFormTag'];
-          for (var fi = 0; fi < fields.length; fi++) {
-            var f = fields[fi];
-            if (p[f] && Array.isArray(p[f])) {
-              p[f] = p[f].map(function (v) {
-                var label = tagLabelMap[v] || v;
-                if (allTags.indexOf(label) === -1) allTags.push(label);
-                return label;
-              });
-            }
-          }
-          data.allTags = allTags;
-        }
-
-        function addCart() {
-          var loggedIn = checkLoginStatus();
-          if (!loggedIn) { showDialog('您可以注册会员后申请样品'); return; }
-          GatteAPI.Cart.add({ productType: 'pharma', productId: productId, productName: data.product.name }).then(function () {
-            data.inCart = true;
-            showDialog('已加入样品申请列表');
-          }).catch(function () { showDialog('操作失败，请稍后重试'); });
-        }
-
-        function addProductFav() {
-          var loggedIn = checkLoginStatus();
-          if (!loggedIn) { showDialog('请先登录后再收藏'); return; }
-          GatteAPI.Favorite.add({ itemType: 'pharma', itemId: productId }).then(function () {
-            data.inFav = true;
-            showDialog('已加入收藏');
-          }).catch(function () { showDialog('操作失败，请稍后重试'); });
-        }
-
-        function showDialog(message) {
-          var msg = document.getElementById('dialog-message');
-          if (msg) msg.innerHTML = message;
-          document.getElementById('dialog').style.display = 'block';
-        }
-
-        loadProductDetail();
-
-        if (checkLoginStatus()) {
-          GatteAPI.Cart.list().then(function (res) {
-            var items = (res.list || res || []);
-            for (var i = 0; i < items.length; i++) { if (String(items[i].productId) === String(productId)) { data.inCart = true; break; } }
-          }).catch(function () {});
-          GatteAPI.Favorite.list({ itemType: 'pharma', limit: 100 }).then(function (res) {
-            var items = (res.list || res || []);
-            for (var i = 0; i < items.length; i++) { if (String(items[i].itemId) === String(productId)) { data.inFav = true; break; } }
-          }).catch(function () {});
-        }
-
-        return { data, addCart, addProductFav };
-      }
+    function showDialog(message) {
+      dialogMessage.innerHTML = message;
+      dialog.style.display = 'block';
+    }
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
     });
-    app.mount('#app');
+
+    function checkLoginStatus() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
   </script>
 
   <script>
+    const { createApp, reactive, ref, nextTick } = Vue;
+
+    const app = createApp({
+      setup() {
+        const params = new URLSearchParams(window.location.search);
+        const productId = parseInt(params.get('id') || '0');
+        const isLogin = checkLoginStatus();
+
+        const state = reactive({
+          loading: true,
+          error: false,
+          product: {},
+          tags: [],
+          docTech: [],
+          docBrochure: [],
+          docScientific: [],
+          related: [],
+          inCart: false,
+          inFav: false,
+        });
+
+        // ---- Load product detail ----
+        async function loadProduct() {
+          if (!productId) { state.error = true; state.loading = false; return; }
+
+          try {
+            // Product detail (response interceptor extracts body.data into response.data)
+            var detailRes = await GatteAPI.PharmaProduct.detail(productId);
+            var prod = detailRes.data;
+            if (!prod) throw new Error('产品数据为空');
+            state.product = {
+              id: prod.id,
+              name: prod.goodsName || prod.name,
+              tagline: prod.tagline || '',
+              description: prod.description || '',
+              goodsCategoryId: prod.goodsCategoryId || 117,
+              imageUrl: prod.goodsCarousel || prod.imageUrl || prod.image || '',
+              mainContent: '',
+            };
+
+            // Build header background
+            var img = state.product.imageUrl;
+            if (img) {
+              var imgUrl = img.startsWith('http') ? img : '/' + img;
+              state.headerBgStyle = { backgroundImage: 'url(' + imgUrl + ')' };
+            } else {
+              state.headerBgStyle = { background: 'linear-gradient(135deg, #0075BB, #00588D)' };
+            }
+
+            // ---- Tags ----
+            if (prod.tags && Array.isArray(prod.tags)) {
+              state.tags = prod.tags.map(function (t) {
+                return { label: t.label || t.name || t, category: t.category || 'market' };
+              });
+            }
+            // Also handle parsed tag arrays from parsePharma()
+            if (!state.tags.length && prod.marketTag && Array.isArray(prod.marketTag)) {
+              for (var i = 0; i < prod.marketTag.length; i++) {
+                state.tags.push({ label: prod.marketTag[i], category: 'market' });
+              }
+              if (prod.routeTag && Array.isArray(prod.routeTag)) {
+                for (var i = 0; i < prod.routeTag.length; i++) {
+                  state.tags.push({ label: prod.routeTag[i], category: 'route' });
+                }
+              }
+              if (prod.functionalityTag && Array.isArray(prod.functionalityTag)) {
+                for (var i = 0; i < prod.functionalityTag.length; i++) {
+                  state.tags.push({ label: prod.functionalityTag[i], category: 'functionality' });
+                }
+              }
+              if (prod.dosageFormTag && Array.isArray(prod.dosageFormTag)) {
+                for (var i = 0; i < prod.dosageFormTag.length; i++) {
+                  state.tags.push({ label: prod.dosageFormTag[i], category: 'dosage-form' });
+                }
+              }
+            }
+
+            // ---- Main content (compositionHtml + applicationHtml + regulatoryHtml) ----
+            var mainHtml = '';
+            var comp = prod.compositionHtml || '';
+            var appl = prod.applicationHtml || '';
+            var reg = prod.regulatoryHtml || '';
+
+            if (comp) mainHtml += '<div class="s-product-content__item"><h2 class="s-product-content__title">名称和别称</h2><div class="s-product-content__txt">' + comp + '</div></div>';
+            if (appl) mainHtml += '<div class="s-product-content__item"><h2 class="s-product-content__title">主要应用</h2><div class="s-product-content__txt">' + appl + '</div></div>';
+            if (reg) mainHtml += '<div class="s-product-content__item"><h2 class="s-product-content__title">法规信息</h2><div class="s-product-content__txt">' + reg + '</div></div>';
+
+            // ---- Content blocks ----
+            try {
+              var blocksRes = await GatteAPI.Blocks.list({ productId: productId, productType: 'pharma' });
+              var blockList = blocksRes.data;
+              if (blockList) {
+                // Could be { list: [...] } or array
+                var blocks = blockList.list || (Array.isArray(blockList) ? blockList : []);
+                for (var i = 0; i < blocks.length; i++) {
+                  mainHtml += renderBlock(blocks[i]);
+                }
+              }
+            } catch(e) { /* no blocks */ }
+
+            state.product.mainContent = mainHtml;
+
+            // ---- Documents ----
+            try {
+              var docRes = await GatteAPI.Document.list({ productId: productId, productType: 'pharma', limit: 100 });
+              var docData = docRes.data;
+              if (docData) {
+                var docs = docData.list || (Array.isArray(docData) ? docData : []);
+                for (var i = 0; i < docs.length; i++) {
+                  var doc = docs[i];
+                  var item = {
+                    id: doc.id,
+                    name: doc.title || doc.name,
+                    url: doc.fileUrl || doc.url || '#',
+                    category: doc.category || doc.type || 'other',
+                  };
+                  if (item.category === 'technical' || item.category === '1') state.docTech.push(item);
+                  else if (item.category === 'brochure' || item.category === '2') state.docBrochure.push(item);
+                  else if (item.category === 'scientific' || item.category === '3') state.docScientific.push(item);
+                }
+              }
+            } catch(e) { /* no docs */ }
+
+            // ---- Cart & Favorite status ----
+            if (isLogin) {
+              try {
+                var cartRes = await GatteAPI.Cart.list();
+                var cartList = cartRes.data;
+                if (cartList && Array.isArray(cartList)) {
+                  for (var i = 0; i < cartList.length; i++) {
+                    if (cartList[i].productId == productId) {
+                      state.inCart = true; break;
+                    }
+                  }
+                }
+              } catch(e) {}
+              try {
+                var favRes = await GatteAPI.Favorite.list();
+                var favData = favRes.data;
+                if (favData) {
+                  // Could be { list: [...] } or array
+                  var favList = favData.list || (Array.isArray(favData) ? favData : []);
+                  for (var i = 0; i < favList.length; i++) {
+                    if (favList[i].itemId == productId) {
+                      state.inFav = true; break;
+                    }
+                  }
+                }
+              } catch(e) {}
+            }
+
+          } catch (err) {
+            console.error('loadProduct error:', err);
+            state.error = true;
+          } finally {
+            state.loading = false;
+          }
+        }
+
+        function renderBlock(block) {
+          if (!block || !block.type) return '';
+          const body = block.body || block.content || '';
+          const imageUrl = block.imageUrl || block.image || '';
+          const videoUrl = block.videoUrl || block.video || '';
+
+          switch (block.type) {
+            case 'richtext':
+              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__txt">' + body + '</div></div>';
+            case 'imagetext':
+              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__cols"><div class="s-product-content__col s-product-content__txt">' + body + '</div><div class="s-product-content__col">' + (imageUrl ? '<img src="' + imageUrl + '" alt="' + (block.title || '') + '" />' : '') + '</div></div></div>';
+            case 'video':
+              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__txt">' + (videoUrl ? '<video controls style="max-width:100%"><source src="' + videoUrl + '" /></video>' : '') + (body || '') + '</div></div>';
+            case 'images':
+              const images = block.images || block.imageList || (imageUrl ? [imageUrl] : []);
+              let html = '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__cols">';
+              for (const img of (Array.isArray(images) ? images : [images])) {
+                html += '<div class="s-product-content__col"><img src="' + (typeof img === 'string' ? img : img.url || img) + '" alt="" /></div>';
+              }
+              html += '</div></div>';
+              return html;
+            default:
+              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__txt">' + (body || '') + '</div></div>';
+          }
+        }
+
+        // ---- Favorite ----
+        async function addProductFav() {
+          if (!isLogin) {
+            showDialog('请先<a href="/account.html">登录</a>');
+            return;
+          }
+          if (state.inFav) return;
+          try {
+            var favRes = await GatteAPI.Favorite.add({
+              itemType: 'pharma',
+              itemId: productId,
+            });
+            state.inFav = true;
+          } catch(e) {
+            showDialog('加入收藏失败');
+          }
+        }
+
+        // ---- Cart ----
+        async function addCart() {
+          if (!isLogin) {
+            showDialog('您可以<a href="/account.html#registration">注册会员</a> 后申请样品，或者点"<a href="/contact-form.html">申请样品/资料</a>"直接申请！');
+            return;
+          }
+          try {
+            var cartRes = await GatteAPI.Cart.add({
+              productType: 'pharma',
+              productId: productId,
+              productName: state.product.name,
+            });
+            state.inCart = true;
+          } catch(e) {
+            showDialog('加入购物车失败');
+          }
+        }
+
+        // Init
+        loadProduct();
+
+        return {
+          loading: state.loading,
+          error: state.error,
+          product: state.product,
+          tags: state.tags,
+          docTech: state.docTech,
+          docBrochure: state.docBrochure,
+          docScientific: state.docScientific,
+          related: state.related,
+          inCart: state.inCart,
+          inFav: state.inFav,
+          headerBgStyle: state.headerBgStyle,
+          addProductFav,
+          addCart,
+        };
+      },
+    });
+
+    app.mount('#app');
+  </script>
+
+  <!-- Load header/footer via jQuery -->
+  <script>
     $(document).ready(function () {
-      $("#header").load("/header.html", function () {
-        var tmp = checkLoginStatus();
-        if (!tmp) { $("#collapseAccMenu").load("/account-menu.html"); }
-        else { $("#collapseAccMenu").load("/account-menu-after-login.html"); }
-      });
+      $("#header").load("/header.html");
       $("#footer").load("/footer.html");
     });
-    $(document).on('click', '#dialog-close', function () { $('#dialog').hide(); });
   </script>
 </body>
 </html>
