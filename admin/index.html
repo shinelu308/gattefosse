@@ -587,6 +587,7 @@ const QUILL_TOOLBAR = [
         <a class="nav-item" :class="{ active: currentPage === 'formula-list' }" @click="goPage('formula-list')">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-5"/><path d="M9 2v5h6V2"/></svg></span>
           配方管理
+          <span class="badge">{{ stats.formulaCount }}</span>
         </a>
         <div class="nav-section"><div class="nav-section-title">内容管理</div></div>
         <a class="nav-item" :class="{ active: currentPage === 'news-list' }" @click="goPage('news-list')">
@@ -1097,6 +1098,7 @@ const QUILL_TOOLBAR = [
                 <thead>
                   <tr>
                     <th style="width:40px;"><input type="checkbox" :checked="pharmaList.length > 0 && selectedPharmaIds.length === pharmaList.length" @change="toggleSelectAllPharma"></th>
+                    <th>图片</th>
                     <th>产品名称</th>
                     <th>给药途径</th>
                     <th>剂型</th>
@@ -1108,10 +1110,11 @@ const QUILL_TOOLBAR = [
                 </thead>
                 <tbody>
                   <tr v-if="pharmaList.length===0">
-                    <td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">暂无数据，点击「新增产品」创建第一个</td>
+                    <td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">暂无数据，点击「新增产品」创建第一个</td>
                   </tr>
                   <tr v-for="item in pharmaList" :key="item.id" :style="{ background: item.isPublished ? '' : '#FFFDF5' }">
                     <td><input type="checkbox" :value="item.id" v-model="selectedPharmaIds"></td>
+                    <td><img :src="item.imageUrl || '/static/images/default-thumb.jpg'" style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid var(--border);" loading="lazy"></td>
                     <td class="table-name">{{ item.name }}</td>
                     <td><span class="tag tag-blue" v-for="t in (item.routeTag||[]).slice(0,3)" :key="t">{{ getTagLabel('pharma','route',t) }}</span></td>
                     <td><span class="tag tag-slate" v-for="t in (item.dosageFormTag||[]).slice(0,2)" :key="t">{{ getTagLabel('pharma','dosage_form',t) }}</span></td>
@@ -1142,7 +1145,13 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'pharma-edit'">
           <h1 class="page-title">{{ editingPharma.id ? '编辑产品 — ' + editingPharma.name : '新增药用辅料' }}</h1>
           <p class="page-subtitle">药用辅料详细信息编辑</p>
-          <div class="card">
+          <div class="tabs">
+            <button class="tab" :class="{ active: pharmaEditTab === 'basic' }" @click="pharmaEditTab = 'basic'">基本信息</button>
+            <button class="tab" :class="{ active: pharmaEditTab === 'tags' }" @click="pharmaEditTab = 'tags'">标签与分类</button>
+            <button class="tab" :class="{ active: pharmaEditTab === 'blocks' }" @click="pharmaEditTab = 'blocks'" v-if="editingPharma.id">详情页内容</button>
+          </div>
+          <!-- 基本信息 -->
+          <div v-show="pharmaEditTab === 'basic'" class="card">
             <div class="card-header"><h3>基本信息</h3></div>
             <div class="card-body">
               <div class="form-group">
@@ -1159,13 +1168,45 @@ const QUILL_TOOLBAR = [
                   <input type="text" class="form-control" v-model="editingPharma.imageUrl" placeholder="https://...">
                 </div>
               </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>宣传标语</label>
+                  <input type="text" class="form-control" v-model="editingPharma.tagline" placeholder="简短的产品宣传语">
+                </div>
+                <div class="form-group">
+                  <label>国际站URL</label>
+                  <input type="text" class="form-control" v-model="editingPharma.intlUrl" placeholder="https://www.gattefosse.com/...">
+                </div>
+              </div>
               <div class="form-group">
                 <label>产品描述</label>
                 <textarea class="form-control" rows="4" v-model="editingPharma.description"></textarea>
               </div>
             </div>
           </div>
-          <div class="card" style="margin-top:20px;">
+          <!-- 详情页 HTML 内容 -->
+          <div v-show="pharmaEditTab === 'basic'" class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>详情页内容（HTML）</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>名称和别称 <span class="hint">compositionHtml</span></label>
+                <textarea class="form-control" rows="6" v-model="editingPharma.compositionHtml" placeholder="输入 HTML，如：&#10;&lt;table&gt;&#10;  &lt;tr&gt;&lt;td&gt;美国药典&lt;/td&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;&#10;&lt;/table&gt;"></textarea>
+                <small style="color:#999;">显示在产品详情页「名称和别称」区块</small>
+              </div>
+              <div class="form-group" style="margin-top:16px;">
+                <label>主要应用 <span class="hint">applicationHtml</span></label>
+                <textarea class="form-control" rows="6" v-model="editingPharma.applicationHtml" placeholder="输入 HTML 内容"></textarea>
+                <small style="color:#999;">显示在产品详情页「主要应用」区块</small>
+              </div>
+              <div class="form-group" style="margin-top:16px;">
+                <label>法规信息 <span class="hint">regulatoryHtml</span></label>
+                <textarea class="form-control" rows="6" v-model="editingPharma.regulatoryHtml" placeholder="输入 HTML 内容"></textarea>
+                <small style="color:#999;">显示在产品详情页「法规信息」区块</small>
+              </div>
+            </div>
+          </div>
+          <!-- 标签与分类 -->
+          <div v-show="pharmaEditTab === 'tags'" class="card">
             <div class="card-header"><h3>标签与分类</h3></div>
             <div class="card-body">
               <div class="form-group">
@@ -1194,62 +1235,176 @@ const QUILL_TOOLBAR = [
               </div>
             </div>
           </div>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+          <!-- 详情页内容区块 -->
+          <div v-show="pharmaEditTab === 'blocks'" class="card">
+            <div class="card-header"><h3>详情页内容区块</h3></div>
+            <div class="card-body">
+              <div v-if="!editingPharma.id" class="alert-info">请先保存产品基本信息，然后可以管理详情页内容区块。</div>
+              <div v-if="editingPharma.id">
+                <div class="block-list" ref="pharmaBlockList">
+                  <div v-for="(block, bi) in editingPharma.blocks" :key="block._key" class="block-item">
+                    <div class="block-header">
+                      <div class="block-drag">
+                        <button @click="movePharmaBlock(bi, -1)" :disabled="bi===0" title="上移">↑</button>
+                        <button @click="movePharmaBlock(bi, 1)" :disabled="bi===editingPharma.blocks.length-1" title="下移">↓</button>
+                      </div>
+                      <div class="block-title">
+                        <input type="text" v-model="block.title" placeholder="区块标题（如：配方特点）" class="form-control" style="width:100%;">
+                      </div>
+                      <div class="block-actions">
+                        <select v-model="block.blockType" @change="onPharmaBlockTypeChange(bi)" class="form-control" style="width:140px;">
+                          <option value="richtext">富文本</option>
+                          <option value="imagetext">图文并排</option>
+                          <option value="video">视频</option>
+                          <option value="images">图片集</option>
+                        </select>
+                        <button class="btn btn-sm btn-danger" @click="deletePharmaBlock(bi)">× 删除</button>
+                      </div>
+                    </div>
+                    <div class="block-body">
+                      <div v-show="block.blockType === 'richtext'">
+                        <textarea class="form-control" rows="6" v-model="block._richtextContent" placeholder="输入富文本内容（支持 HTML）"></textarea>
+                        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                          <button class="btn btn-sm btn-primary" @click="savePharmaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'video'">
+                        <div class="form-group">
+                          <label>视频链接</label>
+                          <input type="text" class="form-control" v-model="block._videoUrl" placeholder="视频 URL">
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                          <button class="btn btn-sm btn-primary" @click="savePharmaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'images'">
+                        <div v-for="(img, ii) in block._imageList" :key="ii" class="block-entry-row">
+                          <input type="text" class="form-control" v-model="img.url" placeholder="图片 URL">
+                          <input type="text" class="form-control" v-model="img.caption" placeholder="图片说明">
+                          <button class="btn btn-sm btn-danger" @click="removePharmaImage(bi, ii)">×</button>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+                          <button class="btn btn-sm btn-outline" @click="addPharmaImage(bi)">+ 添加图片</button>
+                          <button class="btn btn-sm btn-primary" @click="savePharmaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'imagetext'">
+                        <div style="display:flex;gap:16px;">
+                          <div style="flex:1;">
+                            <label>左侧内容</label>
+                            <select v-model="block._leftType" class="form-control" style="margin-bottom:6px;">
+                              <option value="richtext">富文本</option>
+                              <option value="image">图片</option>
+                              <option value="video">视频</option>
+                            </select>
+                            <textarea v-if="block._leftType === 'richtext'" class="form-control" rows="4" v-model="block._leftRichtext" placeholder="左侧 HTML 内容"></textarea>
+                            <input v-if="block._leftType === 'image'" type="text" class="form-control" v-model="block._leftUrl" placeholder="图片 URL">
+                            <input v-if="block._leftType === 'video'" type="text" class="form-control" v-model="block._leftUrl" placeholder="视频 URL">
+                          </div>
+                          <div style="flex:1;">
+                            <label>右侧内容</label>
+                            <select v-model="block._rightType" class="form-control" style="margin-bottom:6px;">
+                              <option value="text">文字</option>
+                              <option value="video">视频</option>
+                            </select>
+                            <textarea v-if="block._rightType === 'text'" class="form-control" rows="4" v-model="block._rightText" placeholder="右侧文字内容"></textarea>
+                            <input v-if="block._rightType === 'video'" type="text" class="form-control" v-model="block._rightUrl" placeholder="视频 URL">
+                          </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                          <button class="btn btn-sm btn-primary" @click="savePharmaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary" @click="addPharmaBlock" style="margin-top:16px;">+ 添加内容区块</button>
+              </div>
+            </div>
+          </div>
+          <!-- 保存按钮 -->
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
             <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;user-select:none;">
               <input type="checkbox" v-model="editingPharma.isPublished"> 保存并发布
             </label>
             <button class="btn btn-outline" @click="goPage('pharma-list')">取消</button>
-            <button class="btn btn-primary" @click="savePharma()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+            <button class="btn btn-outline" @click="editingPharma.isPublished=false;savePharma()">保存草稿</button>
+            <button class="btn btn-primary" @click="editingPharma.isPublished=true;savePharma()" :disabled="saving">{{ saving ? '保存中...' : '保存并发布' }}</button>
           </div>
         </div>
 
         <!-- ==================== 配方列表 ==================== -->
         <div v-if="currentPage === 'formula-list'">
           <h1 class="page-title">配方管理</h1>
-          <p class="page-subtitle">管理与产品关联的应用配方，支持多维度标签筛选</p>
+          <p class="page-subtitle">管理应用配方全部 {{ stats.formulaCount }} 个配方</p>
           <div class="card">
             <div class="card-header">
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div class="filter-bar" style="margin-bottom:0;">
                 <button class="btn btn-sm btn-outline filter-toggle" @click="formulaFilter.show = !formulaFilter.show" style="white-space:nowrap;">
                   {{ formulaFilter.show ? '收起筛选 ▲' : '展开筛选 ▼' }}
                   <span v-if="activeFormulaFilterCount > 0" style="display:inline-block;background:var(--green);color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-left:4px;">{{ activeFormulaFilterCount }}</span>
                 </button>
-                <input type="text" class="form-control" style="max-width:200px;" placeholder="搜索配方名称/编号..." v-model="formulaFilter.keyword" @keyup.enter="loadFormulaList()">
+                <input class="form-control search-input" placeholder="搜索配方名称/编号..." v-model="formulaFilter.keyword" @input="formulaFilter.page=1;loadFormulaList()" style="max-width:200px;">
               </div>
-              <div v-show="formulaFilter.show" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--border);margin-top:4px;">
-                <select class="form-control" style="max-width:160px;" v-model="formulaFilter.application" @change="loadFormulaList()">
+              <div v-show="formulaFilter.show" class="filter-bar" style="margin-bottom:8px;padding:8px 0;border-top:1px solid var(--border);">
+                <select class="form-control" v-model="formulaFilter.application" @change="formulaFilter.page=1;loadFormulaList()">
                   <option value="">全部应用领域</option>
                   <option v-for="t in tagDict.formula?.application||[]" :value="t.value">{{ t.label }}</option>
                 </select>
-                <select class="form-control" style="max-width:140px;" v-model="formulaFilter.form" @change="loadFormulaList()">
+                <select class="form-control" v-model="formulaFilter.form" @change="formulaFilter.page=1;loadFormulaList()">
                   <option value="">全部剂型</option>
                   <option v-for="t in tagDict.formula?.form||[]" :value="t.value">{{ t.label }}</option>
                 </select>
-                <select class="form-control" style="max-width:120px;" v-model="formulaFilter.isPublished" @change="loadFormulaList()">
+                <select class="form-control" v-model="formulaFilter.isPublished" @change="formulaFilter.page=1;loadFormulaList()">
                   <option value="">全部状态</option>
                   <option value="true">已发布</option>
                   <option value="false">草稿</option>
                 </select>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
                 <span v-if="selectedFormulaIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedFormulaIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeleteFormula" :disabled="selectedFormulaIds.length===0">批量删除 ({{ selectedFormulaIds.length }})</button>
-                <button class="btn btn-primary" @click="resetFormulaEdit(); goPage('formula-edit')">+ 新增配方</button>
+                <button class="btn btn-outline btn-sm">导出 Excel</button>
+                <button class="btn btn-primary btn-sm" @click="resetFormulaEdit(); goPage('formula-edit')">+ 新增配方</button>
               </div>
             </div>
-            <div class="card-body" style="padding:0;">
-              <table class="table">
-                <thead><tr><th style="width:40px;"><input type="checkbox" :checked="formulaList.length > 0 && selectedFormulaIds.length === formulaList.length" @change="toggleSelectAllFormula"></th><th>编号</th><th>配方名称</th><th>应用领域</th><th>剂型</th><th>天然指数</th><th style="white-space:nowrap;">状态</th><th style="white-space:nowrap;">操作</th></tr></thead>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:40px;"><input type="checkbox" :checked="formulaList.length > 0 && selectedFormulaIds.length === formulaList.length" @change="toggleSelectAllFormula" title="全选/取消全选"></th>
+                    <th>图片</th>
+                    <th>配方名称</th>
+                    <th>编号</th>
+                    <th>应用领域</th>
+                    <th>剂型</th>
+                    <th>天然指数</th>
+                    <th style="white-space:nowrap;">状态</th>
+                    <th>更新时间</th>
+                    <th style="white-space:nowrap;">操作</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr v-if="formulaList.length===0"><td colspan="9" class="cell-center">暂无配方数据</td></tr>
-                  <tr v-for="item in formulaList">
+                  <tr v-if="formulaList.length===0">
+                    <td colspan="10" style="text-align:center;padding:40px;color:var(--text-muted);">暂无配方数据，点击「新增配方」创建第一个</td>
+                  </tr>
+                  <tr v-for="item in formulaList" :key="item.id" :style="{ background: item.isPublished ? '' : '#FFFDF5' }">
                     <td><input type="checkbox" :value="item.id" v-model="selectedFormulaIds"></td>
+                    <td><img :src="item.imageUrl || '/static/images/default-thumb.jpg'" style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid var(--border);" loading="lazy"></td>
+                    <td class="table-name">{{ item.name }}</td>
                     <td><code>{{ item.code || '-' }}</code></td>
-                    <td><strong>{{ item.name }}</strong></td>
-                    <td><span class="tag tag-slate" v-for="t in item.applicationTag" style="margin-right:4px;">{{ getTagLabel('formula','application',t) }}</span></td>
-                    <td><span class="tag tag-green" v-for="t in item.formTag" style="margin-right:4px;">{{ getTagLabel('formula','form',t) }}</span></td>
+                    <td><span class="tag tag-slate" v-for="t in (item.applicationTag||[]).slice(0,2)" :key="t">{{ getTagLabel('formula','application',t) }}</span></td>
+                    <td><span class="tag tag-green" v-for="t in (item.formTag||[]).slice(0,2)" :key="t">{{ getTagLabel('formula','form',t) }}</span></td>
                     <td><span class="tag tag-amber" v-if="item.naturalityIndex">{{ item.naturalityIndex }}</span></td>
-                    <td><span class="badge" :class="item.isPublished?'badge-success':'badge-secondary'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" @click="editFormula(item)">编辑</button>
+                    <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                    <td class="table-date">{{ item.updatedAt ? new Date(item.updatedAt).toISOString().slice(0,10) : '-' }}</td>
+                    <td class="table-actions">
+                      <button class="btn btn-outline btn-sm" @click="editFormula(item)">编辑</button>
+                      <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleFormulaPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
                       <button class="btn btn-sm btn-danger" @click="deleteFormula(item.id)">删除</button>
                     </td>
                   </tr>
@@ -1271,7 +1426,13 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'formula-edit'">
           <h1 class="page-title">{{ editingFormula.id ? '编辑配方 — ' + editingFormula.name : '新增配方' }}</h1>
           <p class="page-subtitle">配方详细信息编辑</p>
-          <div class="card">
+          <div class="tabs">
+            <button class="tab" :class="{ active: formulaEditTab === 'basic' }" @click="formulaEditTab = 'basic'">基本信息</button>
+            <button class="tab" :class="{ active: formulaEditTab === 'tags' }" @click="formulaEditTab = 'tags'">标签与分类</button>
+            <button class="tab" :class="{ active: formulaEditTab === 'blocks' }" @click="formulaEditTab = 'blocks'" v-if="editingFormula.id">详情页内容</button>
+          </div>
+          <!-- 基本信息 -->
+          <div v-show="formulaEditTab === 'basic'" class="card">
             <div class="card-header"><h3>基本信息</h3></div>
             <div class="card-body">
               <div class="form-row">
@@ -1307,7 +1468,8 @@ const QUILL_TOOLBAR = [
               </div>
             </div>
           </div>
-          <div class="card" style="margin-top:20px;">
+          <!-- 标签与分类 -->
+          <div v-show="formulaEditTab === 'tags'" class="card">
             <div class="card-header"><h3>标签与分类</h3></div>
             <div class="card-body">
               <div class="form-group">
@@ -1328,11 +1490,6 @@ const QUILL_TOOLBAR = [
                   <span class="check-tag" v-for="t in tagDict.pc?.claim||[]" :class="{ checked: editingFormula.claimTag.includes(t.value) }" @click="toggleFormulaTag('claimTag', t.value)">{{ t.label }}</span>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="card" style="margin-top:20px;">
-            <div class="card-header"><h3>配方详情</h3></div>
-            <div class="card-body">
               <div class="form-group">
                 <label>配方成分</label>
                 <textarea class="form-control" rows="6" v-model="editingFormula.compositionText" placeholder="成分名称 + 百分比，每行一条&#10;水  75%&#10;甘油  5%..."></textarea>
@@ -1343,12 +1500,105 @@ const QUILL_TOOLBAR = [
               </div>
             </div>
           </div>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+          <!-- 详情页内容区块 -->
+          <div v-show="formulaEditTab === 'blocks'" class="card">
+            <div class="card-header"><h3>详情页内容区块</h3></div>
+            <div class="card-body">
+              <div v-if="!editingFormula.id" class="alert-info">请先保存配方基本信息，然后可以管理详情页内容区块。</div>
+              <div v-if="editingFormula.id">
+                <div class="block-list" ref="formulaBlockList">
+                  <div v-for="(block, bi) in editingFormula.blocks" :key="block._key" class="block-item">
+                    <div class="block-header">
+                      <div class="block-drag">
+                        <button @click="moveFormulaBlock(bi, -1)" :disabled="bi===0" title="上移">↑</button>
+                        <button @click="moveFormulaBlock(bi, 1)" :disabled="bi===editingFormula.blocks.length-1" title="下移">↓</button>
+                      </div>
+                      <div class="block-title">
+                        <input type="text" v-model="block.title" placeholder="区块标题（如：配方特点）" class="form-control" style="width:100%;">
+                      </div>
+                      <div class="block-actions">
+                        <select v-model="block.blockType" @change="onFormulaBlockTypeChange(bi)" class="form-control" style="width:140px;">
+                          <option value="richtext">富文本</option>
+                          <option value="imagetext">图文并排</option>
+                          <option value="video">视频</option>
+                          <option value="images">图片集</option>
+                        </select>
+                        <button class="btn btn-sm btn-danger" @click="deleteFormulaBlock(bi)">× 删除</button>
+                      </div>
+                    </div>
+                    <div class="block-body">
+                      <div v-show="block.blockType === 'richtext'">
+                        <textarea class="form-control" rows="6" v-model="block._richtextContent" placeholder="输入富文本内容（支持 HTML）"></textarea>
+                        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'video'">
+                        <div class="form-group">
+                          <label>视频链接</label>
+                          <input type="text" class="form-control" v-model="block._videoUrl" placeholder="视频 URL">
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'images'">
+                        <div v-for="(img, ii) in block._imageList" :key="ii" class="block-entry-row">
+                          <input type="text" class="form-control" v-model="img.url" placeholder="图片 URL">
+                          <input type="text" class="form-control" v-model="img.caption" placeholder="图片说明">
+                          <button class="btn btn-sm btn-danger" @click="removeFormulaImage(bi, ii)">×</button>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+                          <button class="btn btn-sm btn-outline" @click="addFormulaImage(bi)">+ 添加图片</button>
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'imagetext'">
+                        <div style="display:flex;gap:16px;">
+                          <div style="flex:1;">
+                            <label>左侧内容</label>
+                            <select v-model="block._leftType" class="form-control" style="margin-bottom:6px;">
+                              <option value="richtext">富文本</option>
+                              <option value="image">图片</option>
+                              <option value="video">视频</option>
+                            </select>
+                            <textarea v-if="block._leftType === 'richtext'" class="form-control" rows="4" v-model="block._leftRichtext" placeholder="左侧 HTML 内容"></textarea>
+                            <input v-if="block._leftType === 'image'" type="text" class="form-control" v-model="block._leftUrl" placeholder="图片 URL">
+                            <input v-if="block._leftType === 'video'" type="text" class="form-control" v-model="block._leftUrl" placeholder="视频 URL">
+                          </div>
+                          <div style="flex:1;">
+                            <label>右侧内容</label>
+                            <select v-model="block._rightType" class="form-control" style="margin-bottom:6px;">
+                              <option value="text">文字</option>
+                              <option value="video">视频</option>
+                            </select>
+                            <textarea v-if="block._rightType === 'text'" class="form-control" rows="4" v-model="block._rightText" placeholder="右侧文字内容"></textarea>
+                            <input v-if="block._rightType === 'video'" type="text" class="form-control" v-model="block._rightUrl" placeholder="视频 URL">
+                          </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary" @click="addFormulaBlock" style="margin-top:16px;">+ 添加内容区块</button>
+              </div>
+            </div>
+          </div>
+          <!-- 保存按钮 -->
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
             <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;user-select:none;">
               <input type="checkbox" v-model="editingFormula.isPublished"> 保存并发布
             </label>
             <button class="btn btn-outline" @click="goPage('formula-list')">取消</button>
-            <button class="btn btn-primary" @click="saveFormula()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+            <button class="btn btn-outline" @click="editingFormula.isPublished=false;saveFormula()">保存草稿</button>
+            <button class="btn btn-primary" @click="editingFormula.isPublished=true;saveFormula()" :disabled="saving">{{ saving ? '保存中...' : '保存并发布' }}</button>
           </div>
         </div>
 
@@ -2192,6 +2442,8 @@ createApp({
       // Nav
       currentPage: 'dashboard',
       pcEditTab: 'basic',
+      pharmaEditTab: 'basic',
+      formulaEditTab: 'basic',
       globalSearch: '',
       // Stats
       stats: { pcCount: 0, pcPublished: 0, pharmaCount: 0, pharmaPublished: 0, formulaCount: 0, formulaPublished: 0, userCount: 0, pendingUsers: 0 },
@@ -2203,7 +2455,6 @@ createApp({
       pcPagination: { total: 0, totalPages: 0 },
       selectedPcIds: [],
       editingPc: { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, id: null, blocks: [], _blockIdCounter: 0 },
-      pcEditTab: 'basic',
       // Pharma
       pharmaList: [],
       pharmaFilter: { page: 1, limit: 20, keyword: '', route: '', dosageForm: '', isPublished: '', show: false },
@@ -2215,7 +2466,7 @@ createApp({
       formulaFilter: { page: 1, limit: 20, keyword: '', application: '', form: '', isPublished: '', show: false },
       formulaPagination: { total: 0, totalPages: 0 },
       selectedFormulaIds: [],
-      editingFormula: { name: '', code: '', description: '', imageUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', isPublished: false, id: null },
+      editingFormula: { name: '', code: '', description: '', imageUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 },
       // Doc
       docList: [],
       docFilter: { page: 1, limit: 20, keyword: '', type: '', isPublic: '' },
@@ -2423,6 +2674,14 @@ createApp({
         this.pcList = data.list; this.pcPagination = data.pagination;
       } catch (e) { console.error(e); }
     },
+    async refreshPcStats() {
+      try {
+        const data = await this.api('/pc-ingredients?limit=1000');
+        const list = data.list || [];
+        this.stats.pcCount = data.pagination ? data.pagination.total : list.length;
+        this.stats.pcPublished = list.filter(function(i) { return i.isPublished; }).length;
+      } catch (e) { console.error(e); }
+    },
     resetPcEdit() {
       this.editingPc = { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, id: null, blocks: [], _blockIdCounter: 0 };
       this._blocksLoaded = false;
@@ -2553,7 +2812,7 @@ createApp({
     },
     async deletePcItem(id, name) {
       this.showConfirm('确认删除', '确定删除产品「' + name + '」？此操作不可恢复。', async () => {
-        try { await this.api('/pc-ingredients/' + id, { method: 'DELETE' }); this.selectedPcIds = []; this.loadPcList(); }
+        try { await this.api('/pc-ingredients/' + id, { method: 'DELETE' }); this.selectedPcIds = []; this.loadPcList(); this.refreshPcStats(); }
         catch (e) { this.showAlert('删除失败：' + e.message); }
       });
     },
@@ -2576,6 +2835,7 @@ createApp({
           await this.api('/pc-ingredients/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) });
           this.selectedPcIds = [];
           this.loadPcList();
+          this.refreshPcStats();
         } catch (e) {
           console.error('批量删除异常:', e);
           this.showAlert('批量删除失败：' + e.message);
@@ -2587,8 +2847,6 @@ createApp({
       });
     },
     // ============ 内容区块管理 ============
-    // 存储 Quill 实例
-    _quillInstances: {    },
     destroyAllQuills() {
       (this.editingPc.blocks || []).forEach(function(block) {
         block._quill = null;
@@ -2890,15 +3148,27 @@ createApp({
         this.pharmaList = data.list; this.pharmaPagination = data.pagination;
       } catch (e) { console.error(e); }
     },
+    async refreshPharmaStats() {
+      try {
+        const data = await this.api('/pharma-products?limit=1000');
+        const list = data.list || [];
+        this.stats.pharmaCount = data.pagination ? data.pagination.total : list.length;
+        this.stats.pharmaPublished = list.filter(function(i) { return i.isPublished; }).length;
+      } catch (e) { console.error(e); }
+    },
     resetPharmaEdit() {
-      this.editingPharma = { name: '', slug: '', description: '', imageUrl: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null };
+      this.pharmaEditTab = 'basic';
+      this.editingPharma = { name: '', slug: '', description: '', imageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null, blocks: [] };
     },
     editPharma(item) {
       this.editingPharma = {
         id: item.id, name: item.name, slug: item.slug || '', description: item.description || '', imageUrl: item.imageUrl || '',
+        tagline: item.tagline || '', intlUrl: item.intlUrl || '',
+        compositionHtml: item.compositionHtml || '', applicationHtml: item.applicationHtml || '', regulatoryHtml: item.regulatoryHtml || '',
         marketTag: [...(item.marketTag||[])], routeTag: [...(item.routeTag||[])], functionalityTag: [...(item.functionalityTag||[])],
-        dosageFormTag: [...(item.dosageFormTag||[])], isPublished: item.isPublished,
+        dosageFormTag: [...(item.dosageFormTag||[])], isPublished: item.isPublished, blocks: [],
       };
+      this.loadPharmaBlocks(item.id);
       this.goPage('pharma-edit');
     },
     togglePharmaTag(field, value) {
@@ -2910,11 +3180,13 @@ createApp({
       if (!this.editingPharma.name) { this.showAlert('产品名称为必填项'); return; }
       this.saving = true;
       try {
-        if (this.editingPharma.id) {
+        var isNew = !this.editingPharma.id;
+        if (!isNew) {
           await this.api('/pharma-products/' + this.editingPharma.id, { method: 'PUT', body: JSON.stringify(this.editingPharma) });
         } else {
           await this.api('/pharma-products', { method: 'POST', body: JSON.stringify(this.editingPharma) });
         }
+        // 返回列表
         this.goPage('pharma-list');
       } catch (e) { this.showAlert('保存失败：' + e.message); }
       finally { this.saving = false; }
@@ -2927,7 +3199,7 @@ createApp({
     },
     async deletePharmaItem(id, name) {
       this.showConfirm('确认删除', '确定删除产品「' + name + '」？此操作不可恢复。', async () => {
-        try { await this.api('/pharma-products/' + id, { method: 'DELETE' }); this.selectedPharmaIds = []; this.loadPharmaList(); }
+        try { await this.api('/pharma-products/' + id, { method: 'DELETE' }); this.selectedPharmaIds = []; await this.loadPharmaList(); this.refreshPharmaStats(); }
         catch (e) { this.showAlert('删除失败：' + e.message); }
       });
     },
@@ -2946,9 +3218,122 @@ createApp({
         try {
           await this.api('/pharma-products/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) });
           this.selectedPharmaIds = [];
-          this.loadPharmaList();
+          await this.loadPharmaList();
+          this.refreshPharmaStats();
         } catch (e) { console.error('批量删除异常:', e); this.showAlert('批量删除失败：' + e.message); }
       });
+    },
+    // Pharma Block CRUD
+    loadPharmaBlocks(productId) {
+      var self = this;
+      this.api('/blocks?productId=' + productId + '&productType=pharma').then(function(data) {
+        var list = data.list || data || [];
+        self.editingPharma.blocks = list.map(function(b) {
+          var content = typeof b.content === 'string' ? JSON.parse(b.content) : (b.content || {});
+          var block = {
+            id: b.id, productId: b.productId, productType: 'pharma',
+            blockType: b.blockType || 'richtext', title: b.title || '', content: b.content,
+            sortOrder: b.sortOrder || 0, isPublished: b.isPublished !== false,
+            _key: 'ph-blk-' + Date.now() + '-' + Math.random().toString(36).slice(2,6),
+            _saved: true,
+            _richtextContent: (b.blockType === 'richtext' && content.html) ? content.html : '',
+            _videoUrl: (b.blockType === 'video') ? (content.url || '') : '',
+            _imageList: (b.blockType === 'images' && content.images) ? content.images.map(function(i) { return { url: i.url, caption: i.caption || '' }; }) : [{ url: '', caption: '' }],
+            _leftType: (b.blockType === 'imagetext') ? (content.leftType || 'richtext') : 'richtext',
+            _leftUrl: (b.blockType === 'imagetext') ? (content.leftUrl || '') : '',
+            _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
+            _rightType: (b.blockType === 'imagetext') ? (content.rightType || 'text') : 'text',
+            _rightText: (b.blockType === 'imagetext' && content.rightType === 'text') ? (content.rightText || '') : '',
+            _rightUrl: (b.blockType === 'imagetext' && content.rightType === 'video') ? (content.rightUrl || '') : '',
+          };
+          return block;
+        });
+      }).catch(function(e) { console.error('加载辅料区块失败:', e); });
+    },
+    addPharmaBlock() {
+      var cnt = Date.now() + '_' + Math.random().toString(36).slice(2,6);
+      var block = {
+        id: null, productId: this.editingPharma.id, productType: 'pharma',
+        blockType: 'richtext', title: '', content: null, sortOrder: this.editingPharma.blocks.length,
+        isPublished: true,
+        _key: 'ph-new-' + cnt,
+        _saved: false,
+        _richtextContent: '',
+        _videoUrl: '',
+        _imageList: [{ url: '', caption: '' }],
+        _leftType: 'richtext',
+        _leftUrl: '',
+        _leftRichtext: '',
+        _rightType: 'text',
+        _rightText: '',
+        _rightUrl: '',
+      };
+      this.editingPharma.blocks.push(block);
+    },
+    deletePharmaBlock(bi) {
+      var block = this.editingPharma.blocks[bi];
+      var self = this;
+      if (block.id) {
+        this.api('/blocks/' + block.id, { method: 'DELETE' }).then(function() {
+          self.editingPharma.blocks.splice(bi, 1);
+        }).catch(function(e) { self.showAlert('删除失败：' + e.message); });
+      } else {
+        this.editingPharma.blocks.splice(bi, 1);
+      }
+    },
+    movePharmaBlock(bi, dir) {
+      var blocks = this.editingPharma.blocks;
+      var target = bi + dir;
+      if (target < 0 || target >= blocks.length) return;
+      var tmp = blocks[bi];
+      blocks[bi] = blocks[target];
+      blocks[target] = tmp;
+      blocks.forEach(function(b, i) { b.sortOrder = i; });
+    },
+    onPharmaBlockTypeChange(bi) {
+      var block = this.editingPharma.blocks[bi];
+      block._saved = false;
+    },
+    addPharmaImage(bi) {
+      this.editingPharma.blocks[bi]._imageList.push({ url: '', caption: '' });
+    },
+    removePharmaImage(bi, ii) {
+      this.editingPharma.blocks[bi]._imageList.splice(ii, 1);
+    },
+    async savePharmaBlock(bi) {
+      var block = this.editingPharma.blocks[bi];
+      var content = {};
+      if (block.blockType === 'richtext') {
+        content = { html: block._richtextContent || '' };
+      } else if (block.blockType === 'video') {
+        content = { url: block._videoUrl || '' };
+      } else if (block.blockType === 'images') {
+        content = { images: (block._imageList || []).filter(function(i) { return i.url; }) };
+      } else if (block.blockType === 'imagetext') {
+        content = {
+          leftType: block._leftType || 'richtext',
+          leftUrl: block._leftUrl || '',
+          leftHtml: block._leftRichtext || '',
+          rightType: block._rightType || 'text',
+          rightText: block._rightText || '',
+          rightUrl: block._rightUrl || '',
+        };
+      }
+      var payload = { blockType: block.blockType, title: block.title, content: JSON.stringify(content), sortOrder: block.sortOrder || 0, isPublished: true, productType: 'pharma' };
+      if (block.id) {
+        try {
+          await this.api('/blocks/' + block.id, { method: 'PUT', body: JSON.stringify(payload) });
+          block._saved = true;
+        } catch (e) { this.showAlert('保存失败：' + e.message); }
+      } else {
+        payload.productId = this.editingPharma.id;
+        try {
+          var res = await this.api('/blocks', { method: 'POST', body: JSON.stringify(payload) });
+          var d = res.data || res;
+          block.id = d.id || d._id;
+          block._saved = true;
+        } catch (e) { this.showAlert('保存失败：' + e.message); }
+      }
     },
     // Formula CRUD
     async loadFormulaList() {
@@ -2962,8 +3347,16 @@ createApp({
         this.formulaList = data.list; this.formulaPagination = data.pagination;
       } catch (e) { console.error(e); }
     },
+    async refreshFormulaStats() {
+      try {
+        const data = await this.api('/formulations?limit=1000');
+        const list = data.list || [];
+        this.stats.formulaCount = data.pagination ? data.pagination.total : list.length;
+        this.stats.formulaPublished = list.filter(function(i) { return i.isPublished; }).length;
+      } catch (e) { console.error(e); }
+    },
     resetFormulaEdit() {
-      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', isPublished: false, id: null };
+      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 };
     },
     editFormula(item) {
       this.editingFormula = {
@@ -2973,7 +3366,9 @@ createApp({
         claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex || '',
         compositionText: item.compositionText || '', preparationSteps: item.preparationSteps || '',
         isPublished: item.isPublished,
+        blocks: [], _blockIdCounter: 0,
       };
+      this.loadFormulaBlocks(item.id);
       this.goPage('formula-edit');
     },
     toggleFormulaTag(field, value) {
@@ -2994,9 +3389,15 @@ createApp({
       } catch (e) { this.showAlert('保存失败：' + e.message); }
       finally { this.saving = false; }
     },
+    async toggleFormulaPublish(item) {
+      try {
+        await this.api('/formulations/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) });
+        item.isPublished = !item.isPublished;
+      } catch (e) { this.showAlert('操作失败：' + e.message); }
+    },
     async deleteFormula(id) {
       this.showConfirm('确认删除', '确定删除该配方？此操作不可恢复。', async () => {
-        try { await this.api('/formulations/' + id, { method: 'DELETE' }); this.selectedFormulaIds = []; this.loadFormulaList(); }
+        try { await this.api('/formulations/' + id, { method: 'DELETE' }); this.selectedFormulaIds = []; this.loadFormulaList(); this.refreshFormulaStats(); }
         catch (e) { this.showAlert('删除失败：' + e.message); }
       });
     },
@@ -3016,8 +3417,121 @@ createApp({
           await this.api('/formulations/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) });
           this.selectedFormulaIds = [];
           this.loadFormulaList();
+          this.refreshFormulaStats();
         } catch (e) { console.error('批量删除异常:', e); this.showAlert('批量删除失败：' + e.message); }
       });
+    },
+    // Formula Block CRUD
+    loadFormulaBlocks(formulaId) {
+      var self = this;
+      this.api('/blocks?productId=' + formulaId + '&productType=formula').then(function(data) {
+        var list = data.list || data || [];
+        self.editingFormula.blocks = list.map(function(b) {
+          var content = typeof b.content === 'string' ? JSON.parse(b.content) : (b.content || {});
+          var block = {
+            id: b.id, productId: b.productId, productType: 'formula',
+            blockType: b.blockType || 'richtext', title: b.title || '', content: b.content,
+            sortOrder: b.sortOrder || 0, isPublished: b.isPublished !== false,
+            _key: 'block-' + (self.editingFormula._blockIdCounter++),
+            _saved: true,
+            _richtextContent: (b.blockType === 'richtext' && content.html) ? content.html : '',
+            _videoUrl: (b.blockType === 'video') ? (content.url || '') : '',
+            _imageList: (b.blockType === 'images' && content.images) ? content.images.map(function(i) { return { url: i.url, caption: i.caption || '' }; }) : [{ url: '', caption: '' }],
+            _leftType: (b.blockType === 'imagetext') ? (content.leftType || 'richtext') : 'richtext',
+            _leftUrl: (b.blockType === 'imagetext') ? (content.leftUrl || '') : '',
+            _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
+            _rightType: (b.blockType === 'imagetext') ? (content.rightType || 'text') : 'text',
+            _rightText: (b.blockType === 'imagetext' && content.rightType === 'text') ? (content.rightText || '') : '',
+            _rightUrl: (b.blockType === 'imagetext' && content.rightType === 'video') ? (content.rightUrl || '') : '',
+          };
+          return block;
+        });
+      }).catch(function(e) { console.error('加载配方区块失败:', e); });
+    },
+    addFormulaBlock() {
+      var cnt = this.editingFormula._blockIdCounter++;
+      var block = {
+        id: null, productId: this.editingFormula.id, productType: 'formula',
+        blockType: 'richtext', title: '', content: null, sortOrder: this.editingFormula.blocks.length,
+        isPublished: true,
+        _key: 'formula-new-' + cnt,
+        _saved: false,
+        _richtextContent: '',
+        _videoUrl: '',
+        _imageList: [{ url: '', caption: '' }],
+        _leftType: 'richtext',
+        _leftUrl: '',
+        _leftRichtext: '',
+        _rightType: 'text',
+        _rightText: '',
+        _rightUrl: '',
+      };
+      this.editingFormula.blocks.push(block);
+    },
+    deleteFormulaBlock(bi) {
+      var block = this.editingFormula.blocks[bi];
+      var self = this;
+      if (block.id) {
+        this.api('/blocks/' + block.id, { method: 'DELETE' }).then(function() {
+          self.editingFormula.blocks.splice(bi, 1);
+        }).catch(function(e) { self.showAlert('删除失败：' + e.message); });
+      } else {
+        this.editingFormula.blocks.splice(bi, 1);
+      }
+    },
+    moveFormulaBlock(bi, dir) {
+      var blocks = this.editingFormula.blocks;
+      var target = bi + dir;
+      if (target < 0 || target >= blocks.length) return;
+      var tmp = blocks[bi];
+      blocks[bi] = blocks[target];
+      blocks[target] = tmp;
+      blocks.forEach(function(b, i) { b.sortOrder = i; });
+    },
+    onFormulaBlockTypeChange(bi) {
+      var block = this.editingFormula.blocks[bi];
+      block._saved = false;
+    },
+    addFormulaImage(bi) {
+      this.editingFormula.blocks[bi]._imageList.push({ url: '', caption: '' });
+    },
+    removeFormulaImage(bi, ii) {
+      this.editingFormula.blocks[bi]._imageList.splice(ii, 1);
+    },
+    async saveFormulaBlock(bi) {
+      var block = this.editingFormula.blocks[bi];
+      var content = {};
+      if (block.blockType === 'richtext') {
+        content = { html: block._richtextContent || '' };
+      } else if (block.blockType === 'video') {
+        content = { url: block._videoUrl || '' };
+      } else if (block.blockType === 'images') {
+        content = { images: (block._imageList || []).filter(function(i) { return i.url; }) };
+      } else if (block.blockType === 'imagetext') {
+        content = {
+          leftType: block._leftType || 'richtext',
+          leftUrl: block._leftUrl || '',
+          leftHtml: block._leftRichtext || '',
+          rightType: block._rightType || 'text',
+          rightText: block._rightText || '',
+          rightUrl: block._rightUrl || '',
+        };
+      }
+      var payload = { blockType: block.blockType, title: block.title, content: JSON.stringify(content), sortOrder: block.sortOrder || 0, isPublished: true, productType: 'formula' };
+      if (block.id) {
+        try {
+          await this.api('/blocks/' + block.id, { method: 'PUT', body: JSON.stringify(payload) });
+          block._saved = true;
+        } catch (e) { this.showAlert('保存失败：' + e.message); }
+      } else {
+        payload.productId = this.editingFormula.id;
+        try {
+          var res = await this.api('/blocks', { method: 'POST', body: JSON.stringify(payload) });
+          var d = res.data || res;
+          block.id = d.id || d._id;
+          block._saved = true;
+        } catch (e) { this.showAlert('保存失败：' + e.message); }
+      }
     },
     // Doc CRUD
     async loadDocList() {

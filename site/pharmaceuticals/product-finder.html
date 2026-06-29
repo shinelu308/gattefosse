@@ -153,7 +153,7 @@
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">过滤器</h2>
                         <button type="reset" target="/pharmaceuticals/product-finder.html"
-                          class="c-filter__reset-btn btn btn-outline-secondary">取消过滤
+                          class="c-filter__reset-btn btn btn-outline-secondary" @click.prevent="clearFilters">取消过滤
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
@@ -162,9 +162,9 @@
                         class="block block-facets-summary block-facets-summary-blockproducts-pharmaceuticals-active-filters" :class="data.activeFilterClass">
                         <h3 class="c-filter__subtitle">当前过滤项 :</h3>
                         <ul class="o-tag-list o-tag-list--wrap">
-                          <li class="facet-summary-item--facet o-tag-list__item">
-                            {{data.curFilter}}
-                            <a href="/pharmaceuticals/product-finder.html" class="c-filter__delete">
+                          <li class="facet-summary-item--facet o-tag-list__item" v-for="(f, fi) in data.filterItems">
+                            {{f.label}}
+                            <a href="javascript:;" class="c-filter__delete" @click="removeFilterItem(f.category, f.value)">
                               <span class="visually-hidden">移除过滤</span>
                             </a>
                           </li>
@@ -241,7 +241,7 @@
                                     <input type="checkbox" v-if="data.tagId == item2.ID" checked="checked"
                                       class="facets-checkbox" :id="item2.dataDrupalFacetItemId">
                                     <input type="checkbox" v-else class="facets-checkbox" @click="goToUrl(item2.tagUrl)"
-                                      :id="item2.dataDrupalFacetItemId"><a :href="item2.tagUrl" rel="nofollow"
+                                      :id="item2.dataDrupalFacetItemId"><a href="javascript:;" rel="nofollow" @click.prevent="goToUrl(item2.tagUrl)"
                                       :data-drupal-facet-item1-id="item2.dataDrupalFacetItemId"
                                       :data-drupal-facet-item1-value="item2.ID" data-drupal-facet-item1-count="17"><span
                                         class="facet-item__value">{{item2.tagName}}</span>
@@ -303,7 +303,7 @@
                       <h4 id="pagination-heading" class="pager__heading visually-hidden">页码</h4>
                       <ul class="pager__items js-pager__items">
                         <li class="pager__item pager__item--previous">
-                          <a :href="data.prev_url" title="Go to previous page" rel="prev">
+                          <a href="javascript:;" title="Go to previous page" rel="prev" @click.prevent="changePage(data.cur_page - 1)">
                             <span class="visually-hidden">上一页</span>
                             <i class="o-icon --caret-right" aria-hidden="true"></i>
                           </a>
@@ -312,7 +312,7 @@
                           {{data.cur_page}}<sub>/{{data.total_page}}</sub>
                         </li>
                         <li class="pager__item pager__item--next">
-                          <a :href="data.next_url" title="Go to next page" rel="next">
+                          <a href="javascript:;" title="Go to next page" rel="next" @click.prevent="changePage(data.cur_page + 1)">
                             <span class="visually-hidden">下一页</span>
                             <i class="o-icon --caret-right" aria-hidden="true"></i>
                           </a>
@@ -368,12 +368,11 @@
   </div>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive, onMounted } = Vue;
-  const app = createApp({
-    setup() {
+  var { createApp, reactive, onMounted } = Vue;
+  var app = createApp({
+    setup: function () {
       var params = new URLSearchParams(window.location.search);
       var curPage = parseInt(params.get('page')) || 1;
-      var curKeyword = params.get('keyword') || '';
 
       var data = reactive({
         tagList: [],
@@ -382,51 +381,81 @@
         total_page: 1,
         cur_page: curPage,
         page_size: 9,
-        keyword: curKeyword,
+        keyword: '',
         loading: false,
         mallGoodsInfoTypeList: [],
-        curFilter: '',
+        filterItems: [],
         activeFilterClass: 'hidden',
+        selectedTags: {},
         prev_url: null,
         next_url: null
       });
 
+      var TAG_CATS = { market: '应用市场', route: '给药途径', functionality: '功能', dosage_form: '剂型' };
+
+      function getCatKey(tagName) {
+        var keys = Object.keys(TAG_CATS);
+        for (var i = 0; i < keys.length; i++) {
+          if (TAG_CATS[keys[i]] === tagName) return keys[i];
+        }
+        return '';
+      }
+
       function loadTags() {
         GatteAPI.Tag.list({ productLine: 'pharma', limit: 100 }).then(function (res) {
-          var rawTags = res.list || res || [];
-          var TAG_LABELS = { market: '应用市场', route: '给药途径', functionality: '功能', dosage_form: '剂型' };
+          // API 返回 (经 axios 拦截器解包后): { dosage_form: [{label, value}], functionality: [...], ... }
+          var tagData = res.data || res || {};
           var groups = {};
-          rawTags.forEach(function (tag) {
-            var cat = tag.category;
-            var catLabel = TAG_LABELS[cat] || cat;
-            if (!groups[cat]) {
-              groups[cat] = {
-                tagName: catLabel,
-                nameId: 'collapse-filtre-accordion-products_pharmaceuticals_' + catLabel,
-                sharpeNameId: '#collapse-filtre-accordion-products_pharmaceuticals_' + catLabel,
-                headerNameId: 'heading-filtre-accordion-products_pharmaceuticals_' + catLabel,
-                accordionNameId: 'accordion-filtre-accordion-products_pharmaceuticals_' + catLabel,
-                dataBlockPluginId: 'facet_block:products_pharmaceuticals_' + catLabel,
-                dataDrupalFacetId: 'products_pharmaceuticals_' + catLabel,
-                class: 'facet-inactive block-facet--checkbox block block-facets block-facet-blockproducts-pharmaceuticals-' + catLabel,
-                children: []
-              };
+          var catKeys = Object.keys(tagData);
+          for (var ki = 0; ki < catKeys.length; ki++) {
+            var cat = catKeys[ki]; // 例如 "dosage_form", "functionality"
+            var items = tagData[cat] || [];
+            if (!items || !items.length) continue;
+            var catLabel = TAG_CATS[cat] || cat;
+            groups[cat] = {
+              tagName: catLabel,
+              nameId: 'collapse-filtre-accordion-products_pharmaceuticals_' + catLabel,
+              sharpeNameId: '#collapse-filtre-accordion-products_pharmaceuticals_' + catLabel,
+              headerNameId: 'heading-filtre-accordion-products_pharmaceuticals_' + catLabel,
+              accordionNameId: 'accordion-filtre-accordion-products_pharmaceuticals_' + catLabel,
+              dataBlockPluginId: 'facet_block:products_pharmaceuticals_' + catLabel,
+              dataDrupalFacetId: 'products_pharmaceuticals_' + catLabel,
+              class: 'facet-inactive block-facet--checkbox block block-facets block-facet-blockproducts-pharmaceuticals-' + catLabel,
+              children: []
+            };
+            for (var ii = 0; ii < items.length; ii++) {
+              var tag = items[ii];
+              // 标签没有数字 id，用 value 作为唯一标识
+              groups[cat].children.push({
+                ID: tag.value,
+                tagName: tag.label,
+                value: tag.value,
+                active: false,
+                dataDrupalFacetItemId: cat + '-' + tag.value,
+                tagUrl: '/pharmaceuticals/product-finder.html?tagId=' + tag.value + '&page=1',
+                facetItemClass: 'facet-item1'
+              });
             }
-            groups[cat].children.push({
-              ID: tag.id,
-              tagName: tag.label,
-              value: tag.value,
-              active: false,
-              dataDrupalFacetItemId: catLabel + '-' + tag.id,
-              tagUrl: '/pharmaceuticals/product-finder.html?tagId=' + tag.id + '&page=1',
-              facetItemClass: 'facet-item1'
-            });
-          });
-          data.tagList = Object.values(groups);
+          }
+          var groupArr = [];
+          var gk = Object.keys(groups);
+          for (var gi = 0; gi < gk.length; gi++) { groupArr.push(groups[gk[gi]]); }
+          data.tagList = groupArr;
           data.tagList.forEach(function(g) {
-            g._collapsed = false;
-            if (g.children.length > 6) {
-              g.children.forEach(function(c, i) { if (i >= 6) c.facetItemClass = 'facet-item1 hidden'; });
+            g._showAll = false;
+            g._hasMore = g.children.length > 6;
+          });
+          // 等 DOM 更新后，隐藏每组第 7 项开始的标签
+          Vue.nextTick(function() {
+            for (var gi2 = 0; gi2 < data.tagList.length; gi2++) {
+              var g2 = data.tagList[gi2];
+              if (!g2._hasMore) continue;
+              var ul = document.querySelector('[data-drupal-facet-id="' + g2.dataDrupalFacetId + '"]');
+              if (!ul) continue;
+              var lis = ul.querySelectorAll('li');
+              for (var liIdx = 6; liIdx < lis.length; liIdx++) {
+                lis[liIdx].classList.add('hidden');
+              }
             }
           });
         }).catch(function (err) { console.error('加载标签失败:', err); });
@@ -434,11 +463,19 @@
 
       function loadProducts(page) {
         data.loading = true;
-        var query = { page: page || data.cur_page, limit: 9, isPublished: 'true' };
+        var p = page || data.cur_page;
+        var query = { page: p, limit: data.page_size, isPublished: 'true' };
         if (data.keyword) query.keyword = data.keyword;
+        // 追加标签筛选参数
+        var cats = Object.keys(data.selectedTags);
+        var TAG_KEYS = { market: 'market', route: 'route', functionality: 'functionality', dosage_form: 'dosageForm' };
+        for (var ci = 0; ci < cats.length; ci++) {
+          var vals = data.selectedTags[cats[ci]];
+          if (vals && vals.length > 0) query[TAG_KEYS[cats[ci]] || cats[ci]] = vals.join(',');
+        }
         GatteAPI.PharmaProduct.list(query).then(function (res) {
-          var result = res.list || res;
-          var items = (result.list || result || []).map(function (p) {
+          var resp = res.data || res;
+          var items = (resp.list || resp || []).map(function (p) {
             return {
               ID: p.id,
               goodsName: p.name,
@@ -450,17 +487,103 @@
             };
           });
           data.productList = items;
-          data.total = result.pagination ? result.pagination.total : items.length;
-          data.total_page = Math.ceil(data.total / 9);
+          var pag = resp.pagination;
+          data.total = pag ? pag.total : items.length;
+          data.total_page = pag ? Math.ceil(pag.total / data.page_size) : Math.ceil(items.length / data.page_size);
+          if (data.cur_page > data.total_page) data.cur_page = 1;
+          data.prev_url = data.cur_page > 1 ? '?page=' + (data.cur_page - 1) : null;
+          data.next_url = data.cur_page < data.total_page ? '?page=' + (data.cur_page + 1) : null;
           data.loading = false;
         }).catch(function (err) { console.error('加载产品失败:', err); data.loading = false; });
+      }
+
+      function toggleTag(category, value) {
+        var sel = data.selectedTags[category] || [];
+        var idx = sel.indexOf(value);
+        if (idx >= 0) { sel.splice(idx, 1); } else { sel.push(value); }
+        if (sel.length === 0) { delete data.selectedTags[category]; } else { data.selectedTags[category] = sel; }
+        // 更新选中高亮
+        data.tagList.forEach(function(g) {
+          var cat = getCatKey(g.tagName);
+          g.children.forEach(function(c) {
+            if (cat) {
+              var selVals = data.selectedTags[cat] || [];
+              c.active = selVals.indexOf(c.value) !== -1;
+              if (c.active) c.facetItemClass = 'facet-item1 selected';
+              else c.facetItemClass = 'facet-item1';
+            }
+          });
+        });
+        // 更新 curFilter 显示
+        updateCurFilter();
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      function updateCurFilter() {
+        var arr = [];
+        var cats = Object.keys(data.selectedTags);
+        for (var ci = 0; ci < cats.length; ci++) {
+          var cat = cats[ci];
+          var vals = data.selectedTags[cat];
+          if (vals && vals.length > 0) {
+            var cl = TAG_CATS[cat] || cat;
+            for (var vi = 0; vi < vals.length; vi++) {
+              // 从 tagList 中找到对应的显示名称 label
+              var label = vals[vi]; // 默认用 value
+              for (var gi = 0; gi < data.tagList.length; gi++) {
+                if (getCatKey(data.tagList[gi].tagName) === cat) {
+                  for (var ci2 = 0; ci2 < data.tagList[gi].children.length; ci2++) {
+                    if (data.tagList[gi].children[ci2].value === vals[vi]) {
+                      label = data.tagList[gi].children[ci2].tagName;
+                      break;
+                    }
+                  }
+                  break;
+                }
+              }
+              arr.push({ category: cat, value: vals[vi], label: cl + ': ' + label });
+            }
+          }
+        }
+        data.filterItems = arr;
+        data.activeFilterClass = arr.length > 0 ? '' : 'hidden';
+      }
+
+      function removeFilterItem(category, value) {
+        toggleTag(category, value);
+      }
+
+      function clearFilters() {
+        data.selectedTags = {};
+        data.filterItems = [];
+        data.activeFilterClass = 'hidden';
+        data.tagList.forEach(function(g) {
+          g._showAll = false;
+          g.children.forEach(function(c) { c.active = false; c.facetItemClass = 'facet-item1'; });
+          // 收起展开状态：恢复隐藏超出6项的标签
+          if (g._hasMore) {
+            var ul = document.querySelector('[data-drupal-facet-id="' + g.dataDrupalFacetId + '"]');
+            if (ul) {
+              var lis = ul.querySelectorAll('li');
+              for (var liIdx = 6; liIdx < lis.length; liIdx++) {
+                lis[liIdx].classList.add('hidden');
+              }
+            }
+          }
+        });
+        data.cur_page = 1;
+        loadProducts(1);
       }
 
       function changePage(newPage) {
         if (newPage < 1 || newPage > data.total_page) return;
         data.cur_page = newPage;
+        // 同步 URL 页码
+        var url = new URL(window.location);
+        url.searchParams.set('page', newPage);
+        window.history.replaceState({}, '', url);
         loadProducts(newPage);
-        history.pushState({}, '', '?page=' + newPage);
       }
 
       function seeAll(event) {
@@ -469,14 +592,40 @@
         if (!body) return;
         var ul = body.querySelector('ul');
         if (!ul) return;
-        var items = ul.querySelectorAll('li');
-        var expanded = btn.getAttribute('data-aria-expanded') === 'true';
-        items.forEach(function(li, idx) { if (idx >= 6) { if (expanded) li.classList.add('hidden'); else li.classList.remove('hidden'); } });
-        btn.textContent = expanded ? btn.getAttribute('data-show') : btn.getAttribute('data-hide');
-        btn.setAttribute('data-aria-expanded', expanded ? 'false' : 'true');
+        // 通过 ul 的 data-drupal-facet-id 找到对应 group
+        var facetId = ul.getAttribute('data-drupal-facet-id');
+        for (var gi = 0; gi < data.tagList.length; gi++) {
+          if (data.tagList[gi].dataDrupalFacetId === facetId) {
+            var g = data.tagList[gi];
+            g._showAll = !g._showAll;
+            var items = ul.querySelectorAll('li');
+            for (var liIdx2 = 0; liIdx2 < items.length; liIdx2++) {
+              if (liIdx2 >= 6) {
+                if (g._showAll) items[liIdx2].classList.remove('hidden');
+                else items[liIdx2].classList.add('hidden');
+              }
+            }
+            btn.textContent = g._showAll ? '收起' : '查看所有';
+            break;
+          }
+        }
       }
 
-      function goToUrl(url) { window.location.href = url; }
+      function goToUrl(url) {
+        // 解析 URL 中的 tagId 进行 AJAX 过滤
+        var u = new URL(url, window.location.origin);
+        var tagId = u.searchParams.get('tagId');
+        // 查找对应的 category 和 value
+        for (var gi = 0; gi < data.tagList.length; gi++) {
+          for (var ci = 0; ci < data.tagList[gi].children.length; ci++) {
+            if (String(data.tagList[gi].children[ci].ID) === tagId) {
+              var cat = getCatKey(data.tagList[gi].tagName);
+              if (cat) toggleTag(cat, data.tagList[gi].children[ci].value);
+              return;
+            }
+          }
+        }
+      }
 
       function addCart(item, index) {
         var tmp = checkLoginStatus();
@@ -490,7 +639,7 @@
 
       onMounted(function () { loadTags(); loadProducts(curPage); });
 
-      return { data, changePage, seeAll, goToUrl, addCart };
+      return { data, changePage, seeAll, goToUrl, addCart, toggleTag, clearFilters, removeFilterItem };
     }
   });
   app.mount("#app");
@@ -501,7 +650,7 @@
   <script>
     $(document).ready(function () {
       $("#header").load("/header.html", function () {
-        let tmp = checkLoginStatus();
+        var tmp = checkLoginStatus();
         if (!tmp) {
           $("#collapseAccMenu").load("/account-menu.html");
         } else {

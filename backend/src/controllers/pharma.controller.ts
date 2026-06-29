@@ -103,7 +103,7 @@ export async function getPharmaProduct(req: Request, res: Response) {
 export async function createPharmaProduct(req: Request, res: Response) {
   try {
     const {
-      name, slug, description, imageUrl,
+      name, slug, description, imageUrl, tagline, intlUrl,
       marketTag, routeTag, functionalityTag, dosageFormTag,
       compositionHtml, applicationHtml, regulatoryHtml,
       sortOrder, isPublished,
@@ -119,6 +119,8 @@ export async function createPharmaProduct(req: Request, res: Response) {
         slug: slug || null,
         description: description || null,
         imageUrl: imageUrl || null,
+        tagline: tagline || null,
+        intlUrl: intlUrl || null,
         marketTag: arrayToTag(marketTag),
         routeTag: arrayToTag(routeTag),
         functionalityTag: arrayToTag(functionalityTag),
@@ -155,6 +157,8 @@ export async function updatePharmaProduct(req: Request, res: Response) {
     if (body.slug !== undefined) data.slug = body.slug;
     if (body.description !== undefined) data.description = body.description;
     if (body.imageUrl !== undefined) data.imageUrl = body.imageUrl;
+    if (body.tagline !== undefined) data.tagline = body.tagline;
+    if (body.intlUrl !== undefined) data.intlUrl = body.intlUrl;
     if (body.marketTag !== undefined) data.marketTag = arrayToTag(body.marketTag);
     if (body.routeTag !== undefined) data.routeTag = arrayToTag(body.routeTag);
     if (body.functionalityTag !== undefined) data.functionalityTag = arrayToTag(body.functionalityTag);
