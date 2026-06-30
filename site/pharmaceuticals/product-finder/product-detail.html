@@ -8,7 +8,7 @@
   <meta property="og:type" content="page" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
-  <title>Capryol® 90 - 产品详情 | 嘉法狮</title>
+  <title>产品详情 | 嘉法狮</title>
   <link rel="stylesheet" media="all" href="/sites/default/files/css/css_1DVUkvXE9JpoQ1xLdVdzs-hgmcfdlNmPGwZO5WfAX5c.css" />
   <link rel="stylesheet" media="all" href="/sites/default/files/css/css_hx-izN24pfJl4Ip2Kx7sPVQzqooEE63N9jGUuXDePTE.css" />
   <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1712750673.css" />
@@ -17,6 +17,7 @@
   <link rel="stylesheet" media="all" href="/sites/default/files/css/css_EmY_sxerr-TNvoyioQly5tba1LJdvC1mnkhyeygX5Gg.css" />
   <script src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/api.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
 </head>
 <body class="path-node page-node-type-products-pharmaceuticals bg- d-flex flex-column">
@@ -52,22 +53,26 @@
               <li class="breadcrumb-item"><a href="/">首页</a></li>
               <li class="breadcrumb-item"><a href="/pharmaceuticals.html">药用辅料</a></li>
               <li class="breadcrumb-item"><a href="/pharmaceuticals/product-finder.html">产品目录</a></li>
-              <li class="breadcrumb-item active">Capryol® 90</li>
+              <li class="breadcrumb-item active" id="breadcrumb-product-name">{{ data.productName }}</li>
             </ol>
           </nav>
         </div>
-        <div class="s-product-header__img" style="background-image: url(/static/images/pharma-bg.jpg); background-size: cover; background-position: center;">
-          <button class="s-product-header__fav js-add-remove-fav">
+        <div class="s-product-header__img" id="product-header-img" :style="data.pharmaHeaderBg">
+          <a @click="toggleFavorite" :class="data.inFav ? 's-product-header__fav is-active' : 's-product-header__fav'">
             <i aria-hidden="true" class="o-icon --star"></i>
             <span class="visually-hidden">收藏</span>
-          </button>
+          </a>
         </div>
         <div class="s-product-header__content">
-          <h1 class="s-product-header__title">Capryol® 90</h1>
+          <h1 class="s-product-header__title" id="product-title">{{ data.productName }}</h1>
           <div class="s-product-header__btns">
-            <button class="btn btn-primary btn-icon--r js-request-sample">
+            <button class="btn btn-primary btn-icon--r js-request-sample" id="applySampleBt"
+              @click="requestSample" data-type="pharma_product"
+              :style="data.inCart ? 'display:none' :'display:flex;'">
               申请样品<i class="o-icon --envelope" aria-hidden="true"></i>
             </button>
+            <a class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html" id="seeCartBt"
+              :style="data.inCart ? 'display:block' :'display:none;'">查看购物车</a>
             <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document">
               <i aria-hidden="true" class="o-icon --document"></i>访问文档和技术信息
             </a>
@@ -81,138 +86,21 @@
           <article role="article" class="node node--type-products-pharmaceuticals node--view-mode-full">
 
             <!-- 产品描述 -->
-            <div class="s-product-description">
+            <div class="s-product-description" id="product-description-section" v-if="data.showDescription">
               <div class="s-product-description__container">
                 <div class="s-product-description__main">
-                  <div class="s-product-description__main-content">
-                    <p>Capryol® 90 是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，在外用制剂中作为助表面活性剂和增溶剂。</p>
-                  </div>
+                  <div class="s-product-description__main-content" id="product-description-content" v-html="data.productDescription"></div>
                 </div>
               </div>
             </div>
 
-            <!-- 产品内容 -->
+            <!-- 产品内容（动态区块渲染） -->
             <div class="s-product-content">
               <div class="container">
                 <div class="s-product-content__inside">
-                  <div class="container">
-                    <!-- 名称和别称 -->
-                    <div class="s-product-content__item">
-                      <h2 class="s-product-content__title">名称和别称</h2>
-                      <div class="s-product-content__txt">
-                        <p><strong>美国药典</strong><br />Propylene Glycol Monocaprylate NF</p>
-                        <p><strong>欧洲药典</strong><br />/</p>
-                        <p><strong>UNII号(FDA)</strong><br />RT9P9S09QI</p>
-                        <p><strong>FDA IID数据库</strong><br />PROPYLENE GLYCOL CAPRYLATE</p>
-                        <p><strong>药用辅料手册</strong><br />Propylene glycol monocaprylate</p>
-                        <p><strong>化学描述</strong><br />由辛酸(C8)的丙二醇酯组成，主要由单酯和少量二酯组成。</p>
-                      </div>
-                    </div>
-                    <!-- 产品特性 -->
-                    <div class="s-product-content__item">
-                      <h2 class="s-product-content__title">产品特性</h2>
-                      <div class="s-product-content__txt">
-                        <div class="s-product-table">
-                          <table>
-                            <thead>
-                              <tr><th>参数</th><th>值</th></tr>
-                            </thead>
-                            <tbody>
-                              <tr><td>形态</td><td>油状液体</td></tr>
-                              <tr><td>粘度(mPa.s)</td><td>20 (20°C)</td></tr>
-                              <tr><td>HLB</td><td>5</td></tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- 主要应用 -->
-                    <div class="s-product-content__item">
-                      <h2 class="s-product-content__title">主要应用</h2>
-                      <div class="s-product-content__txt">
-                        <p>难溶性药物的增溶剂和生物利用度促进剂。在II型和III型脂质处方中作为助表面活性剂。</p>
-                        <p>外用增溶剂和透皮促进剂。在外用微乳处方中作为增溶剂和助表面活性剂。</p>
-                        <p>在已批准上市药品中使用，证实其安全性。</p>
-                      </div>
-                    </div>
-                    <!-- 主要制剂技术 -->
-                    <div class="s-product-content__item">
-                      <h2 class="s-product-content__title">主要制剂技术</h2>
-                      <div class="s-product-content__txt">
-                        <ul>
-                          <li>口服：自乳化脂质处方</li>
-                          <li>外用：乳胶剂，微乳</li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <!-- 相关资料 -->
-                    <div class="s-product-content__item" id="product-document">
-                      <h2 class="s-product-content__title">相关资料</h2>
-                      <div class="s-product-document">
-                        <div class="s-product-document__type">
-                          <h3 class="s-product-document__title">技术文件</h3>
-                          <ul class="s-product-document__list">
-                            <li class="c-link c-link--document">
-                              <a class="c-link__link" href="#" target="_blank">
-                                <div class="c-link__params"><span class="c-link__name">Capryol® 90 技术数据表 (TDS)</span></div>
-                              </a>
-                            </li>
-                            <li class="c-link c-link--document c-link--locked">
-                              <a class="c-link__link" href="#" target="_blank">
-                                <div class="c-link__params"><span class="c-link__name">Capryol® 90 安全数据表 (SDS)</span></div>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div class="s-product-document__type">
-                          <h3 class="s-product-document__title">产品手册</h3>
-                          <ul class="s-product-document__list">
-                            <li class="c-link c-link--document">
-                              <a class="c-link__link" href="#" target="_blank">
-                                <div class="c-link__params"><span class="c-link__name">药用辅料产品手册 2024</span></div>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div class="s-product-document__type">
-                          <h3 class="s-product-document__title">科学文献</h3>
-                          <ul class="s-product-document__list">
-                            <li class="c-link c-link--document">
-                              <a class="c-link__link" href="#" target="_blank">
-                                <div class="c-link__params"><span class="c-link__name">脂质处方中助表面活性剂的选择与应用</span></div>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 延伸内容 -->
-            <div class="s-product-linked">
-              <div class="container">
-                <h2 class="s-product-linked__title u-title-styled">延伸内容</h2>
-                <div class="c-cards">
-                  <div class="c-card c-card--bordered theme-pharma">
-                    <div class="c-card__content">
-                      <h3 class="c-card__title">
-                        <a class="c-card__title-link" href="#">脂质处方技术简介</a>
-                      </h3>
-                      <p class="c-card__summary">了解脂质处方在提高难溶性药物生物利用度方面的应用和优势。</p>
-                    </div>
-                  </div>
-                  <div class="c-card c-card--bordered theme-pharma">
-                    <div class="c-card__content">
-                      <h3 class="c-card__title">
-                        <a class="c-card__title-link" href="#">自乳化药物递送系统 (SEDDS)</a>
-                      </h3>
-                      <p class="c-card__summary">探索SEDDS在口服脂质处方中的应用及其对药物吸收的促进作用。</p>
-                    </div>
-                  </div>
+                  <div class="container" id="product-content-blocks" v-html="data.blocksHtml"></div>
+                  <!-- 相关资料（动态加载） -->
+                  <div class="s-product-content__item" id="product-document" v-html="data.docHtml"></div>
                 </div>
               </div>
             </div>
@@ -221,7 +109,8 @@
         </div>
       </div>
 
-      <a href="#main-content" class="c-back-to-top" title="Revenir en haut de la page">↑</a>
+      <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page" class="c-back-to-top smoothHide d-none"></a>
+
     </main>
     <footer role="contentinfo" class="footer" id="footer"></footer>
 
@@ -248,26 +137,356 @@
     </div>
   </div>
 
-  <!-- Dialog -->
   <div id="dialog" class="dialog">
     <div class="dialog-content">
       <p id="dialog-message"></p>
       <button id="dialog-close" class="btn btn-primary">关闭</button>
     </div>
   </div>
+  <style>
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 30px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: rgba(248, 244, 244, 1);
+      min-width: 400px;
+      z-index: 9999;
+    }
+    .dialog-content {
+      text-align: center;
+    }
+    .dialog-content a {
+      color: #8eb73c;
+      font-weight: bold;
+    }
+    #dialog-close {
+      margin-top: 100px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+  <!-- ★ 与个人护理一致：全局函数/变量在 Vue 之前 -->
+  <script>
+    var inCart = false;
+    var _dialog = document.getElementById('dialog');
+    var _dialogClose = document.getElementById('dialog-close');
+    var _dialogMessage = document.getElementById('dialog-message');
 
-  <!-- 静态脚本：加载header/footer，初始化对话框 -->
+    function showDialog(message) {
+      _dialogMessage.innerHTML = message;
+      _dialog.style.display = 'block';
+    }
+
+    function checkLoginStatus() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    function _escape(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    _dialogClose.addEventListener('click', function () {
+      _dialog.style.display = 'none';
+      var applyBt = document.getElementById('applySampleBt');
+      var seeBt = document.getElementById('seeCartBt');
+      if (seeBt) seeBt.style.display = 'none';
+      if (applyBt) applyBt.style.display = 'flex';
+    });
+  </script>
+
+  <!-- 统一 Vue app 脚本（与个人护理 product-detail.html 同架构） -->
+  <script>
+    console.log('[DIAG] === Pharma Vue app (data+setup hybrid) ===');
+
+    // ====== 从 URL 提取 slug（支持多种格式）======
+    var pharmaSlug = '';
+    var _pathMatch = window.location.pathname.match(/\/([^/]+)\.html$/);
+    if (_pathMatch && _pathMatch[1] !== 'product-detail') {
+      pharmaSlug = decodeURIComponent(_pathMatch[1]);
+    }
+    if (!pharmaSlug) {
+      var _sMatch = window.location.search.match(/[?&]slug=([^&#]+)/);
+      if (_sMatch) { pharmaSlug = decodeURIComponent(_sMatch[1]); }
+    }
+    if (!pharmaSlug) {
+      var _idMatch = window.location.search.match(/[?&]id=([^&#]+)/);
+      if (_idMatch) { pharmaSlug = _idMatch[1]; }
+    }
+    console.log('[DIAG] 最终 slug:', JSON.stringify(pharmaSlug));
+
+    // ====== Vue app（data() + setup() 混合模式，与个人护理一致）======
+    const { createApp, reactive } = Vue;
+    const app = createApp({
+      data: function () {
+        return { productDetail: null };
+      },
+      setup: function () {
+        const data = reactive({
+          pharmaHeaderBg: '',
+          productName: '',
+          productDescription: '',
+          showDescription: true,
+          blocksHtml: '',
+          docHtml: '',
+          inFav: false,
+          inCart: false,
+          _productData: null,
+          _slug: pharmaSlug
+        });
+
+        // ====== 加载产品（与个人护理 getProductDetail 一致）======
+        function loadProduct(slug) {
+          GatteAPI.PharmaProduct.detail(slug)
+            .then(function (resp) {
+              var product = resp.data;
+              if (!product || !product.id) {
+                console.warn('[DIAG] ❌ 产品未找到:', slug);
+                return;
+              }
+              data._productData = product;
+              data.productName = product.name || '';
+              document.title = (product.name || '产品详情') + ' - 产品详情 | 嘉法狮';
+
+              // 头部大图（与个人护理 bg 格式完全一致）
+              var imgUrl = product.detailImageUrl || product.imageUrl;
+              if (imgUrl) {
+                data.pharmaHeaderBg = 'background-image: url(' + imgUrl + ')';
+              }
+              console.log('[DIAG] ✅ 产品加载:', product.name, '| bg:', data.pharmaHeaderBg);
+
+              // 产品描述
+              if (product.description) {
+                data.productDescription = '<p>' + _escape(product.description) + '</p>';
+                data.showDescription = true;
+              } else {
+                data.showDescription = false;
+              }
+
+              // 加载内容区块
+              if (product.id) loadBlocks(product.id);
+              // 加载文档
+              if (product.id) loadDocs(product.id);
+            })
+            .catch(function (e) {
+              console.warn('[DIAG] ❌ 加载失败:', e.message || e);
+            });
+        }
+
+        // ====== 加载内容区块 ======
+        function loadBlocks(productId) {
+          GatteAPI.PharmaProduct.blocks(productId)
+            .then(function (resp) {
+              if (!resp || !resp.data) return;
+              var blocks = resp.data.list || resp.data || [];
+              console.log('[DIAG] Blocks:', blocks.length);
+              if (blocks.length === 0) { data.blocksHtml = ''; return; }
+
+              var html = '';
+              blocks.forEach(function (block) {
+                var content = typeof block.content === 'string'
+                  ? JSON.parse(block.content) : (block.content || {});
+                var item = '';
+
+                switch (block.blockType) {
+                  case 'spec':
+                    var rows = content.rows || [];
+                    if (rows.length === 0) return;
+                    var rh = '';
+                    rows.forEach(function (r) {
+                      if (!r.label) return;
+                      rh += '<p><strong>' + _escape(r.label) + '</strong>';
+                      if (r.value) rh += '<br />' + _escape(r.value);
+                      rh += '</p>';
+                    });
+                    if (rh) {
+                      item = '<div class="s-product-content__item">'
+                        + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
+                        + '<div class="s-product-content__txt">' + rh + '</div></div>';
+                    }
+                    break;
+                  case 'richtext':
+                    if (!content.html) return;
+                    item = '<div class="s-product-content__item">'
+                      + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
+                      + '<div class="s-product-content__txt">' + content.html + '</div></div>';
+                    break;
+                  case 'video':
+                    if (!content.url) return;
+                    item = '<div class="s-product-content__item">'
+                      + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
+                      + '<div class="s-product-content__txt">'
+                      + '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">'
+                      + '<iframe src="' + _escape(content.url) + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>'
+                      + '</div></div></div>';
+                    break;
+                  case 'images':
+                    var imgs = content.images || [];
+                    if (imgs.length === 0) return;
+                    var ih = '';
+                    imgs.forEach(function (img) {
+                      ih += '<figure style="margin:0 0 16px;">'
+                        + '<img src="' + _escape(img.url) + '" alt="' + _escape(img.caption || '') + '" style="max-width:100%;border-radius:4px;" />'
+                        + (img.caption ? '<figcaption style="font-size:13px;color:#666;margin-top:6px;text-align:center;">' + _escape(img.caption) + '</figcaption>' : '')
+                        + '</figure>';
+                    });
+                    item = '<div class="s-product-content__item">'
+                      + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
+                      + '<div class="s-product-content__txt">' + ih + '</div></div>';
+                    break;
+                  case 'imagetext':
+                    item = '<div class="s-product-content__item">'
+                      + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
+                      + '<div class="s-product-content__txt">'
+                      + '<div style="display:flex;gap:24px;align-items:flex-start;"><div style="flex:1;">';
+                    if (content.leftType === 'image' && content.leftUrl) item += '<img src="' + _escape(content.leftUrl) + '" style="max-width:100%;" />';
+                    else if (content.leftType === 'video' && content.leftUrl) item += '<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="' + _escape(content.leftUrl) + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
+                    else if (content.leftHtml) item += content.leftHtml;
+                    item += '</div><div style="flex:1;">';
+                    if (content.rightType === 'video' && content.rightUrl) item += '<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="' + _escape(content.rightUrl) + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
+                    else if (content.rightText) item += '<p>' + content.rightText + '</p>';
+                    item += '</div></div></div></div>';
+                    break;
+                }
+                if (item) html += item;
+              });
+              data.blocksHtml = html;
+              console.log('[DIAG] ✅ Blocks 渲染完成');
+            })
+            .catch(function (e) {
+              console.warn('[DIAG] 加载 blocks 失败:', e.message || e);
+            });
+        }
+
+        // ====== 加载文档 ======
+        function loadDocs(productId) {
+          GatteAPI.PharmaProduct.documents(productId)
+            .then(function (resp) {
+              if (!resp || !resp.data) { console.log('[DIAG] 无文档'); return; }
+              var docs = resp.data;
+              if (!Array.isArray(docs) || docs.length === 0) { console.log('[DIAG] 文档为空'); return; }
+
+              var groups = {};
+              docs.forEach(function (d) {
+                var t = d.type || '\u5176\u4ed6';
+                if (!groups[t]) groups[t] = [];
+                groups[t].push(d);
+              });
+
+              var html = '<h2 class="s-product-content__title">相关资料</h2><div class="s-product-document">';
+              Object.keys(groups).forEach(function (tn) {
+                var items = groups[tn];
+                html += '<div class="s-product-document__type"><h3 class="s-product-document__title">' + _escape(tn) + '</h3><ul class="s-product-document__list">';
+                items.forEach(function (doc) {
+                  var lc = doc.isPublic === false ? ' c-link--locked' : '';
+                  html += '<li class="c-link c-link--document' + lc + '"><a class="c-link__link" href="' + _escape(doc.fileUrl || '#') + '" target="_blank"><div class="c-link__params"><span class="c-link__name">' + _escape(doc.title || doc.fileName || '') + '</span></div></a></li>';
+                });
+                html += '</ul></div>';
+              });
+              html += '</div>';
+              data.docHtml = html;
+              console.log('[DIAG] ✅ 文档渲染完成');
+            })
+            .catch(function (e) {
+              console.warn('[DIAG] 加载文档失败:', e.message || e);
+            });
+        }
+
+        // ====== 申请样品（与个人护理 addCart 一致）======
+        function requestSample() {
+          console.log('[DIAG] requestSample 被点击');
+          if (!checkLoginStatus()) {
+            showDialog('请先<a href="/account.html">登录</a>后申请样品，或点"申请样品/资料"直接申请！');
+            return;
+          }
+          var product = data._productData || {};
+          console.log('[DIAG] 添加到购物车, product:', product.id, product.name);
+          GatteAPI.Cart.add({
+            productType: 'pharma_product',
+            productId: parseInt(product.id),
+            productName: product.name || ''
+          }).then(function () {
+            data.inCart = true;
+            var applyBt = document.getElementById('applySampleBt');
+            var seeBt = document.getElementById('seeCartBt');
+            if (applyBt) applyBt.style.display = 'none';
+            if (seeBt) seeBt.style.display = 'block';
+            showDialog('已添加到购物车！');
+          }).catch(function (err) {
+            console.error('添加购物车失败:', err);
+            showDialog('操作失败，请重试');
+          });
+        }
+
+        // ====== 收藏切换 ======
+        function toggleFavorite() {
+          console.log('[DIAG] toggleFavorite 被点击');
+          if (!checkLoginStatus()) {
+            showDialog('请先<a href="/account.html">登录</a>');
+            return;
+          }
+          if (data.inFav) return;
+          var product = data._productData || {};
+          GatteAPI.Favorite.add({
+            itemType: 'pharma_product',
+            itemId: parseInt(product.id)
+          }).then(function () {
+            data.inFav = true;
+            showDialog('已添加到收藏');
+          }).catch(function (err) {
+            console.error('收藏失败:', err);
+            showDialog('收藏失败，请重试');
+          });
+        }
+
+        // ====== 初始化：加载产品（与个人护理 getProductDetail 一致）======
+        if (!data._slug) {
+          console.error('[DIAG] ❌ 无法提取 slug');
+          data.showDescription = false;
+        } else {
+          loadProduct(data._slug);
+        }
+
+        return {
+          data,
+          loadProduct,
+          loadBlocks,
+          loadDocs,
+          requestSample,
+          toggleFavorite
+        };
+      }
+    });
+    app.mount('#app');
+  </script>
+  <!-- ★ 补齐原站 Drupal 主题 JS（按钮交互依赖这些文件） -->
+  <!-- ★ 注入 drupalSettings 防止 JS 报错（uid/currentQuery 等） -->
+  <script>window.drupalSettings = { "path": { "currentPath": "node/1", "isFront": false, "currentQuery": "" }, "user": { "uid": 0 }, "tarteaucitron": false };</script>
+  <script src="/sites/default/files/js/js_CgNyoAz4OLa5vvP3hfEm88q-44JjhKSP85sJZiRBSH0.js"></script>
+  <script src="/sites/default/files/js/js_aMnLMGSG2CsdZriZXsPE0C6OPSZlxF9gZKkFabaxKnQ.js"></script>
+  <!-- ★ 禁用 cookie 弹窗（tarteaucitron），仅加载不执行核心逻辑 -->
+  <script>var tarteaucitron = { init: function(){}, user: { interface: { openAlert: function(){} } } };</script>
+  <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1724144171"></script>
+  <script src="/sites/default/files/js/js_AGtGO5-z4j5_wdQKvTl9_lxubjwgGGoHPEhvmhh8dnk.js"></script>
+  <script src="/sites/default/files/js/js_cVVQ78Ym14r4j6aYTQP6iZV8nVYAb2Ei1yjBmEJshZg.js"></script>
+  <!-- ★ 与个人护理一致：header/footer/quickLinks 在 Drupal JS 之后加载 -->
   <script>
     $(document).ready(function () {
       $("#header").load("/header.html");
       $("#footer").load("/footer.html");
       $("#quickLinks").load("/quickLinks.html");
+
+      // ★ pharma 特有：解绑 Drupal 原站 JS 对按钮的 handler
+      // （个人护理无 js-request-sample 按钮，不需要此操作；
+      //   pharma 的 js_aMnLMGSG... 中有 $(this).hide() 导致按钮消失）
+      $('.js-request-sample').off('click');
     });
-    var dialog = document.getElementById('dialog');
-    var dialogClose = document.getElementById('dialog-close');
-    dialogClose.addEventListener('click', function () {
-      dialog.style.display = 'none';
-    });
-  </script>
-</body>
+  </script></body>
 </html>

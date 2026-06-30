@@ -1160,13 +1160,27 @@ const QUILL_TOOLBAR = [
               </div>
               <div class="form-row">
                 <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" v-model="editingPharma.slug">
+                <label>产品图片</label>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <input type="text" class="form-control" v-model="editingPharma.imageUrl" placeholder="图片 URL" style="flex:1;min-width:200px;">
+                  <input type="file" accept="image/*" @change="uploadPharmaImage($event)" style="font-size:13px;">
+                  <span v-if="uploadingPharmaImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
                 </div>
-                <div class="form-group">
-                  <label>产品图片 URL</label>
-                  <input type="text" class="form-control" v-model="editingPharma.imageUrl" placeholder="https://...">
+                <div v-if="editingPharma.imageUrl" style="margin-top:6px;">
+                  <img :src="editingPharma.imageUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);">
                 </div>
+              </div>
+              <div class="form-group">
+                <label>详情大图 <span class="hint">（用于详情页顶部横幅，建议高清大图）</span></label>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <input type="text" class="form-control" v-model="editingPharma.detailImageUrl" placeholder="详情大图 URL 或上传" style="flex:1;min-width:200px;">
+                  <input type="file" accept="image/*" @change="uploadPharmaDetailImage($event)" style="font-size:13px;">
+                  <span v-if="uploadingPharmaDetailImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                </div>
+                <div v-if="editingPharma.detailImageUrl" style="margin-top:6px;">
+                  <img :src="editingPharma.detailImageUrl" style="max-width:200px;max-height:100px;border-radius:4px;border:1px solid var(--border);">
+                </div>
+              </div>
               </div>
               <div class="form-row">
                 <div class="form-group">
@@ -1177,31 +1191,6 @@ const QUILL_TOOLBAR = [
                   <label>国际站URL</label>
                   <input type="text" class="form-control" v-model="editingPharma.intlUrl" placeholder="https://www.gattefosse.com/...">
                 </div>
-              </div>
-              <div class="form-group">
-                <label>产品描述</label>
-                <textarea class="form-control" rows="4" v-model="editingPharma.description"></textarea>
-              </div>
-            </div>
-          </div>
-          <!-- 详情页 HTML 内容 -->
-          <div v-show="pharmaEditTab === 'basic'" class="card" style="margin-top:20px;">
-            <div class="card-header"><h3>详情页内容（HTML）</h3></div>
-            <div class="card-body">
-              <div class="form-group">
-                <label>名称和别称 <span class="hint">compositionHtml</span></label>
-                <textarea class="form-control" rows="6" v-model="editingPharma.compositionHtml" placeholder="输入 HTML，如：&#10;&lt;table&gt;&#10;  &lt;tr&gt;&lt;td&gt;美国药典&lt;/td&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;&#10;&lt;/table&gt;"></textarea>
-                <small style="color:#999;">显示在产品详情页「名称和别称」区块</small>
-              </div>
-              <div class="form-group" style="margin-top:16px;">
-                <label>主要应用 <span class="hint">applicationHtml</span></label>
-                <textarea class="form-control" rows="6" v-model="editingPharma.applicationHtml" placeholder="输入 HTML 内容"></textarea>
-                <small style="color:#999;">显示在产品详情页「主要应用」区块</small>
-              </div>
-              <div class="form-group" style="margin-top:16px;">
-                <label>法规信息 <span class="hint">regulatoryHtml</span></label>
-                <textarea class="form-control" rows="6" v-model="editingPharma.regulatoryHtml" placeholder="输入 HTML 内容"></textarea>
-                <small style="color:#999;">显示在产品详情页「法规信息」区块</small>
               </div>
             </div>
           </div>
@@ -1254,6 +1243,7 @@ const QUILL_TOOLBAR = [
                       <div class="block-actions">
                         <select v-model="block.blockType" @change="onPharmaBlockTypeChange(bi)" class="form-control" style="width:140px;">
                           <option value="richtext">富文本</option>
+                          <option value="spec">规格表格</option>
                           <option value="imagetext">图文并排</option>
                           <option value="video">视频</option>
                           <option value="images">图片集</option>
@@ -1315,6 +1305,22 @@ const QUILL_TOOLBAR = [
                           </div>
                         </div>
                         <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                          <button class="btn btn-sm btn-primary" @click="savePharmaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <!-- spec: 规格表格（标签-值配对，带横线） -->
+                      <div v-show="block.blockType === 'spec'">
+                        <div style="font-size:13px;color:#666;margin-bottom:10px;">
+                          每行输入 <strong>标签</strong>（左，加粗显示）和 <strong>值</strong>（右），前台以带分隔线的表格形式展示。
+                        </div>
+                        <div v-for="(row, ri) in block._specRows" :key="ri" class="block-entry-row" style="margin-bottom:6px;">
+                          <input type="text" class="form-control" v-model="row.label" placeholder="标签（如：美国药典）" style="flex:0 0 200px;font-weight:600;">
+                          <input type="text" class="form-control" v-model="row.value" placeholder="对应值">
+                          <button class="btn btn-sm btn-danger" @click="removePharmaSpecRow(bi, ri)" title="删除此行">×</button>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                          <button class="btn btn-sm btn-outline" @click="addPharmaSpecRow(bi)">+ 添加行</button>
                           <button class="btn btn-sm btn-primary" @click="savePharmaBlock(bi)">保存内容</button>
                           <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
                         </div>
@@ -2460,7 +2466,7 @@ createApp({
       pharmaFilter: { page: 1, limit: 20, keyword: '', route: '', dosageForm: '', isPublished: '', show: false },
       pharmaPagination: { total: 0, totalPages: 0 },
       selectedPharmaIds: [],
-      editingPharma: { name: '', slug: '', description: '', imageUrl: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null },
+      editingPharma: { name: '', slug: '', description: '', imageUrl: '', detailImageUrl: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null },
       // Formula
       formulaList: [],
       formulaFilter: { page: 1, limit: 20, keyword: '', application: '', form: '', isPublished: '', show: false },
@@ -2509,6 +2515,8 @@ createApp({
       uploadingImage: false,
       uploadingDetailImage: false,
       uploadingBlockImage: false,
+      uploadingPharmaImage: false,
+      uploadingPharmaDetailImage: false,
     };
   },
   computed: {
@@ -2803,6 +2811,48 @@ createApp({
         }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingBlockImage = false; event.target.value = ''; }
+    },
+    async uploadPharmaImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingPharmaImage = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingPharma.imageUrl = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingPharmaImage = false; event.target.value = ''; }
+    },
+    async uploadPharmaDetailImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingPharmaDetailImage = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingPharma.detailImageUrl = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingPharmaDetailImage = false; event.target.value = ''; }
     },
     async togglePcPublish(item) {
       try {
@@ -3158,11 +3208,11 @@ createApp({
     },
     resetPharmaEdit() {
       this.pharmaEditTab = 'basic';
-      this.editingPharma = { name: '', slug: '', description: '', imageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null, blocks: [] };
+      this.editingPharma = { name: '', slug: '', description: '', imageUrl: '', detailImageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null, blocks: [] };
     },
     editPharma(item) {
       this.editingPharma = {
-        id: item.id, name: item.name, slug: item.slug || '', description: item.description || '', imageUrl: item.imageUrl || '',
+        id: item.id, name: item.name, slug: item.slug || '', description: item.description || '', imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '',
         tagline: item.tagline || '', intlUrl: item.intlUrl || '',
         compositionHtml: item.compositionHtml || '', applicationHtml: item.applicationHtml || '', regulatoryHtml: item.regulatoryHtml || '',
         marketTag: [...(item.marketTag||[])], routeTag: [...(item.routeTag||[])], functionalityTag: [...(item.functionalityTag||[])],
@@ -3245,6 +3295,7 @@ createApp({
             _rightType: (b.blockType === 'imagetext') ? (content.rightType || 'text') : 'text',
             _rightText: (b.blockType === 'imagetext' && content.rightType === 'text') ? (content.rightText || '') : '',
             _rightUrl: (b.blockType === 'imagetext' && content.rightType === 'video') ? (content.rightUrl || '') : '',
+            _specRows: (b.blockType === 'spec' && content.rows) ? content.rows : [{ label: '', value: '' }],
           };
           return block;
         });
@@ -3267,6 +3318,7 @@ createApp({
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
+        _specRows: [{ label: '', value: '' }],
       };
       this.editingPharma.blocks.push(block);
     },
@@ -3300,6 +3352,12 @@ createApp({
     removePharmaImage(bi, ii) {
       this.editingPharma.blocks[bi]._imageList.splice(ii, 1);
     },
+    addPharmaSpecRow(bi) {
+      this.editingPharma.blocks[bi]._specRows.push({ label: '', value: '' });
+    },
+    removePharmaSpecRow(bi, ri) {
+      this.editingPharma.blocks[bi]._specRows.splice(ri, 1);
+    },
     async savePharmaBlock(bi) {
       var block = this.editingPharma.blocks[bi];
       var content = {};
@@ -3318,6 +3376,8 @@ createApp({
           rightText: block._rightText || '',
           rightUrl: block._rightUrl || '',
         };
+      } else if (block.blockType === 'spec') {
+        content = { rows: (block._specRows || []).filter(function(r) { return r.label; }) };
       }
       var payload = { blockType: block.blockType, title: block.title, content: JSON.stringify(content), sortOrder: block.sortOrder || 0, isPublished: true, productType: 'pharma' };
       if (block.id) {
