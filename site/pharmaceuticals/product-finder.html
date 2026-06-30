@@ -279,8 +279,8 @@
                         <div class="c-card__content">
                           <h3 class="c-card__title"><a :href="item.url">{{item.goodsName}}</a>
                           </h3>
-                          <div class="c-card__code">
-                            {{item.goodsIntro}}
+                          <div class="c-card__code" v-if="item.inciName">
+                            {{item.inciName}}
                           </div>
                           <div class="c-card__cta">
                             <button class="btn btn-primary btn-icon--r js-request-sample" data-uid="0" data-nid="478"
@@ -480,6 +480,7 @@
               ID: p.id,
               goodsName: p.name,
               goodsIntro: p.description || '',
+              inciName: p.inciName || '',
               goodsCoverImg: p.imageUrl || '',
               url: '/pharmaceuticals/product-finder/product-detail.html?id=' + p.id,
               flex: 'display: flex',

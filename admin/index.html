@@ -1158,6 +1158,10 @@ const QUILL_TOOLBAR = [
                 <label>产品名称 <span class="hint">（必填）</span></label>
                 <input type="text" class="form-control" v-model="editingPharma.name">
               </div>
+              <div class="form-group">
+                <label>INCI 名称 <span class="hint">（必填）</span></label>
+                <input type="text" class="form-control" v-model="editingPharma.inciName" placeholder="如：单辛酸丙二醇酯（II型）">
+              </div>
               <div class="form-row">
                 <div class="form-group">
                 <label>产品图片</label>
@@ -1182,15 +1186,13 @@ const QUILL_TOOLBAR = [
                 </div>
               </div>
               </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>宣传标语</label>
-                  <input type="text" class="form-control" v-model="editingPharma.tagline" placeholder="简短的产品宣传语">
-                </div>
-                <div class="form-group">
-                  <label>国际站URL</label>
-                  <input type="text" class="form-control" v-model="editingPharma.intlUrl" placeholder="https://www.gattefosse.com/...">
-                </div>
+              <div class="form-group">
+                <label>产品详情</label>
+                <textarea class="form-control" v-model="editingPharma.description" rows="4" placeholder="产品描述/简介"></textarea>
+              </div>
+              <div class="form-group">
+                <label>国际站URL</label>
+                <input type="text" class="form-control" v-model="editingPharma.intlUrl" placeholder="https://www.gattefosse.com/...">
               </div>
             </div>
           </div>
@@ -2466,7 +2468,7 @@ createApp({
       pharmaFilter: { page: 1, limit: 20, keyword: '', route: '', dosageForm: '', isPublished: '', show: false },
       pharmaPagination: { total: 0, totalPages: 0 },
       selectedPharmaIds: [],
-      editingPharma: { name: '', slug: '', description: '', imageUrl: '', detailImageUrl: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null },
+      editingPharma: { name: '', slug: '', inciName: '', description: '', imageUrl: '', detailImageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null },
       // Formula
       formulaList: [],
       formulaFilter: { page: 1, limit: 20, keyword: '', application: '', form: '', isPublished: '', show: false },
@@ -3208,11 +3210,11 @@ createApp({
     },
     resetPharmaEdit() {
       this.pharmaEditTab = 'basic';
-      this.editingPharma = { name: '', slug: '', description: '', imageUrl: '', detailImageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null, blocks: [] };
+      this.editingPharma = { name: '', slug: '', inciName: '', description: '', imageUrl: '', detailImageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null, blocks: [] };
     },
     editPharma(item) {
       this.editingPharma = {
-        id: item.id, name: item.name, slug: item.slug || '', description: item.description || '', imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '',
+        id: item.id, name: item.name, slug: item.slug || '', inciName: item.inciName || '', description: item.description || '', imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '',
         tagline: item.tagline || '', intlUrl: item.intlUrl || '',
         compositionHtml: item.compositionHtml || '', applicationHtml: item.applicationHtml || '', regulatoryHtml: item.regulatoryHtml || '',
         marketTag: [...(item.marketTag||[])], routeTag: [...(item.routeTag||[])], functionalityTag: [...(item.functionalityTag||[])],
@@ -3228,6 +3230,7 @@ createApp({
     },
     async savePharma() {
       if (!this.editingPharma.name) { this.showAlert('产品名称为必填项'); return; }
+      if (!this.editingPharma.inciName) { this.showAlert('INCI名称为必填项'); return; }
       this.saving = true;
       try {
         var isNew = !this.editingPharma.id;

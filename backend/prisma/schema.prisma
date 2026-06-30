@@ -81,8 +81,10 @@ model PharmaProduct {
   id                 Int       @id @default(autoincrement())
   name               String
   slug               String?
+  inciName           String?   @map("inci_name")  // INCI名称（必填）
   description        String?
   imageUrl           String?   @map("image_url")
+  detailImageUrl     String?   @map("detail_image_url")
   tagline            String?   // 宣传标语
   intlUrl            String?   @map("intl_url") // 国际站URL
   marketTag          String    @map("market_tag")

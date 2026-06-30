@@ -355,37 +355,34 @@
       
     </style>
     <script>
-      // 获取对话框元素和关闭按钮
+      // ★ 与参考页一致：全局变量和函数
+      var inCart = false;
       var dialog = document.getElementById('dialog');
       var dialogClose = document.getElementById('dialog-close');
       var dialogMessage = document.getElementById('dialog-message');
     
-      // 替代alert函数
       function showDialog(message) {
         dialogMessage.innerHTML = message;
         dialog.style.display = 'block';
       }
+
+      function checkLoginStatus() {
+        return localStorage.getItem('isLoggedIn') === 'true';
+      }
+
+      function _escape(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
     
-      // 关闭对话框
       dialogClose.addEventListener('click', function () {
         dialog.style.display = 'none';
+        var applyBt = document.getElementById('applySampleBt');
+        var seeBt = document.getElementById('seeCartBt');
+        if (seeBt) seeBt.style.display = 'none';
+        if (applyBt) applyBt.style.display = 'flex';
       });
-    
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("#header").load("/header.html", function () {
-                let tmp = checkLoginStatus();
-                if (!tmp) {
-                    $("#collapseAccMenu").load("/account-menu.html");
-                } else {
-                    $("#collapseAccMenu").load("/account-menu-after-login.html");
-                }
-            });
-            $("#footer").load("/footer.html");
-            $("#quickLinks").load("/quickLinks.html");
-            $("#worldList").load("/world.html");
-        });
     </script>
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -474,10 +471,28 @@
         src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
     <script
         src="/sites/default/files/js/js_cIUKHmKr1kWXi06l4jrQ8vSQ793pffiw2dzBkQNlquo.js"></script>
+    <!-- ★ 抑制 cookie 弹窗（tarteaucitron） -->
+    <script>var tarteaucitron = { init: function(){}, user: { interface: { openAlert: function(){} } } };</script>
     <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1717737938"></script>
     <script
         src="/sites/default/files/js/js_rHsNCjA0R_keGfTFI5P1B3fhlK795Fl3OKhv-joBUIo.js"></script>
     <script
         src="/sites/default/files/js/js_9gCG-xidCn4c4GzZHGZW8TAs9Tt63-h2izBfUZIMBFI.js"></script>
+  <!-- ★ 与参考页一致：header/footer/quickLinks 在 Drupal JS 之后加载 -->
+  <script>
+    $(document).ready(function () {
+      $("#header").load("/header.html", function () {
+        let tmp = checkLoginStatus();
+        if (!tmp) {
+          $("#collapseAccMenu").load("/account-menu.html");
+        } else {
+          $("#collapseAccMenu").load("/account-menu-after-login.html");
+        }
+      });
+      $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+      $("#worldList").load("/world.html");
+    });
+  </script>
 </body>
 </html>

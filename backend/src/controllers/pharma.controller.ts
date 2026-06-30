@@ -32,6 +32,7 @@ export async function listPharmaProducts(req: Request, res: Response) {
       where.OR = [
         { name: { contains: kw } },
         { slug: { contains: kw } },
+        { inciName: { contains: kw } },
         { description: { contains: kw } },
       ];
     }
@@ -103,7 +104,7 @@ export async function getPharmaProduct(req: Request, res: Response) {
 export async function createPharmaProduct(req: Request, res: Response) {
   try {
     const {
-      name, slug, description, imageUrl, tagline, intlUrl,
+      name, slug, inciName, description, imageUrl, detailImageUrl, tagline, intlUrl,
       marketTag, routeTag, functionalityTag, dosageFormTag,
       compositionHtml, applicationHtml, regulatoryHtml,
       sortOrder, isPublished,
@@ -113,12 +114,18 @@ export async function createPharmaProduct(req: Request, res: Response) {
       return res.status(400).json(fail('产品名称为必填项'));
     }
 
+    if (!inciName) {
+      return res.status(400).json(fail('INCI名称为必填项'));
+    }
+
     const item = await prisma.pharmaProduct.create({
       data: {
         name,
         slug: slug || null,
+        inciName: inciName || null,
         description: description || null,
         imageUrl: imageUrl || null,
+        detailImageUrl: detailImageUrl || null,
         tagline: tagline || null,
         intlUrl: intlUrl || null,
         marketTag: arrayToTag(marketTag),
@@ -155,8 +162,10 @@ export async function updatePharmaProduct(req: Request, res: Response) {
 
     if (body.name !== undefined) data.name = body.name;
     if (body.slug !== undefined) data.slug = body.slug;
+    if (body.inciName !== undefined) data.inciName = body.inciName;
     if (body.description !== undefined) data.description = body.description;
     if (body.imageUrl !== undefined) data.imageUrl = body.imageUrl;
+    if (body.detailImageUrl !== undefined) data.detailImageUrl = body.detailImageUrl;
     if (body.tagline !== undefined) data.tagline = body.tagline;
     if (body.intlUrl !== undefined) data.intlUrl = body.intlUrl;
     if (body.marketTag !== undefined) data.marketTag = arrayToTag(body.marketTag);
@@ -239,8 +248,8 @@ export async function getPharmaDocuments(req: Request, res: Response) {
         title: doc.title,
         type: doc.type,
         language: doc.language,
-        fileUrl: doc.fileUrl,
-        fileName: doc.fileName,
+        fileUrl: doc.filePath,
+        fileName: doc.filePath ? doc.filePath.split('/').pop() || doc.filePath : '',
         fileSize: doc.fileSize,
         isPublic: doc.isPublic,
         createdAt: doc.createdAt,
