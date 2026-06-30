@@ -170,31 +170,44 @@
       border: none;
       cursor: pointer;
     }
-    /* Spec 表格样式 — 带分割线的左右分栏 */
-    .spec-table {
-      border-top: 1px solid #e0d5d5;
+    /* Spec 两列网格布局 — 参考页 layout--twocol-section--67-33 */
+    .spec-section {
+      border-bottom: 2px solid #E0E0E0;
+      margin-bottom: 0;
+      padding-bottom: 24px;
+    }
+    .spec-grid {
+      display: flex;
+    }
+    .spec-grid-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .spec-grid-col--left {
+      flex: 0 0 67%;
+      border-right: 2px solid #E0E0E0;
+      padding-right: 24px;
+    }
+    .spec-grid-col--right {
+      flex: 0 0 33%;
+      padding-left: 24px;
     }
     .spec-row {
-      display: flex;
-      align-items: baseline;
-      padding: 16px 0;
-      border-bottom: 1px solid #e0d5d5;
+      padding: 10px 0;
       line-height: 1.6;
     }
     .spec-label {
       font-weight: 700;
       color: #3E3E3E;
       font-size: 15px;
-      white-space: nowrap;
-      width: 160px;
-      flex-shrink: 0;
+      display: block;
     }
     .spec-value {
       color: #555;
       font-size: 15px;
-      text-align: left;
       word-break: break-word;
-      flex: 1;
+      display: block;
+      margin-top: 2px;
     }
   </style>
   <!-- ★ 与个人护理一致：全局函数/变量在 Vue 之前 -->
@@ -325,16 +338,26 @@
                   case 'spec':
                     var rows = content.rows || [];
                     if (rows.length === 0) return;
+                    // 两列网格布局（67%-33%），参考页 layout--twocol-section--67-33
+                    var mid = Math.ceil(rows.length / 2);
+                    var leftRows = rows.slice(0, mid);
+                    var rightRows = rows.slice(mid);
+                    var lh = '';
+                    leftRows.forEach(function (r) {
+                      if (!r.label) return;
+                      lh += '<div class="spec-row"><span class="spec-label">' + _escape(r.label) + '</span><span class="spec-value">' + (r.value ? r.value : '') + '</span></div>';
+                    });
                     var rh = '';
-                    rows.forEach(function (r) {
+                    rightRows.forEach(function (r) {
                       if (!r.label) return;
                       rh += '<div class="spec-row"><span class="spec-label">' + _escape(r.label) + '</span><span class="spec-value">' + (r.value ? r.value : '') + '</span></div>';
                     });
-                    if (rh) {
-                      item = '<div class="s-product-content__item">'
-                        + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
-                        + '<div class="spec-table">' + rh + '</div></div>';
-                    }
+                    item = '<div class="s-product-content__item spec-section">'
+                      + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
+                      + '<div class="spec-grid">'
+                      + '<div class="spec-grid-col spec-grid-col--left">' + lh + '</div>'
+                      + '<div class="spec-grid-col spec-grid-col--right">' + rh + '</div>'
+                      + '</div></div>';
                     break;
                   case 'richtext':
                     if (!content.html) return;
