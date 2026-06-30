@@ -176,9 +176,10 @@
     }
     .spec-row {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 14px 0;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      padding: 16px 0;
       border-bottom: 1px solid #e0d5d5;
       line-height: 1.6;
     }
@@ -189,12 +190,15 @@
       white-space: nowrap;
       min-width: 140px;
       flex-shrink: 0;
+      text-align: center;
     }
     .spec-value {
       color: #555;
       font-size: 15px;
-      text-align: right;
-      word-break: break-word;
+      text-align: center;
+      word-break: break-all;
+      flex: 1;
+      max-width: 600px;
     }
   </style>
   <!-- ★ 与个人护理一致：全局函数/变量在 Vue 之前 -->
