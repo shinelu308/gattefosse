@@ -170,44 +170,40 @@
       border: none;
       cursor: pointer;
     }
-    /* Spec 两列网格布局 — 参考页 layout--twocol-section--67-33 */
+    /* Spec 单列表格布局 — 参考页 Names & synonyms 样式（标签左定宽、值右弹性、行间分割线） */
     .spec-section {
-      border-bottom: 2px solid #E0E0E0;
-      margin-bottom: 0;
-      padding-bottom: 24px;
+      border-bottom: 1px solid #E0E0E0;
     }
-    .spec-grid {
-      display: flex;
-    }
-    .spec-grid-col {
-      flex: 1;
-      min-width: 0;
-    }
-    .spec-grid-col--left {
-      flex: 0 0 67%;
-      border-right: 2px solid #E0E0E0;
-      padding-right: 24px;
-    }
-    .spec-grid-col--right {
-      flex: 0 0 33%;
-      padding-left: 24px;
+    .spec-section-title {
+      color: #005B96;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #E0E0E0;
     }
     .spec-row {
-      padding: 10px 0;
+      display: flex;
+      align-items: baseline;
+      padding: 18px 0;
+      border-bottom: 1px solid #E0E0E0;
       line-height: 1.6;
+    }
+    .spec-row:last-child {
+      border-bottom: none;
     }
     .spec-label {
       font-weight: 700;
       color: #3E3E3E;
       font-size: 15px;
-      display: block;
+      width: 260px;
+      flex-shrink: 0;
     }
     .spec-value {
       color: #555;
       font-size: 15px;
+      flex: 1;
       word-break: break-word;
-      display: block;
-      margin-top: 2px;
     }
   </style>
   <!-- ★ 与个人护理一致：全局函数/变量在 Vue 之前 -->
@@ -338,26 +334,15 @@
                   case 'spec':
                     var rows = content.rows || [];
                     if (rows.length === 0) return;
-                    // 两列网格布局（67%-33%），参考页 layout--twocol-section--67-33
-                    var mid = Math.ceil(rows.length / 2);
-                    var leftRows = rows.slice(0, mid);
-                    var rightRows = rows.slice(mid);
-                    var lh = '';
-                    leftRows.forEach(function (r) {
-                      if (!r.label) return;
-                      lh += '<div class="spec-row"><span class="spec-label">' + _escape(r.label) + '</span><span class="spec-value">' + (r.value ? r.value : '') + '</span></div>';
-                    });
+                    // 单列表格布局 — 标签左定宽、值右弹性，每行带水平分割线（参考页 Names & synonyms 样式）
                     var rh = '';
-                    rightRows.forEach(function (r) {
+                    rows.forEach(function (r) {
                       if (!r.label) return;
                       rh += '<div class="spec-row"><span class="spec-label">' + _escape(r.label) + '</span><span class="spec-value">' + (r.value ? r.value : '') + '</span></div>';
                     });
                     item = '<div class="s-product-content__item spec-section">'
-                      + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
-                      + '<div class="spec-grid">'
-                      + '<div class="spec-grid-col spec-grid-col--left">' + lh + '</div>'
-                      + '<div class="spec-grid-col spec-grid-col--right">' + rh + '</div>'
-                      + '</div></div>';
+                      + (block.title ? '<h2 class="s-product-content__title spec-section-title">' + _escape(block.title) + '</h2>' : '')
+                      + rh + '</div>';
                     break;
                   case 'richtext':
                     if (!content.html) return;
