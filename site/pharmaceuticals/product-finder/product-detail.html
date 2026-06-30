@@ -1,602 +1,244 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>产品详情 | 嘉法狮</title>
+  <meta http-equiv="content-language" content="zh-CN" />
+  <meta property="og:site_name" content="Gattefossé" />
+  <meta property="og:type" content="page" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <title>Capryol® 90 - 产品详情 | 嘉法狮</title>
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/css_1DVUkvXE9JpoQ1xLdVdzs-hgmcfdlNmPGwZO5WfAX5c.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/css_hx-izN24pfJl4Ip2Kx7sPVQzqooEE63N9jGUuXDePTE.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1712750673.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/css_zCDCU-o2LKXngtpj6DBjU0-DPPFPfqZNHXrxn4tmXuY.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/css_WXsVlvolEM36iHFvMW3UgPgsEh7mPKjCJ_ucwbLENX8.css" />
+  <link rel="stylesheet" media="all" href="/sites/default/files/css/css_EmY_sxerr-TNvoyioQly5tba1LJdvC1mnkhyeygX5Gg.css" />
   <script src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
-  <script src="/static/js/api.js"></script>
-  <script src="/static/js/auth.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    /* ===== Gattefossé Pharma Theme ===== */
-    :root {
-      --accent-color-light: #D7E6EF;
-      --accent-color: #0075BB;
-      --accent-color-dark: #00588D;
-      --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --bs-body-font-size: 1.6rem;
-      --bs-body-color: #3C4248;
-      --bs-body-bg: #fff;
-      --bs-link-color: #0075BB;
-      --bs-link-hover-color: #00588D;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-    html { font-size: 62.5%; scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: var(--bs-body-font-family);
-      font-size: var(--bs-body-font-size);
-      color: var(--bs-body-color);
-      background-color: var(--bs-body-bg);
-      line-height: 1.5;
-    }
-    a { color: var(--bs-link-color); text-decoration: none; }
-    a:hover { color: var(--bs-link-hover-color); text-decoration: underline; }
-    img { max-width: 100%; height: auto; vertical-align: middle; }
-    h1, h2, h3, h4 { margin-top: 0; }
-
-    /* ===== Buttons ===== */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
-      padding: 0.8rem 2rem;
-      font-size: 1.4rem;
-      font-weight: 600;
-      line-height: 1.5;
-      text-align: center;
-      text-decoration: none;
-      vertical-align: middle;
-      cursor: pointer;
-      border: 1px solid transparent;
-      border-radius: 0.4rem;
-      transition: all 0.2s;
-    }
-    .btn-primary {
-      color: #fff;
-      background-color: var(--accent-color);
-      border-color: var(--accent-color);
-    }
-    .btn-primary:hover {
-      color: #fff;
-      background-color: var(--accent-color-dark);
-      border-color: var(--accent-color-dark);
-    }
-    .btn-tertiary {
-      color: var(--accent-color);
-      background: none;
-      border: none;
-      padding-left: 0;
-      gap: 0.4rem;
-    }
-    .btn-tertiary:hover { color: var(--accent-color-dark); }
-    .btn-icon--r { gap: 0.8rem; }
-    .btn-see-cart { display: none; }
-
-    /* ===== Breadcrumb ===== */
-    .breadcrumb {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 1.2rem 2.4rem;
-      margin: 0;
-      list-style: none;
-      font-size: 1.3rem;
-    }
-    .breadcrumb-item + .breadcrumb-item { padding-left: 0.5rem; }
-    .breadcrumb-item + .breadcrumb-item::before {
-      content: "\BB";
-      padding-right: 0.5rem;
-      color: #6c757d;
-    }
-    .breadcrumb-item.active { color: #6c757d; }
-    .breadcrumb a { color: var(--accent-color); }
-
-    /* ===== Main Layout ===== */
-    .dialog-off-canvas-main-canvas { display: flex; flex-direction: column; }
-    .main { flex: 1; }
-
-    /* ===== s-product-header ===== */
-    .s-product-header {
-      display: flex;
-      background-color: #fff;
-      min-height: 50.8rem;
-      position: relative;
-    }
-    .s-product-header .region-breadcrumb {
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin: 0;
-      background: rgba(255,255,255,0.6);
-      z-index: 2;
-    }
-    .s-product-header__img {
-      position: relative;
-      width: 58%;
-      min-width: 58%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-    .s-product-header__fav {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: #fff;
-      border-radius: 0 0 0 4px;
-      border: none;
-      color: #8EB73C;
-      width: 5rem;
-      height: 5rem;
-      font-size: 2.4rem;
-      display: inline-flex;
-      place-content: center;
-      place-items: center;
-      cursor: pointer;
-      z-index: 3;
-    }
-    .s-product-header__fav:hover { color: #8EB73C; }
-    .s-product-header__fav .o-icon { font-size: 2.4rem; }
-    .s-product-header__fav.is-active .o-icon--star::before { content: "\2605"; }
-    .s-product-header__content {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding-left: 7%;
-      padding-right: 2.4rem;
-    }
-    .s-product-header__title {
-      font-size: 4rem;
-      font-weight: 700;
-      color: #232426;
-      margin: 0;
-      line-height: 1.2;
-    }
-    .s-product-header__subtitle {
-      font-size: 2.6rem;
-      color: #3C4248;
-      margin: 0.8rem 0 0;
-    }
-    .s-product-header__btns {
-      margin-top: 3.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.6rem;
-      align-items: flex-start;
-    }
-    .s-product-header__btn-document { text-align: left; padding-left: 0; }
-
-    /* ===== s-product-description ===== */
-    .s-product-description {
-      padding: 6.8rem 0 8rem;
-      background-color: #F7F5F0;
-    }
-    .s-product-description a { text-decoration: underline; color: var(--accent-color); }
-    .s-product-description a:hover { color: var(--accent-color-dark); }
-    .s-product-description__container {
-      margin-left: 2.4rem;
-      margin-right: 2.4rem;
-      display: flex;
-      gap: 3.2rem;
-      align-items: flex-start;
-      position: relative;
-      min-height: 10rem;
-    }
-    .s-product-description__container::before {
-      content: "";
-      width: 8rem;
-      height: 17.5rem;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 0 L100 50 L100 150 L50 200 L0 150 L0 50 Z' fill='%23D2E1B4' opacity='0.3'/%3E%3C/svg%3E") no-repeat top left;
-      background-size: contain;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .s-product-description__main {
-      margin-left: 10rem;
-      padding-left: 4rem;
-      border-left: 2px solid #fff;
-      width: 100%;
-    }
-    .s-product-description__main-content {
-      font-size: 2.4rem;
-      color: #3C4248;
-      line-height: 1.6;
-    }
-    .s-product-description__main-content p { margin: 0 0 1.2rem; }
-    .s-product-description__revendication {
-      background: #fff;
-      border-top: 4px solid var(--accent-color);
-      box-shadow: 0 0.4rem 3rem rgba(0,0,0,0.1);
-      padding: 3.2rem;
-      min-width: 26.8rem;
-    }
-    .s-product-description__revendication-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent-color);
-      margin-bottom: 1.6rem;
-    }
-    .s-product-description__revendication-list {
-      font-size: 1.6rem;
-      color: #3C4248;
-      margin: 0;
-      padding-left: 2rem;
-    }
-    .s-product-description__revendication-list li::marker { color: var(--accent-color); }
-
-    /* ===== s-product-content ===== */
-    .s-product-content { background-color: #F7F5F0; width: 100%; }
-    .s-product-content a:not(.btn) { text-decoration: underline; color: var(--accent-color); }
-    .s-product-content a:not(.btn):hover { color: var(--accent-color-dark); }
-    .s-product-content__inside {
-      background-color: #fff;
-      margin-bottom: 10rem;
-      margin-left: -2.4rem;
-      margin-right: -2.4rem;
-    }
-    .s-product-content__item {
-      padding: 8rem 10rem;
-      width: 100%;
-    }
-    .s-product-content__item:not(:last-child) { border-bottom: 1px solid #F0EBE3; }
-    .s-product-content__item li::marker { color: var(--accent-color); }
-    .s-product-content__title {
-      margin-bottom: 2.6rem;
-      font-weight: 700;
-      font-size: 2.3rem;
-      color: var(--accent-color);
-    }
-    .s-product-content__cols { display: flex; gap: 3.2rem; }
-    .s-product-content__col { flex: 1 1 0; }
-    .s-product-content__col img { width: auto; max-width: 100%; height: auto; }
-    .s-product-content__txt { font-size: 1.6rem; color: #3C4248; }
-    .s-product-content__txt p { margin: 0 0 1rem; }
-
-    /* ===== s-product-document ===== */
-    .s-product-document { display: flex; gap: 4rem; flex-wrap: wrap; }
-    .s-product-document a { text-decoration: none; }
-    .s-product-document a:hover { text-decoration: underline; }
-    .s-product-document__type { flex: 1 1 calc(33.333% - 2.7rem); min-width: 20rem; }
-    .s-product-document__title {
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #232426;
-      margin-bottom: 2.4rem;
-    }
-    .s-product-document__list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    .s-product-document .c-link { margin: 0; padding-right: 0; width: 100%; }
-    .c-link { display: block; margin-bottom: 1rem; }
-    .c-link--locked { opacity: 0.6; }
-    .c-link__link { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 0; color: #3C4248; text-decoration: none; border-bottom: 1px solid #F0EBE3; }
-    .c-link__link:hover { color: var(--accent-color); border-bottom-color: var(--accent-color); }
-    .c-link__name { font-size: 1.4rem; }
-
-    /* ===== s-product-linked ===== */
-    .s-product-linked { background-color: #F7F5F0; width: 100%; padding-bottom: 10rem; }
-    .s-product-linked .s-product-linked__title {
-      margin-bottom: 4rem;
-      font-weight: 700;
-      font-size: 3.3rem;
-      text-align: center;
-      line-height: 1.2;
-      padding: 0;
-    }
-    .c-cards { display: flex; gap: 3.2rem; flex-wrap: wrap; justify-content: center; }
-    .c-card {
-      background: #fff;
-      border: 1px solid #F0EBE3;
-      border-radius: 0.8rem;
-      padding: 2.4rem;
-      max-width: 30.4rem;
-      flex: 1 1 28rem;
-    }
-    .c-card__title { font-size: 1.8rem; margin-bottom: 1.2rem; }
-    .c-card__title-link { color: #232426; text-decoration: none; }
-    .c-card__title-link:hover { color: var(--accent-color); }
-    .c-card__summary { font-size: 1.4rem; color: #3C4248; line-height: 1.5; }
-
-    /* ===== Back to top ===== */
-    .c-back-to-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 4rem;
-      height: 4rem;
-      background: var(--accent-color);
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      text-decoration: none;
-      z-index: 100;
-      opacity: 0.8;
-    }
-    .c-back-to-top:hover { opacity: 1; color: #fff; }
-
-    /* ===== Icons ===== */
-    .o-icon { font-style: normal; }
-    .o-icon--star::before { content: "\2606"; }
-    .o-icon--envelope::before { content: "\2709"; }
-    .o-icon--document::before { content: "\1F4C4"; }
-    .o-icon--list::before { content: "\2630"; }
-    .o-icon--cross::before { content: "\2715"; }
-    .o-icon--magnifying-glass::before { content: "\1F50D"; }
-    .o-icon--caret-right::before { content: "\203A"; }
-
-    /* ===== Dialog ===== */
-    .dialog {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 30px;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      background-color: #f8f4f4;
-      min-width: 400px;
-      z-index: 9999;
-    }
-    .dialog-content { text-align: center; }
-    .dialog-content a { color: #8eb73c; font-weight: bold; }
-    #dialog-close { margin-top: 20px; padding: 5px 10px; border: none; cursor: pointer; }
-
-    /* ===== Loading ===== */
-    .product-detail-loading {
-      text-align: center;
-      padding: 120px 20px;
-    }
-    .product-detail-loading .spinner {
-      display: inline-block;
-      width: 36px;
-      height: 36px;
-      border: 3px solid #e0e0e0;
-      border-top-color: var(--accent-color);
-      border-radius: 50%;
-      animation: pd-spin 0.6s linear infinite;
-      margin-bottom: 10px;
-    }
-    @keyframes pd-spin { to { transform: rotate(360deg); } }
-    .s-product-detail-error { text-align: center; padding: 80px 20px; }
-    .s-product-detail-error h2 { color: #c0392b; font-size: 2.4rem; margin-bottom: 10px; }
-
-    /* ===== Tags ===== */
-    .s-product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 1.6rem 0; }
-    .s-product-tag { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 1.2rem; font-weight: 500; }
-    .s-product-tag.market { background: #e8f5e9; color: #2e7d32; }
-    .s-product-tag.route { background: #e8f0fe; color: #004b87; }
-    .s-product-tag.functionality { background: #fff8e1; color: #f57f17; }
-    .s-product-tag.dosage-form { background: #f3e5f5; color: #7b1fa2; }
-
-    /* ===== Quick Access ===== */
-    .quick-access {
-      position: fixed;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      z-index: 999;
-    }
-    .quick-access__button--open {
-      background: var(--accent-color);
-      color: #fff;
-      border: none;
-      padding: 1rem 0.6rem;
-      writing-mode: vertical-rl;
-      cursor: pointer;
-      border-radius: 0 4px 4px 0;
-      font-size: 1.2rem;
-    }
-
-    /* ===== Modal ===== */
-    .modal--search .modal-dialog { max-width: 600px; margin: 10vh auto; }
-    .modal--search .form-item { display: flex; gap: 1rem; margin-top: 2rem; }
-    .modal--search input { flex: 1; padding: 1rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1.6rem; }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 991px) {
-      .s-product-header { min-height: auto; flex-direction: column; }
-      .s-product-header__img { width: 100%; min-width: 100%; height: 26rem; }
-      .s-product-header__content { margin: 2.4rem; padding-left: 0; }
-      .s-product-header__title { font-size: 2.6rem; }
-      .s-product-header__subtitle { font-size: 2rem; }
-      .s-product-header__btns { margin-top: 0.8rem; align-items: stretch; width: 100%; }
-    }
-    @media (max-width: 767px) {
-      .s-product-header__img { height: 18rem; }
-      .s-product-header__title { font-size: 2.2rem; }
-      .s-product-description { padding-top: 2.4rem; padding-bottom: 2.4rem; }
-      .s-product-description__container { flex-direction: column; align-items: stretch; min-height: auto; }
-      .s-product-description__container::before { content: none; }
-      .s-product-description__main { margin-left: 0; padding-left: 1.6rem; }
-      .s-product-description__main-content { font-size: 1.8rem; }
-      .s-product-content__item { padding: 4rem 2.4rem; }
-      .s-product-content__title { font-size: 1.8rem; }
-      .s-product-content__cols { flex-direction: column; gap: 1.6rem; }
-      .s-product-content__txt { font-size: 1.4rem; }
-      .s-product-document { flex-direction: column; gap: 2.6rem; }
-      .s-product-document__title { font-size: 1.6rem; margin-bottom: 1.6rem; }
-      .s-product-linked { padding-bottom: 3.2rem; }
-      .s-product-linked .s-product-linked__title { font-size: 2.3rem; margin-bottom: 1.6rem; }
-      .c-card { max-width: 100%; }
-    }
-  </style>
 </head>
-<body class="theme-pharma path-pharmaceuticals bg- d-flex flex-column">
-  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100">
+<body class="path-node page-node-type-products-pharmaceuticals bg- d-flex flex-column">
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
     <header role="banner" class="header" id="header"></header>
-
     <main role="main" class="main theme-pharma" id="app">
-      <!-- Quick access -->
       <nav role="navigation" class="quick-access">
         <button class="quick-access__button quick-access__button--open js-open">
+          <i class="o-icon --list" aria-hidden="true"></i>
           <strong>快捷链接</strong>
         </button>
+        <div class="quick-access__menu">
+          <button class="quick-access__button quick-access__button--close js-close">
+            <i class="o-icon --cross" aria-hidden="true"></i>
+            关闭
+          </button>
+          <div id="quickLinks"></div>
+        </div>
       </nav>
-
       <a id="main-content" tabindex="-1"></a>
 
-      <div v-if="loading" class="product-detail-loading">
-        <div class="spinner"></div>
-        <p style="color:#999;font-size:16px;">正在加载产品信息...</p>
-      </div>
-
-      <div v-else-if="error" class="s-product-detail-error">
-        <h2>产品未找到</h2>
-        <p style="color:#666;margin-bottom:20px;">抱歉，未找到产品信息。</p>
-        <a href="/pharmaceuticals/product-finder.html" class="btn btn-primary">返回产品列表</a>
-      </div>
-
-      <template v-else>
-        <!-- s-product-header -->
-        <div class="s-product-header">
-          <div class="region region-breadcrumb">
-            <nav aria-label="breadcrumb">
-              <h2 id="system-breadcrumb" class="visually-hidden" style="position:absolute;overflow:hidden;clip:rect(1px,1px,1px,1px);width:1px;height:1px;">Breadcrumb</h2>
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">首页</a></li>
-                <li class="breadcrumb-item"><a href="/pharmaceuticals.html">药用辅料</a></li>
-                <li class="breadcrumb-item"><a href="/pharmaceuticals/product-finder.html">产品目录</a></li>
-                <li class="breadcrumb-item active">{{ product.name }}</li>
-              </ol>
-            </nav>
-          </div>
-          <div class="s-product-header__img" :style="headerBgStyle">
-            <button :class="['s-product-header__fav', { 'is-active': inFav }]" @click="addProductFav">
-              <i aria-hidden="true" class="o-icon o-icon--star"></i>
-              <span class="visually-hidden" style="position:absolute;overflow:hidden;clip:rect(1px,1px,1px,1px);width:1px;height:1px;">收藏</span>
+      <!-- 产品头部 -->
+      <div class="s-product-header">
+        <div class="region region-breadcrumb">
+          <nav aria-label="breadcrumb">
+            <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">首页</a></li>
+              <li class="breadcrumb-item"><a href="/pharmaceuticals.html">药用辅料</a></li>
+              <li class="breadcrumb-item"><a href="/pharmaceuticals/product-finder.html">产品目录</a></li>
+              <li class="breadcrumb-item active">Capryol® 90</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="s-product-header__img" style="background-image: url(/static/images/pharma-bg.jpg); background-size: cover; background-position: center;">
+          <button class="s-product-header__fav js-add-remove-fav">
+            <i aria-hidden="true" class="o-icon --star"></i>
+            <span class="visually-hidden">收藏</span>
+          </button>
+        </div>
+        <div class="s-product-header__content">
+          <h1 class="s-product-header__title">Capryol® 90</h1>
+          <div class="s-product-header__btns">
+            <button class="btn btn-primary btn-icon--r js-request-sample">
+              申请样品<i class="o-icon --envelope" aria-hidden="true"></i>
             </button>
-          </div>
-          <div class="s-product-header__content">
-            <h1 class="s-product-header__title">{{ product.name }}</h1>
-            <p class="s-product-header__subtitle" v-if="product.tagline">{{ product.tagline }}</p>
-            <div class="s-product-tags">
-              <span v-for="tag in tags" :key="tag.label" :class="['s-product-tag', tag.category]">{{ tag.label }}</span>
-            </div>
-            <div class="s-product-header__btns">
-              <button v-if="!inCart" class="btn btn-primary btn-icon--r" @click="addCart">
-                申请样品<i aria-hidden="true" class="o-icon o-icon--envelope"></i>
-              </button>
-              <a v-else class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html" style="display:flex;">查看购物车</a>
-              <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document">
-                <i aria-hidden="true" class="o-icon o-icon--document"></i>访问文档和技术信息
-              </a>
-            </div>
+            <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document">
+              <i aria-hidden="true" class="o-icon --document"></i>访问文档和技术信息
+            </a>
           </div>
         </div>
+      </div>
 
-        <!-- s-product-description -->
-        <div class="s-product-description" v-if="product.description">
-          <div class="s-product-description__container">
-            <div class="s-product-description__main">
-              <div class="s-product-description__main-content" v-html="product.description"></div>
+      <!-- 内容区 -->
+      <div class="region region-content">
+        <div class="block block-system block-system-main-block">
+          <article role="article" class="node node--type-products-pharmaceuticals node--view-mode-full">
+
+            <!-- 产品描述 -->
+            <div class="s-product-description">
+              <div class="s-product-description__container">
+                <div class="s-product-description__main">
+                  <div class="s-product-description__main-content">
+                    <p>Capryol® 90 是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，在外用制剂中作为助表面活性剂和增溶剂。</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- s-product-content -->
-        <div class="s-product-content">
-          <div class="container">
-            <div class="s-product-content__inside">
-              <!-- Main content from API (compositionHtml, applicationHtml, regulatoryHtml, blocks) -->
-              <div class="container" v-html="product.mainContent"></div>
+            <!-- 产品内容 -->
+            <div class="s-product-content">
+              <div class="container">
+                <div class="s-product-content__inside">
+                  <div class="container">
+                    <!-- 名称和别称 -->
+                    <div class="s-product-content__item">
+                      <h2 class="s-product-content__title">名称和别称</h2>
+                      <div class="s-product-content__txt">
+                        <p><strong>美国药典</strong><br />Propylene Glycol Monocaprylate NF</p>
+                        <p><strong>欧洲药典</strong><br />/</p>
+                        <p><strong>UNII号(FDA)</strong><br />RT9P9S09QI</p>
+                        <p><strong>FDA IID数据库</strong><br />PROPYLENE GLYCOL CAPRYLATE</p>
+                        <p><strong>药用辅料手册</strong><br />Propylene glycol monocaprylate</p>
+                        <p><strong>化学描述</strong><br />由辛酸(C8)的丙二醇酯组成，主要由单酯和少量二酯组成。</p>
+                      </div>
+                    </div>
+                    <!-- 产品特性 -->
+                    <div class="s-product-content__item">
+                      <h2 class="s-product-content__title">产品特性</h2>
+                      <div class="s-product-content__txt">
+                        <div class="s-product-table">
+                          <table>
+                            <thead>
+                              <tr><th>参数</th><th>值</th></tr>
+                            </thead>
+                            <tbody>
+                              <tr><td>形态</td><td>油状液体</td></tr>
+                              <tr><td>粘度(mPa.s)</td><td>20 (20°C)</td></tr>
+                              <tr><td>HLB</td><td>5</td></tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 主要应用 -->
+                    <div class="s-product-content__item">
+                      <h2 class="s-product-content__title">主要应用</h2>
+                      <div class="s-product-content__txt">
+                        <p>难溶性药物的增溶剂和生物利用度促进剂。在II型和III型脂质处方中作为助表面活性剂。</p>
+                        <p>外用增溶剂和透皮促进剂。在外用微乳处方中作为增溶剂和助表面活性剂。</p>
+                        <p>在已批准上市药品中使用，证实其安全性。</p>
+                      </div>
+                    </div>
+                    <!-- 主要制剂技术 -->
+                    <div class="s-product-content__item">
+                      <h2 class="s-product-content__title">主要制剂技术</h2>
+                      <div class="s-product-content__txt">
+                        <ul>
+                          <li>口服：自乳化脂质处方</li>
+                          <li>外用：乳胶剂，微乳</li>
+                        </ul>
+                      </div>
+                    </div>
 
-              <!-- Document section -->
-              <div class="container" id="product-document">
-                <div class="s-product-content__item">
-                  <h2 class="s-product-content__title">相关资料</h2>
-                  <div class="s-product-document">
-                    <div class="s-product-document__type" v-if="docTech.length > 0">
-                      <h3 class="s-product-document__title">技术文件</h3>
-                      <ul class="s-product-document__list">
-                        <li class="c-link c-link--document" v-for="item in docTech" :key="item.id">
-                          <a class="c-link__link" :href="item.url" target="_blank">
-                            <span class="c-link__name">{{ item.name }}</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="s-product-document__type" v-if="docBrochure.length > 0">
-                      <h3 class="s-product-document__title">产品手册</h3>
-                      <ul class="s-product-document__list">
-                        <li class="c-link c-link--document" v-for="item in docBrochure" :key="item.id">
-                          <a class="c-link__link" :href="item.url" target="_blank">
-                            <span class="c-link__name">{{ item.name }}</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="s-product-document__type" v-if="docScientific.length > 0">
-                      <h3 class="s-product-document__title">科学文献</h3>
-                      <ul class="s-product-document__list">
-                        <li class="c-link c-link--document" v-for="item in docScientific" :key="item.id">
-                          <a class="c-link__link" :href="item.url" target="_blank">
-                            <span class="c-link__name">{{ item.name }}</span>
-                          </a>
-                        </li>
-                      </ul>
+                    <!-- 相关资料 -->
+                    <div class="s-product-content__item" id="product-document">
+                      <h2 class="s-product-content__title">相关资料</h2>
+                      <div class="s-product-document">
+                        <div class="s-product-document__type">
+                          <h3 class="s-product-document__title">技术文件</h3>
+                          <ul class="s-product-document__list">
+                            <li class="c-link c-link--document">
+                              <a class="c-link__link" href="#" target="_blank">
+                                <div class="c-link__params"><span class="c-link__name">Capryol® 90 技术数据表 (TDS)</span></div>
+                              </a>
+                            </li>
+                            <li class="c-link c-link--document c-link--locked">
+                              <a class="c-link__link" href="#" target="_blank">
+                                <div class="c-link__params"><span class="c-link__name">Capryol® 90 安全数据表 (SDS)</span></div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="s-product-document__type">
+                          <h3 class="s-product-document__title">产品手册</h3>
+                          <ul class="s-product-document__list">
+                            <li class="c-link c-link--document">
+                              <a class="c-link__link" href="#" target="_blank">
+                                <div class="c-link__params"><span class="c-link__name">药用辅料产品手册 2024</span></div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="s-product-document__type">
+                          <h3 class="s-product-document__title">科学文献</h3>
+                          <ul class="s-product-document__list">
+                            <li class="c-link c-link--document">
+                              <a class="c-link__link" href="#" target="_blank">
+                                <div class="c-link__params"><span class="c-link__name">脂质处方中助表面活性剂的选择与应用</span></div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- s-product-linked (related content) -->
-        <div class="s-product-linked" v-if="related.length > 0">
-          <div class="container">
-            <h2 class="s-product-linked__title">延伸内容</h2>
-            <div class="c-cards">
-              <div class="c-card" v-for="item in related" :key="item.id">
-                <div class="c-card__content">
-                  <h3 class="c-card__title">
-                    <a class="c-card__title-link" :href="item.url">{{ item.title }}</a>
-                  </h3>
-                  <p class="c-card__summary" v-html="item.summary"></p>
+            <!-- 延伸内容 -->
+            <div class="s-product-linked">
+              <div class="container">
+                <h2 class="s-product-linked__title u-title-styled">延伸内容</h2>
+                <div class="c-cards">
+                  <div class="c-card c-card--bordered theme-pharma">
+                    <div class="c-card__content">
+                      <h3 class="c-card__title">
+                        <a class="c-card__title-link" href="#">脂质处方技术简介</a>
+                      </h3>
+                      <p class="c-card__summary">了解脂质处方在提高难溶性药物生物利用度方面的应用和优势。</p>
+                    </div>
+                  </div>
+                  <div class="c-card c-card--bordered theme-pharma">
+                    <div class="c-card__content">
+                      <h3 class="c-card__title">
+                        <a class="c-card__title-link" href="#">自乳化药物递送系统 (SEDDS)</a>
+                      </h3>
+                      <p class="c-card__summary">探索SEDDS在口服脂质处方中的应用及其对药物吸收的促进作用。</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+
+          </article>
         </div>
-      </template>
+      </div>
 
-      <a href="#main-content" class="c-back-to-top" title="返回顶部">&#8593;</a>
+      <a href="#main-content" class="c-back-to-top" title="Revenir en haut de la page">↑</a>
     </main>
-
     <footer role="contentinfo" class="footer" id="footer"></footer>
 
+    <!-- Search Modal -->
     <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close" data-bs-dismiss="modal">
-            <i class="o-icon o-icon--cross" aria-hidden="true"></i>
-            <span>关闭</span>
+            <i class="o-icon --cross" aria-hidden="true"></i><span>关闭</span>
           </button>
           <form action="/search.html" method="GET" class="modal--search__form">
             <h2 class="modal-title">您在查找......?</h2>
             <div class="form-item">
               <label class="visually-hidden" for="key">请输入关键词...</label>
               <input class="form-text form-control" placeholder="请输入关键词..." type="text" id="key" name="keyword" value="">
-              <button type="submit" class="js-form-submit form-submit btn btn-primary">
-                <i class="o-icon o-icon--magnifying-glass" aria-hidden="true"></i>
+              <button type="submit" class="js-form-submit form-submit btn">
+                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
               </button>
             </div>
             <a href="/search.html" class="u-link">高级搜索</a>
@@ -606,6 +248,7 @@
     </div>
   </div>
 
+  <!-- Dialog -->
   <div id="dialog" class="dialog">
     <div class="dialog-content">
       <p id="dialog-message"></p>
@@ -613,276 +256,17 @@
     </div>
   </div>
 
-  <script>
-    // Dialog helpers
-    var dialog = document.getElementById('dialog');
-    var dialogClose = document.getElementById('dialog-close');
-    var dialogMessage = document.getElementById('dialog-message');
-
-    function showDialog(message) {
-      dialogMessage.innerHTML = message;
-      dialog.style.display = 'block';
-    }
-    dialogClose.addEventListener('click', function () {
-      dialog.style.display = 'none';
-    });
-
-    function checkLoginStatus() {
-      return localStorage.getItem('isLoggedIn') === 'true';
-    }
-  </script>
-
-  <script>
-    const { createApp, reactive, ref, nextTick } = Vue;
-
-    const app = createApp({
-      setup() {
-        const params = new URLSearchParams(window.location.search);
-        const productId = parseInt(params.get('id') || '0');
-        const isLogin = checkLoginStatus();
-
-        const state = reactive({
-          loading: true,
-          error: false,
-          product: {},
-          tags: [],
-          docTech: [],
-          docBrochure: [],
-          docScientific: [],
-          related: [],
-          inCart: false,
-          inFav: false,
-        });
-
-        // ---- Load product detail ----
-        async function loadProduct() {
-          if (!productId) { state.error = true; state.loading = false; return; }
-
-          try {
-            // Product detail (response interceptor extracts body.data into response.data)
-            var detailRes = await GatteAPI.PharmaProduct.detail(productId);
-            var prod = detailRes.data;
-            if (!prod) throw new Error('产品数据为空');
-            state.product = {
-              id: prod.id,
-              name: prod.goodsName || prod.name,
-              tagline: prod.tagline || '',
-              description: prod.description || '',
-              goodsCategoryId: prod.goodsCategoryId || 117,
-              imageUrl: prod.goodsCarousel || prod.imageUrl || prod.image || '',
-              mainContent: '',
-            };
-
-            // Build header background
-            var img = state.product.imageUrl;
-            if (img) {
-              var imgUrl = img.startsWith('http') ? img : '/' + img;
-              state.headerBgStyle = { backgroundImage: 'url(' + imgUrl + ')' };
-            } else {
-              state.headerBgStyle = { background: 'linear-gradient(135deg, #0075BB, #00588D)' };
-            }
-
-            // ---- Tags ----
-            if (prod.tags && Array.isArray(prod.tags)) {
-              state.tags = prod.tags.map(function (t) {
-                return { label: t.label || t.name || t, category: t.category || 'market' };
-              });
-            }
-            // Also handle parsed tag arrays from parsePharma()
-            if (!state.tags.length && prod.marketTag && Array.isArray(prod.marketTag)) {
-              for (var i = 0; i < prod.marketTag.length; i++) {
-                state.tags.push({ label: prod.marketTag[i], category: 'market' });
-              }
-              if (prod.routeTag && Array.isArray(prod.routeTag)) {
-                for (var i = 0; i < prod.routeTag.length; i++) {
-                  state.tags.push({ label: prod.routeTag[i], category: 'route' });
-                }
-              }
-              if (prod.functionalityTag && Array.isArray(prod.functionalityTag)) {
-                for (var i = 0; i < prod.functionalityTag.length; i++) {
-                  state.tags.push({ label: prod.functionalityTag[i], category: 'functionality' });
-                }
-              }
-              if (prod.dosageFormTag && Array.isArray(prod.dosageFormTag)) {
-                for (var i = 0; i < prod.dosageFormTag.length; i++) {
-                  state.tags.push({ label: prod.dosageFormTag[i], category: 'dosage-form' });
-                }
-              }
-            }
-
-            // ---- Main content (compositionHtml + applicationHtml + regulatoryHtml) ----
-            var mainHtml = '';
-            var comp = prod.compositionHtml || '';
-            var appl = prod.applicationHtml || '';
-            var reg = prod.regulatoryHtml || '';
-
-            if (comp) mainHtml += '<div class="s-product-content__item"><h2 class="s-product-content__title">名称和别称</h2><div class="s-product-content__txt">' + comp + '</div></div>';
-            if (appl) mainHtml += '<div class="s-product-content__item"><h2 class="s-product-content__title">主要应用</h2><div class="s-product-content__txt">' + appl + '</div></div>';
-            if (reg) mainHtml += '<div class="s-product-content__item"><h2 class="s-product-content__title">法规信息</h2><div class="s-product-content__txt">' + reg + '</div></div>';
-
-            // ---- Content blocks ----
-            try {
-              var blocksRes = await GatteAPI.Blocks.list({ productId: productId, productType: 'pharma' });
-              var blockList = blocksRes.data;
-              if (blockList) {
-                // Could be { list: [...] } or array
-                var blocks = blockList.list || (Array.isArray(blockList) ? blockList : []);
-                for (var i = 0; i < blocks.length; i++) {
-                  mainHtml += renderBlock(blocks[i]);
-                }
-              }
-            } catch(e) { /* no blocks */ }
-
-            state.product.mainContent = mainHtml;
-
-            // ---- Documents ----
-            try {
-              var docRes = await GatteAPI.Document.list({ productId: productId, productType: 'pharma', limit: 100 });
-              var docData = docRes.data;
-              if (docData) {
-                var docs = docData.list || (Array.isArray(docData) ? docData : []);
-                for (var i = 0; i < docs.length; i++) {
-                  var doc = docs[i];
-                  var item = {
-                    id: doc.id,
-                    name: doc.title || doc.name,
-                    url: doc.fileUrl || doc.url || '#',
-                    category: doc.category || doc.type || 'other',
-                  };
-                  if (item.category === 'technical' || item.category === '1') state.docTech.push(item);
-                  else if (item.category === 'brochure' || item.category === '2') state.docBrochure.push(item);
-                  else if (item.category === 'scientific' || item.category === '3') state.docScientific.push(item);
-                }
-              }
-            } catch(e) { /* no docs */ }
-
-            // ---- Cart & Favorite status ----
-            if (isLogin) {
-              try {
-                var cartRes = await GatteAPI.Cart.list();
-                var cartList = cartRes.data;
-                if (cartList && Array.isArray(cartList)) {
-                  for (var i = 0; i < cartList.length; i++) {
-                    if (cartList[i].productId == productId) {
-                      state.inCart = true; break;
-                    }
-                  }
-                }
-              } catch(e) {}
-              try {
-                var favRes = await GatteAPI.Favorite.list();
-                var favData = favRes.data;
-                if (favData) {
-                  // Could be { list: [...] } or array
-                  var favList = favData.list || (Array.isArray(favData) ? favData : []);
-                  for (var i = 0; i < favList.length; i++) {
-                    if (favList[i].itemId == productId) {
-                      state.inFav = true; break;
-                    }
-                  }
-                }
-              } catch(e) {}
-            }
-
-          } catch (err) {
-            console.error('loadProduct error:', err);
-            state.error = true;
-          } finally {
-            state.loading = false;
-          }
-        }
-
-        function renderBlock(block) {
-          if (!block || !block.type) return '';
-          const body = block.body || block.content || '';
-          const imageUrl = block.imageUrl || block.image || '';
-          const videoUrl = block.videoUrl || block.video || '';
-
-          switch (block.type) {
-            case 'richtext':
-              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__txt">' + body + '</div></div>';
-            case 'imagetext':
-              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__cols"><div class="s-product-content__col s-product-content__txt">' + body + '</div><div class="s-product-content__col">' + (imageUrl ? '<img src="' + imageUrl + '" alt="' + (block.title || '') + '" />' : '') + '</div></div></div>';
-            case 'video':
-              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__txt">' + (videoUrl ? '<video controls style="max-width:100%"><source src="' + videoUrl + '" /></video>' : '') + (body || '') + '</div></div>';
-            case 'images':
-              const images = block.images || block.imageList || (imageUrl ? [imageUrl] : []);
-              let html = '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__cols">';
-              for (const img of (Array.isArray(images) ? images : [images])) {
-                html += '<div class="s-product-content__col"><img src="' + (typeof img === 'string' ? img : img.url || img) + '" alt="" /></div>';
-              }
-              html += '</div></div>';
-              return html;
-            default:
-              return '<div class="s-product-content__item"><h2 class="s-product-content__title">' + (block.title || '') + '</h2><div class="s-product-content__txt">' + (body || '') + '</div></div>';
-          }
-        }
-
-        // ---- Favorite ----
-        async function addProductFav() {
-          if (!isLogin) {
-            showDialog('请先<a href="/account.html">登录</a>');
-            return;
-          }
-          if (state.inFav) return;
-          try {
-            var favRes = await GatteAPI.Favorite.add({
-              itemType: 'pharma',
-              itemId: productId,
-            });
-            state.inFav = true;
-          } catch(e) {
-            showDialog('加入收藏失败');
-          }
-        }
-
-        // ---- Cart ----
-        async function addCart() {
-          if (!isLogin) {
-            showDialog('您可以<a href="/account.html#registration">注册会员</a> 后申请样品，或者点"<a href="/contact-form.html">申请样品/资料</a>"直接申请！');
-            return;
-          }
-          try {
-            var cartRes = await GatteAPI.Cart.add({
-              productType: 'pharma',
-              productId: productId,
-              productName: state.product.name,
-            });
-            state.inCart = true;
-          } catch(e) {
-            showDialog('加入购物车失败');
-          }
-        }
-
-        // Init
-        loadProduct();
-
-        return {
-          loading: state.loading,
-          error: state.error,
-          product: state.product,
-          tags: state.tags,
-          docTech: state.docTech,
-          docBrochure: state.docBrochure,
-          docScientific: state.docScientific,
-          related: state.related,
-          inCart: state.inCart,
-          inFav: state.inFav,
-          headerBgStyle: state.headerBgStyle,
-          addProductFav,
-          addCart,
-        };
-      },
-    });
-
-    app.mount('#app');
-  </script>
-
-  <!-- Load header/footer via jQuery -->
+  <!-- 静态脚本：加载header/footer，初始化对话框 -->
   <script>
     $(document).ready(function () {
       $("#header").load("/header.html");
       $("#footer").load("/footer.html");
+      $("#quickLinks").load("/quickLinks.html");
+    });
+    var dialog = document.getElementById('dialog');
+    var dialogClose = document.getElementById('dialog-close');
+    dialogClose.addEventListener('click', function () {
+      dialog.style.display = 'none';
     });
   </script>
 </body>
