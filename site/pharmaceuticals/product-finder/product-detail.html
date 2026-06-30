@@ -170,6 +170,32 @@
       border: none;
       cursor: pointer;
     }
+    /* Spec 表格样式 — 带分割线的左右分栏 */
+    .spec-table {
+      border-top: 1px solid #e0d5d5;
+    }
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid #e0d5d5;
+      line-height: 1.6;
+    }
+    .spec-label {
+      font-weight: 700;
+      color: #3E3E3E;
+      font-size: 15px;
+      white-space: nowrap;
+      min-width: 140px;
+      flex-shrink: 0;
+    }
+    .spec-value {
+      color: #555;
+      font-size: 15px;
+      text-align: right;
+      word-break: break-word;
+    }
   </style>
   <!-- ★ 与个人护理一致：全局函数/变量在 Vue 之前 -->
   <script>
@@ -302,14 +328,12 @@
                     var rh = '';
                     rows.forEach(function (r) {
                       if (!r.label) return;
-                      rh += '<p><strong>' + _escape(r.label) + '</strong>';
-                      if (r.value) rh += '<br />' + _escape(r.value);
-                      rh += '</p>';
+                      rh += '<div class="spec-row"><span class="spec-label">' + _escape(r.label) + '</span><span class="spec-value">' + (r.value ? r.value : '') + '</span></div>';
                     });
                     if (rh) {
                       item = '<div class="s-product-content__item">'
                         + (block.title ? '<h2 class="s-product-content__title">' + _escape(block.title) + '</h2>' : '')
-                        + '<div class="s-product-content__txt">' + rh + '</div></div>';
+                        + '<div class="spec-table">' + rh + '</div></div>';
                     }
                     break;
                   case 'richtext':
