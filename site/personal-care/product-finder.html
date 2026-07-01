@@ -249,23 +249,28 @@
                         </a>
                       </div>
                     </div>
-                    <nav class="gatte-pager" role="navigation"
+                    <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
                       v-if="data.total_page > 1">
-                      <button class="gatte-pager__btn gatte-pager__prev"
-                        :disabled="data.cur_page <= 1"
-                        @click="changePage(data.cur_page - 1)">
-                        <span>&lt;</span>
-                      </button>
-                      <div class="gatte-pager__info">
-                        <span class="gatte-pager__current">{{ data.cur_page }}</span>
-                        <span class="gatte-pager__sep">/</span>
-                        <span class="gatte-pager__total">{{ data.total_page }}</span>
-                      </div>
-                      <button class="gatte-pager__btn gatte-pager__next"
-                        :disabled="data.cur_page >= data.total_page"
-                        @click="changePage(data.cur_page + 1)">
-                        <span>&gt;</span>
-                      </button>
+                      <h4 id="pagination-heading" class="pager__heading visually-hidden">页码</h4>
+                      <ul class="pager__items js-pager__items">
+                        <li class="pager__item pager__item--previous"
+                          :class="{ 'pager__item--disabled': data.cur_page <= 1 }">
+                          <a :href="data.prev_url || '#'" title="Go to previous page" rel="prev">
+                            <span class="visually-hidden">上一页</span>
+                            <i class="o-icon --caret-right" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                        <li class="pager__item is-active">
+                          {{data.cur_page}}<sub>/{{data.total_page}}</sub>
+                        </li>
+                        <li class="pager__item pager__item--next"
+                          :class="{ 'pager__item--disabled': data.cur_page >= data.total_page }">
+                          <a :href="data.next_url || '#'" title="Go to next page" rel="next">
+                            <span class="visually-hidden">下一页</span>
+                            <i class="o-icon --caret-right" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                      </ul>
                     </nav>
                   </div>
                 </div>
@@ -507,70 +512,43 @@
       margin: 4px 8px 4px 0;
     }
 
-    /* ===== 分页器 — 简洁箭头+页码样式 ===== */
-    .gatte-pager {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      margin-top: 24px;
-    }
-    .gatte-pager__btn {
+    /* ===== 分页器 — 中文站原始样式 ===== */
+    .pager__items {
+      list-style: none;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border: 2px solid #C8105A;
-      background: transparent;
-      color: #C8105A;
-      font-size: 18px;
-      font-family: "Din Next Lt Pro Regular", sans-serif;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      gap: 1.2rem;
+      place-content: center;
+      place-items: center;
+      margin: 4rem 0 0;
       padding: 0;
-      line-height: 1;
+      color: #A5A9AE;
     }
-    .gatte-pager__btn:hover:not(:disabled) {
-      background: #C8105A;
-      color: #fff;
+    .pager__item {
+      padding: 0;
     }
-    .gatte-pager__btn:disabled {
-      opacity: 0.3;
-      cursor: default;
+    .pager__item--previous {
+      font-size: 2rem;
     }
-    .gatte-pager__prev {
-      border-right: none;
-      border-radius: 2px 0 0 2px;
+    .pager__item--previous .o-icon {
+      transform: rotateY(180deg);
     }
-    .gatte-pager__next {
-      border-left: none;
-      border-radius: 0 2px 2px 0;
+    .pager__item--next {
+      font-size: 2rem;
     }
-    .gatte-pager__info {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 60px;
-      height: 36px;
-      border: 2px solid #C8105A;
-      font-family: "Din Next Lt Pro Regular", sans-serif;
-      font-size: 15px;
-      color: #333;
-      letter-spacing: 1px;
-      user-select: none;
+    .pager__item--disabled {
+      color: #E3E8EE;
     }
-    .gatte-pager__current {
-      font-weight: 700;
-      color: #C8105A;
+    .pager__item--disabled a {
+      pointer-events: none;
     }
-    .gatte-pager__sep {
-      margin: 0 2px;
-      opacity: 0.6;
-      font-weight: 300;
+    .pager__item.is-active {
+      font-family: "Din Next Lt Pro Light", sans-serif;
+      font-size: 2.4rem;
+      font-weight: 400;
     }
-    .gatte-pager__total {
-      opacity: 0.7;
+    .pager__item sub {
+      font-family: "Din Next Lt Pro Bold", sans-serif;
+      font-size: 1.2rem;
     }
   </style>
   <script>
@@ -630,7 +608,9 @@
         activeFilterClass: 'hidden',
         activeFilters: [],
         keyword: curKeyword,
-        loading: false
+        loading: false,
+        prev_url: null,
+        next_url: null
       });
 
       // 加载标签列表
@@ -754,6 +734,8 @@
           data.total = body.pagination ? body.pagination.total : items.length;
           data.total_page = Math.ceil(data.total / pageSize);
           data.cur_page = body.pagination ? body.pagination.page : data.cur_page;
+          data.prev_url = data.cur_page > 1 ? '?page=' + (data.cur_page - 1) + (data.keyword ? '&keyword=' + encodeURIComponent(data.keyword) : '') : null;
+          data.next_url = data.cur_page < data.total_page ? '?page=' + (data.cur_page + 1) + (data.keyword ? '&keyword=' + encodeURIComponent(data.keyword) : '') : null;
           data.loading = false;
         }).catch(function (err) {
           console.error('加载产品失败:', err);
