@@ -161,6 +161,28 @@ body {
 }
 .nav-icon svg { width: 16px; height: 16px; stroke: currentColor; }
 
+/* 可折叠父级菜单 */
+.nav-parent {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; margin: 1px 8px;
+  border-radius: var(--radius);
+  color: var(--text-secondary); text-decoration: none;
+  transition: all 0.15s; cursor: pointer;
+  font-size: 13px; font-weight: 400; position: relative;
+}
+.nav-parent:hover { background: var(--slate-lightest); color: var(--text); }
+.nav-parent.active { background: var(--green-light); color: var(--green); font-weight: 500; }
+.nav-parent .arrow {
+  margin-left: auto; font-size: 11px; transition: transform 0.2s;
+  color: var(--text-muted);
+}
+.nav-parent .arrow.open { transform: rotate(90deg); }
+.nav-sublist { overflow: hidden; transition: max-height 0.25s ease; }
+.nav-sublist.collapsed { max-height: 0; }
+.nav-sublist .nav-item {
+  padding-left: 36px; font-size: 12px;
+}
+
 .sidebar-footer {
   padding: 12px 20px; border-top: 1px solid var(--border-light);
   display: flex; align-items: center; gap: 10px;
@@ -574,20 +596,26 @@ const QUILL_TOOLBAR = [
           总览
         </a>
         <div class="nav-section"><div class="nav-section-title">产品管理</div></div>
-        <a class="nav-item" :class="{ active: currentPage === 'pc-list' }" @click="goPage('pc-list')">
+        <div class="nav-parent" @click="pcMenuCollapsed = !pcMenuCollapsed"
+          :class="{ active: currentPage === 'pc-list' || currentPage === 'pc-edit' || currentPage === 'formula-list' || currentPage === 'formula-edit' }">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
-          个人护理原料
-          <span class="badge">{{ stats.pcCount }}</span>
-        </a>
+          个人护理
+          <span class="arrow" :class="{ open: !pcMenuCollapsed }">▶</span>
+        </div>
+        <div class="nav-sublist" :class="{ collapsed: pcMenuCollapsed }">
+          <a class="nav-item" :class="{ active: currentPage === 'pc-list' || currentPage === 'pc-edit' }" @click="goPage('pc-list')">
+            成分
+            <span class="badge">{{ stats.pcCount }}</span>
+          </a>
+          <a class="nav-item" :class="{ active: currentPage === 'formula-list' || currentPage === 'formula-edit' }" @click="goPage('formula-list')">
+            配方
+            <span class="badge">{{ stats.formulaCount }}</span>
+          </a>
+        </div>
         <a class="nav-item" :class="{ active: currentPage === 'pharma-list' }" @click="goPage('pharma-list')">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
           药用辅料
           <span class="badge">{{ stats.pharmaCount }}</span>
-        </a>
-        <a class="nav-item" :class="{ active: currentPage === 'formula-list' }" @click="goPage('formula-list')">
-          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-5"/><path d="M9 2v5h6V2"/></svg></span>
-          配方管理
-          <span class="badge">{{ stats.formulaCount }}</span>
         </a>
         <div class="nav-section"><div class="nav-section-title">内容管理</div></div>
         <a class="nav-item" :class="{ active: currentPage === 'news-list' }" @click="goPage('news-list')">
@@ -656,7 +684,7 @@ const QUILL_TOOLBAR = [
           <p class="page-subtitle">嘉法狮产品与内容管理总览</p>
           <div class="stats-grid">
             <div class="stat-card">
-              <div class="stat-label">个人护理原料</div>
+              <div class="stat-label">成分</div>
               <div class="stat-value">{{ stats.pcCount }}</div>
               <div class="stat-change up">已发布 {{ stats.pcPublished }}</div>
             </div>
@@ -682,7 +710,7 @@ const QUILL_TOOLBAR = [
                 <h3>快捷操作</h3>
               </div>
               <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
-                <button class="btn btn-primary" @click="resetPcEdit();goPage('pc-edit')">+ 新增个人护理原料</button>
+                <button class="btn btn-primary" @click="resetPcEdit();goPage('pc-edit')">+ 新增成分</button>
                 <button class="btn btn-primary" style="background:var(--slate);border-color:var(--slate);" @click="goPage('pharma-edit')">+ 新增药用辅料</button>
               </div>
             </div>
@@ -701,10 +729,10 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
-        <!-- ==================== 个人护理原料列表 ==================== -->
+        <!-- ==================== 成分列表 ==================== -->
         <div v-if="currentPage === 'pc-list'">
-          <h1 class="page-title">个人护理原料</h1>
-          <p class="page-subtitle">管理个人护理产品线全部 {{ stats.pcCount }} 个原料产品</p>
+          <h1 class="page-title">成分</h1>
+          <p class="page-subtitle">管理个人护理产品线全部 {{ stats.pcCount }} 个成分</p>
           <div class="card">
             <div class="card-header">
               <div class="filter-bar" style="margin-bottom:0;">
@@ -785,10 +813,10 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
-        <!-- ==================== 个人护理原料编辑 ==================== -->
+        <!-- ==================== 成分编辑 ==================== -->
         <div v-if="currentPage === 'pc-edit'">
-          <h1 class="page-title">{{ editingPc.id ? '编辑产品 — ' + editingPc.name : '新增个人护理原料' }}</h1>
-          <p class="page-subtitle">个人护理原料详细信息编辑</p>
+          <h1 class="page-title">{{ editingPc.id ? '编辑产品 — ' + editingPc.name : '新增成分' }}</h1>
+          <p class="page-subtitle">成分详细信息编辑</p>
           <div class="tabs">
             <button class="tab" :class="{ active: pcEditTab === 'basic' }" @click="pcEditTab = 'basic'; destroyAllQuills()">基本信息</button>
             <button class="tab" :class="{ active: pcEditTab === 'tags' }" @click="pcEditTab = 'tags'; destroyAllQuills()">标签与分类</button>
@@ -1369,7 +1397,7 @@ const QUILL_TOOLBAR = [
 
         <!-- ==================== 配方列表 ==================== -->
         <div v-if="currentPage === 'formula-list'">
-          <h1 class="page-title">配方管理</h1>
+          <h1 class="page-title">配方</h1>
           <p class="page-subtitle">管理应用配方全部 {{ stats.formulaCount }} 个配方</p>
           <div class="card">
             <div class="card-header">
@@ -1983,7 +2011,7 @@ const QUILL_TOOLBAR = [
                 <tbody>
                   <tr v-if="!viewingOrder.items||viewingOrder.items.length===0"><td colspan="3" class="cell-center">无明细</td></tr>
                   <tr v-for="it in viewingOrder.items">
-                    <td>{{ {pc_ingredient:'个人护理原料',pharma:'药用辅料'}[it.productType]||it.productType }}</td>
+                    <td>{{ {pc_ingredient:'成分',pharma:'药用辅料'}[it.productType]||it.productType }}</td>
                     <td>{{ it.productId }}</td>
                     <td>{{ it.quantity }}</td>
                   </tr>
@@ -2325,9 +2353,9 @@ const QUILL_TOOLBAR = [
             <div class="card-header">
               <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                 <select class="form-control" style="max-width:160px;" v-model="tagFilterProductLine" @change="loadTags()">
-                  <option value="pc">个人护理原料</option>
+                  <option value="pc">成分</option>
                   <option value="pharma">药用辅料</option>
-                  <option value="formula">配方管理</option>
+                  <option value="formula">配方</option>
                 </select>
                 <button class="btn btn-primary btn-sm" @click="showTagForm(null)">+ 新增标签</button>
               </div>
@@ -2359,7 +2387,7 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>产品线</label>
                 <select class="form-control" v-model="tagForm.productLine" :disabled="tagForm.isEdit">
-                  <option value="pc">个人护理原料</option>
+                  <option value="pc">成分</option>
                   <option value="pharma">药用辅料</option>
                 </select>
               </div>
@@ -2471,6 +2499,7 @@ createApp({
       loggingIn: false,
       // Nav
       currentPage: 'dashboard',
+      pcMenuCollapsed: false,
       pcEditTab: 'basic',
       pharmaEditTab: 'basic',
       formulaEditTab: 'basic',
@@ -2548,12 +2577,12 @@ createApp({
     breadcrumbText() {
       const m = {
         dashboard: '总览',
-        'pc-list': '产品管理 / 个人护理原料',
-        'pc-edit': '产品管理 / 个人护理原料 / ' + (this.editingPc.id ? '编辑产品' : '新增产品'),
+        'pc-list': '个人护理 / 成分',
+        'pc-edit': '个人护理 / 成分 / ' + (this.editingPc.id ? '编辑产品' : '新增产品'),
         'pharma-list': '产品管理 / 药用辅料',
         'pharma-edit': '产品管理 / 药用辅料 / ' + (this.editingPharma.id ? '编辑产品' : '新增产品'),
-        'formula-list': '产品管理 / 配方管理',
-        'formula-edit': '产品管理 / 配方管理 / ' + (this.editingFormula.id ? '编辑配方' : '新增配方'),
+        'formula-list': '个人护理 / 配方',
+        'formula-edit': '个人护理 / 配方 / ' + (this.editingFormula.id ? '编辑配方' : '新增配方'),
         'news-list': '内容管理 / 新闻与活动',
         'news-edit': '内容管理 / 新闻与活动 / ' + (this.editingNews.id ? '编辑' : '新增'),
         'doc-list': '内容管理 / 文档资源',
