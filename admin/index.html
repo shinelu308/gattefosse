@@ -172,15 +172,25 @@ body {
 }
 .nav-parent:hover { background: var(--slate-lightest); color: var(--text); }
 .nav-parent.active { background: var(--green-light); color: var(--green); font-weight: 500; }
-.nav-parent .arrow {
-  margin-left: auto; font-size: 11px; transition: transform 0.2s;
+.nav-parent .arrow-icon {
+  margin-left: auto; display: flex; align-items: center;
+  width: 18px; height: 18px; flex-shrink: 0;
+  transition: transform 0.2s ease;
   color: var(--text-muted);
 }
-.nav-parent .arrow.open { transform: rotate(90deg); }
+.nav-parent .arrow-icon.open { transform: rotate(90deg); }
+.nav-parent .arrow-icon svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.nav-parent.active .arrow-icon { color: var(--green); }
+.nav-parent .total-badge {
+  font-size: 11px; background: var(--slate-lighter);
+  color: var(--slate); padding: 2px 8px; border-radius: 10px; font-weight: 500;
+  margin-left: 0;
+}
+.nav-parent.active .total-badge { background: var(--green); color: white; }
 .nav-sublist { overflow: hidden; transition: max-height 0.25s ease; }
 .nav-sublist.collapsed { max-height: 0; }
 .nav-sublist .nav-item {
-  padding-left: 36px; font-size: 12px;
+  padding-left: 40px; font-size: 12px;
 }
 
 .sidebar-footer {
@@ -600,7 +610,10 @@ const QUILL_TOOLBAR = [
           :class="{ active: currentPage === 'pc-list' || currentPage === 'pc-edit' || currentPage === 'formula-list' || currentPage === 'formula-edit' }">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
           个人护理
-          <span class="arrow" :class="{ open: !pcMenuCollapsed }">▶</span>
+          <span class="total-badge">{{ stats.pcCount + stats.formulaCount }}</span>
+          <span class="arrow-icon" :class="{ open: !pcMenuCollapsed }">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
         </div>
         <div class="nav-sublist" :class="{ collapsed: pcMenuCollapsed }">
           <a class="nav-item" :class="{ active: currentPage === 'pc-list' || currentPage === 'pc-edit' }" @click="goPage('pc-list')">
