@@ -221,40 +221,68 @@
                           </ul>
                         </div>
                       </div>
-                      <div v-for="item in data.tagList" :class="item.class"
-                        :data-block-plugin-id="item.dataBlockPluginId">
-                        <div class="accordion facets-widget-checkbox">
-                          <div class="accordion-item panel-group" :id="item.accordionNameId"
-                            aria-multiselectable="true">
-                            <h3 role="tab" :id="item.headerNameId">
-                              <button type="button" aria-expanded="true" class="panel-title accordion-button"
-                                data-bs-toggle="collapse" :data-bs-target="item.sharpeNameId"
-                                id="nav-filtre-accordion">{{item.tagName}}</button>
-                            </h3>
-                            <div :id="item.nameId" class="panel-collapse collapse show" role="region"
-                              :aria-labelledby="item.headerNameId">
-                              <div class="panel-body accordion-body">
-                                <ul :data-drupal-facet-id="item.dataDrupalFacetId"
-                                  data-drupal-facet-alias="functionality"
-                                  class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
-                                  <li class="facet-item1" v-for="item2 in item.children" :class="item2.facetItemClass">
-                                    <input type="checkbox" v-if="data.tagId == item2.ID" checked="checked"
-                                      class="facets-checkbox" :id="item2.dataDrupalFacetItemId">
-                                    <input type="checkbox" v-else class="facets-checkbox" @click="goToUrl(item2.tagUrl)"
-                                      :id="item2.dataDrupalFacetItemId"><a href="javascript:;" rel="nofollow" @click.prevent="goToUrl(item2.tagUrl)"
-                                      :data-drupal-facet-item1-id="item2.dataDrupalFacetItemId"
-                                      :data-drupal-facet-item1-value="item2.ID" data-drupal-facet-item1-count="17"><span
-                                        class="facet-item__value">{{item2.tagName}}</span>
-                                    </a>
-                                  </li>
-                                </ul>
-                                <button class="link-more js-see-all" data-show="查看所有" @click="seeAll($event)"
-                                  data-hide="收起" data-aria-expanded="false">查看所有</button>
+                      <!-- ====== 英文站直接复制结构：Markets / Route 使用 facets-widget-links，全为 btn-outline-secondary ====== -->
+                      <template v-for="item in data.tagList">
+                        <!-- link-style: 完全匹配英文站 HTML 结构 -->
+                        <div v-if="item._isLinkStyle" :class="'facet-inactive block-facet--links block block-facets block-facet-block' + (getCatKey(item.tagName))"
+                          :data-block-plugin-id="item.dataBlockPluginId">
+                          <div class="facets-widget-links">
+                            <ul data-drupal-facet-id="market" class="facet-inactive js-facets-links facet-list item-list__links">
+                              <!-- "全部XX"：全是 btn-outline-secondary，有选中项时 is-active 消失 -->
+                              <li class="facet-item facets-reset">
+                                <a class="btn btn-outline-secondary"
+                                  :class="hasActiveChild(item) ? '' : 'is-active'"
+                                  href="javascript:;" @click.prevent="clearCategoryTags(item)">全部{{item.tagName}}</a>
+                              </li>
+                              <!-- 各选项：过滤掉以"全部"开头的标签（与上方重置按钮重复）；Route 项有 More information 链接 -->
+                              <template v-for="item2 in item.children">
+                                <li v-if="item2.tagName.indexOf('全部') !== 0" class="facet-item">
+                                  <a class="btn btn-outline-secondary"
+                                    :class="item2.active ? 'is-active' : ''"
+                                    href="javascript:;" @click.prevent="goToUrl(item2.tagUrl)">{{item2.tagName}}</a>
+                                  <a v-if="item2.articleUrl" :href="item2.articleUrl" class="link" target="_blank">更多信息</a>
+                                </li>
+                              </template>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <!-- checkbox-style: 完全匹配英文站 accordion 结构 -->
+                        <div v-else :class="'facet-inactive block-facet--checkbox block block-facets block-facet-blockproducts-pharmaceuticals-' + (getCatKey(item.tagName))"
+                          :data-block-plugin-id="item.dataBlockPluginId">
+                          <div class="accordion facets-widget-checkbox">
+                            <div class="accordion-item panel-group" :id="item.accordionNameId"
+                              aria-multiselectable="true">
+                              <h3 role="tab" :id="item.headerNameId">
+                                <button type="button" aria-expanded="true" class="panel-title accordion-button"
+                                  data-bs-toggle="collapse" :data-bs-target="item.sharpeNameId"
+                                  id="nav-filtre-accordion">{{item.tagName}}</button>
+                              </h3>
+                              <div :id="item.nameId" class="panel-collapse collapse show" role="region"
+                                :aria-labelledby="item.headerNameId">
+                                <div class="panel-body accordion-body">
+                                  <ul :data-drupal-facet-id="item.dataDrupalFacetId"
+                                    class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
+                                    <li class="facet-item" v-for="item2 in item.children">
+                                      <div class="form-check">
+                                        <input type="checkbox" class="form-check-input facets-checkbox"
+                                          :id="item2.dataDrupalFacetItemId"
+                                          :checked="item2.active"
+                                          @change="goToUrl(item2.tagUrl)">
+                                        <label class="form-check-label" :for="item2.dataDrupalFacetItemId">
+                                          <a href="javascript:;" rel="nofollow" @click.prevent="goToUrl(item2.tagUrl)">{{item2.tagName}}</a>
+                                        </label>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                  <button v-if="item._hasMore" class="link-more js-see-all" data-show="查看所有" @click="seeAll($event)"
+                                    data-hide="收起" data-aria-expanded="false">查看所有</button>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </template>
                     </div>
                   </aside>
                   <div class="s-page__content">
@@ -402,7 +430,7 @@
       }
 
       function loadTags() {
-        GatteAPI.Tag.list({ productLine: 'pharma', limit: 100 }).then(function (res) {
+        return GatteAPI.Tag.list({ productLine: 'pharma', limit: 100 }).then(function (res) {
           // API 返回 (经 axios 拦截器解包后): { dosage_form: [{label, value}], functionality: [...], ... }
           var tagData = res.data || res || {};
           var groups = {};
@@ -425,6 +453,14 @@
             };
             for (var ii = 0; ii < items.length; ii++) {
               var tag = items[ii];
+              // Route 标签的 "More information" 链接映射（与英文站一致）
+              var ARTICLE_URLS = {
+                '口服': '/oral-drug-delivery',
+                '直肠': '/rectal-and-vaginal-drug-delivery',
+                '注射（兽用）': '',
+                '局部/透皮': '/topical-drug-delivery',
+                '阴道': '/rectal-and-vaginal-drug-delivery'
+              };
               // 标签没有数字 id，用 value 作为唯一标识
               groups[cat].children.push({
                 ID: tag.value,
@@ -433,7 +469,8 @@
                 active: false,
                 dataDrupalFacetItemId: cat + '-' + tag.value,
                 tagUrl: '/pharmaceuticals/product-finder.html?tagId=' + tag.value + '&page=1',
-                facetItemClass: 'facet-item1'
+                facetItemClass: 'facet-item1',
+                articleUrl: (cat === 'route' && ARTICLE_URLS[tag.label]) ? ARTICLE_URLS[tag.label] : ''
               });
             }
           }
@@ -444,6 +481,15 @@
           data.tagList.forEach(function(g) {
             g._showAll = false;
             g._hasMore = g.children.length > 6;
+            // market 和 route 用蓝色按钮链接样式（同英文站），其余用 checkbox 样式
+            var gCat = getCatKey(g.tagName);
+            g._isLinkStyle = (gCat === 'market' || gCat === 'route');
+          });
+          // ★ 关键排序：link-style (market/route) 必须排在最前面，与英文站布局一致
+          data.tagList.sort(function(a, b) {
+            if (a._isLinkStyle && !b._isLinkStyle) return -1;
+            if (!a._isLinkStyle && b._isLinkStyle) return 1;
+            return 0;
           });
           // 等 DOM 更新后，隐藏每组第 7 项开始的标签
           Vue.nextTick(function() {
@@ -504,6 +550,32 @@
         if (idx >= 0) { sel.splice(idx, 1); } else { sel.push(value); }
         if (sel.length === 0) { delete data.selectedTags[category]; } else { data.selectedTags[category] = sel; }
         // 更新选中高亮
+        updateTagActiveStates();
+        // 更新 curFilter 显示
+        updateCurFilter();
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      // link-style 单选切换（market / route）：点击同一项取消，点击不同项替换
+      function toggleTagLink(category, value) {
+        var sel = data.selectedTags[category] || [];
+        var isActive = sel.indexOf(value) !== -1;
+        if (isActive) {
+          // 点击已激活的按钮 → 取消选中
+          delete data.selectedTags[category];
+        } else {
+          // 点击新的按钮 → 单选替换
+          data.selectedTags[category] = [value];
+        }
+        updateTagActiveStates();
+        updateCurFilter();
+        data.cur_page = 1;
+        loadProducts(1);
+      }
+
+      // 统一更新所有标签的 active 状态和高亮
+      function updateTagActiveStates() {
         data.tagList.forEach(function(g) {
           var cat = getCatKey(g.tagName);
           g.children.forEach(function(c) {
@@ -515,10 +587,6 @@
             }
           });
         });
-        // 更新 curFilter 显示
-        updateCurFilter();
-        data.cur_page = 1;
-        loadProducts(1);
       }
 
       function updateCurFilter() {
@@ -553,6 +621,26 @@
 
       function removeFilterItem(category, value) {
         toggleTag(category, value);
+      }
+
+      // 判断某个分类下是否有选中项（用于"全部XX"按钮的样式切换）
+      function hasActiveChild(group) {
+        var cat = getCatKey(group.tagName);
+        if (!cat) return false;
+        var sel = data.selectedTags[cat];
+        return sel && sel.length > 0;
+      }
+
+      // 清除某个分类下的所有选中标签（点击"全部XX"蓝色按钮时调用）
+      function clearCategoryTags(group) {
+        var cat = getCatKey(group.tagName);
+        if (!cat) return;
+        data.selectedTags[cat] = [];
+        delete data.selectedTags[cat];
+        updateTagActiveStates();
+        updateCurFilter();
+        data.cur_page = 1;
+        loadProducts(1);
       }
 
       function clearFilters() {
@@ -621,7 +709,15 @@
           for (var ci = 0; ci < data.tagList[gi].children.length; ci++) {
             if (String(data.tagList[gi].children[ci].ID) === tagId) {
               var cat = getCatKey(data.tagList[gi].tagName);
-              if (cat) toggleTag(cat, data.tagList[gi].children[ci].value);
+              if (cat) {
+                var val = data.tagList[gi].children[ci].value;
+                // link-style 用单选，checkbox-style 用多选
+                if (data.tagList[gi]._isLinkStyle) {
+                  toggleTagLink(cat, val);
+                } else {
+                  toggleTag(cat, val);
+                }
+              }
               return;
             }
           }
@@ -638,9 +734,33 @@
         }
       }
 
-      onMounted(function () { loadTags(); loadProducts(curPage); });
+      onMounted(function () {
+        // 从 URL 解析初始 tagId（如 ?tagId=人类健康&page=1）
+        var initTagId = params.get('tagId');
+        loadTags().then(function() {
+          if (initTagId) {
+            // 匹配 tagId 到对应分类，设置初始选中状态
+            for (var gi = 0; gi < data.tagList.length; gi++) {
+              var g = data.tagList[gi];
+              for (var ci = 0; ci < g.children.length; ci++) {
+                if (String(g.children[ci].value) === initTagId) {
+                  var cat = getCatKey(g.tagName);
+                  if (cat) {
+                    data.selectedTags[cat] = [initTagId];
+                    g.children[ci].active = true;
+                    g.children[ci].facetItemClass = 'facet-item1 selected';
+                  }
+                  break;
+                }
+              }
+            }
+            updateCurFilter();
+          }
+          loadProducts(curPage);
+        });
+      });
 
-      return { data, changePage, seeAll, goToUrl, addCart, toggleTag, clearFilters, removeFilterItem };
+      return { data, changePage, seeAll, goToUrl, addCart, toggleTag, toggleTagLink, clearFilters, removeFilterItem, clearCategoryTags, hasActiveChild, getCatKey };
     }
   });
   app.mount("#app");
@@ -704,6 +824,105 @@
 
   <style>
     .link-more { display: inline-block !important; }
+
+    /* ★★★ 英文站精确匹配：最小量 CSS，不破坏 Bootstrap 默认样式 ★★★ */
+
+    /* 唯一需要的：垂直排列列表 */
+    .facet-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .facet-item {
+      display: flex;
+      align-items: center;
+    }
+    /* link-style 按钮间距 */
+    .facets-widget-links .facet-item {
+      gap: 0.5rem;
+    }
+
+    /*
+     * ★★★ 唯一的样式覆盖：.is-active 时变蓝底白字
+     * 其他全部交给 Bootstrap 默认 btn-outline-secondary（灰色 #6c757d）
+     */
+    .facets-widget-links .facet-item a.btn-outline-secondary.is-active {
+      background-color: #0066CC !important;
+      border-color: #0066CC !important;
+      color: #fff !important;
+    }
+
+    /* More information 小链接 */
+    .facets-widget-links .facet-item .link {
+      font-size: 0.9rem;
+      color: #0066CC;
+      text-decoration: underline;
+      white-space: nowrap;
+      margin-left: 0.5rem;
+    }
+    .facets-widget-links .facet-item .link:hover {
+      text-decoration: underline;
+    }
+
+    /* 两组之间间距 */
+    .block-facet--links + .block-facet--links {
+      margin-top: 0.5rem;
+    }
+
+    /* checkbox 组：每 7 项开始隐藏 */
+    .facets-widget-checkbox .facet-item:nth-child(n+7) {
+      display: none;
+    }
+    .facets-widget-checkbox .facet-item.show {
+      display: flex;
+    }
+    /* checkbox 内 form-check 样式 */
+    .facets-widget-checkbox .form-check {
+      padding-left: 1.5rem;
+      margin-bottom: 0.2rem;
+    }
+    .facets-widget-checkbox .form-check-input {
+      width: 0.95rem;
+      height: 0.95rem;
+      margin-top: 0.2rem;
+      cursor: pointer;
+    }
+    .facets-widget-checkbox .form-check-label {
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #58616B;
+    }
+    .facets-widget-checkbox .form-check-label a {
+      text-decoration: none;
+      color: inherit;
+    }
+      padding-left: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+    .facets-widget-checkbox .form-check-input {
+      width: 1rem;
+      height: 1rem;
+      margin-top: 0.25rem;
+      cursor: pointer;
+    }
+    .facets-widget-checkbox .form-check-label {
+      cursor: pointer;
+      font-size: 1.4rem;
+      color: #58616B;
+    }
+    .facets-widget-checkbox .form-check-label a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .facets-widget-checkbox .form-check-label a:hover {
+      text-decoration: underline;
+    }
+    .facets-widget-checkbox .facet-item__value {
+      /* 保持原有文字样式 */
+    }
     .dialog {
       display: none;
       position: fixed;
