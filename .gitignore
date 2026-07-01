@@ -3,5 +3,15 @@ node_modules/
 .env
 *.log
 backend/uploads/
-.workbuddy/memory/*.md
-.workbuddy/blobs/
+.workbuddy/
+uploads/
+backend/dist/
+
+# SQLite 数据库（本地运行数据，已通过 _db_dump.json 备份）
+backend/prisma/gattefosse.db
+backend/prisma/gattefosse.db-journal
+backend/prisma/gattefosse.db-wal
+
+# 临时文件
+_original_detail.html
+import_pharma.py

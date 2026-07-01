@@ -1291,18 +1291,40 @@ const QUILL_TOOLBAR = [
                               <option value="richtext">富文本</option>
                               <option value="image">图片</option>
                               <option value="video">视频</option>
+                              <option value="spec">规格表格</option>
                             </select>
                             <textarea v-if="block._leftType === 'richtext'" class="form-control" rows="4" v-model="block._leftRichtext" placeholder="左侧 HTML 内容"></textarea>
                             <input v-if="block._leftType === 'image'" type="text" class="form-control" v-model="block._leftUrl" placeholder="图片 URL">
                             <input v-if="block._leftType === 'video'" type="text" class="form-control" v-model="block._leftUrl" placeholder="视频 URL">
+                            <!-- 左列：规格表格 -->
+                            <div v-if="block._leftType === 'spec'">
+                              <div style="font-size:13px;color:#666;margin-bottom:6px;">每行输入标签和值，前台以表格形式展示。</div>
+                              <div v-for="(row, ri) in block._leftSpecRows" :key="ri" class="block-entry-row" style="margin-bottom:4px;">
+                                <input type="text" class="form-control" v-model="row.label" placeholder="标签" style="flex:0 0 180px;font-weight:600;">
+                                <input type="text" class="form-control" v-model="row.value" placeholder="对应值">
+                                <button class="btn btn-sm btn-danger" @click="removePharmaLeftSpecRow(bi, ri)" title="删除此行">×</button>
+                              </div>
+                              <button class="btn btn-sm btn-outline" @click="addPharmaLeftSpecRow(bi)" style="margin-top:4px;">+ 添加行</button>
+                            </div>
                           </div>
                           <div style="flex:1;">
                             <label>右侧内容</label>
                             <select v-model="block._rightType" class="form-control" style="margin-bottom:6px;">
                               <option value="text">文字</option>
+                              <option value="image">图片</option>
                               <option value="video">视频</option>
                             </select>
                             <textarea v-if="block._rightType === 'text'" class="form-control" rows="4" v-model="block._rightText" placeholder="右侧文字内容"></textarea>
+                            <div v-if="block._rightType === 'image'">
+                              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <input type="text" class="form-control" v-model="block._rightUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:160px;">
+                                <input type="file" accept="image/*" @change="uploadPharmaBlockRightImage($event, bi)" style="font-size:13px;">
+                                <span v-if="uploadingPharmaBlockRightImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                              </div>
+                              <div v-if="block._rightUrl" style="margin-top:6px;">
+                                <img :src="block._rightUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);">
+                              </div>
+                            </div>
                             <input v-if="block._rightType === 'video'" type="text" class="form-control" v-model="block._rightUrl" placeholder="视频 URL">
                           </div>
                         </div>
@@ -2519,6 +2541,7 @@ createApp({
       uploadingBlockImage: false,
       uploadingPharmaImage: false,
       uploadingPharmaDetailImage: false,
+      uploadingPharmaBlockRightImage: false,
     };
   },
   computed: {
@@ -2855,6 +2878,27 @@ createApp({
         }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingPharmaDetailImage = false; event.target.value = ''; }
+    },
+    async uploadPharmaBlockRightImage(event, bi) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingPharmaBlockRightImage = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingPharma.blocks[bi]._rightUrl = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingPharmaBlockRightImage = false; event.target.value = ''; }
     },
     async togglePcPublish(item) {
       try {
@@ -3297,7 +3341,8 @@ createApp({
             _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
             _rightType: (b.blockType === 'imagetext') ? (content.rightType || 'text') : 'text',
             _rightText: (b.blockType === 'imagetext' && content.rightType === 'text') ? (content.rightText || '') : '',
-            _rightUrl: (b.blockType === 'imagetext' && content.rightType === 'video') ? (content.rightUrl || '') : '',
+            _rightUrl: (b.blockType === 'imagetext' && (content.rightType === 'video' || content.rightType === 'image')) ? (content.rightUrl || '') : '',
+            _leftSpecRows: (b.blockType === 'imagetext' && content.leftType === 'spec' && content.leftSpecRows) ? content.leftSpecRows.map(function(r) { return { label: r.label, value: r.value }; }) : [{ label: '', value: '' }],
             _specRows: (b.blockType === 'spec' && content.rows) ? content.rows : [{ label: '', value: '' }],
           };
           return block;
@@ -3318,6 +3363,7 @@ createApp({
         _leftType: 'richtext',
         _leftUrl: '',
         _leftRichtext: '',
+        _leftSpecRows: [{ label: '', value: '' }],
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
@@ -3361,6 +3407,12 @@ createApp({
     removePharmaSpecRow(bi, ri) {
       this.editingPharma.blocks[bi]._specRows.splice(ri, 1);
     },
+    addPharmaLeftSpecRow(bi) {
+      this.editingPharma.blocks[bi]._leftSpecRows.push({ label: '', value: '' });
+    },
+    removePharmaLeftSpecRow(bi, ri) {
+      this.editingPharma.blocks[bi]._leftSpecRows.splice(ri, 1);
+    },
     async savePharmaBlock(bi) {
       var block = this.editingPharma.blocks[bi];
       var content = {};
@@ -3375,6 +3427,7 @@ createApp({
           leftType: block._leftType || 'richtext',
           leftUrl: block._leftUrl || '',
           leftHtml: block._leftRichtext || '',
+          leftSpecRows: (block._leftType === 'spec') ? (block._leftSpecRows || []).filter(function(r) { return r.label; }) : undefined,
           rightType: block._rightType || 'text',
           rightText: block._rightText || '',
           rightUrl: block._rightUrl || '',

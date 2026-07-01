@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta http-equiv="content-language" content="en" />
+  <meta property="og:site_name" content="Gattefossé" />
+  <meta property="og:type" content="page" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="alternate" hreflang="x-default"
+    href="https://www.gattefosse.com/personal-care/formulation-finder/anti-gravity-serum" />
+  <link rel="alternate" hreflang="en"
+    href="https://www.gattefosse.com/personal-care/formulation-finder/anti-gravity-serum" />
+  <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <style>
+    html, body {
+      background: #F7F5F0;
+      margin: 0;
+      padding: 0;
+      font-family: "Din Next Lt Pro Regular", sans-serif;
+    }
+    .main { background: #F7F5F0; }
+    /* 配方详情页顶部 */
+    .f-header {
+      position: relative;
+      padding: 60px 0 40px;
+      background: #fff;
+    }
+    .f-header__inner {
+      max-width: 1170px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    .f-header__img {
+      width: 300px;
+      height: 300px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f0ede5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .f-header__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .f-header__info { flex: 1; }
+    .f-header__code {
+      font-size: 1.4rem;
+      color: #C4004D;
+      font-weight: 600;
+      margin: 0 0 8px;
+    }
+    .f-header__name {
+      font-size: 4rem;
+      font-family: "Din Next Slab Pro Bold", sans-serif;
+      font-weight: 400;
+      color: #3E3E3E;
+      margin: 0 0 16px;
+      line-height: 1.2;
+    }
+    .f-header__desc {
+      font-size: 1.6rem;
+      color: #555;
+      line-height: 1.7;
+      margin: 0 0 24px;
+    }
+    .f-header__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: #C4004D;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .f-header__btn:hover { background: #910039; }
+
+    /* 规格卡片区 */
+    .f-specs {
+      padding: 40px 0;
+    }
+    .f-specs__grid {
+      max-width: 1170px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .f-specs__card {
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .f-specs__label {
+      font-size: 1.3rem;
+      color: #999;
+      margin: 0 0 6px;
+    }
+    .f-specs__value {
+      font-size: 1.5rem;
+      color: #3E3E3E;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* 内容区块 */
+    .f-content {
+      padding: 0 0 40px;
+    }
+    .f-content__inner {
+      max-width: 1170px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .f-content__item {
+      margin-bottom: 40px;
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: 10px;
+      padding: 32px;
+    }
+    .f-content__title {
+      font-size: 2rem;
+      font-family: "Din Next Slab Pro Bold", sans-serif;
+      font-weight: 400;
+      color: #3E3E3E;
+      margin: 0 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #F0DCE4;
+    }
+
+    /* 配方表格 */
+    .f-formula-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.4rem;
+    }
+    .f-formula-table th {
+      text-align: left;
+      padding: 10px 12px;
+      background: #F7F5F0;
+      color: #3E3E3E;
+      font-weight: 600;
+      border-bottom: 2px solid #e0ddd5;
+    }
+    .f-formula-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0ebe3;
+      color: #555;
+    }
+    .f-formula-table tr:hover td { background: #F9F7F3; }
+
+    /* 操作说明 - 编号列表 */
+    .f-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .f-steps li {
+      position: relative;
+      padding: 12px 0 12px 40px;
+      font-size: 1.5rem;
+      line-height: 1.7;
+      color: #555;
+      border-bottom: 1px solid #f0ebe3;
+    }
+    .f-steps li:last-child { border-bottom: none; }
+    .f-steps li::before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 28px;
+      height: 28px;
+      background: #F0DCE4;
+      color: #C4004D;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .f-steps { counter-reset: step-counter; }
+
+    /* 相关产品卡片 */
+    .f-related {
+      padding: 0 0 60px;
+    }
+    .f-related__inner {
+      max-width: 1170px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .f-related__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .f-related__card {
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .f-related__card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .f-related__img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+    .f-related__body { padding: 16px 20px 20px; }
+    .f-related__name {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #3E3E3E;
+      margin: 0 0 6px;
+    }
+    .f-related__inci {
+      font-size: 1.3rem;
+      color: #999;
+      margin: 0 0 8px;
+    }
+    .f-related__desc {
+      font-size: 1.3rem;
+      color: #666;
+      line-height: 1.5;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* 区块内容通用 */
+    .block-content, .block-content p {
+      font-size: 1.5rem;
+      line-height: 1.8;
+      color: #555;
+    }
+  </style>
+  <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <title>配方详情 - 嘉法狮</title>
+</head>
+
+<body>
+  <nav role="navigation" aria-label="Accès rapide au contenu">
+    <a href="#main-content" class="visually-hidden focusable skip__link">
+      <span class="skip__link__text">Saut au contenu</span>
+    </a>
+  </nav>
+  <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas>
+    <header role="banner" class="header" id="header"></header>
+    <main role="main" class="main" id="app">
+      <a id="main-content" tabindex="-1"></a>
+
+      <!-- 面包屑 -->
+      <nav aria-label="breadcrumb" style="max-width:1170px;margin:0 auto;padding:16px 20px 0;">
+        <ol class="breadcrumb" style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:1.3rem;color:#888;">
+          <li><a href="/" style="color:#888;text-decoration:none;">首页</a><span style="margin-left:8px;">/</span></li>
+          <li><a href="/personal-care.html" style="color:#888;text-decoration:none;">个人护理</a><span style="margin-left:8px;">/</span></li>
+          <li><a href="/personal-care/formulation-finder.html" style="color:#888;text-decoration:none;">配方</a><span style="margin-left:8px;">/</span></li>
+          <li style="color:#3E3E3E;">{{ data.formulation.name }}</li>
+        </ol>
+      </nav>
+
+      <!-- 顶部区域 -->
+      <div class="f-header">
+        <div class="f-header__inner">
+          <div class="f-header__img">
+            <img :src="data.formulation.imageUrl || '/static/images/default-formulation.jpg'" :alt="data.formulation.name">
+          </div>
+          <div class="f-header__info">
+            <p class="f-header__code" v-if="data.formulation.code">{{ data.formulation.code }}</p>
+            <h1 class="f-header__name">{{ data.formulation.name }}</h1>
+            <p class="f-header__desc" v-if="data.formulation.description">{{ data.formulation.description }}</p>
+            <a v-if="data.formulation.pdfPath" :href="data.formulation.pdfPath" target="_blank" class="f-header__btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              下载配方
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 规格卡片 -->
+      <div class="f-specs" v-if="data.formulation.specs">
+        <div class="f-specs__grid">
+          <div class="f-specs__card" v-if="data.formulation.specs.appearance">
+            <p class="f-specs__label">外观</p>
+            <p class="f-specs__value">{{ data.formulation.specs.appearance }}</p>
+          </div>
+          <div class="f-specs__card" v-if="data.formulation.specs.ph">
+            <p class="f-specs__label">pH 值</p>
+            <p class="f-specs__value">{{ data.formulation.specs.ph }}</p>
+          </div>
+          <div class="f-specs__card" v-if="data.formulation.specs.viscosity">
+            <p class="f-specs__label">粘度</p>
+            <p class="f-specs__value">{{ data.formulation.specs.viscosity }}</p>
+          </div>
+          <div class="f-specs__card" v-if="data.formulation.naturalityIndex">
+            <p class="f-specs__label">天然来源指数 (ISO 16128)</p>
+            <p class="f-specs__value">{{ data.formulation.naturalityIndex }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 内容区块 -->
+      <div class="f-content">
+        <div class="f-content__inner">
+
+          <!-- 配方成分表 -->
+          <div v-if="data.formulaTable && data.formulaTable.length" class="f-content__item">
+            <h2 class="f-content__title">配方表</h2>
+            <table class="f-formula-table">
+              <thead>
+                <tr>
+                  <th>相</th>
+                  <th>成分名称</th>
+                  <th>INCI</th>
+                  <th>供应商</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, ri) in data.formulaTable" :key="ri">
+                  <td>{{ row.phase }}</td>
+                  <td>{{ row.name }}</td>
+                  <td>{{ row.inci }}</td>
+                  <td>{{ row.supplier }}</td>
+                  <td>{{ row.pct }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 操作说明 -->
+          <div v-if="data.preparationSteps && data.preparationSteps.length" class="f-content__item">
+            <h2 class="f-content__title">操作说明</h2>
+            <ol class="f-steps">
+              <li v-for="(step, si) in data.preparationSteps" :key="si">{{ step }}</li>
+            </ol>
+          </div>
+
+          <!-- 模块化内容区块 -->
+          <div v-for="(block, bi) in data.contentBlocks" :key="block.id || bi" class="f-content__item">
+            <h2 class="f-content__title">{{ block.title }}</h2>
+            <!-- 富文本 -->
+            <div v-if="block.blockType === 'richtext' && block.content" v-html="block.content.html || block.content" class="block-content"></div>
+            <!-- 视频 -->
+            <div v-if="block.blockType === 'video' && block.content && block.content.url" class="block-video">
+              <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                <iframe :src="block.content.url" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <!-- 图片 -->
+            <div v-if="block.blockType === 'images' && block.content && block.content.images" class="block-images">
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+                <figure v-for="(img, ii) in block.content.images" :key="ii" style="margin:0;">
+                  <img :src="img.url" :alt="img.caption || ''" style="width:100%;height:auto;border-radius:8px;">
+                  <figcaption v-if="img.caption" style="margin-top:8px;font-size:14px;color:#666;text-align:center;">{{ img.caption }}</figcaption>
+                </figure>
+              </div>
+            </div>
+            <!-- 图文 -->
+            <div v-if="block.blockType === 'imagetext' && block.content" class="block-content" v-html="block.content.html || block.content"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 相关原料 -->
+      <div class="f-related" v-if="data.relatedIngredients && data.relatedIngredients.length">
+        <div class="f-related__inner">
+          <h2 style="font-size:2.4rem;font-family:'Din Next Slab Pro Bold',sans-serif;font-weight:400;color:#3E3E3E;margin:0 0 24px;">相关原料</h2>
+          <div class="f-related__grid">
+            <a class="f-related__card" v-for="item in data.relatedIngredients" :key="item.id" :href="item.url" style="text-decoration:none;">
+              <img class="f-related__img" :src="item.thumb" :alt="item.name" loading="lazy">
+              <div class="f-related__body">
+                <h3 class="f-related__name">{{ item.name }}</h3>
+                <p class="f-related__inci">INCI: {{ item.inci }}</p>
+                <p class="f-related__desc">{{ item.summary }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer role="contentinfo" class="footer" id="footer" style="gap:0;display:block;padding-top:0;background:#fff;"></footer>
+  </div>
+
+  <div id="dialog" class="dialog">
+    <div class="dialog-content">
+      <p id="dialog-message"></p>
+      <button id="dialog-close" class="btn btn-primary">关闭</button>
+    </div>
+  </div>
+  <style>
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 30px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: rgba(248, 244, 244, 1);
+      min-width: 400px;
+      z-index: 9999;
+    }
+    .dialog-content { text-align: center; }
+    .dialog-content a { color: #8eb73c; font-style: bold; }
+    #dialog-close { margin-top: 100px; padding: 5px 10px; border: none; cursor: pointer; }
+  </style>
+
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script>
+    console.log('[DIAG] === Formulation Vue app (data+setup hybrid) ===');
+
+    // ====== 全局函数（与个人护理、药用辅料一致）======
+    function showDialog(message) {
+      var msgEl = document.getElementById('dialog-message');
+      if (msgEl) { msgEl.innerHTML = message; }
+      var dlg = document.getElementById('dialog');
+      if (dlg) { dlg.style.display = 'block'; }
+    }
+
+    function checkLoginStatus() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    // Dialog 关闭按钮监听
+    document.addEventListener('DOMContentLoaded', function () {
+      var closeBtn = document.getElementById('dialog-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          var dlg = document.getElementById('dialog');
+          if (dlg) { dlg.style.display = 'none'; }
+        });
+      }
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    var id = params.get('id');
+
+    // ====== Vue app（data() + setup() 混合模式，与个人护理一致）======
+    const { createApp, reactive } = Vue;
+    const app = createApp({
+      data: function () {
+        return { formulationDetail: null };
+      },
+      setup: function () {
+        const data = reactive({
+          formulation: {},
+          formulaTable: [],
+          preparationSteps: [],
+          contentBlocks: [],
+          relatedIngredients: [],
+          loading: true,
+        });
+
+        // 加载配方详情
+        function loadFormulation() {
+          data.loading = true;
+          GatteAPI.Formulation.detail(parseInt(id)).then(function (res) {
+            var f = res.data || res;
+            data.formulation = {
+              id: f.id,
+              name: f.name,
+              code: f.code || '',
+              description: f.description || '',
+              imageUrl: f.imageUrl || '',
+              pdfPath: f.pdfPath || '',
+              naturalityIndex: f.naturalityIndex || '',
+              specs: null,
+            };
+            // 解析 specs
+            if (f.specInfo) {
+              try {
+                data.formulation.specs = typeof f.specInfo === 'string' ? JSON.parse(f.specInfo) : f.specInfo;
+              } catch(e) { data.formulation.specs = null; }
+            }
+            // 解析配方成分表
+            if (f.compositionText) {
+              data.formulaTable = parseFormulaTable(f.compositionText);
+            }
+            // 解析操作步骤
+            if (f.preparationSteps) {
+              data.preparationSteps = f.preparationSteps.split('\n').filter(Boolean);
+            }
+            data.loading = false;
+            // 加载内容区块
+            loadBlocks(f.id);
+            // 加载相关原料
+            loadRelated(f.id);
+          }).catch(function (err) {
+            console.error('加载配方失败:', err);
+            data.loading = false;
+          });
+        }
+
+        // 解析配方成分表
+        function parseFormulaTable(text) {
+          var rows = [];
+          var lines = text.split('\n');
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (!line) continue;
+            var parts = line.split('\t');
+            if (parts.length >= 2) {
+              rows.push({
+                phase: parts[0] || '',
+                name: parts[1] || '',
+                inci: parts[2] || '',
+                supplier: parts[3] || '',
+                pct: parts[4] || '',
+              });
+            } else {
+              rows.push({ phase: '', name: line, inci: '', supplier: '', pct: '' });
+            }
+          }
+          return rows;
+        }
+
+        // 加载内容区块
+        function loadBlocks(formulaId) {
+          GatteAPI.Blocks.list({ productId: formulaId, productType: 'formula' }).then(function (res) {
+            var body = res.data || res;
+            var blocks = body && body.list ? body.list : (Array.isArray(body) ? body : []);
+            data.contentBlocks = blocks;
+          }).catch(function (err) {
+            console.error('加载区块失败:', err);
+          });
+        }
+
+        // 加载相关原料
+        function loadRelated(formulaId) {
+          GatteAPI.Formulation.related(formulaId).then(function (res) {
+            var body = res.data || res;
+            var items = body && body.list ? body.list : (Array.isArray(body) ? body : []);
+            data.relatedIngredients = items.map(function (p) {
+              return {
+                id: p.id,
+                name: p.name,
+                inci: p.inciName || '',
+                summary: p.description || '',
+                thumb: p.imageUrl || '/static/images/default-thumb.jpg',
+                url: '/personal-care/product-finder/product-detail.html?id=' + p.id,
+              };
+            });
+          }).catch(function (err) {
+            console.error('加载相关原料失败:', err);
+          });
+        }
+
+        loadFormulation();
+
+        return { data };
+      }
+    });
+    app.mount("#app");
+
+    $(document).ready(function () {
+      $("#header").load("/header.html");
+      $("#footer").load("/footer.html");
+    });
+  </script>
+</body>
+</html>

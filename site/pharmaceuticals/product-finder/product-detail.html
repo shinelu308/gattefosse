@@ -382,9 +382,18 @@
                       + '<div style="display:flex;gap:24px;align-items:flex-start;"><div style="flex:1;">';
                     if (content.leftType === 'image' && content.leftUrl) item += '<img src="' + _escape(content.leftUrl) + '" style="max-width:100%;" />';
                     else if (content.leftType === 'video' && content.leftUrl) item += '<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="' + _escape(content.leftUrl) + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
+                    else if (content.leftType === 'spec' && content.leftSpecRows) {
+                      var sr = '';
+                      content.leftSpecRows.forEach(function(r) {
+                        if (!r.label) return;
+                        sr += '<div class="spec-row"><span class="spec-label">' + _escape(r.label) + '</span><span class="spec-value">' + (r.value || '') + '</span></div>';
+                      });
+                      item += '<div class="spec-section">' + sr + '</div>';
+                    }
                     else if (content.leftHtml) item += content.leftHtml;
                     item += '</div><div style="flex:1;">';
                     if (content.rightType === 'video' && content.rightUrl) item += '<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="' + _escape(content.rightUrl) + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
+                    else if (content.rightType === 'image' && content.rightUrl) item += '<img src="' + _escape(content.rightUrl) + '" style="max-width:100%;" />';
                     else if (content.rightText) item += '<p>' + content.rightText + '</p>';
                     item += '</div></div></div></div>';
                     break;
