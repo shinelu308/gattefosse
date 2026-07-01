@@ -8,7 +8,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const API_BASE = 'https://www.gattefossechina.cn/api';
-const PAGE_SIZE = 100;
+const PAGE_SIZE = 250;
 
 /**
  * PC 产品相关的顶级分类映射
