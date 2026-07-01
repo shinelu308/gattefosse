@@ -999,5 +999,466 @@
       "detail_image_url": "https://www.gattefossechina.cn/uploads/file/a4caede218db7a2cb1a4b34fd294ed9b_20240514133756.jpg",
       "video_url": ""
     }
+  ],
+  "tagDictionary": [
+    {
+      "id": 153,
+      "category": "application",
+      "product_line": "pc",
+      "label": "身体护理",
+      "value": "身体护理",
+      "sort_order": 1,
+      "created_at": "1782309597281"
+    },
+    {
+      "id": 154,
+      "category": "application",
+      "product_line": "pc",
+      "label": "眼部护理",
+      "value": "眼部护理",
+      "sort_order": 2,
+      "created_at": "1782309597340"
+    },
+    {
+      "id": 159,
+      "category": "application",
+      "product_line": "pc",
+      "label": "彩妆",
+      "value": "彩妆",
+      "sort_order": 7,
+      "created_at": "1782309597598"
+    },
+    {
+      "id": 160,
+      "category": "application",
+      "product_line": "pc",
+      "label": "男士护理",
+      "value": "男士护理",
+      "sort_order": 8,
+      "created_at": "1782309597665"
+    },
+    {
+      "id": 315,
+      "category": "application",
+      "product_line": "pc",
+      "label": "婴儿和儿童护理",
+      "value": "婴儿和儿童护理",
+      "sort_order": 44,
+      "created_at": "1782920744793"
+    },
+    {
+      "id": 316,
+      "category": "application",
+      "product_line": "pc",
+      "label": "脸部护理",
+      "value": "脸部护理",
+      "sort_order": 45,
+      "created_at": "1782920744846"
+    },
+    {
+      "id": 317,
+      "category": "application",
+      "product_line": "pc",
+      "label": "头发和头皮护理",
+      "value": "头发和头皮护理",
+      "sort_order": 46,
+      "created_at": "1782920744893"
+    },
+    {
+      "id": 318,
+      "category": "application",
+      "product_line": "pc",
+      "label": "防晒",
+      "value": "防晒",
+      "sort_order": 47,
+      "created_at": "1782920744946"
+    },
+    {
+      "id": 333,
+      "category": "characteristic",
+      "product_line": "pc",
+      "label": "符合中国标准 (IECIC)",
+      "value": "符合中国标准 (IECIC)",
+      "sort_order": 62,
+      "created_at": "1782920745712"
+    },
+    {
+      "id": 334,
+      "category": "characteristic",
+      "product_line": "pc",
+      "label": "可冷加工",
+      "value": "可冷加工",
+      "sort_order": 63,
+      "created_at": "1782920745771"
+    },
+    {
+      "id": 335,
+      "category": "characteristic",
+      "product_line": "pc",
+      "label": "不含聚乙二醇",
+      "value": "不含聚乙二醇",
+      "sort_order": 64,
+      "created_at": "1782920745821"
+    },
+    {
+      "id": 336,
+      "category": "characteristic",
+      "product_line": "pc",
+      "label": "不含防腐剂",
+      "value": "不含防腐剂",
+      "sort_order": 65,
+      "created_at": "1782920745879"
+    },
+    {
+      "id": 337,
+      "category": "characteristic",
+      "product_line": "pc",
+      "label": "易于生物降解",
+      "value": "易于生物降解",
+      "sort_order": 66,
+      "created_at": "1782920745929"
+    },
+    {
+      "id": 338,
+      "category": "characteristic",
+      "product_line": "pc",
+      "label": "素食主义者",
+      "value": "素食主义者",
+      "sort_order": 67,
+      "created_at": "1782920745979"
+    },
+    {
+      "id": 178,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "抗痘",
+      "value": "抗痘",
+      "sort_order": 0,
+      "created_at": "1782309598689"
+    },
+    {
+      "id": 179,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "抗衰老",
+      "value": "抗衰老",
+      "sort_order": 1,
+      "created_at": "1782309598764"
+    },
+    {
+      "id": 183,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "抗氧化",
+      "value": "抗氧化",
+      "sort_order": 5,
+      "created_at": "1782309598997"
+    },
+    {
+      "id": 187,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "抗皱",
+      "value": "抗皱",
+      "sort_order": 9,
+      "created_at": "1782309599256"
+    },
+    {
+      "id": 190,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "细胞更新",
+      "value": "细胞更新",
+      "sort_order": 12,
+      "created_at": "1782309599422"
+    },
+    {
+      "id": 195,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "紧致",
+      "value": "紧致",
+      "sort_order": 17,
+      "created_at": "1782309599731"
+    },
+    {
+      "id": 327,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "防黑眼圈和眼袋",
+      "value": "防黑眼圈和眼袋",
+      "sort_order": 56,
+      "created_at": "1782920745412"
+    },
+    {
+      "id": 328,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "防污染",
+      "value": "防污染",
+      "sort_order": 57,
+      "created_at": "1782920745460"
+    },
+    {
+      "id": 329,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "抗下垂",
+      "value": "抗下垂",
+      "sort_order": 58,
+      "created_at": "1782920745512"
+    },
+    {
+      "id": 330,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "抗斑",
+      "value": "抗斑",
+      "sort_order": 59,
+      "created_at": "1782920745560"
+    },
+    {
+      "id": 331,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "冷却",
+      "value": "冷却",
+      "sort_order": 60,
+      "created_at": "1782920745612"
+    },
+    {
+      "id": 332,
+      "category": "claim",
+      "product_line": "pc",
+      "label": "充满活力_",
+      "value": "充满活力_",
+      "sort_order": 61,
+      "created_at": "1782920745662"
+    },
+    {
+      "id": 165,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "美食原料",
+      "value": "美食原料",
+      "sort_order": 2,
+      "created_at": "1782309597964"
+    },
+    {
+      "id": 319,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "炎症老化",
+      "value": "炎症老化",
+      "sort_order": 48,
+      "created_at": "1782920744993"
+    },
+    {
+      "id": 320,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "本地采购/法国",
+      "value": "本地采购/法国",
+      "sort_order": 49,
+      "created_at": "1782920745046"
+    },
+    {
+      "id": 321,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "矿物化妆品",
+      "value": "矿物化妆品",
+      "sort_order": 50,
+      "created_at": "1782920745096"
+    },
+    {
+      "id": 322,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "NaDES/LTTM 溶剂技术",
+      "value": "NaDES/LTTM 溶剂技术",
+      "sort_order": 51,
+      "created_at": "1782920745146"
+    },
+    {
+      "id": 323,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "传统医学植物",
+      "value": "传统医学植物",
+      "sort_order": 52,
+      "created_at": "1782920745213"
+    },
+    {
+      "id": 324,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "皮肤健康",
+      "value": "皮肤健康",
+      "sort_order": 53,
+      "created_at": "1782920745260"
+    },
+    {
+      "id": 325,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "升级再造和零浪费",
+      "value": "升级再造和零浪费",
+      "sort_order": 54,
+      "created_at": "1782920745313"
+    },
+    {
+      "id": 326,
+      "category": "concept",
+      "product_line": "pc",
+      "label": "蜡黄油技术",
+      "value": "蜡黄油技术",
+      "sort_order": 55,
+      "created_at": "1782920745360"
+    },
+    {
+      "id": 138,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "活性物",
+      "value": "活性物",
+      "sort_order": 0,
+      "created_at": "1782309596359"
+    },
+    {
+      "id": 141,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "润肤剂",
+      "value": "润肤剂",
+      "sort_order": 3,
+      "created_at": "1782309596515"
+    },
+    {
+      "id": 151,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "润湿剂",
+      "value": "润湿剂",
+      "sort_order": 13,
+      "created_at": "1782309597156"
+    },
+    {
+      "id": 309,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "增效剂",
+      "value": "增效剂",
+      "sort_order": 38,
+      "created_at": "1782920744481"
+    },
+    {
+      "id": 310,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "乳化剂(O/W)",
+      "value": "乳化剂(O/W)",
+      "sort_order": 39,
+      "created_at": "1782920744538"
+    },
+    {
+      "id": 311,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "植物/水果提取物",
+      "value": "植物/水果提取物",
+      "sort_order": 40,
+      "created_at": "1782920744588"
+    },
+    {
+      "id": 312,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "助溶剂",
+      "value": "助溶剂",
+      "sort_order": 41,
+      "created_at": "1782920744643"
+    },
+    {
+      "id": 313,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "纹理化剂",
+      "value": "纹理化剂",
+      "sort_order": 42,
+      "created_at": "1782920744693"
+    },
+    {
+      "id": 314,
+      "category": "functionality",
+      "product_line": "pc",
+      "label": "不含乳化剂",
+      "value": "不含乳化剂",
+      "sort_order": 43,
+      "created_at": "1782920744746"
+    },
+    {
+      "id": 224,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "COSMOS 批准",
+      "value": "COSMOS 批准",
+      "sort_order": 0,
+      "created_at": "1782309601424"
+    },
+    {
+      "id": 225,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "COSMOS认证",
+      "value": "COSMOS认证",
+      "sort_order": 1,
+      "created_at": "1782309601488"
+    },
+    {
+      "id": 339,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "ERI 360 铜牌",
+      "value": "ERI 360 铜牌",
+      "sort_order": 68,
+      "created_at": "1782920746029"
+    },
+    {
+      "id": 340,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "ERI 360 银",
+      "value": "ERI 360 银",
+      "sort_order": 69,
+      "created_at": "1782920746076"
+    },
+    {
+      "id": 341,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "NOI = 100 % (ISO 16128)",
+      "value": "NOI = 100 % (ISO 16128)",
+      "sort_order": 70,
+      "created_at": "1782920746129"
+    },
+    {
+      "id": 342,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "NOI > 99% (ISO 16128)",
+      "value": "NOI > 99% (ISO 16128)",
+      "sort_order": 71,
+      "created_at": "1782920746176"
+    },
+    {
+      "id": 343,
+      "category": "naturality",
+      "product_line": "pc",
+      "label": "RSPO 质量平衡",
+      "value": "RSPO 质量平衡",
+      "sort_order": 72,
+      "created_at": "1782920746226"
+    }
   ]
 }
