@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { hashPassword } from '../src/utils/hash';
-import { PC_TAG_DICTIONARY, PHARMA_TAG_DICTIONARY, FORMULATION_TAG_DICTIONARY, DOCUMENT_TYPE } from '../src/types/dictionary';
 import path from 'path';
 import fs from 'fs';
 
@@ -108,65 +107,7 @@ async function main() {
   }
   console.log('✅ 静态页面初始数据创建成功');
 
-  // 4.1 标签字典（由数据备份统一恢复，此处跳过）
-  // 注：标签字典数据已从 _db_dump.json 恢复（见第5步）
-  // 如果运行 seed 时没有备份文件，则会使用下方代码初始化默认标签
-
-  let tagCount = 0;
-  // 个人护理原料标签
-  for (const [category, options] of Object.entries(PC_TAG_DICTIONARY)) {
-    for (let i = 0; i < options.length; i++) {
-      const tag = options[i];
-      await prisma.tagDictionary.create({
-        data: {
-          category,
-          productLine: 'pc',
-          label: tag.label,
-          value: tag.value,
-          sortOrder: i,
-        },
-      });
-      tagCount++;
-    }
-  }
-
-  // 药用辅料标签
-  for (const [category, options] of Object.entries(PHARMA_TAG_DICTIONARY)) {
-    for (let i = 0; i < options.length; i++) {
-      const tag = options[i];
-      await prisma.tagDictionary.create({
-        data: {
-          category: category === 'dosageForm' ? 'dosage_form' : category,
-          productLine: 'pharma',
-          label: tag.label,
-          value: tag.value,
-          sortOrder: i,
-        },
-      });
-      tagCount++;
-    }
-  }
-
-  // 配方标签
-  for (const [category, options] of Object.entries(FORMULATION_TAG_DICTIONARY)) {
-    for (let i = 0; i < options.length; i++) {
-      const tag = options[i];
-      await prisma.tagDictionary.create({
-        data: {
-          category,
-          productLine: 'formulation',
-          label: tag.label,
-          value: tag.value,
-          sortOrder: i,
-        },
-      });
-      tagCount++;
-    }
-  }
-
-  console.log(`✅ 标签字典填充完成，共 ${tagCount} 条`);
-
-  // 5. 从数据备份恢复业务数据（PC 产品、内容区块、配方、药用辅料等）
+  // 5. 从数据备份恢复业务数据（标签字典、PC产品、配方、内容区块、药用辅料等）
   const backupPath = path.join(__dirname, '../../_db_dump.json');
   if (fs.existsSync(backupPath)) {
     const raw = fs.readFileSync(backupPath, 'utf-8');
