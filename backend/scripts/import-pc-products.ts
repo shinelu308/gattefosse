@@ -1,6 +1,7 @@
 /**
  * 从 gattefossechina.cn 导入 PC 产品
  * API 字段映射到本地数据库的 PcIngredient 模型
+ * 标签按分类分配到对应字段：functionalityTag / applicationTag / conceptTag / claimTag / characteristicTag / naturalityLabel
  */
 import { PrismaClient } from '@prisma/client';
 
@@ -9,24 +10,88 @@ const prisma = new PrismaClient();
 const API_BASE = 'https://www.gattefossechina.cn/api';
 const PAGE_SIZE = 100;
 
+/**
+ * PC 产品相关的顶级分类映射
+ * 注意：功能(ID=292)和剂型(ID=293)是药用辅料的，不用于PC
+ */
+const PC_CATEGORIES: Record<number, { key: string; field: string; name: string }> = {
+  175: { key: 'functionality', field: 'functionalityTag', name: '功能' },
+  125: { key: 'application', field: 'applicationTag', name: '应用领域' },
+  124: { key: 'concept', field: 'conceptTag', name: '概念' },
+  123: { key: 'claim', field: 'claimTag', name: '声明' },
+  209: { key: 'characteristic', field: 'characteristicTag', name: '特征' },
+  122: { key: 'naturality', field: 'naturalityLabel', name: '自然性和标签' },
+};
+
 async function fetchJson(url: string) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
   return res.json();
 }
 
+/** 解析标签字符串为分类后的对象 */
+function parseCategorizedTags(
+  tagStr: string,
+  tagDict: Record<string, string>,
+  labelToCategory: Record<string, string>,
+): Record<string, string[]> {
+  const categorized: Record<string, string[]> = {
+    functionality: [],
+    application: [],
+    concept: [],
+    claim: [],
+    characteristic: [],
+    naturality: [],
+  };
+
+  if (!tagStr || tagStr === '""' || tagStr === '""""' || tagStr === '""\\""\\""""') return categorized;
+
+  try {
+    const pairs: number[][] = JSON.parse(tagStr.replace(/\\/g, ''));
+    for (const p of pairs) {
+      const label = tagDict[p[1]] || `tag_${p[1]}`;
+      const catKey = labelToCategory[label];
+      if (catKey && categorized[catKey]) {
+        categorized[catKey].push(label);
+      } else {
+        // 未分类的标签默认归到功能
+        categorized.functionality.push(label);
+      }
+    }
+  } catch {
+    // 解析失败，返回空
+  }
+
+  return categorized;
+}
+
 async function main() {
   console.log('🚀 开始导入 PC 产品...\n');
 
-  // 1. 获取标签字典（将标签ID映射为中文标签名）
-  const tagDict: Record<string, { id: number; label: string }> = {};
+  // 1. 获取标签字典和分类映射
+  const tagDict: Record<string, string> = {};       // tagId → 中文标签名
+  const labelToCategory: Record<string, string> = {}; // 中文标签名 → category key
   try {
     const tagRes = await fetchJson(`${API_BASE}/mallGoodsTag/getMallGoodsTagList`);
     const tags = tagRes?.data?.list || tagRes?.data || [];
     for (const t of tags) {
-      tagDict[t.ID] = { id: t.ID, label: t.name || t.tagName || '' };
+      // 记录顶级标签本身
+      const tName = t.name || t.tagName || '';
+      if (tName) tagDict[t.ID] = tName;
+
+      // 记录子标签并建立分类映射
+      const catInfo = PC_CATEGORIES[t.ID];
+      if (catInfo && t.children && Array.isArray(t.children)) {
+        for (const child of t.children) {
+          const childName = child.tagName || child.name || '';
+          if (childName) {
+            tagDict[child.ID] = childName;
+            labelToCategory[childName] = catInfo.key;
+          }
+        }
+      }
     }
-    console.log(`✅ 加载标签字典: ${Object.keys(tagDict).length} 条`);
+    console.log(`✅ 加载标签字典: ${Object.keys(tagDict).length} 条, 分类映射: ${Object.keys(labelToCategory).length} 条`);
   } catch (e) {
     console.warn('⚠️  加载标签字典失败，标签将为空:', (e as Error).message);
   }
@@ -76,19 +141,8 @@ async function main() {
       }
     }
 
-    // 4. 处理标签
-    const parseTags = (tagStr: string): string => {
-      if (!tagStr || tagStr === '""' || tagStr === '""""' || tagStr === '""\\""\\""""') return '';
-      try {
-        const pairs: number[][] = JSON.parse(tagStr.replace(/\\/g, ''));
-        return pairs.map((p: number[]) => {
-          const t = tagDict[p[1]];
-          return t ? t.label : `tag_${p[1]}`;
-        }).filter(Boolean).join(',');
-      } catch {
-        return '';
-      }
-    };
+    // 4. 处理标签（按分类分配到对应字段）
+    const categorized = parseCategorizedTags(item.tag, tagDict, labelToCategory);
 
     // 5. 构建数据库记录
     const data: any = {
@@ -107,14 +161,12 @@ async function main() {
         : '',
       tagline: item.subtitle || '',
       intlUrl: item.enUrl || '',
-      functionalityTag: parseTags(item.tag),
-      applicationTag: '',
-      conceptTag: '',
-      claimTag: item.claims
-        ? item.claims.replace(/<[^>]+>/g, '').replace(/\s+/g, ',').slice(0, 500)
-        : '',
-      characteristicTag: '',
-      naturalityLabel: '',
+      functionalityTag: categorized.functionality.join(','),
+      applicationTag: categorized.application.join(','),
+      conceptTag: categorized.concept.join(','),
+      claimTag: categorized.claim.join(','),
+      characteristicTag: categorized.characteristic.join(','),
+      naturalityLabel: categorized.naturality.join(','),
       compositionHtml: compositionHtml || '',
       sensoryHtml: sensoryHtml || '',
       clinicalHtml: clinicalHtml || '',
