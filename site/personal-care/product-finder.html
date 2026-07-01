@@ -174,11 +174,11 @@
                           <div class="accordion-item panel-group" :id="item.accordionNameId"
                             aria-multiselectable="true">
                             <h3 role="tab" :id="item.headerNameId">
-                              <button type="button" aria-expanded="false" class="panel-title accordion-button collapsed"
+                              <button type="button" aria-expanded="true" class="panel-title accordion-button"
                                 data-bs-toggle="collapse" :data-bs-target="item.sharpeNameId"
                                 id="nav-filtre-accordion">{{item.tagName}}</button>
                             </h3>
-                            <div :id="item.nameId" class="panel-collapse collapse" role="region"
+                            <div :id="item.nameId" class="panel-collapse collapse show" role="region"
                               :aria-labelledby="item.headerNameId">
                               <div class="panel-body accordion-body">
                                 <ul :data-drupal-facet-id="item.dataDrupalFacetId"
@@ -876,7 +876,7 @@
         });
       }
 
-      // 初始化子标签显示状态：默认收起，超过6个的显示「查看所有」按钮
+      // 初始化子标签显示状态：默认全部展开
       function setTagStyle() {
         nextTick(function () {
           setTimeout(function() {
@@ -885,19 +885,18 @@
               if (!ul) return;
               var items = ul.querySelectorAll('li');
               var btn = body.querySelector('.js-see-all');
-              // 默认收起超过6个的标签
+              // 默认全部展开，不收起任何标签
               items.forEach(function(li, idx) {
                 li.classList.remove('hidden');
-                if (idx >= 6) li.classList.add('tag-collapsed');
-                else li.classList.remove('tag-collapsed');
+                li.classList.remove('tag-collapsed');
               });
-              // 按钮初始化
+              // 按钮初始化：标签多时显示「收起」按钮
               if (btn) {
                 if (items.length > 6) {
                   btn.style.display = '';
-                  btn.textContent = '查看所有';
-                  btn.setAttribute('data-aria-expanded', 'false');
-                  btn.setAttribute('data-hide', '收起');
+                  btn.textContent = '收起';
+                  btn.setAttribute('data-aria-expanded', 'true');
+                  btn.setAttribute('data-hide', '查看所有');
                 } else {
                   btn.style.display = 'none';
                 }
