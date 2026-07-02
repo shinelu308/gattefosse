@@ -300,6 +300,10 @@
                                                 </div>
                                                 <div style="flex:1;min-width:280px;">
                                                     <div v-if="block.content.rightType === 'text' && block.content.rightText" style="white-space:pre-line;font-size:16px;line-height:1.7;color:#555;">{{ block.content.rightText }}</div>
+                                                    <div v-if="block.content.rightType === 'richtext' && block.content.rightHtml" v-html="block.content.rightHtml" class="block-content"></div>
+                                                    <div v-if="block.content.rightType === 'image' && block.content.rightUrl">
+                                                        <img :src="block.content.rightUrl" :alt="block.title || ''" style="width:100%;height:auto;border-radius:8px;display:block;">
+                                                    </div>
                                                     <div v-if="block.content.rightType === 'video' && block.content.rightUrl" class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
                                                         <iframe :src="block.content.rightUrl" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
                                                     </div>
@@ -470,11 +474,12 @@
       }
 
       /* ============ 特点图标（Picto）= 原站CSS直搬 ============ */
+      .s-product-description { margin-bottom: 0; }
       .s-product-picto {
         background-color: #F7F5F0;
         display: inline-block;
         width: 100%;
-        margin-top: 5.2rem;
+        margin-top: 0;
         min-width: 22rem;
       }
       .s-product-picto a { text-decoration: none; }
@@ -538,8 +543,6 @@
         }
         .s-product-picto__text {
           font-size: 1.4rem;
-        }
-      }
         }
       }
       

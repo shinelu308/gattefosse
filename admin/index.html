@@ -1046,14 +1046,19 @@ const QUILL_TOOLBAR = [
                           <!-- 左列 -->
                           <div class="form-group" style="flex:1;">
                             <label>左列类型</label>
-                            <select v-model="block._leftType" class="form-control" style="margin-bottom:8px;">
+                            <select v-model="block._leftType" @change="onImagetextTypeChange(bi, 'left')" class="form-control" style="margin-bottom:8px;">
                               <option value="richtext">富文本</option>
+                              <option value="text">文字</option>
                               <option value="image">图片</option>
                               <option value="video">视频</option>
                             </select>
                             <!-- 左列：富文本 -->
                             <div v-if="block._leftType === 'richtext'">
                               <div :id="'qled-imagetext-left-' + block._key" class="quill-editor" style="min-height:150px;"></div>
+                            </div>
+                            <!-- 左列：文字 -->
+                            <div v-if="block._leftType === 'text'">
+                              <textarea class="form-control" v-model="block._leftText" rows="10" placeholder="输入文字内容...&#10;换行自动显示为换行" style="min-height:180px;resize:vertical;white-space:pre-line;"></textarea>
                             </div>
                             <!-- 左列：图片 -->
                             <div v-if="block._leftType === 'image'">
@@ -1074,13 +1079,30 @@ const QUILL_TOOLBAR = [
                           <!-- 右列 -->
                           <div class="form-group" style="flex:1;">
                             <label>右列类型</label>
-                            <select v-model="block._rightType" class="form-control" style="margin-bottom:8px;">
+                            <select v-model="block._rightType" @change="onImagetextTypeChange(bi, 'right')" class="form-control" style="margin-bottom:8px;">
+                              <option value="richtext">富文本</option>
                               <option value="text">文字</option>
+                              <option value="image">图片</option>
                               <option value="video">视频</option>
                             </select>
+                            <!-- 右列：富文本 -->
+                            <div v-if="block._rightType === 'richtext'">
+                              <div :id="'qled-imagetext-right-' + block._key" class="quill-editor" style="min-height:150px;"></div>
+                            </div>
                             <!-- 右列：文字 -->
                             <div v-if="block._rightType === 'text'">
                               <textarea class="form-control" v-model="block._rightText" rows="10" placeholder="输入文字内容...&#10;换行自动显示为换行" style="min-height:180px;resize:vertical;white-space:pre-line;"></textarea>
+                            </div>
+                            <!-- 右列：图片 -->
+                            <div v-if="block._rightType === 'image'">
+                              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <input type="text" class="form-control" v-model="block._rightUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:160px;">
+                                <input type="file" accept="image/*" @change="uploadBlockImageRight($event, bi)" style="font-size:13px;">
+                                <span v-if="uploadingBlockImageRight" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                              </div>
+                              <div v-if="block._rightUrl" style="margin-top:6px;">
+                                <img :src="block._rightUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);">
+                              </div>
                             </div>
                             <!-- 右列：视频 -->
                             <div v-if="block._rightType === 'video'">
@@ -1521,16 +1543,6 @@ const QUILL_TOOLBAR = [
                 <label>配方编号</label>
                 <input type="text" class="form-control" v-model="editingFormula.code" placeholder="如 2972-5.20">
               </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>建议用量</label>
-                  <input type="text" class="form-control" v-model="editingFormula.dosage" placeholder="例：1-5%">
-                </div>
-                <div class="form-group">
-                  <label>宣传标语</label>
-                  <input type="text" class="form-control" v-model="editingFormula.tagline" placeholder="例：每一滴都带来舒缓呵护">
-                </div>
-              </div>
               <div class="form-group">
                 <label>配方图片</label>
                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -1706,25 +1718,54 @@ const QUILL_TOOLBAR = [
                       </div>
                       <div v-show="block.blockType === 'imagetext'">
                         <div style="display:flex;gap:16px;">
-                          <div style="flex:1;">
-                            <label>左侧内容</label>
-                            <select v-model="block._leftType" class="form-control" style="margin-bottom:6px;">
+                          <div class="form-group" style="flex:1;min-width:0;">
+                            <label>左列类型</label>
+                            <select v-model="block._leftType" @change="onFormulaImagetextTypeChange(bi, 'left')" class="form-control" style="margin-bottom:8px;">
+                              <option value="richtext">富文本</option>
+                              <option value="text">文字</option>
+                              <option value="image">图片</option>
+                              <option value="video">视频</option>
+                            </select>
+                            <div v-if="block._leftType === 'richtext'">
+                              <div :id="'qled-imagetext-left-' + block._key" class="quill-editor" style="min-height:150px;"></div>
+                            </div>
+                            <div v-if="block._leftType === 'text'">
+                              <textarea class="form-control" v-model="block._leftText" rows="10" placeholder="输入文字内容...&#10;换行自动显示为换行" style="min-height:180px;resize:vertical;white-space:pre-line;"></textarea>
+                            </div>
+                            <div v-if="block._leftType === 'image'">
+                              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <input type="text" class="form-control" v-model="block._leftUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:160px;">
+                                <input type="file" accept="image/*" @change="uploadFormulaBlockImage($event, bi)" style="font-size:13px;">
+                                <span v-if="uploadingFormulaBlockImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                              </div>
+                              <div v-if="block._leftUrl" style="margin-top:6px;">
+                                <img :src="block._leftUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);">
+                              </div>
+                            </div>
+                            <div v-if="block._leftType === 'video'">
+                              <input type="text" class="form-control" v-model="block._leftUrl" placeholder="输入视频嵌入链接 / iframe代码 / B站视频页链接">
+                            </div>
+                          </div>
+                          <div class="form-group" style="flex:1;min-width:0;">
+                            <label>右列类型</label>
+                            <select v-model="block._rightType" @change="onFormulaImagetextTypeChange(bi, 'right')" class="form-control" style="margin-bottom:8px;">
+                              <option value="text">文字</option>
                               <option value="richtext">富文本</option>
                               <option value="image">图片</option>
                               <option value="video">视频</option>
                             </select>
-                            <div v-if="block._leftType === 'richtext'" :id="'qled-imagetext-left-' + block._key" class="quill-editor" style="min-height:150px;"></div>
-                            <input v-if="block._leftType === 'image'" type="text" class="form-control" v-model="block._leftUrl" placeholder="图片 URL">
-                            <input v-if="block._leftType === 'video'" type="text" class="form-control" v-model="block._leftUrl" placeholder="视频 URL">
-                          </div>
-                          <div style="flex:1;">
-                            <label>右侧内容</label>
-                            <select v-model="block._rightType" class="form-control" style="margin-bottom:6px;">
-                              <option value="text">文字</option>
-                              <option value="video">视频</option>
-                            </select>
-                            <textarea v-if="block._rightType === 'text'" class="form-control" rows="4" v-model="block._rightText" placeholder="右侧文字内容"></textarea>
-                            <input v-if="block._rightType === 'video'" type="text" class="form-control" v-model="block._rightUrl" placeholder="视频 URL">
+                            <div v-if="block._rightType === 'text'">
+                              <textarea class="form-control" v-model="block._rightText" rows="10" placeholder="输入文字内容...&#10;换行自动显示为换行" style="min-height:180px;resize:vertical;white-space:pre-line;"></textarea>
+                            </div>
+                            <div v-if="block._rightType === 'richtext'">
+                              <div :id="'qled-imagetext-right-' + block._key" class="quill-editor" style="min-height:150px;"></div>
+                            </div>
+                            <div v-if="block._rightType === 'image'">
+                              <input type="text" class="form-control" v-model="block._rightUrl" placeholder="图片 URL">
+                            </div>
+                            <div v-if="block._rightType === 'video'">
+                              <input type="text" class="form-control" v-model="block._rightUrl" placeholder="输入视频嵌入链接 / iframe代码 / B站视频页链接">
+                            </div>
                           </div>
                         </div>
                         <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
@@ -2658,10 +2699,12 @@ createApp({
       uploadingImage: false,
       uploadingDetailImage: false,
       uploadingBlockImage: false,
+      uploadingBlockImageRight: false,
       uploadingPharmaImage: false,
       uploadingPharmaDetailImage: false,
       uploadingPharmaBlockRightImage: false,
       uploadingFormulaImage: false,
+      uploadingFormulaBlockImage: false,
       uploadingFormulaDetailImage: false,
     };
   },
@@ -2958,6 +3001,62 @@ createApp({
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingBlockImage = false; event.target.value = ''; }
     },
+    async uploadBlockImageRight(event, bi) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingBlockImageRight = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingPc.blocks[bi]._rightUrl = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingBlockImageRight = false; event.target.value = ''; }
+    },
+    onImagetextTypeChange(bi, side) {
+      var block = this.editingPc.blocks[bi];
+      var self = this;
+      if (side === 'left') {
+        if (block._quillL) { block._quillL.container.remove(); block._quillL = null; }
+        this.$nextTick(function() {
+          if (block._leftType === 'richtext') {
+            self._initSingleQuill(block, 'qled-imagetext-left-' + block._key, function(ql, blk) {
+              blk._quillL = ql;
+              if (blk.content && typeof blk.content === 'string') {
+                try { blk.content = JSON.parse(blk.content); } catch(e) {}
+              }
+              if (blk.content && blk.content.leftHtml) {
+                ql.root.innerHTML = blk.content.leftHtml;
+              }
+            });
+          }
+        });
+      } else {
+        if (block._quillR) { block._quillR.container.remove(); block._quillR = null; }
+        this.$nextTick(function() {
+          if (block._rightType === 'richtext') {
+            self._initSingleQuill(block, 'qled-imagetext-right-' + block._key, function(ql, blk) {
+              blk._quillR = ql;
+              if (blk.content && typeof blk.content === 'string') {
+                try { blk.content = JSON.parse(blk.content); } catch(e) {}
+              }
+              if (blk.content && blk.content.rightHtml) {
+                ql.root.innerHTML = blk.content.rightHtml;
+              }
+            });
+          }
+        });
+      }
+    },
     async uploadFormulaImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2976,6 +3075,25 @@ createApp({
         } else { this.showAlert('上传失败：' + (data.message || '未知错误')); }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingFormulaImage = false; event.target.value = ''; }
+    },
+    async uploadFormulaBlockImage(event, bi) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingFormulaBlockImage = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingFormula.blocks[bi]._leftUrl = data.data.url;
+        } else { this.showAlert('上传失败：' + (data.message || '未知错误')); }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingFormulaBlockImage = false; event.target.value = ''; }
     },
     async uploadFormulaDetailImage(event) {
       const file = event.target.files[0];
@@ -3106,6 +3224,7 @@ createApp({
       (this.editingPc.blocks || []).forEach(function(block) {
         block._quill = null;
         block._quillL = null;
+        block._quillR = null;
       });
       // 清理页面上残留的 Quill 工具栏和编辑器 DOM
       document.querySelectorAll('.ql-toolbar, .ql-container').forEach(function(el) {
@@ -3152,8 +3271,10 @@ createApp({
         _saved: true,
         _quill: null,
         _quillL: null,
+        _quillR: null,
         _leftType: 'richtext',
         _leftUrl: '',
+        _leftText: '',
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
@@ -3171,6 +3292,7 @@ createApp({
       } else if (block.blockType === 'imagetext') {
         block._leftType = (block.content && block.content.leftType) ? block.content.leftType : 'richtext';
         block._leftUrl = (block.content && block.content.leftUrl) ? block.content.leftUrl : '';
+        block._leftText = (block.content && block.content.leftText) ? block.content.leftText : '';
         block._rightType = (block.content && block.content.rightType) ? block.content.rightType : 'text';
         block._rightText = (block.content && block.content.rightText) ? block.content.rightText : '';
         block._rightUrl = (block.content && block.content.rightUrl) ? block.content.rightUrl : '';
@@ -3188,8 +3310,10 @@ createApp({
         _saved: false,
         _quill: null,
         _quillL: null,
+        _quillR: null,
         _leftType: 'richtext',
         _leftUrl: '',
+        _leftText: '',
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
@@ -3279,6 +3403,10 @@ createApp({
         block._quillL.container.remove();
         block._quillL = null;
       }
+      if (block._quillR) {
+        block._quillR.container.remove();
+        block._quillR = null;
+      }
       this._initBlockViewData(block);
       // 切换后重新初始化 Quill
       var self = this;
@@ -3294,13 +3422,16 @@ createApp({
           const ql = block._quill;
           content = { html: ql ? ql.root.innerHTML : '' };
         } else if (block.blockType === 'imagetext') {
+          var qlR = block._quillR;
           content = {
             leftType: block._leftType || 'richtext',
             leftUrl: block._leftUrl || '',
-            leftHtml: block._quillL ? block._quillL.root.innerHTML : '',
+            leftText: (block._leftType === 'text') ? (block._leftText || '') : '',
+            leftHtml: (block._leftType === 'richtext' && block._quillL) ? block._quillL.root.innerHTML : '',
             rightType: block._rightType || 'text',
-            rightText: block._rightText || '',
+            rightText: (block._rightType === 'text') ? (block._rightText || '') : '',
             rightUrl: block._rightUrl || '',
+            rightHtml: (block._rightType === 'richtext' && qlR) ? qlR.root.innerHTML : '',
           };
         } else if (block.blockType === 'video') {
           content = { url: block._videoUrl || '' };
@@ -3332,7 +3463,7 @@ createApp({
         const block = this.editingPc.blocks[i];
         // 保存所有有 Quill 实例的富文本区块（用户可能已编辑但未点单个保存）
         // 以及所有未保存的区块（新添加的非富文本区块）
-        var hasQuill = block._quill || block._quillL;
+        var hasQuill = block._quill || block._quillL || block._quillR;
         if (hasQuill || !block._saved) {
           await this.saveBlockContent(i);
         }
@@ -3355,6 +3486,15 @@ createApp({
               blk._quillL = ql;
               if (blk.content && blk.content.leftHtml) {
                 ql.root.innerHTML = blk.content.leftHtml;
+              }
+            });
+          }
+          // 右列富文本 Quill
+          if (block._rightType === 'richtext') {
+            this._initSingleQuill(block, 'qled-imagetext-right-' + block._key, function(ql, blk) {
+              blk._quillR = ql;
+              if (blk.content && blk.content.rightHtml) {
+                ql.root.innerHTML = blk.content.rightHtml;
               }
             });
           }
@@ -3633,7 +3773,7 @@ createApp({
     resetFormulaEdit() {
       this._formulaBlocksLoaded = false;
       this.destroyFormulaQuills();
-      this.editingFormula = { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
+      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
       this.formulaEditTab = 'basic';
     },
     editFormula(item) {
@@ -3641,7 +3781,6 @@ createApp({
       this.destroyFormulaQuills();
       this.editingFormula = {
         id: item.id, name: item.name, code: item.code || '', description: item.description || '',
-        dosage: item.dosage || '', tagline: item.tagline || '',
         imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', intlUrl: item.intlUrl || '', pdfPath: item.pdfPath || '',
         applicationTag: [...(item.applicationTag||[])], formTag: [...(item.formTag||[])],
         claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex || '',
@@ -3651,6 +3790,7 @@ createApp({
         blocks: [], _blockIdCounter: 0,
         _pictoList: this._parsePictos(item.pictos),
       };
+      this.formulaEditTab = 'basic';
       this.goPage('formula-edit');
     },
     toggleFormulaTag(field, value) {
@@ -3758,14 +3898,18 @@ createApp({
             _saved: true,
             _quill: null,
             _quillL: null,
+            _quillR: null,
             _videoUrl: (b.blockType === 'video') ? (content.url || '') : '',
             _imageList: (b.blockType === 'images' && content.images) ? content.images.map(function(i) { return { url: i.url, caption: i.caption || '' }; }) : [{ url: '', caption: '' }],
             _fileList: (b.blockType === 'files' && content.files) ? content.files.map(function(f) { return { title: f.title || '', url: f.url || '', fileId: f.fileId || null, isPublic: f.isPublic, type: f.type || '' }; }) : [],
             _leftType: (b.blockType === 'imagetext') ? (content.leftType || 'richtext') : 'richtext',
             _leftUrl: (b.blockType === 'imagetext') ? (content.leftUrl || '') : '',
+            _leftText: (b.blockType === 'imagetext' && content.leftType === 'text') ? (content.leftText || '') : '',
             _rightType: (b.blockType === 'imagetext') ? (content.rightType || 'text') : 'text',
             _rightText: (b.blockType === 'imagetext' && content.rightType === 'text') ? (content.rightText || '') : '',
-            _rightUrl: (b.blockType === 'imagetext' && content.rightType === 'video') ? (content.rightUrl || '') : '',
+            _rightUrl: (b.blockType === 'imagetext' && (content.rightType === 'video' || content.rightType === 'image')) ? (content.rightUrl || '') : '',
+            _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
+            _rightRichtext: (b.blockType === 'imagetext' && content.rightType === 'richtext') ? (content.rightHtml || '') : '',
           };
         });
         self.editingFormula._blockIdCounter = list.length;
@@ -3782,11 +3926,13 @@ createApp({
         _saved: false,
         _quill: null,
         _quillL: null,
+        _quillR: null,
         _videoUrl: '',
         _imageList: [{ url: '', caption: '' }],
         _fileList: [],
         _leftType: 'richtext',
         _leftUrl: '',
+        _leftText: '',
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
@@ -3804,6 +3950,10 @@ createApp({
       if (block._quillL) {
         block._quillL.container.remove();
         block._quillL = null;
+      }
+      if (block._quillR) {
+        block._quillR.container.remove();
+        block._quillR = null;
       }
       if (block.id) {
         this.api('/blocks/' + block.id, { method: 'DELETE' }).then(function() {
@@ -3834,8 +3984,64 @@ createApp({
         block._quillL.container.remove();
         block._quillL = null;
       }
+      if (block._quillR) {
+        block._quillR.container.remove();
+        block._quillR = null;
+      }
+      this._initFormulaBlockViewData(block);
       var self = this;
       setTimeout(function() { self.initFormulaQuillEditors(); }, 100);
+    },
+    onFormulaImagetextTypeChange(bi, side) {
+      var block = this.editingFormula.blocks[bi];
+      var self = this;
+      if (side === 'left') {
+        if (block._quillL) { block._quillL.container.remove(); block._quillL = null; }
+        this.$nextTick(function() {
+          if (block._leftType === 'richtext') {
+            self._initFormulaSingleQuill(block, 'qled-imagetext-left-' + block._key, function(ql, blk) {
+              blk._quillL = ql;
+              if (blk.content && typeof blk.content === 'string') {
+                try { blk.content = JSON.parse(blk.content); } catch(e) {}
+              }
+              if (blk.content && blk.content.leftHtml) {
+                ql.root.innerHTML = blk.content.leftHtml;
+              }
+            });
+          }
+        });
+      } else {
+        if (block._quillR) { block._quillR.container.remove(); block._quillR = null; }
+        this.$nextTick(function() {
+          if (block._rightType === 'richtext') {
+            self._initFormulaSingleQuill(block, 'qled-imagetext-right-' + block._key, function(ql, blk) {
+              blk._quillR = ql;
+              if (blk.content && typeof blk.content === 'string') {
+                try { blk.content = JSON.parse(blk.content); } catch(e) {}
+              }
+              if (blk.content && blk.content.rightHtml) {
+                ql.root.innerHTML = blk.content.rightHtml;
+              }
+            });
+          }
+        });
+      }
+    },
+    _initFormulaBlockViewData(block) {
+      if (block.blockType === 'images') {
+        block._imageList = (block.content && block.content.images) ? block.content.images.map(i => ({...i})) : [{ url: '', caption: '' }];
+      } else if (block.blockType === 'files') {
+        block._fileList = (block.content && block.content.files) ? block.content.files.map(f => ({...f})) : [];
+      } else if (block.blockType === 'video') {
+        block._videoUrl = (block.content && block.content.url) ? block.content.url : '';
+      } else if (block.blockType === 'imagetext') {
+        block._leftType = (block.content && block.content.leftType) ? block.content.leftType : 'richtext';
+        block._leftUrl = (block.content && block.content.leftUrl) ? block.content.leftUrl : '';
+        block._leftText = (block.content && block.content.leftText) ? block.content.leftText : '';
+        block._rightType = (block.content && block.content.rightType) ? block.content.rightType : 'text';
+        block._rightText = (block.content && block.content.rightText) ? block.content.rightText : '';
+        block._rightUrl = (block.content && block.content.rightUrl) ? block.content.rightUrl : '';
+      }
     },
     addFormulaImage(bi) {
       this.editingFormula.blocks[bi]._imageList.push({ url: '', caption: '' });
@@ -3878,13 +4084,16 @@ createApp({
         content = { images: (block._imageList || []).filter(function(i) { return i.url; }) };
       } else if (block.blockType === 'imagetext') {
         var qlL = block._quillL;
+        var qlR = block._quillR;
         content = {
           leftType: block._leftType || 'richtext',
           leftUrl: block._leftUrl || '',
+          leftText: (block._leftType === 'text') ? (block._leftText || '') : '',
           leftHtml: (block._leftType === 'richtext' && qlL) ? qlL.root.innerHTML : '',
           rightType: block._rightType || 'text',
-          rightText: block._rightText || '',
+          rightText: (block._rightType === 'text') ? (block._rightText || '') : '',
           rightUrl: block._rightUrl || '',
+          rightHtml: (block._rightType === 'richtext' && qlR) ? qlR.root.innerHTML : '',
         };
       } else if (block.blockType === 'files') {
         content = { files: (block._fileList || []).filter(function(f) { return f.url; }).map(function(f) { return { title: f.title, url: f.url, fileId: f.fileId || null, isPublic: f.isPublic, type: f.type || '' }; }) };
@@ -3930,6 +4139,17 @@ createApp({
               }
             });
           }
+          if (block._rightType === 'richtext') {
+            this._initFormulaSingleQuill(block, 'qled-imagetext-right-' + block._key, function(ql, blk) {
+              blk._quillR = ql;
+              if (blk.content && typeof blk.content === 'string') {
+                try { blk.content = JSON.parse(blk.content); } catch(e) {}
+              }
+              if (blk.content && blk.content.rightHtml) {
+                ql.root.innerHTML = blk.content.rightHtml;
+              }
+            });
+          }
         }
       }.bind(this));
     },
@@ -3965,6 +4185,7 @@ createApp({
       (this.editingFormula.blocks || []).forEach(function(block) {
         block._quill = null;
         block._quillL = null;
+        block._quillR = null;
       });
       document.querySelectorAll('.ql-toolbar, .ql-container').forEach(function(el) {
         el.remove();
