@@ -151,14 +151,14 @@
                                 <div class="s-product-description__main">
                                     <h2 class="u-title-styled s-product-description__main-title">简述</h2>
                                     <div class="s-product-description__main-content"
-                                        v-html="data.productDetail.description">
+                                        v-html="getBlockContent('简述') || data.productDetail.description">
                                     </div>
                                 </div>
                                 <div class="s-product-description__side">
                                     <div class="s-product-description__revendication">
                                         <h3 class="s-product-description__revendication-title">关键点</h3>
                                         <div class="s-product-description__revendication-list"
-                                            v-html="data.productDetail.claims">
+                                            v-html="getBlockContent('关键点') || data.productDetail.claims">
                                         </div>
                                     </div>
                                 </div>
@@ -192,6 +192,114 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 模块化内容区块渲染（跳过顶部已显示的简述和关键点） -->
+                        <div class="s-product-content" v-if="data.contentBlocks.length > 0">
+                            <div class="container">
+                                <div class="s-product-content__inside" style="max-width:1170px;margin:0 auto;">
+                                    <template v-for="(block, bi) in data.contentBlocks" :key="block.id || bi">
+                                        <div v-if="block.title !== '简述' && block.title !== '关键点'" class="s-product-content__item" style="margin-bottom:40px;">
+                                        <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
+                                        <!-- 富文本区块 -->
+                                        <div v-if="block.blockType === 'richtext' && block.content" v-html="block.content.html" class="block-content"></div>
+                                        <!-- 视频区块 -->
+                                        <div v-if="block.blockType === 'video' && block.content && block.content.url" class="block-video">
+                                            <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                                                <iframe :src="block.content.url" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                        <!-- 图片集区块 -->
+                                        <div v-if="block.blockType === 'images' && block.content && block.content.images" class="block-images">
+                                            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+                                                <figure v-for="(img, ii) in block.content.images" :key="ii" style="margin:0;">
+                                                    <img :src="img.url" :alt="img.caption || ''" style="width:100%;height:auto;border-radius:8px;">
+                                                    <figcaption v-if="img.caption" style="margin-top:8px;font-size:14px;color:#666;text-align:center;">{{ img.caption }}</figcaption>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                        <!-- 文件下载区块 -->
+                                        <div v-if="block.blockType === 'files' && block.content && block.content.files" class="block-files" id="product-document">
+                                            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+                                                <div>
+                                                    <h3 style="font-size:1.8rem;font-weight:700;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">技术文件</h3>
+                                                    <ul style="list-style:none;padding:0;margin:0;">
+                                                        <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
+                                                            <li v-if="isTdsDoc(file)" style="margin-bottom:10px;">
+                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;font-weight:700;line-height:1.5;">
+                                                                    <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
+                                                                    <span>{{ file.title || file.url }}</span>
+                                                                </a>
+                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;font-weight:700;line-height:1.5;cursor:not-allowed;">
+                                                                    <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
+                                                                    <span>{{ file.title || file.url }}</span>
+                                                                </span>
+                                                            </li>
+                                                        </template>
+                                                        <li v-if="!hasTdsDocs(block.content.files)" style="color:#999;font-size:20px;">暂无技术文件</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <h3 style="font-size:1.8rem;font-weight:700;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">产品手册</h3>
+                                                    <ul style="list-style:none;padding:0;margin:0;">
+                                                        <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
+                                                            <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;">
+                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;font-weight:700;line-height:1.5;">
+                                                                    <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
+                                                                    <span>{{ file.title || file.url }}</span>
+                                                                </a>
+                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;font-weight:700;line-height:1.5;cursor:not-allowed;">
+                                                                    <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
+                                                                    <span>{{ file.title || file.url }}</span>
+                                                                </span>
+                                                            </li>
+                                                        </template>
+                                                        <li v-if="!hasBrochureDocs(block.content.files)" style="color:#999;font-size:20px;">暂无产品手册</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <h3 style="font-size:1.8rem;font-weight:700;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">配方资料</h3>
+                                                    <ul style="list-style:none;padding:0;margin:0;">
+                                                        <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
+                                                            <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;">
+                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;font-weight:700;line-height:1.5;">
+                                                                    <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
+                                                                    <span>{{ file.title || file.url }}</span>
+                                                                </a>
+                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;font-weight:700;line-height:1.5;cursor:not-allowed;">
+                                                                    <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
+                                                                    <span>{{ file.title || file.url }}</span>
+                                                                </span>
+                                                            </li>
+                                                        </template>
+                                                        <li v-if="!hasFormulaDocs(block.content.files)" style="color:#999;font-size:20px;">暂无配方资料</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 图文并排区块 -->
+                                        <div v-if="block.blockType === 'imagetext' && block.content" class="block-imagetext">
+                                            <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
+                                                <div style="flex:1;min-width:280px;">
+                                                    <div v-if="block.content.leftType === 'richtext' && block.content.leftHtml" v-html="block.content.leftHtml" class="block-content"></div>
+                                                    <div v-if="block.content.leftType === 'image' && block.content.leftUrl">
+                                                        <img :src="block.content.leftUrl" :alt="block.title || ''" style="width:100%;height:auto;border-radius:8px;display:block;">
+                                                    </div>
+                                                    <div v-if="block.content.leftType === 'video' && block.content.leftUrl" class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                                                        <iframe :src="block.content.leftUrl" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                                                    </div>
+                                                </div>
+                                                <div style="flex:1;min-width:280px;">
+                                                    <div v-if="block.content.rightType === 'text' && block.content.rightText" style="white-space:pre-line;font-size:16px;line-height:1.7;color:#555;">{{ block.content.rightText }}</div>
+                                                    <div v-if="block.content.rightType === 'video' && block.content.rightUrl" class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                                                        <iframe :src="block.content.rightUrl" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -400,6 +508,7 @@
                     productDetail: {}, inFav: false,
                     relatedProducts: [],
                     relatedContents: [],
+                    contentBlocks: [],
                     loading: true
                 });
 
@@ -439,29 +548,100 @@
                             subtitle: f.code || '',
                             description: f.description || '',
                             imageUrl: f.imageUrl || '',
-                            bg: f.imageUrl ? 'background-image: url(' + f.imageUrl + ')' : '',
+                            bg: f.detailImageUrl ? 'background-image: url(' + f.detailImageUrl + ')' : (f.imageUrl ? 'background-image: url(' + f.imageUrl + ')' : ''),
                             url: '/personal-care/formulation-finder/product-detail.html?id=' + f.id,
                             favUrl: '/account.html?url=/personal-care/formulation-finder/product-detail.html?id=' + id,
-                            pdfUrl: '',
+                            pdfUrl: f.pdfPath || '',
                             claims: '',
                             picto: '',
-                            movieUrl: '',
+                            movieUrl: f.videoUrl || '',
                             mainContent: mainContent,
                             goodsCategoryId: ''
                         };
                         data.loading = false;
+                        if (f.id) loadContentBlocks(f.id);
                     }).catch(function (err) {
                         console.error('获取配方详情失败:', err);
                         data.loading = false;
                     });
                 };
 
+                // 从 contentBlocks 中按标题取区块的 HTML 内容
+                function getBlockContent(title) {
+                    for (var i = 0; i < data.contentBlocks.length; i++) {
+                        var b = data.contentBlocks[i];
+                        if (b.title === title && b.blockType === 'richtext' && b.content && b.content.html) {
+                            return b.content.html;
+                        }
+                    }
+                    return '';
+                }
+
+                // 加载内容区块
+                const loadContentBlocks = function (productId) {
+                    GatteAPI.Blocks.list({ productId: productId, productType: 'formula' }).then(function (res) {
+                        var body = res.data || res;
+                        if (body && body.list) {
+                            data.contentBlocks = body.list;
+                        } else if (Array.isArray(body)) {
+                            data.contentBlocks = body;
+                        }
+                        // 防御性处理：确保 content 是对象而非双重序列化的字符串
+                        var blocks = data.contentBlocks || [];
+                        for (var bi = 0; bi < blocks.length; bi++) {
+                            var block = blocks[bi];
+                            if (block.content && typeof block.content === 'string') {
+                                try { block.content = JSON.parse(block.content); } catch(e) { /* ignore */ }
+                            }
+                            // 自动同步文件区块中文档的最新权限状态
+                            if (block.blockType === 'files' && block.content && block.content.files) {
+                                for (var fi = 0; fi < block.content.files.length; fi++) {
+                                    var file = block.content.files[fi];
+                                    if (file.fileId) {
+                                        (function(f) {
+                                            GatteAPI.Document.detail(f.fileId).then(function(res) {
+                                                var doc = res.data || res;
+                                                if (doc && doc.isPublic !== undefined) {
+                                                    f.isPublic = doc.isPublic;
+                                                }
+                                            }).catch(function() {});
+                                        })(file);
+                                    }
+                                }
+                            }
+                        }
+                    }).catch(function (err) {
+                        console.error('加载内容区块失败:', err);
+                    });
+                };
+
+                // 文档类型判断辅助函数（用于文件区块渲染）
+                function isTdsDoc(file) {
+                    return file.type === 'TDS' || (file.title && file.title.indexOf('TDS') !== -1);
+                }
+                function isBrochureDoc(file) {
+                    return file.type === 'Brochure' || (file.title && file.title.indexOf('Brochure') !== -1);
+                }
+                function isFormulaDoc(file) {
+                    return file.type === 'Formula' || (file.title && file.title.indexOf('Formula') !== -1);
+                }
+                function hasTdsDocs(files) { return files.some(function(f) { return isTdsDoc(f); }); }
+                function hasBrochureDocs(files) { return files.some(function(f) { return isBrochureDoc(f); }); }
+                function hasFormulaDocs(files) { return files.some(function(f) { return isFormulaDoc(f); }); }
+
                 getProductDetail();
 
                 return {
                     data,
                     getProductDetail,
-                    addProductFav
+                    addProductFav,
+                    getBlockContent,
+                    isTdsDoc,
+                    isBrochureDoc,
+                    isFormulaDoc,
+                    hasTdsDocs,
+                    hasBrochureDocs,
+                    hasFormulaDocs
                 };
             },
         });
