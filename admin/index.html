@@ -2913,27 +2913,46 @@ createApp({
       if (!this.editingPc.name || !this.editingPc.inciName) { this.showAlert('产品名称和INCI名称为必填项'); return; }
       this.saving = true;
       try {
-        // 构建保存 payload，排除内部属性（_quill 等含 DOM 引用会导致循环引用）
+        // 构建 specInfo（无论新建/更新都需要）
         const specPayload = this.editingPc.specDosage || this.editingPc.specCertification || this.editingPc.specInci
           ? { dosage: this.editingPc.specDosage, certification: this.editingPc.specCertification, inci: this.editingPc.specInci }
           : undefined;
-        const payload = { ...this.editingPc, specInfo: specPayload, blocks: this.editingPc.blocks.map(b => ({
-          ...b, specDosage: undefined, specCertification: undefined, specInci: undefined,
-          _quill: undefined, _quillL: undefined,
-          _imageList: undefined, _fileList: undefined,
-          _videoUrl: undefined, _key: undefined, _saved: undefined,
-          _leftType: undefined, _leftUrl: undefined, _rightText: undefined, _rightType: undefined, _rightUrl: undefined,
-        })) };
+
         if (this.editingPc.id) {
+          // ---------- 已有产品（有 ID）----------
+          // 1. 先保存所有区块（提取 Quill 内容到 block.content），此时 productId 已存在
+          await this.saveAllBlocks();
+          // 2. 销毁 Quill 编辑器，清除 DOM 循环引用（与 saveFormula 一致）
+          this.destroyAllQuills();
+          // 3. 构建 payload（此时 _quill/_quillL/_quillR 已为 null，安全可序列化）
+          const payload = { ...this.editingPc, specInfo: specPayload, blocks: this.editingPc.blocks.map(b => ({
+            ...b, specDosage: undefined, specCertification: undefined, specInci: undefined,
+            _quill: undefined, _quillL: undefined, _quillR: undefined,
+            _imageList: undefined, _fileList: undefined,
+            _videoUrl: undefined, _key: undefined, _saved: undefined,
+            _leftType: undefined, _leftUrl: undefined, _rightText: undefined, _rightType: undefined, _rightUrl: undefined,
+          })) };
+          delete payload.specDosage;
+          delete payload.specCertification;
+          delete payload.specInci;
           await this.api('/pc-ingredients/' + this.editingPc.id, { method: 'PUT', body: JSON.stringify(payload) });
         } else {
-          const resp = await this.api('/pc-ingredients', { method: 'POST', body: JSON.stringify(payload) });
-          // 新创建的产品，用返回的 id 更新 editingPc
+          // ---------- 新建产品（无 ID）----------
+          // 1. 构建 payload（blocks 传空数组，后端 insert 时忽略该字段）
+          var newPayload = { ...this.editingPc, specInfo: specPayload, blocks: [] };
+          delete newPayload.specDosage;
+          delete newPayload.specCertification;
+          delete newPayload.specInci;
+          // 2. 先创建产品主数据获取 id
+          var resp = await this.api('/pc-ingredients', { method: 'POST', body: JSON.stringify(newPayload) });
           if (resp && resp.id) {
             this.editingPc.id = resp.id;
           }
+          // 3. 再保存区块（此时 productId 已就绪，Quill 编辑器仍存活）
+          await this.saveAllBlocks();
+          // 4. 清理 Quill（销毁 DOM 引用）
+          this.destroyAllQuills();
         }
-        await this.saveAllBlocks();
         this.goPage('pc-list');
       } catch (e) { this.showAlert('保存失败：' + e.message); }
       finally { this.saving = false; }

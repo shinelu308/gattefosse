@@ -67,8 +67,8 @@
     }
     /* 产品规格区 — 粉色圆底图标 + 深红文字（复刻参考样式） */
     .s-product-specs {
-      padding: 40px 0;
-      background: transparent;
+      padding: 68px 0 80px;
+      background: #F7F5F0;
     }
     .s-product-specs__grid {
       display: flex;
@@ -113,6 +113,16 @@
       color: #C4004D;
       line-height: 1.6;
       font-weight: 700;
+    }
+    /* 内容区块区（对齐原站 css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css） */
+    .s-product-content {
+      background-color: #F7F5F0;
+      display: inline-block;
+      width: 100%;
+    }
+    .s-product-content__inside {
+      background-color: #fff;
+      padding: 40px 24px;
     }
     /* 图文并排区块：双列排版 */
     .block-imagetext {
@@ -486,6 +496,12 @@
                         <div class="block-imagetext__col">
                           <!-- 右：文字 -->
                           <div v-if="block.content.rightType === 'text' && block.content.rightText" style="white-space:pre-line;font-size:16px;line-height:1.7;color:#555;">{{ block.content.rightText }}</div>
+                          <!-- 右：富文本 -->
+                          <div v-if="block.content.rightType === 'richtext' && block.content.rightHtml" v-html="block.content.rightHtml" class="block-content"></div>
+                          <!-- 右：图片 -->
+                          <div v-if="block.content.rightType === 'image' && block.content.rightUrl">
+                            <img :src="block.content.rightUrl" :alt="block.title || ''" style="width:100%;height:auto;border-radius:8px;display:block;">
+                          </div>
                           <!-- 右：视频 -->
                           <div v-if="block.content.rightType === 'video' && block.content.rightUrl" class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
                             <iframe :src="convertVideoUrl(block.content.rightUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
