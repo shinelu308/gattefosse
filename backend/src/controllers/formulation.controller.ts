@@ -130,6 +130,7 @@ export async function createFormulation(req: Request, res: Response) {
       naturalityIndex,
       compositionText,
       preparationSteps,
+      pictos,
       sortOrder,
       isPublished,
     } = req.body;
@@ -151,6 +152,7 @@ export async function createFormulation(req: Request, res: Response) {
         naturalityIndex: naturalityIndex || null,
         compositionText: compositionText || null,
         preparationSteps: preparationSteps || null,
+        pictos: pictos || '[]',
         sortOrder: sortOrder || 0,
         isPublished: isPublished || false,
         createdById: req.user?.userId || null,
@@ -188,6 +190,7 @@ export async function updateFormulation(req: Request, res: Response) {
       naturalityIndex,
       compositionText,
       preparationSteps,
+      pictos,
       sortOrder,
       isPublished,
     } = req.body;
@@ -204,6 +207,7 @@ export async function updateFormulation(req: Request, res: Response) {
     if (naturalityIndex !== undefined) updateData.naturalityIndex = naturalityIndex || null;
     if (compositionText !== undefined) updateData.compositionText = compositionText || null;
     if (preparationSteps !== undefined) updateData.preparationSteps = preparationSteps || null;
+    if (pictos !== undefined) updateData.pictos = pictos || '[]';
     if (sortOrder !== undefined) updateData.sortOrder = sortOrder;
     if (isPublished !== undefined) updateData.isPublished = isPublished;
 

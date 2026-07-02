@@ -113,6 +113,7 @@ model Formulation {
   naturalityIndex    String?   @map("naturality_index")
   compositionText    String?   @map("composition_text")
   preparationSteps   String?   @map("preparation_steps")
+  pictos             String?   @default("[]")  // JSON: [{iconType, label}]
   sortOrder          Int       @default(0) @map("sort_order")
   isPublished        Boolean   @default(false) @map("is_published")
   createdById        Int?      @map("created_by")

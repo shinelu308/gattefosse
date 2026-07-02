@@ -551,6 +551,13 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .block-entry-row input { flex:1; }
 .block-saved-msg { color:var(--green); font-size:12px; margin-left:8px; }
 .alert-info { background:var(--blue-link); color:#fff; padding:12px 16px; border-radius:var(--radius); margin-bottom:12px; font-size:13px; }
+/* Picto 图标编辑器 */
+.picto-editor { }
+.picto-editor__item { display:flex; align-items:center; gap:8px; margin-bottom:6px; padding:8px 10px; border:1px solid var(--border); border-radius:var(--radius); cursor:grab; transition:border-color .15s; }
+.picto-editor__item:hover { border-color:#c4004d; }
+.picto-editor__item:active { cursor:grabbing; }
+.picto-editor__drag { color:#999; font-size:14px; cursor:grab; user-select:none; flex-shrink:0; }
+.picto-editor__icon-preview { width:44px; height:44px; min-width:44px; background:#F7F5F0; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 </style>
 
 <script>
@@ -1564,6 +1571,31 @@ const QUILL_TOOLBAR = [
                   <option value="">无</option>
                   <option v-for="t in tagDict.formula?.naturalityIndex||[]" :value="t.value">{{ t.label }}</option>
                 </select>
+              </div>
+              <!-- 特点图标（Picto） -->
+              <div class="form-group">
+                <label>特点图标 <span class="hint">（详情页展示的圆形图标，可增删和排序）</span></label>
+                <div class="picto-editor">
+                  <div v-for="(pi, pii) in editingFormula._pictoList" :key="pii" class="picto-editor__item" draggable="true"
+                       @dragstart="onPictoDragStart(pii, $event)" @dragover.prevent @drop="onPictoDrop(pii, $event)">
+                    <div class="picto-editor__drag">☰</div>
+                    <div class="picto-editor__icon-preview">
+                      <img :src="'/static/icons/picto/' + pi.iconType + '.svg'" :alt="pi.label" style="width:36px;height:36px;">
+                    </div>
+                    <select class="form-control" v-model="pi.iconType" style="flex:1;min-width:120px;font-size:13px;" @change="onPictoTypeChange(pii)">
+                      <option value="plante">🌿 植物（天然/护发/防晒）</option>
+                      <option value="pot">🫙 罐子（护肤）</option>
+                      <option value="baume_1">💄 膏体（彩妆/天然）</option>
+                      <option value="wow3">✨ 惊叹（质地转变）</option>
+                    </select>
+                    <input type="text" class="form-control" v-model="pi.label" placeholder="标签文字" style="width:100px;font-size:13px;">
+                    <button class="btn btn-sm btn-danger" @click="removePictoItem(pii)" title="删除">×</button>
+                  </div>
+                  <button class="btn btn-sm btn-outline" @click="addPictoItem()" style="margin-top:6px;">+ 添加图标</button>
+                  <div v-if="editingFormula._pictoList.length === 0" style="color:#999;font-size:12px;margin-top:4px;">
+                    暂无图标，点击上方按钮添加
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3601,7 +3633,7 @@ createApp({
     resetFormulaEdit() {
       this._formulaBlocksLoaded = false;
       this.destroyFormulaQuills();
-      this.editingFormula = { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 };
+      this.editingFormula = { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
       this.formulaEditTab = 'basic';
     },
     editFormula(item) {
@@ -3614,8 +3646,10 @@ createApp({
         applicationTag: [...(item.applicationTag||[])], formTag: [...(item.formTag||[])],
         claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex || '',
         compositionText: item.compositionText || '', preparationSteps: item.preparationSteps || '',
+        pictos: item.pictos || '[]',
         isPublished: item.isPublished,
         blocks: [], _blockIdCounter: 0,
+        _pictoList: this._parsePictos(item.pictos),
       };
       this.goPage('formula-edit');
     },
@@ -3627,6 +3661,8 @@ createApp({
     async saveFormula() {
       if (!this.editingFormula.name) { this.showAlert('配方名称为必填项'); return; }
       this.destroyFormulaQuills();
+      // 序列化 picto 图标列表为 JSON
+      this.editingFormula.pictos = JSON.stringify(this.editingFormula._pictoList || []);
       this.saving = true;
       try {
         if (this.editingFormula.id) {
@@ -3669,6 +3705,40 @@ createApp({
           this.refreshFormulaStats();
         } catch (e) { console.error('批量删除异常:', e); this.showAlert('批量删除失败：' + e.message); }
       });
+    },
+    // ============ 配方特点图标（Picto）管理 ============
+    _parsePictos(pictosStr) {
+      try {
+        var arr = JSON.parse(pictosStr || '[]');
+        return Array.isArray(arr) ? arr : [];
+      } catch (e) { return []; }
+    },
+    addPictoItem() {
+      if (!this.editingFormula._pictoList) this.editingFormula._pictoList = [];
+      this.editingFormula._pictoList.push({ iconType: 'plante', label: '天然' });
+    },
+    removePictoItem(pii) {
+      this.editingFormula._pictoList.splice(pii, 1);
+    },
+    onPictoTypeChange(pii) {
+      // 根据图标类型自动填充默认标签
+      var typeLabels = { plante: '天然', pot: '护肤', baume_1: '彩妆', wow3: '质地转变' };
+      var item = this.editingFormula._pictoList[pii];
+      if (item && typeLabels[item.iconType] && !item.label) {
+        item.label = typeLabels[item.iconType];
+      }
+    },
+    _pictoDragIdx: -1,
+    onPictoDragStart(pii, e) {
+      this._pictoDragIdx = pii;
+      e.dataTransfer.effectAllowed = 'move';
+    },
+    onPictoDrop(pii, e) {
+      if (this._pictoDragIdx === -1 || this._pictoDragIdx === pii) return;
+      var list = this.editingFormula._pictoList;
+      var item = list.splice(this._pictoDragIdx, 1)[0];
+      list.splice(pii, 0, item);
+      this._pictoDragIdx = -1;
     },
     // Formula Block CRUD
     async loadFormulaBlocks(formulaId) {

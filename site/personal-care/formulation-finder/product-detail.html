@@ -164,8 +164,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="s-product-picto">
-                            <div class="container" v-html="data.productDetail.picto">
+                        <div class="s-product-picto" v-if="data.pictoList && data.pictoList.length > 0">
+                            <div class="container">
+                                <ul class="s-product-picto__list">
+                                    <li v-for="(pi, pii) in data.pictoList" :key="pii" class="s-product-picto__item">
+                                        <div class="s-product-picto__img">
+                                            <img :src="'/static/icons/picto/' + pi.iconType + '.svg'" :alt="pi.label" loading="lazy">
+                                        </div>
+                                        <p class="s-product-picto__text">{{ pi.label }}</p>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="s-product-video" v-if="data.productDetail.movieUrl != null && data.productDetail.movieUrl !=''">
@@ -460,6 +468,86 @@
         border: none;
         cursor: pointer;
       }
+
+      /* ============ 特点图标（Picto）区域 — 与原站一致 ============ */
+      .s-product-picto {
+        background-color: #F7F5F0;
+        display: inline-block;
+        width: 100%;
+        margin-top: 5.2rem;
+        min-width: 22rem;
+        border: 1px solid #e8ddd4;
+        padding: 2rem 0;
+      }
+      .s-product-picto a { text-decoration: none; }
+      .s-product-picto__list {
+        list-style: none;
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+        gap: 3.2rem;
+        max-width: 900px;
+        justify-content: center;
+      }
+      .s-product-picto__item {
+        display: flex;
+        gap: 1.6rem;
+        align-items: center;
+        color: #c4004d;
+        flex: 0 0 auto;
+      }
+      .s-product-picto__img {
+        width: 8rem;
+        min-width: 8rem;
+        height: 8rem;
+        background-color: #FDF8F6;
+        border-radius: 100%;
+        padding: 2.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #f0e0d8;
+      }
+      .s-product-picto__img img {
+        width: 3.2rem;
+        height: 3.2rem;
+        object-fit: contain;
+      }
+      .s-product-picto__text {
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #c4004d;
+        white-space: nowrap;
+      }
+      @media (max-width: 767.98px) {
+        .s-product-picto {
+          margin-top: 0;
+          padding: 1.5rem 0;
+        }
+        .s-product-picto__list {
+          gap: 1.5rem;
+          margin-bottom: 0;
+          flex-wrap: wrap;
+          padding: 0 1rem;
+        }
+        .s-product-picto__item {
+          gap: 0.8rem;
+        }
+        .s-product-picto__img {
+          width: 4.8rem;
+          min-width: 4.8rem;
+          height: 4.8rem;
+          padding: 1.4rem;
+        }
+        .s-product-picto__img img {
+          width: 1.8rem;
+          height: 1.8rem;
+        }
+        .s-product-picto__text {
+          font-size: 1.3rem;
+        }
+      }
       
     </style>
     <script>
@@ -509,6 +597,7 @@
                     relatedProducts: [],
                     relatedContents: [],
                     contentBlocks: [],
+                    pictoList: [],
                     loading: true
                 });
 
@@ -558,6 +647,9 @@
                             mainContent: mainContent,
                             goodsCategoryId: ''
                         };
+                        // 解析特点图标（pictos）
+                        try { data.pictoList = JSON.parse(f.pictos || '[]'); } catch(e) { data.pictoList = []; }
+                        if (!Array.isArray(data.pictoList)) data.pictoList = [];
                         data.loading = false;
                         if (f.id) loadContentBlocks(f.id);
                     }).catch(function (err) {
