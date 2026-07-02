@@ -136,7 +136,7 @@
                     <h1 class="s-product-header__title">{{data.productDetail.goodsName}}</h1>
                     <p class="s-product-header__subtitle">{{data.productDetail.subtitle}}</p>
                     <div class="s-product-header__btns">
-                        <a :href="data.productDetail.pdfUrl" class="btn btn-primary btn-icon--r" target="_blank">下载资料<i
+                        <a v-if="data.productDetail.pdfUrl" :href="data.productDetail.pdfUrl" class="btn btn-primary btn-icon--r" target="_blank">下载资料<i
                                 class="o-icon --download" aria-hidden="true"></i></a>
                     </div>
                 </div>
