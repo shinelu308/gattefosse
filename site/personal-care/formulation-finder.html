@@ -148,7 +148,7 @@
                           aria-hidden="true"></i>关闭</button>
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">过滤器</h2>
-                        <button type="button" @click="clearFilter"
+                        <button type="button" @click="clearFilter($event)"
                           class="c-filter__reset-btn btn btn-outline-secondary">取消过滤
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
@@ -160,7 +160,7 @@
                         <ul class="o-tag-list o-tag-list--wrap">
                           <li class="facet-summary-item--facet o-tag-list__item">
                             {{data.curFilter}}
-                            <a href="javascript:;" @click="clearFilter" class="c-filter__delete">
+                            <a href="javascript:;" @click="clearFilter($event)" class="c-filter__delete">
                               <span class="visually-hidden">移除过滤</span>
                             </a>
                           </li>
@@ -184,8 +184,8 @@
                                   class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
                                   <li class="facet-item1" v-for="item2 in item.children" :class="item2.facetItemClass">
                                     <input type="checkbox" v-if="isFilterActive(item2)" checked="checked"
-                                      class="facets-checkbox" :id="item2.dataDrupalFacetItemId" @click="filterByTag(item2.tagCategory, item2.tagValue)">
-                                    <input type="checkbox" v-else class="facets-checkbox" @click="filterByTag(item2.tagCategory, item2.tagValue)"
+                                      class="facets-checkbox" :id="item2.dataDrupalFacetItemId" @click="filterByTag($event, item2.tagCategory, item2.tagValue)">
+                                    <input type="checkbox" v-else class="facets-checkbox" @click="filterByTag($event, item2.tagCategory, item2.tagValue)"
                                       :id="item2.dataDrupalFacetItemId"><a href="javascript:;" rel="nofollow"
                                       :data-drupal-facet-item1-id="item2.dataDrupalFacetItemId"
                                       :data-drupal-facet-item1-value="item2.ID" data-drupal-facet-item1-count="1"><span
@@ -394,29 +394,30 @@
   var filterApplication = params.get('application') || '';
   var filterForm = params.get('form') || '';
   var filterClaim = params.get('claim') || '';
-  var filterNaturality = params.get('naturality') || '';
+  var filterNaturality = params.get('naturalityIndex') || params.get('naturality') || '';
   var filterIngredient = params.get('ingredient') || '';
   var w = params.get('keyword');
   var baseUrl = window.location.pathname;
   var activeFilterName = filterApplication || filterForm || filterClaim || filterNaturality || filterIngredient || '';
 
   function makePageUrl(page) {
-    var u = baseUrl + '?page=' + page;
+    var safeBase = (typeof baseUrl === 'string' && baseUrl) ? baseUrl : window.location.pathname;
+    var u = safeBase + '?page=' + page;
     if (filterApplication) u += '&application=' + encodeURIComponent(filterApplication);
     if (filterForm) u += '&form=' + encodeURIComponent(filterForm);
     if (filterClaim) u += '&claim=' + encodeURIComponent(filterClaim);
-    if (filterNaturality) u += '&naturality=' + encodeURIComponent(filterNaturality);
+    if (filterNaturality) u += '&naturalityIndex=' + encodeURIComponent(filterNaturality);
     if (filterIngredient) u += '&ingredient=' + encodeURIComponent(filterIngredient);
     if (w) u += '&keyword=' + encodeURIComponent(w);
     return u;
   }
 
-  // 分类名称映射
+  // 分类名称映射（key 必须与后端 API 返回的 category 字段一致）
   var catNameMap = {
     application: '应用领域',
     form: '性状',
     claim: '声明',
-    naturality: '天然指数',
+    naturalityIndex: '天然指数',
     ingredient: '成分'
   };
   // 分类→API参数字段名映射
@@ -424,7 +425,7 @@
     application: 'application',
     form: 'form',
     claim: 'claim',
-    naturality: 'naturalityIndex',
+    naturalityIndex: 'naturalityIndex',
     ingredient: 'ingredient'
   };
 
@@ -452,7 +453,7 @@
       function loadTagDictionary() {
         GatteAPI.Tag.list({ productLine: 'formulation' }).then(function(res) {
           var body = res.data || res;
-          // API返回格式: { application: [{label,value},...], form: [...], claim: [...], naturality: [...] }
+          // API返回格式: { application: [{label,value},...], form: [...], claim: [...], naturalityIndex: [...], ingredient: [...] }
           var tagMap = body.data || body;
           if (!tagMap) return;
           var groups = [];
@@ -541,7 +542,11 @@
       }
 
       // 点击标签筛选
-      function filterByTag(category, value) {
+      function filterByTag(event, category, value) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
         // 设置对应筛选条件
         if (category === 'application') {
           data.filterApplication = (data.filterApplication === value) ? '' : value;
@@ -549,7 +554,7 @@
           data.filterForm = (data.filterForm === value) ? '' : value;
         } else if (category === 'claim') {
           data.filterClaim = (data.filterClaim === value) ? '' : value;
-        } else if (category === 'naturality') {
+        } else if (category === 'naturalityIndex') {
           data.filterNaturality = (data.filterNaturality === value) ? '' : value;
         } else if (category === 'ingredient') {
           data.filterIngredient = (data.filterIngredient === value) ? '' : value;
@@ -572,7 +577,11 @@
       }
 
       // 清除所有筛选
-      function clearFilter() {
+      function clearFilter(event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
         data.filterApplication = '';
         data.filterForm = '';
         data.filterClaim = '';
@@ -587,7 +596,9 @@
         filterIngredient = '';
         activeFilterName = '';
         loadProducts(1);
-        history.pushState({}, '', baseUrl + '?page=1' + (w ? '&keyword=' + encodeURIComponent(w) : ''));
+        // 安全确保 baseUrl 有效
+        var safeBaseUrl = window.location.pathname || '/personal-care/formulation-finder.html';
+        history.pushState({}, '', safeBaseUrl + '?page=1' + (w ? '&keyword=' + encodeURIComponent(w) : ''));
       }
 
       function changePage(newPage) {
@@ -651,7 +662,7 @@
         if (tagItem.tagCategory === 'application' && data.filterApplication === tagItem.tagValue) return true;
         if (tagItem.tagCategory === 'form' && data.filterForm === tagItem.tagValue) return true;
         if (tagItem.tagCategory === 'claim' && data.filterClaim === tagItem.tagValue) return true;
-        if (tagItem.tagCategory === 'naturality' && data.filterNaturality === tagItem.tagValue) return true;
+        if (tagItem.tagCategory === 'naturalityIndex' && data.filterNaturality === tagItem.tagValue) return true;
         if (tagItem.tagCategory === 'ingredient' && data.filterIngredient === tagItem.tagValue) return true;
         return false;
       }
@@ -668,11 +679,12 @@
   if (w) { document.getElementById('edit-keyword').value = w; }
   </script>
 
-  <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
+  <!-- 以下原站外部JS已移除 - 包含Drupal facet行为，会拦截Vue应用中的按钮点击导致404跳转 -->
+  <!-- <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
   <script src="/sites/default/files/js/js_cIUKHmKr1kWXi06l4jrQ8vSQ793pffiw2dzBkQNlquo.js"></script>
   <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1713167250"></script>
   <script src="/sites/default/files/js/js_HjijG7-o7JXaM0iPkTo4h98Ws0CAvM9MsofLwYnRqtc.js"></script>
-  <script src="/sites/default/files/js/js_W8q5R4oIsmRhsRjsbPGB5rAGV5-VpUYHfAmsY7Pxc74.js"></script>
+  <script src="/sites/default/files/js/js_W8q5R4oIsmRhsRjsbPGB5rAGV5-VpUYHfAmsY7Pxc74.js"></script> -->
   <script>
     $(document).ready(function () {
       $("#header").load("/header.html", function () {

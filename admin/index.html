@@ -1617,6 +1617,12 @@ const QUILL_TOOLBAR = [
                 </div>
               </div>
               <div class="form-group">
+                <label>天然指数</label>
+                <div class="check-group">
+                  <span class="check-tag" v-for="t in tagDict.formula?.naturalityIndex||[]" :class="{ checked: editingFormula.naturalityIndex.includes(t.value) }" @click="toggleNaturalityIndex(t.value)">{{ t.label }}</span>
+                </div>
+              </div>
+              <div class="form-group">
                 <label>成分/概念</label>
                 <div class="check-group">
                   <span class="check-tag" v-for="t in tagDict.formula?.ingredient||[]" :class="{ checked: editingFormula.conceptTag.includes(t.value) }" @click="toggleFormulaTag('conceptTag', t.value)">{{ t.label }}</span>
@@ -1629,13 +1635,6 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>制备步骤</label>
                 <textarea class="form-control" rows="6" v-model="editingFormula.preparationSteps" placeholder="1. 混合水相&#10;2. 加入乳化剂..."></textarea>
-              </div>
-              <div class="form-group">
-                <label>天然指数</label>
-                <select class="form-control" style="max-width:200px;" v-model="editingFormula.naturalityIndex">
-                  <option value="">无</option>
-                  <option v-for="t in tagDict.formula?.naturalityIndex||[]" :value="t.value">{{ t.label }}</option>
-                </select>
               </div>
             </div>
           </div>
@@ -2686,7 +2685,7 @@ createApp({
       formulaFilter: { page: 1, limit: 20, keyword: '', application: '', form: '', isPublished: '', show: false },
       formulaPagination: { total: 0, totalPages: 0 },
       selectedFormulaIds: [],
-      editingFormula: { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', conceptTag: [], compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 },
+      editingFormula: { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: [], conceptTag: [], compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 },
       // Doc
       docList: [],
       docFilter: { page: 1, limit: 20, keyword: '', type: '', isPublic: '' },
@@ -3824,7 +3823,7 @@ createApp({
     resetFormulaEdit() {
       this._formulaBlocksLoaded = false;
       this.destroyFormulaQuills();
-      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', conceptTag: [], compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
+      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: [], conceptTag: [], compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
       this.formulaEditTab = 'basic';
     },
     editFormula(item) {
@@ -3834,7 +3833,7 @@ createApp({
         id: item.id, name: item.name, code: item.code || '', description: item.description || '',
         imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', videoSectionTitle: item.videoSectionTitle || '', intlUrl: item.intlUrl || '', pdfPath: item.pdfPath || '',
         applicationTag: [...(item.applicationTag||[])], formTag: [...(item.formTag||[])],
-        claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex || '',
+        claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex ? [item.naturalityIndex] : [],
         conceptTag: [...(item.conceptTag||[])],
         compositionText: item.compositionText || '', preparationSteps: item.preparationSteps || '',
         pictos: item.pictos || '[]',
@@ -3850,11 +3849,24 @@ createApp({
       const idx = arr.indexOf(value);
       if (idx >= 0) arr.splice(idx, 1); else arr.push(value);
     },
+    // 天然指数单选框：点击选中，再次点击取消
+    toggleNaturalityIndex(value) {
+      const arr = this.editingFormula.naturalityIndex;
+      if (arr.includes(value)) {
+        arr.splice(0); // 已选中则清除
+      } else {
+        arr.splice(0, arr.length, value); // 替换为当前选中值（单选框）
+      }
+    },
     async saveFormula() {
       if (!this.editingFormula.name) { this.showAlert('配方名称为必填项'); return; }
       this.destroyFormulaQuills();
       // 序列化 picto 图标列表为 JSON
       this.editingFormula.pictos = JSON.stringify(this.editingFormula._pictoList || []);
+      // 天然指数：数组转单值字符串（后端只存一个值）
+      const niArr = this.editingFormula.naturalityIndex;
+      const niValue = niArr.length > 0 ? niArr[0] : '';
+      this.editingFormula.naturalityIndex = niValue;
       this.saving = true;
       try {
         if (this.editingFormula.id) {
@@ -3864,7 +3876,11 @@ createApp({
         }
         this.goPage('formula-list');
       } catch (e) { this.showAlert('保存失败：' + e.message); }
-      finally { this.saving = false; }
+      finally {
+        // 恢复为数组（保持 UI 状态一致）
+        this.editingFormula.naturalityIndex = niValue ? [niValue] : [];
+        this.saving = false;
+      }
     },
     async toggleFormulaPublish(item) {
       try {
