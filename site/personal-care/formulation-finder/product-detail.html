@@ -642,6 +642,27 @@
                         if (!Array.isArray(data.pictoList)) data.pictoList = [];
                         data.loading = false;
                         if (f.id) loadContentBlocks(f.id);
+                        // 加载相关 PC 产品（按应用标签匹配）
+                        if (f.applicationTag && f.applicationTag.length > 0) {
+                            var tag = Array.isArray(f.applicationTag) ? f.applicationTag[0] : f.applicationTag.split(',')[0];
+                            if (tag) {
+                                GatteAPI.PcProduct.list({ application: tag, limit: 6 }).then(function (res) {
+                                    var body = res.data || res;
+                                    var items = body && body.list ? body.list : (Array.isArray(body) ? body : []);
+                                    data.relatedProducts = items.map(function (p) {
+                                        return {
+                                            goodsName: p.name,
+                                            subtitle: p.code || p.inciName || '',
+                                            description: p.description || '',
+                                            goodsCoverImg: p.imageUrl || '',
+                                            url: '/personal-care/product-finder/product-detail.html?id=' + p.id
+                                        };
+                                    });
+                                }).catch(function (err) {
+                                    console.error('加载相关PC产品失败:', err);
+                                });
+                            }
+                        }
                     }).catch(function (err) {
                         console.error('获取配方详情失败:', err);
                         data.loading = false;
