@@ -1656,6 +1656,7 @@ const QUILL_TOOLBAR = [
                           <option value="video">视频</option>
                           <option value="images">图片集</option>
                           <option value="files">文件下载</option>
+                          <option value="related">相关产品</option>
                         </select>
                         <button class="btn btn-sm btn-danger" @click="deleteFormulaBlock(bi)">× 删除</button>
                       </div>
@@ -1702,6 +1703,38 @@ const QUILL_TOOLBAR = [
                         </div>
                         <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
                           <button class="btn btn-sm btn-outline" @click="addFormulaFile(bi)">+ 添加文件</button>
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <div v-show="block.blockType === 'related'" class="block-related">
+                        <div class="form-group">
+                          <label>搜索 PC 产品</label>
+                          <div style="display:flex;gap:8px;">
+                            <input type="text" class="form-control" v-model="block._productSearch" placeholder="输入产品名称搜索..." style="flex:1;" @input="searchRelatedProducts(bi)">
+                            <button class="btn btn-sm btn-outline" @click="searchRelatedProducts(bi)">搜索</button>
+                          </div>
+                          <div v-if="block._searchResults && block._searchResults.length > 0" style="margin-top:6px;border:1px solid var(--border);border-radius:4px;max-height:180px;overflow-y:auto;">
+                            <div v-for="(p, pi) in block._searchResults" :key="pi" style="display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;border-bottom:1px solid #eee;" @click="addRelatedProduct(bi, p)">
+                              <img :src="p.imageUrl || '/static/images/default-thumb.jpg'" style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
+                              <span style="flex:1;font-size:13px;">{{ p.name }}</span>
+                              <span style="font-size:11px;color:#999;">{{ p.inciName || '' }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label>已选产品（{{ (block._productList||[]).length }}）</label>
+                          <div v-if="block._productList && block._productList.length > 0">
+                            <div v-for="(sp, spi) in block._productList" :key="spi" style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #eee;">
+                              <img :src="sp.imageUrl || '/static/images/default-thumb.jpg'" style="width:48px;height:48px;object-fit:cover;border-radius:4px;">
+                              <span style="flex:1;font-size:14px;">{{ sp.name }}</span>
+                              <span style="font-size:12px;color:#999;">{{ sp.inciName || '' }}</span>
+                              <button class="btn btn-sm btn-danger" @click="removeRelatedProduct(bi, spi)">×</button>
+                            </div>
+                          </div>
+                          <div v-else style="color:#999;font-size:13px;">暂无产品，请搜索并选择</div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
                           <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)">保存内容</button>
                           <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
                         </div>
@@ -3919,6 +3952,7 @@ createApp({
             _rightUrl: (b.blockType === 'imagetext' && (content.rightType === 'video' || content.rightType === 'image')) ? (content.rightUrl || '') : '',
             _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
             _rightRichtext: (b.blockType === 'imagetext' && content.rightType === 'richtext') ? (content.rightHtml || '') : '',
+            _productList: (b.blockType === 'related' && content.products) ? content.products.map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) : [],
           };
         });
         self.editingFormula._blockIdCounter = list.length;
@@ -3945,6 +3979,9 @@ createApp({
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
+        _productSearch: '',
+        _searchResults: [],
+        _productList: [],
       };
       this.editingFormula.blocks.push(block);
       this.$nextTick(function() { self.initFormulaQuillEditors(); });
@@ -4065,6 +4102,41 @@ createApp({
     removeFormulaFile(bi, fi) {
       this.editingFormula.blocks[bi]._fileList.splice(fi, 1);
     },
+    // ============ 相关产品区块 ============
+    searchRelatedProducts(bi) {
+      var block = this.editingFormula.blocks[bi];
+      var kw = (block._productSearch || '').trim();
+      if (!kw) { block._searchResults = []; return; }
+      var self = this;
+      this.api('/pc-ingredients?keyword=' + encodeURIComponent(kw) + '&limit=10').then(function(res) {
+        var body = res.data || res;
+        var items = body && body.list ? body.list : (Array.isArray(body) ? body : []);
+        block._searchResults = items;
+      }).catch(function(err) {
+        console.error('搜索PC产品失败:', err);
+      });
+    },
+    addRelatedProduct(bi, product) {
+      var block = this.editingFormula.blocks[bi];
+      if (!block._productList) block._productList = [];
+      // 去重：按 id 判断
+      var exists = block._productList.some(function(p) { return p.id === product.id; });
+      if (exists) return;
+      block._productList.push({
+        id: product.id,
+        name: product.name,
+        inciName: product.inciName || '',
+        imageUrl: product.imageUrl || '',
+        description: product.description || ''
+      });
+      block._searchResults = [];
+      block._productSearch = '';
+    },
+    removeRelatedProduct(bi, product) {
+      var list = this.editingFormula.blocks[bi]._productList || [];
+      var idx = list.indexOf(product);
+      if (idx >= 0) list.splice(idx, 1);
+    },
     onFormulaDocSelect(bi, fi, event) {
       var docId = parseInt(event.target.value);
       if (!docId) return;
@@ -4106,6 +4178,8 @@ createApp({
         };
       } else if (block.blockType === 'files') {
         content = { files: (block._fileList || []).filter(function(f) { return f.url; }).map(function(f) { return { title: f.title, url: f.url, fileId: f.fileId || null, isPublic: f.isPublic, type: f.type || '' }; }) };
+      } else if (block.blockType === 'related') {
+        content = { products: (block._productList || []).map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) };
       }
       var payload = { blockType: block.blockType, title: block.title, content: content, sortOrder: block.sortOrder || 0, isPublished: true, productType: 'formula' };
       if (block.id) {

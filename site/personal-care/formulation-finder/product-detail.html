@@ -298,6 +298,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- 相关产品区块 -->
+                                    <div v-if="block.blockType === 'related' && block.content && block.content.products && block.content.products.length > 0" class="s-product-content__item">
+                                        <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
+                                        <div class="s-product-related js-related-product">
+                                            <div class="s-product-slider js-product-slider">
+                                            <div class="s-product-related__slider js-related-product-slider">
+                                                <div class="c-card c-card--bordered" v-for="item in block.content.products" :key="item.id">
+                                                    <div class="c-card__content">
+                                                        <h3 class="c-card__title">
+                                                            <a :href="'/personal-care/product-finder/product-detail.html?id=' + item.id" class="c-card__title-link">{{ item.name }}</a>
+                                                        </h3>
+                                                        <p class="c-card__baseline">{{ item.inciName || '' }}</p>
+                                                        <p class="c-card__summary" v-html="item.description"></p>
+                                                    </div>
+                                                    <div class="c-card__image">
+                                                        <img :src="item.imageUrl || '/static/images/default-thumb.jpg'" alt="" width="369" height="208" class="card__image img-fluid" loading="lazy">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     </template>
                                 </div>
                             </div>
