@@ -189,7 +189,7 @@
                             </div>
                         </div>
                         <!-- 模块化内容区块渲染（跳过顶部已显示的简述和关键点） -->
-                        <div class="s-product-content" v-if="data.contentBlocks.length > 0">
+                        <div class="s-product-content" v-if="data.contentBlocks.length > 0" style="padding-bottom:4rem;">
                             <div class="container">
                                 <div class="s-product-content__inside" style="max-width:1170px;margin:0 auto;">
                                     <template v-for="(block, bi) in data.contentBlocks" :key="block.id || bi">
@@ -322,7 +322,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="s-product-content">
+                        <div class="s-product-content" v-if="data.productDetail.mainContent">
                             <div class="container">
                                 <div class="s-product-content__inside" style="margin-bottom: 0px;" v-html="data.productDetail.mainContent">
                                 </div>
@@ -524,7 +524,7 @@
       }
       /* ============ 覆盖 Drupal CSS 过大间距 ============ */
       .s-product-content__inside {
-        margin-bottom: 2rem !important;
+        margin-bottom: 6rem !important;
       }
     </style>
     <script>
