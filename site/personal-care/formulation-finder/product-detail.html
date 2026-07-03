@@ -176,7 +176,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="s-product-video" v-if="data.productDetail.movieUrl" style="padding:6.8rem 0 8rem;background:#F7F5F0;">
+                        <div class="s-product-video" v-if="data.productDetail.movieUrl" style="padding:3rem 0 4rem;background:#F7F5F0;">
                             <div class="container" style="max-width:1170px;margin:0 auto;">
                                 <div style="display:flex;gap:40px;align-items:center;">
                                     <div style="flex:1;min-width:0;">
@@ -195,7 +195,7 @@
                             <div class="container">
                                 <div class="s-product-content__inside" style="max-width:1170px;margin:0 auto;">
                                     <template v-for="(block, bi) in data.contentBlocks" :key="block.id || bi">
-                                        <div v-if="block.title !== '简述' && block.title !== '关键点' && block.blockType !== 'related'" class="s-product-content__item" style="margin-bottom:40px;">
+                                        <div v-if="block.title !== '简述' && block.title !== '关键点' && block.blockType !== 'related'" class="s-product-content__item" style="margin-bottom:1.5rem;">
                                         <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
                                         <!-- 富文本区块 -->
                                         <div v-if="block.blockType === 'richtext' && block.content" v-html="block.content.html" class="block-content"></div>
@@ -324,7 +324,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="s-product-content">
+                        <div class="s-product-content" v-if="data.productDetail.mainContent">
                             <div class="container">
                                 <div class="s-product-content__inside" style="margin-bottom: 0px;" v-html="data.productDetail.mainContent">
                                 </div>
@@ -458,8 +458,8 @@
       .s-product-picto a { text-decoration: none; }
       .s-product-picto__list {
         list-style: none;
-        margin: 0 0 10.9rem;
-        padding: 0;
+        margin: 0 0 3rem;
+        padding: 3rem 0 0;
         display: flex;
         gap: 3.2rem;
       }
@@ -523,6 +523,16 @@
       .s-product-content__title {
         font-weight: 400 !important;
         font-family: "Din Next Lt Pro", "Din Next Slab Pro", sans-serif !important;
+      }
+      /* ============ 内容区块间距优化（覆盖外部Drupal CSS过大值） ============ */
+      .s-product-content__inside {
+        margin-bottom: 2rem !important;
+      }
+      .s-product-content__item {
+        padding: 2rem 4rem !important;
+      }
+      .s-product-linked {
+        padding-bottom: 3rem !important;
       }
     </style>
     <script>
