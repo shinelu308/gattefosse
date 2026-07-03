@@ -19,6 +19,7 @@ export async function listFormulations(req: Request, res: Response) {
       form,
       claim,
       naturalityIndex,
+      ingredient,
       isPublished,
     } = req.query;
 
@@ -40,6 +41,7 @@ export async function listFormulations(req: Request, res: Response) {
       ['applicationTag', application as string],
       ['formTag', form as string],
       ['claimTag', claim as string],
+      ['conceptTag', ingredient as string],
     ];
     for (const [field, val] of tagFilters) {
       if (val) {
@@ -128,6 +130,7 @@ export async function createFormulation(req: Request, res: Response) {
       formTag,
       claimTag,
       naturalityIndex,
+      conceptTag,
       compositionText,
       preparationSteps,
       pictos,
@@ -152,6 +155,7 @@ export async function createFormulation(req: Request, res: Response) {
         formTag: Array.isArray(formTag) ? formTag.join(',') : (formTag || ''),
         claimTag: Array.isArray(claimTag) ? claimTag.join(',') : (claimTag || ''),
         naturalityIndex: naturalityIndex || null,
+        conceptTag: Array.isArray(conceptTag) ? conceptTag.join(',') : (conceptTag || ''),
         compositionText: compositionText || null,
         preparationSteps: preparationSteps || null,
         pictos: pictos || '[]',
@@ -192,6 +196,7 @@ export async function updateFormulation(req: Request, res: Response) {
       formTag,
       claimTag,
       naturalityIndex,
+      conceptTag,
       compositionText,
       preparationSteps,
       pictos,
@@ -211,6 +216,7 @@ export async function updateFormulation(req: Request, res: Response) {
     if (formTag !== undefined) updateData.formTag = Array.isArray(formTag) ? formTag.join(',') : formTag;
     if (claimTag !== undefined) updateData.claimTag = Array.isArray(claimTag) ? claimTag.join(',') : claimTag;
     if (naturalityIndex !== undefined) updateData.naturalityIndex = naturalityIndex || null;
+    if (conceptTag !== undefined) updateData.conceptTag = Array.isArray(conceptTag) ? conceptTag.join(',') : conceptTag;
     if (compositionText !== undefined) updateData.compositionText = compositionText || null;
     if (preparationSteps !== undefined) updateData.preparationSteps = preparationSteps || null;
     if (pictos !== undefined) updateData.pictos = pictos || '[]';
@@ -283,5 +289,6 @@ function formatFormulation(item: any) {
     applicationTag: splitTags(item.applicationTag),
     formTag: splitTags(item.formTag),
     claimTag: splitTags(item.claimTag),
+    conceptTag: splitTags(item.conceptTag),
   };
 }

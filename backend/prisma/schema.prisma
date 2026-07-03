@@ -118,6 +118,7 @@ model Formulation {
   formTag            String    @map("form_tag")
   claimTag           String    @map("claim_tag")
   naturalityIndex    String?   @map("naturality_index")
+  conceptTag         String    @default("") @map("concept_tag")
   compositionText    String?   @map("composition_text")
   preparationSteps   String?   @map("preparation_steps")
   pictos             String?   @default("[]")  // JSON: [{iconType, label}]

@@ -395,9 +395,10 @@
   var filterForm = params.get('form') || '';
   var filterClaim = params.get('claim') || '';
   var filterNaturality = params.get('naturality') || '';
+  var filterIngredient = params.get('ingredient') || '';
   var w = params.get('keyword');
   var baseUrl = window.location.pathname;
-  var activeFilterName = filterApplication || filterForm || filterClaim || filterNaturality || '';
+  var activeFilterName = filterApplication || filterForm || filterClaim || filterNaturality || filterIngredient || '';
 
   function makePageUrl(page) {
     var u = baseUrl + '?page=' + page;
@@ -405,6 +406,7 @@
     if (filterForm) u += '&form=' + encodeURIComponent(filterForm);
     if (filterClaim) u += '&claim=' + encodeURIComponent(filterClaim);
     if (filterNaturality) u += '&naturality=' + encodeURIComponent(filterNaturality);
+    if (filterIngredient) u += '&ingredient=' + encodeURIComponent(filterIngredient);
     if (w) u += '&keyword=' + encodeURIComponent(w);
     return u;
   }
@@ -414,14 +416,16 @@
     application: '应用领域',
     form: '性状',
     claim: '声明',
-    naturality: '天然指数'
+    naturality: '天然指数',
+    ingredient: '成分'
   };
   // 分类→API参数字段名映射
   var catApiMap = {
     application: 'application',
     form: 'form',
     claim: 'claim',
-    naturality: 'naturalityIndex'
+    naturality: 'naturalityIndex',
+    ingredient: 'ingredient'
   };
 
   const app = createApp({
@@ -440,7 +444,8 @@
         filterApplication: filterApplication,
         filterForm: filterForm,
         filterClaim: filterClaim,
-        filterNaturality: filterNaturality
+        filterNaturality: filterNaturality,
+        filterIngredient: filterIngredient
       });
 
       // 加载标签字典
@@ -504,6 +509,7 @@
         if (data.filterForm) apiParams.form = data.filterForm;
         if (data.filterClaim) apiParams.claim = data.filterClaim;
         if (data.filterNaturality) apiParams.naturalityIndex = data.filterNaturality;
+        if (data.filterIngredient) apiParams.ingredient = data.filterIngredient;
         if (w) apiParams.keyword = w;
         GatteAPI.Formulation.list(apiParams).then(function (res) {
           var result = res.data || res;
@@ -545,9 +551,11 @@
           data.filterClaim = (data.filterClaim === value) ? '' : value;
         } else if (category === 'naturality') {
           data.filterNaturality = (data.filterNaturality === value) ? '' : value;
+        } else if (category === 'ingredient') {
+          data.filterIngredient = (data.filterIngredient === value) ? '' : value;
         }
         // 更新当前筛选显示
-        data.curFilter = data.filterApplication || data.filterForm || data.filterClaim || data.filterNaturality || '';
+        data.curFilter = data.filterApplication || data.filterForm || data.filterClaim || data.filterNaturality || data.filterIngredient || '';
         // 重置到第1页并重新加载
         data.cur_page = 1;
         // 更新全局变量
@@ -555,6 +563,7 @@
         filterForm = data.filterForm;
         filterClaim = data.filterClaim;
         filterNaturality = data.filterNaturality;
+        filterIngredient = data.filterIngredient;
         activeFilterName = data.curFilter;
         loadProducts(1);
         // 更新URL
@@ -568,12 +577,14 @@
         data.filterForm = '';
         data.filterClaim = '';
         data.filterNaturality = '';
+        data.filterIngredient = '';
         data.curFilter = '';
         data.cur_page = 1;
         filterApplication = '';
         filterForm = '';
         filterClaim = '';
         filterNaturality = '';
+        filterIngredient = '';
         activeFilterName = '';
         loadProducts(1);
         history.pushState({}, '', baseUrl + '?page=1' + (w ? '&keyword=' + encodeURIComponent(w) : ''));
@@ -586,6 +597,7 @@
         filterForm = data.filterForm;
         filterClaim = data.filterClaim;
         filterNaturality = data.filterNaturality;
+        filterIngredient = data.filterIngredient;
         loadProducts(newPage);
         history.pushState({}, '', makePageUrl(newPage));
       }
@@ -640,6 +652,7 @@
         if (tagItem.tagCategory === 'form' && data.filterForm === tagItem.tagValue) return true;
         if (tagItem.tagCategory === 'claim' && data.filterClaim === tagItem.tagValue) return true;
         if (tagItem.tagCategory === 'naturality' && data.filterNaturality === tagItem.tagValue) return true;
+        if (tagItem.tagCategory === 'ingredient' && data.filterIngredient === tagItem.tagValue) return true;
         return false;
       }
 
