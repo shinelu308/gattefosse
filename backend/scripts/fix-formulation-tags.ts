@@ -8,7 +8,7 @@
  * 用法：npx tsx scripts/fix-formulation-tags.ts
  *
  * 参照原中文站截图，正确的标签为：
- *   应用领域: 婴儿/儿童护理 | 身体护理 | 眼部护理 | 脸部护理 | 脸部和头皮护理 | 彩妆 | 防晒
+ *   应用领域: 婴儿/儿童护理 | 身体护理 | 眼部护理 | 脸部护理 | 脸部和头皮护理 | 彩妆 | 防晒 | 男士护理
  *   性状:     香脂 | 润肤膏 | 乳霜 | 乳剂/啫哩 | 凝胶
  */
 
@@ -26,6 +26,7 @@ const CORRECT_APPLICATION_TAGS = [
   { label: '脸部和头皮护理', value: '脸部和头皮护理', order: 4 },
   { label: '彩妆',           value: '彩妆',           order: 5 },
   { label: '防晒',           value: '防晒',           order: 6 },
+  { label: '男士护理',       value: '男士护理',       order: 7 },
 ];
 
 const CORRECT_FORM_TAGS = [
@@ -47,6 +48,7 @@ const APP_VALUE_MAP: Record<string, string> = {
   'hair_care':  '脸部和头皮护理', // 头发→脸部和头皮（原站无独立头发分类）
   'lip_care':   '脸部护理',       // 唇部→脸部区域
   'make_up':    '彩妆',
+  'men_care':   '男士护理',       // 男士护理
   'sun_care':   '防晒',
 };
 
