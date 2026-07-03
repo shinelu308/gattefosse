@@ -218,15 +218,15 @@
                                         <div v-if="block.blockType === 'files' && block.content && block.content.files" class="block-files" id="product-document">
                                             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
                                                 <div>
-                                                    <h3 style="font-size:1.8rem;font-weight:700;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">技术文件</h3>
+                                                    <h3 style="font-size:1.8rem;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">技术文件</h3>
                                                     <ul style="list-style:none;padding:0;margin:0;">
                                                         <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
                                                             <li v-if="isTdsDoc(file)" style="margin-bottom:10px;">
-                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;font-weight:700;line-height:1.5;">
+                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
                                                                     <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </a>
-                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;font-weight:700;line-height:1.5;cursor:not-allowed;">
+                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;line-height:1.5;cursor:not-allowed;">
                                                                     <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </span>
@@ -236,15 +236,15 @@
                                                     </ul>
                                                 </div>
                                                 <div>
-                                                    <h3 style="font-size:1.8rem;font-weight:700;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">产品手册</h3>
+                                                    <h3 style="font-size:1.8rem;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">产品手册</h3>
                                                     <ul style="list-style:none;padding:0;margin:0;">
                                                         <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
                                                             <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;">
-                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;font-weight:700;line-height:1.5;">
+                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
                                                                     <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </a>
-                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;font-weight:700;line-height:1.5;cursor:not-allowed;">
+                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;line-height:1.5;cursor:not-allowed;">
                                                                     <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </span>
@@ -254,15 +254,15 @@
                                                     </ul>
                                                 </div>
                                                 <div>
-                                                    <h3 style="font-size:1.8rem;font-weight:700;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">配方资料</h3>
+                                                    <h3 style="font-size:1.8rem;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">配方资料</h3>
                                                     <ul style="list-style:none;padding:0;margin:0;">
                                                         <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
                                                             <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;">
-                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;font-weight:700;line-height:1.5;">
+                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
                                                                     <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </a>
-                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;font-weight:700;line-height:1.5;cursor:not-allowed;">
+                                                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;line-height:1.5;cursor:not-allowed;">
                                                                     <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </span>
@@ -533,6 +533,11 @@
         }
       }
       
+      /* ============ 内容区块标题不加粗 ============ */
+      .s-product-content__title {
+        font-weight: 400 !important;
+        font-family: "Din Next Lt Pro", "Din Next Slab Pro", sans-serif !important;
+      }
     </style>
     <script>
       // ★ 与参考页一致：全局变量和函数
