@@ -1620,7 +1620,20 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>功效宣称</label>
                 <div class="check-group">
-                  <span class="check-tag" v-for="t in tagDict.pc?.claim||[]" :class="{ checked: editingFormula.claimTag.includes(t.value) }" @click="toggleFormulaTag('claimTag', t.value)">{{ t.label }}</span>
+                  <span class="check-tag" v-for="t in tagDict.formula?.claim||[]" :class="{ checked: editingFormula.claimTag.includes(t.value) }" @click="toggleFormulaTag('claimTag', t.value)">{{ t.label }}</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>天然指数</label>
+                <select class="form-control" v-model="editingFormula.naturalityIndex">
+                  <option value="">无</option>
+                  <option v-for="t in tagDict.formula?.naturalityIndex||[]" :value="t.value">{{ t.label }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>成分/概念</label>
+                <div class="check-group">
+                  <span class="check-tag" v-for="t in tagDict.formula?.ingredient||[]" :class="{ checked: editingFormula.conceptTag.includes(t.value) }" @click="toggleFormulaTag('conceptTag', t.value)">{{ t.label }}</span>
                 </div>
               </div>
               <div class="form-group">
@@ -2679,7 +2692,7 @@ createApp({
       formulaFilter: { page: 1, limit: 20, keyword: '', application: '', form: '', isPublished: '', show: false },
       formulaPagination: { total: 0, totalPages: 0 },
       selectedFormulaIds: [],
-      editingFormula: { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 },
+      editingFormula: { name: '', code: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', conceptTag: [], compositionText: '', preparationSteps: '', isPublished: false, id: null, blocks: [], _blockIdCounter: 0 },
       // Doc
       docList: [],
       docFilter: { page: 1, limit: 20, keyword: '', type: '', isPublic: '' },
@@ -3815,7 +3828,7 @@ createApp({
     resetFormulaEdit() {
       this._formulaBlocksLoaded = false;
       this.destroyFormulaQuills();
-      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
+      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', conceptTag: [], compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
       this.formulaEditTab = 'basic';
     },
     editFormula(item) {
@@ -3826,6 +3839,7 @@ createApp({
         imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', videoSectionTitle: item.videoSectionTitle || '', intlUrl: item.intlUrl || '', pdfPath: item.pdfPath || '',
         applicationTag: [...(item.applicationTag||[])], formTag: [...(item.formTag||[])],
         claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex || '',
+        conceptTag: [...(item.conceptTag||[])],
         compositionText: item.compositionText || '', preparationSteps: item.preparationSteps || '',
         pictos: item.pictos || '[]',
         isPublished: item.isPublished,
