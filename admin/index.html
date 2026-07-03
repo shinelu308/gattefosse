@@ -854,15 +854,9 @@ const QUILL_TOOLBAR = [
                 <label>INCI 名称 <span class="hint">（必填）</span></label>
                 <input type="text" class="form-control" v-model="editingPc.inciName">
               </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>建议用量</label>
-                  <input type="text" class="form-control" v-model="editingPc.dosage" placeholder="例：1-5%">
-                </div>
-                <div class="form-group">
-                  <label>宣传标语</label>
-                  <input type="text" class="form-control" v-model="editingPc.tagline" placeholder="例：每一滴都带来舒缓呵护">
-                </div>
+              <div class="form-group">
+                <label>宣传标语</label>
+                <input type="text" class="form-control" v-model="editingPc.tagline" placeholder="例：每一滴都带来舒缓呵护">
               </div>
               <div class="form-group">
                 <label>产品图片</label>
@@ -893,10 +887,6 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>视频区标题 <span class="hint">（默认显示"成分视频摘要"）</span></label>
                 <input type="text" class="form-control" v-model="editingPc.videoSectionTitle" placeholder="成分视频摘要">
-              </div>
-              <div class="form-group">
-                <label>国际站 URL</label>
-                <input type="url" class="form-control" v-model="editingPc.intlUrl" placeholder="https://www.gattefosse.com/...">
               </div>
               <div class="form-group">
                 <label>产品描述</label>
@@ -1264,10 +1254,6 @@ const QUILL_TOOLBAR = [
                 <label>产品详情</label>
                 <textarea class="form-control" v-model="editingPharma.description" rows="4" placeholder="产品描述/简介"></textarea>
               </div>
-              <div class="form-group">
-                <label>国际站URL</label>
-                <input type="text" class="form-control" v-model="editingPharma.intlUrl" placeholder="https://www.gattefosse.com/...">
-              </div>
             </div>
           </div>
           <!-- 标签与分类 -->
@@ -1576,10 +1562,6 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>视频区标题 <span class="hint">（默认显示"视频"）</span></label>
                 <input type="text" class="form-control" v-model="editingFormula.videoSectionTitle" placeholder="视频">
-              </div>
-              <div class="form-group">
-                <label>国际站 URL</label>
-                <input type="url" class="form-control" v-model="editingFormula.intlUrl" placeholder="https://www.gattefosse.com/...">
               </div>
               <div class="form-group">
                 <label>PDF 文件路径</label>
