@@ -328,43 +328,7 @@
                             <div class="container">
                                 <div class="s-product-content__inside" style="margin-bottom: 0px;" v-html="data.productDetail.mainContent">
                                 </div>
-                                <div class="s-product-content__inside" v-if="data.relatedProducts.length > 0">
-                                    <div class="s-product-content__item">
-                                        <h2 class="s-product-content__title">相关产品</h2>
-                                        <div class="s-product-related js-related-product">
-                                            <div class="s-product-slider js-product-slider">
-                                            <div class="s-product-related__slider js-related-product-slider">
-                                                <div class="c-card c-card--bordered"
-                                                    v-for="item in data.relatedProducts">
-                                                    <div class="c-card__content">
-                                                        <h3 class="c-card__title">
-                                                            <a :href="item.url" class="c-card__title-link">{{item.goodsName}}</a>
-                                                        </h3>
-                                                        <p class="c-card__baseline">{{item.subtitle}}</p>
-                                                        <p class="c-card__code">
-                                                            <span class="ingredient-type"></span>
-                                                            <span class="ingredient-name"></span>
-                                                        </p>
-                                                        <p class="c-card__summary" v-html="item.description"></p>
-                                                    </div>
-                                                    <div class="c-card__image">
-                                                        <img :src="item.goodsCoverImg" :data-src="item.goodsCoverImg"
-                                                            alt="Thumbnail image Elevastin" width="369" height="208"
-                                                            class="card__image img-fluid" loading="lazy">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="slick-controls">
-                                                <button type="button" aria-label="Previous"
-                                                    class="slick-prev js-slick-prev"></button>
-                                                <div class="slick-dots-wrapper js-slick-dots-wrapper"></div>
-                                                <button type="button" aria-label="Next"
-                                                    class="slick-next js-slick-next"></button>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
                             </div>
                         </div>
                         <div class="s-product-linked" v-if="data.relatedContents.length > 0">
@@ -664,27 +628,6 @@
                         if (!Array.isArray(data.pictoList)) data.pictoList = [];
                         data.loading = false;
                         if (f.id) loadContentBlocks(f.id);
-                        // 加载相关 PC 产品（按应用标签匹配）
-                        if (f.applicationTag && f.applicationTag.length > 0) {
-                            var tag = Array.isArray(f.applicationTag) ? f.applicationTag[0] : f.applicationTag.split(',')[0];
-                            if (tag) {
-                                GatteAPI.PcProduct.list({ application: tag, limit: 6 }).then(function (res) {
-                                    var body = res.data || res;
-                                    var items = body && body.list ? body.list : (Array.isArray(body) ? body : []);
-                                    data.relatedProducts = items.map(function (p) {
-                                        return {
-                                            goodsName: p.name,
-                                            subtitle: p.code || p.inciName || '',
-                                            description: p.description || '',
-                                            goodsCoverImg: p.imageUrl || '',
-                                            url: '/personal-care/product-finder/product-detail.html?id=' + p.id
-                                        };
-                                    });
-                                }).catch(function (err) {
-                                    console.error('加载相关PC产品失败:', err);
-                                });
-                            }
-                        }
                     }).catch(function (err) {
                         console.error('获取配方详情失败:', err);
                         data.loading = false;
