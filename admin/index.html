@@ -1624,13 +1624,6 @@ const QUILL_TOOLBAR = [
                 </div>
               </div>
               <div class="form-group">
-                <label>天然指数</label>
-                <select class="form-control" v-model="editingFormula.naturalityIndex">
-                  <option value="">无</option>
-                  <option v-for="t in tagDict.formula?.naturalityIndex||[]" :value="t.value">{{ t.label }}</option>
-                </select>
-              </div>
-              <div class="form-group">
                 <label>成分/概念</label>
                 <div class="check-group">
                   <span class="check-tag" v-for="t in tagDict.formula?.ingredient||[]" :class="{ checked: editingFormula.conceptTag.includes(t.value) }" @click="toggleFormulaTag('conceptTag', t.value)">{{ t.label }}</span>
