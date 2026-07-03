@@ -1567,13 +1567,6 @@ const QUILL_TOOLBAR = [
                 <label>PDF 文件路径</label>
                 <input type="text" class="form-control" v-model="editingFormula.pdfPath" placeholder="/uploads/...">
               </div>
-              <div class="form-group">
-                <label>天然指数</label>
-                <select class="form-control" style="max-width:200px;" v-model="editingFormula.naturalityIndex">
-                  <option value="">无</option>
-                  <option v-for="t in tagDict.formula?.naturalityIndex||[]" :value="t.value">{{ t.label }}</option>
-                </select>
-              </div>
               <!-- 特点图标（Picto） -->
               <div class="form-group">
                 <label>特点图标 <span class="hint">（详情页展示的圆形图标，可增删和排序）</span></label>
@@ -1636,6 +1629,13 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>制备步骤</label>
                 <textarea class="form-control" rows="6" v-model="editingFormula.preparationSteps" placeholder="1. 混合水相&#10;2. 加入乳化剂..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>天然指数</label>
+                <select class="form-control" style="max-width:200px;" v-model="editingFormula.naturalityIndex">
+                  <option value="">无</option>
+                  <option v-for="t in tagDict.formula?.naturalityIndex||[]" :value="t.value">{{ t.label }}</option>
+                </select>
               </div>
             </div>
           </div>
@@ -2549,6 +2549,7 @@ const QUILL_TOOLBAR = [
                 <select class="form-control" v-model="tagForm.productLine" :disabled="tagForm.isEdit">
                   <option value="pc">成分</option>
                   <option value="pharma">药用辅料</option>
+                  <option value="formula">配方</option>
                 </select>
               </div>
               <div class="form-group">
@@ -2783,6 +2784,8 @@ createApp({
           { label: '应用领域', value: 'application' },
           { label: '剂型', value: 'form' },
           { label: '功效宣称', value: 'claim' },
+          { label: '天然指数', value: 'naturalityIndex' },
+          { label: '成分/概念', value: 'ingredient' },
         ],
       };
       return map[this.tagFilterProductLine] || map.pc;
@@ -4621,7 +4624,7 @@ createApp({
     // ============ 标签管理 ============
     async loadTags() {
       try {
-        const data = await this.api('/tags/list?productLine=' + this.tagFilterProductLine);
+        const data = await this.api('/tags/list?productLine=' + (this.tagFilterProductLine === 'formula' ? 'formulation' : this.tagFilterProductLine));
         this.tagList = data || [];
       } catch (e) { console.error(e); }
     },
@@ -4629,7 +4632,7 @@ createApp({
       if (tag) {
         this.tagForm = { show: true, isEdit: true, id: tag.id, productLine: tag.productLine, category: tag.category, label: tag.label, value: tag.value, sortOrder: tag.sortOrder };
       } else {
-        this.tagForm = { show: true, isEdit: false, id: null, productLine: this.tagFilterProductLine, category: 'functionality', label: '', value: '', sortOrder: 0 };
+        this.tagForm = { show: true, isEdit: false, id: null, productLine: this.tagFilterProductLine, category: 'application', label: '', value: '', sortOrder: 0 };
       }
     },
     async saveTag() {
@@ -4639,7 +4642,7 @@ createApp({
         if (f.isEdit) {
           await this.api('/tags/' + f.id, { method: 'PUT', body: JSON.stringify({ label: f.label, value: f.value, sortOrder: f.sortOrder, category: f.category }) });
         } else {
-          await this.api('/tags', { method: 'POST', body: JSON.stringify({ productLine: f.productLine, category: f.category, label: f.label, value: f.value, sortOrder: f.sortOrder }) });
+          await this.api('/tags', { method: 'POST', body: JSON.stringify({ productLine: f.productLine === 'formula' ? 'formulation' : f.productLine, category: f.category, label: f.label, value: f.value, sortOrder: f.sortOrder }) });
         }
         this.tagForm.show = false;
         this.loadTags();
