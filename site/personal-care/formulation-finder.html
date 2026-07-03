@@ -148,19 +148,19 @@
                           aria-hidden="true"></i>关闭</button>
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">过滤器</h2>
-                        <button type="reset" target="/personal-care/formulation-finder.html"
+                        <button type="button" @click="clearFilter"
                           class="c-filter__reset-btn btn btn-outline-secondary">取消过滤
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
                       <div data-drupal-facets-summary-id="formulations_personal_care_active_filters"
                         data-block-plugin-id="facets_summary_block:formulations_personal_care_active_filters"
-                        class="block block-facets-summary block-facets-summary-blockformulations-personal-care-active-filters" :class="data.activeFilterClass">
+                        class="block block-facets-summary block-facets-summary-blockformulations-personal-care-active-filters" :class="data.curFilter ? 'showDiv' : 'hidden'">
                         <h3 class="c-filter__subtitle">当前过滤项 :</h3>
                         <ul class="o-tag-list o-tag-list--wrap">
                           <li class="facet-summary-item--facet o-tag-list__item">
                             {{data.curFilter}}
-                            <a href="/personal-care/formulation-finder.html" class="c-filter__delete">
+                            <a href="javascript:;" @click="clearFilter" class="c-filter__delete">
                               <span class="visually-hidden">移除过滤</span>
                             </a>
                           </li>
@@ -183,10 +183,10 @@
                                   data-drupal-facet-alias="applications"
                                   class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
                                   <li class="facet-item1" v-for="item2 in item.children" :class="item2.facetItemClass">
-                                    <input type="checkbox" v-if="data.tagId == item2.ID" checked="checked"
-                                      class="facets-checkbox" :id="item2.dataDrupalFacetItemId">
-                                    <input type="checkbox" v-else class="facets-checkbox" @click="goToUrl(item2.tagUrl)"
-                                      :id="item2.dataDrupalFacetItemId"><a :href="item2.tagUrl" rel="nofollow"
+                                    <input type="checkbox" v-if="isFilterActive(item2)" checked="checked"
+                                      class="facets-checkbox" :id="item2.dataDrupalFacetItemId" @click="filterByTag(item2.tagCategory, item2.tagValue)">
+                                    <input type="checkbox" v-else class="facets-checkbox" @click="filterByTag(item2.tagCategory, item2.tagValue)"
+                                      :id="item2.dataDrupalFacetItemId"><a href="javascript:;" rel="nofollow"
                                       :data-drupal-facet-item1-id="item2.dataDrupalFacetItemId"
                                       :data-drupal-facet-item1-value="item2.ID" data-drupal-facet-item1-count="1"><span
                                         class="facet-item__value">{{item2.tagName}}</span>
@@ -390,124 +390,44 @@
   const pageSize = 9;
   var params = new URLSearchParams(window.location.search);
   var curPage = parseInt(params.get('page')) || 1;
-  var tagId = params.get('tagId');
+  // 标签筛选参数（直接用标签值，不再用 Drupal facet ID）
+  var filterApplication = params.get('application') || '';
+  var filterForm = params.get('form') || '';
+  var filterClaim = params.get('claim') || '';
+  var filterNaturality = params.get('naturality') || '';
   var w = params.get('keyword');
   var baseUrl = window.location.pathname;
+  var activeFilterName = filterApplication || filterForm || filterClaim || filterNaturality || '';
+
   function makePageUrl(page) {
     var u = baseUrl + '?page=' + page;
-    if (tagId) u += '&tagId=' + tagId;
+    if (filterApplication) u += '&application=' + encodeURIComponent(filterApplication);
+    if (filterForm) u += '&form=' + encodeURIComponent(filterForm);
+    if (filterClaim) u += '&claim=' + encodeURIComponent(filterClaim);
+    if (filterNaturality) u += '&naturality=' + encodeURIComponent(filterNaturality);
     if (w) u += '&keyword=' + encodeURIComponent(w);
     return u;
   }
+
+  // 分类名称映射
+  var catNameMap = {
+    application: '应用领域',
+    form: '性状',
+    claim: '声明',
+    naturality: '天然指数'
+  };
+  // 分类→API参数字段名映射
+  var catApiMap = {
+    application: 'application',
+    form: 'form',
+    claim: 'claim',
+    naturality: 'naturalityIndex'
+  };
+
   const app = createApp({
     setup() {
       var data = reactive({
-        tagList: [
-          {tagName:'应用领域',nameId:'collapse-filtre-accordion-formulations_personal_care_应用领域',sharpeNameId:'#collapse-filtre-accordion-formulations_personal_care_应用领域',headerNameId:'heading-filtre-accordion-formulations_personal_care_应用领域',accordionNameId:'accordion-filtre-accordion-formulations_personal_care_应用领域',dataBlockPluginId:'facet_block:formulations_personal_care_应用领域',class:'facet-inactive block-facet--checkbox block block-facets block-facet-blockformulations-personal-care-应用领域',dataDrupalFacetId:'formulations_personal_care_应用领域',children:[
-            {ID:237,tagName:'婴儿和儿童护理',dataDrupalFacetItemId:'应用领域-237',tagUrl:'/personal-care/formulation-finder.html?tagId=237&page=1',facetItemClass:'facet-item1'},
-            {ID:238,tagName:'身体护理',dataDrupalFacetItemId:'应用领域-238',tagUrl:'/personal-care/formulation-finder.html?tagId=238&page=1',facetItemClass:'facet-item1'},
-            {ID:239,tagName:'眼部护理',dataDrupalFacetItemId:'应用领域-239',tagUrl:'/personal-care/formulation-finder.html?tagId=239&page=1',facetItemClass:'facet-item1'},
-            {ID:240,tagName:'脸部护理',dataDrupalFacetItemId:'应用领域-240',tagUrl:'/personal-care/formulation-finder.html?tagId=240&page=1',facetItemClass:'facet-item1'},
-            {ID:241,tagName:'头发和头皮护理',dataDrupalFacetItemId:'应用领域-241',tagUrl:'/personal-care/formulation-finder.html?tagId=241&page=1',facetItemClass:'facet-item1'},
-            {ID:242,tagName:'彩妆',dataDrupalFacetItemId:'应用领域-242',tagUrl:'/personal-care/formulation-finder.html?tagId=242&page=1',facetItemClass:'facet-item1'},
-            {ID:243,tagName:'防晒',dataDrupalFacetItemId:'应用领域-243',tagUrl:'/personal-care/formulation-finder.html?tagId=243&page=1',facetItemClass:'facet-item1'}
-          ]},
-          {tagName:'性状',nameId:'collapse-filtre-accordion-formulations_personal_care_性状',sharpeNameId:'#collapse-filtre-accordion-formulations_personal_care_性状',headerNameId:'heading-filtre-accordion-formulations_personal_care_性状',accordionNameId:'accordion-filtre-accordion-formulations_personal_care_性状',dataBlockPluginId:'facet_block:formulations_personal_care_性状',class:'facet-inactive block-facet--checkbox block block-facets block-facet-blockformulations-personal-care-性状',dataDrupalFacetId:'formulations_personal_care_性状',children:[
-            {ID:244,tagName:'香脂',dataDrupalFacetItemId:'性状-244',tagUrl:'/personal-care/formulation-finder.html?tagId=244&page=1',facetItemClass:'facet-item1'},
-            {ID:245,tagName:'润肤膏',dataDrupalFacetItemId:'性状-245',tagUrl:'/personal-care/formulation-finder.html?tagId=245&page=1',facetItemClass:'facet-item1'},
-            {ID:246,tagName:'乳霜',dataDrupalFacetItemId:'性状-246',tagUrl:'/personal-care/formulation-finder.html?tagId=246&page=1',facetItemClass:'facet-item1'},
-            {ID:247,tagName:'乳霜啫喱',dataDrupalFacetItemId:'性状-247',tagUrl:'/personal-care/formulation-finder.html?tagId=247&page=1',facetItemClass:'facet-item1'},
-            {ID:248,tagName:'凝胶',dataDrupalFacetItemId:'性状-248',tagUrl:'/personal-care/formulation-finder.html?tagId=248&page=1',facetItemClass:'facet-item1'},
-            {ID:249,tagName:'洗剂',dataDrupalFacetItemId:'性状-249',tagUrl:'/personal-care/formulation-finder.html?tagId=249&page=1',facetItemClass:'facet-item1'},
-            {ID:250,tagName:'面膜',dataDrupalFacetItemId:'性状-250',tagUrl:'/personal-care/formulation-finder.html?tagId=250&page=1',facetItemClass:'facet-item1'},
-            {ID:251,tagName:'油',dataDrupalFacetItemId:'性状-251',tagUrl:'/personal-care/formulation-finder.html?tagId=251&page=1',facetItemClass:'facet-item1'},
-            {ID:252,tagName:'擦洗',dataDrupalFacetItemId:'性状-252',tagUrl:'/personal-care/formulation-finder.html?tagId=252&page=1',facetItemClass:'facet-item1'},
-            {ID:253,tagName:'血清',dataDrupalFacetItemId:'性状-253',tagUrl:'/personal-care/formulation-finder.html?tagId=253&page=1',facetItemClass:'facet-item1'},
-            {ID:254,tagName:'固态',dataDrupalFacetItemId:'性状-254',tagUrl:'/personal-care/formulation-finder.html?tagId=254&page=1',facetItemClass:'facet-item1'},
-            {ID:255,tagName:'喷雾',dataDrupalFacetItemId:'性状-255',tagUrl:'/personal-care/formulation-finder.html?tagId=255&page=1',facetItemClass:'facet-item1'},
-            {ID:256,tagName:'膏_',dataDrupalFacetItemId:'性状-256',tagUrl:'/personal-care/formulation-finder.html?tagId=256&page=1',facetItemClass:'facet-item1'},
-            {ID:257,tagName:'爽肤水',dataDrupalFacetItemId:'性状-257',tagUrl:'/personal-care/formulation-finder.html?tagId=257&page=1',facetItemClass:'facet-item1'}
-          ]},
-          {tagName:'声明',nameId:'collapse-filtre-accordion-formulations_personal_care_声明',sharpeNameId:'#collapse-filtre-accordion-formulations_personal_care_声明',headerNameId:'heading-filtre-accordion-formulations_personal_care_声明',accordionNameId:'accordion-filtre-accordion-formulations_personal_care_声明',dataBlockPluginId:'facet_block:formulations_personal_care_声明',class:'facet-inactive block-facet--checkbox block block-facets block-facet-blockformulations-personal-care-声明',dataDrupalFacetId:'formulations_personal_care_声明',children:[
-            {ID:258,tagName:'抗痘',dataDrupalFacetItemId:'声明-258',tagUrl:'/personal-care/formulation-finder.html?tagId=258&page=1',facetItemClass:'facet-item1'},
-            {ID:259,tagName:'抗衰老',dataDrupalFacetItemId:'声明-259',tagUrl:'/personal-care/formulation-finder.html?tagId=259&page=1',facetItemClass:'facet-item1'},
-            {ID:260,tagName:'抗氧化',dataDrupalFacetItemId:'声明-260',tagUrl:'/personal-care/formulation-finder.html?tagId=260&page=1',facetItemClass:'facet-item1'},
-            {ID:261,tagName:'抗下垂',dataDrupalFacetItemId:'声明-261',tagUrl:'/personal-care/formulation-finder.html?tagId=261&page=1',facetItemClass:'facet-item1'},
-            {ID:262,tagName:'抗斑',dataDrupalFacetItemId:'声明-262',tagUrl:'/personal-care/formulation-finder.html?tagId=262&page=1',facetItemClass:'facet-item1'},
-            {ID:263,tagName:'抗皱',dataDrupalFacetItemId:'声明-263',tagUrl:'/personal-care/formulation-finder.html?tagId=263&page=1',facetItemClass:'facet-item1'},
-            {ID:264,tagName:'细胞更新',dataDrupalFacetItemId:'声明-264',tagUrl:'/personal-care/formulation-finder.html?tagId=264&page=1',facetItemClass:'facet-item1'},
-            {ID:265,tagName:'洁面',dataDrupalFacetItemId:'声明-265',tagUrl:'/personal-care/formulation-finder.html?tagId=265&page=1',facetItemClass:'facet-item1'},
-            {ID:266,tagName:'冷却',dataDrupalFacetItemId:'声明-266',tagUrl:'/personal-care/formulation-finder.html?tagId=266&page=1',facetItemClass:'facet-item1'},
-            {ID:267,tagName:'排毒',dataDrupalFacetItemId:'声明-267',tagUrl:'/personal-care/formulation-finder.html?tagId=267&page=1',facetItemClass:'facet-item1'},
-            {ID:268,tagName:'紧致',dataDrupalFacetItemId:'声明-268',tagUrl:'/personal-care/formulation-finder.html?tagId=268&page=1',facetItemClass:'facet-item1'},
-            {ID:269,tagName:'焕发活力',dataDrupalFacetItemId:'声明-269',tagUrl:'/personal-care/formulation-finder.html?tagId=269&page=1',facetItemClass:'facet-item1'},
-            {ID:270,tagName:'赋活',dataDrupalFacetItemId:'声明-270',tagUrl:'/personal-care/formulation-finder.html?tagId=270&page=1',facetItemClass:'facet-item1'},
-            {ID:271,tagName:'高耐受性',dataDrupalFacetItemId:'声明-271',tagUrl:'/personal-care/formulation-finder.html?tagId=271&page=1',facetItemClass:'facet-item1'},
-            {ID:272,tagName:'哑光',dataDrupalFacetItemId:'声明-272',tagUrl:'/personal-care/formulation-finder.html?tagId=272&page=1',facetItemClass:'facet-item1'},
-            {ID:273,tagName:'保湿',dataDrupalFacetItemId:'声明-273',tagUrl:'/personal-care/formulation-finder.html?tagId=273&page=1',facetItemClass:'facet-item1'},
-            {ID:274,tagName:'滋补',dataDrupalFacetItemId:'声明-274',tagUrl:'/personal-care/formulation-finder.html?tagId=274&page=1',facetItemClass:'facet-item1'},
-            {ID:275,tagName:'光老化',dataDrupalFacetItemId:'声明-275',tagUrl:'/personal-care/formulation-finder.html?tagId=275&page=1',facetItemClass:'facet-item1'},
-            {ID:276,tagName:'焕肤',dataDrupalFacetItemId:'声明-276',tagUrl:'/personal-care/formulation-finder.html?tagId=276&page=1',facetItemClass:'facet-item1'},
-            {ID:277,tagName:'重组',dataDrupalFacetItemId:'声明-277',tagUrl:'/personal-care/formulation-finder.html?tagId=277&page=1',facetItemClass:'facet-item1'},
-            {ID:278,tagName:'舒缓',dataDrupalFacetItemId:'声明-278',tagUrl:'/personal-care/formulation-finder.html?tagId=278&page=1',facetItemClass:'facet-item1'},
-            {ID:279,tagName:'修复',dataDrupalFacetItemId:'声明-279',tagUrl:'/personal-care/formulation-finder.html?tagId=279&page=1',facetItemClass:'facet-item1'},
-            {ID:280,tagName:'抗松弛',dataDrupalFacetItemId:'声明-280',tagUrl:'/personal-care/formulation-finder.html?tagId=280&page=1',facetItemClass:'facet-item1'},
-            {ID:281,tagName:'去角质',dataDrupalFacetItemId:'声明-281',tagUrl:'/personal-care/formulation-finder.html?tagId=281&page=1',facetItemClass:'facet-item1'},
-            {ID:282,tagName:'皮脂控制',dataDrupalFacetItemId:'声明-282',tagUrl:'/personal-care/formulation-finder.html?tagId=282&page=1',facetItemClass:'facet-item1'},
-            {ID:283,tagName:'肤色',dataDrupalFacetItemId:'声明-283',tagUrl:'/personal-care/formulation-finder.html?tagId=283&page=1',facetItemClass:'facet-item1'},
-            {ID:284,tagName:'皮肤光泽',dataDrupalFacetItemId:'声明-284',tagUrl:'/personal-care/formulation-finder.html?tagId=284&page=1',facetItemClass:'facet-item1'},
-            {ID:285,tagName:'柔顺',dataDrupalFacetItemId:'声明-285',tagUrl:'/personal-care/formulation-finder.html?tagId=285&page=1',facetItemClass:'facet-item1'},
-            {ID:286,tagName:'舒缓 / 抗红斑',dataDrupalFacetItemId:'声明-286',tagUrl:'/personal-care/formulation-finder.html?tagId=286&page=1',facetItemClass:'facet-item1'},
-            {ID:287,tagName:'紫外线防护',dataDrupalFacetItemId:'声明-287',tagUrl:'/personal-care/formulation-finder.html?tagId=287&page=1',facetItemClass:'facet-item1'}
-          ]},
-          {tagName:'天然指数',nameId:'collapse-filtre-accordion-formulations_personal_care_天然指数',sharpeNameId:'#collapse-filtre-accordion-formulations_personal_care_天然指数',headerNameId:'heading-filtre-accordion-formulations_personal_care_天然指数',accordionNameId:'accordion-filtre-accordion-formulations_personal_care_天然指数',dataBlockPluginId:'facet_block:formulations_personal_care_天然指数',class:'facet-inactive block-facet--checkbox block block-facets block-facet-blockformulations-personal-care-天然指数',dataDrupalFacetId:'formulations_personal_care_天然指数',children:[
-            {ID:288,tagName:'>99%',dataDrupalFacetItemId:'天然指数-288',tagUrl:'/personal-care/formulation-finder.html?tagId=288&page=1',facetItemClass:'facet-item1'},
-            {ID:289,tagName:'>98%',dataDrupalFacetItemId:'天然指数-289',tagUrl:'/personal-care/formulation-finder.html?tagId=289&page=1',facetItemClass:'facet-item1'},
-            {ID:290,tagName:'>95%',dataDrupalFacetItemId:'天然指数-290',tagUrl:'/personal-care/formulation-finder.html?tagId=290&page=1',facetItemClass:'facet-item1'},
-            {ID:291,tagName:'>90%',dataDrupalFacetItemId:'天然指数-291',tagUrl:'/personal-care/formulation-finder.html?tagId=291&page=1',facetItemClass:'facet-item1'}
-          ]},
-          {tagName:'成分',nameId:'collapse-filtre-accordion-formulations_personal_care_成分',sharpeNameId:'#collapse-filtre-accordion-formulations_personal_care_成分',headerNameId:'heading-filtre-accordion-formulations_personal_care_成分',accordionNameId:'accordion-filtre-accordion-formulations_personal_care_成分',dataBlockPluginId:'facet_block:formulations_personal_care_成分',class:'facet-inactive block-facet--checkbox block block-facets block-facet-blockformulations-personal-care-成分',dataDrupalFacetId:'formulations_personal_care_成分',children:[
-            {ID:126,tagName:'Solastemis™',dataDrupalFacetItemId:'成分-126',tagUrl:'/personal-care/formulation-finder.html?tagId=126&page=1',facetItemClass:'facet-item1'},
-            {ID:127,tagName:'Acticire® MB',dataDrupalFacetItemId:'成分-127',tagUrl:'/personal-care/formulation-finder.html?tagId=127&page=1',facetItemClass:'facet-item1'},
-            {ID:128,tagName:'Compritol® 888 CG MB',dataDrupalFacetItemId:'成分-128',tagUrl:'/personal-care/formulation-finder.html?tagId=128&page=1',facetItemClass:'facet-item1'},
-            {ID:131,tagName:'DPPG CG',dataDrupalFacetItemId:'成分-131',tagUrl:'/personal-care/formulation-finder.html?tagId=131&page=1',facetItemClass:'facet-item1'},
-            {ID:133,tagName:'Emulfree® CBG MB',dataDrupalFacetItemId:'成分-133',tagUrl:'/personal-care/formulation-finder.html?tagId=133&page=1',facetItemClass:'facet-item1'},
-            {ID:135,tagName:'Emulium® Delta MB',dataDrupalFacetItemId:'成分-135',tagUrl:'/personal-care/formulation-finder.html?tagId=135&page=1',facetItemClass:'facet-item1'},
-            {ID:136,tagName:'Emulium® Dermolea MB',dataDrupalFacetItemId:'成分-136',tagUrl:'/personal-care/formulation-finder.html?tagId=136&page=1',facetItemClass:'facet-item1'},
-            {ID:142,tagName:'Gatuline® Age Defense NP',dataDrupalFacetItemId:'成分-142',tagUrl:'/personal-care/formulation-finder.html?tagId=142&page=1',facetItemClass:'facet-item1'},
-            {ID:143,tagName:'Gatuline® Expression AF',dataDrupalFacetItemId:'成分-143',tagUrl:'/personal-care/formulation-finder.html?tagId=143&page=1',facetItemClass:'facet-item1'},
-            {ID:144,tagName:'Gatuline® In-Tense MB',dataDrupalFacetItemId:'成分-144',tagUrl:'/personal-care/formulation-finder.html?tagId=144&page=1',facetItemClass:'facet-item1'},
-            {ID:147,tagName:'Gatuline® RC Bio',dataDrupalFacetItemId:'成分-147',tagUrl:'/personal-care/formulation-finder.html?tagId=147&page=1',facetItemClass:'facet-item1'},
-            {ID:148,tagName:'Gatuline® Renew',dataDrupalFacetItemId:'成分-148',tagUrl:'/personal-care/formulation-finder.html?tagId=148&page=1',facetItemClass:'facet-item1'},
-            {ID:151,tagName:'Labrafac™ CC MB',dataDrupalFacetItemId:'成分-151',tagUrl:'/personal-care/formulation-finder.html?tagId=151&page=1',facetItemClass:'facet-item1'},
-            {ID:155,tagName:'MOD MB',dataDrupalFacetItemId:'成分-155',tagUrl:'/personal-care/formulation-finder.html?tagId=155&page=1',facetItemClass:'facet-item1'},
-            {ID:157,tagName:'Original extract™ Ginger',dataDrupalFacetItemId:'成分-157',tagUrl:'/personal-care/formulation-finder.html?tagId=157&page=1',facetItemClass:'facet-item1'},
-            {ID:158,tagName:'Original extract™ Kiwi',dataDrupalFacetItemId:'成分-158',tagUrl:'/personal-care/formulation-finder.html?tagId=158&page=1',facetItemClass:'facet-item1'},
-            {ID:159,tagName:'Original Extract™ Apple',dataDrupalFacetItemId:'成分-159',tagUrl:'/personal-care/formulation-finder.html?tagId=159&page=1',facetItemClass:'facet-item1'},
-            {ID:160,tagName:'Original Extract™ Cranberry',dataDrupalFacetItemId:'成分-160',tagUrl:'/personal-care/formulation-finder.html?tagId=160&page=1',facetItemClass:'facet-item1'},
-            {ID:161,tagName:'Original Extract™ Grape Bio',dataDrupalFacetItemId:'成分-161',tagUrl:'/personal-care/formulation-finder.html?tagId=161&page=1',facetItemClass:'facet-item1'},
-            {ID:162,tagName:'Original Extract™ Grapefruit',dataDrupalFacetItemId:'成分-162',tagUrl:'/personal-care/formulation-finder.html?tagId=162&page=1',facetItemClass:'facet-item1'},
-            {ID:163,tagName:'Original Extract™ Lemon Bio',dataDrupalFacetItemId:'成分-163',tagUrl:'/personal-care/formulation-finder.html?tagId=163&page=1',facetItemClass:'facet-item1'},
-            {ID:164,tagName:'Original Extract™ Orange Bio',dataDrupalFacetItemId:'成分-164',tagUrl:'/personal-care/formulation-finder.html?tagId=164&page=1',facetItemClass:'facet-item1'},
-            {ID:165,tagName:'Plurol® Stearique MB',dataDrupalFacetItemId:'成分-165',tagUrl:'/personal-care/formulation-finder.html?tagId=165&page=1',facetItemClass:'facet-item1'},
-            {ID:170,tagName:'Cytobiol™ Iris A²',dataDrupalFacetItemId:'成分-170',tagUrl:'/personal-care/formulation-finder.html?tagId=170&page=1',facetItemClass:'facet-item1'},
-            {ID:171,tagName:'Cytobiol™ Lumin-Eye',dataDrupalFacetItemId:'成分-171',tagUrl:'/personal-care/formulation-finder.html?tagId=171&page=1',facetItemClass:'facet-item1'},
-            {ID:172,tagName:'Definicire®',dataDrupalFacetItemId:'成分-172',tagUrl:'/personal-care/formulation-finder.html?tagId=172&page=1',facetItemClass:'facet-item1'},
-            {ID:173,tagName:'EleVastin™',dataDrupalFacetItemId:'成分-173',tagUrl:'/personal-care/formulation-finder.html?tagId=173&page=1',facetItemClass:'facet-item1'},
-            {ID:174,tagName:'Emulium® 22 MB',dataDrupalFacetItemId:'成分-174',tagUrl:'/personal-care/formulation-finder.html?tagId=174&page=1',facetItemClass:'facet-item1'},
-            {ID:175,tagName:'Emulium® Dolcea MB',dataDrupalFacetItemId:'成分-175',tagUrl:'/personal-care/formulation-finder.html?tagId=175&page=1',facetItemClass:'facet-item1'},
-            {ID:176,tagName:'Emulium® Illustro',dataDrupalFacetItemId:'成分-176',tagUrl:'/personal-care/formulation-finder.html?tagId=176&page=1',facetItemClass:'facet-item1'},
-            {ID:177,tagName:'Emulium® Kappa MB',dataDrupalFacetItemId:'成分-177',tagUrl:'/personal-care/formulation-finder.html?tagId=177&page=1',facetItemClass:'facet-item1'},
-            {ID:178,tagName:'Emulium® Mellifera MB',dataDrupalFacetItemId:'成分-178',tagUrl:'/personal-care/formulation-finder.html?tagId=178&page=1',facetItemClass:'facet-item1'},
-            {ID:179,tagName:'EnergiNius®',dataDrupalFacetItemId:'成分-179',tagUrl:'/personal-care/formulation-finder.html?tagId=179&page=1',facetItemClass:'facet-item1'},
-            {ID:180,tagName:'Gatuline® Derma-Sensitive',dataDrupalFacetItemId:'成分-180',tagUrl:'/personal-care/formulation-finder.html?tagId=180&page=1',facetItemClass:'facet-item1'},
-            {ID:181,tagName:'Gatuline® In-Tense MB',dataDrupalFacetItemId:'成分-181',tagUrl:'/personal-care/formulation-finder.html?tagId=181&page=1',facetItemClass:'facet-item1'},
-            {ID:182,tagName:'Gatuline® Link n Lift',dataDrupalFacetItemId:'成分-182',tagUrl:'/personal-care/formulation-finder.html?tagId=182&page=1',facetItemClass:'facet-item1'},
-            {ID:183,tagName:'Gatuline® Radiance',dataDrupalFacetItemId:'成分-183',tagUrl:'/personal-care/formulation-finder.html?tagId=183&page=1',facetItemClass:'facet-item1'},
-            {ID:184,tagName:'Gatuline® Skin-Repair AF',dataDrupalFacetItemId:'成分-184',tagUrl:'/personal-care/formulation-finder.html?tagId=184&page=1',facetItemClass:'facet-item1'},
-            {ID:185,tagName:'Gatuline® Spot-Light',dataDrupalFacetItemId:'成分-185',tagUrl:'/personal-care/formulation-finder.html?tagId=185&page=1',facetItemClass:'facet-item1'}
-          ]}
-        ],
+        tagList: [],
         productList: [],
         total: 0,
         total_page: 1,
@@ -515,32 +435,77 @@
         page_size: pageSize,
         prev_url: curPage > 1 ? makePageUrl(curPage - 1) : null,
         next_url: null,
-        curFilter: '',
-        activeFilterClass: tagId ? 'showDiv' : 'hidden',
-        tagId: tagId,
-        loading: false
+        curFilter: activeFilterName,
+        loading: false,
+        filterApplication: filterApplication,
+        filterForm: filterForm,
+        filterClaim: filterClaim,
+        filterNaturality: filterNaturality
       });
-      // 处理当前筛选标签显示
-      if (tagId) {
-        for (var ti = 0; ti < data.tagList.length; ti++) {
-          if (data.tagList[ti].children) {
-            for (var tj = 0; tj < data.tagList[ti].children.length; tj++) {
-              if (data.tagList[ti].children[tj].ID == tagId) {
-                data.curFilter = data.tagList[ti].children[tj].tagName;
-              }
+
+      // 加载标签字典
+      function loadTagDictionary() {
+        GatteAPI.Tag.list({ productLine: 'formulation' }).then(function(res) {
+          var body = res.data || res;
+          // API返回格式: { application: [{label,value},...], form: [...], claim: [...], naturality: [...] }
+          var tagMap = body.data || body;
+          if (!tagMap) return;
+          var groups = [];
+          var idx = 0;
+          for (var cat in catNameMap) {
+            if (!catNameMap.hasOwnProperty(cat)) continue;
+            var items = tagMap[cat] || [];
+            if (items.length === 0) continue;
+            var groupName = catNameMap[cat];
+            var groupId = 'collapse-' + cat;
+            var children = [];
+            for (var i = 0; i < items.length; i++) {
+              var val = items[i].value || items[i].label;
+              children.push({
+                ID: cat + '-' + i,
+                tagName: items[i].label,
+                tagValue: val,
+                tagCategory: cat,
+                dataDrupalFacetItemId: cat + '-' + val,
+                tagUrl: '/personal-care/formulation-finder.html?' + catApiMap[cat] + '=' + encodeURIComponent(val) + '&page=1',
+                facetItemClass: 'facet-item1'
+              });
             }
+            groups.push({
+              tagName: groupName,
+              nameId: groupId,
+              sharpeNameId: '#' + groupId,
+              headerNameId: 'heading-' + cat,
+              accordionNameId: 'accordion-' + cat,
+              dataBlockPluginId: 'facet_block:formulations_personal_care_' + groupName,
+              class: 'facet-inactive block-facet--checkbox block block-facets block-facet-blockformulations-personal-care-' + groupName,
+              dataDrupalFacetId: 'formulations_personal_care_' + groupName,
+              children: children
+            });
           }
-        }
+          data.tagList = groups;
+          // 加载完标签后设置样式
+          setTagStyle();
+        }).catch(function(err) {
+          console.error('加载标签字典失败:', err);
+        });
       }
+
       // 从后端加载配方列表
       function loadProducts(page) {
         if (data.loading) return;
         data.loading = true;
-        GatteAPI.Formulation.list({
+        var apiParams = {
           limit: pageSize,
           page: page || data.cur_page,
           isPublished: 'true'
-        }).then(function (res) {
+        };
+        if (data.filterApplication) apiParams.application = data.filterApplication;
+        if (data.filterForm) apiParams.form = data.filterForm;
+        if (data.filterClaim) apiParams.claim = data.filterClaim;
+        if (data.filterNaturality) apiParams.naturalityIndex = data.filterNaturality;
+        if (w) apiParams.keyword = w;
+        GatteAPI.Formulation.list(apiParams).then(function (res) {
           var result = res.data || res;
           var list = result.list || result || [];
           data.productList = list.map(function (f) {
@@ -568,12 +533,63 @@
           data.loading = false;
         });
       }
+
+      // 点击标签筛选
+      function filterByTag(category, value) {
+        // 设置对应筛选条件
+        if (category === 'application') {
+          data.filterApplication = (data.filterApplication === value) ? '' : value;
+        } else if (category === 'form') {
+          data.filterForm = (data.filterForm === value) ? '' : value;
+        } else if (category === 'claim') {
+          data.filterClaim = (data.filterClaim === value) ? '' : value;
+        } else if (category === 'naturality') {
+          data.filterNaturality = (data.filterNaturality === value) ? '' : value;
+        }
+        // 更新当前筛选显示
+        data.curFilter = data.filterApplication || data.filterForm || data.filterClaim || data.filterNaturality || '';
+        // 重置到第1页并重新加载
+        data.cur_page = 1;
+        // 更新全局变量
+        filterApplication = data.filterApplication;
+        filterForm = data.filterForm;
+        filterClaim = data.filterClaim;
+        filterNaturality = data.filterNaturality;
+        activeFilterName = data.curFilter;
+        loadProducts(1);
+        // 更新URL
+        var u = makePageUrl(1);
+        history.pushState({}, '', u);
+      }
+
+      // 清除所有筛选
+      function clearFilter() {
+        data.filterApplication = '';
+        data.filterForm = '';
+        data.filterClaim = '';
+        data.filterNaturality = '';
+        data.curFilter = '';
+        data.cur_page = 1;
+        filterApplication = '';
+        filterForm = '';
+        filterClaim = '';
+        filterNaturality = '';
+        activeFilterName = '';
+        loadProducts(1);
+        history.pushState({}, '', baseUrl + '?page=1' + (w ? '&keyword=' + encodeURIComponent(w) : ''));
+      }
+
       function changePage(newPage) {
         if (newPage < 1 || newPage > data.total_page) return;
         data.cur_page = newPage;
+        filterApplication = data.filterApplication;
+        filterForm = data.filterForm;
+        filterClaim = data.filterClaim;
+        filterNaturality = data.filterNaturality;
         loadProducts(newPage);
         history.pushState({}, '', makePageUrl(newPage));
       }
+
       function seeAll(event) {
         var btn = event.currentTarget;
         var body = btn.closest('.panel-body');
@@ -590,6 +606,7 @@
           btn.setAttribute('data-aria-expanded', 'true');
         }
       }
+
       function setTagStyle() {
         setTimeout(function() {
           document.querySelectorAll('.facet-inactive .panel-body').forEach(function(body) {
@@ -607,18 +624,31 @@
           });
         }, 100);
       }
+
       function addProductFav(event) {
         var el = event.currentTarget;
         if (el.classList.contains('is-active')) return;
         if (!checkLoginStatus()) { showDialog("请先<a href=\"/account.html\">登录</a>"); return; }
         el.classList.add('is-active');
       }
+
       function goToUrl(url) { window.location.href = url; }
+
+      // 判断标签是否处于激活筛选状态
+      function isFilterActive(tagItem) {
+        if (tagItem.tagCategory === 'application' && data.filterApplication === tagItem.tagValue) return true;
+        if (tagItem.tagCategory === 'form' && data.filterForm === tagItem.tagValue) return true;
+        if (tagItem.tagCategory === 'claim' && data.filterClaim === tagItem.tagValue) return true;
+        if (tagItem.tagCategory === 'naturality' && data.filterNaturality === tagItem.tagValue) return true;
+        return false;
+      }
+
       onMounted(function() {
-        setTagStyle();
+        loadTagDictionary();
         loadProducts(curPage);
       });
-      return { data, changePage, seeAll, addProductFav, goToUrl };
+
+      return { data, changePage, seeAll, addProductFav, goToUrl, filterByTag, clearFilter, isFilterActive };
     }
   });
   app.mount("#app");
