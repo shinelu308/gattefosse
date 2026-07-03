@@ -678,6 +678,32 @@
                                 }
                             }
                         }
+                        // 去重：同一页面只保留一个 related 区块，合并重复区块的产品
+                        var firstRelatedIdx = -1;
+                        for (var di = 0; di < blocks.length; di++) {
+                            if (blocks[di].blockType === 'related') {
+                                if (firstRelatedIdx < 0) {
+                                    firstRelatedIdx = di;
+                                } else {
+                                    // 合并产品到第一个 related 区块
+                                    var firstBlock = blocks[firstRelatedIdx];
+                                    if (firstBlock.content && firstBlock.content.products && blocks[di].content && blocks[di].content.products) {
+                                        var existingIds = {};
+                                        for (var ei = 0; ei < firstBlock.content.products.length; ei++) {
+                                            existingIds[firstBlock.content.products[ei].id] = true;
+                                        }
+                                        for (var pi = 0; pi < blocks[di].content.products.length; pi++) {
+                                            if (!existingIds[blocks[di].content.products[pi].id]) {
+                                                firstBlock.content.products.push(blocks[di].content.products[pi]);
+                                            }
+                                        }
+                                    }
+                                    // 移除重复的 related 区块
+                                    blocks.splice(di, 1);
+                                    di--;
+                                }
+                            }
+                        }
                     }).catch(function (err) {
                         console.error('加载内容区块失败:', err);
                     });
