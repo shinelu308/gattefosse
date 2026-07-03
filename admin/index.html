@@ -891,6 +891,10 @@ const QUILL_TOOLBAR = [
                 <input type="text" class="form-control" v-model="editingPc.videoUrl" placeholder="输入视频嵌入链接 / iframe代码 / B站视频页链接">
               </div>
               <div class="form-group">
+                <label>视频区标题 <span class="hint">（默认显示"成分视频摘要"）</span></label>
+                <input type="text" class="form-control" v-model="editingPc.videoSectionTitle" placeholder="成分视频摘要">
+              </div>
+              <div class="form-group">
                 <label>国际站 URL</label>
                 <input type="url" class="form-control" v-model="editingPc.intlUrl" placeholder="https://www.gattefosse.com/...">
               </div>
@@ -1568,6 +1572,10 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>产品视频 <span class="hint">（嵌入链接 / iframe / B站视频页链接）</span></label>
                 <input type="text" class="form-control" v-model="editingFormula.videoUrl" placeholder="输入视频嵌入链接 / iframe代码 / B站视频页链接">
+              </div>
+              <div class="form-group">
+                <label>视频区标题 <span class="hint">（默认显示"视频"）</span></label>
+                <input type="text" class="form-control" v-model="editingFormula.videoSectionTitle" placeholder="视频">
               </div>
               <div class="form-group">
                 <label>国际站 URL</label>
@@ -2880,7 +2888,7 @@ createApp({
       } catch (e) { console.error(e); }
     },
     resetPcEdit() {
-      this.editingPc = { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, id: null, blocks: [], _blockIdCounter: 0 };
+      this.editingPc = { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, id: null, blocks: [], _blockIdCounter: 0 };
       this._blocksLoaded = false;
       this.pcEditTab = 'basic';
     },
@@ -2892,7 +2900,7 @@ createApp({
       const spec = item.specInfo ? (typeof item.specInfo === 'string' ? JSON.parse(item.specInfo) : item.specInfo) : {};
       this.editingPc = {
         id: item.id, name: item.name, inciName: item.inciName, description: item.description || '', dosage: item.dosage || '',
-        tagline: item.tagline || '', imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', intlUrl: item.intlUrl || '',
+        tagline: item.tagline || '', imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', videoSectionTitle: item.videoSectionTitle || '', intlUrl: item.intlUrl || '',
         functionalityTag: [...(item.functionalityTag||[])], applicationTag: [...(item.applicationTag||[])],
         conceptTag: [...(item.conceptTag||[])], claimTag: [...(item.claimTag||[])], characteristicTag: [...(item.characteristicTag||[])],
         naturalityLabel: [...(item.naturalityLabel||[])], isPublished: item.isPublished,
@@ -3792,7 +3800,7 @@ createApp({
     resetFormulaEdit() {
       this._formulaBlocksLoaded = false;
       this.destroyFormulaQuills();
-      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
+      this.editingFormula = { name: '', code: '', description: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', pdfPath: '', applicationTag: [], formTag: [], claimTag: [], naturalityIndex: '', compositionText: '', preparationSteps: '', pictos: '[]', isPublished: false, id: null, blocks: [], _blockIdCounter: 0, _pictoList: [] };
       this.formulaEditTab = 'basic';
     },
     editFormula(item) {
@@ -3800,7 +3808,7 @@ createApp({
       this.destroyFormulaQuills();
       this.editingFormula = {
         id: item.id, name: item.name, code: item.code || '', description: item.description || '',
-        imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', intlUrl: item.intlUrl || '', pdfPath: item.pdfPath || '',
+        imageUrl: item.imageUrl || '', detailImageUrl: item.detailImageUrl || '', videoUrl: item.videoUrl || '', videoSectionTitle: item.videoSectionTitle || '', intlUrl: item.intlUrl || '', pdfPath: item.pdfPath || '',
         applicationTag: [...(item.applicationTag||[])], formTag: [...(item.formTag||[])],
         claimTag: [...(item.claimTag||[])], naturalityIndex: item.naturalityIndex || '',
         compositionText: item.compositionText || '', preparationSteps: item.preparationSteps || '',

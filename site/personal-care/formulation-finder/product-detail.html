@@ -176,28 +176,15 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="s-product-video" v-if="data.productDetail.movieUrl != null && data.productDetail.movieUrl !=''">
-                            <div class="container">
-                                <div class="s-product-video__container">
-                                    <h2 class="s-product-video__title u-title-styled">视频</h2>
-                                    <div class="s-product-video__video">
-                                        <div
-                                            class="c-video c-video--inner paragraph paragraph--type--video paragraph--view-mode--full">
-                                            <div
-                                                class="contextual-region o-video media media--type-video media--view-mode-video">
-                                                <div
-                                                    class="c-video c-video--inner paragraph paragraph--type--video paragraph--view-mode--full">
-                                                    <div
-                                                        class="contextual-region o-video media media--type-video media--view-mode-video">
-                                                        <div class="video__container">
-                                                            <div
-                                                                class="field field--name-field-media-video-file field--type-file field--label-hidden field__item" v-html="data.productDetail.movieUrl">
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="s-product-video" v-if="data.productDetail.movieUrl" style="padding:40px 0;">
+                            <div class="container" style="max-width:1170px;margin:0 auto;">
+                                <div style="display:flex;gap:40px;align-items:center;">
+                                    <div style="flex:1;min-width:0;">
+                                        <p style="font-size:4.8rem;font-family:'Din Next Slab Pro Bold',sans-serif;font-weight:400;letter-spacing:0;position:relative;padding-right:2.8rem;color:#3E3E3E;line-height:1.3;margin:0;" v-html="(data.productDetail.videoSectionTitle || '视频') + '<span style=&quot;color:#C4004D;margin-left:10px;&quot;>●</span>'"></p>
+                                    </div>
+                                    <div style="flex:1;min-width:0;">
+                                        <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                                            <iframe :src="convertVideoUrl(data.productDetail.movieUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
                                         </div>
                                     </div>
                                 </div>
@@ -641,6 +628,7 @@
                             claims: '',
                             picto: '',
                             movieUrl: f.videoUrl || '',
+                            videoSectionTitle: f.videoSectionTitle || '',
                             mainContent: mainContent,
                             goodsCategoryId: ''
                         };
@@ -718,6 +706,26 @@
                 function hasBrochureDocs(files) { return files.some(function(f) { return isBrochureDoc(f); }); }
                 function hasFormulaDocs(files) { return files.some(function(f) { return isFormulaDoc(f); }); }
 
+                // 视频 URL 转换：将各种视频链接转为可嵌入的 iframe 地址
+                function convertVideoUrl(url) {
+                    if (!url) return '';
+                    // 1. 如果是 iframe 标签，提取 src
+                    var match = url.match(/<iframe[^>]*\ssrc=["']([^"']+)["']/i);
+                    if (match) return match[1];
+                    // 2. B站视频页 → 嵌入链接
+                    //    https://www.bilibili.com/video/BVxxx → //player.bilibili.com/player.html?bvid=BVxxx
+                    var bvMatch = url.match(/(?:https?:)?\/\/(?:www\.)?bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/i);
+                    if (bvMatch) return '//player.bilibili.com/player.html?bvid=' + bvMatch[1] + '&autoplay=0';
+                    // 3. B站嵌入链接已含 player.bilibili.com，直接返回
+                    if (url.indexOf('player.bilibili.com') !== -1) return url;
+                    // 4. 如果是相对路径，拼接站点域名
+                    if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+                        return 'https://www.gattefosse.com' + (url.indexOf('/') === 0 ? '' : '/') + url;
+                    }
+                    // 5. 其他完整 URL 直接返回
+                    return url;
+                }
+
                 getProductDetail();
 
                 return {
@@ -730,7 +738,8 @@
                     isFormulaDoc,
                     hasTdsDocs,
                     hasBrochureDocs,
-                    hasFormulaDocs
+                    hasFormulaDocs,
+                    convertVideoUrl
                 };
             },
         });

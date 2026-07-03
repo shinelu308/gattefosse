@@ -52,6 +52,7 @@ model PcIngredient {
   imageUrl           String?   @map("image_url")
   detailImageUrl     String?   @map("detail_image_url")
   videoUrl           String?   @map("video_url")
+  videoSectionTitle  String?   @map("video_section_title")
   tagline            String?   // 宣传标语
   intlUrl            String?   @map("intl_url") // 国际站URL
   // SQLite 不支持数组，用逗号分隔字符串存储标签
@@ -120,6 +121,8 @@ model Formulation {
   compositionText    String?   @map("composition_text")
   preparationSteps   String?   @map("preparation_steps")
   pictos             String?   @default("[]")  // JSON: [{iconType, label}]
+  videoUrl           String?   @map("video_url")
+  videoSectionTitle  String?   @map("video_section_title")
   sortOrder          Int       @default(0) @map("sort_order")
   isPublished        Boolean   @default(false) @map("is_published")
   createdById        Int?      @map("created_by")

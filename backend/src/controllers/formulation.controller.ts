@@ -133,6 +133,8 @@ export async function createFormulation(req: Request, res: Response) {
       pictos,
       sortOrder,
       isPublished,
+      videoUrl,
+      videoSectionTitle,
     } = req.body;
 
     if (!name) {
@@ -155,6 +157,8 @@ export async function createFormulation(req: Request, res: Response) {
         pictos: pictos || '[]',
         sortOrder: sortOrder || 0,
         isPublished: isPublished || false,
+        videoUrl: videoUrl || null,
+        videoSectionTitle: videoSectionTitle || null,
         createdById: req.user?.userId || null,
       },
       include: FORMULATION_INCLUDE,
@@ -193,6 +197,8 @@ export async function updateFormulation(req: Request, res: Response) {
       pictos,
       sortOrder,
       isPublished,
+      videoUrl,
+      videoSectionTitle,
     } = req.body;
 
     const updateData: Record<string, unknown> = {};
@@ -210,6 +216,8 @@ export async function updateFormulation(req: Request, res: Response) {
     if (pictos !== undefined) updateData.pictos = pictos || '[]';
     if (sortOrder !== undefined) updateData.sortOrder = sortOrder;
     if (isPublished !== undefined) updateData.isPublished = isPublished;
+    if (videoUrl !== undefined) updateData.videoUrl = videoUrl || null;
+    if (videoSectionTitle !== undefined) updateData.videoSectionTitle = videoSectionTitle || null;
 
     const item = await prisma.formulation.update({
       where: { id },

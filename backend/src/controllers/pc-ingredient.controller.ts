@@ -128,6 +128,7 @@ export async function createPcIngredient(req: Request, res: Response) {
       imageUrl,
       detailImageUrl,
       videoUrl,
+      videoSectionTitle,
       tagline,
       intlUrl,
       functionalityTag,
@@ -157,6 +158,7 @@ export async function createPcIngredient(req: Request, res: Response) {
         imageUrl: imageUrl || null,
         detailImageUrl: detailImageUrl || null,
         videoUrl: videoUrl || null,
+        videoSectionTitle: videoSectionTitle || null,
         tagline: tagline || null,
         intlUrl: intlUrl || null,
         functionalityTag: arrayToTag(functionalityTag),
@@ -205,6 +207,7 @@ export async function updatePcIngredient(req: Request, res: Response) {
     if (body.imageUrl !== undefined) data.imageUrl = body.imageUrl;
     if (body.detailImageUrl !== undefined) data.detailImageUrl = body.detailImageUrl;
     if (body.videoUrl !== undefined) data.videoUrl = body.videoUrl;
+    if (body.videoSectionTitle !== undefined) data.videoSectionTitle = body.videoSectionTitle || null;
     if (body.tagline !== undefined) data.tagline = body.tagline;
     if (body.intlUrl !== undefined) data.intlUrl = body.intlUrl;
 
