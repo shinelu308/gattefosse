@@ -5,6 +5,7 @@ import { success, fail, paginate } from '../utils/response';
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
   author: { select: { id: true, name: true, avatar: true, bio: true } },
+  blocks: { orderBy: { sortOrder: 'asc' as const } },
 };
 
 /**
@@ -130,6 +131,7 @@ export async function createNewsItem(req: Request, res: Response) {
       metaDescription,
       metaKeywords,
       authorId,
+      blocks,
     } = req.body;
 
     if (!title) {
@@ -171,6 +173,17 @@ export async function createNewsItem(req: Request, res: Response) {
         metaKeywords: metaKeywords || null,
         authorId: authorId || null,
         createdById: req.user?.userId || null,
+        // 扩展：文章区块
+        ...(Array.isArray(blocks) && blocks.length > 0 ? {
+          blocks: {
+            create: blocks.map((b: any, i: number) => ({
+              blockType: b.blockType || 'text',
+              title: b.title || null,
+              content: typeof b.content === 'object' ? JSON.stringify(b.content) : (b.content || '{}'),
+              sortOrder: b.sortOrder ?? i,
+            })),
+          },
+        } : {}),
       },
       include: NEWS_INCLUDE,
     });
@@ -217,6 +230,7 @@ export async function updateNewsItem(req: Request, res: Response) {
       metaDescription,
       metaKeywords,
       authorId,
+      blocks,
     } = req.body;
 
     const updateData: Record<string, unknown> = {};
@@ -243,6 +257,24 @@ export async function updateNewsItem(req: Request, res: Response) {
     if (metaDescription !== undefined) updateData.metaDescription = metaDescription || null;
     if (metaKeywords !== undefined) updateData.metaKeywords = metaKeywords || null;
     if (authorId !== undefined) updateData.authorId = authorId || null;
+
+    // 处理区块：替换全部
+    if (Array.isArray(blocks)) {
+      // 先删除旧区块
+      await prisma.articleBlock.deleteMany({ where: { articleId: id } });
+      // 创建新区块
+      if (blocks.length > 0) {
+        await prisma.articleBlock.createMany({
+          data: blocks.map((b: any, i: number) => ({
+            articleId: id,
+            blockType: b.blockType || 'text',
+            title: b.title || null,
+            content: typeof b.content === 'object' ? JSON.stringify(b.content) : (b.content || '{}'),
+            sortOrder: b.sortOrder ?? i,
+          })),
+        });
+      }
+    }
 
     const item = await prisma.newsEvent.update({
       where: { id },

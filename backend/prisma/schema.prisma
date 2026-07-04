@@ -219,6 +219,7 @@ model NewsEvent {
 
   createdBy      User?     @relation("NewsEventCreator", fields: [createdById], references: [id], onDelete: SetNull)
   author         Author?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  blocks         ArticleBlock[]
 
   @@map("news_events")
 }
@@ -374,6 +375,23 @@ model ContentBlock {
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("content_blocks")
+}
+
+// ===== 文章内容区块表（文章详情页模块化编辑）=====
+model ArticleBlock {
+  id          Int       @id @default(autoincrement())
+  articleId   Int       @map("article_id")
+  blockType   String    @map("block_type")   // text / product_cards / video / files
+  title       String?                        // 区块标题（显示用）
+  content     String                        // JSON 格式的区块内容
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  article     NewsEvent @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@map("article_blocks")
 }
 
 // ===== 标签字典表 =====

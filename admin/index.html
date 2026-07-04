@@ -2326,6 +2326,80 @@ const QUILL_TOOLBAR = [
             <div class="card-body">
               <div :id="'article-quill-editor'" class="quill-editor" style="min-height:400px;"></div>
               <textarea class="form-control" v-model="editingArticle.contentHtml" style="display:none;"></textarea>
+
+              <!-- 附加区块 -->
+              <div style="margin-top:32px;border-top:2px solid var(--border);padding-top:20px;">
+                <h4 style="margin:0 0 12px 0;">附加区块 <span style="font-size:12px;color:var(--text-tertiary);font-weight:400;">（可选：关联产品、视频、文件）</span></h4>
+
+                <div v-for="(block, bi) in editingArticle.blocks" :key="bi" style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;background:#f9f9fb;">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                    <span style="cursor:grab;color:var(--text-tertiary);font-size:16px;">⠿</span>
+                    <select class="form-control" v-model="block.blockType" style="max-width:160px;font-size:13px;" @change="onBlockTypeChange(bi)">
+                      <option value="product_cards">关联产品</option>
+                      <option value="video">视频</option>
+                      <option value="files">文件下载</option>
+                    </select>
+                    <span style="font-size:12px;color:var(--text-tertiary);">#{{ bi + 1 }}</span>
+                    <span style="flex:1;"></span>
+                    <button class="btn btn-sm btn-outline" style="font-size:12px;padding:2px 8px;" @click="moveBlock(bi, -1)" :disabled="bi === 0">↑</button>
+                    <button class="btn btn-sm btn-outline" style="font-size:12px;padding:2px 8px;" @click="moveBlock(bi, 1)" :disabled="bi === editingArticle.blocks.length - 1">↓</button>
+                    <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 8px;" @click="removeBlock(bi)">×</button>
+                  </div>
+
+                  <!-- product_cards block with search -->
+                  <div v-if="block.blockType === 'product_cards'">
+                    <label style="font-size:12px;font-weight:600;">搜索并选择产品</label>
+                    <div style="position:relative;">
+                      <input class="form-control" :placeholder="'搜索产品名称...'" style="font-size:13px;"
+                        v-model="block._searchKeyword"
+                        @input="debounceSearchProducts(bi, block._searchKeyword)"
+                        @focus="block._showResults = true"
+                        @blur="setTimeout(function(){ block._showResults = false; }, 200)">
+                      <!-- 搜索结果 -->
+                      <div v-if="block._showResults && block._searchResults && block._searchResults.length" style="position:absolute;top:100%;left:0;right:0;z-index:100;background:#fff;border:1px solid var(--border);border-radius:4px;max-height:220px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+                        <div v-for="(p, pi) in block._searchResults" :key="pi"
+                          style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px;"
+                          @mousedown.prevent="selectProduct(bi, p)">
+                          <span style="font-weight:600;color:var(--text-primary);">{{ p.name }}</span>
+                          <span v-if="p.inciName" style="font-size:11px;color:var(--text-tertiary);">INCI: {{ p.inciName }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 已选产品 -->
+                    <div v-if="block._selectedProducts && block._selectedProducts.length" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">
+                      <span v-for="(sp, spi) in block._selectedProducts" :key="spi"
+                        style="display:inline-flex;align-items:center;gap:4px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:4px;font-size:12px;">
+                        {{ sp.name || ('#' + sp.id) }}
+                        <span style="cursor:pointer;font-weight:bold;font-size:14px;line-height:1;" @click="removeSelectedProduct(bi, spi)">×</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- video block -->
+                  <div v-if="block.blockType === 'video'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">视频标题</label>
+                      <input class="form-control" v-model="block._title" placeholder="视频标题" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label style="font-size:12px;font-weight:600;">视频 URL</label>
+                      <input class="form-control" v-model="block._url" placeholder="https://..." style="font-size:13px;">
+                    </div>
+                  </div>
+
+                  <!-- files block -->
+                  <div v-if="block.blockType === 'files'">
+                    <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:8px;">每个文件一行：文件名 | URL</div>
+                    <textarea class="form-control" v-model="block._filesText" rows="4" placeholder="产品手册.pdf | /uploads/manual.pdf&#10;技术资料.docx | /uploads/tech.docx" style="font-size:13px;font-family:monospace;"></textarea>
+                  </div>
+                </div>
+
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-sm btn-outline" @click="addBlock('product_cards')">+ 关联产品</button>
+                  <button class="btn btn-sm btn-outline" @click="addBlock('video')">+ 视频</button>
+                  <button class="btn btn-sm btn-outline" @click="addBlock('files')">+ 文件下载</button>
+                </div>
+              </div>
             </div>
           </div>
           <!-- 保存 -->
@@ -3258,7 +3332,7 @@ createApp({
       selectedArticleIds: [],
       articleFilter: { page: 1, limit: 20, keyword: '', articleType: '', isPublished: '' },
       articlePagination: { total: 0, totalPages: 0 },
-      editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0 },
+      editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] },
       articleEditTab: 'basic',
       articleTagInput: '',
       articleTagList: [],
@@ -5212,7 +5286,7 @@ createApp({
     resetArticleEdit() {
       var self = this;
       if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
-      this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0 };
+      this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] };
       this.loadArticleTags();
       this.loadAuthorList();
       this.articleEditTab = 'basic';
@@ -5224,7 +5298,36 @@ createApp({
         try { tagsList = JSON.parse(item.tags); } catch(e) { tagsList = item.tags.split(',').map(t => t.trim()).filter(Boolean); }
       }
       if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
-      this.editingArticle = { ...item, tagsList, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      // 加载区块数据
+      let blocks = [];
+      if (Array.isArray(item.blocks) && item.blocks.length > 0) {
+        blocks = item.blocks.map(function(b) {
+          var parsed = {};
+          try { parsed = typeof b.content === 'string' ? JSON.parse(b.content) : (b.content || {}); } catch(e) {}
+          var block = { id: b.id, blockType: b.blockType, title: b.title || '', sortOrder: b.sortOrder, content: parsed };
+          // 初始化编辑辅助字段
+          if (b.blockType === 'product_cards') {
+            block._searchKeyword = '';
+            block._searchResults = [];
+            block._showResults = false;
+            // 兼容新旧格式：优先读 products 数组，降级到 productIds
+            if (parsed.products && parsed.products.length > 0) {
+              block._selectedProducts = parsed.products.map(function(p) { return { id: p.id, name: p.name || ('#' + p.id), inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; });
+            } else if (parsed.productIds && parsed.productIds.length > 0) {
+              block._selectedProducts = parsed.productIds.map(function(id) { return { id: id, name: '#' + id }; });
+            } else {
+              block._selectedProducts = [];
+            }
+          } else if (b.blockType === 'video') {
+            block._title = parsed.title || '';
+            block._url = parsed.url || '';
+          } else if (b.blockType === 'files') {
+            block._filesText = (parsed.files || []).map(function(f) { return (f.name || '') + ' | ' + (f.url || ''); }).join('\n');
+          }
+          return block;
+        });
+      }
+      this.editingArticle = { ...item, tagsList, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '', blocks: blocks };
       this.loadArticleTags();
       this.loadAuthorList();
       this.currentPage = 'article-edit';
@@ -5234,17 +5337,121 @@ createApp({
       if (!this.editingArticle.title) { this.showAlert('标题不能为空'); return; }
       if (!this.editingArticle.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
-      // 同步 Quill 内容（如果用户正在 content tab 但未触发 text-change）
+      // 同步 Quill 内容
       if (this.articleQuill && this.articleQuill.root) {
         this.editingArticle.contentHtml = this.articleQuill.root.innerHTML;
       }
-      const payload = { ...this.editingArticle, tags: JSON.stringify(this.editingArticle.tagsList || []) };
+      // 构建区块数据
+      var blocksPayload = this.editingArticle.blocks.map(function(b, i) {
+        var content = {};
+        if (b.blockType === 'product_cards') {
+          content.products = (b._selectedProducts || []).map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; });
+        } else if (b.blockType === 'video') {
+          content.title = b._title || '';
+          content.url = b._url || '';
+        } else if (b.blockType === 'files') {
+          content.files = (b._filesText || '').split('\n').filter(function(l) { return l.trim(); }).map(function(line) {
+            var parts = line.split('|').map(function(s) { return s.trim(); });
+            return { name: parts[0] || '', url: parts[1] || '' };
+          });
+        }
+        return { blockType: b.blockType, title: b.title || '', content: content, sortOrder: i };
+      });
+      const payload = { ...this.editingArticle, tags: JSON.stringify(this.editingArticle.tagsList || []), blocks: blocksPayload };
       delete payload.tagsList;
       try {
         if (this.editingArticle.id) { await this.api('/news/' + this.editingArticle.id, { method: 'PUT', body: JSON.stringify(payload) }); }
         else { await this.api('/news', { method: 'POST', body: JSON.stringify(payload) }); }
         this.currentPage = 'article-list'; this.loadArticleList();
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    // ---- 区块操作方法 ----
+    addBlock(type) {
+      var block = { blockType: type, content: {}, _title: '', _url: '', _filesText: '' };
+      if (type === 'product_cards') {
+        block._searchKeyword = '';
+        block._searchResults = [];
+        block._showResults = false;
+        block._selectedProducts = [];
+      } else if (type === 'video') {
+        block._title = '';
+        block._url = '';
+      } else if (type === 'files') {
+        block._filesText = '';
+      }
+      if (!this.editingArticle.blocks) this.editingArticle.blocks = [];
+      this.editingArticle.blocks.push(block);
+    },
+    removeBlock(index) {
+      this.editingArticle.blocks.splice(index, 1);
+    },
+    moveBlock(index, direction) {
+      var blocks = this.editingArticle.blocks;
+      var newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= blocks.length) return;
+      var tmp = blocks[index];
+      blocks[index] = blocks[newIndex];
+      blocks[newIndex] = tmp;
+      this.editingArticle.blocks = blocks.slice();
+    },
+    onBlockTypeChange(index) {
+      var b = this.editingArticle.blocks[index];
+      if (b.blockType === 'product_cards') {
+        b._searchKeyword = '';
+        b._searchResults = [];
+        b._showResults = false;
+        b._selectedProducts = [];
+      } else if (b.blockType === 'video') {
+        b._title = '';
+        b._url = '';
+      } else if (b.blockType === 'files') {
+        b._filesText = '';
+      }
+      b.content = {};
+    },
+    syncProductIds(index) {
+    },
+    // 产品搜索（去抖）
+    debounceSearchProducts: function() {
+      var timer = null;
+      return function(bi, keyword) {
+        var self = this;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function() {
+          self.searchProducts(bi, keyword);
+        }, 300);
+      };
+    }(),
+    async searchProducts(bi, keyword) {
+      var block = this.editingArticle.blocks[bi];
+      if (!keyword || keyword.trim().length < 1) {
+        block._searchResults = [];
+        return;
+      }
+      try {
+        var kw = encodeURIComponent(keyword.trim());
+        var d = await this.api('/pc-ingredients?keyword=' + kw + '&limit=10&page=1');
+        block._searchResults = d.list || [];
+      } catch(e) {
+        block._searchResults = [];
+      }
+    },
+    selectProduct(bi, product) {
+      var block = this.editingArticle.blocks[bi];
+      if (!block._selectedProducts) block._selectedProducts = [];
+      // 避免重复
+      var exists = block._selectedProducts.some(function(p) { return p.id === product.id; });
+      if (!exists) {
+        block._selectedProducts.push({ id: product.id, name: product.name, inciName: product.inciName || '', imageUrl: product.imageUrl || '', description: product.description || '' });
+      }
+      block._searchKeyword = '';
+      block._searchResults = [];
+    },
+    removeSelectedProduct(bi, index) {
+      var block = this.editingArticle.blocks[bi];
+      if (block._selectedProducts) {
+        block._selectedProducts.splice(index, 1);
+      }
     },
     async toggleArticlePublish(item) {
       try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadArticleList(); }

@@ -12,6 +12,12 @@ backend/prisma/gattefosse.db
 backend/prisma/gattefosse.db-journal
 backend/prisma/gattefosse.db-wal
 
+# 本地开发数据库
+backend/prisma/dev.db
+
+# 数据同步目录（运行时生成）
+backend/data/
+
 # 临时文件
 _original_detail.html
 import_pharma.py

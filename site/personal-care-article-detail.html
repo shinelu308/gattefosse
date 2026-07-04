@@ -1,159 +1,595 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>文章详情 | 嘉法狮</title>
-  <meta name="description" :content="metaDesc">
-  <meta name="keywords" :content="metaKeywords">
-  <link rel="canonical" :href="canonicalUrl">
-  <script src="/static/js/vue.global.prod.js"></script>
-  <script src="/static/js/axios.min.js"></script>
-  <script src="/static/js/jquery-3.7.1.min.js"></script>
-  <style>
-    :root { --accent-color: #8EB73C; --accent-color-dark: #598305; }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: "Open Sans",sans-serif; font-size: 16px; line-height: 1.5; color: #333; }
-    .s-article { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
-    .s-article__top-part { display: flex; flex-direction: column; gap: 32px; }
-    .s-article__top-part > div:last-child:not(.block-accroche) { margin-bottom: 32px; }
-    .s-article__title { font-size: 48px; font-weight: 700; line-height: 1.2; color: #232426; margin: 0; }
-    .s-article__data { display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
-    .s-article__author { display: flex; gap: 16px; align-items: center; }
-    .s-article__author-img { border-radius: 50%; width: 56px; height: 56px; object-fit: cover; }
-    .s-article__author-info { display: flex; flex-direction: column; }
-    .s-article__author-name { font-size: 14px; font-weight: 700; color: #232426; margin: 0; }
-    .s-article__author-poste { font-size: 12px; color: #74797D; }
-    .s-article__category-title { margin-bottom: 4px; font-size: 11px; color: var(--accent-color); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; display: inline-block; }
-    .s-article__date { display: flex; align-items: center; gap: 12px; color: #74797D; margin-left: auto; }
-    .s-article__date .c-card__date, .s-article__date .c-card__reading { color: inherit; font-size: 13px; }
-    .s-article__content { font-size: 16px; line-height: 1.8; color: #333; }
-    .s-article__content p { margin-bottom: 1.2em; }
-    .s-article__content h2 { font-size: 28px; margin: 40px 0 16px; font-weight: 600; color: #232426; }
-    .s-article__content h3 { font-size: 22px; margin: 32px 0 12px; font-weight: 600; color: #232426; }
-    .s-article__content img { max-width: 100%; border-radius: 8px; margin: 24px 0; height: auto; }
-    .s-article__content a { color: var(--accent-color); text-decoration: underline; }
-    .s-article__content blockquote { border-left: 4px solid var(--accent-color); padding-left: 20px; margin: 24px 0; color: #555; font-style: italic; }
-    .s-article__content ul, .s-article__content ol { margin-bottom: 1.2em; padding-left: 24px; }
-    .page-top__image { width: 100%; height: 400px; background-size: cover; background-position: center; }
-    .page-top { margin-bottom: 0; }
-    .breadcrumb { display: flex; gap: 8px; list-style: none; padding: 24px 0 16px; font-size: 13px; color: #74797D; margin: 0; }
-    .breadcrumb a { color: var(--accent-color); text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .breadcrumb li+li:before { content: '/'; margin-right: 8px; color: #ccc; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    .o-tag-list { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; margin: 8px 0 0; }
-    .c-card__tag-item { background: #EAF3DE; color: #3B6D11; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
-    .c-card__info { display: flex; align-items: center; gap: 8px; }
-    .loading { text-align: center; padding: 80px 20px; color: #999; font-size: 16px; }
-    .theme-cosm { --accent-color: #8EB73C; }
-    .s-page--inner { min-height: 60vh; }
-    .s-page--inner.no-image-banner { padding-top: 20px; }
-    @media (max-width: 768px) {
-      .s-article__title { font-size: 28px; text-align: center; }
-      .s-article__data { flex-direction: column; gap: 16px; }
-      .s-article__date { margin-left: 0; justify-content: flex-start; }
-      .s-article__author-img { width: 40px; height: 40px; }
-    }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.gattefossechina.cn/personal-care-article-detail.html">
+    <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+    <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css" />
+    <link rel="stylesheet" media="all" href="/sites/default/files/css/menu_icons_1713165946.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_pPfrrsOwLXxDLw7-UYKDqFONEmjyh_dCi89ZBWzLKGc.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+
+    <!-- Custom styles matching English gattefosse.com article pages -->
+    <style>
+        [v-cloak] { display: none !important; }
+
+        /* ===== Font size base (matching Drupal theme) ===== */
+        html { font-size: 10px !important; }
+        body { font-size: 16px; }
+
+        /* ===== Page layout ===== */
+        .adp-has-image .page-top { height: 405px; }
+        .adp-no-image .page-top { height: auto; max-width: 1440px; margin: 0 auto; }
+        .adp-no-image .region-breadcrumb { position: static; margin-bottom: 25px; }
+        .adp-no-image .breadcrumb { position: static; width: auto; background: none; padding-left: 0; }
+        .adp-no-image .node__wrapper { margin-top: auto; padding-top: 0; }
+
+        /* ===== 摘要区（匹配原站 .s-article__subtitle + .block-accroche）===== */
+        .adp-summary-wrap { margin-top: 0; }
+
+        /* 副标题行：小字、靠左、无大写 */
+        .adp-summary-wrap .s-article__subtitle {
+            display: block !important;
+            font-size: 13px !important;
+            letter-spacing: 0.04em !important;
+            color: #3C4248 !important;
+            margin-bottom: 25px !important;
+            text-align: left !important;
+        }
+
+        /* 摘要正文：大号灰色字体 + 金色底边线 */
+        .block-accroche {
+            font-family: "Din Next Lt Pro Light", "Microsoft YaHei", sans-serif !important;
+            font-size: 18px !important;
+            line-height: 1.35 !important;
+            color: #74797D !important;
+            border-bottom: 1px solid #E1D9C3 !important;
+            padding-bottom: 12px !important;
+            margin-bottom: 20px !important;
+        }
+        .block-accroche p,
+        .block-accroche * {
+            font-size: inherit !important;
+            color: inherit !important;
+            margin: 0 !important;
+        }
+
+        /* ===== Article title ===== */
+        .s-article__title { font-size: 48px !important; font-weight: 700; line-height: 1.2; color: #232426; margin-bottom: 2px; }
+
+        /* ===== Author info ===== */
+        .s-article__author-name { font-size: 14px !important; font-weight: 700; color: #232426; }
+        .s-article__author-poste { font-size: 12px !important; color: #74797D; }
+        .s-article__category-title { font-size: 11px !important; letter-spacing: 0.08em; text-transform: uppercase; }
+        .c-card__date { font-size: 13px !important; color: #A5A9AE; }
+        .c-card__reading { font-size: 12px !important; color: #A5A9AE; }
+        .breadcrumb { font-size: 12px !important; }
+
+        /* ===== IMAGE TABLE (auto-generated from consecutive images) ===== */
+        /* Matches original Drupal site's use of <table> for image groups */
+        .adp-img-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 28px 0;
+            table-layout: fixed;
+            border: 1px solid #F0EBE4;
+        }
+        .adp-img-table td {
+            width: 33.333%;
+            padding: 12px;
+            vertical-align: middle;
+            text-align: center;
+            border-right: 1px solid #F0EBE4;
+            line-height: 0;
+        }
+        .adp-img-table td:last-child { border-right: none; }
+        .adp-img-table a {
+            display: block;
+            text-decoration: none !important;
+        }
+        /* 图片容器（匹配原站 .c-image + .c-image__container 结构） */
+        .adp-img-table a > img {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            border: none;
+        }
+        .adp-img-table a:hover img { opacity: 0.92; }
+
+        /* ===== 关联产品卡片（匹配原站 .c-cards / .c-card）===== */
+        .c-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .c-card {
+            display: flex !important;
+            border: 1px solid #F0EBE4 !important;
+            padding: 20px;
+            background-color: #fff;
+            width: calc(33.333% - 16px);
+            min-width: 280px;
+            box-sizing: border-box;
+        }
+        .c-card__image {
+            order: -1;
+            margin-right: 24px;
+            flex-shrink: 0;
+            width: 160px;
+            height: auto;
+        }
+        .c-card__image img {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+        .c-card__content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .c-card__title {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            color: #232426 !important;
+            margin: 0 0 6px 0 !important;
+        }
+        .c-card__title-link {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+        .c-card__title-link:hover {
+            color: #8EB73C !important;
+        }
+        .c-card__breadcrumb {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 8px 0;
+            font-size: 11px !important;
+            color: #A5A9AE !important;
+        }
+        .c-card__breadcrumb li { display: inline; }
+        .c-card__summary {
+            font-size: 14px !important;
+            line-height: 1.6;
+            color: #58616B !important;
+            margin-bottom: 12px !important;
+        }
+        .c-card__tag {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .c-card__tag-item {
+            display: inline-block;
+            font-size: 11px !important;
+            padding: 3px 10px;
+            background-color: #FFF5F5;
+            color: #C4004D;
+            border-radius: 2px;
+        }
+
+        /* Single image (standalone, not in table) */
+        .adp-content > p:has(> a:only-child > img:only-child) img {
+            max-width: 100%;
+            margin: 24px 0;
+            border: 1px solid #E3E8EE;
+        }
+
+        /* ===== Content typography (matching English site) ===== */
+        .adp-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #3C4248;
+        }
+        .adp-content > p {
+            margin-bottom: 1.25em;
+            margin-top: 0;
+        }
+        .adp-content h2 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #232426;
+            margin: 48px 0 18px;
+            line-height: 1.35;
+        }
+        .adp-content h2:first-child { margin-top: 24px; }
+        .adp-content h3 {
+            font-size: 21px;
+            font-weight: 600;
+            color: #232426;
+            margin: 36px 0 14px;
+            line-height: 1.4;
+        }
+        .adp-content strong {
+            font-weight: 700;
+            color: #232426;
+        }
+        .adp-content em,
+        .adp-content i {
+            font-style: italic;
+            color: #58616B;
+        }
+        .adp-content ul,
+        .adp-content ol {
+            padding-left: 26px;
+            margin: 0 0 1.25em;
+        }
+        .adp-content li {
+            margin-bottom: 6px;
+        }
+        .adp-content a {
+            color: #8EB73C;
+            text-decoration: underline;
+        }
+        .adp-content a:hover {
+            color: #598305;
+        }
+        .adp-content blockquote {
+            border-left: 4px solid #8EB73C;
+            padding-left: 22px;
+            margin: 28px 0;
+            color: #58616B;
+            font-style: italic;
+        }
+        .adp-content hr {
+            border: none;
+            border-top: 1px solid #E3E8EE;
+            margin: 36px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 767.98px) {
+            .adp-img-table td { display: block; width: 100%; padding: 0 0 16px 0; }
+            .adp-img-table td:last-child { padding-bottom: 0; }
+            .adp-img-table img { max-height: 400px; }
+        }
+    </style>
+
+    <title>文章详情 | 嘉法狮</title>
 </head>
-<body>
-  <div id="app" v-cloak>
-    <header id="header"></header>
-    <main class="s-page--inner main theme-cosm" :class="{'no-image-banner': !article.topBackground}">
-      <div class="container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li><a href="/">首页</a></li>
-            <li><a href="/personal-care.html">个人护理</a></li>
-            <li><a href="/personal-care/get-inspired.html">获取灵感</a></li>
-            <li><a href="/personal-care/get-inspired/articles.html">所有文章</a></li>
-            <li>{{ article.title }}</li>
-          </ol>
-        </nav>
-      </div>
-      <div v-if="article.topBackground" class="page-top">
-        <div class="page-top__image" :style="{ backgroundImage: 'url(' + article.topBackground + ')' }"></div>
-      </div>
-      <div class="container" v-if="article.id">
-        <article class="s-article">
-          <div class="s-article__top-part">
-            <h1 class="s-article__title">{{ article.title }}</h1>
-            <div class="s-article__data">
-              <div class="s-article__author" v-if="article.author">
-                <img :src="article.author.avatar || '/static/images/default-avatar.png'" alt="" class="s-article__author-img" @error="$event.target.src='/static/images/default-avatar.png'">
-                <div class="s-article__author-info">
-                  <div class="s-article__author-name">{{ article.author.name }}</div>
-                  <div class="s-article__author-poste" v-if="article.author.bio">{{ article.author.bio }}</div>
+<body class="path-node page-node-type-article-personal-care bg- d-flex flex-column">
+    <nav role="navigation" aria-label="Accès rapide au contenu">
+        <a href="#main-content" class="visually-hidden focusable skip__link">
+            <span class="skip__link__text">跳转到内容</span>
+        </a>
+    </nav>
+    <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas id="app">
+        <header role="banner" class="header" id="header"></header>
+        <div class="region region-highlight">
+            <div data-drupal-messages-fallback class="hidden"></div>
+        </div>
+
+        <main role="main" class="s-page--inner main theme-cosm"
+              :class="article.topBackground ? 'adp-has-image' : 'adp-no-image no-image-banner'"
+              data-bs-spy="scroll">
+
+            <!-- PAGE TOP: Breadcrumb + Header Image -->
+            <div class="page-top">
+                <div class="region region-breadcrumb">
+                    <div id="block-gattefosse-breadcrumbs" class="block block-system block-system-breadcrumb-block">
+                        <nav aria-label="breadcrumb">
+                            <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                                <li class="breadcrumb-item"><a href="/personal-care.html">个人护理</a></li>
+                                <li class="breadcrumb-item"><a href="/personal-care/get-inspired.html">获取灵感</a></li>
+                                <li class="breadcrumb-item">{{ article.title }}</li>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
-              </div>
-              <div>
-                <span class="s-article__category-title" v-if="article.articleType">{{ article.articleType }}</span>
-                <ul class="o-tag-list" v-if="article.tagsList && article.tagsList.length">
-                  <li class="c-card__tag-item" v-for="t in article.tagsList" :key="t">{{ t }}</li>
-                </ul>
-              </div>
-              <div class="c-card__info s-article__date">
-                <span class="c-card__date" v-if="article.displayDate">{{ article.displayDate }}</span>
-                <span class="c-card__reading" v-if="article.readingTime">阅读时长 {{ article.readingTime }} 分钟</span>
-                <span class="c-card__reading">阅读量 {{ article.views || 0 }}</span>
-              </div>
+                <div class="page-top__image page-top__image--full"
+                     v-if="article.topBackground"
+                     :style="{ backgroundImage: 'url(' + article.topBackground + ')' }"></div>
             </div>
-            <p v-if="article.summary" style="color:#74797D;font-size:15px;line-height:1.6;margin:0;">{{ article.summary }}</p>
-          </div>
-          <div class="s-article__content" v-html="article.contentHtml"></div>
-        </article>
-      </div>
-      <div class="loading" v-else-if="loading">加载中...</div>
-      <div class="loading" v-else>文章不存在或已下架</div>
-    </main>
-    <footer id="footer"></footer>
-  </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const articleId = params.get('id') || '';
+            <a id="main-content" tabindex="-1"></a>
 
-    $(document).ready(function () {
-      $("#header").load("/header.html");
-      $("#footer").load("/footer.html");
-    });
+            <!-- ARTICLE CONTENT -->
+            <div class="region region-content" v-if="article.id">
+                <div id="block-gattefosse-content" class="block block-system block-system-main-block">
+                    <article role="article" about="" class="node node--type-article-personal-care node--view-mode-full">
+                        <div class="container s-article">
+                            <div class="node__wrapper">
+                                <div class="node__content-wrapper">
 
-    const { createApp } = Vue;
-    const app = createApp({
-      data() {
-        return { article: {}, loading: true, metaDesc: '', metaKeywords: '', canonicalUrl: '' };
-      },
-      mounted() { this.fetchArticle(); },
-      methods: {
-        async fetchArticle() {
-          if (!articleId) { this.loading = false; return; }
-          try {
-            const resp = await axios.get('/api/news/' + articleId);
-            if (resp.data.code === 0) {
-              const item = resp.data.data;
-              let tagsList = [];
-              if (item.tags) {
-                try { tagsList = JSON.parse(item.tags); } catch(e) { tagsList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
-              }
-              var displayDate = '';
-              if (item.publishedDate) {
-                var d = new Date(item.publishedDate);
-                displayDate = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日';
-              }
-              this.article = { ...item, tagsList, displayDate };
-              this.metaDesc = item.metaDescription || item.summary || '';
-              this.metaKeywords = item.metaKeywords || '';
-              this.canonicalUrl = item.slug ? 'https://www.gattefossechina.cn/' + item.slug : window.location.href;
-              document.title = (item.metaTitle || item.title) + ' | 嘉法狮';
-              axios.put('/api/news/' + articleId + '/views').catch(function(){});
+                                    <div class="s-article__top-part">
+                                        <div class="row s-article__data">
+                                            <div class="col-md s-article__author" v-if="article.author">
+                                                <picture>
+                                                    <img :src="article.author.avatar || '/static/images/default-avatar.png'"
+                                                        alt="" width="56" height="56" loading="lazy"
+                                                        class="s-article__author-img img-fluid"
+                                                        @error="$event.target.src='/static/images/default-avatar.png'">
+                                                </picture>
+                                                <div class="s-article__author-info">
+                                                    <span class="s-article__author-name">{{ article.author.name }}</span>
+                                                    <span class="s-article__author-poste" v-if="article.author.bio">{{ article.author.bio }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <span class="s-article__category-title" v-if="article.articleType">{{ article.articleType }}</span>
+                                                <ul class="o-tag-list o-tag-list--wrap" v-if="article.tagsList && article.tagsList.length">
+                                                    <li v-for="tagItem in article.tagsList" :key="tagItem" class="c-card__tag-item">{{ tagItem }}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="c-card__info s-article__date">
+                                                    <div class="c-card__date" v-if="article.displayDate">{{ article.displayDate }}</div>
+                                                    <div class="c-card__reading">阅读量：{{ article.views || 0 }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-if="article.title">
+                                            <h1 class="s-article__title page-title u-title-styled">{{ article.title }}</h1>
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary -->
+                                    <!-- Summary section (matching original Drupal .s-article__subtitle + .block-accroche) -->
+                                    <div v-if="article.summary" class="adp-summary-wrap">
+                                        <div>
+                                            <div class="s-article__subtitle"><span>{{ article.summaryLabel || '' }}</span></div>
+                                        </div>
+                                        <div class="block-accroche">
+                                            <p>{{ article.summary }}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Body Content (with processed HTML for image galleries) -->
+                                    <div class="adp-content" v-html="article.processedContentHtml"></div>
+
+                                    <!-- 附加区块渲染 -->
+                                    <div v-if="article.blocks && article.blocks.length > 0" class="adp-blocks">
+                                      <div v-for="(blk, bi) in article.blocks" :key="bi">
+                                        <!-- product_cards -->
+                                        <div v-if="blk.blockType === 'product_cards'" class="c-cards" style="margin-top:32px;">
+                                          <div v-for="(card, ci) in renderProductCards(blk.content)" :key="ci" class="c-card c-card--bordered theme-cosm">
+                                            <div class="c-card__image">
+                                              <img :src="card.imageUrl || '/images/placeholder.png'" alt="" class="card__image img-fluid" loading="lazy">
+                                            </div>
+                                            <div class="c-card__content">
+                                              <ul class="c-card__breadcrumb"><li>{{ card.typeLabel || 'Ingredient' }}</li></ul>
+                                              <h3 class="c-card__title"><a class="c-card__title-link" :href="card.url || '#'">{{ card.name }}</a></h3>
+                                              <p class="c-card__summary">{{ card.summary || '' }}</p>
+                                              <ul class="c-card__tag" v-if="card.tags && card.tags.length">
+                                                <li class="c-card__tag-item" v-for="(t, ti) in card.tags" :key="ti">{{ t }}</li>
+                                              </ul>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <!-- video -->
+                                        <div v-if="blk.blockType === 'video'" class="adp-video-block" style="margin:28px 0;">
+                                          <div v-if="blk.content.title" style="font-size:18px;font-weight:600;color:#232426;margin-bottom:12px;">{{ blk.content.title }}</div>
+                                          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                                            <iframe :src="blk.content.url" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>
+                                          </div>
+                                        </div>
+                                        <!-- files -->
+                                        <div v-if="blk.blockType === 'files'" class="adp-files-block" style="margin:28px 0;">
+                                          <div class="adp-files-title" style="font-size:16px;font-weight:600;color:#232426;margin-bottom:16px;" v-if="blk.title">{{ blk.title }}</div>
+                                          <div v-for="(f, fi) in renderFiles(blk.content)" :key="fi" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #E3E8EE;border-radius:6px;margin-bottom:8px;">
+                                            <span style="font-size:20px;">📄</span>
+                                            <a :href="f.url" target="_blank" style="flex:1;color:#232426;text-decoration:none;font-size:14px;">{{ f.name }}</a>
+                                            <span style="font-size:12px;color:#A5A9AE;">{{ f.size || '' }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Loading/Error states -->
+            <div class="region region-content" v-else-if="loading">
+                <div class="container"><p style="text-align:center;padding:80px 20px;color:#999;">加载中...</p></div>
+            </div>
+            <div class="region region-content" v-else>
+                <div class="container"><p style="text-align:center;padding:80px 20px;color:#999;">文章不存在或已下架</p></div>
+            </div>
+
+            <a href="#main-content" id="js_back-to-top" title="回到顶部" class="c-back-to-top smoothHide d-none"></a>
+        </main>
+
+        <footer role="contentinfo" class="footer" id="footer"> </footer>
+    </div>
+
+    <!-- Global JS -->
+    <script src="/sites/default/files/js/js_N81plmNQLshwK5FABanM0cbfGmnGryAOF7WftT2a97I.js"></script>
+    <script src="/sites/default/files/js/js_s6aNHaNyXsaLLFMbA3H-L-jz0lJviaanDGet7HBKEvU.js"></script>
+    <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1713335028"></script>
+    <script src="/sites/default/files/js/js_-YsAXWEB4twbIcIo_-Yc1WeAgi9b2E4Oba79--lmNQ0.js"></script>
+
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var articleId = params.get('id') || '';
+
+        $(document).ready(function () {
+            $("#header").load("/header.html", function() {
+                if (typeof checkLoginStatus === 'function' && !checkLoginStatus()) {
+                    $("#collapseAccMenu").load("/account-menu.html");
+                } else if (typeof checkLoginStatus === 'function') {
+                    $("#collapseAccMenu").load("/account-menu-after-login.html");
+                }
+            });
+            $("#footer").load("/footer.html");
+        });
+
+        /**
+         * Process content HTML:
+         * 1. Detect consecutive <p><a><img>...</a></p> blocks (from Quill editor)
+         * 2. Wrap them into <table> rows for horizontal layout
+         * (Matching the original Drupal site's approach of using <table> for image groups)
+         */
+        function processContentHtml(html) {
+            if (!html) return '';
+
+            // Match patterns like: <p><a ... ><img ... ></a></p>
+            var re = /<p[^>]*>\s*<a[^>]*>\s*<img[^>]*>[^<]*<\/a>\s*<\/p>/gi;
+
+            // Find all image paragraph positions
+            var ranges = [], m;
+            while ((m = re.exec(html)) !== null) {
+                ranges.push({ start: m.index, end: m.index + m[0].length, html: m[0] });
             }
-          } catch (e) { console.error('加载文章失败:', e); }
-          finally { this.loading = false; }
-        },
-      },
-    });
-    app.mount('#app');
-  </script>
+            if (ranges.length < 2) return html;
+
+            // Group consecutive images: adjacent if gap between them has no real text
+            var groups = [], cur = [ranges[0]];
+            for (var i = 1; i < ranges.length; i++) {
+                var gap = html.substring(ranges[i - 1].end, ranges[i].start);
+                var clean = gap.replace(/<\/?p[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+                if (clean.length === 0 || clean.length <= 3) {
+                    cur.push(ranges[i]);
+                } else {
+                    groups.push(cur);
+                    cur = [ranges[i]];
+                }
+            }
+            groups.push(cur);
+
+            // Build replacement (reverse order to preserve indices)
+            var output = html;
+            for (var g = groups.length - 1; g >= 0; g--) {
+                var grp = groups[g];
+                if (grp.length < 2) continue;
+
+                // Build <table> row (matching original Drupal approach)
+                var cells = '';
+                for (var j = 0; j < grp.length; j++) {
+                    // Extract <a ...>...</a> from inside <p>...</p>
+                    var aTag = grp[j].html.replace(/^<p[^>]*>/i, '').replace(/<\/p>$/i, '');
+                    cells += '            <td>' + aTag + '</td>\n';
+                }
+                var tbl = '<table class="adp-img-table">\n<tbody>\n<tr>\n' + cells + '        </tr>\n</tbody>\n</table>';
+
+                output = output.substring(0, grp[0].start)
+                       + tbl
+                       + output.substring(grp[grp.length - 1].end);
+            }
+
+            return output;
+        }
+
+        Vue.createApp({
+            data: function () {
+                return { article: {}, loading: true };
+            },
+            mounted: function () { this.fetchArticle(); },
+            methods: {
+                fetchArticle: function () {
+                    var self = this;
+                    if (!articleId) { self.loading = false; return; }
+                    axios.get('/api/news/' + articleId)
+                        .then(function (resp) {
+                            if (resp.data.code === 0) {
+                                var item = resp.data.data;
+
+                                // Parse tags
+                                var tagsList = [];
+                                if (item.tags) {
+                                    try { tagsList = JSON.parse(item.tags); }
+                                    catch (e) { tagsList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
+                                }
+
+                                // Format date
+                                var displayDate = '';
+                                if (item.publishedDate) {
+                                    var d = new Date(item.publishedDate);
+                                    displayDate = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日';
+                                }
+
+                                // Build summary label
+                                var summaryLabel = '';
+                                var summaryText = item.summary || '';
+                                if (summaryText.length > 4) {
+                                    var cleanText = summaryText.replace(/[，。！？、：；""''（）【】]/g, '').trim();
+                                    if (cleanText.length > 14) {
+                                        summaryLabel = '聚焦' + cleanText.substring(0, 13) + '…';
+                                    } else {
+                                        summaryLabel = '聚焦' + cleanText;
+                                    }
+                                } else if (summaryText) {
+                                    summaryLabel = '聚焦' + summaryText;
+                                }
+
+                                // Process content HTML for image galleries (wrap consecutive images into <table>)
+                                var rawContent = item.contentHtml || '';
+                                var processedContent = processContentHtml(rawContent);
+
+                                // Parse blocks (parse JSON content strings)
+                                var blocks = [];
+                                if (Array.isArray(item.blocks)) {
+                                    blocks = item.blocks.map(function(b) {
+                                        var parsed = {};
+                                        try { parsed = typeof b.content === 'string' ? JSON.parse(b.content) : (b.content || {}); } catch(e) {}
+                                        return { blockType: b.blockType, title: b.title || '', content: parsed, sortOrder: b.sortOrder };
+                                    });
+                                }
+
+                                self.article = Object.assign({}, item, {
+                                    tagsList: tagsList,
+                                    displayDate: displayDate,
+                                    summaryLabel: summaryLabel,
+                                    contentHtml: rawContent,
+                                    processedContentHtml: processedContent,
+                                    blocks: blocks
+                                });
+
+                                document.title = (item.metaTitle || item.title) + ' | 嘉法狮';
+                                axios.put('/api/news/' + articleId + '/views').catch(function(){});
+                            }
+                        })
+                        .catch(function (e) { console.error('加载文章失败:', e); })
+                        .then(function () { self.loading = false; });
+                },
+                renderProductCards: function(content) {
+                    if (!content || !content.products || !Array.isArray(content.products)) return [];
+                    return content.products.map(function(p) {
+                        return {
+                            name: p.name || '产品 #' + p.id,
+                            typeLabel: 'Ingredient',
+                            imageUrl: p.imageUrl || '',
+                            summary: p.description || p.inciName || '',
+                            tags: [],
+                            url: '/personal-care/product-finder/product-detail.html?id=' + p.id
+                        };
+                    });
+                },
+                renderFiles: function(content) {
+                    if (!content || !content.files || !Array.isArray(content.files)) return [];
+                    return content.files;
+                }
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
