@@ -10,45 +10,57 @@
   <script src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="/static/css/styles.css" />
   <style>
-    .s-article { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
-    .s-article__top-part { margin-bottom: 32px; }
-    .s-article__title { font-size: 32px; font-weight: 600; line-height: 1.3; color: #1a1a1a; margin-bottom: 16px; }
-    .s-article__data { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
-    .s-article__author { display: flex; align-items: center; gap: 12px; }
-    .s-article__author-img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
-    .s-article__author-name { font-size: 14px; font-weight: 600; color: #333; }
-    .s-article__author-poste { font-size: 12px; color: #666; }
-    .s-article__category-title { display: inline-block; background: #EEEDFE; color: #3C3489; padding: 2px 10px; border-radius: 12px; font-size: 12px; }
-    .s-article__tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-    .s-article__tags .tag { display: inline-block; background: #f0f0f0; color: #555; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
-    .s-article__date { font-size: 13px; color: #999; }
-    .s-article__reading { font-size: 13px; color: #999; margin-left: 12px; }
-    .s-article__banner { width: 100%; height: 360px; object-fit: cover; border-radius: 12px; margin-bottom: 32px; }
+    :root { --accent-color: #8EB73C; --accent-color-dark: #598305; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Open Sans",sans-serif; font-size: 16px; line-height: 1.5; color: #333; }
+    .s-article { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+    .s-article__top-part { display: flex; flex-direction: column; gap: 32px; }
+    .s-article__top-part > div:last-child:not(.block-accroche) { margin-bottom: 32px; }
+    .s-article__title { font-size: 48px; font-weight: 700; line-height: 1.2; color: #232426; margin: 0; }
+    .s-article__data { display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+    .s-article__author { display: flex; gap: 16px; align-items: center; }
+    .s-article__author-img { border-radius: 50%; width: 56px; height: 56px; object-fit: cover; }
+    .s-article__author-info { display: flex; flex-direction: column; }
+    .s-article__author-name { font-size: 14px; font-weight: 700; color: #232426; margin: 0; }
+    .s-article__author-poste { font-size: 12px; color: #74797D; }
+    .s-article__category-title { margin-bottom: 4px; font-size: 11px; color: var(--accent-color); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; display: inline-block; }
+    .s-article__date { display: flex; align-items: center; gap: 12px; color: #74797D; margin-left: auto; }
+    .s-article__date .c-card__date, .s-article__date .c-card__reading { color: inherit; font-size: 13px; }
     .s-article__content { font-size: 16px; line-height: 1.8; color: #333; }
     .s-article__content p { margin-bottom: 1.2em; }
-    .s-article__content h2 { font-size: 24px; margin: 32px 0 16px; }
-    .s-article__content h3 { font-size: 20px; margin: 24px 0 12px; }
-    .s-article__content img { max-width: 100%; border-radius: 8px; margin: 16px 0; }
-    .s-article__back { display: inline-block; margin-bottom: 24px; color: var(--blue-link, #003CC5); text-decoration: none; font-size: 14px; }
+    .s-article__content h2 { font-size: 28px; margin: 40px 0 16px; font-weight: 600; color: #232426; }
+    .s-article__content h3 { font-size: 22px; margin: 32px 0 12px; font-weight: 600; color: #232426; }
+    .s-article__content img { max-width: 100%; border-radius: 8px; margin: 24px 0; height: auto; }
+    .s-article__content a { color: var(--accent-color); text-decoration: underline; }
+    .s-article__content blockquote { border-left: 4px solid var(--accent-color); padding-left: 20px; margin: 24px 0; color: #555; font-style: italic; }
+    .s-article__content ul, .s-article__content ol { margin-bottom: 1.2em; padding-left: 24px; }
     .page-top__image { width: 100%; height: 400px; background-size: cover; background-position: center; }
-    .breadcrumb { display: flex; gap: 8px; list-style: none; padding: 16px 0; font-size: 13px; color: #666; }
-    .breadcrumb a { color: var(--blue-link, #003CC5); text-decoration: none; }
+    .page-top { margin-bottom: 0; }
+    .breadcrumb { display: flex; gap: 8px; list-style: none; padding: 24px 0 16px; font-size: 13px; color: #74797D; margin: 0; }
+    .breadcrumb a { color: var(--accent-color); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
     .breadcrumb li+li:before { content: '/'; margin-right: 8px; color: #ccc; }
-    .page-top { margin-bottom: 24px; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    .o-tag-list { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; margin: 8px 0; }
+    .o-tag-list { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; margin: 8px 0 0; }
     .c-card__tag-item { background: #EAF3DE; color: #3B6D11; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
     .c-card__info { display: flex; align-items: center; gap: 8px; }
     .loading { text-align: center; padding: 80px 20px; color: #999; font-size: 16px; }
+    .theme-cosm { --accent-color: #8EB73C; }
+    .s-page--inner { min-height: 60vh; }
+    .s-page--inner.no-image-banner { padding-top: 20px; }
+    @media (max-width: 768px) {
+      .s-article__title { font-size: 28px; text-align: center; }
+      .s-article__data { flex-direction: column; gap: 16px; }
+      .s-article__date { margin-left: 0; justify-content: flex-start; }
+      .s-article__author-img { width: 40px; height: 40px; }
+    }
   </style>
 </head>
 <body>
   <div id="app" v-cloak>
     <header id="header"></header>
     <main class="s-page--inner main theme-cosm" :class="{'no-image-banner': !article.topBackground}">
-      <!-- 面包屑 -->
       <div class="container">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
@@ -60,11 +72,9 @@
           </ol>
         </nav>
       </div>
-      <!-- 头图 -->
       <div v-if="article.topBackground" class="page-top">
         <div class="page-top__image" :style="{ backgroundImage: 'url(' + article.topBackground + ')' }"></div>
       </div>
-      <!-- 文章内容 -->
       <div class="container" v-if="article.id">
         <article class="s-article">
           <div class="s-article__top-part">
@@ -83,13 +93,13 @@
                   <li class="c-card__tag-item" v-for="t in article.tagsList" :key="t">{{ t }}</li>
                 </ul>
               </div>
-              <div class="c-card__info">
-                <span class="s-article__date" v-if="article.displayDate">{{ article.displayDate }}</span>
-                <span class="s-article__reading" v-if="article.readingTime">阅读时长 {{ article.readingTime }} 分钟</span>
-                <span class="s-article__reading">阅读量 {{ article.views || 0 }}</span>
+              <div class="c-card__info s-article__date">
+                <span class="c-card__date" v-if="article.displayDate">{{ article.displayDate }}</span>
+                <span class="c-card__reading" v-if="article.readingTime">阅读时长 {{ article.readingTime }} 分钟</span>
+                <span class="c-card__reading">阅读量 {{ article.views || 0 }}</span>
               </div>
             </div>
-            <p v-if="article.summary" style="color:#666;font-size:15px;line-height:1.6;">{{ article.summary }}</p>
+            <p v-if="article.summary" style="color:#74797D;font-size:15px;line-height:1.6;margin:0;">{{ article.summary }}</p>
           </div>
           <div class="s-article__content" v-html="article.contentHtml"></div>
         </article>
@@ -109,20 +119,12 @@
       $("#footer").load("/footer.html");
     });
 
-    const { createApp, reactive, ref } = Vue;
+    const { createApp } = Vue;
     const app = createApp({
       data() {
-        return {
-          article: {},
-          loading: true,
-          metaDesc: '',
-          metaKeywords: '',
-          canonicalUrl: '',
-        };
+        return { article: {}, loading: true, metaDesc: '', metaKeywords: '', canonicalUrl: '' };
       },
-      mounted() {
-        this.fetchArticle();
-      },
+      mounted() { this.fetchArticle(); },
       methods: {
         async fetchArticle() {
           if (!articleId) { this.loading = false; return; }
@@ -130,12 +132,10 @@
             const resp = await axios.get('/api/news/' + articleId);
             if (resp.data.code === 0) {
               const item = resp.data.data;
-              // Parse tags
               let tagsList = [];
               if (item.tags) {
                 try { tagsList = JSON.parse(item.tags); } catch(e) { tagsList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
               }
-              // Format date
               var displayDate = '';
               if (item.publishedDate) {
                 var d = new Date(item.publishedDate);
@@ -145,18 +145,11 @@
               this.metaDesc = item.metaDescription || item.summary || '';
               this.metaKeywords = item.metaKeywords || '';
               this.canonicalUrl = item.slug ? 'https://www.gattefossechina.cn/' + item.slug : window.location.href;
-              // Update page title
               document.title = (item.metaTitle || item.title) + ' | 嘉法狮';
-              // Increment views
               axios.put('/api/news/' + articleId + '/views').catch(function(){});
-            } else {
-              console.error('加载失败:', resp.data.message);
             }
-          } catch (e) {
-            console.error('加载文章失败:', e);
-          } finally {
-            this.loading = false;
-          }
+          } catch (e) { console.error('加载文章失败:', e); }
+          finally { this.loading = false; }
         },
       },
     });

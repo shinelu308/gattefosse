@@ -2186,6 +2186,9 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'article-edit'">
           <h1 class="page-title">{{ editingArticle.id ? '编辑文章 — ' + editingArticle.title : '新增文章' }}</h1>
           <p class="page-subtitle">编写技术文章，展示在个人护理 - 获取灵感 - 文章页面 <span v-if="editingArticle.id" style="color:var(--text-tertiary);font-size:12px;margin-left:16px;">阅读量: {{ editingArticle.views || 0 }}</span></p>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <button class="btn btn-sm btn-outline" @click="goPage('article-list')">← 返回列表</button>
+          </div>
           <div class="tabs">
             <button class="tab" :class="{ active: articleEditTab === 'basic' }" @click="articleEditTab = 'basic'">基本信息</button>
             <button class="tab" :class="{ active: articleEditTab === 'media' }" @click="articleEditTab = 'media'">图片与作者</button>
