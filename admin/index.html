@@ -2170,11 +2170,13 @@ const QUILL_TOOLBAR = [
                 <tr v-if="articleList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
               </tbody>
             </table>
-            <div class="pagination" v-if="articlePagination.totalPages > 1">
-              <button class="btn btn-sm btn-outline" :disabled="articleFilter.page <= 1" @click="articleFilter.page--; loadArticleList()">‹</button>
-              <span style="font-size:12px;color:var(--text-tertiary);">{{ articleFilter.page }} / {{ articlePagination.totalPages }}</span>
-              <button class="btn btn-sm btn-outline" :disabled="articleFilter.page >= articlePagination.totalPages" @click="articleFilter.page++; loadArticleList()">›</button>
-              <span style="font-size:12px;color:var(--text-tertiary);margin-left:8px;">共 {{ articlePagination.total }} 条</span>
+            <div class="pagination" style="padding:12px 20px;">
+              <div class="pagination-info">共 {{ articlePagination.total }} 条，第 {{ articleFilter.page }} / {{ Math.max(1, articlePagination.totalPages) }} 页</div>
+              <div class="pagination-btns">
+                <button :disabled="articleFilter.page <= 1" @click="articleFilter.page--;loadArticleList()">‹</button>
+                <button :class="{ active: articleFilter.page === p }" v-for="p in pageRange(articlePagination.totalPages)" :key="p" @click="articleFilter.page = p; loadArticleList()">{{ p }}</button>
+                <button :disabled="articleFilter.page >= articlePagination.totalPages" @click="articleFilter.page++;loadArticleList()">›</button>
+              </div>
             </div>
           </div>
         </div>
