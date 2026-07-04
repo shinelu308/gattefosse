@@ -5312,7 +5312,7 @@ createApp({
             block._showResults = false;
             // 兼容新旧格式：优先读 products 数组，降级到 productIds
             if (parsed.products && parsed.products.length > 0) {
-              block._selectedProducts = parsed.products.map(function(p) { return { id: p.id, name: p.name || ('#' + p.id), inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; });
+              block._selectedProducts = parsed.products.map(function(p) { return { id: p.id, name: p.name || ('#' + p.id), inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '', functionalityTag: p.functionalityTag || [] }; });
             } else if (parsed.productIds && parsed.productIds.length > 0) {
               block._selectedProducts = parsed.productIds.map(function(id) { return { id: id, name: '#' + id }; });
             } else {
@@ -5345,7 +5345,7 @@ createApp({
       var blocksPayload = this.editingArticle.blocks.map(function(b, i) {
         var content = {};
         if (b.blockType === 'product_cards') {
-          content.products = (b._selectedProducts || []).map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; });
+          content.products = (b._selectedProducts || []).map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '', functionalityTag: p.functionalityTag || [] }; });
         } else if (b.blockType === 'video') {
           content.title = b._title || '';
           content.url = b._url || '';
@@ -5442,7 +5442,7 @@ createApp({
       // 避免重复
       var exists = block._selectedProducts.some(function(p) { return p.id === product.id; });
       if (!exists) {
-        block._selectedProducts.push({ id: product.id, name: product.name, inciName: product.inciName || '', imageUrl: product.imageUrl || '', description: product.description || '' });
+        block._selectedProducts.push({ id: product.id, name: product.name, inciName: product.inciName || '', imageUrl: product.imageUrl || '', description: product.description || '', functionalityTag: product.functionalityTag || [] });
       }
       block._searchKeyword = '';
       block._searchResults = [];
