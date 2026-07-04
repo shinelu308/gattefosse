@@ -5467,7 +5467,7 @@ createApp({
       try {
         const fd = new FormData();
         fd.append('file', file);
-        const r = await this.api('/upload', { method: 'POST', body: fd, noJson: true });
+        const r = await this.api('/upload/image', { method: 'POST', body: fd, noJson: true });
         this.editingArticle[field] = r.data?.url || r.url || r.path;
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingArticleImage = false; }
