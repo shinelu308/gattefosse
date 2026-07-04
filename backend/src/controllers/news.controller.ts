@@ -277,6 +277,26 @@ export async function deleteNewsItem(req: Request, res: Response) {
 }
 
 /**
+ * 批量删除新闻/活动
+ * POST /api/news/batch-delete
+ */
+export async function batchDeleteNews(req: Request, res: Response) {
+  try {
+    const { ids } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json(fail('ids 不能为空'));
+    }
+    await prisma.newsEvent.deleteMany({
+      where: { id: { in: ids } },
+    });
+    return res.json(success({ deleted: ids.length }, '批量删除成功'));
+  } catch (error) {
+    console.error('批量删除失败:', error);
+    return res.status(500).json(fail('批量删除失败'));
+  }
+}
+
+/**
  * 获取所有文章标签（去重）
  * GET /api/news/tags/list?type=article
  */

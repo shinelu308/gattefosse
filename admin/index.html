@@ -2141,11 +2141,13 @@ const QUILL_TOOLBAR = [
                 <button class="btn btn-primary" @click="loadArticleList()">搜索</button>
                 <button class="btn btn-outline" @click="articleFilter = { page:1, limit:20, keyword:'', articleType:'', isPublished:'' }; loadArticleList();">重置</button>
                 <button class="btn btn-primary" @click="currentPage='article-edit'; resetArticleEdit()" style="margin-left:auto;">+ 新增文章</button>
+                <span v-if="selectedArticleIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedArticleIds.length }} 项</span>
+                <button class="btn btn-sm btn-danger" @click="batchDeleteArticle" :disabled="selectedArticleIds.length === 0">批量删除 ({{ selectedArticleIds.length }})</button>
               </div>
             </div>
             <table class="table">
               <thead><tr>
-                <th style="width:40px;"><input type="checkbox"></th>
+                <th style="width:40px;"><input type="checkbox" :checked="articleList.length > 0 && selectedArticleIds.length === articleList.length" @change="toggleSelectAllArticle" title="全选/取消全选"></th>
                 <th style="width:200px;">标题</th>
                 <th style="width:100px;">子类型</th>
                 <th style="width:80px;">阅读时长</th>
@@ -2155,7 +2157,7 @@ const QUILL_TOOLBAR = [
               </tr></thead>
               <tbody>
                 <tr v-for="item in articleList" :key="item.id">
-                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox" :value="item.id" v-model="selectedArticleIds" @change="onArticleSelectChange"></td>
                   <td class="td-title">{{ item.title }}</td>
                   <td><span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;">{{ item.articleType || '-' }}</span></td>
                   <td>{{ item.readingTime || '-' }} 分钟</td>
@@ -3250,6 +3252,7 @@ createApp({
       editingNews: { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: '', eventEndDate: '', location: '', booth: '', isPublished: false },
       // 获取灵感 — 文章
       articleList: [],
+      selectedArticleIds: [],
       articleFilter: { page: 1, limit: 20, keyword: '', articleType: '', isPublished: '' },
       articlePagination: { total: 0, totalPages: 0 },
       editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0 },
@@ -5093,8 +5096,34 @@ createApp({
       if (this.articleFilter.keyword) params.set('keyword', this.articleFilter.keyword);
       if (this.articleFilter.articleType) params.set('articleType', this.articleFilter.articleType);
       if (this.articleFilter.isPublished) params.set('isPublished', this.articleFilter.isPublished);
-      try { const d = await this.api('/news?' + params.toString()); this.articleList = d.list; this.articlePagination = d.pagination; }
+      try { const d = await this.api('/news?' + params.toString()); this.articleList = d.list; this.articlePagination = d.pagination; this.selectedArticleIds = []; }
       catch (e) { console.error(e); }
+    },
+    // ============ 全选 & 批量删除 - 文章 ============
+    toggleSelectAllArticle() {
+      if (this.selectedArticleIds.length === this.articleList.length) {
+        this.selectedArticleIds = [];
+      } else {
+        this.selectedArticleIds = this.articleList.map(item => item.id);
+      }
+    },
+    onArticleSelectChange() {
+      // 不需要额外逻辑，v-model 已维护 selectedArticleIds
+    },
+    async batchDeleteArticle() {
+      if (this.selectedArticleIds.length === 0) return;
+      const ids = [...this.selectedArticleIds];
+      this.showConfirm('批量删除', '确定删除选中的 ' + ids.length + ' 篇文章？此操作不可恢复。', async () => {
+        try {
+          await this.api('/news/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) });
+          this.selectedArticleIds = [];
+          this.loadArticleList();
+          this.showAlert('成功删除 ' + ids.length + ' 篇文章');
+        } catch (e) {
+          console.error('批量删除异常:', e);
+          this.showAlert('批量删除失败：' + e.message);
+        }
+      });
     },
     async loadArticleTags() {
       try { const d = await this.api('/news/tags/list?type=article'); this.articleTagList = d.data || []; }
