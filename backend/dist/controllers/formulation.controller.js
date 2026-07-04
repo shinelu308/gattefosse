@@ -16,7 +16,7 @@ const FORMULATION_INCLUDE = {
  */
 async function listFormulations(req, res) {
     try {
-        const { page = '1', limit = '20', keyword, application, form, claim, naturalityIndex, isPublished, } = req.query;
+        const { page = '1', limit = '20', keyword, application, form, claim, naturalityIndex, ingredient, isPublished, } = req.query;
         const pageNum = Math.max(1, parseInt(String(page)));
         const limitNum = Math.min(100, Math.max(1, parseInt(String(limit))));
         const where = {};
@@ -32,6 +32,7 @@ async function listFormulations(req, res) {
             ['applicationTag', application],
             ['formTag', form],
             ['claimTag', claim],
+            ['conceptTag', ingredient],
         ];
         for (const [field, val] of tagFilters) {
             if (val) {
@@ -94,7 +95,7 @@ async function getFormulation(req, res) {
  */
 async function createFormulation(req, res) {
     try {
-        const { name, code, description, imageUrl, pdfPath, applicationTag, formTag, claimTag, naturalityIndex, compositionText, preparationSteps, pictos, sortOrder, isPublished, } = req.body;
+        const { name, code, description, imageUrl, pdfPath, applicationTag, formTag, claimTag, naturalityIndex, conceptTag, compositionText, preparationSteps, pictos, sortOrder, isPublished, videoUrl, videoSectionTitle, } = req.body;
         if (!name) {
             return res.status(400).json((0, response_1.fail)('配方名称不能为空'));
         }
@@ -109,11 +110,14 @@ async function createFormulation(req, res) {
                 formTag: Array.isArray(formTag) ? formTag.join(',') : (formTag || ''),
                 claimTag: Array.isArray(claimTag) ? claimTag.join(',') : (claimTag || ''),
                 naturalityIndex: naturalityIndex || null,
+                conceptTag: Array.isArray(conceptTag) ? conceptTag.join(',') : (conceptTag || ''),
                 compositionText: compositionText || null,
                 preparationSteps: preparationSteps || null,
                 pictos: pictos || '[]',
                 sortOrder: sortOrder || 0,
                 isPublished: isPublished || false,
+                videoUrl: videoUrl || null,
+                videoSectionTitle: videoSectionTitle || null,
                 createdById: req.user?.userId || null,
             },
             include: FORMULATION_INCLUDE,
@@ -135,7 +139,7 @@ async function updateFormulation(req, res) {
         if (!existing) {
             return res.status(404).json((0, response_1.fail)('配方不存在'));
         }
-        const { name, code, description, imageUrl, pdfPath, applicationTag, formTag, claimTag, naturalityIndex, compositionText, preparationSteps, pictos, sortOrder, isPublished, } = req.body;
+        const { name, code, description, imageUrl, pdfPath, applicationTag, formTag, claimTag, naturalityIndex, conceptTag, compositionText, preparationSteps, pictos, sortOrder, isPublished, videoUrl, videoSectionTitle, } = req.body;
         const updateData = {};
         if (name !== undefined)
             updateData.name = name;
@@ -155,15 +159,22 @@ async function updateFormulation(req, res) {
             updateData.claimTag = Array.isArray(claimTag) ? claimTag.join(',') : claimTag;
         if (naturalityIndex !== undefined)
             updateData.naturalityIndex = naturalityIndex || null;
+        if (conceptTag !== undefined)
+            updateData.conceptTag = Array.isArray(conceptTag) ? conceptTag.join(',') : conceptTag;
         if (compositionText !== undefined)
             updateData.compositionText = compositionText || null;
         if (preparationSteps !== undefined)
             updateData.preparationSteps = preparationSteps || null;
-        if (pictos !== undefined) updateData.pictos = pictos || '[]';
+        if (pictos !== undefined)
+            updateData.pictos = pictos || '[]';
         if (sortOrder !== undefined)
             updateData.sortOrder = sortOrder;
         if (isPublished !== undefined)
             updateData.isPublished = isPublished;
+        if (videoUrl !== undefined)
+            updateData.videoUrl = videoUrl || null;
+        if (videoSectionTitle !== undefined)
+            updateData.videoSectionTitle = videoSectionTitle || null;
         const item = await prisma_1.prisma.formulation.update({
             where: { id },
             data: updateData,
@@ -226,6 +237,7 @@ function formatFormulation(item) {
         applicationTag: splitTags(item.applicationTag),
         formTag: splitTags(item.formTag),
         claimTag: splitTags(item.claimTag),
+        conceptTag: splitTags(item.conceptTag),
     };
 }
 //# sourceMappingURL=formulation.controller.js.map

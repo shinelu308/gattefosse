@@ -22,6 +22,7 @@ import careerRoutes from './routes/career.routes';
 import searchRoutes from './routes/search.routes';
 import orderPublicRoutes from './routes/order-public.routes';
 import blockRoutes from './routes/block.routes';
+import authorRoutes from './routes/authors.routes';
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use('/api/careers', careerRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/orders', orderPublicRoutes);
 app.use('/api/blocks', blockRoutes);
+app.use('/api/authors', authorRoutes);
 
 // 404 处理
 app.use('*', (_req, res) => {

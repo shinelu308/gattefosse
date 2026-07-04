@@ -149,6 +149,8 @@ body {
   font-size: 13px; font-weight: 400; position: relative;
 }
 .nav-item:hover { background: var(--slate-lightest); color: var(--text); }
+.nav-item.nav-sub { font-size: 12px; padding: 5px 12px 5px 40px; margin: 0 8px; }
+.nav-item.nav-sub .nav-icon { width: 16px; height: 16px; }
 .nav-item.active { background: var(--green-light); color: var(--green); font-weight: 500; }
 .nav-item .badge {
   margin-left: auto; font-size: 11px; background: var(--slate-lighter);
@@ -642,6 +644,31 @@ const QUILL_TOOLBAR = [
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
           新闻与活动
         </a>
+        <div class="nav-parent" @click="getInspiredCollapsed = !getInspiredCollapsed">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.272 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span>
+          获取灵感
+          <span class="arrow-icon" :class="{ open: !getInspiredCollapsed }">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+        <div class="nav-sublist" :class="{ collapsed: getInspiredCollapsed }">
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'article-list' }" @click="goPage('article-list')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg></span>
+            文章
+          </a>
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'webinar-list' }" @click="goPage('webinar-list')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+            在线研讨会
+          </a>
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'publication-list' }" @click="goPage('publication-list')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+            出版物
+          </a>
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'magazine-list' }" @click="goPage('magazine-list')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            杂志
+          </a>
+        </div>
         <a class="nav-item" :class="{ active: currentPage === 'doc-list' }" @click="goPage('doc-list')">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></span>
           文档资源
@@ -662,6 +689,10 @@ const QUILL_TOOLBAR = [
         <a class="nav-item" :class="{ active: currentPage === 'settings' }" @click="currentPage = 'settings'">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
           系统设置
+        </a>
+        <a class="nav-item" :class="{ active: currentPage === 'author-list' || currentPage === 'author-edit' }" @click="goPage('author-list')">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></span>
+          作者管理
         </a>
         <a class="nav-item" :class="{ active: currentPage === 'tag-manage' }" @click="loadTags(); currentPage='tag-manage'">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
@@ -2086,6 +2117,442 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
+        <!-- ==================== 文章列表 ==================== -->
+        <div v-if="currentPage === 'article-list'">
+          <h1 class="page-title">文章管理</h1>
+          <p class="page-subtitle">管理获取灵感模块下的技术文章，展示在个人护理 - 获取灵感 - 文章页面</p>
+          <div class="card">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <input class="form-control" style="width:200px;" placeholder="搜索标题..." v-model="articleFilter.keyword" @keyup.enter="loadArticleList()">
+                <select class="form-control" style="width:140px;" v-model="articleFilter.articleType">
+                  <option value="">全部子类型</option>
+                  <option value="应用领域">应用领域</option>
+                  <option value="专业知识">专业知识</option>
+                  <option value="灵感和趋势">灵感和趋势</option>
+                  <option value="质地与配方">质地与配方</option>
+                  <option value="其他">其他</option>
+                </select>
+                <select class="form-control" style="width:100px;" v-model="articleFilter.isPublished">
+                  <option value="">全部状态</option>
+                  <option value="true">已发布</option>
+                  <option value="false">草稿</option>
+                </select>
+                <button class="btn btn-primary" @click="loadArticleList()">搜索</button>
+                <button class="btn btn-outline" @click="articleFilter = { page:1, limit:20, keyword:'', articleType:'', isPublished:'' }; loadArticleList();">重置</button>
+                <button class="btn btn-primary" @click="currentPage='article-edit'; resetArticleEdit()" style="margin-left:auto;">+ 新增文章</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead><tr>
+                <th style="width:40px;"><input type="checkbox"></th>
+                <th style="width:200px;">标题</th>
+                <th style="width:100px;">子类型</th>
+                <th style="width:80px;">阅读时长</th>
+                <th style="width:80px;">状态</th>
+                <th style="width:100px;">更新时间</th>
+                <th style="width:160px;">操作</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="item in articleList" :key="item.id">
+                  <td><input type="checkbox"></td>
+                  <td class="td-title">{{ item.title }}</td>
+                  <td><span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;">{{ item.articleType || '-' }}</span></td>
+                  <td>{{ item.readingTime || '-' }} 分钟</td>
+                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" @click="editArticle(item)">编辑</button>
+                    <button class="btn btn-sm btn-outline" @click="toggleArticlePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deleteArticle(item.id)">删除</button>
+                  </td>
+                </tr>
+                <tr v-if="articleList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
+              </tbody>
+            </table>
+            <div class="pagination" v-if="articlePagination.totalPages > 1">
+              <button class="btn btn-sm btn-outline" :disabled="articleFilter.page <= 1" @click="articleFilter.page--; loadArticleList()">‹</button>
+              <span style="font-size:12px;color:var(--text-tertiary);">{{ articleFilter.page }} / {{ articlePagination.totalPages }}</span>
+              <button class="btn btn-sm btn-outline" :disabled="articleFilter.page >= articlePagination.totalPages" @click="articleFilter.page++; loadArticleList()">›</button>
+              <span style="font-size:12px;color:var(--text-tertiary);margin-left:8px;">共 {{ articlePagination.total }} 条</span>
+            </div>
+          </div>
+        </div>
+        <!-- 文章编辑（C方案 - 样式对齐PC编辑） -->
+        <div v-if="currentPage === 'article-edit'">
+          <h1 class="page-title">{{ editingArticle.id ? '编辑文章 — ' + editingArticle.title : '新增文章' }}</h1>
+          <p class="page-subtitle">编写技术文章，展示在个人护理 - 获取灵感 - 文章页面 <span v-if="editingArticle.id" style="color:var(--text-tertiary);font-size:12px;margin-left:16px;">阅读量: {{ editingArticle.views || 0 }}</span></p>
+          <div class="tabs">
+            <button class="tab" :class="{ active: articleEditTab === 'basic' }" @click="articleEditTab = 'basic'">基本信息</button>
+            <button class="tab" :class="{ active: articleEditTab === 'media' }" @click="articleEditTab = 'media'">图片与作者</button>
+            <button class="tab" :class="{ active: articleEditTab === 'tags' }" @click="articleEditTab = 'tags'">标签与SEO</button>
+            <button class="tab" :class="{ active: articleEditTab === 'content' }" @click="articleEditTab = 'content'; $nextTick(initArticleQuill)">正文内容</button>
+          </div>
+          <!-- 基本信息 -->
+          <div v-show="articleEditTab === 'basic'" class="card">
+            <div class="card-header"><h3>基本信息</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>文章标题 <span class="hint">（必填）</span></label>
+                <input class="form-control" v-model="editingArticle.title" placeholder="文章标题" @input="autoGenerateSlug()">
+              </div>
+              <div class="form-group">
+                <label>Slug/URL</label>
+                <input class="form-control" v-model="editingArticle.slug" placeholder="自动生成或手动输入">
+              </div>
+              <div class="form-group">
+                <label>文章子类型</label>
+                <select class="form-control" v-model="editingArticle.articleType">
+                  <option value="">请选择</option><option>应用领域</option><option>专业知识</option><option>灵感和趋势</option><option>质地与配方</option><option>其他</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>发布日期 <span class="hint">（必填）</span></label>
+                <input type="date" class="form-control" v-model="editingArticle.publishedDate" style="max-width:200px;">
+              </div>
+              <div class="form-group">
+                <label>阅读时长 <span class="hint">（留空自动计算）</span></label>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <input type="number" class="form-control" v-model="editingArticle.readingTime" @blur="autoCalcReadingTime" style="max-width:120px;" placeholder="分钟">
+                  <span style="font-size:12px;color:var(--text-tertiary);">分钟</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>发布状态</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;margin-top:2px;"><input type="checkbox" v-model="editingArticle.isPublished"> 已发布</label>
+              </div>
+              <div class="form-group">
+                <label>文章摘要</label>
+                <textarea class="form-control" rows="3" v-model="editingArticle.summary" placeholder="文章摘要..."></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- 图片与作者 -->
+          <div v-show="articleEditTab === 'media'" class="card">
+            <div class="card-header"><h3>图片</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>缩略图 <span class="hint">（列表页展示）</span></label>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <input class="form-control" v-model="editingArticle.imageUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:200px;">
+                  <input type="file" accept="image/*" @change="uploadArticleImage($event, 'imageUrl')" style="font-size:13px;">
+                  <span v-if="uploadingArticleImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                </div>
+                <div v-if="editingArticle.imageUrl" style="margin-top:6px;">
+                  <img :src="editingArticle.imageUrl" style="max-width:150px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>头图/Hero <span class="hint">（文章详情页顶部全幅背景图，建议1920x600）</span></label>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <input class="form-control" v-model="editingArticle.topBackground" placeholder="头图 URL 或上传" style="flex:1;min-width:200px;">
+                  <input type="file" accept="image/*" @change="uploadArticleImage($event, 'topBackground')" style="font-size:13px;">
+                  <span v-if="uploadingArticleImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                </div>
+                <div v-if="editingArticle.topBackground" style="margin-top:6px;">
+                  <img :src="editingArticle.topBackground" style="max-width:300px;max-height:80px;border-radius:4px;border:1px solid var(--border);object-fit:cover;width:100%;">
+                </div>
+              </div>
+            </div>
+            <div class="card-header" style="border-top:1px solid var(--border);margin-top:0;"><h3>作者</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>选择作者</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <select class="form-control" v-model="editingArticle.authorId" style="max-width:300px;">
+                    <option :value="null">不指定</option>
+                    <option v-for="a in authorList" :key="a.id" :value="a.id">{{ a.name }}</option>
+                  </select>
+                  <button class="btn btn-sm btn-outline" @click="currentPage='author-list'">管理作者</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 标签与SEO -->
+          <div v-show="articleEditTab === 'tags'" class="card">
+            <div class="card-header"><h3>标签</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>已有标签 <span class="hint">（点击快速添加）</span></label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;cursor:pointer;" v-for="(tag, ti) in articleTagList" :key="ti" @click="addArticleTag(tag)">{{ tag }}</span>
+                  <span v-if="articleTagList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无已存在的标签</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>新标签</label>
+                <div style="display:flex;gap:4px;">
+                  <input class="form-control" v-model="articleTagInput" placeholder="输入标签回车添加" @keyup.enter="addArticleTag(articleTagInput)" style="flex:1;max-width:300px;">
+                  <button class="btn btn-sm btn-outline" @click="addArticleTag(articleTagInput)" :disabled="!articleTagInput.trim()">添加</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>当前标签</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EAF3DE;color:#3B6D11;font-size:11px;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in editingArticle.tagsList" :key="ti">
+                    {{ tag }}
+                    <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removeArticleTag(ti)">×</span>
+                  </span>
+                  <span v-if="!editingArticle.tagsList || editingArticle.tagsList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无标签</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-header" style="border-top:1px solid var(--border);margin-top:0;"><h3>SEO 设置</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Meta 标题 <span class="hint">（留空则使用文章标题）</span></label>
+                <input class="form-control" v-model="editingArticle.metaTitle" placeholder="SEO 标题">
+              </div>
+              <div class="form-group">
+                <label>Meta 描述</label>
+                <textarea class="form-control" rows="2" v-model="editingArticle.metaDescription" placeholder="SEO 描述..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>Meta 关键词</label>
+                <input class="form-control" v-model="editingArticle.metaKeywords" placeholder="逗号分隔的关键词">
+              </div>
+            </div>
+          </div>
+          <!-- 正文 -->
+          <div v-show="articleEditTab === 'content'" class="card">
+            <div class="card-header"><h3>正文内容</h3></div>
+            <div class="card-body">
+              <div :id="'article-quill-editor'" class="quill-editor" style="min-height:400px;"></div>
+              <textarea class="form-control" v-model="editingArticle.contentHtml" style="display:none;"></textarea>
+            </div>
+          </div>
+          <!-- 保存 -->
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;margin-bottom:40px;">
+            <button class="btn btn-outline" @click="goPage('article-list')">取消</button>
+            <button class="btn btn-primary" @click="saveArticle()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+          </div>
+        </div>
+
+        <!-- ==================== 在线研讨会列表 ==================== -->
+        <div v-if="currentPage === 'webinar-list'">
+          <h1 class="page-title">在线研讨会管理</h1>
+          <p class="page-subtitle">管理获取灵感模块下的在线研讨会</p>
+          <div class="card">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <input class="form-control" style="width:200px;" placeholder="搜索标题..." v-model="webinarFilter.keyword" @keyup.enter="loadWebinarList()">
+                <select class="form-control" style="width:100px;" v-model="webinarFilter.isPublished">
+                  <option value="">全部状态</option><option value="true">已发布</option><option value="false">草稿</option>
+                </select>
+                <button class="btn btn-primary" @click="loadWebinarList()">搜索</button>
+                <button class="btn btn-outline" @click="webinarFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadWebinarList();">重置</button>
+                <button class="btn btn-primary" @click="currentPage='webinar-edit'; resetWebinarEdit()" style="margin-left:auto;">+ 新增研讨会</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead><tr>
+                <th style="width:40px;"><input type="checkbox"></th>
+                <th>标题</th>
+                <th style="width:100px;">视频链接</th>
+                <th style="width:60px;">需登录</th>
+                <th style="width:80px;">状态</th>
+                <th style="width:100px;">更新时间</th>
+                <th style="width:160px;">操作</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="item in webinarList" :key="item.id">
+                  <td><input type="checkbox"></td>
+                  <td class="td-title">{{ item.title }}</td>
+                  <td style="font-size:12px;">{{ item.videoUrl ? '有' : '无' }}</td>
+                  <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
+                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" @click="editWebinar(item)">编辑</button>
+                    <button class="btn btn-sm btn-outline" @click="toggleWebinarPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deleteWebinar(item.id)">删除</button>
+                  </td>
+                </tr>
+                <tr v-if="webinarList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
+              </tbody>
+            </table>
+            <div class="pagination" v-if="webinarPagination.totalPages > 1">
+              <button class="btn btn-sm btn-outline" :disabled="webinarFilter.page <= 1" @click="webinarFilter.page--; loadWebinarList()">‹</button>
+              <span style="font-size:12px;color:var(--text-tertiary);">{{ webinarFilter.page }} / {{ webinarPagination.totalPages }}</span>
+              <button class="btn btn-sm btn-outline" :disabled="webinarFilter.page >= webinarPagination.totalPages" @click="webinarFilter.page++; loadWebinarList()">›</button>
+              <span style="font-size:12px;color:var(--text-tertiary);margin-left:8px;">共 {{ webinarPagination.total }} 条</span>
+            </div>
+          </div>
+        </div>
+        <!-- 在线研讨会编辑 -->
+        <div v-if="currentPage === 'webinar-edit'">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <button class="btn btn-sm btn-outline" @click="goPage('webinar-list')">← 返回列表</button>
+            <h1 style="font-size:18px;margin:0;">{{ editingWebinar.id ? '编辑研讨会' : '新增研讨会' }}</h1>
+          </div>
+          <div class="card">
+            <div class="form-grid">
+              <div class="form-group"><label>标题 *</label><input class="form-control" v-model="editingWebinar.title" placeholder="研讨会标题"></div>
+              <div class="form-group"><label>封面图 URL</label><input class="form-control" v-model="editingWebinar.imageUrl" placeholder="https://..."></div>
+              <div class="form-group"><label>视频回放 URL</label><input class="form-control" v-model="editingWebinar.videoUrl" placeholder="https://..."></div>
+              <div class="form-group"><label>发布日期 *</label><input type="date" class="form-control" v-model="editingWebinar.publishedDate"></div>
+              <div class="form-group"><label>阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingWebinar.readingTime" style="max-width:120px;"></div>
+              <div class="form-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" v-model="editingWebinar.lock"> 需要登录才能查看</label></div>
+            </div>
+            <div class="form-group"><label>摘要</label><textarea class="form-control" rows="3" v-model="editingWebinar.summary" placeholder="研讨会描述..."></textarea></div>
+            <div class="form-group"><label>正文内容</label><textarea class="form-control" rows="10" v-model="editingWebinar.contentHtml" placeholder="支持 HTML..."></textarea></div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;"><input type="checkbox" v-model="editingWebinar.isPublished"> 保存并发布</label>
+              <button class="btn btn-outline" @click="goPage('webinar-list')">取消</button>
+              <button class="btn btn-primary" @click="saveWebinar()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 出版物列表 ==================== -->
+        <div v-if="currentPage === 'publication-list'">
+          <h1 class="page-title">出版物管理</h1>
+          <p class="page-subtitle">管理获取灵感模块下的科技出版物</p>
+          <div class="card">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <input class="form-control" style="width:200px;" placeholder="搜索标题..." v-model="publicationFilter.keyword" @keyup.enter="loadPublicationList()">
+                <select class="form-control" style="width:100px;" v-model="publicationFilter.isPublished">
+                  <option value="">全部状态</option><option value="true">已发布</option><option value="false">草稿</option>
+                </select>
+                <button class="btn btn-primary" @click="loadPublicationList()">搜索</button>
+                <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadPublicationList();">重置</button>
+                <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()" style="margin-left:auto;">+ 新增出版物</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead><tr>
+                <th style="width:40px;"><input type="checkbox"></th>
+                <th>标题</th>
+                <th style="width:80px;">PDF</th>
+                <th style="width:60px;">需登录</th>
+                <th style="width:80px;">状态</th>
+                <th style="width:100px;">更新时间</th>
+                <th style="width:160px;">操作</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="item in publicationList" :key="item.id">
+                  <td><input type="checkbox"></td>
+                  <td class="td-title">{{ item.title }}</td>
+                  <td><a :href="item.pdfUrl" target="_blank" v-if="item.pdfUrl" style="font-size:12px;">查看</a><span v-else style="color:var(--text-tertiary);font-size:12px;">无</span></td>
+                  <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
+                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" @click="editPublication(item)">编辑</button>
+                    <button class="btn btn-sm btn-outline" @click="togglePublicationPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deletePublication(item.id)">删除</button>
+                  </td>
+                </tr>
+                <tr v-if="publicationList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
+              </tbody>
+            </table>
+            <div class="pagination" v-if="publicationPagination.totalPages > 1">
+              <button class="btn btn-sm btn-outline" :disabled="publicationFilter.page <= 1" @click="publicationFilter.page--; loadPublicationList()">‹</button>
+              <span style="font-size:12px;color:var(--text-tertiary);">{{ publicationFilter.page }} / {{ publicationPagination.totalPages }}</span>
+              <button class="btn btn-sm btn-outline" :disabled="publicationFilter.page >= publicationPagination.totalPages" @click="publicationFilter.page++; loadPublicationList()">›</button>
+              <span style="font-size:12px;color:var(--text-tertiary);margin-left:8px;">共 {{ publicationPagination.total }} 条</span>
+            </div>
+          </div>
+        </div>
+        <!-- 出版物编辑 -->
+        <div v-if="currentPage === 'publication-edit'">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <button class="btn btn-sm btn-outline" @click="goPage('publication-list')">← 返回列表</button>
+            <h1 style="font-size:18px;margin:0;">{{ editingPublication.id ? '编辑出版物' : '新增出版物' }}</h1>
+          </div>
+          <div class="card">
+            <div class="form-grid">
+              <div class="form-group"><label>标题 *</label><input class="form-control" v-model="editingPublication.title" placeholder="出版物标题"></div>
+              <div class="form-group"><label>封面图 URL</label><input class="form-control" v-model="editingPublication.imageUrl" placeholder="https://..."></div>
+              <div class="form-group"><label>PDF 下载链接</label><input class="form-control" v-model="editingPublication.pdfUrl" placeholder="https://... 或 /uploads/..."></div>
+              <div class="form-group"><label>发布日期 *</label><input type="date" class="form-control" v-model="editingPublication.publishedDate"></div>
+              <div class="form-group"><label>阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingPublication.readingTime" style="max-width:120px;"></div>
+              <div class="form-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" v-model="editingPublication.lock"> 需要登录才能查看</label></div>
+            </div>
+            <div class="form-group"><label>摘要</label><textarea class="form-control" rows="4" v-model="editingPublication.summary" placeholder="出版物简介..."></textarea></div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;"><input type="checkbox" v-model="editingPublication.isPublished"> 保存并发布</label>
+              <button class="btn btn-outline" @click="goPage('publication-list')">取消</button>
+              <button class="btn btn-primary" @click="savePublication()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 杂志列表 ==================== -->
+        <div v-if="currentPage === 'magazine-list'">
+          <h1 class="page-title">杂志管理</h1>
+          <p class="page-subtitle">管理获取灵感模块下的 addiactive 杂志</p>
+          <div class="card">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <input class="form-control" style="width:200px;" placeholder="搜索标题..." v-model="magazineFilter.keyword" @keyup.enter="loadMagazineList()">
+                <select class="form-control" style="width:100px;" v-model="magazineFilter.isPublished">
+                  <option value="">全部状态</option><option value="true">已发布</option><option value="false">草稿</option>
+                </select>
+                <button class="btn btn-primary" @click="loadMagazineList()">搜索</button>
+                <button class="btn btn-outline" @click="magazineFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadMagazineList();">重置</button>
+                <button class="btn btn-primary" @click="currentPage='magazine-edit'; resetMagazineEdit()" style="margin-left:auto;">+ 新增杂志</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead><tr>
+                <th style="width:40px;"><input type="checkbox"></th>
+                <th>标题</th>
+                <th style="width:80px;">PDF</th>
+                <th style="width:60px;">需登录</th>
+                <th style="width:80px;">状态</th>
+                <th style="width:100px;">更新时间</th>
+                <th style="width:160px;">操作</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="item in magazineList" :key="item.id">
+                  <td><input type="checkbox"></td>
+                  <td class="td-title">{{ item.title }}</td>
+                  <td><a :href="item.pdfUrl" target="_blank" v-if="item.pdfUrl" style="font-size:12px;">查看</a><span v-else style="color:var(--text-tertiary);font-size:12px;">无</span></td>
+                  <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
+                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" @click="editMagazine(item)">编辑</button>
+                    <button class="btn btn-sm btn-outline" @click="toggleMagazinePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deleteMagazine(item.id)">删除</button>
+                  </td>
+                </tr>
+                <tr v-if="magazineList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
+              </tbody>
+            </table>
+            <div class="pagination" v-if="magazinePagination.totalPages > 1">
+              <button class="btn btn-sm btn-outline" :disabled="magazineFilter.page <= 1" @click="magazineFilter.page--; loadMagazineList()">‹</button>
+              <span style="font-size:12px;color:var(--text-tertiary);">{{ magazineFilter.page }} / {{ magazinePagination.totalPages }}</span>
+              <button class="btn btn-sm btn-outline" :disabled="magazineFilter.page >= magazinePagination.totalPages" @click="magazineFilter.page++; loadMagazineList()">›</button>
+              <span style="font-size:12px;color:var(--text-tertiary);margin-left:8px;">共 {{ magazinePagination.total }} 条</span>
+            </div>
+          </div>
+        </div>
+        <!-- 杂志编辑 -->
+        <div v-if="currentPage === 'magazine-edit'">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <button class="btn btn-sm btn-outline" @click="goPage('magazine-list')">← 返回列表</button>
+            <h1 style="font-size:18px;margin:0;">{{ editingMagazine.id ? '编辑杂志' : '新增杂志' }}</h1>
+          </div>
+          <div class="card">
+            <div class="form-grid">
+              <div class="form-group"><label>标题 *</label><input class="form-control" v-model="editingMagazine.title" placeholder="如：addiactive #126"></div>
+              <div class="form-group"><label>封面图 URL</label><input class="form-control" v-model="editingMagazine.imageUrl" placeholder="https://..."></div>
+              <div class="form-group"><label>PDF 下载链接</label><input class="form-control" v-model="editingMagazine.pdfUrl" placeholder="https://... 或 /uploads/..."></div>
+              <div class="form-group"><label>发布日期 *</label><input type="date" class="form-control" v-model="editingMagazine.publishedDate"></div>
+              <div class="form-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" v-model="editingMagazine.lock"> 需要登录才能查看</label></div>
+            </div>
+            <div class="form-group"><label>摘要</label><textarea class="form-control" rows="4" v-model="editingMagazine.summary" placeholder="杂志简介..."></textarea></div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;"><input type="checkbox" v-model="editingMagazine.isPublished"> 保存并发布</label>
+              <button class="btn btn-outline" @click="goPage('magazine-list')">取消</button>
+              <button class="btn btn-primary" @click="saveMagazine()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+            </div>
+          </div>
+        </div>
+
         <!-- ==================== 订单列表 ==================== -->
         <div v-if="currentPage === 'order-list'">
           <h1 class="page-title">样品订单</h1>
@@ -2451,6 +2918,86 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
+        <!-- ==================== 作者管理 ==================== -->
+        <div v-if="currentPage === 'author-list'">
+          <h1 class="page-title">作者管理</h1>
+          <p class="page-subtitle">管理文章作者，供文章编辑时选择</p>
+          <div class="card">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <input class="form-control" style="width:200px;" placeholder="搜索作者姓名..." v-model="authorFilter.keyword" @keyup.enter="loadAuthorList()">
+                <button class="btn btn-primary" @click="loadAuthorList()">搜索</button>
+                <button class="btn btn-outline" @click="authorFilter.keyword = ''; loadAuthorList();">重置</button>
+                <button class="btn btn-primary" @click="currentPage='author-edit'; resetAuthorEdit()" style="margin-left:auto;">+ 新增作者</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead><tr>
+                <th style="width:60px;">ID</th>
+                <th style="width:80px;">头像</th>
+                <th style="width:160px;">姓名</th>
+                <th>简介</th>
+                <th style="width:80px;">排序</th>
+                <th style="width:160px;">操作</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="item in authorList" :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <td><img :src="item.avatar || '/admin/default-avatar.png'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border);" @error="$event.target.src='/admin/default-avatar.png'"></td>
+                  <td class="td-title">{{ item.name }}</td>
+                  <td style="color:var(--text-secondary);font-size:12px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ item.bio || '-' }}</td>
+                  <td>{{ item.sortOrder }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" @click="editAuthor(item)">编辑</button>
+                    <button class="btn btn-sm btn-danger" @click="deleteAuthor(item.id)">删除</button>
+                  </td>
+                </tr>
+                <tr v-if="authorList.length === 0"><td colspan="6" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无作者</td></tr>
+              </tbody>
+            </table>
+            <div class="card-footer">
+              <span>共 {{ authorPagination.total }} 位作者</span>
+            </div>
+          </div>
+        </div>
+        <div v-if="currentPage === 'author-edit'">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <button class="btn btn-sm btn-outline" @click="goPage('author-list')">← 返回列表</button>
+            <h1 style="font-size:18px;margin:0;">{{ editingAuthor.id ? '编辑作者' : '新增作者' }}</h1>
+          </div>
+          <div class="card" style="max-width:600px;">
+            <div class="card-body">
+              <div class="form-group">
+                <label>姓名 <span class="hint">（必填）</span></label>
+                <input class="form-control" v-model="editingAuthor.name" placeholder="作者姓名">
+              </div>
+              <div class="form-group">
+                <label>头像 URL</label>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <input class="form-control" v-model="editingAuthor.avatar" placeholder="头像图片 URL" style="flex:1;min-width:200px;">
+                  <input type="file" accept="image/*" @change="uploadAuthorAvatar($event)" style="font-size:13px;">
+                  <span v-if="uploadingAuthorAvatar" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                </div>
+                <div v-if="editingAuthor.avatar" style="margin-top:6px;">
+                  <img :src="editingAuthor.avatar" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:1px solid var(--border);">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>简介</label>
+                <textarea class="form-control" rows="3" v-model="editingAuthor.bio" placeholder="作者简介..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>排序 <span class="hint">（数字越小越靠前）</span></label>
+                <input type="number" class="form-control" v-model="editingAuthor.sortOrder" style="max-width:120px;">
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+                <button class="btn btn-outline" @click="goPage('author-list')">取消</button>
+                <button class="btn btn-primary" @click="saveAuthor()" :disabled="savingAuthor">{{ savingAuthor ? '保存中...' : '保存' }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ==================== 系统设置 ==================== -->
         <div v-if="currentPage === 'settings'">
           <h1 class="page-title">系统设置</h1>
@@ -2660,6 +3207,7 @@ createApp({
       // Nav
       currentPage: 'dashboard',
       pcMenuCollapsed: false,
+      getInspiredCollapsed: false,
       pcEditTab: 'basic',
       pharmaEditTab: 'basic',
       formulaEditTab: 'basic',
@@ -2698,6 +3246,37 @@ createApp({
       newsFilter: { page: 1, limit: 20, keyword: '', type: 'all', category: '', isPublished: '' },
       newsPagination: { total: 0, totalPages: 0 },
       editingNews: { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: '', eventEndDate: '', location: '', booth: '', isPublished: false },
+      // 获取灵感 — 文章
+      articleList: [],
+      articleFilter: { page: 1, limit: 20, keyword: '', articleType: '', isPublished: '' },
+      articlePagination: { total: 0, totalPages: 0 },
+      editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0 },
+      articleEditTab: 'basic',
+      articleTagInput: '',
+      articleTagList: [],
+      authorList: [],
+      uploadingArticleImage: false,
+      articleQuill: null,
+      // 作者管理
+      authorFilter: { page: 1, limit: 50, keyword: '' },
+      authorPagination: { total: 0, totalPages: 0 },
+      editingAuthor: { id: null, name: '', avatar: '', bio: '', sortOrder: 0 },
+      savingAuthor: false,
+      // 获取灵感 — 在线研讨会
+      webinarList: [],
+      webinarFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
+      webinarPagination: { total: 0, totalPages: 0 },
+      editingWebinar: { id: null, type: 'webinar', category: 'pc', title: '', summary: '', contentHtml: '', imageUrl: '', videoUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false },
+      // 获取灵感 — 出版物
+      publicationList: [],
+      publicationFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
+      publicationPagination: { total: 0, totalPages: 0 },
+      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false },
+      // 获取灵感 — 杂志
+      magazineList: [],
+      magazineFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
+      magazinePagination: { total: 0, totalPages: 0 },
+      editingMagazine: { id: null, type: 'magazine', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', publishedDate: '', lock: false, isPublished: false },
       // Orders
       orderList: [],
       orderFilter: { page: 1, limit: 20, keyword: '', status: '' },
@@ -2760,6 +3339,16 @@ createApp({
         'content-edit': '内容管理 / 站点内容 / 编辑',
         'subsidiary-edit': '内容管理 / 站点内容 / 编辑分公司',
         'tag-manage': '运营 / 标签管理',
+        'article-list': '内容管理 / 获取灵感 / 文章',
+        'article-edit': '内容管理 / 获取灵感 / 文章 / ' + (this.editingArticle.id ? '编辑' : '新增'),
+        'webinar-list': '内容管理 / 获取灵感 / 在线研讨会',
+        'webinar-edit': '内容管理 / 获取灵感 / 在线研讨会 / ' + (this.editingWebinar.id ? '编辑' : '新增'),
+        'publication-list': '内容管理 / 获取灵感 / 出版物',
+        'publication-edit': '内容管理 / 获取灵感 / 出版物 / ' + (this.editingPublication.id ? '编辑' : '新增'),
+        'magazine-list': '内容管理 / 获取灵感 / 杂志',
+        'magazine-edit': '内容管理 / 获取灵感 / 杂志 / ' + (this.editingMagazine.id ? '编辑' : '新增'),
+        'author-list': '系统 / 作者管理',
+        'author-edit': '系统 / 作者管理 / ' + (this.editingAuthor.id ? '编辑' : '新增'),
       };
       return m[this.currentPage] || '管理后台';
     },
@@ -2799,7 +3388,7 @@ createApp({
       return pages;
     },
     async api(path, options = {}) {
-      const headers = { 'Content-Type': 'application/json', ...options.headers };
+      const headers = options.noJson ? {} : { 'Content-Type': 'application/json', ...options.headers };
       if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
       let res;
       try {
@@ -2849,7 +3438,24 @@ createApp({
       if (page === 'formula-list') this.loadFormulaList();
       if (page === 'doc-list') this.loadDocList();
       if (page === 'news-list') this.loadNewsList();
+      if (page === 'article-list') this.loadArticleList();
+      if (page === 'webinar-list') this.loadWebinarList();
+      if (page === 'publication-list') this.loadPublicationList();
+      if (page === 'magazine-list') this.loadMagazineList();
+      if (page === 'author-list') this.loadAuthorList();
+      if (page === 'author-edit' && !this.editingAuthor.id) this.resetAuthorEdit();
       if (page === 'order-list') this.loadOrderList();
+      if (page === 'user-list') this.loadUserList();
+      if (page === 'content-list') this.loadContent();
+      if (page === 'settings') this.loadSettings();
+      if (page === 'pc-edit' && !this.editingPc.id) this.resetPcEdit();
+      if (page === 'pharma-edit' && !this.editingPharma.id) this.resetPharmaEdit();
+      if (page === 'formula-edit' && !this.editingFormula.id) this.resetFormulaEdit();
+      if (page === 'news-edit' && !this.editingNews.id) this.resetNewsEdit();
+      if (page === 'article-edit' && !this.editingArticle.id) this.resetArticleEdit();
+      if (page === 'webinar-edit' && !this.editingWebinar.id) this.resetWebinarEdit();
+      if (page === 'publication-edit' && !this.editingPublication.id) this.resetPublicationEdit();
+      if (page === 'magazine-edit' && !this.editingMagazine.id) this.resetMagazineEdit();
       if (page === 'user-list') this.loadUserList();
       if (page === 'content-list') this.loadContent();
       if (page === 'settings') this.loadSettings();
@@ -3271,6 +3877,7 @@ createApp({
     },
     // ============ 内容区块管理 ============
     destroyAllQuills() {
+      if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
       (this.editingPc.blocks || []).forEach(function(block) {
         block._quill = null;
         block._quillL = null;
@@ -4477,6 +5084,285 @@ createApp({
         try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadNewsList(); }
         catch (e) { this.showAlert('删除失败：' + e.message); }
       });
+    },
+    // 获取灵感 — 文章 CRUD
+    async loadArticleList() {
+      const params = new URLSearchParams({ page: this.articleFilter.page, limit: this.articleFilter.limit, type: 'article' });
+      if (this.articleFilter.keyword) params.set('keyword', this.articleFilter.keyword);
+      if (this.articleFilter.articleType) params.set('articleType', this.articleFilter.articleType);
+      if (this.articleFilter.isPublished) params.set('isPublished', this.articleFilter.isPublished);
+      try { const d = await this.api('/news?' + params.toString()); this.articleList = d.list; this.articlePagination = d.pagination; }
+      catch (e) { console.error(e); }
+    },
+    async loadArticleTags() {
+      try { const d = await this.api('/news/tags/list?type=article'); this.articleTagList = d.data || []; }
+      catch (e) { console.error('加载标签列表失败:', e); }
+    },
+    async loadAuthorList() {
+      try { const d = await this.api('/authors?limit=100'); this.authorList = d.list || []; }
+      catch (e) { console.error('加载作者列表失败:', e); }
+    },
+    autoGenerateSlug() {
+      if (!this.editingArticle.slug && this.editingArticle.title) {
+        this.editingArticle.slug = this.editingArticle.title
+          .replace(/[^\w\u4e00-\u9fff\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .toLowerCase();
+      }
+    },
+    autoCalcReadingTime() {
+      if (!this.editingArticle.readingTime && this.editingArticle.contentHtml) {
+        var text = this.editingArticle.contentHtml.replace(/<[^>]+>/g, '');
+        var cn = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+        var en = (text.match(/[a-zA-Z]+/g) || []).length;
+        this.editingArticle.readingTime = Math.max(1, Math.round((cn + en) / 300));
+      }
+    },
+    openUploadDialog(field) {
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      var self = this;
+      input.onchange = function() {
+        var file = input.files[0];
+        if (!file) return;
+        var formData = new FormData();
+        formData.append('file', file);
+        self.api('/upload', { method: 'POST', body: formData, noJson: true }).then(function(r) {
+          self.editingArticle[field] = r.data.url || r.url;
+        }).catch(function(e) { self.showAlert('上传失败：' + e.message); });
+      };
+      input.click();
+    },
+    initArticleQuill() {
+      var self = this;
+      var el = document.getElementById('article-quill-editor');
+      if (!el) return;
+      // 如果已存在 Quill 编辑器，直接恢复内容，不重复创建
+      if (this.articleQuill) {
+        if (self.editingArticle.contentHtml) {
+          this.articleQuill.root.innerHTML = self.editingArticle.contentHtml;
+        }
+        return;
+      }
+      if (el.querySelector('.ql-editor')) return;
+      var ql = new Quill(el, {
+        theme: 'snow',
+        modules: { toolbar: QUILL_TOOLBAR },
+        placeholder: '请输入文章正文内容...',
+      });
+      if (self.editingArticle.contentHtml) {
+        ql.root.innerHTML = self.editingArticle.contentHtml;
+      }
+      ql.on('text-change', function() {
+        if (ql.root) {
+          self.editingArticle.contentHtml = ql.root.innerHTML;
+        }
+      });
+      this.articleQuill = ql;
+    },
+    addArticleTag(tag) {
+      const t = (tag || '').trim();
+      if (!t) return;
+      if (!this.editingArticle.tagsList) this.editingArticle.tagsList = [];
+      if (this.editingArticle.tagsList.indexOf(t) === -1) {
+        this.editingArticle.tagsList.push(t);
+      }
+      this.articleTagInput = '';
+    },
+    removeArticleTag(index) {
+      if (this.editingArticle.tagsList) {
+        this.editingArticle.tagsList.splice(index, 1);
+      }
+    },
+    resetArticleEdit() {
+      var self = this;
+      if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
+      this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0 };
+      this.loadArticleTags();
+      this.loadAuthorList();
+      this.articleEditTab = 'basic';
+    },
+    editArticle(item) {
+      var self = this;
+      let tagsList = [];
+      if (item.tags) {
+        try { tagsList = JSON.parse(item.tags); } catch(e) { tagsList = item.tags.split(',').map(t => t.trim()).filter(Boolean); }
+      }
+      if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
+      this.editingArticle = { ...item, tagsList, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      this.loadArticleTags();
+      this.loadAuthorList();
+      this.currentPage = 'article-edit';
+      this.articleEditTab = 'basic';
+    },
+    async saveArticle() {
+      if (!this.editingArticle.title) { this.showAlert('标题不能为空'); return; }
+      if (!this.editingArticle.publishedDate) { this.showAlert('发布日期不能为空'); return; }
+      this.saving = true;
+      // 同步 Quill 内容（如果用户正在 content tab 但未触发 text-change）
+      if (this.articleQuill && this.articleQuill.root) {
+        this.editingArticle.contentHtml = this.articleQuill.root.innerHTML;
+      }
+      const payload = { ...this.editingArticle, tags: JSON.stringify(this.editingArticle.tagsList || []) };
+      delete payload.tagsList;
+      try {
+        if (this.editingArticle.id) { await this.api('/news/' + this.editingArticle.id, { method: 'PUT', body: JSON.stringify(payload) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(payload) }); }
+        this.currentPage = 'article-list'; this.loadArticleList();
+      } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async toggleArticlePublish(item) {
+      try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadArticleList(); }
+      catch (e) { this.showAlert('操作失败：' + e.message); }
+    },
+    async deleteArticle(id) {
+      this.showConfirm('确认删除', '确定删除该文章？', async () => { try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadArticleList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });
+    },
+    async uploadArticleImage(event, field) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingArticleImage = true;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const r = await this.api('/upload', { method: 'POST', body: fd, noJson: true });
+        this.editingArticle[field] = r.data?.url || r.url || r.path;
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingArticleImage = false; }
+    },
+    // 作者 CRUD
+    async loadAuthorList() {
+      const params = new URLSearchParams({ page: this.authorFilter.page, limit: this.authorFilter.limit });
+      if (this.authorFilter.keyword) params.set('keyword', this.authorFilter.keyword);
+      try { const d = await this.api('/authors?' + params.toString()); this.authorList = d.list; this.authorPagination = d.pagination; }
+      catch (e) { console.error(e); }
+    },
+    resetAuthorEdit() {
+      this.editingAuthor = { id: null, name: '', avatar: '', bio: '', sortOrder: 0 };
+    },
+    editAuthor(item) {
+      this.editingAuthor = { ...item };
+      this.currentPage = 'author-edit';
+    },
+    async saveAuthor() {
+      if (!this.editingAuthor.name) { this.showAlert('姓名不能为空'); return; }
+      this.savingAuthor = true;
+      try {
+        if (this.editingAuthor.id) { await this.api('/authors/' + this.editingAuthor.id, { method: 'PUT', body: JSON.stringify(this.editingAuthor) }); }
+        else { await this.api('/authors', { method: 'POST', body: JSON.stringify(this.editingAuthor) }); }
+        this.currentPage = 'author-list'; this.loadAuthorList();
+      } catch (e) { this.showAlert('保存失败：' + e.message); }
+      finally { this.savingAuthor = false; }
+    },
+    async deleteAuthor(id) {
+      this.showConfirm('确认删除', '确定删除该作者？文章将取消关联', async () => { try { await this.api('/authors/' + id, { method: 'DELETE' }); this.loadAuthorList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });
+    },
+    async uploadAuthorAvatar(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const r = await this.api('/upload', { method: 'POST', body: fd, noJson: true });
+        this.editingAuthor.avatar = r.data?.url || r.url || r.path;
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+    },
+    // 获取灵感 — 在线研讨会 CRUD
+    async loadWebinarList() {
+      const params = new URLSearchParams({ page: this.webinarFilter.page, limit: this.webinarFilter.limit, type: 'webinar' });
+      if (this.webinarFilter.keyword) params.set('keyword', this.webinarFilter.keyword);
+      if (this.webinarFilter.isPublished) params.set('isPublished', this.webinarFilter.isPublished);
+      try { const d = await this.api('/news?' + params.toString()); this.webinarList = d.list; this.webinarPagination = d.pagination; }
+      catch (e) { console.error(e); }
+    },
+    resetWebinarEdit() {
+      this.editingWebinar = { id: null, type: 'webinar', category: 'pc', title: '', summary: '', contentHtml: '', imageUrl: '', videoUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false };
+    },
+    editWebinar(item) {
+      this.editingWebinar = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      this.currentPage = 'webinar-edit';
+    },
+    async saveWebinar() {
+      if (!this.editingWebinar.title) { this.showAlert('标题不能为空'); return; }
+      if (!this.editingWebinar.publishedDate) { this.showAlert('发布日期不能为空'); return; }
+      this.saving = true;
+      try {
+        if (this.editingWebinar.id) { await this.api('/news/' + this.editingWebinar.id, { method: 'PUT', body: JSON.stringify(this.editingWebinar) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingWebinar) }); }
+        this.currentPage = 'webinar-list'; this.loadWebinarList();
+      } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async toggleWebinarPublish(item) {
+      try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadWebinarList(); }
+      catch (e) { this.showAlert('操作失败：' + e.message); }
+    },
+    async deleteWebinar(id) {
+      this.showConfirm('确认删除', '确定删除该研讨会？', async () => { try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadWebinarList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });
+    },
+    // 获取灵感 — 出版物 CRUD
+    async loadPublicationList() {
+      const params = new URLSearchParams({ page: this.publicationFilter.page, limit: this.publicationFilter.limit, type: 'publication' });
+      if (this.publicationFilter.keyword) params.set('keyword', this.publicationFilter.keyword);
+      if (this.publicationFilter.isPublished) params.set('isPublished', this.publicationFilter.isPublished);
+      try { const d = await this.api('/news?' + params.toString()); this.publicationList = d.list; this.publicationPagination = d.pagination; }
+      catch (e) { console.error(e); }
+    },
+    resetPublicationEdit() {
+      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false };
+    },
+    editPublication(item) {
+      this.editingPublication = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      this.currentPage = 'publication-edit';
+    },
+    async savePublication() {
+      if (!this.editingPublication.title) { this.showAlert('标题不能为空'); return; }
+      if (!this.editingPublication.publishedDate) { this.showAlert('发布日期不能为空'); return; }
+      this.saving = true;
+      try {
+        if (this.editingPublication.id) { await this.api('/news/' + this.editingPublication.id, { method: 'PUT', body: JSON.stringify(this.editingPublication) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingPublication) }); }
+        this.currentPage = 'publication-list'; this.loadPublicationList();
+      } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async togglePublicationPublish(item) {
+      try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadPublicationList(); }
+      catch (e) { this.showAlert('操作失败：' + e.message); }
+    },
+    async deletePublication(id) {
+      this.showConfirm('确认删除', '确定删除该出版物？', async () => { try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadPublicationList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });
+    },
+    // 获取灵感 — 杂志 CRUD
+    async loadMagazineList() {
+      const params = new URLSearchParams({ page: this.magazineFilter.page, limit: this.magazineFilter.limit, type: 'magazine' });
+      if (this.magazineFilter.keyword) params.set('keyword', this.magazineFilter.keyword);
+      if (this.magazineFilter.isPublished) params.set('isPublished', this.magazineFilter.isPublished);
+      try { const d = await this.api('/news?' + params.toString()); this.magazineList = d.list; this.magazinePagination = d.pagination; }
+      catch (e) { console.error(e); }
+    },
+    resetMagazineEdit() {
+      this.editingMagazine = { id: null, type: 'magazine', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false };
+    },
+    editMagazine(item) {
+      this.editingMagazine = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      this.currentPage = 'magazine-edit';
+    },
+    async saveMagazine() {
+      if (!this.editingMagazine.title) { this.showAlert('标题不能为空'); return; }
+      if (!this.editingMagazine.publishedDate) { this.showAlert('发布日期不能为空'); return; }
+      this.saving = true;
+      try {
+        if (this.editingMagazine.id) { await this.api('/news/' + this.editingMagazine.id, { method: 'PUT', body: JSON.stringify(this.editingMagazine) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingMagazine) }); }
+        this.currentPage = 'magazine-list'; this.loadMagazineList();
+      } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async toggleMagazinePublish(item) {
+      try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadMagazineList(); }
+      catch (e) { this.showAlert('操作失败：' + e.message); }
+    },
+    async deleteMagazine(id) {
+      this.showConfirm('确认删除', '确定删除该杂志？', async () => { try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadMagazineList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });
     },
     // Order
     async loadOrderList() {

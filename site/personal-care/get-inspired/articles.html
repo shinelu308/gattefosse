@@ -444,148 +444,124 @@
           }
         }
         setTimeout(function() { setTagStyle(); }, 100);
-        // ===== 硬编码标签数据 =====
-var tagGroups = [{"ID":1,"tagName":"主题","children":[{"ID":293,"tagName":"活性成分"},{"ID":294,"tagName":"老化"},{"ID":295,"tagName":"婴儿护理"},{"ID":296,"tagName":"美容科技"},{"ID":297,"tagName":"洁净美容"},{"ID":298,"tagName":"企业社会责任"},{"ID":299,"tagName":"ERI 360"},{"ID":300,"tagName":"暴露组"},{"ID":301,"tagName":"宝石学"},{"ID":302,"tagName":"头发护理"},{"ID":303,"tagName":"缺陷"},{"ID":304,"tagName":"包容性"},{"ID":305,"tagName":"炎"},{"ID":306,"tagName":"灵感"},{"ID":307,"tagName":"本地采购"},{"ID":308,"tagName":"彩妆"},{"ID":309,"tagName":"微生物组"},{"ID":310,"tagName":"钒盐"},{"ID":311,"tagName":"植物采购"},{"ID":312,"tagName":"责任美妆"},{"ID":313,"tagName":"下垂"},{"ID":314,"tagName":"头皮护理"},{"ID":315,"tagName":"季节"},{"ID":316,"tagName":"敏感型皮肤"},{"ID":317,"tagName":"感官"},{"ID":318,"tagName":"皮肤生物学"},{"ID":319,"tagName":"防晒"},{"ID":320,"tagName":"旅行友好型"},{"ID":321,"tagName":"W/O 配方"}]}];
-data.tagList = [];
-for (var gi = 0; gi < tagGroups.length; gi++) {
-  var g = tagGroups[gi];
-  var tn = g.tagName;
-  var tmp = tn.replace(/ /g, '_');
-  var group = {
-    tagName: tn, ID: g.ID,
-    nameId: "collapse-filtre-accordion-" + tn + "_" + g.ID,
-    sharpeNameId: "#collapse-filtre-accordion-" + tn + "_" + g.ID,
-    headerNameId: "heading-filtre-accordion-personal-care_" + tmp,
-    accordionNameId: "accordion-filtre-accordion-personal-care_" + tmp,
-    dataBlockPluginId: "facet_block:personal-care_" + tmp,
-    panelDivId1: tmp + "_" + g.ID,
-    class: "facet-inactive block-facet--checkbox block block-facets ",
-    children: []
-  };
-  for (var ci = 0; ci < g.children.length; ci++) {
-    var c = g.children[ci];
-    var u = baseUrl + '?page=1&tagId=' + c.ID;
-    if (articleType) u += '&articleType=' + articleType;
-    if (w) u += '&keyword=' + encodeURIComponent(w);
-    group.children.push({ID: c.ID, tagName: c.tagName, tagUrl: u, dataDrupalFacetItemId: "market-" + c.ID, facetItemClass: ci < 6 ? "facet-item1" : "facet-item1 hidden"});
-  }
-  data.tagList.push(group);
-  if (tagId > 0) {
-    for (var ci2 = 0; ci2 < g.children.length; ci2++) {
-      if (g.children[ci2].ID == tagId) { data.curFilterTagName = g.children[ci2].tagName; data.activeFilterClass = "showDiv"; }
-    }
-  }
-}
-// 文章数据+标签
+        // ===== 从 API 动态加载文章数据 =====
 var baseUrl = window.location.pathname;
-var allTaggedData = [
-  {ID:214,title:"助力肌肤从容应对多变环境的活性成分",typeType:0,eventTime:"2026-05-28T11:13:40.168Z",tag:"\"\"",url:"https://www.gattefosse.com/personal-care/get-inspired/bioactive-helps-skin-thrive-unpredictable-world",thumb:"https://www.gattefossechina.cn/uploads/file/7ae1f74e60160bb3183a96c3d242cd29_20260528111907.jpg"},
-  {ID:213,title:"从亚太到世界：亚洲美妆为何成为全球创新风向标？",typeType:0,eventTime:"2026-02-07T17:34:27.087Z",tag:"[[1,304],[1,302],[1,314],[1,308]]",url:"https://www.gattefosse.com/personal-care/get-inspired/why-world-obsessed-asian-beauty",thumb:"https://www.gattefossechina.cn/uploads/file/1a5fcefe2601425bd491a541438e5f9b_20260207173522.jpg"},
-  {ID:210,title:"2025 万圣节美妆“怪美”风向",typeType:0,eventTime:"2025-11-11T05:08:05.351Z",tag:"[[1,306],[1,315],[1,308]]",url:"https://www.gattefosse.com/personal-care/get-inspired/whats-brewing-halloween-beauty",thumb:"https://www.gattefossechina.cn/uploads/file/4f8b9bac13ba43de53379a662fcf82a0_20251111054057.jpg"},
-  {ID:209,title:"身体护理新法则",typeType:3,eventTime:"2025-11-11T03:01:47.749Z",tag:"[[1,293],[1,294],[1,304],[1,316]]",url:"https://www.gattefosse.com/personal-care/get-inspired/new-rules-body-care",thumb:"https://www.gattefossechina.cn/uploads/file/dfc64774a2a82b79021c3499f47928ec_20251111033129.png"},
-  {ID:208,title:"废料即答案？",typeType:3,eventTime:"2025-10-15T14:17:05.679Z",tag:"[[1,293],[1,297],[1,298],[1,307],[1,311],[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/waste-solution",thumb:"https://www.gattefossechina.cn/uploads/file/cfe9ed72d9025d77dc229f89cca1e609_20251015141852.jpeg"},
-  {ID:206,title:"追踪防晒护理的变革趋势",typeType:3,eventTime:"2025-10-14T13:04:19.796Z",tag:"[[1,319]]",url:"https://www.gattefosse.com/personal-care/get-inspired/tracking-trends-transforming-suncare",thumb:"https://www.gattefossechina.cn/uploads/file/e6d6976b66ba0d99f23924465a9d0dac_20251014130739.jpeg"},
-  {ID:204,title:"以绿色创新庆祝地球日",typeType:3,eventTime:"2025-04-21T16:00:00Z",tag:"[[1,298],[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/celebrate-earth-day-green-innovations",thumb:"https://www.gattefossechina.cn/uploads/file/375c03adee10c544657aefd5c61421db_20250808065951.jpeg"},
-  {ID:205,title:"从垃圾到宝藏",typeType:3,eventTime:"2025-10-14T12:59:53.088Z",tag:"[[1,293],[1,311],[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/trash-treasure",thumb:"https://www.gattefossechina.cn/uploads/file/55a49e45ebe28fabd95fef4938c7d08b_20251014130136.jpeg"},
-  {ID:203,title:"敏感肌肤，智能解决方案",typeType:4,eventTime:"2025-08-08T03:16:30.71Z",tag:"[[1,316]]",url:"https://www.gattefosse.com/personal-care/get-inspired/sensitive-skin-smart-solutions",thumb:"https://www.gattefossechina.cn/uploads/file/5e662a5ee048523b1c3aa0200a4f7d2e_20250808032702.jpeg"},
-  {ID:202,title:"如何平复敏感肌肤的小闹剧",typeType:2,eventTime:"2025-08-08T00:44:21.465Z",tag:"[[1,300],[1,316],[1,304]]",url:"https://www.gattefosse.com/personal-care/get-inspired/how-turn-sensitive-skin-drama-smooth-opera",thumb:"https://www.gattefossechina.cn/uploads/file/94b83ebe8700e7192e9e60940883dd25_20250808004650.jpeg"},
-  {ID:201,title:"揭开氧化炎烎的面纱",typeType:2,eventTime:"2025-03-20T16:00:00Z",tag:"[[1,300],[1,305],[1,318],[1,316]]",url:"https://www.gattefosse.com/personal-care/get-inspired/oxi-inflammation-unmasked",thumb:"https://www.gattefossechina.cn/uploads/file/7c48d2f1e91f32ba2676d30cafaa3195_20250808000650.jpeg"},
-  {ID:199,title:"嘉法狮为各世代消费者打造的美妆趋势",typeType:3,eventTime:"2025-03-24T08:52:55.334Z",tag:"[[1,308]]",url:"https://www.gattefosse.com/personal-care/get-inspired/makeup-gens",thumb:"https://www.gattefossechina.cn/uploads/file/1dc2e8c79b9c3565263148dc1342573d_20250324085526.jpg"},
-  {ID:198,title:"纵享美味：美妆与美食的跨界狂想",typeType:3,eventTime:"2025-03-24T02:10:20.037Z",tag:"[[1,306]]",url:"https://www.gattefosse.com/personal-care/get-inspired/guilty-pleasures",thumb:"https://www.gattefossechina.cn/uploads/file/b056e718febdb463ae338f4b4e9052e4_20250324021438.jpg"},
-  {ID:200,title:"Movember男士护理：健康胡须，魅力升级",typeType:4,eventTime:"2025-03-24T10:12:42.047Z",tag:"[[1,302]]",url:"https://www.gattefosse.com/personal-care/get-inspired/groomed-greatness",thumb:"https://www.gattefossechina.cn/uploads/file/f259b79338c1981abb2411c17815490f_20250324101345.jpg"},
-  {ID:197,title:"掌握植物化学，解锁有力主张",typeType:2,eventTime:"",tag:"[[1,293]]",url:"https://www.gattefosse.com/personal-care/get-inspired/mastering-plant-chemistry-unlock-powerful-claims",thumb:"https://www.gattefossechina.cn/uploads/file/34928c210dc3c762fa0dd94719e0ea9e_20240822021540.png"},
-  {ID:151,title:"关于眼下肌肤，您可能不知道的三件事",typeType:2,eventTime:"2024-04-24T16:00:00Z",tag:"[[1,293],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/3-things-you-did-not-know-about-your-under-eye",thumb:"https://www.gattefossechina.cn/uploads/file/2372eb0b6d586b4df579ad49e024a2c0_20240521015533.png"},
-  {ID:152,title:"护肤品和化妆品的终极亲脂奇迹",typeType:2,eventTime:"2024-04-22T16:00:00Z",tag:"[[1,293],[1,308],[1,311]]",url:"https://www.gattefosse.com/personal-care/get-inspired/ultimate-lipophilic-wonder-skincare-makeup",thumb:"https://www.gattefossechina.cn/uploads/file/3bff67d3d6b111bb2d7faaa059e048d0_20240521015504.png"},
-  {ID:153,title:"年龄的故事",typeType:3,eventTime:"",tag:"[[1,294],[1,303]]",url:"https://www.gattefosse.com/personal-care/get-inspired/story-age",thumb:"https://www.gattefossechina.cn/uploads/file/3de3df5c8fef728de1871cab227007c9_20240521015437.jpg"},
-  {ID:154,title:"适应性植物让炲倦肌肤焕发活力",typeType:2,eventTime:"",tag:"[[1,293],[1,294],[1,300]]",url:"https://www.gattefosse.com/personal-care/get-inspired/adaptogen-plant-revives-fatigued-skins",thumb:"https://www.gattefossechina.cn/uploads/file/924c52ed896d74f60433fa66f0c81e17_20240521015416.jpg"},
-  {ID:155,title:"文艺复兴",typeType:3,eventTime:"2024-01-31T16:00:00Z",tag:"[[1,306]]",url:"https://www.gattefosse.com/personal-care/get-inspired/renaissance",thumb:"https://www.gattefossechina.cn/uploads/file/75921de72e7621fb76b32e7dfcde547c_20240521015353.jpg"},
-  {ID:156,title:"探索气候变化对配方的影响",typeType:2,eventTime:"2024-01-24T16:00:00Z",tag:"[[1,317],[1,320]]",url:"https://www.gattefosse.com/personal-care/get-inspired/exploring-climate-impact-formulations",thumb:"https://www.gattefossechina.cn/uploads/file/fe8d758a208b682cc2fa95089ffb3453_20240521015331.jpg"},
-  {ID:157,title:"想要提升你的身体护理效果吗？",typeType:1,eventTime:"2024-01-21T16:00:00Z",tag:"[[1,293]]",url:"https://www.gattefosse.com/personal-care/get-inspired/boost-your-bodycare",thumb:"https://www.gattefossechina.cn/uploads/file/34928c210dc3c762fa0dd94719e0ea9e_20240521015303.png"},
-  {ID:158,title:"彩妆必备",typeType:1,eventTime:"2023-11-20T16:00:00Z",tag:"[[1,308]]",url:"https://www.gattefosse.com/personal-care/get-inspired/color-cosmetics-essentials",thumb:"https://www.gattefossechina.cn/uploads/file/50256deaa86e33cef97a6670007b6496_20240521015230.jpg"},
-  {ID:159,title:"探索宇宙万圣节妆容",typeType:3,eventTime:"2024-05-20T15:23:08.543Z",tag:"[[1,306]]",url:"https://www.gattefosse.com/personal-care/get-inspired/explore-cosmic-halloween-looks",thumb:"https://www.gattefossechina.cn/uploads/file/fbaa618cb44ceac9d1d2f25d7a7786bf_20240521015146.jpg"},
-  {ID:160,title:"揭示敏感性护肤中质地的力量",typeType:2,eventTime:"2024-05-20T15:25:26.597Z",tag:"[[1,316]]",url:"https://www.gattefosse.com/personal-care/get-inspired/unveiling-power-texture-sensitive-skincare",thumb:"https://www.gattefossechina.cn/uploads/file/fec2bf17c20fff50ca9940d542c236af_20240521015117.jpg"},
-  {ID:161,title:"拥抱升级再造",typeType:3,eventTime:"2024-05-20T15:27:11.392Z",tag:"[[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/embracing-upcycling",thumb:"https://www.gattefossechina.cn/uploads/file/107a104a19551d6fae4c6b9f860daffb_20240521015046.jpg"},
-  {ID:162,title:"头皮护理",typeType:1,eventTime:"2024-05-20T15:29:15.369Z",tag:"[[1,314],[1,316]]",url:"https://www.gattefosse.com/personal-care/get-inspired/scalp-care-consultation",thumb:"https://www.gattefossechina.cn/uploads/file/21fe78ed41a53f60aa42fed7adc0fda7_20240521015016.jpg"},
-  {ID:163,title:"超越防晒",typeType:1,eventTime:"2024-05-20T15:30:45.998Z",tag:"[[1,294],[1,300],[1,319]]",url:"https://www.gattefosse.com/personal-care/get-inspired/beyond-sun-protection",thumb:"https://www.gattefossechina.cn/uploads/file/441b31eef46903d4a1d51331706293c9_20240521014953.jpg"},
-  {ID:164,title:"焕发健康光彩的秘诀",typeType:2,eventTime:"2024-05-20T15:32:27.357Z",tag:"[[1,293]]",url:"https://www.gattefosse.com/personal-care/get-inspired/hacks-healthy-glow",thumb:"https://www.gattefossechina.cn/uploads/file/3bd0292efd662f2705290aa977a0adb8_20240521014929.jpg"},
-  {ID:165,title:"敏感肌护理",typeType:2,eventTime:"2024-05-20T15:34:40.702Z",tag:"[[1,305],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/sensitive-skin-explained",thumb:"https://www.gattefossechina.cn/uploads/file/3dd71b95dc0851c3467d9483f330b227_20240521014906.jpg"},
-  {ID:166,title:"色彩斑斓的春天",typeType:1,eventTime:"2024-05-20T15:35:24.692Z",tag:"[[1,308],[1,315]]",url:"https://www.gattefosse.com/personal-care/get-inspired/spring-forward-color",thumb:"https://www.gattefossechina.cn/uploads/file/498f609332926144ed2cc5d2d1b94831_20240521014842.jpg"},
-  {ID:167,title:"元宇宙中的感官",typeType:3,eventTime:"2024-05-20T15:36:23.667Z",tag:"[[1,296],[1,317]]",url:"https://www.gattefosse.com/personal-care/get-inspired/sensory-metaverse",thumb:"https://www.gattefossechina.cn/uploads/file/84acc5ff086672c57ca3221bc6f6ee00_20240521014815.jpg"},
-  {ID:168,title:"勇创每一天",typeType:3,eventTime:"2024-05-20T15:37:27.992Z",tag:"[[1,306]]",url:"https://www.gattefosse.com/personal-care/get-inspired/daring-daily",thumb:"https://www.gattefossechina.cn/uploads/file/7ce79da5b0a1d7bd8f5b9d3049dc4f68_20240521014756.jpg"},
-  {ID:169,title:"环境友好的配方",typeType:4,eventTime:"2024-05-20T15:38:39.779Z",tag:"[[1,298],[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/eco-friendly-formulation",thumb:"https://www.gattefossechina.cn/uploads/file/19c6a2a02ebcd5149fa41ef1ce54af94_20240521014729.jpg"},
-  {ID:170,title:"防晒产品，助力完美容颜",typeType:2,eventTime:"2024-05-20T15:40:47.898Z",tag:"[[1,319]]",url:"https://www.gattefosse.com/personal-care/get-inspired/spf-showoff-perfect-faces",thumb:"https://www.gattefossechina.cn/uploads/file/dfffdfb35b3118789115d8e6c651bd51_20240521014702.jpg"},
-  {ID:171,title:"爱上色彩",typeType:1,eventTime:"2024-05-20T15:41:38.648Z",tag:"[[1,308],[1,315]]",url:"https://www.gattefosse.com/personal-care/get-inspired/fall-love-color",thumb:"https://www.gattefossechina.cn/uploads/file/2dadb2f4488b555d1929d60824ec7b0b_20240521014629.jpg"},
-  {ID:172,title:"光滑肌肤",typeType:4,eventTime:"2024-05-20T15:43:57.039Z",tag:"[[1,293],[1,303]]",url:"https://www.gattefosse.com/personal-care/get-inspired/clear-skin-all",thumb:"https://www.gattefossechina.cn/uploads/file/382a6710df53c1f91641a7fe69cbf7f6_20240521014521.jpg"},
-  {ID:173,title:"皮肤护理的新常态",typeType:2,eventTime:"2024-05-20T15:46:46.144Z",tag:"[[1,293],[1,294],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/new-normal-skin-care",thumb:"https://www.gattefossechina.cn/uploads/file/d7d3fb59e56b12e250287edf04988f8f_20240521014458.jpg"},
-  {ID:174,title:"恰到好处",typeType:2,eventTime:"2024-05-20T15:51:38.629Z",tag:"[[1,293],[1,294],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/hit-spot",thumb:"https://www.gattefossechina.cn/uploads/file/06e9c269aae699bff2940f3b1b09246a_20240521014439.jpg"},
-  {ID:175,title:"朝着光保护的下一步",typeType:2,eventTime:"2024-05-20T15:57:35.566Z",tag:"[[1,293],[1,294],[1,300],[1,310]]",url:"https://www.gattefosse.com/personal-care/get-inspired/next-step-towards-photoprotection",thumb:"https://www.gattefossechina.cn/uploads/file/dd43b4438916cc6a2bd00b7e30d54b54_20240521014417.jpg"},
-  {ID:176,title:"光老化之路",typeType:2,eventTime:"2024-05-20T15:58:27.339Z",tag:"[[1,293],[1,294],[1,300],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/pathway-photoaging",thumb:"https://www.gattefossechina.cn/uploads/file/42f87160ad0c959cd0d0dae7c453c60e_20240521014355.jpg"},
-  {ID:177,title:"克服重力",typeType:4,eventTime:"2024-05-20T15:59:22.301Z",tag:"[[1,293],[1,313]]",url:"https://www.gattefosse.com/personal-care/get-inspired/defying-gravity",thumb:"https://www.gattefossechina.cn/uploads/file/d0582e12dc680acb4c9a063ae309e888_20240521014336.jpg"},
-  {ID:178,title:"灵感2022",typeType:3,eventTime:"2024-05-20T16:00:04.111Z",tag:"[[1,306],[1,320]]",url:"https://www.gattefosse.com/personal-care/get-inspired/inspiration-2022",thumb:"https://www.gattefossechina.cn/uploads/file/4b38c643caff7fa8fd0fafe536c7c8e1_20240521014259.jpg"},
-  {ID:179,title:"放过你的头发吧!",typeType:1,eventTime:"2024-05-20T16:02:22.687Z",tag:"[[1,302],[1,304],[1,314]]",url:"https://www.gattefosse.com/personal-care/get-inspired/let-your-hair-down",thumb:"https://www.gattefossechina.cn/uploads/file/1aadbab19f2e7d5440db09b9ae419470_20240521014235.jpg"},
-  {ID:181,title:"炎症性衰老",typeType:2,eventTime:"2024-05-20T16:04:07.28Z",tag:"[[1,293],[1,294],[1,305],[1,316],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/inflammaging",thumb:"https://www.gattefossechina.cn/uploads/file/eb8f18f772fd340932fd0acac8193769_20240521014140.jpg"},
-  {ID:182,title:"提升皮肤弹性以对抗皮肤松弛",typeType:2,eventTime:"2024-05-20T16:04:51.977Z",tag:"[[1,293],[1,313],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/promoting-skin-elasticity-fight-skin-sagging",thumb:"https://www.gattefossechina.cn/uploads/file/fff1550d9bc0fc85ce90ade17a95a571_20240521014118.jpg"},
-  {ID:183,title:"抗击皮肤松弛",typeType:2,eventTime:"2024-05-20T16:05:50.543Z",tag:"[[1,293],[1,313],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/sagging-and-skin",thumb:"https://www.gattefossechina.cn/uploads/file/245ea994281ee969d16384cce1e5d2a1_20240521014058.jpg"},
-  {ID:184,title:"婴儿护理",typeType:1,eventTime:"2024-05-20T16:06:35.949Z",tag:"[[1,295]]",url:"https://www.gattefosse.com/personal-care/get-inspired/oh-baby",thumb:"https://www.gattefossechina.cn/uploads/file/a289f94e40c9edc490735e1a00117a1b_20240521014037.jpg"},
-  {ID:185,title:"从本地市场的角度出发：嘉法狮的地区承诺",typeType:2,eventTime:"2024-05-20T16:07:51.033Z",tag:"[[1,293],[1,307]]",url:"https://www.gattefosse.com/personal-care/get-inspired/thinking-local",thumb:"https://www.gattefossechina.cn/uploads/file/5df1f926f8bf707d139ab8f22d7e0ddf_20240521014018.jpg"},
-  {ID:186,title:"矿物质的力量",typeType:2,eventTime:"2024-05-20T16:08:28.169Z",tag:"[[1,293],[1,301]]",url:"https://www.gattefosse.com/personal-care/get-inspired/minerals-matter",thumb:"https://www.gattefossechina.cn/uploads/file/668cf177b9c0db8a5719f0d14449ab91_20240521013954.jpg"},
-  {ID:187,title:"\"农场至肌肤\"的美丽之旅",typeType:3,eventTime:"2024-05-20T16:09:06.079Z",tag:"[[1,310],[1,311],[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/beauty-behind-farm-face",thumb:"https://www.gattefossechina.cn/uploads/file/fe8eec7aa233e552e5f26bc0b5229978_20240521013927.jpg"},
-  {ID:188,title:"微生物组革命",typeType:2,eventTime:"2024-05-20T16:10:01.771Z",tag:"[[1,309],[1,318]]",url:"https://www.gattefosse.com/personal-care/get-inspired/microbiome-revolution",thumb:"https://www.gattefossechina.cn/uploads/file/74e530b5a3af88c186608db2cbc7ef35_20240521013902.jpg"},
-  {ID:189,title:"无忧配制水包油乳液！",typeType:4,eventTime:"2024-05-20T16:10:35.023Z",tag:"[[1,321]]",url:"https://www.gattefosse.com/personal-care/get-inspired/formulating-wo-emulsions-wout-worry",thumb:"https://www.gattefossechina.cn/uploads/file/8b6a5b12fc3af625bcc3cecaa136564a_20240521013840.jpg"},
-  {ID:190,title:"新消费标准：透明度与真实性的力量",typeType:3,eventTime:"2024-05-20T16:11:08.135Z",tag:"[[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/crystal-clear-beauty",thumb:"https://www.gattefossechina.cn/uploads/file/72572841f63eb6e90f7a7a3e2d0e1168_20240521013816.jpg"},
-  {ID:193,title:"致力于可持续发展",typeType:3,eventTime:"2024-07-19T03:39:59.05Z",tag:"[[1,299],[1,312]]",url:"https://www.gattefosse.com/personal-care/get-inspired/committed-sustainability",thumb:"https://www.gattefossechina.cn/uploads/file/87208f5d885ffc6e19462fbda1e2645b_20240719040642.webp"},
-  {ID:192,title:"掌握植物化学，解锁有力主张",typeType:2,eventTime:"2024-07-19T03:38:28.963Z",tag:"[[1,293]]",url:"https://www.gattefosse.com/personal-care/get-inspired/mastering-plant-chemistry-unlock-powerful-claims",thumb:"https://www.gattefossechina.cn/uploads/file/34928c210dc3c762fa0dd94719e0ea9e_20240719040740.webp"}
-];
-// 筛选逻辑
-function filterArticles(arr) {
-  var f = arr.slice();
-  var t = articleType;
-  if (t && t != '0') { var pt = parseInt(t); f = f.filter(function(p) { return p.typeType == pt; }); }
-  var tid = tagId;
-  if (tid && tid != '0') { tid = parseInt(tid);
-    f = f.filter(function(p) { try { var tags = JSON.parse(p.tag); for (var i = 0; i < tags.length; i++) { if (tags[i][1] == tid) return true; } } catch(e) {} return false; }); }
-  if (w) { var kw = w.toLowerCase();
-    f = f.filter(function(p) { return (p.title && p.title.toLowerCase().indexOf(kw) >= 0) || (p.summary && p.summary.toLowerCase().indexOf(kw) >= 0); }); }
-  return f;
-}
-var filteredData = filterArticles(allTaggedData);
-data.total = filteredData.length;
-data.total_page = Math.ceil(data.total / data.page_size);
-if (curPage < 1 || curPage > data.total_page) curPage = 1;
-data.cur_page = parseInt(curPage) || 1;
-data.formData = (function(page) {
-  var s = (page - 1) * data.page_size, e = Math.min(s + data.page_size, filteredData.length);
-  var pageData = filteredData.slice(s, e);
-  for (var i = 0; i < pageData.length; i++) {
-    pageData[i].eventTimeYear = pageData[i].eventTime ? pageData[i].eventTime.substring(0,4) : '';
-    pageData[i].eventTimeDate = pageData[i].eventTime ? pageData[i].eventTime.substring(5,10).replace('-','月') : '';
-    for (var j = 0; j < data.articleTypeList.length; j++) {
-      if (pageData[i].typeType == data.articleTypeList[j].ID) { pageData[i].typeName = data.articleTypeList[j].typeName; break; }
-    }
-    pageData[i].tagList = [];
-    try {
-      var tags = JSON.parse(pageData[i].tag);
-      for (var m = 0; m < tags.length; m++) {
-        for (var gi = 0; gi < tagGroups.length; gi++) {
-          if (tags[m][0] == tagGroups[gi].ID) {
-            for (var ci = 0; ci < tagGroups[gi].children.length; ci++) {
-              if (tags[m][1] == tagGroups[gi].children[ci].ID) { pageData[i].tagList.push(tagGroups[gi].children[ci].tagName); }
-            }
-          }
-        }
-      }
-    } catch(e) {}
+var apiBase = '/api';
+
+// 构建 API 请求 URL
+function buildApiUrl() {
+  var params = new URLSearchParams();
+  params.set('type', 'article');
+  params.set('page', data.cur_page);
+  params.set('limit', '9');
+  if (w) params.set('keyword', w);
+  if (articleType && articleType > 0) {
+    var typeNames = ['','应用领域','专业知识','灵感和趋势','质地与配方'];
+    params.set('articleType', typeNames[parseInt(articleType)]);
   }
-  return pageData;
-})(data.cur_page);
-var tp = ''; var tg = ''; var kw = '';
-if (articleType && articleType != '0') tp = '&articleType=' + articleType;
-if (tagId && tagId != '0') tg = '&tagId=' + tagId;
-if (w) kw = '&keyword=' + encodeURIComponent(w);
-data.prev_url = data.cur_page > 1 ? baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw : null;
-data.next_url = data.cur_page < data.total_page ? baseUrl + '?page=' + (data.cur_page + 1) + tp + tg + kw : null;
-data.allTypeUrl = delUrlParam(curUrl, "articleType");
-data.articleType = articleType;
+  if (tagId && tagId != '0') {
+    params.set('tags', decodeURIComponent(tagId));
+  }
+  return apiBase + '/news?' + params.toString();
+}
+
+// 加载文章数据
+async function loadArticles() {
+  try {
+    var resp = await fetch(buildApiUrl());
+    var result = await resp.json();
+    if (result.code !== 0) throw new Error(result.message || '加载失败');
+    var d = result.data;
+    data.total = d.pagination.total;
+    data.total_page = d.pagination.totalPages;
+    data.cur_page = parseInt(d.pagination.page);
+    data.formData = d.list.map(function(item) {
+      var tagList = [];
+      if (item.tags) {
+        try { tagList = JSON.parse(item.tags); } catch(e) { tagList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
+      }
+      var eventTimeYear = '', eventTimeDate = '';
+      if (item.publishedDate) {
+        var d2 = new Date(item.publishedDate);
+        eventTimeYear = d2.getFullYear();
+        eventTimeDate = (d2.getMonth() + 1) + '月' + d2.getDate();
+      }
+      var typeName = '';
+      for (var j = 0; j < data.articleTypeList.length; j++) {
+        if (item.articleType == data.articleTypeList[j].typeName) { typeName = data.articleTypeList[j].typeName; break; }
+      }
+      return {
+        ID: item.id,
+        title: item.title,
+        typeName: typeName,
+        eventTime: item.publishedDate,
+        eventTimeYear: eventTimeYear,
+        eventTimeDate: eventTimeDate,
+        summary: item.summary || '',
+        tagList: tagList,
+        url: '/personal-care-article-detail.html?id=' + item.id,
+        thumb: item.imageUrl || '/'
+      };
+    });
+    var tp = articleType && articleType != '0' ? '&articleType=' + articleType : '';
+    var tg = tagId && tagId != '0' ? '&tagId=' + encodeURIComponent(tagId) : '';
+    var kw = w ? '&keyword=' + encodeURIComponent(w) : '';
+    data.prev_url = data.cur_page > 1 ? baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw : null;
+    data.next_url = data.cur_page < data.total_page ? baseUrl + '?page=' + (data.cur_page + 1) + tp + tg + kw : null;
+  } catch (e) {
+    console.error('加载文章失败:', e);
+    data.formData = [];
+    data.total = 0;
+  }
+  setTimeout(function() { setTagStyle(); }, 100);
+}
+
+// 加载标签列表
+async function loadTags() {
+  try {
+    var resp = await fetch(apiBase + '/news/tags/list?type=article');
+    var result = await resp.json();
+    if (result.code !== 0) return;
+    var tags = result.data || [];
+    var group = {
+      tagName: '主题', ID: 1,
+      nameId: 'collapse-filtre-accordion-主题_1',
+      sharpeNameId: '#collapse-filtre-accordion-主题_1',
+      headerNameId: 'heading-filtre-accordion-personal-care_主题',
+      accordionNameId: 'accordion-filtre-accordion-personal-care_主题',
+      dataBlockPluginId: 'facet_block:personal-care_主题',
+      panelDivId1: '主题_1',
+      class: 'facet-inactive block-facet--checkbox block block-facets ',
+      children: []
+    };
+    for (var ci = 0; ci < tags.length; ci++) {
+      var tagName = tags[ci];
+      var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(tagName);
+      if (articleType) u += '&articleType=' + articleType;
+      if (w) u += '&keyword=' + encodeURIComponent(w);
+      if (tagId && decodeURIComponent(tagId) === tagName) {
+        data.curFilterTagName = tagName;
+        data.activeFilterClass = 'showDiv';
+      }
+      group.children.push({
+        ID: tagName,
+        tagName: tagName,
+        tagUrl: u,
+        dataDrupalFacetItemId: 'tag-' + ci,
+        facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
+      });
+    }
+    data.tagList = [group];
+  } catch (e) {
+    console.error('加载标签列表失败:', e);
+  }
+}
+
+// 初始化：先加载标签，再加载文章
+loadTags().then(function() {
+  loadArticles();
+});
+        data.allTypeUrl = delUrlParam(curUrl, "articleType");
         data.articleType = articleType;
         return {
           data,

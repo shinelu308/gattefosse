@@ -183,29 +183,59 @@ model DocFormulation {
   @@map("doc_formulations")
 }
 
-// ===== 新闻与活动表 =====
+// ===== 新闻与活动表（扩展支持获取灵感模块） =====
 model NewsEvent {
   id             Int       @id @default(autoincrement())
-  type           String    // news / event
+  type           String    // news / event / article / webinar / publication / magazine
   category       String    // corporate / pc / pharma
   title          String
   slug           String?
   summary        String?
   contentHtml    String?   @map("content_html")
   imageUrl       String?   @map("image_url")
+  topBackground  String?   @map("top_background")  // 文章页头图（hero image）
   readingTime    Int?      @map("reading_time")
   publishedDate  DateTime  @map("published_date")
   eventEndDate   DateTime? @map("event_end_date")
   location       String?
   booth          String?
   isPublished    Boolean   @default(false) @map("is_published")
+  views          Int       @default(0)             // 阅读量
+  // 获取灵感模块扩展字段
+  articleType    String?   @map("article_type")  // article子类型：应用领域/专业知识/灵感和趋势/质地与配方/其他
+  tags           String?   // JSON数组，如 ["活性成分","抗衰老","舒缓"]，用于文章/研讨会标签筛选
+  pdfUrl         String?   @map("pdf_url")       // 出版物/杂志 PDF 下载链接
+  videoUrl       String?   @map("video_url")     // 研讨会回放视频链接
+  lock           Boolean   @default(false)       // 是否需要登录查看
+  // SEO 字段
+  metaTitle       String?   @map("meta_title")
+  metaDescription String?   @map("meta_description")
+  metaKeywords    String?   @map("meta_keywords")
+  // 作者关联
+  authorId        Int?      @map("author_id")
   createdById    Int?      @map("created_by")
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
 
   createdBy      User?     @relation("NewsEventCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  author         Author?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
 
   @@map("news_events")
+}
+
+// ===== 文章作者表 =====
+model Author {
+  id        Int       @id @default(autoincrement())
+  name      String
+  avatar    String?   // 头像 URL
+  bio       String?   // 作者简介
+  sortOrder Int       @default(0) @map("sort_order")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  articles  NewsEvent[]
+
+  @@map("authors")
 }
 
 // ===== 用户收藏表 =====

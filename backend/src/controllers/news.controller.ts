@@ -4,6 +4,7 @@ import { success, fail, paginate } from '../utils/response';
 
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
+  author: { select: { id: true, name: true, avatar: true, bio: true } },
 };
 
 /**
@@ -16,8 +17,10 @@ export async function listNews(req: Request, res: Response) {
       limit = '20',
       type = 'all',
       category,
+      articleType,
       keyword,
       isPublished,
+      tags,
     } = req.query;
 
     const pageNum = Math.max(1, parseInt(String(page)));
@@ -42,8 +45,18 @@ export async function listNews(req: Request, res: Response) {
       where.category = String(category);
     }
 
+    if (articleType) {
+      where.articleType = String(articleType);
+    }
+
     if (isPublished !== undefined && isPublished !== '') {
       where.isPublished = String(isPublished) === 'true';
+    }
+
+    // tags 筛选：SQLite 的 contains 对 JSON 字符串做模糊匹配
+    if (tags) {
+      const tagStr = String(tags);
+      where.tags = { contains: tagStr };
     }
 
     const [total, items] = await Promise.all([
@@ -107,14 +120,25 @@ export async function createNewsItem(req: Request, res: Response) {
       location,
       booth,
       isPublished,
+      articleType,
+      tags,
+      pdfUrl,
+      videoUrl,
+      lock,
+      topBackground,
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      authorId,
     } = req.body;
 
     if (!title) {
       return res.status(400).json(fail('标题不能为空'));
     }
 
-    if (!['news', 'event'].includes(type)) {
-      return res.status(400).json(fail('type 必须是 news 或 event'));
+    const validTypes = ['news', 'event', 'article', 'webinar', 'publication', 'magazine'];
+    if (!validTypes.includes(type)) {
+      return res.status(400).json(fail('type 必须是 news/event/article/webinar/publication/magazine'));
     }
 
     if (!publishedDate) {
@@ -136,6 +160,16 @@ export async function createNewsItem(req: Request, res: Response) {
         location: location || null,
         booth: booth || null,
         isPublished: isPublished !== undefined ? isPublished : false,
+        articleType: articleType || null,
+        tags: tags || null,
+        pdfUrl: pdfUrl || null,
+        videoUrl: videoUrl || null,
+        lock: lock !== undefined ? lock : false,
+        topBackground: topBackground || null,
+        metaTitle: metaTitle || null,
+        metaDescription: metaDescription || null,
+        metaKeywords: metaKeywords || null,
+        authorId: authorId || null,
         createdById: req.user?.userId || null,
       },
       include: NEWS_INCLUDE,
@@ -173,6 +207,16 @@ export async function updateNewsItem(req: Request, res: Response) {
       location,
       booth,
       isPublished,
+      articleType,
+      tags,
+      pdfUrl,
+      videoUrl,
+      lock,
+      topBackground,
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      authorId,
     } = req.body;
 
     const updateData: Record<string, unknown> = {};
@@ -189,6 +233,16 @@ export async function updateNewsItem(req: Request, res: Response) {
     if (location !== undefined) updateData.location = location || null;
     if (booth !== undefined) updateData.booth = booth || null;
     if (isPublished !== undefined) updateData.isPublished = isPublished;
+    if (articleType !== undefined) updateData.articleType = articleType || null;
+    if (tags !== undefined) updateData.tags = tags || null;
+    if (pdfUrl !== undefined) updateData.pdfUrl = pdfUrl || null;
+    if (videoUrl !== undefined) updateData.videoUrl = videoUrl || null;
+    if (lock !== undefined) updateData.lock = lock;
+    if (topBackground !== undefined) updateData.topBackground = topBackground || null;
+    if (metaTitle !== undefined) updateData.metaTitle = metaTitle || null;
+    if (metaDescription !== undefined) updateData.metaDescription = metaDescription || null;
+    if (metaKeywords !== undefined) updateData.metaKeywords = metaKeywords || null;
+    if (authorId !== undefined) updateData.authorId = authorId || null;
 
     const item = await prisma.newsEvent.update({
       where: { id },
@@ -219,5 +273,70 @@ export async function deleteNewsItem(req: Request, res: Response) {
   } catch (error) {
     console.error('删除新闻失败:', error);
     return res.status(500).json(fail('删除新闻失败'));
+  }
+}
+
+/**
+ * 获取所有文章标签（去重）
+ * GET /api/news/tags/list?type=article
+ */
+export async function listNewsTags(req: Request, res: Response) {
+  try {
+    const { type = 'article' } = req.query;
+    const where: Record<string, unknown> = {};
+    if (type && type !== 'all') {
+      where.type = String(type);
+    }
+    where.isPublished = true;
+
+    const items = await prisma.newsEvent.findMany({
+      where,
+      select: { tags: true },
+    });
+
+    // 提取所有标签并去重
+    const tagSet = new Set<string>();
+    for (const item of items) {
+      if (item.tags) {
+        try {
+          const parsed = JSON.parse(item.tags);
+          if (Array.isArray(parsed)) {
+            parsed.forEach((t: string) => { if (t) tagSet.add(t); });
+          }
+        } catch {
+          // 不是合法JSON时尝试按逗号分割
+          item.tags.split(',').map(t => t.trim()).filter(Boolean).forEach(t => tagSet.add(t));
+        }
+      }
+    }
+
+    const sorted = Array.from(tagSet).sort();
+    return res.json(success(sorted, '获取成功'));
+  } catch (error) {
+    console.error('获取标签列表失败:', error);
+    return res.status(500).json(fail('获取标签列表失败'));
+  }
+}
+
+/**
+ * 增加阅读量
+ * PUT /api/news/:id/views
+ */
+export async function incrementNewsViews(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    const existing = await prisma.newsEvent.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json(fail('该新闻/活动不存在'));
+    }
+    const updated = await prisma.newsEvent.update({
+      where: { id },
+      data: { views: { increment: 1 } },
+      select: { id: true, views: true },
+    });
+    return res.json(success(updated, '更新成功'));
+  } catch (error) {
+    console.error('更新阅读量失败:', error);
+    return res.status(500).json(fail('更新阅读量失败'));
   }
 }

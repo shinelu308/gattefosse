@@ -1,232 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical"
-        href="https://www.gattefosse.com/personal-care/get-inspired/exploring-climate-impact-formulations" />
-    <meta name="google-site-verification"
-        content="google-site-verification=Y6WviYcf7W8KotrHzlWpb5b-OAAhVvid6uNBCzp_BeQ" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="alternate" hreflang="x-default"
-        href="https://www.gattefosse.com/personal-care/get-inspired/exploring-climate-impact-formulations" />
-    <link rel="alternate" hreflang="en"
-        href="https://www.gattefosse.com/personal-care/get-inspired/exploring-climate-impact-formulations" />
-    <link rel="alternate" hreflang="fr"
-        href="https://www.gattefosse.com/fr/cosmetique/inspirez-vous/limpact-du-climat-sur-les-formulations" />
-    <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
-    <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
-    <script src="/static/js/axios.min.js"></script>
-    <script src="/static/js/jquery-3.7.1.min.js"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            "Pagetype": "article_personal_care",
-            "LEVEL1": "Personal Care",
-            "LEVEL2": "Get inspired",
-            "LEVEL3": "Exploring the Climate Impact on Formulations",
-            "Pays": "en",
-            "Thematique": "",
-            "Connexion": "Non"
-        });
-    </script>
-    <title>嘉法狮</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/themes/custom/gattefosse/images/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/gattefosse/images/favicons/favicon-16x16.png">
-    <link rel="manifest" href="/themes/custom/gattefosse/images/favicons/site.webmanifest">
-    <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" media="all"
-        href="/sites/default/files/css/css_VReceDAmMvwZ-zGjf3J2Cz04lQy72pkaj4cVAETXvtc.css" />
-    <link rel="stylesheet" media="all"
-        href="/sites/default/files/css/css_q87ucVt3rnFopj3ZmA--fl7PQC4tROomRfVer8ewsiI.css" />
-    <link rel="stylesheet" media="all"
-        href="/sites/default/files/css/menu_icons_1713822109.css" />
-    <link rel="stylesheet" media="all"
-        href="/sites/default/files/css/css_zCDCU-o2LKXngtpj6DBjU0-DPPFPfqZNHXrxn4tmXuY.css" />
-    <link rel="stylesheet" media="all"
-        href="/sites/default/files/css/css_CfAqE8UjmFObeJ-EWQr7CuI8o5xv3bQTdu0Ee6hJ1P0.css" />
-    <link rel="stylesheet" media="all"
-        href="/sites/default/files/css/css_LOEta1EWPP03WWB9W1oc6XQDrBhzvU3zh_QtcpORiwI.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文章详情 | 嘉法狮</title>
+  <meta name="description" :content="metaDesc">
+  <meta name="keywords" :content="metaKeywords">
+  <link rel="canonical" :href="canonicalUrl">
+  <script src="/static/js/vue.global.prod.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <style>
+    .s-article { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+    .s-article__top-part { margin-bottom: 32px; }
+    .s-article__title { font-size: 32px; font-weight: 600; line-height: 1.3; color: #1a1a1a; margin-bottom: 16px; }
+    .s-article__data { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+    .s-article__author { display: flex; align-items: center; gap: 12px; }
+    .s-article__author-img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .s-article__author-name { font-size: 14px; font-weight: 600; color: #333; }
+    .s-article__author-poste { font-size: 12px; color: #666; }
+    .s-article__category-title { display: inline-block; background: #EEEDFE; color: #3C3489; padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+    .s-article__tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .s-article__tags .tag { display: inline-block; background: #f0f0f0; color: #555; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+    .s-article__date { font-size: 13px; color: #999; }
+    .s-article__reading { font-size: 13px; color: #999; margin-left: 12px; }
+    .s-article__banner { width: 100%; height: 360px; object-fit: cover; border-radius: 12px; margin-bottom: 32px; }
+    .s-article__content { font-size: 16px; line-height: 1.8; color: #333; }
+    .s-article__content p { margin-bottom: 1.2em; }
+    .s-article__content h2 { font-size: 24px; margin: 32px 0 16px; }
+    .s-article__content h3 { font-size: 20px; margin: 24px 0 12px; }
+    .s-article__content img { max-width: 100%; border-radius: 8px; margin: 16px 0; }
+    .s-article__back { display: inline-block; margin-bottom: 24px; color: var(--blue-link, #003CC5); text-decoration: none; font-size: 14px; }
+    .page-top__image { width: 100%; height: 400px; background-size: cover; background-position: center; }
+    .breadcrumb { display: flex; gap: 8px; list-style: none; padding: 16px 0; font-size: 13px; color: #666; }
+    .breadcrumb a { color: var(--blue-link, #003CC5); text-decoration: none; }
+    .breadcrumb li+li:before { content: '/'; margin-right: 8px; color: #ccc; }
+    .page-top { margin-bottom: 24px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .o-tag-list { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; margin: 8px 0; }
+    .c-card__tag-item { background: #EAF3DE; color: #3B6D11; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+    .c-card__info { display: flex; align-items: center; gap: 8px; }
+    .loading { text-align: center; padding: 80px 20px; color: #999; font-size: 16px; }
+  </style>
 </head>
-<body class="path-node page-node-type-article-personal-care    bg- d-flex flex-column">
-    <nav role="navigation" aria-label="Accès rapide au contenu">
-        <a href="#main-content" class="visually-hidden focusable skip__link">
-            <span class="skip__link__text">Saut au contenu</span>
-        </a>
-    </nav>
-    <div class="dialog-off-canvas-main-canvas d-flex flex-column h-100" data-off-canvas-main-canvas id="app">
-        <header role="banner" class="header" id="header"></header>
-        <div class="region region-highlight">
-            <div data-drupal-messages-fallback class="hidden"></div>
-        </div>
-        <main role="main" data-bs-spy="scroll" :class="(data.formData.topBackground  == null || data.formData.topBackground  == '') ? 's-page--inner main theme-cosm no-image-banner' : 's-page--inner main theme-cosm'">
-            <!-- theme-pharma | theme-cosm -->
-            <nav role="navigation" class="quick-access">
-                <button class="quick-access__button quick-access__button--open js-open">
-                  <i class="o-icon --list" aria-hidden="true"></i>
-                  <strong>快捷链接</strong>
-                </button>
-                <div class="quick-access__menu">
-                  <button class="quick-access__button quick-access__button--close js-close">
-                    <i class="o-icon --cross" aria-hidden="true"></i>
-                    关闭
-                  </button>
-                  <div id="quickLinks"></div>
+<body>
+  <div id="app" v-cloak>
+    <header id="header"></header>
+    <main class="s-page--inner main theme-cosm" :class="{'no-image-banner': !article.topBackground}">
+      <!-- 面包屑 -->
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="/">首页</a></li>
+            <li><a href="/personal-care.html">个人护理</a></li>
+            <li><a href="/personal-care/get-inspired.html">获取灵感</a></li>
+            <li><a href="/personal-care/get-inspired/articles.html">所有文章</a></li>
+            <li>{{ article.title }}</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- 头图 -->
+      <div v-if="article.topBackground" class="page-top">
+        <div class="page-top__image" :style="{ backgroundImage: 'url(' + article.topBackground + ')' }"></div>
+      </div>
+      <!-- 文章内容 -->
+      <div class="container" v-if="article.id">
+        <article class="s-article">
+          <div class="s-article__top-part">
+            <h1 class="s-article__title">{{ article.title }}</h1>
+            <div class="s-article__data">
+              <div class="s-article__author" v-if="article.author">
+                <img :src="article.author.avatar || '/static/images/default-avatar.png'" alt="" class="s-article__author-img" @error="$event.target.src='/static/images/default-avatar.png'">
+                <div class="s-article__author-info">
+                  <div class="s-article__author-name">{{ article.author.name }}</div>
+                  <div class="s-article__author-poste" v-if="article.author.bio">{{ article.author.bio }}</div>
                 </div>
-        
-              </nav>
-            <a id="main-content" tabindex="-1"></a>
-            <div class="page-top">
-                <div class="region region-breadcrumb">
-                    <div id="block-gattefosse-breadcrumbs" data-block-plugin-id="system_breadcrumb_block"
-                        class="block block-system block-system-breadcrumb-block">
-                        <nav aria-label="breadcrumb">
-                            <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="/">首页</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="/personal-care.html">个人护理</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="/personal-care/get-inspired.html">获取灵感</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a :href="data.formData.url">{{data.formData.title}}</a>
-                                </li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-                <div class="page-top__image page-top__image--full" v-if="data.formData.topBackground  != null && data.formData.topBackground  != ''"
-                :style="data.formData.styleBackground">
-                </div>
+              </div>
+              <div>
+                <span class="s-article__category-title" v-if="article.articleType">{{ article.articleType }}</span>
+                <ul class="o-tag-list" v-if="article.tagsList && article.tagsList.length">
+                  <li class="c-card__tag-item" v-for="t in article.tagsList" :key="t">{{ t }}</li>
+                </ul>
+              </div>
+              <div class="c-card__info">
+                <span class="s-article__date" v-if="article.displayDate">{{ article.displayDate }}</span>
+                <span class="s-article__reading" v-if="article.readingTime">阅读时长 {{ article.readingTime }} 分钟</span>
+                <span class="s-article__reading">阅读量 {{ article.views || 0 }}</span>
+              </div>
             </div>
-            <div class="region region-content">
-                <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
-                    class="block block-system block-system-main-block">
-                    <article role="article" about="/personal-care/get-inspired/exploring-climate-impact-formulations"
-                        class="node node--type-article-personal-care node--view-mode-full">
-                        <div class="container s-article">
-                            <div class="node__wrapper">
-                                <div class="node__content-wrapper">
-                                    <div class="s-article__top-part">
-                                      <div class="row s-article__data">
-                                        <div class="col-md s-article__author" v-if="data.formData.person  != null">
-                                          <picture>
-                                            <img :src="data.formData.person.thumb" alt=""
-                                              width="56" height="56" loading="lazy" class=" s-article__author-img img-fluid">
-                                          </picture>
-                                          <div class="s-article__author-info">
-                                            <span class="s-article__author-name">{{data.formData.person.title}}</span>
-                                            <span class="s-article__author-poste">{{data.formData.person.summary}}</span>
-                                          </div>
-                                        </div>
-                                        <div class="col-md">
-                                          <span class="s-article__category-title">{{data.formData.typeName}}</span>
-                                          <ul class="o-tag-list o-tag-list--wrap">
-                                            <li v-for="item2 in data.formData.tagList" class="c-card__tag-item">{{item2}}</li>
-                                          </ul>
-                                        </div>
-                  
-                                        <div class="col-md">
-                                          <div class="c-card__info s-article__date">
-                                            <div class="c-card__date" v-if="data.formData.eventTime != null && data.formData.eventTimeDate != ''">
-                                              {{data.formData.eventTimeYear}}年{{data.formData.eventTimeDate}}日
-                                            </div>
-                                            <div class="c-card__reading">
-                                              阅读量 : {{data.formData.views * 13 + 5}}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                        <div v-if="data.formData">
-                                            <h1 class="s-article__title page-title u-title-styled">{{data.formData.title}}</h1>
-                                        </div>
-                                    </div>
-                                    <span v-html="data.formData.content">
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-            <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
-                class="c-back-to-top smoothHide d-none"></a>
-        </main>
-        <footer role="contentinfo" class="footer" id="footer"> </footer>
-        <div class="modal modal--search" id="search-modal" tabindex="-1" aria-label="Search form" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <button role="button" aria-label="Close" class="btn btn-icon--l o-btn-close"
-                        data-bs-dismiss="modal">
-                        <i class="o-icon --cross" aria-hidden="true"></i>
-                        <span>Close</span>
-                    </button>
-                    <form action="https://www.gattefosse.com/search" method="GET" class="modal--search__form">
-                        <h2 class="modal-title">
-                            What are you looking for ?
-                        </h2>
-                        <div class="form-item">
-                            <label class="visually-hidden" for="key">Please enter a keyword...</label>
-                            <input class="form-text form-control" placeholder="Please enter a keyword..." type="text"
-                                id="key" name="keyword" value="">
-                            <button type="submit" class="js-form-submit form-submit btn">
-                                <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <a href="https://www.gattefosse.com/search" class="u-link">Advanced search</a>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
-    </div>
+            <p v-if="article.summary" style="color:#666;font-size:15px;line-height:1.6;">{{ article.summary }}</p>
+          </div>
+          <div class="s-article__content" v-html="article.contentHtml"></div>
+        </article>
+      </div>
+      <div class="loading" v-else-if="loading">加载中...</div>
+      <div class="loading" v-else>文章不存在或已下架</div>
+    </main>
+    <footer id="footer"></footer>
   </div>
-    <script src="/sites/default/files/js/js_CsyIdu1wDwXVRDYNWl5It2Y_pq096ewn0Yfk5whPKdQ.js"></script>
-    <script src="/sites/default/files/js/js_2mNc9WZm6LIH1QDAnAZOt4JIJSloG3vjQk0K6gYGs4E.js"></script>
-    <script src="/sites/default/files/js/js_CQT8UYTJuSJOvNdF1_QG5Y9O8tzb6ju15QlcNogaY4E.js"></script>
-    <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1715880874"></script>
-    <script src="/sites/default/files/js/js_fvK3KXKeRUyxbhECdSVtPhzVcBujcPEehnt5TgZ0MoI.js"></script><script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>   
 
-<script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const articleId = params.get('id') || '';
+
+    $(document).ready(function () {
+      $("#header").load("/header.html");
+      $("#footer").load("/footer.html");
+    });
+
+    const { createApp, reactive, ref } = Vue;
+    const app = createApp({
+      data() {
+        return {
+          article: {},
+          loading: true,
+          metaDesc: '',
+          metaKeywords: '',
+          canonicalUrl: '',
+        };
+      },
+      mounted() {
+        this.fetchArticle();
+      },
+      methods: {
+        async fetchArticle() {
+          if (!articleId) { this.loading = false; return; }
+          try {
+            const resp = await axios.get('/api/news/' + articleId);
+            if (resp.data.code === 0) {
+              const item = resp.data.data;
+              // Parse tags
+              let tagsList = [];
+              if (item.tags) {
+                try { tagsList = JSON.parse(item.tags); } catch(e) { tagsList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
+              }
+              // Format date
+              var displayDate = '';
+              if (item.publishedDate) {
+                var d = new Date(item.publishedDate);
+                displayDate = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日';
+              }
+              this.article = { ...item, tagsList, displayDate };
+              this.metaDesc = item.metaDescription || item.summary || '';
+              this.metaKeywords = item.metaKeywords || '';
+              this.canonicalUrl = item.slug ? 'https://www.gattefossechina.cn/' + item.slug : window.location.href;
+              // Update page title
+              document.title = (item.metaTitle || item.title) + ' | 嘉法狮';
+              // Increment views
+              axios.put('/api/news/' + articleId + '/views').catch(function(){});
+            } else {
+              console.error('加载失败:', resp.data.message);
+            }
+          } catch (e) {
+            console.error('加载文章失败:', e);
+          } finally {
+            this.loading = false;
+          }
+        },
+      },
+    });
+    app.mount('#app');
+  </script>
 </body>
 </html>
-<script>
-    
-    $(document).ready(function () {
-      $("#header").load("/header.html", function(){
-        let tmp = checkLoginStatus();
-        if (!tmp) {
-          $("#collapseAccMenu").load("/account-menu.html");
-        } else {
-          $("#collapseAccMenu").load("/account-menu-after-login.html");
-        }
-      });
-      $("#footer").load("/footer.html");
-      $("#quickLinks").load("/quickLinks.html");
-      $("#worldList").load("/world.html");
-    });
-  </script>
-  <script>
-  function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
-  const app = createApp({
-    setup() {
-      const data = reactive({
-        formData: { title: '嘉法狮', summary: '嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
-      });
-      return { data };
-    }
-  });
-  app.mount("#app");
-</script>
