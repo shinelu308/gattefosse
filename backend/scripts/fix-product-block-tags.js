@@ -53,8 +53,9 @@ async function main() {
             imageUrl: fullProduct.imageUrl || '',
             description: fullProduct.description || '',
             functionalityTag: fullProduct.functionalityTag || [],
+            applicationTag: fullProduct.applicationTag || [],
           };
-          console.log(`   ✅ ${fullProduct.name}: 标签=${JSON.stringify(fullProduct.functionalityTag || [])}`);
+          console.log(`   ✅ ${fullProduct.name}: 功能=${JSON.stringify(fullProduct.functionalityTag || [])} 应用=${JSON.stringify(fullProduct.applicationTag || [])}`);
         } else {
           console.log(`   ⚠️ 产品 #${p.id} (${p.name}) 未在API中找到`);
         }
