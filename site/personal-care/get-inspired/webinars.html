@@ -148,7 +148,7 @@
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">过滤器</h2>
                         <button type="reset" target="/personal-care/get-inspired/webinars.html"
-                          class="c-filter__reset-btn btn btn-outline-secondary">重置过滤器
+                          class="c-filter__reset-btn btn btn-outline-secondary" @click.prevent="clearFilters">重置过滤器
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
@@ -377,7 +377,14 @@ var app = createApp({
       prev_url: '',
       next_url: ''
     });
-    return { data };
+    // 清除所有筛选条件（重置过滤器）
+    const clearFilters = () => {
+      data.activeFilterClass = 'hidden';
+      data.curFilterTagName = '';
+      data.curFilterTypeName = '';
+      window.location.href = window.location.pathname || '/personal-care/get-inspired/webinars.html';
+    }
+    return { data, clearFilters };
   }
 });
 app.mount('#app');

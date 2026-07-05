@@ -147,7 +147,7 @@
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">过滤器</h2>
                         <button type="reset" target="/personal-care/get-inspired/articles.html"
-                          class="c-filter__reset-btn btn btn-outline-secondary">重置过滤器
+                          class="c-filter__reset-btn btn btn-outline-secondary" @click.prevent="clearFilters">重置过滤器
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
@@ -429,6 +429,14 @@
           var url = delUrlParam(curUrl, paramName);
           window.location.href = url;
         }
+        // 清除所有筛选条件（重置过滤器）
+        const clearFilters = () => {
+          var baseUrl = window.location.pathname || '/personal-care/get-inspired/articles.html';
+          data.activeFilterClass = 'hidden';
+          data.curFilterTagName = '';
+          data.curFilterTypeName = '';
+          window.location.href = baseUrl;
+        }
         // 文章类型列表
         data.articleTypeList = [
           {ID:1,typeName:'\u5e94\u7528\u9886\u57df',url:setUrlParam(curUrl,'articleType',1)},
@@ -567,7 +575,8 @@ loadTags().then(function() {
           data,
           seeAll,
           goToUrl,
-          delParamAndGotoUrl
+          delParamAndGotoUrl,
+          clearFilters
         };
       },
     });
