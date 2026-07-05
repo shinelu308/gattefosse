@@ -2917,8 +2917,107 @@ const QUILL_TOOLBAR = [
               <input class="form-input" v-model="editingContent.title" placeholder="如: 关于嘉法狮" />
             </div>
             <div class="form-group">
-              <label class="form-label">页面内容 (HTML)</label>
-              <textarea class="form-input" v-model="editingContent.contentHtml" rows="12" placeholder="支持 HTML 标签..." style="font-family:monospace;font-size:12px;"></textarea>
+              <label class="form-label">页面内容 (HTML) <span style="font-size:12px;color:var(--text-tertiary);font-weight:400;">—— 建议用下方的区块编辑代替</span></label>
+              <textarea class="form-input" v-model="editingContent.contentHtml" rows="8" placeholder="支持 HTML 标签..." style="font-family:monospace;font-size:12px;"></textarea>
+            </div>
+
+            <!-- 结构化区块编辑器 -->
+            <div class="form-group" style="margin-top:16px;border-top:2px solid var(--border);padding-top:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <label class="form-label" style="margin-bottom:0;">结构化区块</label>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-sm btn-outline" @click="addPageBlock('hero')">+ 头部</button>
+                  <button class="btn btn-sm btn-outline" @click="addPageBlock('stats')">+ 统计数据</button>
+                  <button class="btn btn-sm btn-outline" @click="addPageBlock('text')">+ 文本</button>
+                  <button class="btn btn-sm btn-outline" @click="addPageBlock('pillar_cards')">+ 三卡片</button>
+                  <button class="btn btn-sm btn-outline" @click="addPageBlock('quote')">+ 引语</button>
+                </div>
+              </div>
+              <div v-if="!editingContent._blocks || editingContent._blocks.length === 0" style="padding:24px;text-align:center;color:var(--text-tertiary);border:1px dashed var(--border);border-radius:8px;">
+                暂无区块，点击上方按钮添加
+              </div>
+              <div v-for="(blk, bi) in editingContent._blocks" :key="bi" style="border:1px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden;">
+                <!-- 区块头 -->
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--slate-light);border-bottom:1px solid var(--border);">
+                  <span style="font-weight:600;font-size:13px;">{{ blockTypeLabel(blk.type) }}</span>
+                  <div style="display:flex;gap:4px;">
+                    <button class="btn btn-sm btn-outline" style="font-size:12px;padding:2px 6px;" @click="movePageBlock(bi, -1)" :disabled="bi === 0">↑</button>
+                    <button class="btn btn-sm btn-outline" style="font-size:12px;padding:2px 6px;" @click="movePageBlock(bi, 1)" :disabled="bi === editingContent._blocks.length - 1">↓</button>
+                    <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="removePageBlock(bi)">×</button>
+                  </div>
+                </div>
+                <!-- 区块内容 -->
+                <div style="padding:12px;">
+
+                  <!-- type: hero -->
+                  <div v-if="blk.type === 'hero'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">标题</label>
+                      <input class="form-control" v-model="blk.data.title" placeholder="企业社会责任" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label style="font-size:12px;font-weight:600;">摘要</label>
+                      <textarea class="form-control" v-model="blk.data.summary" rows="3" placeholder="摘要文字..." style="font-size:13px;"></textarea>
+                    </div>
+                  </div>
+
+                  <!-- type: stats -->
+                  <div v-if="blk.type === 'stats'">
+                    <div v-for="(item, si) in blk.data.items" :key="si" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                      <input class="form-control" v-model="item.number" placeholder="数字" style="width:100px;font-size:13px;">
+                      <input class="form-control" v-model="item.unit" placeholder="单位(如%)" style="width:80px;font-size:13px;">
+                      <input class="form-control" v-model="item.label" placeholder="说明文字" style="flex:1;font-size:13px;">
+                      <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.items.splice(si,1)" v-if="blk.data.items.length > 1">×</button>
+                    </div>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ number:'', unit:'', label:'' })">+ 添加统计项</button>
+                  </div>
+
+                  <!-- type: text -->
+                  <div v-if="blk.type === 'text'">
+                    <textarea class="form-control" v-model="blk.data.html" rows="5" placeholder="HTML 内容..." style="font-size:13px;font-family:monospace;"></textarea>
+                  </div>
+
+                  <!-- type: pillar_cards -->
+                  <div v-if="blk.type === 'pillar_cards'">
+                    <div v-for="(card, ci) in blk.data.cards" :key="ci" style="border:1px solid #eee;border-radius:6px;padding:10px;margin-bottom:8px;">
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <span style="font-weight:600;font-size:12px;color:var(--text-secondary);">卡片 {{ ci+1 }}</span>
+                        <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.cards.splice(ci,1)" v-if="blk.data.cards.length > 1">×</button>
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="card.imageUrl" placeholder="图片 URL" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="card.title" placeholder="标题" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <textarea class="form-control" v-model="card.description" rows="2" placeholder="描述文字" style="font-size:13px;"></textarea>
+                      </div>
+                      <div class="form-group" style="margin-bottom:0;">
+                        <input class="form-control" v-model="card.linkUrl" placeholder="链接 URL" style="font-size:13px;">
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.cards.push({ imageUrl:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
+                  </div>
+
+                  <!-- type: quote -->
+                  <div v-if="blk.type === 'quote'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <input class="form-control" v-model="blk.data.imageUrl" placeholder="头像图片 URL" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <textarea class="form-control" v-model="blk.data.text" rows="3" placeholder="引文内容" style="font-size:13px;"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <input class="form-control" v-model="blk.data.author" placeholder="作者姓名" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <input class="form-control" v-model="blk.data.title" placeholder="作者职衔" style="font-size:13px;">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
             <div class="form-row">
               <div class="form-group" style="flex:1;">
@@ -3372,7 +3471,7 @@ createApp({
       // Content
       contentTab: 'pages',
       contentPages: [],
-      editingContent: { id: null, pageKey: '', title: '', contentHtml: '', metaTitle: '', metaDescription: '' },
+      editingContent: { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] },
       subsidiaryList: [],
       editingSubsidiary: { id: null, name: '', country: '', city: '', address: '', phone: '', email: '', website: '', imageUrl: '', description: '', sortOrder: 0 },
       // Settings
@@ -5690,23 +5789,73 @@ createApp({
       } catch (e) { console.error('Load content error:', e); }
     },
     addContent() {
-      this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', metaTitle: '', metaDescription: '' };
+      this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] };
       this.currentPage = 'content-edit';
     },
     editContent(item) {
-      this.editingContent = { ...item };
+      var parsed = { ...item };
+      // 解析 content JSON 为 _blocks 数组
+      if (parsed.content) {
+        try {
+          var blocks = typeof parsed.content === 'string' ? JSON.parse(parsed.content) : parsed.content;
+          parsed._blocks = Array.isArray(blocks) ? blocks : [];
+        } catch(e) {
+          parsed._blocks = [];
+        }
+      } else {
+        parsed._blocks = [];
+      }
+      this.editingContent = parsed;
       this.currentPage = 'content-edit';
     },
     async saveContent() {
       if (!this.editingContent.pageKey || !this.editingContent.title) { this.showAlert('页面标识和标题不能为空'); return; }
       this.saving = true;
       try {
-        await this.api('/content/admin/pages/' + this.editingContent.pageKey, { method: 'PUT', body: JSON.stringify(this.editingContent) });
+        // 序列化 _blocks → content JSON
+        var payload = { ...this.editingContent };
+        if (payload._blocks && payload._blocks.length > 0) {
+          payload.content = JSON.stringify(payload._blocks.map(function(b) {
+            return { type: b.type, data: b.data || {} };
+          }));
+        } else {
+          payload.content = null;
+        }
+        delete payload._blocks;
+        await this.api('/content/admin/pages/' + payload.pageKey, { method: 'PUT', body: JSON.stringify(payload) });
         this.currentPage = 'content-list';
         this.contentTab = 'pages';
         this.loadContent();
       } catch (e) { this.showAlert('保存失败：' + e.message); }
       finally { this.saving = false; }
+    },
+    // 页面的区块操作方法
+    blockTypeLabel(type) {
+      var map = { hero: '头部', stats: '统计数据', text: '文本', pillar_cards: '三卡片', quote: '引语' };
+      return map[type] || type;
+    },
+    addPageBlock(type) {
+      if (!this.editingContent._blocks) this.editingContent._blocks = [];
+      var defaults = {
+        hero: { title: '', summary: '' },
+        stats: { items: [{ number: '', unit: '', label: '' }] },
+        text: { html: '' },
+        pillar_cards: { cards: [{ imageUrl: '', title: '', description: '', linkUrl: '' }] },
+        quote: { imageUrl: '', text: '', author: '', title: '' }
+      };
+      this.editingContent._blocks.push({ type: type, data: defaults[type] || {} });
+    },
+    movePageBlock(index, direction) {
+      var blocks = this.editingContent._blocks;
+      var newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= blocks.length) return;
+      var tmp = blocks[index];
+      blocks[index] = blocks[newIndex];
+      blocks[newIndex] = tmp;
+      this.editingContent._blocks = blocks.slice();
+    },
+    removePageBlock(index) {
+      this.editingContent._blocks.splice(index, 1);
     },
     // Subsidiary CRUD
     addSubsidiary() {

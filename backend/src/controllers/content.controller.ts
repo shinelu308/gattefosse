@@ -37,7 +37,7 @@ export async function listAllPages(_req: Request, res: Response) {
 export async function savePageContent(req: Request, res: Response) {
   try {
     const { pageKey } = req.params;
-    const { title, contentHtml, metaTitle, metaDescription } = req.body;
+    const { title, contentHtml, content, metaTitle, metaDescription } = req.body;
     if (!title) {
       return res.json(fail('页面标题不能为空'));
     }
@@ -46,6 +46,7 @@ export async function savePageContent(req: Request, res: Response) {
       update: {
         title,
         contentHtml: contentHtml || null,
+        content: content ? (typeof content === 'string' ? content : JSON.stringify(content)) : null,
         metaTitle: metaTitle || null,
         metaDescription: metaDescription || null,
         updatedAt: new Date(),
@@ -54,6 +55,7 @@ export async function savePageContent(req: Request, res: Response) {
         pageKey,
         title,
         contentHtml: contentHtml || null,
+        content: content ? (typeof content === 'string' ? content : JSON.stringify(content)) : null,
         metaTitle: metaTitle || null,
         metaDescription: metaDescription || null,
       },

@@ -308,13 +308,14 @@ model Subsidiary {
 
 // ===== 静态页面内容表 =====
 model PageContent {
-  id           Int       @id @default(autoincrement())
-  pageKey      String    @unique @map("page_key")
-  title        String
-  contentHtml  String?   @map("content_html")
-  metaTitle    String?   @map("meta_title")
+  id             Int       @id @default(autoincrement())
+  pageKey        String    @unique @map("page_key")
+  title          String
+  contentHtml    String?   @map("content_html")
+  content        String?   // JSON 数组：结构化区块内容 [{ type, data }]，优先级高于 contentHtml
+  metaTitle      String?   @map("meta_title")
   metaDescription String? @map("meta_description")
-  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
 
   @@map("page_contents")
 }
