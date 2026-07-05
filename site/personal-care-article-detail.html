@@ -372,7 +372,7 @@
                                       <div v-for="(blk, bi) in article.blocks" :key="bi">
                                         <!-- product_cards -->
                                         <div v-if="blk.blockType === 'product_cards'" class="c-cards" style="margin-top:32px;">
-                                          <div v-for="(card, ci) in renderProductCards(blk.content)" :key="ci" class="c-card c-card--bordered theme-cosm">
+                                          <div v-for="(card, ci) in renderProductCards(blk.content, article.tagsList)" :key="ci" class="c-card c-card--bordered theme-cosm">
                                             <div class="c-card__image">
                                               <img :src="card.imageUrl || '/images/placeholder.png'" alt="" class="card__image img-fluid" loading="lazy">
                                             </div>
@@ -575,18 +575,18 @@
                         .catch(function (e) { console.error('加载文章失败:', e); })
                         .then(function () { self.loading = false; });
                 },
-                renderProductCards: function(content) {
+                renderProductCards: function(content, articleTags) {
                     if (!content || !content.products || !Array.isArray(content.products)) return [];
-                    return content.products.map(function(p) {
-                        // 标签处理：兼容字符串或数组格式
-                        var tags = [];
-                        if (p.functionalityTag) {
-                            if (typeof p.functionalityTag === 'string') {
-                                tags = p.functionalityTag.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
-                            } else if (Array.isArray(p.functionalityTag)) {
-                                tags = p.functionalityTag;
-                            }
+                    // 使用文章标签（兼容字符串数组或逗号分隔字符串）
+                    var tags = [];
+                    if (articleTags) {
+                        if (typeof articleTags === 'string') {
+                            tags = articleTags.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
+                        } else if (Array.isArray(articleTags)) {
+                            tags = articleTags;
                         }
+                    }
+                    return content.products.map(function(p) {
                         return {
                             name: p.name || '产品 #' + p.id,
                             typeLabel: 'Ingredient',
