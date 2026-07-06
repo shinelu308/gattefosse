@@ -2856,14 +2856,19 @@ const QUILL_TOOLBAR = [
               <button class="btn btn-sm btn-primary" @click="addContent()">+ 新增页面</button>
             </div>
             <table class="data-table">
-              <thead><tr><th style="width:40px;">#</th><th>页面标识</th><th>标题</th><th>最近更新</th><th>操作</th></tr></thead>
+              <thead><tr><th style="width:80px;">排序</th><th>页面标识</th><th>标题</th><th>最近更新</th><th>操作</th></tr></thead>
               <tbody>
                 <tr v-for="(p, pi) in contentPages" :key="p.pageKey">
                   <td class="text-center" style="white-space:nowrap;">
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
-                      <button class="btn btn-sm btn-outline" style="font-size:10px;padding:1px 6px;line-height:1;" @click="movePage(pi, 'up')" :disabled="pi === 0">▲</button>
-                      <span style="font-size:10px;color:var(--text-muted);">{{ pi + 1 }}</span>
-                      <button class="btn btn-sm btn-outline" style="font-size:10px;padding:1px 6px;line-height:1;" @click="movePage(pi, 'down')" :disabled="pi === contentPages.length - 1">▼</button>
+                    <div style="display:flex;align-items:center;gap:5px;justify-content:center;">
+                      <span style="cursor:grab;font-size:15px;color:var(--text-muted);user-select:none;">⠿</span>
+                      <span style="font-size:11px;font-weight:500;color:var(--text-muted);min-width:16px;text-align:center;">{{ pi + 1 }}</span>
+                      <button class="btn btn-sm btn-outline" style="font-size:0;padding:0;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;" @click="movePage(pi, 'up')" :disabled="pi === 0">
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2L2 7h8L6 2z" fill="currentColor"/></svg>
+                      </button>
+                      <button class="btn btn-sm btn-outline" style="font-size:0;padding:0;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;" @click="movePage(pi, 'down')" :disabled="pi === contentPages.length - 1">
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 10l4-5H2l4 5z" fill="currentColor"/></svg>
+                      </button>
                     </div>
                   </td>
                   <td><code>{{ p.pageKey }}</code></td>
