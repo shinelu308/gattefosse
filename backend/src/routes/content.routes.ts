@@ -5,6 +5,7 @@ import {
   getPageContent,
   listAllPages,
   savePageContent,
+  reorderPages,
   listSubsidiaries,
   createSubsidiary,
   updateSubsidiary,
@@ -19,6 +20,7 @@ router.get('/pages/:pageKey', getPageContent);
 // 管理：页面列表 + 编辑
 router.get('/admin/pages', auth, requireRole('editor', 'super_admin'), listAllPages);
 router.put('/admin/pages/:pageKey', auth, requireRole('editor', 'super_admin'), savePageContent);
+router.post('/admin/pages/reorder', auth, requireRole('editor', 'super_admin'), reorderPages);
 
 // 公开：分公司列表
 router.get('/subsidiaries', listSubsidiaries);

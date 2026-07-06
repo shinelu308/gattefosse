@@ -23,8 +23,8 @@ export async function getPageContent(req: Request, res: Response) {
 export async function listAllPages(_req: Request, res: Response) {
   try {
     const pages = await prisma.pageContent.findMany({
-      orderBy: { pageKey: 'asc' },
-      select: { id: true, pageKey: true, title: true, metaTitle: true, updatedAt: true },
+      orderBy: { sortOrder: 'asc' },
+      select: { id: true, pageKey: true, title: true, metaTitle: true, sortOrder: true, updatedAt: true },
     });
     res.json(success(pages));
   } catch (err: any) {
@@ -63,6 +63,33 @@ export async function savePageContent(req: Request, res: Response) {
     res.json(success(page));
   } catch (err: any) {
     console.error('savePageContent error:', err);
+    res.status(500).json(fail('服务器错误'));
+  }
+}
+
+/** 页面排序（交换两个页面的 sortOrder） */
+export async function reorderPages(req: Request, res: Response) {
+  try {
+    const { id, direction } = req.body; // id: 当前页面ID, direction: 'up' | 'down'
+    const current = await prisma.pageContent.findUnique({ where: { id } });
+    if (!current) return res.json(fail('页面不存在'));
+
+    const target = await prisma.pageContent.findFirst({
+      where: direction === 'up'
+        ? { sortOrder: { lt: current.sortOrder } }
+        : { sortOrder: { gt: current.sortOrder } },
+      orderBy: direction === 'up' ? { sortOrder: 'desc' } : { sortOrder: 'asc' },
+    });
+    if (!target) return res.json(fail('已经在边界'));
+
+    // 交换 sortOrder
+    await prisma.$transaction([
+      prisma.pageContent.update({ where: { id: current.id }, data: { sortOrder: target.sortOrder } }),
+      prisma.pageContent.update({ where: { id: target.id }, data: { sortOrder: current.sortOrder } }),
+    ]);
+    res.json(success(null));
+  } catch (err: any) {
+    console.error('reorderPages error:', err);
     res.status(500).json(fail('服务器错误'));
   }
 }
