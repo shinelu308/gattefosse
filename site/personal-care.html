@@ -47,6 +47,11 @@
     href="sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+  <!-- 修复 Drupal main{display:flex} 导致的页面结构错乱 -->
+  <style>
+    .path-personal-care main#app,
+    .path-personal-care main.main { display: block !important; }
+  </style>
 </head>
 <body class="is-mobile path-personal-care    bg- d-flex flex-column">
   <nav role="navigation" aria-label="Accès rapide au contenu">
@@ -247,7 +252,7 @@
                 </div>
               </div>
             </div>
-            <div class="s-tunnel-formula js-block-formula">
+            <div class="s-tunnel-formula js-block-formula" v-if="data.formulationList && data.formulationList.length > 0">
               <div class="s-tunnel-formula__container">
                 <h2 class="s-tunnel-formula__title u-title-styled">我们最喜欢的配方
                 </h2>
@@ -299,7 +304,7 @@
                 </div>
               </div>
             </div>
-            <div class="s-tunnel-events">
+            <div class="s-tunnel-events" v-if="data.eventData.length >= 3">
               <div class="container">
                 <div class="s-tunnel-events__container">
                   <h2 class="s-tunnel-events__title u-title-styled">

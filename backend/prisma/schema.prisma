@@ -313,6 +313,7 @@ model PageContent {
   title          String
   contentHtml    String?   @map("content_html")
   content        String?   // JSON 数组：结构化区块内容 [{ type, data }]，优先级高于 contentHtml
+  slug           String?   // 前端页面路径（如 personal-care → /personal-care.html）
   sortOrder      Int       @default(0) @map("sort_order")
   metaTitle      String?   @map("meta_title")
   metaDescription String? @map("meta_description")

@@ -24,7 +24,7 @@ export async function listAllPages(_req: Request, res: Response) {
   try {
     const pages = await prisma.pageContent.findMany({
       orderBy: { sortOrder: 'asc' },
-      select: { id: true, pageKey: true, title: true, metaTitle: true, sortOrder: true, updatedAt: true },
+      select: { id: true, pageKey: true, title: true, slug: true, metaTitle: true, sortOrder: true, updatedAt: true },
     });
     res.json(success(pages));
   } catch (err: any) {
@@ -37,7 +37,7 @@ export async function listAllPages(_req: Request, res: Response) {
 export async function savePageContent(req: Request, res: Response) {
   try {
     const { pageKey } = req.params;
-    const { title, contentHtml, content, metaTitle, metaDescription } = req.body;
+    const { title, contentHtml, content, metaTitle, metaDescription, slug } = req.body;
     if (!title) {
       return res.json(fail('页面标题不能为空'));
     }
@@ -47,6 +47,7 @@ export async function savePageContent(req: Request, res: Response) {
         title,
         contentHtml: contentHtml || null,
         content: content ? (typeof content === 'string' ? content : JSON.stringify(content)) : null,
+        slug: slug || null,
         metaTitle: metaTitle || null,
         metaDescription: metaDescription || null,
         updatedAt: new Date(),
@@ -56,6 +57,7 @@ export async function savePageContent(req: Request, res: Response) {
         title,
         contentHtml: contentHtml || null,
         content: content ? (typeof content === 'string' ? content : JSON.stringify(content)) : null,
+        slug: slug || null,
         metaTitle: metaTitle || null,
         metaDescription: metaDescription || null,
       },

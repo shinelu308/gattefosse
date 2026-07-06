@@ -2915,6 +2915,7 @@ const QUILL_TOOLBAR = [
           <p class="page-subtitle">编辑网站独立页面内容，支持结构化区块编辑</p>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
             <button class="btn btn-sm btn-outline" @click="currentPage='content-list'">← 返回列表</button>
+            <a v-if="editingContent.pageKey || editingContent.slug" :href="'/' + (editingContent.slug || editingContent.pageKey) + '.html'" target="_blank" class="btn btn-sm btn-primary" style="text-decoration:none;">🔍 查看页面</a>
           </div>
           <div class="tabs">
             <button class="tab" :class="{ active: contentEditTab === 'basic' }" @click="contentEditTab = 'basic'">基本信息</button>
@@ -2929,6 +2930,11 @@ const QUILL_TOOLBAR = [
                 <label>页面标题 <span class="hint">（必填）</span></label>
                 <input class="form-control" v-model="editingContent.title" placeholder="如: 关于嘉法狮" @input="autoGeneratePageKey" />
                 <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">页面标识将从标题自动生成</div>
+              </div>
+              <div class="form-group">
+                <label>前端路径 <span class="hint">（如：personal-care，对应 /personal-care.html）</span></label>
+                <input class="form-control" v-model="editingContent.slug" placeholder="留空则使用 pageKey" />
+                <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">填写后「查看页面」按钮将跳转到 /{此值}.html</div>
               </div>
               <div class="form-group">
                 <label>页面内容 (HTML) <span class="hint">—— 建议用"区块内容"中的结构化区块代替</span></label>
@@ -2955,18 +2961,22 @@ const QUILL_TOOLBAR = [
               <div v-if="!editingContent._blocks || editingContent._blocks.length === 0" style="padding:24px;text-align:center;color:var(--text-tertiary);border:1px dashed var(--border);border-radius:8px;">
                 暂无区块，点击上方按钮添加
               </div>
-              <div v-for="(blk, bi) in editingContent._blocks" :key="bi" style="border:1px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden;">
+              <div class="block-list" v-if="editingContent._blocks && editingContent._blocks.length > 0">
+                <div v-for="(blk, bi) in editingContent._blocks" :key="bi" class="block-item">
                 <!-- 区块头 -->
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--slate-light);border-bottom:1px solid var(--border);">
-                  <span style="font-weight:600;font-size:13px;">{{ blockTypeLabel(blk.type) }}</span>
-                  <div style="display:flex;gap:4px;">
-                    <button class="btn btn-sm btn-outline" style="font-size:12px;padding:2px 6px;" @click="movePageBlock(bi, -1)" :disabled="bi === 0">↑</button>
-                    <button class="btn btn-sm btn-outline" style="font-size:12px;padding:2px 6px;" @click="movePageBlock(bi, 1)" :disabled="bi === editingContent._blocks.length - 1">↓</button>
-                    <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="removePageBlock(bi)">×</button>
+                <div class="block-header">
+                  <div class="block-title">
+                    <span style="font-weight:600;font-size:13px;">{{ blockTypeLabel(blk.type) }}</span>
+                  </div>
+                  <div class="block-actions">
+                    <div class="block-drag">
+                      <button @click="movePageBlock(bi, -1)" :disabled="bi === 0" title="上移">↑</button>
+                      <button @click="movePageBlock(bi, 1)" :disabled="bi === editingContent._blocks.length - 1" title="下移">↓</button>
+                    </div>
+                    <button class="btn btn-sm btn-danger" @click="removePageBlock(bi)">× 删除</button>
                   </div>
                 </div>
-                <!-- 区块内容 -->
-                <div style="padding:12px;">
+                <div class="block-body">
                   <!-- type: hero -->
                   <div v-if="blk.type === 'hero'">
                     <div class="form-group" style="margin-bottom:8px;">
@@ -5896,25 +5906,32 @@ createApp({
       } catch (e) { console.error('Load content error:', e); }
     },
     addContent() {
-      this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] };
+      this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', slug: '', _blocks: [] };
       this.isNewPage = true;
       this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
     },
-    editContent(item) {
-      var parsed = { ...item };
+    async editContent(item) {
+      // 获取完整页面内容（列表 API 不返回 content 等大字段）
+      var full = { ...item };
+      try {
+        var resp = await this.api('/content/pages/' + item.pageKey, { method: 'GET' });
+        if (resp) {
+          full = { ...full, ...resp };
+        }
+      } catch(e) { /* 使用列表数据 */ }
       // 解析 content JSON 为 _blocks 数组
-      if (parsed.content) {
+      if (full.content) {
         try {
-          var blocks = typeof parsed.content === 'string' ? JSON.parse(parsed.content) : parsed.content;
-          parsed._blocks = Array.isArray(blocks) ? blocks : [];
+          var blocks = typeof full.content === 'string' ? JSON.parse(full.content) : full.content;
+          full._blocks = Array.isArray(blocks) ? blocks : [];
         } catch(e) {
-          parsed._blocks = [];
+          full._blocks = [];
         }
       } else {
-        parsed._blocks = [];
+        full._blocks = [];
       }
-      this.editingContent = parsed;
+      this.editingContent = full;
       this.isNewPage = false;
       this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
@@ -5949,10 +5966,11 @@ createApp({
         }
         delete payload._blocks;
         await this.api('/content/admin/pages/' + payload.pageKey, { method: 'PUT', body: JSON.stringify(payload) });
-        this.currentPage = 'content-list';
-        this.contentEditTab = 'basic';
+        this.editingContent.pageKey = payload.pageKey;
+        this.isNewPage = false;
+        this.showAlert('✅ 保存成功！可点击上方「🔍 查看页面」预览', 'success');
         this.loadContent();
-      } catch (e) { this.showAlert('保存失败：' + e.message); }
+      } catch (e) { this.showAlert('保存失败：' + e.message, 'error'); }
       finally { this.saving = false; }
     },
     // 页面的区块操作方法
