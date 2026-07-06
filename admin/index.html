@@ -2900,35 +2900,48 @@ const QUILL_TOOLBAR = [
 
         <!-- ==================== 编辑页面内容 ==================== -->
         <div v-if="currentPage === 'content-edit'">
-          <div class="card">
-            <div class="card-hd"><h2>{{ editingContent.pageKey ? '编辑页面' : '新增页面' }}</h2></div>
+          <h1 class="page-title">{{ editingContent.pageKey ? '编辑页面 — ' + editingContent.title : '新增页面' }}</h1>
+          <p class="page-subtitle">编辑网站独立页面内容，支持结构化区块编辑</p>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <button class="btn btn-sm btn-outline" @click="currentPage='content-list'">← 返回列表</button>
+          </div>
+          <div class="tabs">
+            <button class="tab" :class="{ active: contentEditTab === 'basic' }" @click="contentEditTab = 'basic'">基本信息</button>
+            <button class="tab" :class="{ active: contentEditTab === 'blocks' }" @click="contentEditTab = 'blocks'">区块内容</button>
+            <button class="tab" :class="{ active: contentEditTab === 'seo' }" @click="contentEditTab = 'seo'">SEO</button>
+          </div>
+          <!-- 基本信息 -->
+          <div v-show="contentEditTab === 'basic'" class="card">
+            <div class="card-header"><h3>基本信息</h3></div>
             <div class="card-body">
-            <div class="form-group">
-              <label class="form-label">页面标识 (pageKey)<span class="text-danger">*</span></label>
-              <input class="form-input" v-model="editingContent.pageKey" :disabled="!!editingContent.id" placeholder="如: about, history, csr" />
-              <div class="form-hint">URL中使用的小写英文标识，创建后不可修改</div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">页面标题<span class="text-danger">*</span></label>
-              <input class="form-input" v-model="editingContent.title" placeholder="如: 关于嘉法狮" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">页面内容 (HTML) <span style="font-size:12px;color:var(--text-tertiary);font-weight:400;">—— 建议用下方的区块编辑代替</span></label>
-              <textarea class="form-input" v-model="editingContent.contentHtml" rows="8" placeholder="支持 HTML 标签..." style="font-family:monospace;font-size:12px;"></textarea>
-            </div>
-
-            <!-- 结构化区块编辑器 -->
-            <div class="form-group" style="margin-top:16px;border-top:2px solid var(--border);padding-top:16px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                <label class="form-label" style="margin-bottom:0;">结构化区块</label>
-                <div style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-outline" @click="addPageBlock('hero')">+ 头部</button>
-                  <button class="btn btn-sm btn-outline" @click="addPageBlock('stats')">+ 统计数据</button>
-                  <button class="btn btn-sm btn-outline" @click="addPageBlock('text')">+ 文本</button>
-                  <button class="btn btn-sm btn-outline" @click="addPageBlock('pillar_cards')">+ 三卡片</button>
-                  <button class="btn btn-sm btn-outline" @click="addPageBlock('quote')">+ 引语</button>
-                </div>
+              <div class="form-group">
+                <label>页面标识 (pageKey) <span class="hint">（必填）</span></label>
+                <input class="form-control" v-model="editingContent.pageKey" :disabled="!!editingContent.id" placeholder="如: about, history, csr" />
+                <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">URL中使用的小写英文标识，创建后不可修改</div>
               </div>
+              <div class="form-group">
+                <label>页面标题 <span class="hint">（必填）</span></label>
+                <input class="form-control" v-model="editingContent.title" placeholder="如: 关于嘉法狮" />
+              </div>
+              <div class="form-group">
+                <label>页面内容 (HTML) <span class="hint">—— 建议用"区块内容"中的结构化区块代替</span></label>
+                <textarea class="form-control" v-model="editingContent.contentHtml" rows="8" placeholder="支持 HTML 标签..." style="font-family:monospace;font-size:12px;"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- 区块内容 -->
+          <div v-show="contentEditTab === 'blocks'" class="card">
+            <div class="card-header">
+              <h3>结构化区块</h3>
+              <div style="display:flex;gap:6px;">
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('hero')">+ 头部</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('stats')">+ 统计数据</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('text')">+ 文本</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('pillar_cards')">+ 三卡片</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('quote')">+ 引语</button>
+              </div>
+            </div>
+            <div class="card-body">
               <div v-if="!editingContent._blocks || editingContent._blocks.length === 0" style="padding:24px;text-align:center;color:var(--text-tertiary);border:1px dashed var(--border);border-radius:8px;">
                 暂无区块，点击上方按钮添加
               </div>
@@ -2944,7 +2957,6 @@ const QUILL_TOOLBAR = [
                 </div>
                 <!-- 区块内容 -->
                 <div style="padding:12px;">
-
                   <!-- type: hero -->
                   <div v-if="blk.type === 'hero'">
                     <div class="form-group" style="margin-bottom:8px;">
@@ -2956,7 +2968,6 @@ const QUILL_TOOLBAR = [
                       <textarea class="form-control" v-model="blk.data.summary" rows="3" placeholder="摘要文字..." style="font-size:13px;"></textarea>
                     </div>
                   </div>
-
                   <!-- type: stats -->
                   <div v-if="blk.type === 'stats'">
                     <div v-for="(item, si) in blk.data.items" :key="si" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
@@ -2967,12 +2978,10 @@ const QUILL_TOOLBAR = [
                     </div>
                     <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ number:'', unit:'', label:'' })">+ 添加统计项</button>
                   </div>
-
                   <!-- type: text -->
                   <div v-if="blk.type === 'text'">
                     <textarea class="form-control" v-model="blk.data.html" rows="5" placeholder="HTML 内容..." style="font-size:13px;font-family:monospace;"></textarea>
                   </div>
-
                   <!-- type: pillar_cards -->
                   <div v-if="blk.type === 'pillar_cards'">
                     <div v-for="(card, ci) in blk.data.cards" :key="ci" style="border:1px solid #eee;border-radius:6px;padding:10px;margin-bottom:8px;">
@@ -2995,7 +3004,6 @@ const QUILL_TOOLBAR = [
                     </div>
                     <button class="btn btn-sm btn-outline" @click="blk.data.cards.push({ imageUrl:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
                   </div>
-
                   <!-- type: quote -->
                   <div v-if="blk.type === 'quote'">
                     <div class="form-group" style="margin-bottom:8px;">
@@ -3011,25 +3019,27 @@ const QUILL_TOOLBAR = [
                       <input class="form-control" v-model="blk.data.title" placeholder="作者职衔" style="font-size:13px;">
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
-            <div class="form-row">
-              <div class="form-group" style="flex:1;">
-                <label class="form-label">SEO 标题</label>
-                <input class="form-input" v-model="editingContent.metaTitle" placeholder="meta title" />
+          </div>
+          <!-- SEO -->
+          <div v-show="contentEditTab === 'seo'" class="card">
+            <div class="card-header"><h3>SEO 设置</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Meta 标题 <span class="hint">（留空则使用页面标题）</span></label>
+                <input class="form-control" v-model="editingContent.metaTitle" placeholder="SEO 标题">
               </div>
-              <div class="form-group" style="flex:1;">
-                <label class="form-label">SEO 描述</label>
-                <input class="form-input" v-model="editingContent.metaDescription" placeholder="meta description" />
+              <div class="form-group">
+                <label>Meta 描述</label>
+                <textarea class="form-control" rows="3" v-model="editingContent.metaDescription" placeholder="SEO 描述..."></textarea>
               </div>
             </div>
-            <div style="display:flex;gap:12px;margin-top:20px;">
-              <button class="btn btn-primary" @click="saveContent()" :disabled="saving">{{ saving ? '保存中...' : '保存页面' }}</button>
-              <button class="btn btn-outline" @click="currentPage = 'content-list'; contentTab = 'pages'">取消</button>
-            </div>
-            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:12px;">
+            <button class="btn btn-outline" @click="currentPage='content-list'">取消</button>
+            <button class="btn btn-primary" @click="saveContent()" :disabled="saving">{{ saving ? '保存中...' : '保存页面' }}</button>
           </div>
         </div>
 
@@ -3468,6 +3478,7 @@ createApp({
       contentTab: 'pages',
       contentPages: [],
       editingContent: { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] },
+      contentEditTab: 'basic',
       subsidiaryList: [],
       editingSubsidiary: { id: null, name: '', country: '', city: '', address: '', phone: '', email: '', website: '', imageUrl: '', description: '', sortOrder: 0 },
       // Settings
@@ -5786,6 +5797,7 @@ createApp({
     },
     addContent() {
       this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] };
+      this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
     },
     editContent(item) {
@@ -5802,6 +5814,7 @@ createApp({
         parsed._blocks = [];
       }
       this.editingContent = parsed;
+      this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
     },
     async saveContent() {
@@ -5820,7 +5833,7 @@ createApp({
         delete payload._blocks;
         await this.api('/content/admin/pages/' + payload.pageKey, { method: 'PUT', body: JSON.stringify(payload) });
         this.currentPage = 'content-list';
-        this.contentTab = 'pages';
+        this.contentEditTab = 'basic';
         this.loadContent();
       } catch (e) { this.showAlert('保存失败：' + e.message); }
       finally { this.saving = false; }
