@@ -2915,13 +2915,9 @@ const QUILL_TOOLBAR = [
             <div class="card-header"><h3>基本信息</h3></div>
             <div class="card-body">
               <div class="form-group">
-                <label>页面标识 (pageKey) <span class="hint">（必填）</span></label>
-                <input class="form-control" v-model="editingContent.pageKey" :disabled="!!editingContent.id" placeholder="如: about, history, csr" />
-                <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">URL中使用的小写英文标识，创建后不可修改</div>
-              </div>
-              <div class="form-group">
                 <label>页面标题 <span class="hint">（必填）</span></label>
-                <input class="form-control" v-model="editingContent.title" placeholder="如: 关于嘉法狮" />
+                <input class="form-control" v-model="editingContent.title" placeholder="如: 关于嘉法狮" @input="autoGeneratePageKey" />
+                <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">页面标识将从标题自动生成</div>
               </div>
               <div class="form-group">
                 <label>页面内容 (HTML) <span class="hint">—— 建议用"区块内容"中的结构化区块代替</span></label>
@@ -3478,6 +3474,7 @@ createApp({
       contentTab: 'pages',
       contentPages: [],
       editingContent: { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] },
+      isNewPage: false,
       contentEditTab: 'basic',
       subsidiaryList: [],
       editingSubsidiary: { id: null, name: '', country: '', city: '', address: '', phone: '', email: '', website: '', imageUrl: '', description: '', sortOrder: 0 },
@@ -5797,6 +5794,7 @@ createApp({
     },
     addContent() {
       this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] };
+      this.isNewPage = true;
       this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
     },
@@ -5814,11 +5812,27 @@ createApp({
         parsed._blocks = [];
       }
       this.editingContent = parsed;
+      this.isNewPage = false;
       this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
     },
+    // 从标题自动生成 pageKey（仅允许小写字母、数字、连字符）
+    autoGeneratePageKey() {
+      if (!this.isNewPage) return;
+      this.editingContent.pageKey = this.editingContent.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .replace(/-+/g, '-')
+        || 'untitled';
+    },
     async saveContent() {
-      if (!this.editingContent.pageKey || !this.editingContent.title) { this.showAlert('页面标识和标题不能为空'); return; }
+      if (!this.editingContent.title) { this.showAlert('页面标题不能为空'); return; }
+      // 自动生成 pageKey（新增时）
+      if (!this.editingContent.pageKey && this.isNewPage) {
+        this.autoGeneratePageKey();
+      }
+      if (!this.editingContent.pageKey) { this.showAlert('页面标识生成失败，请检查标题'); return; }
       this.saving = true;
       try {
         // 序列化 _blocks → content JSON
