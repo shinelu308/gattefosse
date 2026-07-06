@@ -2942,9 +2942,12 @@ const QUILL_TOOLBAR = [
               <h3>结构化区块</h3>
               <div style="display:flex;gap:6px;">
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('hero')">+ 头部</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('feature_cards')">+ 特征卡片</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('product_promo')">+ 产品推广</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('stats')">+ 统计数据</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('text')">+ 文本</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('pillar_cards')">+ 三卡片</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('cta_cards')">+ 双CTA卡片</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('quote')">+ 引语</button>
               </div>
             </div>
@@ -2968,11 +2971,71 @@ const QUILL_TOOLBAR = [
                   <div v-if="blk.type === 'hero'">
                     <div class="form-group" style="margin-bottom:8px;">
                       <label style="font-size:12px;font-weight:600;">标题</label>
-                      <input class="form-control" v-model="blk.data.title" placeholder="企业社会责任" style="font-size:13px;">
+                      <input class="form-control" v-model="blk.data.title" placeholder="个人护理" style="font-size:13px;">
                     </div>
-                    <div class="form-group" style="margin-bottom:0;">
+                    <div class="form-group" style="margin-bottom:8px;">
                       <label style="font-size:12px;font-weight:600;">摘要</label>
                       <textarea class="form-control" v-model="blk.data.summary" rows="3" placeholder="摘要文字..." style="font-size:13px;"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">背景图片 URL</label>
+                      <input class="form-control" v-model="blk.data.backgroundImage" placeholder="https://..." style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label style="font-size:12px;font-weight:600;">按钮</label>
+                      <div v-for="(btn, hi) in blk.data.buttons" :key="hi" style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">
+                        <input class="form-control" v-model="btn.label" placeholder="按钮文字" style="width:140px;font-size:13px;">
+                        <input class="form-control" v-model="btn.url" placeholder="链接 URL" style="flex:1;font-size:13px;">
+                        <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.buttons.splice(hi,1)" v-if="blk.data.buttons.length > 1">×</button>
+                      </div>
+                      <button class="btn btn-sm btn-outline" style="font-size:12px;" @click="blk.data.buttons.push({ label:'', url:'' })">+ 添加按钮</button>
+                    </div>
+                  </div>
+                  <!-- type: feature_cards -->
+                  <div v-if="blk.type === 'feature_cards'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">区块标题</label>
+                      <input class="form-control" v-model="blk.data.title" placeholder="如: All about Personal Care" style="font-size:13px;">
+                    </div>
+                    <div v-for="(item, fi) in blk.data.items" :key="fi" style="border:1px solid #eee;border-radius:6px;padding:10px;margin-bottom:8px;">
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <span style="font-weight:600;font-size:12px;color:var(--text-secondary);">卡片 {{ fi+1 }}</span>
+                        <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.items.splice(fi,1)" v-if="blk.data.items.length > 1">×</button>
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="item.icon" placeholder="图标类名 (如: --flask)" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="item.title" placeholder="标题" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <textarea class="form-control" v-model="item.description" rows="2" placeholder="描述" style="font-size:13px;"></textarea>
+                      </div>
+                      <div class="form-group" style="margin-bottom:0;">
+                        <input class="form-control" v-model="item.linkUrl" placeholder="链接 URL" style="font-size:13px;">
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ icon:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
+                  </div>
+                  <!-- type: product_promo -->
+                  <div v-if="blk.type === 'product_promo'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <input class="form-control" v-model="blk.data.title" placeholder="产品名称" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <input class="form-control" v-model="blk.data.subtitle" placeholder="副标题" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <textarea class="form-control" v-model="blk.data.description" rows="3" placeholder="产品描述" style="font-size:13px;"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <input class="form-control" v-model="blk.data.imageUrl" placeholder="图片 URL" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <input class="form-control" v-model="blk.data.linkUrl" placeholder="链接 URL" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <input class="form-control" v-model="blk.data.linkLabel" placeholder="按钮文字" style="font-size:13px;">
                     </div>
                   </div>
                   <!-- type: stats -->
@@ -3010,6 +3073,35 @@ const QUILL_TOOLBAR = [
                       </div>
                     </div>
                     <button class="btn btn-sm btn-outline" @click="blk.data.cards.push({ imageUrl:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
+                  </div>
+                  <!-- type: cta_cards -->
+                  <div v-if="blk.type === 'cta_cards'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">区块标题</label>
+                      <input class="form-control" v-model="blk.data.title" placeholder="如: Explore more" style="font-size:13px;">
+                    </div>
+                    <div v-for="(card, ci) in blk.data.cards" :key="ci" style="border:1px solid #eee;border-radius:6px;padding:10px;margin-bottom:8px;">
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <span style="font-weight:600;font-size:12px;color:var(--text-secondary);">卡片 {{ ci+1 }}</span>
+                        <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.cards.splice(ci,1)" v-if="blk.data.cards.length > 1">×</button>
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="card.imageUrl" placeholder="图片 URL" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="card.subtitle" placeholder="子标题 (小字)" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="card.title" placeholder="标题" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <textarea class="form-control" v-model="card.description" rows="2" placeholder="描述" style="font-size:13px;"></textarea>
+                      </div>
+                      <div class="form-group" style="margin-bottom:0;">
+                        <input class="form-control" v-model="card.linkUrl" placeholder="链接 URL" style="font-size:13px;">
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.cards.push({ imageUrl:'', subtitle:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
                   </div>
                   <!-- type: quote -->
                   <div v-if="blk.type === 'quote'">
@@ -5865,16 +5957,19 @@ createApp({
     },
     // 页面的区块操作方法
     blockTypeLabel(type) {
-      var map = { hero: '头部', stats: '统计数据', text: '文本', pillar_cards: '三卡片', quote: '引语' };
+      var map = { hero: '头部', feature_cards: '特征卡片', product_promo: '产品推广', stats: '统计数据', text: '文本', pillar_cards: '三卡片', cta_cards: '双CTA卡片', quote: '引语' };
       return map[type] || type;
     },
     addPageBlock(type) {
       if (!this.editingContent._blocks) this.editingContent._blocks = [];
       var defaults = {
-        hero: { title: '', summary: '' },
+        hero: { title: '', summary: '', backgroundImage: '', buttons: [] },
+        feature_cards: { title: '', items: [{ icon: '', title: '', description: '', linkUrl: '' }] },
+        product_promo: { title: '', subtitle: '', description: '', imageUrl: '', linkUrl: '', linkLabel: '阅读更多' },
         stats: { items: [{ number: '', unit: '', label: '' }] },
         text: { html: '' },
         pillar_cards: { cards: [{ imageUrl: '', title: '', description: '', linkUrl: '' }] },
+        cta_cards: { title: '', cards: [{ imageUrl: '', subtitle: '', title: '', description: '', linkUrl: '' }] },
         quote: { imageUrl: '', text: '', author: '', title: '' }
       };
       this.editingContent._blocks.push({ type: type, data: defaults[type] || {} });

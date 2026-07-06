@@ -85,30 +85,28 @@
                   <a href="index.html">首页</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="/personal-care.html">{{data.baseData.title}}</a>
+                  <a href="/personal-care.html">{{data.hero.title}}</a>
                 </li>
               </ol>
             </nav>
           </div>
         </div>
-        <div class="s-tunnel-header__img" :style="data.baseData.styleBackground">
+        <div class="s-tunnel-header__img" :style="heroBg()">
         </div>
         <div class="s-tunnel-header__content">
           <h1 class="s-tunnel-header__title page-title u-title-styled">
-            {{data.baseData.title}}
+            {{data.hero.title}}
           </h1>
           <div class="s-tunnel-header__desc">
-            <p v-html="data.baseData.summary"></p>
+            <p v-html="data.hero.summary"></p>
           </div>
           <div class="s-tunnel-header__video">
           </div>
         </div>
         <div class="s-tunnel-header__btns">
-          <a class="btn btn-primary" href="/personal-care/product-finder.html">找到您要的产品
+          <a v-for="btn in data.hero.buttons" :key="btn.label" class="btn btn-primary" :href="btn.url">
+            {{ btn.label }}
             <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
-          </a>
-          <a class="btn btn-primary" href="/personal-care/formulation-finder.html">查找您要的配方
-            <i class="o-icon --ico-flask" aria-hidden="true"></i>
           </a>
         </div>
       </div>
@@ -116,22 +114,68 @@
         <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
           class="block block-system block-system-main-block">
           <div class="page-tunnel-personal-care">
-            <span v-html="data.baseData.content"></span>
-            <div class="s-tunnel-product" v-if="data.productList[0]">
-              <div class="s-tunnel-product__content">
-                <h3>{{data.productList[0].goodsName}}
-                </h3>
-                <p class="s-tunnel-product__tagline">{{data.productList[0].subtitle}}
-                </p>
-                <div class="s-tunnel-product__description" v-html="data.productList[0].description">
+            <!-- 区块渲染 -->
+            <template v-for="(blk, bi) in data.blocks" :key="bi">
+              
+              <!-- 文本区块 -->
+              <div v-if="blk.type === 'text'" v-html="blk.data.html"></div>
+              
+              <!-- 特征卡片 -->
+              <div v-if="blk.type === 'feature_cards'" class="s-tunnel-content" style="padding:40px 0;">
+                <div class="container">
+                  <h2 v-if="blk.data.title" class="u-title-styled" style="text-align:center;margin-bottom:32px;">{{ blk.data.title }}</h2>
+                  <div class="row" style="display:flex;gap:24px;justify-content:center;">
+                    <div v-for="(item, fi) in blk.data.items" :key="fi" class="col-12 col-md-4" style="flex:1;min-width:200px;max-width:360px;text-align:center;">
+                      <div class="c-card c-card--bordered" style="padding:32px 20px;">
+                        <i v-if="item.icon" class="o-icon" :class="item.icon" style="font-size:32px;color:var(--green);margin-bottom:12px;"></i>
+                        <h3 style="font-size:16px;margin-bottom:8px;">{{ item.title }}</h3>
+                        <p style="font-size:13px;color:#666;">{{ item.description }}</p>
+                        <a v-if="item.linkUrl" :href="item.linkUrl" class="btn btn-outline-primary" style="margin-top:12px;">了解更多</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <a class="s-tunnel-product__btn btn btn-primary" :href="data.productList[0].url">
-                  阅读更多
-                </a>
               </div>
-              <div class="s-tunnel-product__img" :style="data.productList[0].styleBackground">
+
+              <!-- 产品推广 -->
+              <div v-if="blk.type === 'product_promo'" class="s-tunnel-product" style="margin-bottom:40px;">
+                <div class="container" style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
+                  <div class="s-tunnel-product__content" style="flex:1;min-width:300px;">
+                    <h3>{{ blk.data.title }}</h3>
+                    <p class="s-tunnel-product__tagline" style="font-size:14px;color:var(--green);">{{ blk.data.subtitle }}</p>
+                    <div class="s-tunnel-product__description" v-html="blk.data.description"></div>
+                    <a v-if="blk.data.linkUrl" class="s-tunnel-product__btn btn btn-primary" :href="blk.data.linkUrl">{{ blk.data.linkLabel || '阅读更多' }}</a>
+                  </div>
+                  <div v-if="blk.data.imageUrl" class="s-tunnel-product__img" style="flex:1;min-width:300px;">
+                    <img :src="blk.data.imageUrl" alt="" style="width:100%;border-radius:8px;" />
+                  </div>
+                </div>
               </div>
-            </div>
+
+              <!-- 双CTA卡片 -->
+              <div v-if="blk.type === 'cta_cards'" class="js-block-contents s-tunnel-content" style="margin-bottom:40px;">
+                <div class="container">
+                  <h2 v-if="blk.data.title" class="u-title-styled" style="text-align:center;margin-bottom:24px;">{{ blk.data.title }}</h2>
+                  <div class="js-block-contents-slider s-tunnel-content__slider" style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
+                    <div v-for="(card, ci) in blk.data.cards" :key="ci" class="c-card c-card--bordered" style="flex:1;min-width:280px;max-width:480px;">
+                      <div class="c-card__image">
+                        <img :src="card.imageUrl" :alt="card.title" width="369" height="208" loading="lazy" class="img-fluid" style="width:100%;">
+                      </div>
+                      <div class="c-card__content" style="padding:20px;">
+                        <span v-if="card.subtitle" class="c-card__category" style="font-size:12px;color:var(--green);text-transform:uppercase;">{{ card.subtitle }}</span>
+                        <h3 class="c-card__title" style="font-size:16px;margin:8px 0;">
+                          <a :href="card.linkUrl" class="u-cover">{{ card.title }}</a>
+                        </h3>
+                        <p class="c-card__summary" style="font-size:13px;color:#666;">{{ card.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+
+            <!-- ===== 旧内容区域（保持对 data.xxx 的引用）===== -->
             <div class="s-tunnel-news" v-if="data.newsData[0]">
               <div class="container">
                 <h2 class="s-tunnel-news__title u-title-styled">
@@ -370,54 +414,6 @@
                 </div>
               </div>
             </div>
-            <div class="js-block-contents s-tunnel-content">
-              <div class="js-block-contents-slider s-tunnel-content__slider">
-                <div class="c-card c-card--bordered">
-                  <div class="c-card__content">
-                    <span class="c-card__category">
-                      探索独特的感官创新
-                    </span>
-                    <h3 class="c-card__title">
-                      <a href="/unexpected-suncare.html" class="u-cover">
-                        意想不到的防晒护理
-                      </a>
-                    </h3>
-                    <p class="c-card__summary">
-                      Gattefossé 将其感官和配方专业知识应用于防晒产品，以满足……
-                    </p>
-                  </div>
-                  <div class="c-card__image">
-                    <img src="/sites/default/files/styles/card_default/public/2023-10/istock_38105902_xxlarge.jpg.webp"
-                      alt="意想不到的防晒" width="369" height="208" loading="lazy" class="img-fluid">
-                  </div>
-                </div>
-                <div class="c-card c-card--bordered">
-                  <div class="c-card__content">
-                    <span class="c-card__category">
-                      天然和感官配方的解决方案
-                    </span>
-                    <h3 class="c-card__title">
-                      <a href="/wax-butter-technology.html" class="u-cover">
-                        蜡黄油技术
-                      </a>
-                    </h3>
-                    <p class="c-card__summary">
-                      了解蜡黄油技术的优势，该技术由……创建并获得专利。
-                    </p>
-                  </div>
-                  <div class="c-card__image">
-                    <img
-                      src="/sites/default/files/styles/card_default/public/2023-07/istock_000054577596_large.jpg.webp"
-                      alt="异硬脂醇异硬脂酸酯" width="369" height="208" loading="lazy" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="slick-controls">
-                <button type="button" aria-label="以前的" class="slick-prev js-slick-prev"></button>
-                <div class="slick-dots-wrapper js-slick-dots-wrapper"></div>
-                <button type="button" aria-label="下一个" class="slick-next js-slick-next"></button>
-              </div>
-            </div>
           </div>
           <div id="video-modal" class="modal video-modal">
             <div class="modal-content formulaire">
@@ -485,117 +481,119 @@
   </script>
   <script>
     function checkLoginStatus() { return false; }
-    const { createApp, reactive } = Vue;
+    const { createApp, reactive, onMounted } = Vue;
     const app = createApp({
       setup() {
         const data = reactive({
-          baseData: {
-            title: '个人护理',
-            summary: '我们专注于油脂和植物化学，提供天然活性成分和功能性成分的解决方案。',
-            styleBackground: 'background-image: url(/sites/default/files/styles/page_banner_desktop_full/public/2023-07/40-web-shooting-gattefosse-jour3-27oct2022-saintpriest-chloelapeyssonnie-6979-1.jpgebad.jpg)',
-            content: '<p>嘉法狮（Gattefossé）在个人护理领域拥有超过一个世纪的经验，是油脂和植物化学两个互补领域的专家。</p>'
-          },
-          productList: [{
-            goodsName: '意想不到的防晒护理',
-            subtitle: '探索独特的感官创新',
-            description: '嘉法狮将其感官和配方专业知识应用于防晒产品。',
-            url: '/unexpected-suncare.html',
-            goodsCoverImg: '/sites/default/files/styles/homepage_bu/public/2023-06/gettyimages-1460122345-copie_0.webp',
-            styleBackground: 'background-image: url(/sites/default/files/styles/card_default/public/2023-10/istock_38105902_xxlarge.jpg.webp)',
-            favUrl: '/account.html?url=/personal-care/product-finder.html'
-          }],
-          formulationList: [{
-            goodsName: '丝滑防晒乳SPF30',
-            subtitle: '清爽不油腻的日常防晒配方',
-            goodsIntro: '基于天然油脂的防晒配方。',
-            url: '/personal-care/formulation-finder/product-detail.html?id=101',
-            goodsCoverImg: '/sites/default/files/styles/card_default/public/2023-10/istock_38105902_xxlarge.jpg.webp',
-            favUrl: '/account.html?url=/personal-care/formulation-finder.html'
-          }, {
-            goodsName: '修护滋养面霜',
-            subtitle: '深层滋养，恢复肌肤屏障',
-            goodsIntro: '采用嘉法狮专利油脂技术。',
-            url: '/personal-care/formulation-finder/product-detail.html?id=102',
-            goodsCoverImg: '/sites/default/files/styles/card_default/public/2023-10/istock_38105902_xxlarge.jpg.webp',
-            favUrl: '/account.html?url=/personal-care/formulation-finder.html'
-          }, {
-            goodsName: '温和洁肤油',
-            subtitle: '以油洁肤，温和不刺激',
-            goodsIntro: '天然植物油脂配方。',
-            url: '/personal-care/formulation-finder/product-detail.html?id=103',
-            goodsCoverImg: '/sites/default/files/styles/card_default/public/2023-10/istock_38105902_xxlarge.jpg.webp',
-            favUrl: '/account.html?url=/personal-care/formulation-finder.html'
-          }],
-          newsData: [{
-            title: '2026 In-Cosmetics 国际化妆品原料展',
-            summary: '04月14日~04月16日 2026 法国巴黎 展位号:3G80',
-            thumb: '/sites/default/files/styles/card_default_big/public/2024-05/design-sans-titre-2.png.webp',
-            url: 'personal-care-news-detail.html?id=1',
-            goodsCatName: '个人护理',
-            eventTimeYear: '2026',
-            eventTimeDate: '04月14'
-          }],
-          eventData: [{
-            title: '2026 In-Cosmetics 国际化妆品原料展',
-            eventTimeYear: '2026',
-            eventTimeDate: '04月14',
-            eventEndTimeDate: '04月16',
-            eventAddress: '法国巴黎 展位号:3G80',
-            goodsCatName: '个人护理',
-            class: 'c-card c-card--bordered c-card--event theme-cosm',
-            catName: '遇见我们',
-            city: '巴黎',
-            country: '法国'
-          }, {
-            title: '2026中国化妆品、个人和家庭护理用品原料展览会 (PCHi)',
-            eventTimeYear: '2026',
-            eventTimeDate: '03月18',
-            eventEndTimeDate: '03月20',
-            eventAddress: '中国杭州 杭州大会展中心 展位号2F08',
-            goodsCatName: '个人护理',
-            class: 'c-card c-card--bordered c-card--event theme-cosm',
-            catName: '遇见我们',
-            city: '杭州',
-            country: '中国'
-          }, {
-            title: '2025年in-cosmetics Asia展览会',
-            eventTimeYear: '2025',
-            eventTimeDate: '11月04',
-            eventEndTimeDate: '11月06',
-            eventAddress: '曼谷BITEC国际展览中心',
-            goodsCatName: '个人护理',
-            class: 'c-card c-card--bordered c-card--event theme-cosm',
-            catName: '遇见我们',
-            city: '曼谷',
-            country: '泰国'
-          }],
-          articlesData: [{
-            title: '探索天然活性成分的护肤力量',
-            summary: '了解嘉法狮最新的天然活性成分如何改变护肤市场。',
-            thumb: '/sites/default/files/styles/card_default/public/2023-07/sensory-analysis.jpg0100.jpg',
-            url: '/personal-care-article-detail.html?id=1',
-            CreatedAt: '2026-03-15',
-            eventTimeYear: '2026',
-            eventTimeDate: '03月15'
-          }, {
-            title: '油脂化学在化妆品中的应用',
-            summary: '深入探讨不同油脂的特性及其在配方中的表现。',
-            thumb: '/sites/default/files/styles/card_default/public/2023-07/lipid-chemistry.jpgc40d.jpg',
-            url: '/personal-care-article-detail.html?id=2',
-            CreatedAt: '2026-02-20',
-            eventTimeYear: '2026',
-            eventTimeDate: '02月20'
-          }, {
-            title: '感官分析：打造极致肤感体验',
-            summary: '如何通过科学的感官分析方法优化产品肤感。',
-            thumb: '/sites/default/files/styles/card_default/public/2023-07/skin-biology-2_0.jpg1f73.jpg',
-            url: '/personal-care-article-detail.html?id=3',
-            CreatedAt: '2026-01-10',
-            eventTimeYear: '2026',
-            eventTimeDate: '01月10'
-          }]
+          // 从 API 加载的页面区块
+          blocks: [],
+          // 动态数据（从其他API拉取）
+          newsData: [],
+          articlesData: [],
+          formulationList: [],
+          eventData: [],
+          // hero 快捷引用（从 blocks 中提取）
+          hero: { title: '个人护理', summary: '', backgroundImage: '', buttons: [] }
         });
-        return { data };
+
+        // 格式化日期
+        function fmtDate(d) {
+          if (!d) return { year: '', date: '' };
+          var parts = d.split('-');
+          if (parts.length === 3) return { year: parts[0], date: parts[1] + '月' + parseInt(parts[2]) };
+          return { year: '', date: d };
+        }
+
+        onMounted(async function() {
+          try {
+            // 1. 加载页面区块
+            var res = await axios.get('/api/content/pages/personal-care');
+            var pageData = res.data?.data;
+            if (pageData && pageData.content) {
+              var blocks = typeof pageData.content === 'string' ? JSON.parse(pageData.content) : pageData.content;
+              data.blocks = blocks;
+              // 提取 hero 用于面包屑/背景
+              var heroBlock = blocks.find(function(b) { return b.type === 'hero'; });
+              if (heroBlock) {
+                data.hero.title = heroBlock.data.title || '个人护理';
+                data.hero.summary = heroBlock.data.summary || '';
+                data.hero.backgroundImage = heroBlock.data.backgroundImage || '';
+                data.hero.buttons = heroBlock.data.buttons || [];
+              }
+            }
+          } catch(e) { console.error('Failed to load page blocks:', e); }
+
+          try {
+            // 2. 加载最新新闻/文章
+            var newsRes = await axios.get('/api/news', { params: { type: 'article', category: 'pc', pageSize: 4 } });
+            var newsItems = newsRes.data?.data?.list || [];
+            if (newsItems.length > 0) {
+              data.newsData = [newsItems[0]];
+              data.articlesData = newsItems.slice(1);
+              // 格式化日期
+              data.newsData.forEach(function(item) {
+                var f = fmtDate(item.publishedDate);
+                item.eventTimeYear = f.year;
+                item.eventTimeDate = f.date;
+                item.thumb = item.imageUrl || '';
+                item.url = '/personal-care-article-detail.html?id=' + item.id;
+                item.catName = item.articleType || '文章';
+              });
+              data.articlesData.forEach(function(item) {
+                var f = fmtDate(item.publishedDate);
+                item.eventTimeYear = f.year;
+                item.eventTimeDate = f.date;
+                item.thumb = item.imageUrl || '';
+                item.url = '/personal-care-article-detail.html?id=' + item.id;
+                item.catName = item.articleType || '文章';
+              });
+            }
+          } catch(e) { console.error('Failed to load news:', e); }
+
+          try {
+            // 3. 加载活动/事件
+            var eventRes = await axios.get('/api/news', { params: { type: 'event', category: 'pc', pageSize: 3 } });
+            var eventItems = eventRes.data?.data?.list || [];
+            data.eventData = eventItems.map(function(item) {
+              var f = fmtDate(item.publishedDate);
+              var ef = item.eventEndDate ? fmtDate(item.eventEndDate) : { date: '' };
+              return {
+                title: item.title,
+                eventTimeYear: f.year,
+                eventTimeDate: f.date,
+                eventEndTimeDate: ef.date,
+                eventAddress: item.location || '',
+                goodsCatName: '个人护理',
+                catName: '遇见我们',
+                city: item.location ? item.location.split(',')[0] || '' : '',
+                country: ''
+              };
+            });
+          } catch(e) { console.error('Failed to load events:', e); }
+
+          try {
+            // 4. 加载配方
+            var formRes = await axios.get('/api/formulations', { params: { pageSize: 6 } });
+            var formItems = formRes.data?.data?.list || [];
+            data.formulationList = formItems.map(function(item) {
+              return {
+                goodsName: item.name,
+                subtitle: item.code || item.inciName || '',
+                goodsIntro: item.description || '',
+                url: '/personal-care/formulation-finder/product-detail.html?id=' + item.id,
+                goodsCoverImg: item.imageUrl || '',
+                favUrl: '/account.html?url=/personal-care/formulation-finder.html'
+              };
+            });
+          } catch(e) { console.error('Failed to load formulations:', e); }
+        });
+
+        // 获取 hero 背景样式
+        function heroBg() {
+          return data.hero.backgroundImage ? 'background-image: url(' + data.hero.backgroundImage + ')' : '';
+        }
+
+        return { data, heroBg };
       }
     });
     app.mount("#app");
