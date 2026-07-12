@@ -81,19 +81,6 @@
     #video-modal .o-video { background: #fff; }
     #video-modal .video__container { position: relative; padding-bottom: 56.25%; height: 0; border: 1px solid #e0e0e0; }
     #video-modal .video__footer { min-height: 8px; }
-    /* 特征卡片 - 英文站粉/红图标方框样式 */
-    .feature-cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-    .feature-card { display: flex; align-items: center; gap: 24px; padding: 32px 24px; text-decoration: none; color: inherit; border-bottom: 1px solid #eee; }
-    .feature-card:nth-child(odd) { border-right: 1px solid #eee; }
-    .feature-card--last-row { border-bottom: none !important; }
-    .feature-card__icon-wrap { flex-shrink: 0; width: 80px; height: 80px; background: var(--accent-background-color-light, #F0DCE4); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-    .feature-card__icon-wrap .o-icon { font-size: 36px; color: var(--accent-color, #C4004D); }
-    .feature-card__content h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #333; }
-    .feature-card__content p { font-size: 14px; color: #666; margin: 0; line-height: 1.5; }
-    @media (max-width: 767px) {
-      .feature-cards-grid { grid-template-columns: 1fr; }
-      .feature-card:nth-child(odd) { border-right: none; }
-    }
   </style>
 </head>
 <body class="is-mobile path-personal-care    bg- d-flex flex-column">
@@ -173,20 +160,24 @@
               <div v-if="blk.type === 'text'" v-html="blk.data.html"></div>
               
               <!-- 特征卡片 -->
-              <div v-if="blk.type === 'feature_cards'" class="s-tunnel-content theme-cosm" style="padding:40px 0;">
+              <div v-if="blk.type === 'feature_cards'" class="s-tunnel-page theme-cosm">
                 <div class="container">
-                  <h2 v-if="blk.data.title" class="u-title-styled" style="text-align:center;margin-bottom:8px;">{{ blk.data.title }}</h2>
-                  <div class="feature-cards-grid">
-                    <a v-for="(item, fi) in blk.data.items" :key="fi" :href="item.linkUrl || '#'" class="feature-card" :class="{ 'feature-card--last-row': fi >= Math.floor((blk.data.items.length - 1) / 2) * 2 }">
-                      <div class="feature-card__icon-wrap">
-                        <i v-if="item.icon" class="o-icon" :class="item.icon"></i>
+                  <h2 v-if="blk.data.title" class="s-tunnel-page__title u-title-styled">{{ blk.data.title }}</h2>
+                  <ul class="s-tunnel-page__list">
+                    <li v-for="(item, fi) in blk.data.items" :key="fi" class="s-tunnel-page__item">
+                      <img v-if="item.imageUrl" :src="item.imageUrl" alt="" width="48" height="48" loading="lazy" class="img-fluid s-tunnel-page__item-img">
+                      <i v-else-if="item.icon" class="o-icon img-fluid s-tunnel-page__item-img" :class="item.icon" style="display:flex;align-items:center;justify-content:center;font-size:32px;"></i>
+                      <div class="s-tunnel-page__item-content">
+                        <h3 class="s-tunnel-page__item-title">
+                          <a v-if="item.linkUrl" :href="item.linkUrl" class="u-cover">{{ item.title }}</a>
+                          <span v-else>{{ item.title }}</span>
+                        </h3>
+                        <div class="s-tunnel-page__item-txt">
+                          <p>{{ item.description }}</p>
+                        </div>
                       </div>
-                      <div class="feature-card__content">
-                        <h3>{{ item.title }}</h3>
-                        <p>{{ item.description }}</p>
-                      </div>
-                    </a>
-                  </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
 

@@ -34,19 +34,22 @@ const blocks = [
         'title': 'All about Personal Care',
         'items': [
           {
-            'icon': '--ico-flask',
+            'imageUrl': '/sites/default/files/2023-06/ingredients_0.svg',
+            'icon': '',
             'title': 'Ingredients',
             'description': '为您开发项目寻找最合适的成分。',
             'linkUrl': '/personal-care/product-finder.html'
           },
           {
-            'icon': '--ico-test-tubes',
+            'imageUrl': '/sites/default/files/2023-06/formulation.svg',
+            'icon': '',
             'title': 'Formulations',
             'description': '探索我们独特的配方库，展示我们的活性成分和质地成分。',
             'linkUrl': '/personal-care/formulation-finder.html'
           },
           {
-            'icon': '--book',
+            'imageUrl': '/sites/default/files/2023-06/get-inspired.svg',
+            'icon': '',
             'title': 'Get inspired',
             'description': '阅读我们的最新文章，随时观看无限量的在线研讨会。',
             'linkUrl': '/personal-care/get-inspired.html'

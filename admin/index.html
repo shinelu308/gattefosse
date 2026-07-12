@@ -3038,16 +3038,18 @@ const QUILL_TOOLBAR = [
                         <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.items.splice(fi,1)" v-if="blk.data.items.length > 1">×</button>
                       </div>
                       <div class="form-group" style="margin-bottom:6px;">
-                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">图标类名</label>
+                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">图标图片 URL</label>
                         <div style="display:flex;gap:10px;align-items:center;">
-                          <input class="form-control" v-model="item.icon" placeholder="如: --ico-flask" style="font-size:13px;flex:1;">
-                          <div style="width:48px;height:48px;background:#F0DCE4;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i v-if="item.icon" class="o-icon" :class="item.icon" style="font-size:22px;color:#C4004D;"></i>
+                          <input class="form-control" v-model="item.imageUrl" placeholder="如: /sites/default/files/2023-06/ingredients_0.svg" style="font-size:13px;flex:1;">
+                          <div style="width:48px;height:48px;background:var(--accent-color-light,#F0DCE4);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <img v-if="item.imageUrl" :src="item.imageUrl" style="width:32px;height:32px;object-fit:contain;">
+                            <i v-else-if="item.icon" class="o-icon" :class="item.icon" style="font-size:22px;color:#C4004D;"></i>
                           </div>
                         </div>
-                        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
-                          <button v-for="ic in ['--ico-flask','--ico-test-tubes','--book','--ico-microscope','--gear','--ico-earth']" :key="ic" class="btn btn-sm btn-outline" style="font-size:11px;padding:2px 8px;" :style="item.icon === ic ? 'background:#F0DCE4;border-color:#F0DCE4;color:#C4004D;' : ''" @click="item.icon = ic">{{ ic }}</button>
-                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">或图标类名</label>
+                        <input class="form-control" v-model="item.icon" placeholder="如: --ico-flask" style="font-size:13px;">
                       </div>
                       <div class="form-group" style="margin-bottom:6px;">
                         <input class="form-control" v-model="item.title" placeholder="标题" style="font-size:13px;">
@@ -3059,7 +3061,7 @@ const QUILL_TOOLBAR = [
                         <input class="form-control" v-model="item.linkUrl" placeholder="链接 URL" style="font-size:13px;">
                       </div>
                     </div>
-                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ icon:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ imageUrl:'', icon:'', title:'', description:'', linkUrl:'' })">+ 添加卡片</button>
                   </div>
                   <!-- type: product_promo -->
                   <div v-if="blk.type === 'product_promo'">
@@ -6060,7 +6062,7 @@ createApp({
       if (!this.editingContent._blocks) this.editingContent._blocks = [];
       var defaults = {
         hero: { title: '', summary: '', backgroundImage: '', buttons: [], videoUrl: '', videoType: '' },
-        feature_cards: { title: '', items: [{ icon: '', title: '', description: '', linkUrl: '' }] },
+        feature_cards: { title: '', items: [{ imageUrl: '', icon: '', title: '', description: '', linkUrl: '' }] },
         product_promo: { title: '', subtitle: '', description: '', imageUrl: '', linkUrl: '', linkLabel: '阅读更多' },
         stats: { items: [{ number: '', unit: '', label: '' }] },
         text: { html: '' },
