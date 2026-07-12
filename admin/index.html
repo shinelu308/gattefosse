@@ -2188,6 +2188,11 @@ const QUILL_TOOLBAR = [
                   <label>阅读时长（分钟）</label>
                   <input type="number" class="form-control" v-model="editingNews.readingTime" placeholder="5" style="max-width:140px;">
                 </div>
+                <div class="form-group" style="flex:2;">
+                  <label>标签</label>
+                  <input type="text" class="form-control" v-model="editingNews.tagInput" placeholder="用逗号分隔多个标签，如：活性成分, 老化, 防晒">
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">输入标签后保存时会自动转为 JSON</div>
+                </div>
               </div>
               <div v-if="editingNews.type==='event'" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);">
                 <div class="form-row">
@@ -5724,10 +5729,21 @@ createApp({
       } catch (e) { console.error(e); }
     },
     resetNewsEdit() {
-      this.editingNews = { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), eventEndDate: '', location: '', booth: '', isPublished: false };
+      this.editingNews = { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), eventEndDate: '', location: '', booth: '', isPublished: false, tags: null, tagInput: '' };
     },
     editNews(item) {
-      this.editingNews = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '', eventEndDate: item.eventEndDate ? new Date(item.eventEndDate).toISOString().slice(0,10) : '' };
+      var tagArr = [];
+      if (item.tags) {
+        try { tagArr = JSON.parse(item.tags); } catch(e) { 
+          tagArr = typeof item.tags === 'string' ? item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean) : [];
+        }
+      }
+      this.editingNews = { 
+        ...item, 
+        publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '', 
+        eventEndDate: item.eventEndDate ? new Date(item.eventEndDate).toISOString().slice(0,10) : '',
+        tagInput: tagArr.join(', ')
+      };
       this.currentPage = 'news-edit';
     },
     async saveNews() {
@@ -5735,10 +5751,18 @@ createApp({
       if (!this.editingNews.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
       try {
-        if (this.editingNews.id) {
-          await this.api('/news/' + this.editingNews.id, { method: 'PUT', body: JSON.stringify(this.editingNews) });
+        // 序列化标签
+        var payload = { ...this.editingNews };
+        if (payload.tagInput) {
+          payload.tags = JSON.stringify(payload.tagInput.split(',').map(function(t) { return t.trim(); }).filter(Boolean));
         } else {
-          await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingNews) });
+          payload.tags = null;
+        }
+        delete payload.tagInput;
+        if (payload.id) {
+          await this.api('/news/' + payload.id, { method: 'PUT', body: JSON.stringify(payload) });
+        } else {
+          await this.api('/news', { method: 'POST', body: JSON.stringify(payload) });
         }
         this.currentPage = 'news-list';
         this.loadNewsList();

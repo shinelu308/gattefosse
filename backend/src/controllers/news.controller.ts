@@ -71,8 +71,21 @@ export async function listNews(req: Request, res: Response) {
       }),
     ]);
 
+    // 统计各 category 的数量（供前端侧栏筛选展示）
+    const allPublished = await prisma.newsEvent.findMany({
+      where: { isPublished: true },
+      select: { category: true },
+    });
+    const counts: Record<string, number> = { all: allPublished.length, corporate: 0, pc: 0, pharma: 0 };
+    allPublished.forEach((n) => {
+      if (n.category in counts) counts[n.category]++;
+    });
+
+    const result = paginate(items, total, pageNum, limitNum);
+    (result as any).counts = counts;
+
     return res.json(
-      success(paginate(items, total, pageNum, limitNum), '获取成功')
+      success(result, '获取成功')
     );
   } catch (error) {
     console.error('获取新闻列表失败:', error);

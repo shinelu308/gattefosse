@@ -51,6 +51,25 @@
   <script src="static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api.js"></script>
   <script src="/static/js/auth.js"></script>
+  <style>
+    /* 筛选按钮组行内排列 */
+    .custom--bef-links { display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center; }
+    /* 过滤侧栏固定宽度 */
+    .s-page__aside--l { flex: 0 0 28rem; max-width: 28rem; }
+    /* 活动卡片左右布局 */
+    .c-card--event .c-card__info-grid { display:flex; gap:2.4rem; }
+    .c-card--event .c-card__date-block { min-width:10rem; text-align:center; }
+    .c-card--event .c-card__date-num { font-size:3.2rem; font-weight:700; color:var(--accent-color); line-height:1; }
+    .c-card--event .c-card__date-range { font-size:1.2rem; color:#666; }
+    /* 筛选侧栏移动端按钮 */
+    .c-filter__mobile-btn { display:none; width:100%; margin-bottom:1.6rem; }
+    @media (max-width: 991.98px) {
+      .s-page__aside--l { flex: 0 0 100%; max-width: 100%; }
+      .c-filter__mobile-btn { display:block; }
+      .c-filter { display:none; }
+      .c-filter.is-open { display:block; }
+    }
+  </style>
   <script>
    $(document).ready(function () {
       $("#header").load("/header.html", function(){
@@ -117,124 +136,169 @@
           <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
             class="block block-system block-system-main-block">
             <div class="views-element-container">
-              <section
+              <section id="app"
                 class="view view-news view-id-news view-display-id-list js-view-dom-id-646aebdff81067bb40aa90af2036d7d867d2f830b6c098edfba49113991bbc30 s-page has-aside s-page--filter">
+                <!-- 页头：标题 + 搜索 + 类型切换 -->
                 <div class="s-page__header">
-                  <div class="container" id="app3">
-                    <h1 class="s-page__title u-title-styled">
-                      新闻与活动
-                    </h1>
-                  </div>
-                </div>
-                <div class="s-page__wrapper">
-                  <aside class="s-page__aside s-page__aside--l" aria-label="filters" role="complementary">                    
-                    <div class="c-filter e-form js-filter">
-                      <div class="facet-inactive block-facet--links block block-facets block-facet-blockbusiness-unit"
-                        data-block-plugin-id="facet_block:business_unit">
-                        <div id="app2">
-                          <div class="facets-widget-links">
-                            <ul data-drupal-facet-id="business_unit" data-drupal-facet-alias="business_unit"
-                              class="facet-inactive js-facets-links facet-list item-list__links">
-                              <li class="facet-item">
-                                <a class="btn btn-outline-secondary"
-                                  :class="data.goodsCategoryId == 0 ? 'is-active' : ''" href="/news.html?i=0">公司资讯
-                                  </a>
-                              </li>
-                              <li class="facet-item">
-                                <a class="btn btn-outline-secondary"
-                                  :class="data.goodsCategoryId == 1 ? 'is-active' : ''" href="/news.html?i=1">个人护理</a>
-                              </li>
-                              <li class="facet-item">
-                                <a class="btn btn-outline-secondary"
-                                  :class="data.goodsCategoryId == 117 ? 'is-active' : ''" href="/news.html?i=117">药用辅料
-                                  </a>
-                              </li>
-                              <li class="facet-item facets-reset">
-                                <a class="btn btn-outline-secondary"
-                                  :class="data.type == 2 ? 'is-active' : ''" href="/news.html?type=2">遇见我们
-                                  </a>
-                              </li>
-                            </ul>
-                          </div>
+                  <div class="container">
+                    <h1 class="s-page__title u-title-styled">新闻与活动</h1>
+                    <div class="view-filters">
+                      <div class="s-page__header-search">
+                        <!-- 关键词搜索 -->
+                        <div class="form-item" style="display:flex;gap:0.4rem;align-items:center;max-width:50rem;margin:0 auto 2rem;">
+                          <input type="text" v-model="data.keyword" placeholder="你想找什么？"
+                            class="form-text form-control" style="flex:1;">
+                          <button type="button" class="btn" @click="data.cur_page=1;loadNews()">
+                            <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                        <!-- 类型切换：全部 / 新闻 / 活动 -->
+                        <div class="custom--bef-links" style="justify-content:center;">
+                          <a class="btn btn-outline-secondary" :class="data.typeFilter === '' ? 'is-active' : ''"
+                            href="javascript:;" @click="data.typeFilter='';data.cur_page=1;loadNews()">全部</a>
+                          <a class="btn btn-outline-secondary" :class="data.typeFilter === 'news' ? 'is-active' : ''"
+                            href="javascript:;" @click="data.typeFilter='news';data.cur_page=1;loadNews()">新闻</a>
+                          <a class="btn btn-outline-secondary" :class="data.typeFilter === 'event' ? 'is-active' : ''"
+                            href="javascript:;" @click="data.typeFilter='event';data.cur_page=1;loadNews()">活动</a>
                         </div>
                       </div>
-                      <div class="facet-inactive hidden block-facet--checkbox block block-facets block-facet-blockarea"
-                        data-block-plugin-id="facet_block:area">
-                        <div data-drupal-facet-id="area" class="facet-empty facet-hidden">
-                          <div class="accordion facets-widget-checkbox"> </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 主体：侧栏筛选 + 内容列表 -->
+                <div class="s-page__wrapper">
+                  <aside class="s-page__aside s-page__aside--l" aria-label="filters" role="complementary">
+                    <button type="button" class="c-filter__mobile-btn btn btn-primary"
+                      @click="data.filterOpen = !data.filterOpen">
+                      <span>{{ data.filterOpen ? '关闭筛选' : '筛选' }}</span>
+                      <i class="o-icon --caret-circle-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="c-filter e-form js-filter" :class="{ 'is-open': data.filterOpen }">
+                      <div class="c-filter__header">
+                        <h2 class="c-filter__main-title">筛选</h2>
+                        <button type="button" class="c-filter__reset-btn btn btn-outline-secondary"
+                          @click="resetFilters()">重置筛选
+                          <i class="o-icon --reset" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <!-- 业务分类筛选 -->
+                      <div class="facet-inactive block-facet--links">
+                        <div class="facets-widget-links">
+                          <ul class="facet-list item-list__links">
+                            <li class="facet-item facets-reset">
+                              <a class="btn btn-outline-secondary"
+                                :class="data.categoryFilter === '' ? 'is-active' : ''"
+                                href="javascript:;"
+                                @click="data.categoryFilter='';data.cur_page=1;loadNews()">
+                                全部新闻与活动 (<span v-text="data.categoryCounts.all || '0'"></span>)
+                              </a>
+                            </li>
+                            <li class="facet-item">
+                              <a class="btn btn-outline-secondary"
+                                :class="data.categoryFilter === 'corporate' ? 'is-active' : ''"
+                                href="javascript:;"
+                                @click="data.categoryFilter='corporate';data.cur_page=1;loadNews()">
+                                企业新闻 (<span v-text="data.categoryCounts.corporate || '0'"></span>)
+                              </a>
+                            </li>
+                            <li class="facet-item">
+                              <a class="btn btn-outline-secondary"
+                                :class="data.categoryFilter === 'pc' ? 'is-active' : ''"
+                                href="javascript:;"
+                                @click="data.categoryFilter='pc';data.cur_page=1;loadNews()">
+                                个人护理 (<span v-text="data.categoryCounts.pc || '0'"></span>)
+                              </a>
+                            </li>
+                            <li class="facet-item">
+                              <a class="btn btn-outline-secondary"
+                                :class="data.categoryFilter === 'pharma' ? 'is-active' : ''"
+                                href="javascript:;"
+                                @click="data.categoryFilter='pharma';data.cur_page=1;loadNews()">
+                                药用辅料 (<span v-text="data.categoryCounts.pharma || '0'"></span>)
+                              </a>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>
                   </aside>
-                  <div id="app">
-                    <div class="s-page__content">
-                      <div class="c-cards c-cards--vertical">
-                        <div v-for='item in data.formData' :class="item.class">
-                          <div class="c-card__content" v-if="item.type == 1">
-                            <h3 class="c-card__title">
-                              <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
-                              {{item.eventAddress}}
-                            </h3>
+                  <!-- 内容列表 -->
+                  <div class="s-page__content">
+                    <div class="c-cards c-cards--vertical">
+                      <!-- 新闻卡片 -->
+                      <div v-for="item in data.formData" :key="item.id"
+                        :class="'c-card c-card--horizontal' + (item.isEvent ? ' c-card--bordered c-card--event' : '')">
+                        <template v-if="item.isEvent">
+                          <!-- 活动卡片 -->
+                          <div class="c-card__content">
                             <ul class="c-card__breadcrumb">
-                              <li class="category">{{item.goodsCatName}}</li>
+                              <li class="category" v-text="item.catName"></li>
                             </ul>
-                            <p class="c-card__info">
-                              <span class="c-card__date"><time :datetime="item.eventTime"
-                                  class="datetime" v-if="item.eventTime != null && item.eventTime != ''">{{item.eventTimeYear}}年{{item.eventTimeDate}}日</time>
-                              </span>
-                            </p>
-                            <p class="c-card__summary" style="color: rgb(136, 135, 135);">{{item.summary}}</p>
-                          </div>
-                          <div class="c-card__image" v-if="item.type == 1">
-                            <img :src="item.thumb" alt="incos-awards-dermolea" style="width:369px;height:208px"
-                              width="369" height="208" class="card__image img-fluid" loading="lazy">
-                          </div>
-                          <div class="c-card__content" v-if="item.type == 2">
-                            <ul class="c-card__breadcrumb">
-                              <li class="category">{{item.goodsCatName}}</li>
-                            </ul>
-                            <h3 class="c-card__title">{{item.title}}</h3>
-                            <div class="c-card__left">
-                              <p class="c-card__date">
-                                <span class="date">{{item.eventTimeDate}}日~{{item.eventEndTimeDate}}日</span>
-                                <span class="year">{{item.eventTimeYear}}</span>
-                              </p>
-                              <div class="c-card__event-info">
-                                <p class="c-card__place">
-                                  {{item.eventAddress}}
-                                </p>
+                            <h3 class="c-card__title" v-text="item.title"></h3>
+                            <div class="c-card__info-grid">
+                              <div class="c-card__date-block">
+                                <div class="c-card__date-num" v-text="item.eventDateNum"></div>
+                                <div class="c-card__date-range" v-text="item.eventDateRange"></div>
+                              </div>
+                              <div>
+                                <p class="c-card__place" v-if="item.location" v-text="item.location"></p>
+                                <p class="c-card__summary" v-text="item.summary"></p>
                               </div>
                             </div>
-                            <div class="c-card__right">
-                              <p class="c-card__summary">{{item.summary}}</p>
-                            </div>
                           </div>
-                        </div>
+                        </template>
+                        <template v-else>
+                          <!-- 新闻卡片：图片 -->
+                          <div class="c-card__image" v-if="item.thumb">
+                            <img :src="item.thumb" :alt="item.title" style="width:369px;height:208px"
+                              class="card__image img-fluid" loading="lazy">
+                          </div>
+                          <!-- 新闻卡片：内容 -->
+                          <div class="c-card__content">
+                            <ul class="c-card__breadcrumb">
+                              <li class="category" v-text="item.catName"></li>
+                            </ul>
+                            <h3 class="c-card__title">
+                              <a class="c-card__title-link" :href="item.url" v-text="item.title"></a>
+                            </h3>
+                            <p class="c-card__info">
+                              <span class="c-card__date" v-text="item.dateStr"></span>
+                              <span v-if="item.readingTime" style="margin-left:1.2rem;">阅读时长：{{ item.readingTime }} 分钟</span>
+                            </p>
+                            <p class="c-card__summary" v-text="item.summary"></p>
+                          </div>
+                        </template>
                       </div>
-                      <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
-                        v-if="data.total_page > 1">
-                        <h4 id="pagination-heading" class="pager__heading visually-hidden">页码</h4>
-                        <ul class="pager__items js-pager__items">
-                          <li class="pager__item pager__item--previous pager__item">
-                            <a :href="data.prev_url" title="Go to previous page" rel="prev">
-                              <span class="visually-hidden">上一页</span>
-                              <i class="o-icon --caret-right" aria-hidden="true"></i>
-                            </a>
-                          </li>
-                          <li class="pager__item is-active">
-                            {{data.cur_page}}<sub>/{{data.total_page}}</sub>
-                          </li>
-                          <li class="pager__item pager__item--next">
-                            <a :href="data.next_url" title="Go to next page" rel="next">
-                              <span class="visually-hidden">下一页</span>
-                              <i class="o-icon --caret-right" aria-hidden="true"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
+                      <!-- 无结果 -->
+                      <div v-if="data.formData.length === 0 && !data.loading"
+                        style="text-align:center;padding:4rem;color:#999;font-size:1.6rem;">
+                        暂无内容
+                      </div>
                     </div>
+                    <!-- 分页 -->
+                    <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
+                      v-if="data.total_page > 1">
+                      <h4 id="pagination-heading" class="pager__heading visually-hidden">页码</h4>
+                      <ul class="pager__items js-pager__items">
+                        <li class="pager__item pager__item--previous">
+                          <a href="javascript:;" @click="goPage(data.cur_page - 1)" title="上一页" rel="prev">
+                            <span class="visually-hidden">上一页</span>
+                            <i class="o-icon --caret-right" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                        <li class="pager__item is-active">
+                          {{ data.cur_page }}<sub>/{{ data.total_page }}</sub>
+                        </li>
+                        <li class="pager__item pager__item--next">
+                          <a href="javascript:;" @click="goPage(data.cur_page + 1)" title="下一页" rel="next">
+                            <span class="visually-hidden">下一页</span>
+                            <i class="o-icon --caret-right" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
-                </div> <!-- vue app end-->
+                </div>
               </section>
             </div>
           </div>
@@ -252,13 +316,10 @@
             <span>关闭</span>
           </button>
           <form action="/search.html" method="GET" class="modal--search__form">
-            <h2 class="modal-title">
-              您在找寻什么?
-            </h2>
+            <h2 class="modal-title">您在找寻什么?</h2>
             <div class="form-item">
               <label class="visually-hidden" for="key">请输入关键词......</label>
-              <input class="form-text form-control" placeholder="请输入关键词......" type="text" id="key" name="keyword"
-                value="">
+              <input class="form-text form-control" placeholder="请输入关键词......" type="text" id="key" name="keyword" value="">
               <button type="submit" class="js-form-submit form-submit btn">
                 <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
               </button>
@@ -271,8 +332,7 @@
   </div>
   <div class="modal fade modal--affiliates" id="affiliates-modal" tabindex="-1" aria-label="Gattefossé in the world"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
-    </div>
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList"></div>
   </div>
   <script src="sites/default/files/js/js_N81plmNQLshwK5FABanM0cbfGmnGryAOF7WftT2a97I.js"></script>
   <script src="sites/default/files/js/js_UZbwTSK8mg1ekvwEemvRQaYDsYrEeazeJ2Jkf1cict0.js"></script>
@@ -282,55 +342,28 @@
   <script>
   function checkLoginStatus() { return false; }
   const { createApp, reactive, onMounted } = Vue;
-  var atype = new URLSearchParams(window.location.search).get('type');
-  var goodsCategoryId = new URLSearchParams(window.location.search).get('i');
-  var w = new URLSearchParams(window.location.search).get('keyword');
+
+  var typeFilter = new URLSearchParams(window.location.search).get('type') || '';
+  var categoryFilter = new URLSearchParams(window.location.search).get('cat') || '';
+  var keyword = new URLSearchParams(window.location.search).get('keyword') || '';
   var page = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
-  var limit = 9;
+  var limit = 12;
 
   function formatDateParts(iso) {
-    if (!iso) return { year: '', date: '', endDate: '' };
+    if (!iso) return { year: '', month: '', day: '', str: '' };
     var d = new Date(iso);
-    if (isNaN(d.getTime())) return { year: '', date: '', endDate: '' };
-    var y = d.getFullYear();
-    var m = ('0' + (d.getMonth() + 1)).slice(-2);
-    var day = ('0' + d.getDate()).slice(-2);
-    return { year: y, date: m + '月' + day, endDate: m + '月' + day };
-  }
-
-  function mapNewsItem(item) {
-    var d = formatDateParts(item.publishedDate);
-    // type 1 = 资讯, type 2 = 遇见我们(活动)
-    var isEvent = item.type === 2 || item.type === 'event' || item.type === 'meet';
-    var themeClass = (item.category && item.category.indexOf('药用') >= 0) ? 'theme-pharma' : 'theme-cosm';
-    var catName = item.category || (isEvent ? '遇见我们' : '公司资讯');
-    var baseCls = 'c-card c-card--horizontal' + (isEvent ? ' c-card--bordered c-card--event ' + themeClass : '');
+    if (isNaN(d.getTime())) return { year: '', month: '', day: '', str: '' };
     return {
-      ID: item.id,
-      id: item.id,
-      title: item.title,
-      summary: item.summary || '',
-      thumb: item.imageUrl || '',
-      url: 'news-detail.html?id=' + item.id,
-      type: isEvent ? 2 : 1,
-      eventAddress: '',
-      eventTime: item.publishedDate,
-      eventTimeYear: d.year + '年',
-      eventTimeDate: d.date,
-      eventEndTimeDate: d.endDate,
-      goodsCatName: catName,
-      class: baseCls
+      year: d.getFullYear(),
+      month: ('0' + (d.getMonth() + 1)).slice(-2),
+      day: ('0' + d.getDate()).slice(-2),
+      str: d.getFullYear() + '年' + ('0' + (d.getMonth() + 1)).slice(-2) + '月' + ('0' + d.getDate()).slice(-2) + '日'
     };
   }
 
-  function buildPageUrl(p) {
-    var qs = new URLSearchParams();
-    if (atype) qs.set('type', atype);
-    if (goodsCategoryId) qs.set('i', goodsCategoryId);
-    if (w) qs.set('keyword', w);
-    if (p) qs.set('page', p);
-    var s = qs.toString();
-    return s ? '/news.html?' + s : '/news.html';
+  function catLabel(cat) {
+    var map = { corporate: '企业新闻', pc: '个人护理', pharma: '药用辅料' };
+    return map[cat] || cat;
   }
 
   const app = createApp({
@@ -338,50 +371,92 @@
       const data = reactive({
         formData: [],
         total: 0,
-        type: atype,
-        goodsCategoryId: goodsCategoryId,
-        keyword: w,
-        cur_page: page,
-        page_size: limit,
         total_page: 1,
-        prev_url: buildPageUrl(Math.max(1, page - 1)),
-        next_url: buildPageUrl(page + 1)
+        cur_page: page,
+        typeFilter: typeFilter,
+        categoryFilter: categoryFilter,
+        keyword: keyword,
+        loading: false,
+        filterOpen: false,
+        categoryCounts: { all: 0, corporate: 0, pc: 0, pharma: 0 }
       });
 
+      function goPage(p) {
+        if (p < 1 || p > data.total_page) return;
+        data.cur_page = p;
+        loadNews();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function resetFilters() {
+        data.categoryFilter = '';
+        data.typeFilter = '';
+        data.keyword = '';
+        data.cur_page = 1;
+        loadNews();
+      }
+
       const loadNews = async () => {
-        var params = { limit: limit, page: page, isPublished: 'true' };
-        if (atype) params.type = atype;
-        if (goodsCategoryId) params.categoryId = goodsCategoryId;
-        if (w) params.keyword = w;
+        data.loading = true;
+        var params = { limit: limit, page: data.cur_page, isPublished: 'true' };
+        if (data.typeFilter) params.type = data.typeFilter;
+        if (data.categoryFilter) params.category = data.categoryFilter;
+        if (data.keyword) params.keyword = data.keyword;
         try {
           var res = await GatteAPI.News.list(params);
           var payload = res.data || {};
           var list = payload.list || payload.items || (Array.isArray(payload) ? payload : []);
           var pagination = payload.pagination || {};
-          data.formData = list.map(mapNewsItem);
+
+          data.formData = list.map(function(item) {
+            var d = formatDateParts(item.publishedDate);
+            var isEvent = item.type === 'event';
+            return {
+              id: item.id,
+              title: item.title,
+              summary: item.summary || '',
+              thumb: item.imageUrl || '',
+              url: 'news-detail.html?id=' + item.id,
+              isEvent: isEvent,
+              catName: catLabel(item.category),
+              dateStr: d.str,
+              readingTime: item.readingTime || 0,
+              location: item.location || '',
+              eventDateNum: d.month + '月' + d.day,
+              eventDateRange: d.year + '年',
+            };
+          });
           data.total = pagination.total || list.length;
-          data.cur_page = pagination.page || page;
-          data.page_size = pagination.limit || limit;
           data.total_page = pagination.totalPages || Math.max(1, Math.ceil(data.total / limit));
-          data.prev_url = buildPageUrl(Math.max(1, data.cur_page - 1));
-          data.next_url = buildPageUrl(data.cur_page + 1);
+
+          // 统计各分类数量
+          if (payload.counts) {
+            data.categoryCounts = payload.counts;
+          } else {
+            var all = data.total;
+            var corp = 0, pc = 0, pharm = 0;
+            list.forEach(function(item) {
+              if (item.category === 'corporate') corp++;
+              else if (item.category === 'pc') pc++;
+              else if (item.category === 'pharma') pharm++;
+            });
+            data.categoryCounts = { all: all, corporate: corp, pc: pc, pharma: pharm };
+          }
         } catch (err) {
           console.error('News list load failed:', err);
           data.formData = [];
-          data.total = 0;
-          data.total_page = 1;
         }
+        data.loading = false;
       };
 
       onMounted(loadNews);
-      return { data };
+      return { data, goPage, resetFilters };
     }
   });
   app.mount("#app");
-</script>
+  </script>
   <script defer src="https://umami.onlystyle.com.cn/script.js"
     data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
-
 <script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
 </body>
 </html>
