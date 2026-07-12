@@ -1009,6 +1009,7 @@ const QUILL_TOOLBAR = [
                         <select v-model="block.blockType" @change="onPcBlockTypeChange(bi)" class="form-control" style="width:140px;">
                           <option value="richtext">富文本</option>
                           <option value="imagetext">图文并排</option>
+                          <option value="slider">滑块</option>
                           <option value="video">视频</option>
                           <option value="images">图片集</option>
                           <option value="files">文件下载</option>
@@ -1137,6 +1138,50 @@ const QUILL_TOOLBAR = [
                           </div>
                         </div>
                         <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                          <button class="btn btn-sm btn-primary" @click="saveBlockContent(bi)">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <!-- 滑块：左右交替图文轮播 -->
+                      <div v-show="block.blockType === 'slider'">
+                        <div style="margin-bottom:8px;font-size:13px;color:var(--text-muted);">
+                          每个滑块由左侧媒体（图片/视频）和右侧文字组成，支持添加多张幻灯片
+                        </div>
+                        <div v-for="(slide, si) in block._slides" :key="si" style="border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:12px;background:#fafafa;">
+                          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                            <strong style="font-size:13px;">幻灯片 {{ si + 1 }}</strong>
+                            <button class="btn btn-sm btn-danger" @click="removeSliderSlide(bi, si)" v-if="block._slides.length > 1">× 删除</button>
+                          </div>
+                          <div style="display:flex;gap:16px;">
+                            <!-- 左侧媒体 -->
+                            <div style="flex:1;">
+                              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">左侧媒体类型</label>
+                              <select v-model="slide.leftType" class="form-control" style="width:100%;margin-bottom:6px;font-size:13px;">
+                                <option value="image">图片</option>
+                                <option value="video">视频</option>
+                              </select>
+                              <div v-if="slide.leftType === 'image'">
+                                <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                                  <input type="text" class="form-control" v-model="slide.leftUrl" placeholder="图片 URL" style="flex:1;min-width:120px;font-size:13px;">
+                                  <input type="file" accept="image/*" @change="uploadSliderImage($event, bi, si)" style="font-size:12px;">
+                                </div>
+                                <div v-if="slide.leftUrl" style="margin-top:4px;">
+                                  <img :src="slide.leftUrl" style="max-width:80px;max-height:60px;border-radius:4px;border:1px solid var(--border);">
+                                </div>
+                              </div>
+                              <div v-if="slide.leftType === 'video'">
+                                <input type="text" class="form-control" v-model="slide.leftUrl" placeholder="视频嵌入链接 / iframe代码 / B站链接" style="font-size:13px;">
+                              </div>
+                            </div>
+                            <!-- 右侧文字 -->
+                            <div style="flex:1;">
+                              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">右侧文字</label>
+                              <div :id="'qled-slider-right-' + block._key + '-' + si" class="quill-editor" style="min-height:100px;"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+                          <button class="btn btn-sm btn-outline" @click="addSliderSlide(bi)">+ 添加幻灯片</button>
                           <button class="btn btn-sm btn-primary" @click="saveBlockContent(bi)">保存内容</button>
                           <span class="block-saved-msg" v-if="block._saved">✓ 已保存</span>
                         </div>
@@ -3935,10 +3980,11 @@ createApp({
           // 3. 构建 payload（此时 _quill/_quillL/_quillR 已为 null，安全可序列化）
           const payload = { ...this.editingPc, specInfo: specPayload, blocks: this.editingPc.blocks.map(b => ({
             ...b, specDosage: undefined, specCertification: undefined, specInci: undefined,
-            _quill: undefined, _quillL: undefined, _quillR: undefined,
+            _quill: undefined, _quillL: undefined, _quillR: undefined, _quillSlides: undefined,
             _imageList: undefined, _fileList: undefined,
             _videoUrl: undefined, _key: undefined, _saved: undefined,
             _leftType: undefined, _leftUrl: undefined, _rightText: undefined, _rightType: undefined, _rightUrl: undefined,
+            _slides: undefined,
           })) };
           delete payload.specDosage;
           delete payload.specCertification;
@@ -4295,6 +4341,12 @@ createApp({
         block._quill = null;
         block._quillL = null;
         block._quillR = null;
+        if (block._quillSlides) {
+          block._quillSlides.forEach(function(ql) {
+            if (ql && ql.container) ql.container.remove();
+          });
+          block._quillSlides = null;
+        }
       });
       // 清理页面上残留的 Quill 工具栏和编辑器 DOM
       document.querySelectorAll('.ql-toolbar, .ql-container').forEach(function(el) {
@@ -4342,12 +4394,14 @@ createApp({
         _quill: null,
         _quillL: null,
         _quillR: null,
+        _quillSlides: [],  // Quill instances for each slider slide
         _leftType: 'richtext',
         _leftUrl: '',
         _leftText: '',
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
+        _slides: [{ leftType: 'image', leftUrl: '', rightHtml: '' }],
       };
       this._initBlockViewData(block);
       return block;
@@ -4366,6 +4420,10 @@ createApp({
         block._rightType = (block.content && block.content.rightType) ? block.content.rightType : 'text';
         block._rightText = (block.content && block.content.rightText) ? block.content.rightText : '';
         block._rightUrl = (block.content && block.content.rightUrl) ? block.content.rightUrl : '';
+      } else if (block.blockType === 'slider') {
+        var slides = (block.content && block.content.slides) ? block.content.slides : [];
+        block._slides = slides.length > 0 ? slides.map(function(s) { return { leftType: s.leftType || 'image', leftUrl: s.leftUrl || '', rightHtml: s.rightHtml || '' }; }) : [{ leftType: 'image', leftUrl: '', rightHtml: '' }];
+        block._quillSlides = [];
       } else {
         // richtext — content 在 Quill 实例中管理
       }
@@ -4381,6 +4439,7 @@ createApp({
         _quill: null,
         _quillL: null,
         _quillR: null,
+        _quillSlides: [],
         _leftType: 'richtext',
         _leftUrl: '',
         _leftText: '',
@@ -4392,6 +4451,7 @@ createApp({
         _videoUrl: '',
         _imageUrl: '',
         _imageAlt: '',
+        _slides: [{ leftType: 'image', leftUrl: '', rightHtml: '' }],
       };
       this.editingPc.blocks.push(block);
       this.$nextTick(() => {
@@ -4443,6 +4503,37 @@ createApp({
     removeFile(bi, fi) {
       this.editingPc.blocks[bi]._fileList.splice(fi, 1);
     },
+    addSliderSlide(bi) {
+      this.editingPc.blocks[bi]._slides.push({ leftType: 'image', leftUrl: '', rightHtml: '' });
+      var self = this;
+      this.$nextTick(function() { self.initQuillEditors(); });
+    },
+    removeSliderSlide(bi, si) {
+      var block = this.editingPc.blocks[bi];
+      // 销毁该滑块的 Quill
+      if (block._quillSlides && block._quillSlides[si]) {
+        block._quillSlides[si].container.remove();
+        block._quillSlides.splice(si, 1);
+      }
+      block._slides.splice(si, 1);
+    },
+    uploadSliderImage(event, bi, si) {
+      var file = event.target.files[0];
+      if (!file) return;
+      var self = this;
+      this.uploadingBlockImage = true;
+      var formData = new FormData();
+      formData.append('file', file);
+      this.api('/upload', { method: 'POST', body: formData, headers: {} }).then(function(data) {
+        self.uploadingBlockImage = false;
+        if (data && data.url) {
+          self.editingPc.blocks[bi]._slides[si].leftUrl = data.url;
+        }
+      }).catch(function(e) {
+        self.uploadingBlockImage = false;
+        self.showAlert('上传失败：' + e.message);
+      });
+    },
     onDocSelect(bi, fi, event) {
       var docId = parseInt(event.target.value);
       if (!docId) return;
@@ -4464,7 +4555,7 @@ createApp({
     },
     onPcBlockTypeChange(bi) {
       const block = this.editingPc.blocks[bi];
-      // 彻底销毁旧 Quill（含 imagetext 左列）
+      // 彻底销毁旧 Quill（含 imagetext 左列、右列、滑块）
       if (block._quill) {
         block._quill.container.remove();
         block._quill = null;
@@ -4476,6 +4567,12 @@ createApp({
       if (block._quillR) {
         block._quillR.container.remove();
         block._quillR = null;
+      }
+      if (block._quillSlides) {
+        block._quillSlides.forEach(function(ql) {
+          if (ql && ql.container) ql.container.remove();
+        });
+        block._quillSlides = [];
       }
       this._initBlockViewData(block);
       // 切换后重新初始化 Quill
@@ -4509,6 +4606,18 @@ createApp({
           content = { images: block._imageList.filter(i => i.url.trim()) };
         } else if (block.blockType === 'files') {
           content = { files: block._fileList.filter(f => f.title.trim() && f.url.trim()) };
+        } else if (block.blockType === 'slider') {
+          var slides = [];
+          for (var si = 0; si < block._slides.length; si++) {
+            var slide = block._slides[si];
+            var ql = block._quillSlides && block._quillSlides[si];
+            slides.push({
+              leftType: slide.leftType || 'image',
+              leftUrl: slide.leftUrl || '',
+              rightHtml: ql ? ql.root.innerHTML : (slide.rightHtml || '')
+            });
+          }
+          content = { slides: slides };
         }
         const payload = {
           productId: this.editingPc.id,
@@ -4533,7 +4642,7 @@ createApp({
         const block = this.editingPc.blocks[i];
         // 保存所有有 Quill 实例的富文本区块（用户可能已编辑但未点单个保存）
         // 以及所有未保存的区块（新添加的非富文本区块）
-        var hasQuill = block._quill || block._quillL || block._quillR;
+        var hasQuill = block._quill || block._quillL || block._quillR || (block._quillSlides && block._quillSlides.length > 0);
         if (hasQuill || !block._saved) {
           await this.saveBlockContent(i);
         }
@@ -4568,6 +4677,28 @@ createApp({
               }
             });
           }
+        } else if (block.blockType === 'slider') {
+          // 每个滑块的右侧文字 Quill
+          (block._slides || []).forEach(function(slide, si) {
+            var elId = 'qled-slider-right-' + block._key + '-' + si;
+            // 初始化 Quill 编辑器（延迟匹配）
+            setTimeout(function() {
+              var el = document.getElementById(elId);
+              if (!el || el.querySelector('.ql-editor')) return;
+              if (el.offsetHeight > 0) {
+                var ql = new Quill(el, {
+                  theme: 'snow',
+                  modules: { toolbar: QUILL_TOOLBAR },
+                  placeholder: '输入右侧文字内容...',
+                });
+                if (!block._quillSlides) block._quillSlides = [];
+                block._quillSlides[si] = ql;
+                if (slide.rightHtml) {
+                  ql.root.innerHTML = slide.rightHtml;
+                }
+              }
+            }, 200);
+          });
         }
       });
     },

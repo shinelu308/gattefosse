@@ -142,6 +142,113 @@
       line-height: 1.7;
       color: #555;
     }
+    /* 滑块区块（复刻原站 s-product-slider / s-product-content__cols / slick-controls） */
+    .slider-block {
+      margin: 20px 0;
+    }
+    .s-product-slider:not(.slick-slider) ~ .slick-controls {
+      display: none;
+    }
+    .s-product-slider__slide {
+      padding: 1px;
+    }
+    .s-product-slider ~ .slick-controls {
+      margin-top: 2.6rem;
+    }
+    .s-product-slider .paragraph {
+      margin-bottom: 0;
+    }
+    .s-product-content__cols {
+      display: flex;
+      gap: 3.2rem;
+    }
+    .s-product-content__col {
+      flex: 1 1 0;
+    }
+    .s-product-content__col img {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .s-product-content__txt {
+      font-size: 1.6rem;
+      color: #3C4248;
+    }
+    .slick-controls {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      margin-top: 0.8rem;
+    }
+    .slick-controls .slick-arrow {
+      position: static;
+      margin: 0;
+      display: inline-flex !important;
+    }
+    .slick-controls .slick-hidden {
+      display: none !important;
+    }
+    .slick-arrow {
+      display: flex;
+      align-items: center;
+      align-content: center;
+      padding: 0;
+      font-size: 0;
+      position: absolute;
+      top: 50%;
+      margin-top: -1.6rem;
+      z-index: 1;
+    }
+    .slick-arrow::after {
+      display: block;
+      color: #A5A9AE;
+      font-size: 3.2rem;
+    }
+    .slick-controls .slick-arrow {
+      position: static;
+      margin: 0;
+      display: inline-flex !important;
+    }
+    .slick-prev { left: -3.2rem; }
+    .slick-prev::after {
+      transform: rotate(180deg);
+      font-family: "Icons custom" !important;
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\e922";
+    }
+    .slick-next { right: -3.2rem; }
+    .slick-next::after {
+      font-family: "Icons custom" !important;
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\e922";
+    }
+    @media (max-width: 767.98px) {
+      .s-product-content__cols {
+        gap: 1.6rem;
+        flex-direction: column;
+      }
+      .s-product-slider ~ .slick-controls {
+        margin-top: 1.6rem;
+      }
+    }
+    @media (min-width: 768px) {
+      .slick-prev { left: -4.2rem; }
+    }
     /* 相关推荐产品卡片 — 上图片下文字 */
     .s-product-linked {
       padding: 40px 0;
@@ -507,6 +614,33 @@
                         </div>
                       </div>
                     </div>
+                    <!-- 滑块：左右交替图文轮播（复刻原站 Sourcing 区块） -->
+                    <div v-if="block.blockType === 'slider' && block.content && block.content.slides && block.content.slides.length > 0" class="slider-block">
+                      <div class="s-product-slider js-product-slider">
+                        <div class="s-product-slider__slide js-product-slide" v-for="(slide, si) in block.content.slides" :key="si">
+                          <div class="s-product-content__cols">
+                            <div class="s-product-content__col">
+                              <!-- 左：图片 -->
+                              <div v-if="slide.leftType === 'image' && slide.leftUrl">
+                                <img :src="slide.leftUrl" :alt="block.title || ''" style="width:auto;max-width:100%;height:auto;display:block;">
+                              </div>
+                              <!-- 左：视频 -->
+                              <div v-if="slide.leftType === 'video' && slide.leftUrl" class="video__container" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+                                <iframe :src="convertVideoUrl(slide.leftUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                              </div>
+                            </div>
+                            <div class="s-product-content__col">
+                              <div class="s-product-content__txt" v-html="slide.rightHtml"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="slick-controls">
+                        <button type="button" aria-label="Previous" class="slick-prev js-slick-prev"></button>
+                        <div class="slick-dots-wrapper js-slick-dots-wrapper"></div>
+                        <button type="button" aria-label="Next" class="slick-next js-slick-next"></button>
+                      </div>
+                    </div>
                   </div>
                   </template>
                 </div>
@@ -771,6 +905,10 @@
                 }
               }
             }
+            // 内容区块加载完成后，初始化滑块
+            nextTick(function() {
+              initContentSliders();
+            });
           }).catch(function (err) {
             console.error('加载内容区块失败:', err);
           });
@@ -848,6 +986,30 @@
               }
             }
           }).catch(function () {});
+        }
+
+        // 滑块初始化 — 通用函数，支持内容区块中的滑块
+        function initContentSliders() {
+          $('.slider-block .js-product-slider').each(function () {
+            var $slider = $(this);
+            var slideCount = $slider.find('.js-product-slide').length;
+            if (slideCount <= 1) return;
+            var $parent = $slider.closest('.slider-block');
+            var $next = $parent.find('.js-slick-next');
+            var $prev = $parent.find('.js-slick-prev');
+            var $dots = $parent.find('.js-slick-dots-wrapper');
+            if ($slider.hasClass('slick-initialized')) return;
+            $slider.slick({
+              accessibility: true,
+              infinite: false,
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              dots: true,
+              nextArrow: $next,
+              prevArrow: $prev,
+              appendDots: $dots,
+            });
+          });
         }
 
         // 滑块初始化（保持原有DOM逻辑）
