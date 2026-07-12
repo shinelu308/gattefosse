@@ -142,6 +142,7 @@ export async function createPcIngredient(req: Request, res: Response) {
       clinicalHtml,
       sortOrder,
       isPublished,
+      isShowRelated,
       specInfo,
     } = req.body;
 
@@ -172,6 +173,7 @@ export async function createPcIngredient(req: Request, res: Response) {
         clinicalHtml: clinicalHtml || null,
         sortOrder: sortOrder || 0,
         isPublished: isPublished || false,
+        isShowRelated: isShowRelated !== undefined ? isShowRelated : true,
         specInfo: specInfo ? JSON.stringify(specInfo) : null,
         createdById: req.user?.userId || null,
       },
@@ -226,6 +228,7 @@ export async function updatePcIngredient(req: Request, res: Response) {
 
     if (body.sortOrder !== undefined) data.sortOrder = body.sortOrder;
     if (body.isPublished !== undefined) data.isPublished = body.isPublished;
+    if (body.isShowRelated !== undefined) data.isShowRelated = body.isShowRelated;
     if (body.specInfo !== undefined) data.specInfo = body.specInfo ? JSON.stringify(body.specInfo) : null;
 
     const item = await prisma.pcIngredient.update({
@@ -363,6 +366,7 @@ export async function batchPublishPcIngredients(req: Request, res: Response) {
 function parsePcIngredient(item: any) {
   return {
     ...item,
+    isShowRelated: item.isShowRelated !== false,
     functionalityTag: tagToArray(item.functionalityTag),
     applicationTag: tagToArray(item.applicationTag),
     conceptTag: tagToArray(item.conceptTag),

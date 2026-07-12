@@ -924,6 +924,20 @@ const QUILL_TOOLBAR = [
                 <label>产品描述</label>
                 <textarea class="form-control" rows="4" v-model="editingPc.description"></textarea>
               </div>
+              <div class="form-group">
+                <label>详情页相关内容</label>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <label class="switch" style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer;">
+                    <input type="checkbox" :checked="editingPc.isShowRelated !== false" @change="editingPc.isShowRelated = $event.target.checked" style="opacity:0;width:0;height:0;position:absolute;">
+                    <span class="slider round" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.3s;border-radius:24px;" :style="editingPc.isShowRelated !== false ? 'background-color:var(--green);' : ''"></span>
+                    <span class="slider-thumb" style="position:absolute;content:'';height:18px;width:18px;left:3px;bottom:3px;background-color:#fff;transition:.3s;border-radius:50%;" :style="editingPc.isShowRelated !== false ? 'transform:translateX(20px);' : ''"></span>
+                  </label>
+                  <span style="font-size:13px;color:var(--text-secondary);">{{ editingPc.isShowRelated !== false ? '显示' : '隐藏' }}</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                  控制详情页底部「相关内容」区域的显示与隐藏
+                </div>
+              </div>
             </div>
           </div>
           <!-- 标签与分类 -->
@@ -3972,7 +3986,7 @@ createApp({
       } catch (e) { console.error(e); }
     },
     resetPcEdit() {
-      this.editingPc = { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, id: null, blocks: [], _blockIdCounter: 0 };
+      this.editingPc = { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, isShowRelated: true, id: null, blocks: [], _blockIdCounter: 0 };
       this._blocksLoaded = false;
       this.pcEditTab = 'basic';
     },
@@ -3988,6 +4002,7 @@ createApp({
         functionalityTag: [...(item.functionalityTag||[])], applicationTag: [...(item.applicationTag||[])],
         conceptTag: [...(item.conceptTag||[])], claimTag: [...(item.claimTag||[])], characteristicTag: [...(item.characteristicTag||[])],
         naturalityLabel: [...(item.naturalityLabel||[])], isPublished: item.isPublished,
+        isShowRelated: item.isShowRelated !== false,
         specDosage: spec.dosage || '',
         specCertification: spec.certification || '',
         specInci: spec.inci || '',

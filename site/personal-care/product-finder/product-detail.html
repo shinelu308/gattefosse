@@ -662,7 +662,7 @@
               </div>
             </div>
     <!-- 相关推荐产品 -->
-    <div class="s-product-linked" v-if="data.relatedContents.length > 0">
+    <div class="s-product-linked" v-if="data.showRelated && data.relatedContents.length > 0">
           <div class="container">
             <h2 class="s-product-linked__title u-title-styled">相关内容</h2>
             <div class="c-cards">
@@ -805,6 +805,7 @@
           contentBlocks: [],
           productSpecs: null,
           relatedContents: [],
+          showRelated: true,
           isLoginedAndEnabled: false,
           loading: true,
         });
@@ -877,6 +878,7 @@
               var spec = typeof product.specInfo === 'string' ? JSON.parse(product.specInfo) : product.specInfo;
               data.productSpecs = spec;
             }
+            data.showRelated = product.isShowRelated !== false;
             data.loading = false;
             // 加载关联文档
             if (product.id) {

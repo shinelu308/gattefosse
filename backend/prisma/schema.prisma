@@ -67,6 +67,7 @@ model PcIngredient {
   clinicalHtml       String?   @map("clinical_html")
   sortOrder          Int       @default(0) @map("sort_order")
   isPublished        Boolean   @default(false) @map("is_published")
+  isShowRelated      Boolean   @default(true)  @map("is_show_related")
   specInfo           String?   @map("spec_info") // JSON: { dosage, certification, inci }
   createdById        Int?      @map("created_by")
   createdAt          DateTime  @default(now()) @map("created_at")
