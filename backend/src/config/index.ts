@@ -13,7 +13,9 @@ export const config = {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   },
   upload: {
-    dir: process.env.UPLOAD_DIR || './uploads',
+    dir: process.env.UPLOAD_DIR
+      ? (path.isAbsolute(process.env.UPLOAD_DIR) ? process.env.UPLOAD_DIR : path.resolve(__dirname, '../..', process.env.UPLOAD_DIR))
+      : path.resolve(__dirname, '../../uploads'),
     maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '10485760', 10),
   },
   cors: {
