@@ -2164,7 +2164,7 @@ const QUILL_TOOLBAR = [
                 <label>标题 <span class="hint">（必填）</span></label>
                 <input type="text" class="form-control" v-model="editingNews.title">
               </div>
-              <div class="form-row">
+              <div class="form-row" v-if="editingNews.type !== 'event'">
                 <div class="form-group">
                   <label>Slug（URL 标识）</label>
                   <input type="text" class="form-control" v-model="editingNews.slug" placeholder="留空则自动生成">
@@ -2178,15 +2178,21 @@ const QUILL_TOOLBAR = [
                 <label>摘要</label>
                 <textarea class="form-control" rows="2" v-model="editingNews.summary"></textarea>
               </div>
-              <div class="form-group">
+              <div class="form-group" v-if="editingNews.type !== 'event'">
                 <label>正文内容（HTML）</label>
                 <textarea class="form-control" rows="6" v-model="editingNews.contentHtml" placeholder="&lt;p&gt;...&lt;/p&gt;"></textarea>
               </div>
               <div class="form-row">
                 <div class="form-group">
-                  <label>发布日期</label>
+                  <label>{{ editingNews.type === 'event' ? '活动起始日期' : '发布日期' }}</label>
                   <input type="date" class="form-control" v-model="editingNews.publishedDate">
                 </div>
+                <div class="form-group" v-if="editingNews.type === 'event'">
+                  <label>活动结束日期</label>
+                  <input type="date" class="form-control" v-model="editingNews.eventEndDate">
+                </div>
+              </div>
+              <div class="form-row" v-if="editingNews.type !== 'event'">
                 <div class="form-group">
                   <label>阅读时长（分钟）</label>
                   <input type="number" class="form-control" v-model="editingNews.readingTime" placeholder="5" style="max-width:140px;">
@@ -2197,16 +2203,10 @@ const QUILL_TOOLBAR = [
                   <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">输入标签后保存时会自动转为 JSON</div>
                 </div>
               </div>
-              <div v-if="editingNews.type==='event'" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);">
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>活动结束日期</label>
-                    <input type="date" class="form-control" v-model="editingNews.eventEndDate">
-                  </div>
-                  <div class="form-group">
-                    <label>活动地点</label>
-                    <input type="text" class="form-control" v-model="editingNews.location" placeholder="如：上海新国际博览中心">
-                  </div>
+              <div class="form-row" v-if="editingNews.type === 'event'" style="margin-top:4px;">
+                <div class="form-group">
+                  <label>活动地点</label>
+                  <input type="text" class="form-control" v-model="editingNews.location" placeholder="如：上海新国际博览中心">
                 </div>
                 <div class="form-group">
                   <label>展位号</label>

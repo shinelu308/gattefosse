@@ -56,11 +56,6 @@
     .custom--bef-links { display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center; }
     /* 过滤侧栏固定宽度 */
     .s-page__aside--l { flex: 0 0 28rem; max-width: 28rem; }
-    /* 活动卡片左右布局 */
-    .c-card--event .c-card__info-grid { display:flex; gap:2.4rem; }
-    .c-card--event .c-card__date-block { min-width:10rem; text-align:center; }
-    .c-card--event .c-card__date-num { font-size:3.2rem; font-weight:700; color:var(--accent-color); line-height:1; }
-    .c-card--event .c-card__date-range { font-size:1.2rem; color:#666; }
     /* 筛选侧栏移动端按钮 */
     .c-filter__mobile-btn { display:none; width:100%; margin-bottom:1.6rem; }
     .c-filter__reset-btn--vue { width:100%; }
@@ -68,6 +63,69 @@
     .theme-default { --accent-color-light:#D2E1B4; --accent-color:#8EB73C; --accent-color-dark:#598305; --accent-background-color-light:#E6EED5; }
     .theme-cosm { --accent-color-light:#F0DCE4; --accent-color:#C4004D; --accent-color-dark:#910039; --accent-background-color-light:#F9F1F4; }
     .theme-pharma { --accent-color-light:#D7E6EF; --accent-color:#0075BB; --accent-color-dark:#00588D; --accent-background-color-light:#EBF3F7; }
+    /* 活动卡片布局（1:1 复刻英文站） */
+    .c-card--event { border: 0.1rem solid #E3E8EE; }
+    .c-card--event .c-card__content {
+      padding: 3.2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 0 3.2rem;
+      grid-template-areas: "breadcrumb breadcrumb" "title title" "left right";
+      position: relative;
+    }
+    .c-card--event .c-card__content::before {
+      content: "";
+      opacity: 0;
+      width: 100%;
+      height: 0.4rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 0.4s ease-in-out;
+      background-color: var(--accent-color);
+    }
+    .c-card--event:hover .c-card__content::before,
+    .c-card--event:focus-within .c-card__content::before {
+      opacity: 1;
+    }
+    .c-card--event .c-card__breadcrumb { grid-area: breadcrumb; margin-bottom: 1.6rem; }
+    .c-card--event .c-card__title { grid-area: title; width: 100%; text-align: center; margin-bottom: 1.6rem; }
+    .c-card--event .c-card__left { grid-area: left; margin-top: 1.6rem; }
+    .c-card--event .c-card__right { grid-area: right; }
+    .c-card--event .c-card__left,
+    .c-card--event .c-card__right {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem 0;
+    }
+    .c-card--event .c-card__date {
+      width: 100%;
+      max-width: 28rem;
+      height: 6.7rem;
+      display: flex;
+      place-content: center;
+      place-items: center;
+      flex-direction: column;
+      position: relative;
+      margin: 0 auto;
+      padding: 0.5rem 4.8rem;
+      color: var(--accent-color);
+      line-height: 1;
+      border: 0.1rem solid #F0EBE3;
+      border-radius: 6rem;
+      text-align: center;
+    }
+    .c-card--event .c-card__date .date { font-family: "Din Next Lt Pro Bold", sans-serif; font-size: 1.8rem; font-weight: 700; }
+    .c-card--event .c-card__date .year { font-size: 1.2rem; color: var(--accent-color); margin-top: 0.2rem; }
+    .c-card--event .c-card__place { display:flex; align-items:center; margin:0; color:#58616B; font-size:1.4rem; line-height:1.5; }
+    .c-card--event .c-card__summary { margin: 0; color: #333; font-size: 1.5rem; line-height: 1.6; }
+    @media (max-width: 767.98px) {
+      .c-card--event .c-card__content { grid-template-columns: 1fr; grid-template-areas: "breadcrumb" "title" "left" "right"; gap: 1.6rem 0; }
+      .c-card--event .c-card__left { margin-top: 0; }
+      .c-card--event .c-card__right { margin-top: 0; }
+    }
     /* Active filters 已选条件 */
     .c-filter__active { margin-bottom:1.6rem; padding-bottom:1.2rem; border-bottom:1px solid #e5e5e5; }
     .c-filter__active-title { font-size:1.2rem; font-weight:600; text-transform:uppercase; color:#333; margin-bottom:0.8rem; }
@@ -316,15 +374,21 @@
                               <li class="category" v-text="item.catName"></li>
                             </ul>
                             <h3 class="c-card__title" v-text="item.title"></h3>
-                            <div class="c-card__info-grid">
-                              <div class="c-card__date-block">
-                                <div class="c-card__date-num" v-text="item.eventDateNum"></div>
-                                <div class="c-card__date-range" v-text="item.eventDateRange"></div>
+                            <div class="c-card__left">
+                              <p class="c-card__date">
+                                <span class="date" v-text="item.eventDate.date"></span>
+                                <span class="year" v-text="item.eventDate.year"></span>
+                              </p>
+                              <div class="c-card__event-info" v-if="item.location || item.booth">
+                                <p class="c-card__place">
+                                  <span v-text="item.location"></span>
+                                  <span v-if="item.location && item.booth"> </span>
+                                  <span v-text="item.booth"></span>
+                                </p>
                               </div>
-                              <div>
-                                <p class="c-card__place" v-if="item.location" v-text="item.location"></p>
-                                <p class="c-card__summary" v-text="item.summary"></p>
-                              </div>
+                            </div>
+                            <div class="c-card__right" v-if="item.eventDesc">
+                              <p class="c-card__summary" v-text="item.eventDesc"></p>
                             </div>
                           </div>
                         </template>
@@ -445,6 +509,48 @@
       day: ('0' + d.getDate()).slice(-2),
       str: d.getFullYear() + '年' + ('0' + (d.getMonth() + 1)).slice(-2) + '月' + ('0' + d.getDate()).slice(-2) + '日'
     };
+  }
+
+  function formatEventDate(startIso, endIso) {
+    if (!startIso) return { date: '', year: '' };
+    var s = new Date(startIso);
+    if (isNaN(s.getTime())) return { date: '', year: '' };
+    var sm = ('0' + (s.getMonth() + 1)).slice(-2);
+    var sd = ('0' + s.getDate()).slice(-2);
+    var sy = s.getFullYear();
+    var datePart = sm + '月' + sd + '日';
+    var yearPart = String(sy);
+    if (endIso) {
+      var e = new Date(endIso);
+      if (!isNaN(e.getTime())) {
+        var em = ('0' + (e.getMonth() + 1)).slice(-2);
+        var ed = ('0' + e.getDate()).slice(-2);
+        var ey = e.getFullYear();
+        if (ey !== sy) {
+          // 跨年时显示完整起止日期
+          datePart = sm + '月' + sd + '日~' + em + '月' + ed + '日';
+          yearPart = sy + '-' + ey;
+        } else {
+          datePart = sm + '月' + sd + '日~' + em + '月' + ed + '日';
+        }
+      }
+    }
+    return { date: datePart, year: yearPart };
+  }
+
+  function parseEventSummary(summary) {
+    if (!summary) return { date: '', year: '', location: '', desc: '' };
+    var parts = summary.split(' / ');
+    if (parts.length >= 2) {
+      var datePart = parts[0].trim();
+      var locationPart = parts[1].trim();
+      var descPart = parts.length > 2 ? parts.slice(2).join(' / ') : '';
+      var yearMatch = datePart.match(/(\d{4})$/);
+      var year = yearMatch ? yearMatch[1] : '';
+      var date = yearMatch ? datePart.replace(/\s*\d{4}$/, '').trim() : datePart;
+      return { date: date, year: year, location: locationPart, desc: descPart };
+    }
+    return { date: '', year: '', location: '', desc: summary };
   }
 
   function catLabel(cat) {
@@ -579,6 +685,15 @@
           data.formData = list.map(function(item) {
             var d = formatDateParts(item.publishedDate);
             var isEvent = item.type === 'event';
+            var parsedSummary = isEvent ? parseEventSummary(item.summary || '') : { date: '', year: '', location: '', desc: '' };
+            var eventDate = isEvent ? formatEventDate(item.publishedDate, item.eventEndDate) : { date: '', year: '' };
+            // 若数据库 eventEndDate/location 为空，则从 summary 解析兜底
+            if (isEvent && !item.eventEndDate && parsedSummary.date) {
+              eventDate = { date: parsedSummary.date, year: parsedSummary.year };
+            }
+            var location = item.location || parsedSummary.location || '';
+            var booth = item.booth || '';
+            var eventDesc = parsedSummary.desc || '';
             return {
               id: item.id,
               title: item.title,
@@ -590,9 +705,10 @@
               catName: catLabel(item.category),
               dateStr: d.str,
               readingTime: item.readingTime || 0,
-              location: item.location || '',
-              eventDateNum: d.month + '月' + d.day,
-              eventDateRange: d.year + '年',
+              location: location,
+              booth: booth,
+              eventDesc: eventDesc,
+              eventDate: eventDate,
             };
           });
           data.total = pagination.total || list.length;
