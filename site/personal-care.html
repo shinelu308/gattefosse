@@ -72,13 +72,28 @@
     .btn-video .o-icon { font-size: 12px; }
     #video-modal { display: none; }
     #video-modal.show { display: flex; align-items: center; justify-content: center; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.7); }
-    #video-modal .modal-content { position: relative; width: 90%; max-width: 960px; background: #fff; border-radius: 4px; overflow: hidden; }
-    #video-modal .btn-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(0,0,0,0.5); border-radius: 50%; cursor: pointer; z-index: 10; }
+    #video-modal .modal-content { position: relative; width: 92%; max-width: 980px; background: #fff; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); padding: 22px; }
+    #video-modal .btn-close { position: absolute; top: -14px; right: -14px; width: 32px; height: 32px; border: none; background: #fff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 0; }
     #video-modal .btn-close::before,
-    #video-modal .btn-close::after { content: ''; position: absolute; top: 50%; left: 50%; width: 16px; height: 2px; background: #fff; transform-origin: center; }
-    #video-modal .btn-close::before { transform: translate(-50%, -50%) rotate(45deg); }
-    #video-modal .btn-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
-    #video-modal .video__container { position: relative; padding-bottom: 56.25%; height: 0; }
+    #video-modal .btn-close::after { content: ''; position: absolute; width: 14px; height: 2px; background: #333; }
+    #video-modal .btn-close::before { transform: rotate(45deg); }
+    #video-modal .btn-close::after { transform: rotate(-45deg); }
+    #video-modal .o-video { background: #fff; }
+    #video-modal .video__container { position: relative; padding-bottom: 56.25%; height: 0; border: 1px solid #e0e0e0; }
+    #video-modal .video__footer { min-height: 8px; }
+    /* 特征卡片 - 英文站粉/红图标方框样式 */
+    .feature-cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .feature-card { display: flex; align-items: center; gap: 24px; padding: 32px 24px; text-decoration: none; color: inherit; border-bottom: 1px solid #eee; }
+    .feature-card:nth-child(odd) { border-right: 1px solid #eee; }
+    .feature-card--last-row { border-bottom: none !important; }
+    .feature-card__icon-wrap { flex-shrink: 0; width: 80px; height: 80px; background: var(--accent-background-color-light, #F0DCE4); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .feature-card__icon-wrap .o-icon { font-size: 36px; color: var(--accent-color, #C4004D); }
+    .feature-card__content h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #333; }
+    .feature-card__content p { font-size: 14px; color: #666; margin: 0; line-height: 1.5; }
+    @media (max-width: 767px) {
+      .feature-cards-grid { grid-template-columns: 1fr; }
+      .feature-card:nth-child(odd) { border-right: none; }
+    }
   </style>
 </head>
 <body class="is-mobile path-personal-care    bg- d-flex flex-column">
@@ -158,18 +173,19 @@
               <div v-if="blk.type === 'text'" v-html="blk.data.html"></div>
               
               <!-- 特征卡片 -->
-              <div v-if="blk.type === 'feature_cards'" class="s-tunnel-content" style="padding:40px 0;">
+              <div v-if="blk.type === 'feature_cards'" class="s-tunnel-content theme-cosm" style="padding:40px 0;">
                 <div class="container">
-                  <h2 v-if="blk.data.title" class="u-title-styled" style="text-align:center;margin-bottom:32px;">{{ blk.data.title }}</h2>
-                  <div class="row" style="display:flex;gap:24px;justify-content:center;">
-                    <div v-for="(item, fi) in blk.data.items" :key="fi" class="col-12 col-md-4" style="flex:1;min-width:200px;max-width:360px;text-align:center;">
-                      <div class="c-card c-card--bordered" style="padding:32px 20px;">
-                        <i v-if="item.icon" class="o-icon" :class="item.icon" style="font-size:32px;color:var(--green);margin-bottom:12px;"></i>
-                        <h3 style="font-size:16px;margin-bottom:8px;">{{ item.title }}</h3>
-                        <p style="font-size:13px;color:#666;">{{ item.description }}</p>
-                        <a v-if="item.linkUrl" :href="item.linkUrl" class="btn btn-outline-primary" style="margin-top:12px;">了解更多</a>
+                  <h2 v-if="blk.data.title" class="u-title-styled" style="text-align:center;margin-bottom:8px;">{{ blk.data.title }}</h2>
+                  <div class="feature-cards-grid">
+                    <a v-for="(item, fi) in blk.data.items" :key="fi" :href="item.linkUrl || '#'" class="feature-card" :class="{ 'feature-card--last-row': fi >= Math.floor((blk.data.items.length - 1) / 2) * 2 }">
+                      <div class="feature-card__icon-wrap">
+                        <i v-if="item.icon" class="o-icon" :class="item.icon"></i>
                       </div>
-                    </div>
+                      <div class="feature-card__content">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -454,11 +470,11 @@
           </div>
           <div id="video-modal" class="modal video-modal" :class="{ 'show': videoModalVisible }">
             <div class="modal-content formulaire">
-              <span class="btn-close" @click="closeVideoModal()"></span>
+              <button class="btn-close" @click="closeVideoModal()" aria-label="关闭"></button>
               <div class="o-video media media--type-remote-video media--view-mode-full">
                 <div class="video__container">
                   <!-- YouTube -->
-                  <iframe v-if="data.hero.videoType === 'youtube' && data.hero.videoUrl" :src="youtubeEmbedUrl" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>
+                  <iframe v-if="data.hero.videoType === 'youtube' && data.hero.videoUrl" :src="youtubeEmbedUrl()" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>
                   <!-- Local video -->
                   <video v-else-if="data.hero.videoType === 'local' && data.hero.videoUrl" :src="data.hero.videoUrl" controls style="width:100%;height:100%;position:absolute;top:0;left:0;background:#000;"></video>
                 </div>

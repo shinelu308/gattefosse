@@ -34,13 +34,13 @@ const blocks = [
         'title': 'All about Personal Care',
         'items': [
           {
-            'icon': '--flask',
+            'icon': '--ico-flask',
             'title': 'Ingredients',
             'description': '为您开发项目寻找最合适的成分。',
             'linkUrl': '/personal-care/product-finder.html'
           },
           {
-            'icon': '--test-tube',
+            'icon': '--ico-test-tubes',
             'title': 'Formulations',
             'description': '探索我们独特的配方库，展示我们的活性成分和质地成分。',
             'linkUrl': '/personal-care/formulation-finder.html'
