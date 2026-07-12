@@ -162,22 +162,24 @@
               <!-- 特征卡片 -->
               <div v-if="blk.type === 'feature_cards'" class="s-tunnel-page theme-cosm">
                 <div class="container">
-                  <h2 v-if="blk.data.title" class="s-tunnel-page__title u-title-styled">{{ blk.data.title }}</h2>
-                  <ul class="s-tunnel-page__list">
-                    <li v-for="(item, fi) in blk.data.items" :key="fi" class="s-tunnel-page__item">
-                      <img v-if="item.imageUrl" :src="item.imageUrl" alt="" width="48" height="48" loading="lazy" class="img-fluid s-tunnel-page__item-img">
-                      <i v-else-if="item.icon" class="o-icon img-fluid s-tunnel-page__item-img" :class="item.icon" style="display:flex;align-items:center;justify-content:center;font-size:32px;"></i>
-                      <div class="s-tunnel-page__item-content">
-                        <h3 class="s-tunnel-page__item-title">
-                          <a v-if="item.linkUrl" :href="item.linkUrl" class="u-cover">{{ item.title }}</a>
-                          <span v-else>{{ item.title }}</span>
-                        </h3>
-                        <div class="s-tunnel-page__item-txt">
-                          <p>{{ item.description }}</p>
+                  <div class="s-tunnel-page__container">
+                    <h2 v-if="blk.data.title" class="s-tunnel-page__title u-title-styled">{{ blk.data.title }}</h2>
+                    <ul class="s-tunnel-page__list">
+                      <li v-for="(item, fi) in blk.data.items" :key="fi" class="s-tunnel-page__item">
+                        <img v-if="item.imageUrl" :src="item.imageUrl" alt="" width="48" height="48" loading="lazy" class="img-fluid s-tunnel-page__item-img">
+                        <i v-else-if="item.icon" class="o-icon img-fluid s-tunnel-page__item-img" :class="item.icon" style="display:flex;align-items:center;justify-content:center;font-size:32px;"></i>
+                        <div class="s-tunnel-page__item-content">
+                          <h3 class="s-tunnel-page__item-title">
+                            <a v-if="item.linkUrl" :href="item.linkUrl" class="u-cover">{{ item.title }}</a>
+                            <span v-else>{{ item.title }}</span>
+                          </h3>
+                          <div class="s-tunnel-page__item-txt">
+                            <p>{{ item.description }}</p>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 
