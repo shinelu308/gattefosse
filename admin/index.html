@@ -6141,7 +6141,7 @@ createApp({
       sd.results = [];
       try {
         var data = await this.api('/pc-ingredients?keyword=' + encodeURIComponent(sd.keyword) + '&limit=10');
-        sd.results = data.items || [];
+        sd.results = data.list || [];
       } catch (e) {
         sd.results = [];
       } finally {
