@@ -27,38 +27,54 @@ export async function listNews(req: Request, res: Response) {
     const pageNum = Math.max(1, parseInt(String(page)));
     const limitNum = Math.min(100, Math.max(1, parseInt(String(limit))));
 
-    const where: Record<string, unknown> = {};
+    const parseMulti = (val: any): string[] => {
+      if (!val) return [];
+      if (Array.isArray(val)) return val.map(String).filter(Boolean);
+      return String(val).split(',').map((s) => s.trim()).filter(Boolean);
+    };
+
+    const categories = parseMulti(category);
+    const tagFilters = parseMulti(tags);
+
+    const andConditions: Record<string, unknown>[] = [];
 
     if (keyword) {
       const kw = String(keyword);
-      where.OR = [
-        { title: { contains: kw } },
-        { summary: { contains: kw } },
-        { contentHtml: { contains: kw } },
-      ];
+      andConditions.push({
+        OR: [
+          { title: { contains: kw } },
+          { summary: { contains: kw } },
+          { contentHtml: { contains: kw } },
+        ],
+      });
     }
 
     if (type && type !== 'all') {
-      where.type = String(type);
+      andConditions.push({ type: String(type) });
     }
 
-    if (category) {
-      where.category = String(category);
+    if (categories.length) {
+      andConditions.push({ category: { in: categories } });
     }
 
     if (articleType) {
-      where.articleType = String(articleType);
+      andConditions.push({ articleType: String(articleType) });
     }
 
     if (isPublished !== undefined && isPublished !== '') {
-      where.isPublished = String(isPublished) === 'true';
+      andConditions.push({ isPublished: String(isPublished) === 'true' });
     }
 
-    // tags 筛选：SQLite 的 contains 对 JSON 字符串做模糊匹配
-    if (tags) {
-      const tagStr = String(tags);
-      where.tags = { contains: tagStr };
+    // tags 多选：满足任意一个选中标签即命中（JSON 字符串 contains 模糊匹配）
+    if (tagFilters.length) {
+      andConditions.push({
+        OR: tagFilters.map((t) => ({ tags: { contains: t } })),
+      });
     }
+
+    const where: Record<string, unknown> = andConditions.length
+      ? { AND: andConditions }
+      : {};
 
     const [total, items] = await Promise.all([
       prisma.newsEvent.count({ where }),
@@ -71,18 +87,36 @@ export async function listNews(req: Request, res: Response) {
       }),
     ]);
 
-    // 统计各 category 的数量（供前端侧栏筛选展示）
+    // 统计各 category 和 tags 的数量（静态总数，供前端侧栏筛选展示）
     const allPublished = await prisma.newsEvent.findMany({
       where: { isPublished: true },
-      select: { category: true },
+      select: { category: true, tags: true },
     });
     const counts: Record<string, number> = { all: allPublished.length, corporate: 0, pc: 0, pharma: 0 };
+    const tagCounts: Record<string, number> = {};
     allPublished.forEach((n) => {
       if (n.category in counts) counts[n.category]++;
+      // 解析 tags JSON 并统计
+      if (n.tags) {
+        try {
+          const parsed = JSON.parse(n.tags);
+          if (Array.isArray(parsed)) {
+            parsed.forEach((t: string) => {
+              if (t) tagCounts[t] = (tagCounts[t] || 0) + 1;
+            });
+          }
+        } catch {
+          // 非 JSON 格式，按逗号分割
+          n.tags.split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
+            tagCounts[t] = (tagCounts[t] || 0) + 1;
+          });
+        }
+      }
     });
 
     const result = paginate(items, total, pageNum, limitNum);
     (result as any).counts = counts;
+    (result as any).tagCounts = tagCounts;
 
     return res.json(
       success(result, '获取成功')

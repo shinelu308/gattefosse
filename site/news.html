@@ -63,6 +63,46 @@
     .c-card--event .c-card__date-range { font-size:1.2rem; color:#666; }
     /* 筛选侧栏移动端按钮 */
     .c-filter__mobile-btn { display:none; width:100%; margin-bottom:1.6rem; }
+    .c-filter__reset-btn--vue { width:100%; }
+    /* 分类主题色（参考英文站） */
+    .theme-default { --accent-color-light:#D2E1B4; --accent-color:#8EB73C; --accent-color-dark:#598305; --accent-background-color-light:#E6EED5; }
+    .theme-cosm { --accent-color-light:#F0DCE4; --accent-color:#C4004D; --accent-color-dark:#910039; --accent-background-color-light:#F9F1F4; }
+    .theme-pharma { --accent-color-light:#D7E6EF; --accent-color:#0075BB; --accent-color-dark:#00588D; --accent-background-color-light:#EBF3F7; }
+    /* Active filters 已选条件 */
+    .c-filter__active { margin-bottom:1.6rem; padding-bottom:1.2rem; border-bottom:1px solid #e5e5e5; }
+    .c-filter__active-title { font-size:1.2rem; font-weight:600; text-transform:uppercase; color:#333; margin-bottom:0.8rem; }
+    .c-filter__active-list { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:0.6rem; }
+    .c-filter__active-remove {
+      display:inline-flex; align-items:center; gap:0.4rem; padding:0.4rem 0.8rem;
+      background:#f5f5f5; border:1px solid #ddd; border-radius:1.6rem; font-size:1.2rem; color:#555;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .c-filter__active-remove:hover { background:#e8f1d9; border-color:#8eb73c; }
+    .c-filter__active-remove .o-icon { font-size:1rem; }
+    /* Subject checkbox filter 样式 */
+    .item-list__checkbox { list-style:none; padding:0; margin:0; }
+    .item-list__checkbox .facet-item { margin-bottom:0.4rem; }
+    .item-list__checkbox .facet-item__link {
+      display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1rem;
+      border-radius:0.4rem; text-decoration:none; color:#555; font-size:1.4rem;
+      transition:background 0.2s;
+    }
+    .item-list__checkbox .facet-item__link:hover { background:#f5f5f5; }
+    .item-list__checkbox .facet-item__link.is-active { color:var(--accent-color); font-weight:600; background:#f0f7e6; }
+    .item-list__checkbox .facet-item__link::before {
+      content:''; display:inline-block; width:1.6rem; height:1.6rem;
+      border:2px solid #ccc; border-radius:0.3rem; flex-shrink:0;
+      transition:all 0.15s;
+    }
+    .item-list__checkbox .facet-item__link.is-active::before {
+      background:var(--accent-color); border-color:var(--accent-color);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+      background-size:1.2rem; background-position:center; background-repeat:no-repeat;
+    }
+    .item-list__checkbox .facet-item__count { margin-left:auto; color:#999; font-size:1.2rem; }
+    .facets-widget-checkbox .accordion-button { font-size:1.4rem; font-weight:600; padding:1rem 0; }
+    .facets-widget-checkbox .panel-body { padding:0.4rem 0 0.8rem; }
+    .facets-widget-checkbox .accordion-button:not(.collapsed) { color:inherit; background:transparent; box-shadow:none; }
     @media (max-width: 991.98px) {
       .s-page__aside--l { flex: 0 0 100%; max-width: 100%; }
       .c-filter__mobile-btn { display:block; }
@@ -148,7 +188,7 @@
                         <div class="form-item" style="display:flex;gap:0.4rem;align-items:center;max-width:50rem;margin:0 auto 2rem;">
                           <input type="text" v-model="data.keyword" placeholder="你想找什么？"
                             class="form-text form-control" style="flex:1;">
-                          <button type="button" class="btn" @click="data.cur_page=1;loadNews()">
+                          <button type="button" class="btn" @click.prevent="data.cur_page=1;loadNews()">
                             <i class="o-icon --magnifying-glass" aria-hidden="true"></i>
                           </button>
                         </div>
@@ -176,10 +216,23 @@
                     <div class="c-filter e-form js-filter" :class="{ 'is-open': data.filterOpen }">
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">筛选</h2>
-                        <button type="button" class="c-filter__reset-btn btn btn-outline-secondary"
-                          @click="resetFilters()">重置筛选
+                        <button type="button" class="c-filter__reset-btn--vue btn btn-outline-secondary"
+                          onclick="return false;"
+                          @click.prevent.stop="resetFilters()">重置筛选
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
+                      </div>
+                      <!-- 已选条件 -->
+                      <div class="c-filter__active" v-if="activeFilters().length > 0">
+                        <h3 class="c-filter__active-title">已选条件</h3>
+                        <ul class="c-filter__active-list">
+                          <li class="c-filter__active-item" v-for="f in activeFilters()" :key="f.type + '-' + f.value">
+                            <button type="button" class="c-filter__active-remove" @click="removeFilter(f.type, f.value)">
+                              <span v-text="f.label"></span>
+                              <i class="o-icon --cross" aria-hidden="true"></i>
+                            </button>
+                          </li>
+                        </ul>
                       </div>
                       <!-- 业务分类筛选 -->
                       <div class="facet-inactive block-facet--links">
@@ -187,37 +240,65 @@
                           <ul class="facet-list item-list__links">
                             <li class="facet-item facets-reset">
                               <a class="btn btn-outline-secondary"
-                                :class="data.categoryFilter === '' ? 'is-active' : ''"
+                                :class="data.categoryFilter.length === 0 ? 'is-active' : ''"
                                 href="javascript:;"
-                                @click="data.categoryFilter='';data.cur_page=1;loadNews()">
+                                @click="toggleCategory('')">
                                 全部新闻与活动 (<span v-text="data.categoryCounts.all || '0'"></span>)
                               </a>
                             </li>
                             <li class="facet-item">
                               <a class="btn btn-outline-secondary"
-                                :class="data.categoryFilter === 'corporate' ? 'is-active' : ''"
+                                :class="hasCategory('corporate') ? 'is-active' : ''"
                                 href="javascript:;"
-                                @click="data.categoryFilter='corporate';data.cur_page=1;loadNews()">
+                                @click="toggleCategory('corporate')">
                                 企业新闻 (<span v-text="data.categoryCounts.corporate || '0'"></span>)
                               </a>
                             </li>
                             <li class="facet-item">
                               <a class="btn btn-outline-secondary"
-                                :class="data.categoryFilter === 'pc' ? 'is-active' : ''"
+                                :class="hasCategory('pc') ? 'is-active' : ''"
                                 href="javascript:;"
-                                @click="data.categoryFilter='pc';data.cur_page=1;loadNews()">
+                                @click="toggleCategory('pc')">
                                 个人护理 (<span v-text="data.categoryCounts.pc || '0'"></span>)
                               </a>
                             </li>
                             <li class="facet-item">
                               <a class="btn btn-outline-secondary"
-                                :class="data.categoryFilter === 'pharma' ? 'is-active' : ''"
+                                :class="hasCategory('pharma') ? 'is-active' : ''"
                                 href="javascript:;"
-                                @click="data.categoryFilter='pharma';data.cur_page=1;loadNews()">
+                                @click="toggleCategory('pharma')">
                                 药用辅料 (<span v-text="data.categoryCounts.pharma || '0'"></span>)
                               </a>
                             </li>
                           </ul>
+                        </div>
+                      </div>
+                      <!-- 主题/标签筛选 (Subjects) -->
+                      <div class="facet-inactive block-facet--checkbox">
+                        <div class="accordion facets-widget-checkbox">
+                          <div class="accordion-item panel-group" id="accordion-filtre-accordion-subject" aria-multiselectable="true">
+                            <h3 role="tab" id="heading-filtre-accordion-subject">
+                              <button type="button" aria-expanded="true"
+                                class="panel-title accordion-button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse-filtre-accordion-subject"
+                                id="nav-filtre-accordion">主题</button>
+                            </h3>
+                            <div id="collapse-filtre-accordion-subject" class="panel-collapse collapse show"
+                              role="region" aria-labelledby="heading-filtre-accordion-subject">
+                              <div class="panel-body accordion-body">
+                                <ul class="facet-list item-list__checkbox">
+                                  <li class="facet-item" v-for="subj in data.subjects" :key="subj.value">
+                                    <a href="javascript:;"
+                                      :class="'facet-item__link' + (hasSubject(subj.value) ? ' is-active' : '')"
+                                      @click="toggleSubject(subj.value)">
+                                      <span class="facet-item__value" v-text="subj.label"></span>
+                                      <span class="facet-item__count" v-text="'(' + (data.subjectCounts[subj.value] || 0) + ')'"></span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -227,7 +308,7 @@
                     <div class="c-cards c-cards--vertical">
                       <!-- 新闻卡片 -->
                       <div v-for="item in data.formData" :key="item.id"
-                        :class="'c-card c-card--horizontal' + (item.isEvent ? ' c-card--bordered c-card--event' : '')">
+                        :class="'c-card c-card--horizontal' + (item.isEvent ? ' c-card--bordered c-card--event' : '') + ' theme-' + (item.category === 'pc' ? 'cosm' : item.category === 'pharma' ? 'pharma' : 'default')">
                         <template v-if="item.isEvent">
                           <!-- 活动卡片 -->
                           <div class="c-card__content">
@@ -345,9 +426,14 @@
 
   var typeFilter = new URLSearchParams(window.location.search).get('type') || '';
   var categoryFilter = new URLSearchParams(window.location.search).get('cat') || '';
+  var subjectFilter = new URLSearchParams(window.location.search).get('tags') || '';
   var keyword = new URLSearchParams(window.location.search).get('keyword') || '';
   var page = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
   var limit = 12;
+
+  function parseMulti(val) {
+    return (val || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+  }
 
   function formatDateParts(iso) {
     if (!iso) return { year: '', month: '', day: '', str: '' };
@@ -374,11 +460,17 @@
         total_page: 1,
         cur_page: page,
         typeFilter: typeFilter,
-        categoryFilter: categoryFilter,
+        categoryFilter: parseMulti(categoryFilter),
         keyword: keyword,
         loading: false,
         filterOpen: false,
-        categoryCounts: { all: 0, corporate: 0, pc: 0, pharma: 0 }
+        categoryCounts: { all: 0, corporate: 0, pc: 0, pharma: 0 },
+        subjectFilter: parseMulti(subjectFilter),
+        subjectCounts: {},
+        subjects: [
+          { value: '个人护理', label: '个人护理' },
+          { value: '可持续发展', label: '可持续发展' }
+        ]
       });
 
       function goPage(p) {
@@ -389,21 +481,97 @@
       }
 
       function resetFilters() {
-        data.categoryFilter = '';
+        data.categoryFilter = [];
+        data.subjectFilter = [];
         data.typeFilter = '';
         data.keyword = '';
         data.cur_page = 1;
         loadNews();
       }
 
+      function hasCategory(cat) {
+        return data.categoryFilter.indexOf(cat) !== -1;
+      }
+
+      function hasSubject(subj) {
+        return data.subjectFilter.indexOf(subj) !== -1;
+      }
+
+      function toggleCategory(cat) {
+        if (cat === '') {
+          data.categoryFilter = [];
+        } else {
+          var idx = data.categoryFilter.indexOf(cat);
+          if (idx !== -1) data.categoryFilter.splice(idx, 1);
+          else data.categoryFilter.push(cat);
+        }
+        data.cur_page = 1;
+        loadNews();
+      }
+
+      function toggleSubject(val) {
+        var idx = data.subjectFilter.indexOf(val);
+        if (idx !== -1) data.subjectFilter.splice(idx, 1);
+        else data.subjectFilter.push(val);
+        data.cur_page = 1;
+        loadNews();
+      }
+
+      function removeFilter(type, val) {
+        if (type === 'category') {
+          var idx = data.categoryFilter.indexOf(val);
+          if (idx !== -1) data.categoryFilter.splice(idx, 1);
+        } else if (type === 'subject') {
+          var idx2 = data.subjectFilter.indexOf(val);
+          if (idx2 !== -1) data.subjectFilter.splice(idx2, 1);
+        } else if (type === 'keyword') {
+          data.keyword = '';
+        } else if (type === 'type') {
+          data.typeFilter = '';
+        }
+        data.cur_page = 1;
+        loadNews();
+      }
+
+      function activeFilters() {
+        var list = [];
+        data.categoryFilter.forEach(function(cat) {
+          list.push({ type: 'category', value: cat, label: catLabel(cat) });
+        });
+        data.subjectFilter.forEach(function(subj) {
+          list.push({ type: 'subject', value: subj, label: subj });
+        });
+        if (data.typeFilter) {
+          list.push({ type: 'type', value: data.typeFilter, label: data.typeFilter === 'news' ? '新闻' : '活动' });
+        }
+        if (data.keyword) {
+          list.push({ type: 'keyword', value: data.keyword, label: '关键词: ' + data.keyword });
+        }
+        return list;
+      }
+
+      function updateUrl(params) {
+        var qs = new URLSearchParams();
+        if (params.type) qs.set('type', params.type);
+        if (params.category) qs.set('cat', params.category);
+        if (params.keyword) qs.set('keyword', params.keyword);
+        if (params.tags) qs.set('tags', params.tags);
+        if (data.cur_page > 1) qs.set('page', String(data.cur_page));
+        var query = qs.toString();
+        var newUrl = window.location.pathname + (query ? '?' + query : '');
+        window.history.replaceState({}, '', newUrl);
+      }
+
       const loadNews = async () => {
         data.loading = true;
         var params = { limit: limit, page: data.cur_page, isPublished: 'true' };
         if (data.typeFilter) params.type = data.typeFilter;
-        if (data.categoryFilter) params.category = data.categoryFilter;
+        if (data.categoryFilter && data.categoryFilter.length) params.category = data.categoryFilter.join(',');
         if (data.keyword) params.keyword = data.keyword;
+        if (data.subjectFilter && data.subjectFilter.length) params.tags = data.subjectFilter.join(',');
         try {
           var res = await GatteAPI.News.list(params);
+          updateUrl(params);
           var payload = res.data || {};
           var list = payload.list || payload.items || (Array.isArray(payload) ? payload : []);
           var pagination = payload.pagination || {};
@@ -414,6 +582,7 @@
             return {
               id: item.id,
               title: item.title,
+              category: item.category,
               summary: item.summary || '',
               thumb: item.imageUrl || '',
               url: 'news-detail.html?id=' + item.id,
@@ -442,6 +611,8 @@
             });
             data.categoryCounts = { all: all, corporate: corp, pc: pc, pharma: pharm };
           }
+          // 主题/标签统计
+          data.subjectCounts = payload.tagCounts || {};
         } catch (err) {
           console.error('News list load failed:', err);
           data.formData = [];
@@ -450,7 +621,7 @@
       };
 
       onMounted(loadNews);
-      return { data, goPage, resetFilters };
+      return { data, goPage, resetFilters, toggleCategory, toggleSubject, removeFilter, activeFilters, hasCategory, hasSubject };
     }
   });
   app.mount("#app");

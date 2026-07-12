@@ -348,6 +348,9 @@ table tbody tr:last-child td { border-bottom: none; }
 .tag-slate { background: var(--slate-lighter); color: var(--slate); }
 .tag-amber { background: var(--amber-light); color: var(--amber); }
 .tag-red { background: var(--red-light); color: var(--red); }
+.tag-corp { background: var(--green-light); color: var(--green); }
+.tag-cosm { background: #F9F1F4; color: #C4004D; }
+.tag-pharma { background: #EBF3F7; color: #0075BB; }
 
 /* 表格内状态徽章 */
 .badge-success { background: var(--green-light); color: var(--green); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
@@ -2110,7 +2113,7 @@ const QUILL_TOOLBAR = [
                   <tr v-for="item in newsList">
                     <td><span class="tag" :class="item.type==='event'?'tag-amber':'tag-blue'">{{ item.type==='event'?'活动':'新闻' }}</span></td>
                     <td><strong>{{ item.title }}</strong><br><span style="font-size:12px;color:var(--text-muted);">{{ (item.summary||'').substring(0,50) }}</span></td>
-                    <td><span class="tag-slate" style="font-size:11px;padding:2px 8px;border-radius:3px;background:var(--slate-lightest);">{{ {corporate:'企业',pc:'个护',pharma:'药用'}[item.category]||item.category }}</span></td>
+                    <td><span class="tag" :class="'tag-'+(item.category==='pc'?'cosm':item.category==='pharma'?'pharma':'corp')" style="font-size:11px;padding:2px 8px;border-radius:3px;">{{ {corporate:'企业',pc:'个护',pharma:'药用'}[item.category]||item.category }}</span></td>
                     <td class="table-date">{{ item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '-' }}</td>
                     <td><span class="badge" :class="item.isPublished?'badge-success':'badge-secondary'">{{ item.isPublished?'已发布':'草稿' }}</span></td>
                     <td>
