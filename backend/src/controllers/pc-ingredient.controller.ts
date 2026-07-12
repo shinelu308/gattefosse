@@ -264,7 +264,7 @@ export async function deletePcIngredient(req: Request, res: Response) {
 }
 
 /**
- * 获取相关推荐产品 — 按标签相似度自动匹配
+ * 获取相关推荐 — 按产品标签匹配文章/内容
  * GET /api/pc-ingredients/:id/related
  */
 export async function getRelatedPcIngredients(req: Request, res: Response) {
@@ -275,46 +275,80 @@ export async function getRelatedPcIngredients(req: Request, res: Response) {
     const product = await prisma.pcIngredient.findUnique({ where: { id } });
     if (!product) return res.status(404).json(fail('产品不存在'));
 
-    // 获取当前产品的所有标签
-    const currentTags = [
-      ...tagToArray(product.functionalityTag),
-      ...tagToArray(product.applicationTag),
-      ...tagToArray(product.conceptTag),
-      ...tagToArray(product.claimTag),
-      ...tagToArray(product.characteristicTag),
-      ...tagToArray(product.naturalityLabel),
+    // 提取产品所有标签中可搜索的关键词
+    function extractTokens(tagStr: string): string[] {
+      if (!tagStr) return [];
+      // 按逗号或斜杠拆分，去掉空字符串
+      return tagStr.split(/[,/\/]/).map(t => t.trim()).filter(t => t.length > 0);
+    }
+    const productTokens = [
+      ...extractTokens(product.functionalityTag),
+      ...extractTokens(product.applicationTag),
+      ...extractTokens(product.conceptTag),
+      ...extractTokens(product.claimTag),
+      ...extractTokens(product.characteristicTag),
+      ...extractTokens(product.naturalityLabel),
     ];
+    // 去重
+    const uniqueTokens = [...new Set(productTokens)];
 
-    // 获取所有已发布的其他产品
-    const allProducts = await prisma.pcIngredient.findMany({
-      where: { id: { not: id }, isPublished: true },
+    if (uniqueTokens.length === 0) {
+      return res.json(success([]));
+    }
+
+    // 查找已发布的文章（category=pc, type=article）
+    const articles = await prisma.newsEvent.findMany({
+      where: {
+        isPublished: true,
+        category: 'pc',
+        type: 'article',
+      },
+      orderBy: { publishedDate: 'desc' },
     });
 
-    // 按共享标签数量评分
-    const scored = allProducts.map((other) => {
-      const otherTags = [
-        ...tagToArray(other.functionalityTag),
-        ...tagToArray(other.applicationTag),
-        ...tagToArray(other.conceptTag),
-        ...tagToArray(other.claimTag),
-        ...tagToArray(other.characteristicTag),
-        ...tagToArray(other.naturalityLabel),
-      ];
-      const sharedCount = currentTags.filter((t) => otherTags.includes(t)).length;
-      return { product: other, score: sharedCount };
+    // 按标签匹配度评分：对每个 token，检查文章 tags JSON 中是否包含
+    const scored = articles.map((article) => {
+      let articleTags: string[] = [];
+      try {
+        articleTags = JSON.parse(article.tags || '[]');
+      } catch (e) {
+        articleTags = [];
+      }
+      if (!Array.isArray(articleTags)) articleTags = [];
+
+      let score = 0;
+      for (const token of uniqueTokens) {
+        for (const tag of articleTags) {
+          // 双向包含匹配：token 包含 tag，或 tag 包含 token
+          if (tag.includes(token) || token.includes(tag)) {
+            score++;
+            break; // 每个 token 最多贡献 1 分
+          }
+        }
+      }
+      return { article, score };
     });
 
-    // 过滤掉得分为0的，按得分降序排列，取前6条
     const related = scored
       .filter((s) => s.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, 6)
-      .map((s) => parsePcIngredient(s.product));
+      .map((s) => ({
+        id: s.article.id,
+        title: s.article.title,
+        summary: s.article.summary || '',
+        imageUrl: s.article.imageUrl || '',
+        slug: s.article.slug || '',
+        publishedDate: s.article.publishedDate,
+        tags: (() => {
+          try { return JSON.parse(s.article.tags || '[]'); } catch (e) { return []; }
+        })(),
+      }));
 
     return res.json(success(related));
   } catch (error) {
-    console.error('获取相关产品失败:', error);
-    return res.status(500).json(fail('获取相关产品失败'));
+    console.error('获取相关推荐失败:', error);
+    return res.status(500).json(fail('获取相关推荐失败'));
   }
 }
 

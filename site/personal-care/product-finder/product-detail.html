@@ -931,50 +931,31 @@
           });
         };
 
-        // 加载相关推荐产品
+        // 加载相关推荐内容 — 按标签匹配相关文章
         const loadRelatedProducts = function (productId) {
-          // 先加载标签字典，用于将标签值转为中文
-          var tagDict = {};
-          GatteAPI.Tag.list({ productLine: 'pc', limit: 100 }).then(function (tagRes) {
-            var tagBody = tagRes.data || tagRes;
-            if (typeof tagBody === 'object' && tagBody !== null) {
-              Object.keys(tagBody).forEach(function (cat) {
-                var tags = Array.isArray(tagBody[cat]) ? tagBody[cat] : [];
-                for (var i = 0; i < tags.length; i++) {
-                  tagDict[tags[i].value] = tags[i].label || tags[i].value;
+          GatteAPI.PcProduct.related(productId).then(function (res) {
+            var body = res.data || res;
+            var items = Array.isArray(body) ? body : (body && body.list ? body.list : (body && body.data && body.data.list ? body.data.list : []));
+            data.relatedContents = items.map(function (item) {
+              var tagList = [];
+              if (item.tags) {
+                if (Array.isArray(item.tags)) {
+                  tagList = item.tags;
+                } else if (typeof item.tags === 'string') {
+                  try { tagList = JSON.parse(item.tags); } catch(e) { tagList = []; }
                 }
-              });
-            }
-          }).catch(function () {}).finally(function () {
-            // 不论标签字典加载成功与否，都继续加载相关产品
-            GatteAPI.PcProduct.related(productId).then(function (res) {
-              var body = res.data || res;
-              var items = body && body.list ? body.list : (Array.isArray(body) ? body : []);
-              data.relatedContents = items.map(function (p) {
-                var tagList = [];
-                var tagFields = [p.functionalityTag, p.applicationTag, p.conceptTag, p.claimTag, p.characteristicTag, p.naturalityLabel];
-                for (var ti = 0; ti < tagFields.length; ti++) {
-                  var ft = tagFields[ti];
-                  if (ft) {
-                    var vals = Array.isArray(ft) ? ft : (typeof ft === 'string' && ft.trim() ? ft.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : []);
-                    for (var vi = 0; vi < vals.length; vi++) {
-                      var v = vals[vi];
-                      tagList.push(tagDict[v] || v);
-                    }
-                  }
-                }
-                return {
-                  title: p.name,
-                  summary: p.description || '',
-                  thumb: p.imageUrl || '/static/images/default-thumb.jpg',
-                  url: '/personal-care/product-finder/product-detail.html?id=' + p.id,
-                  category: 'pc_ingredient',
-                  tags: tagList.slice(0, 3),
-                };
-              });
-            }).catch(function (err) {
-              console.error('加载相关推荐失败:', err);
+              }
+              return {
+                title: item.title,
+                summary: item.summary || '',
+                thumb: item.imageUrl || '/static/images/default-thumb.jpg',
+                url: '/personal-care-article-detail.html?id=' + item.id,
+                tags: tagList.slice(0, 3),
+                publishedDate: item.publishedDate || '',
+              };
             });
+          }).catch(function (err) {
+            console.error('加载相关推荐失败:', err);
           });
         };
 
