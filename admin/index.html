@@ -999,14 +999,14 @@ const QUILL_TOOLBAR = [
                   <div v-for="(block, bi) in editingPc.blocks" :key="block._key" class="block-item">
                     <div class="block-header">
                       <div class="block-drag">
-                        <button @click="moveBlock(bi, -1)" :disabled="bi===0" title="上移">↑</button>
-                        <button @click="moveBlock(bi, 1)" :disabled="bi===editingPc.blocks.length-1" title="下移">↓</button>
+                        <button @click="movePcBlock(bi, -1)" :disabled="bi===0" title="上移">↑</button>
+                        <button @click="movePcBlock(bi, 1)" :disabled="bi===editingPc.blocks.length-1" title="下移">↓</button>
                       </div>
                       <div class="block-title">
                         <input type="text" v-model="block.title" placeholder="区块标题（如：成分构成）" class="form-control" style="width:100%;">
                       </div>
                       <div class="block-actions">
-                        <select v-model="block.blockType" @change="onBlockTypeChange(bi)" class="form-control" style="width:140px;">
+                        <select v-model="block.blockType" @change="onPcBlockTypeChange(bi)" class="form-control" style="width:140px;">
                           <option value="richtext">富文本</option>
                           <option value="imagetext">图文并排</option>
                           <option value="video">视频</option>
@@ -1144,7 +1144,7 @@ const QUILL_TOOLBAR = [
                     </div>
                   </div>
                 </div>
-                <button class="btn btn-primary" @click="addBlock" style="margin-top:16px;">+ 添加内容区块</button>
+                <button class="btn btn-primary" @click="addPcBlock" style="margin-top:16px;">+ 添加内容区块</button>
               </div>
             </div>
           </div>
@@ -2360,7 +2360,7 @@ const QUILL_TOOLBAR = [
                       <div v-if="block._showResults && block._searchResults && block._searchResults.length" style="position:absolute;top:100%;left:0;right:0;z-index:100;background:#fff;border:1px solid var(--border);border-radius:4px;max-height:220px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
                         <div v-for="(p, pi) in block._searchResults" :key="pi"
                           style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px;"
-                          @mousedown.prevent="selectProduct(bi, p)">
+                          @mousedown.prevent="selectArticleProduct(bi, p)">
                           <span style="font-weight:600;color:var(--text-primary);">{{ p.name }}</span>
                           <span v-if="p.inciName" style="font-size:11px;color:var(--text-tertiary);">INCI: {{ p.inciName }}</span>
                         </div>
@@ -3069,13 +3069,13 @@ const QUILL_TOOLBAR = [
                     <div style="background:var(--green-light);border:1px solid var(--green);border-radius:var(--radius);padding:10px;margin-bottom:12px;">
                       <label style="font-size:12px;font-weight:600;color:var(--green);display:block;margin-bottom:4px;">🔍 搜索产品自动填充</label>
                       <div style="display:flex;gap:8px;align-items:center;">
-                        <input class="form-control" v-model="(productSearchData[bi] || {}).keyword" placeholder="输入产品名称搜索..." style="font-size:13px;flex:1;" @keydown.enter.prevent="searchProduct(bi)">
-                        <button class="btn btn-sm btn-primary" style="font-size:12px;" @click="searchProduct(bi)">搜索</button>
+                        <input class="form-control" v-model="(productSearchData[bi] || {}).keyword" placeholder="输入产品名称搜索..." style="font-size:13px;flex:1;" @keydown.enter.prevent="searchProductForPromo(bi)">
+                        <button class="btn btn-sm btn-primary" style="font-size:12px;" @click="searchProductForPromo(bi)">搜索</button>
                         <span v-if="productSearchData[bi] && productSearchData[bi].searching" style="font-size:11px;color:var(--green);">搜索中...</span>
                       </div>
                       <!-- 搜索结果下拉 -->
                       <div v-if="productSearchData[bi] && productSearchData[bi].results && productSearchData[bi].results.length > 0" style="margin-top:6px;border:1px solid var(--border);border-radius:4px;background:var(--white);max-height:200px;overflow-y:auto;">
-                        <div v-for="p in productSearchData[bi].results" :key="p.id" style="padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:center;" @click="selectProduct(bi, p)" :title="'点击选择 ' + p.name">
+                        <div v-for="p in productSearchData[bi].results" :key="p.id" style="padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:center;" @click="selectProductForPromo(bi, p)" :title="'点击选择 ' + p.name">
                           <div style="width:36px;height:36px;background:#f0f0f0;border-radius:4px;overflow:hidden;flex-shrink:0;">
                             <img v-if="p.imageUrl" :src="p.imageUrl" style="width:100%;height:100%;object-fit:cover;">
                           </div>
@@ -4370,7 +4370,7 @@ createApp({
         // richtext — content 在 Quill 实例中管理
       }
     },
-    addBlock() {
+    addPcBlock() {
       const cnt = this.editingPc._blockIdCounter++;
       const block = {
         id: null, productId: this.editingPc.id, productType: 'pc',
@@ -4414,7 +4414,7 @@ createApp({
         this.editingPc.blocks.splice(bi, 1);
       });
     },
-    moveBlock(bi, dir) {
+    movePcBlock(bi, dir) {
       const blocks = this.editingPc.blocks;
       const target = bi + dir;
       if (target < 0 || target >= blocks.length) return;
@@ -4462,7 +4462,7 @@ createApp({
       // 重置下拉框
       event.target.value = '';
     },
-    onBlockTypeChange(bi) {
+    onPcBlockTypeChange(bi) {
       const block = this.editingPc.blocks[bi];
       // 彻底销毁旧 Quill（含 imagetext 左列）
       if (block._quill) {
@@ -5767,7 +5767,7 @@ createApp({
         block._searchResults = [];
       }
     },
-    selectProduct(bi, product) {
+    selectArticleProduct(bi, product) {
       var block = this.editingArticle.blocks[bi];
       if (!block._selectedProducts) block._selectedProducts = [];
       // 避免重复
@@ -6134,7 +6134,7 @@ createApp({
       this.editingContent._blocks.splice(index, 1);
     },
     // 产品搜索（用于产品推广区块）
-    async searchProduct(bi) {
+    async searchProductForPromo(bi) {
       var sd = this.productSearchData[bi];
       if (!sd || !sd.keyword || sd.keyword.length < 1) return;
       sd.searching = true;
@@ -6148,7 +6148,7 @@ createApp({
         sd.searching = false;
       }
     },
-    selectProduct(bi, product) {
+    selectProductForPromo(bi, product) {
       var blk = this.editingContent._blocks[bi];
       if (!blk) return;
       blk.data.title = product.name;
