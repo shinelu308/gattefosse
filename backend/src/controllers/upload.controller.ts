@@ -104,3 +104,27 @@ export async function uploadDocument(req: Request, res: Response) {
     return res.status(500).json(fail('文档上传失败'));
   }
 }
+
+/**
+ * 视频上传
+ */
+export async function uploadVideo(req: Request, res: Response) {
+  try {
+    if (!req.file) {
+      return res.status(400).json(fail('请选择要上传的视频'));
+    }
+
+    const url = `${config.baseUrl}/uploads/videos/${req.file.filename}`;
+    return res.json(
+      success({
+        url,
+        filename: req.file.filename,
+        size: req.file.size,
+        originalName: req.file.originalname,
+      }, '上传成功')
+    );
+  } catch (error) {
+    console.error('视频上传失败:', error);
+    return res.status(500).json(fail('视频上传失败'));
+  }
+}

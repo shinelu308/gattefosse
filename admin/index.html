@@ -2874,7 +2874,10 @@ const QUILL_TOOLBAR = [
                   <td><code>{{ p.pageKey }}</code></td>
                   <td>{{ p.title || '-' }}</td>
                   <td class="text-sm">{{ p.updatedAt ? new Date(p.updatedAt).toLocaleString('zh-CN') : '-' }}</td>
-                  <td><button class="btn btn-sm btn-outline" @click="editContent(p)">编辑</button></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" @click="editContent(p)">编辑</button>
+                    <button class="btn btn-sm btn-danger" @click="deletePage(p)" style="margin-left:4px;">删除</button>
+                  </td>
                 </tr>
                 <tr v-if="contentPages.length === 0">
                   <td colspan="5" class="text-center text-muted">暂无页面数据</td>
@@ -2988,8 +2991,29 @@ const QUILL_TOOLBAR = [
                       <textarea class="form-control" v-model="blk.data.summary" rows="3" placeholder="摘要文字..." style="font-size:13px;"></textarea>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                      <label style="font-size:12px;font-weight:600;">背景图片 URL</label>
-                      <input class="form-control" v-model="blk.data.backgroundImage" placeholder="https://..." style="font-size:13px;">
+                      <label style="font-size:12px;font-weight:600;">背景图片</label>
+                      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <input class="form-control" v-model="blk.data.backgroundImage" placeholder="图片 URL 或本地上传" style="font-size:13px;flex:1;min-width:160px;">
+                        <input type="file" accept="image/*" @change="uploadHeroBackgroundImage($event, bi)" style="font-size:13px;">
+                        <span v-if="uploadingHeroBgImage === bi" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                      </div>
+                      <div v-if="blk.data.backgroundImage" style="margin-top:6px;">
+                        <img :src="blk.data.backgroundImage" style="max-width:240px;max-height:120px;border-radius:4px;border:1px solid var(--border);" alt="背景预览">
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">视频</label>
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <select class="form-control" v-model="blk.data.videoType" style="width:110px;font-size:13px;">
+                          <option value="">无视频</option>
+                          <option value="youtube">YouTube</option>
+                          <option value="local">本地上传</option>
+                        </select>
+                        <input v-if="blk.data.videoType === 'youtube'" class="form-control" v-model="blk.data.videoUrl" placeholder="YouTube 视频 ID 或完整 URL" style="font-size:13px;flex:1;min-width:160px;">
+                        <input v-if="blk.data.videoType === 'local'" class="form-control" v-model="blk.data.videoUrl" placeholder="视频 URL（如 /uploads/xxx.mp4）" style="font-size:13px;flex:1;min-width:160px;">
+                        <input v-if="blk.data.videoType === 'local'" type="file" accept="video/*" @change="uploadHeroVideo($event, bi)" style="font-size:13px;">
+                        <span v-if="uploadingHeroVideo === bi" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                      </div>
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
                       <label style="font-size:12px;font-weight:600;">按钮</label>
@@ -3606,6 +3630,8 @@ createApp({
       uploadingDetailImage: false,
       uploadingBlockImage: false,
       uploadingBlockImageRight: false,
+      uploadingHeroBgImage: null,
+      uploadingHeroVideo: null,
       uploadingPharmaImage: false,
       uploadingPharmaDetailImage: false,
       uploadingPharmaBlockRightImage: false,
@@ -3933,6 +3959,48 @@ createApp({
         }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingDetailImage = false; event.target.value = ''; }
+    },
+    async uploadHeroBackgroundImage(event, bi) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingHeroBgImage = bi;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingContent._blocks[bi].data.backgroundImage = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingHeroBgImage = null; event.target.value = ''; }
+    },
+    async uploadHeroVideo(event, bi) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingHeroVideo = bi;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/video', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingContent._blocks[bi].data.videoUrl = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingHeroVideo = null; event.target.value = ''; }
     },
     async uploadBlockImage(event, bi) {
       const file = event.target.files[0];
@@ -5981,7 +6049,7 @@ createApp({
     addPageBlock(type) {
       if (!this.editingContent._blocks) this.editingContent._blocks = [];
       var defaults = {
-        hero: { title: '', summary: '', backgroundImage: '', buttons: [] },
+        hero: { title: '', summary: '', backgroundImage: '', buttons: [], videoUrl: '', videoType: '' },
         feature_cards: { title: '', items: [{ icon: '', title: '', description: '', linkUrl: '' }] },
         product_promo: { title: '', subtitle: '', description: '', imageUrl: '', linkUrl: '', linkLabel: '阅读更多' },
         stats: { items: [{ number: '', unit: '', label: '' }] },
@@ -6017,6 +6085,15 @@ createApp({
         });
         this.loadContent();
       } catch (e) { this.showAlert('排序失败：' + e.message); }
+    },
+    deletePage(p) {
+      this.showConfirm('确认删除', '确定删除页面「' + p.title + '」？该操作不可恢复。', async () => {
+        try {
+          await this.api('/content/admin/pages/' + p.id, { method: 'DELETE' });
+          this.showAlert('删除成功');
+          this.loadContent();
+        } catch (e) { this.showAlert('删除失败：' + e.message); }
+      });
     },
     // Subsidiary CRUD
     addSubsidiary() {

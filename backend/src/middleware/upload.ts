@@ -61,3 +61,25 @@ export const uploadDocument = multer({
   },
   limits: { fileSize: config.upload.maxFileSize },
 });
+
+// 视频上传配置
+export const uploadVideo = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      cb(null, path.join(config.upload.dir, 'videos'));
+    },
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}${ext}`;
+      cb(null, uniqueName);
+    },
+  }),
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith('video/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('只支持视频文件'));
+    }
+  },
+  limits: { fileSize: config.upload.maxFileSize },
+});

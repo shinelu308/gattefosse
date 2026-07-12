@@ -96,6 +96,20 @@ export async function reorderPages(req: Request, res: Response) {
   }
 }
 
+/** 删除页面 */
+export async function deletePage(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const page = await prisma.pageContent.findUnique({ where: { id: Number(id) } });
+    if (!page) return res.json(fail('页面不存在'));
+    await prisma.pageContent.delete({ where: { id: Number(id) } });
+    res.json(success(null));
+  } catch (err: any) {
+    console.error('deletePage error:', err);
+    res.status(500).json(fail('服务器错误'));
+  }
+}
+
 
 // ===================== 分公司管理 =====================
 
