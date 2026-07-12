@@ -3065,6 +3065,27 @@ const QUILL_TOOLBAR = [
                   </div>
                   <!-- type: product_promo -->
                   <div v-if="blk.type === 'product_promo'">
+                    <!-- 产品快速选择 -->
+                    <div style="background:var(--green-light);border:1px solid var(--green);border-radius:var(--radius);padding:10px;margin-bottom:12px;">
+                      <label style="font-size:12px;font-weight:600;color:var(--green);display:block;margin-bottom:4px;">🔍 搜索产品自动填充</label>
+                      <div style="display:flex;gap:8px;align-items:center;">
+                        <input class="form-control" v-model="(productSearchData[bi] || {}).keyword" placeholder="输入产品名称搜索..." style="font-size:13px;flex:1;" @keydown.enter.prevent="searchProduct(bi)">
+                        <button class="btn btn-sm btn-primary" style="font-size:12px;" @click="searchProduct(bi)">搜索</button>
+                        <span v-if="productSearchData[bi] && productSearchData[bi].searching" style="font-size:11px;color:var(--green);">搜索中...</span>
+                      </div>
+                      <!-- 搜索结果下拉 -->
+                      <div v-if="productSearchData[bi] && productSearchData[bi].results && productSearchData[bi].results.length > 0" style="margin-top:6px;border:1px solid var(--border);border-radius:4px;background:var(--white);max-height:200px;overflow-y:auto;">
+                        <div v-for="p in productSearchData[bi].results" :key="p.id" style="padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:center;" @click="selectProduct(bi, p)" :title="'点击选择 ' + p.name">
+                          <div style="width:36px;height:36px;background:#f0f0f0;border-radius:4px;overflow:hidden;flex-shrink:0;">
+                            <img v-if="p.imageUrl" :src="p.imageUrl" style="width:100%;height:100%;object-fit:cover;">
+                          </div>
+                          <div style="flex:1;">
+                            <div style="font-size:13px;font-weight:600;">{{ p.name }}</div>
+                            <div v-if="p.tagline" style="font-size:11px;color:var(--text-secondary);">{{ p.tagline }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-group" style="margin-bottom:8px;">
                       <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">产品名称</label>
                       <input class="form-control" v-model="blk.data.title" placeholder="如：Eyeglorius™" style="font-size:13px;">
@@ -3663,6 +3684,7 @@ createApp({
       uploadingFormulaImage: false,
       uploadingFormulaBlockImage: false,
       uploadingFormulaDetailImage: false,
+      productSearchData: {},
     };
   },
   computed: {
@@ -6027,6 +6049,15 @@ createApp({
       this.editingContent = full;
       this.isNewPage = false;
       this.contentEditTab = 'basic';
+      // 初始化产品搜索状态
+      this.productSearchData = {};
+      if (full._blocks) {
+        full._blocks.forEach((blk, i) => {
+          if (blk.type === 'product_promo') {
+            this.$set(this.productSearchData, i, { keyword: '', results: [], searching: false });
+          }
+        });
+      }
       this.currentPage = 'content-edit';
     },
     // 从标题自动生成 pageKey（仅允许小写字母、数字、连字符）
@@ -6084,6 +6115,11 @@ createApp({
         quote: { imageUrl: '', text: '', author: '', title: '' }
       };
       this.editingContent._blocks.push({ type: type, data: defaults[type] || {} });
+      // 初始化产品搜索状态
+      if (type === 'product_promo') {
+        var bi = this.editingContent._blocks.length - 1;
+        this.$set(this.productSearchData, bi, { keyword: '', results: [], searching: false });
+      }
     },
     movePageBlock(index, direction) {
       var blocks = this.editingContent._blocks;
@@ -6096,6 +6132,33 @@ createApp({
     },
     removePageBlock(index) {
       this.editingContent._blocks.splice(index, 1);
+    },
+    // 产品搜索（用于产品推广区块）
+    async searchProduct(bi) {
+      var sd = this.productSearchData[bi];
+      if (!sd || !sd.keyword || sd.keyword.length < 1) return;
+      sd.searching = true;
+      sd.results = [];
+      try {
+        var data = await this.api('/pc-ingredients?keyword=' + encodeURIComponent(sd.keyword) + '&limit=10');
+        sd.results = data.items || [];
+      } catch (e) {
+        sd.results = [];
+      } finally {
+        sd.searching = false;
+      }
+    },
+    selectProduct(bi, product) {
+      var blk = this.editingContent._blocks[bi];
+      if (!blk) return;
+      blk.data.title = product.name;
+      blk.data.subtitle = product.tagline || '';
+      blk.data.description = product.description || '';
+      blk.data.imageUrl = product.imageUrl || '';
+      blk.data.linkUrl = '/personal-care/product-finder/product-detail.html?id=' + product.id;
+      // 清空搜索结果
+      var sd = this.productSearchData[bi];
+      if (sd) { sd.results = []; sd.keyword = ''; }
     },
     // 页面排序
     async movePage(index, direction) {
