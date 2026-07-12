@@ -3066,22 +3066,35 @@ const QUILL_TOOLBAR = [
                   <!-- type: product_promo -->
                   <div v-if="blk.type === 'product_promo'">
                     <div class="form-group" style="margin-bottom:8px;">
-                      <input class="form-control" v-model="blk.data.title" placeholder="产品名称" style="font-size:13px;">
+                      <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">产品名称</label>
+                      <input class="form-control" v-model="blk.data.title" placeholder="如：Eyeglorius™" style="font-size:13px;">
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                      <input class="form-control" v-model="blk.data.subtitle" placeholder="副标题" style="font-size:13px;">
+                      <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">副标题 / Slogan</label>
+                      <input class="form-control" v-model="blk.data.subtitle" placeholder="如：Brilliance with every blink" style="font-size:13px;">
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                      <textarea class="form-control" v-model="blk.data.description" rows="3" placeholder="产品描述" style="font-size:13px;"></textarea>
+                      <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">产品描述</label>
+                      <textarea class="form-control" v-model="blk.data.description" rows="3" placeholder="支持 HTML" style="font-size:13px;"></textarea>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                      <input class="form-control" v-model="blk.data.imageUrl" placeholder="图片 URL" style="font-size:13px;">
+                      <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">右侧背景图 URL</label>
+                      <div style="display:flex;gap:10px;align-items:flex-start;">
+                        <input class="form-control" v-model="blk.data.imageUrl" placeholder="如：/sites/default/files/styles/page_product_banner/public/2026-04/eyeglorius-cover.jpg.webp" style="font-size:13px;flex:1;">
+                        <div v-if="blk.data.imageUrl" style="width:120px;height:72px;background:#f5f5f5;border-radius:4px;overflow:hidden;flex-shrink:0;">
+                          <img :src="blk.data.imageUrl" style="width:100%;height:100%;object-fit:cover;">
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group" style="margin-bottom:8px;">
-                      <input class="form-control" v-model="blk.data.linkUrl" placeholder="链接 URL" style="font-size:13px;">
-                    </div>
-                    <div class="form-group" style="margin-bottom:0;">
-                      <input class="form-control" v-model="blk.data.linkLabel" placeholder="按钮文字" style="font-size:13px;">
+                    <div style="display:flex;gap:8px;">
+                      <div class="form-group" style="margin-bottom:0;flex:1;">
+                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">按钮链接</label>
+                        <input class="form-control" v-model="blk.data.linkUrl" placeholder="链接 URL" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:0;flex:1;">
+                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">按钮文字</label>
+                        <input class="form-control" v-model="blk.data.linkLabel" placeholder="如：阅读更多" style="font-size:13px;">
+                      </div>
                     </div>
                   </div>
                   <!-- type: stats -->

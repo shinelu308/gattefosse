@@ -63,7 +63,7 @@ const blocks = [
         'title': 'Eyeglorius™',
         'subtitle': 'Brilliance with every blink',
         'description': 'Eyeglorius™ 是一种脂溶性生物活性物，旨在矫正黑眼圈和浮肿，恢复焕发活力的光彩。',
-        'imageUrl': '/sites/default/files/styles/card_default/public/2023-06/gettyimages-1460122345-copie_0.webp',
+        'imageUrl': '/sites/default/files/styles/page_product_banner/public/2026-04/eyeglorius-cover.jpg.webp',
         'linkUrl': '/personal-care/product-finder/product-detail.html?id=1',
         'linkLabel': '阅读更多'
       }

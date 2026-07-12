@@ -184,18 +184,14 @@
               </div>
 
               <!-- 产品推广 -->
-              <div v-if="blk.type === 'product_promo'" class="s-tunnel-product" style="margin-bottom:40px;">
-                <div class="container" style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
-                  <div class="s-tunnel-product__content" style="flex:1;min-width:300px;">
-                    <h3>{{ blk.data.title }}</h3>
-                    <p class="s-tunnel-product__tagline" style="font-size:14px;color:var(--green);">{{ blk.data.subtitle }}</p>
-                    <div class="s-tunnel-product__description" v-html="blk.data.description"></div>
-                    <a v-if="blk.data.linkUrl" class="s-tunnel-product__btn btn btn-primary" :href="blk.data.linkUrl">{{ blk.data.linkLabel || '阅读更多' }}</a>
-                  </div>
-                  <div v-if="blk.data.imageUrl" class="s-tunnel-product__img" style="flex:1;min-width:300px;">
-                    <img :src="blk.data.imageUrl" alt="" style="width:100%;border-radius:8px;" />
-                  </div>
+              <div v-if="blk.type === 'product_promo'" class="s-tunnel-product">
+                <div class="s-tunnel-product__content">
+                  <h3 class="s-tunnel-product__title">{{ blk.data.title }}</h3>
+                  <p v-if="blk.data.subtitle" class="s-tunnel-product__tagline">{{ blk.data.subtitle }}</p>
+                  <div class="s-tunnel-product__description" v-html="blk.data.description"></div>
+                  <a v-if="blk.data.linkUrl" class="s-tunnel-product__btn btn btn-primary" :href="blk.data.linkUrl">{{ blk.data.linkLabel || '阅读更多' }}</a>
                 </div>
+                <div v-if="blk.data.imageUrl" class="s-tunnel-product__img" :style="{ backgroundImage: 'url(' + blk.data.imageUrl + ')' }"></div>
               </div>
 
               <!-- 双CTA卡片 -->
