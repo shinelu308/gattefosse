@@ -558,6 +558,11 @@
     return map[cat] || cat;
   }
 
+  function stripHtml(html) {
+    if (!html) return '';
+    return String(html).replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+  }
+
   const app = createApp({
     setup() {
       const data = reactive({
@@ -693,7 +698,17 @@
             }
             var location = item.location || parsedSummary.location || '';
             var booth = item.booth || '';
-            var eventDesc = parsedSummary.desc || '';
+            // 活动描述优先级：summary 中的描述 > 非日期/地点格式的 summary > contentHtml 文本
+            var hasDescInSummary = parsedSummary.desc !== '';
+            var isDateLocationSummary = parsedSummary.date !== '' && !hasDescInSummary;
+            var eventDesc = '';
+            if (hasDescInSummary) {
+              eventDesc = parsedSummary.desc;
+            } else if (item.summary && !isDateLocationSummary) {
+              eventDesc = item.summary;
+            } else if (item.contentHtml) {
+              eventDesc = stripHtml(item.contentHtml);
+            }
             return {
               id: item.id,
               title: item.title,

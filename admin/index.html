@@ -2175,7 +2175,7 @@ const QUILL_TOOLBAR = [
                 </div>
               </div>
               <div class="form-group">
-                <label>摘要</label>
+                <label>{{ editingNews.type === 'event' ? '活动描述' : '摘要' }}</label>
                 <textarea class="form-control" rows="2" v-model="editingNews.summary"></textarea>
               </div>
               <div class="form-group" v-if="editingNews.type !== 'event'">
