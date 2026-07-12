@@ -37,8 +37,13 @@ app.use(express.urlencoded({ extended: true }));
 // 静态文件服务（上传的文件）
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 
-// 管理后台静态文件
-app.use('/admin', express.static(path.resolve(__dirname, '../../admin')));
+// 管理后台静态文件（禁用缓存，避免升级后页面不刷新）
+app.use('/admin', (req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+}, express.static(path.resolve(__dirname, '../../admin')));
 
 // 前端网站静态文件
 app.use(express.static(path.resolve(__dirname, '../../site')));
