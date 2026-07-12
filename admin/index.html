@@ -1145,7 +1145,7 @@ const QUILL_TOOLBAR = [
                       <!-- 滑块：左右交替图文轮播 -->
                       <div v-show="block.blockType === 'slider'">
                         <div style="margin-bottom:8px;font-size:13px;color:var(--text-muted);">
-                          每个滑块由左侧媒体（图片/视频）和右侧文字组成，支持添加多张幻灯片
+                          每个滑块由左右两列组成，可分别设置为富文本/文字/图片/视频，支持添加多张幻灯片
                         </div>
                         <div v-for="(slide, si) in block._slides" :key="si" style="border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:12px;background:#fafafa;">
                           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -1153,30 +1153,69 @@ const QUILL_TOOLBAR = [
                             <button class="btn btn-sm btn-danger" @click="removeSliderSlide(bi, si)" v-if="block._slides.length > 1">× 删除</button>
                           </div>
                           <div style="display:flex;gap:16px;">
-                            <!-- 左侧媒体 -->
+                            <!-- 左列 -->
                             <div style="flex:1;">
-                              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">左侧媒体类型</label>
-                              <select v-model="slide.leftType" class="form-control" style="width:100%;margin-bottom:6px;font-size:13px;">
+                              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">左列类型</label>
+                              <select v-model="slide.leftType" @change="onSliderTypeChange(bi, si, 'left')" class="form-control" style="width:100%;margin-bottom:6px;font-size:13px;">
+                                <option value="richtext">富文本</option>
+                                <option value="text">文字</option>
                                 <option value="image">图片</option>
                                 <option value="video">视频</option>
                               </select>
+                              <!-- 左列：富文本 -->
+                              <div v-if="slide.leftType === 'richtext'">
+                                <div :id="'qled-slider-left-' + block._key + '-' + si" class="quill-editor" style="min-height:100px;"></div>
+                              </div>
+                              <!-- 左列：文字 -->
+                              <div v-if="slide.leftType === 'text'">
+                                <textarea class="form-control" v-model="slide.leftText" rows="5" placeholder="输入文字内容..." style="min-height:100px;resize:vertical;white-space:pre-line;"></textarea>
+                              </div>
+                              <!-- 左列：图片 -->
                               <div v-if="slide.leftType === 'image'">
                                 <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
                                   <input type="text" class="form-control" v-model="slide.leftUrl" placeholder="图片 URL" style="flex:1;min-width:120px;font-size:13px;">
-                                  <input type="file" accept="image/*" @change="uploadSliderImage($event, bi, si)" style="font-size:12px;">
+                                  <input type="file" accept="image/*" @change="uploadSliderImage($event, bi, si, 'left')" style="font-size:12px;">
                                 </div>
                                 <div v-if="slide.leftUrl" style="margin-top:4px;">
                                   <img :src="slide.leftUrl" style="max-width:80px;max-height:60px;border-radius:4px;border:1px solid var(--border);">
                                 </div>
                               </div>
+                              <!-- 左列：视频 -->
                               <div v-if="slide.leftType === 'video'">
                                 <input type="text" class="form-control" v-model="slide.leftUrl" placeholder="视频嵌入链接 / iframe代码 / B站链接" style="font-size:13px;">
                               </div>
                             </div>
-                            <!-- 右侧文字 -->
+                            <!-- 右列 -->
                             <div style="flex:1;">
-                              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">右侧文字</label>
-                              <div :id="'qled-slider-right-' + block._key + '-' + si" class="quill-editor" style="min-height:100px;"></div>
+                              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">右列类型</label>
+                              <select v-model="slide.rightType" @change="onSliderTypeChange(bi, si, 'right')" class="form-control" style="width:100%;margin-bottom:6px;font-size:13px;">
+                                <option value="richtext">富文本</option>
+                                <option value="text">文字</option>
+                                <option value="image">图片</option>
+                                <option value="video">视频</option>
+                              </select>
+                              <!-- 右列：富文本 -->
+                              <div v-if="slide.rightType === 'richtext'">
+                                <div :id="'qled-slider-right-' + block._key + '-' + si" class="quill-editor" style="min-height:100px;"></div>
+                              </div>
+                              <!-- 右列：文字 -->
+                              <div v-if="slide.rightType === 'text'">
+                                <textarea class="form-control" v-model="slide.rightText" rows="5" placeholder="输入文字内容..." style="min-height:100px;resize:vertical;white-space:pre-line;"></textarea>
+                              </div>
+                              <!-- 右列：图片 -->
+                              <div v-if="slide.rightType === 'image'">
+                                <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                                  <input type="text" class="form-control" v-model="slide.rightUrl" placeholder="图片 URL" style="flex:1;min-width:120px;font-size:13px;">
+                                  <input type="file" accept="image/*" @change="uploadSliderImage($event, bi, si, 'right')" style="font-size:12px;">
+                                </div>
+                                <div v-if="slide.rightUrl" style="margin-top:4px;">
+                                  <img :src="slide.rightUrl" style="max-width:80px;max-height:60px;border-radius:4px;border:1px solid var(--border);">
+                                </div>
+                              </div>
+                              <!-- 右列：视频 -->
+                              <div v-if="slide.rightType === 'video'">
+                                <input type="text" class="form-control" v-model="slide.rightUrl" placeholder="视频嵌入链接 / iframe代码 / B站链接" style="font-size:13px;">
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -4172,6 +4211,20 @@ createApp({
         });
       }
     },
+    onSliderTypeChange(bi, si, side) {
+      var block = this.editingPc.blocks[bi];
+      var self = this;
+      if (!block._quillSlides) block._quillSlides = [];
+      if (!block._quillSlides[si]) block._quillSlides[si] = { left: null, right: null };
+      if (side === 'left') {
+        if (block._quillSlides[si].left) { block._quillSlides[si].left.container.remove(); block._quillSlides[si].left = null; }
+      } else {
+        if (block._quillSlides[si].right) { block._quillSlides[si].right.container.remove(); block._quillSlides[si].right = null; }
+      }
+      this.$nextTick(function() {
+        self.initQuillEditors();
+      });
+    },
     async uploadFormulaImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -4342,8 +4395,9 @@ createApp({
         block._quillL = null;
         block._quillR = null;
         if (block._quillSlides) {
-          block._quillSlides.forEach(function(ql) {
-            if (ql && ql.container) ql.container.remove();
+          block._quillSlides.forEach(function(q) {
+            if (q && q.left && q.left.container) q.left.container.remove();
+            if (q && q.right && q.right.container) q.right.container.remove();
           });
           block._quillSlides = null;
         }
@@ -4401,7 +4455,10 @@ createApp({
         _rightType: 'text',
         _rightText: '',
         _rightUrl: '',
-        _slides: [{ leftType: 'image', leftUrl: '', rightHtml: '' }],
+        _slides: [{
+          leftType: 'image', leftUrl: '', leftText: '', leftHtml: '',
+          rightType: 'text', rightUrl: '', rightText: '', rightHtml: ''
+        }],
       };
       this._initBlockViewData(block);
       return block;
@@ -4422,7 +4479,21 @@ createApp({
         block._rightUrl = (block.content && block.content.rightUrl) ? block.content.rightUrl : '';
       } else if (block.blockType === 'slider') {
         var slides = (block.content && block.content.slides) ? block.content.slides : [];
-        block._slides = slides.length > 0 ? slides.map(function(s) { return { leftType: s.leftType || 'image', leftUrl: s.leftUrl || '', rightHtml: s.rightHtml || '' }; }) : [{ leftType: 'image', leftUrl: '', rightHtml: '' }];
+        block._slides = slides.length > 0 ? slides.map(function(s) {
+          return {
+            leftType: s.leftType || 'image',
+            leftUrl: s.leftUrl || '',
+            leftText: s.leftText || '',
+            leftHtml: s.leftHtml || '',
+            rightType: s.rightType || 'text',
+            rightUrl: s.rightUrl || '',
+            rightText: s.rightText || '',
+            rightHtml: s.rightHtml || ''
+          };
+        }) : [{
+          leftType: 'image', leftUrl: '', leftText: '', leftHtml: '',
+          rightType: 'text', rightUrl: '', rightText: '', rightHtml: ''
+        }];
         block._quillSlides = [];
       } else {
         // richtext — content 在 Quill 实例中管理
@@ -4451,7 +4522,10 @@ createApp({
         _videoUrl: '',
         _imageUrl: '',
         _imageAlt: '',
-        _slides: [{ leftType: 'image', leftUrl: '', rightHtml: '' }],
+        _slides: [{
+          leftType: 'image', leftUrl: '', leftText: '', leftHtml: '',
+          rightType: 'text', rightUrl: '', rightText: '', rightHtml: ''
+        }],
       };
       this.editingPc.blocks.push(block);
       this.$nextTick(() => {
@@ -4510,28 +4584,38 @@ createApp({
     },
     removeSliderSlide(bi, si) {
       var block = this.editingPc.blocks[bi];
-      // 销毁该滑块的 Quill
+      // 销毁该滑块的 Quill（左侧和右侧）
       if (block._quillSlides && block._quillSlides[si]) {
-        block._quillSlides[si].container.remove();
+        if (block._quillSlides[si].left) block._quillSlides[si].left.container.remove();
+        if (block._quillSlides[si].right) block._quillSlides[si].right.container.remove();
         block._quillSlides.splice(si, 1);
       }
       block._slides.splice(si, 1);
     },
-    uploadSliderImage(event, bi, si) {
+    uploadSliderImage(event, bi, si, side) {
       var file = event.target.files[0];
       if (!file) return;
       var self = this;
       this.uploadingBlockImage = true;
       var formData = new FormData();
       formData.append('file', file);
-      this.api('/upload', { method: 'POST', body: formData, headers: {} }).then(function(data) {
+      fetch(API + '/upload/image', {
+        method: 'POST',
+        headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+        body: formData,
+      }).then(function(res) { return res.json(); }).then(function(data) {
         self.uploadingBlockImage = false;
-        if (data && data.url) {
-          self.editingPc.blocks[bi]._slides[si].leftUrl = data.url;
+        if (data.code === 0 && data.data && data.data.url) {
+          var urlField = side === 'right' ? 'rightUrl' : 'leftUrl';
+          self.editingPc.blocks[bi]._slides[si][urlField] = data.data.url;
+        } else {
+          self.showAlert('上传失败：' + (data.message || '未知错误'));
         }
       }).catch(function(e) {
         self.uploadingBlockImage = false;
         self.showAlert('上传失败：' + e.message);
+      }).finally(function() {
+        event.target.value = '';
       });
     },
     onDocSelect(bi, fi, event) {
@@ -4611,10 +4695,17 @@ createApp({
           for (var si = 0; si < block._slides.length; si++) {
             var slide = block._slides[si];
             var ql = block._quillSlides && block._quillSlides[si];
+            var qlLeft = ql && ql.left ? ql.left : null;
+            var qlRight = ql && ql.right ? ql.right : null;
             slides.push({
               leftType: slide.leftType || 'image',
               leftUrl: slide.leftUrl || '',
-              rightHtml: ql ? ql.root.innerHTML : (slide.rightHtml || '')
+              leftText: (slide.leftType === 'text') ? (slide.leftText || '') : '',
+              leftHtml: (slide.leftType === 'richtext' && qlLeft) ? qlLeft.root.innerHTML : (slide.leftHtml || ''),
+              rightType: slide.rightType || 'text',
+              rightUrl: slide.rightUrl || '',
+              rightText: (slide.rightType === 'text') ? (slide.rightText || '') : '',
+              rightHtml: (slide.rightType === 'richtext' && qlRight) ? qlRight.root.innerHTML : (slide.rightHtml || '')
             });
           }
           content = { slides: slides };
@@ -4678,26 +4769,48 @@ createApp({
             });
           }
         } else if (block.blockType === 'slider') {
-          // 每个滑块的右侧文字 Quill
+          // 每个滑块的左侧和/或右侧富文本 Quill
           (block._slides || []).forEach(function(slide, si) {
-            var elId = 'qled-slider-right-' + block._key + '-' + si;
-            // 初始化 Quill 编辑器（延迟匹配）
-            setTimeout(function() {
-              var el = document.getElementById(elId);
-              if (!el || el.querySelector('.ql-editor')) return;
-              if (el.offsetHeight > 0) {
-                var ql = new Quill(el, {
-                  theme: 'snow',
-                  modules: { toolbar: QUILL_TOOLBAR },
-                  placeholder: '输入右侧文字内容...',
-                });
-                if (!block._quillSlides) block._quillSlides = [];
-                block._quillSlides[si] = ql;
-                if (slide.rightHtml) {
-                  ql.root.innerHTML = slide.rightHtml;
-                }
-              }
-            }, 200);
+            if (!block._quillSlides) block._quillSlides = [];
+            if (!block._quillSlides[si]) block._quillSlides[si] = { left: null, right: null };
+            // 左侧富文本
+            if (slide.leftType === 'richtext') {
+              (function(slideData, index) {
+                setTimeout(function() {
+                  var elId = 'qled-slider-left-' + block._key + '-' + index;
+                  var el = document.getElementById(elId);
+                  if (!el || el.querySelector('.ql-editor')) return;
+                  if (el.offsetHeight > 0) {
+                    var ql = new Quill(el, {
+                      theme: 'snow',
+                      modules: { toolbar: QUILL_TOOLBAR },
+                      placeholder: '输入左侧文字内容...',
+                    });
+                    block._quillSlides[index].left = ql;
+                    if (slideData.leftHtml) ql.root.innerHTML = slideData.leftHtml;
+                  }
+                }, 200);
+              })(slide, si);
+            }
+            // 右侧富文本
+            if (slide.rightType === 'richtext') {
+              (function(slideData, index) {
+                setTimeout(function() {
+                  var elId = 'qled-slider-right-' + block._key + '-' + index;
+                  var el = document.getElementById(elId);
+                  if (!el || el.querySelector('.ql-editor')) return;
+                  if (el.offsetHeight > 0) {
+                    var ql = new Quill(el, {
+                      theme: 'snow',
+                      modules: { toolbar: QUILL_TOOLBAR },
+                      placeholder: '输入右侧文字内容...',
+                    });
+                    block._quillSlides[index].right = ql;
+                    if (slideData.rightHtml) ql.root.innerHTML = slideData.rightHtml;
+                  }
+                }, 200);
+              })(slide, si);
+            }
           });
         }
       });
