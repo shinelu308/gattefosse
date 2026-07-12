@@ -6054,7 +6054,7 @@ createApp({
       if (full._blocks) {
         full._blocks.forEach((blk, i) => {
           if (blk.type === 'product_promo') {
-            this.$set(this.productSearchData, i, { keyword: '', results: [], searching: false });
+            this.productSearchData[i] = { keyword: '', results: [], searching: false };
           }
         });
       }
@@ -6118,7 +6118,7 @@ createApp({
       // 初始化产品搜索状态
       if (type === 'product_promo') {
         var bi = this.editingContent._blocks.length - 1;
-        this.$set(this.productSearchData, bi, { keyword: '', results: [], searching: false });
+        this.productSearchData[bi] = { keyword: '', results: [], searching: false };
       }
     },
     movePageBlock(index, direction) {
