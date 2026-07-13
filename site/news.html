@@ -488,7 +488,10 @@
   function checkLoginStatus() { return false; }
   const { createApp, reactive, onMounted } = Vue;
 
-  var typeFilter = new URLSearchParams(window.location.search).get('type') || '';
+  // 兼容旧链接 ?type=2（活动）/1（新闻）等数字编码
+  var _rawType = new URLSearchParams(window.location.search).get('type') || '';
+  var _typeMap = { '1': 'news', '2': 'event' };
+  var typeFilter = _typeMap[_rawType] || _rawType;
   var categoryFilter = new URLSearchParams(window.location.search).get('cat') || '';
   var subjectFilter = new URLSearchParams(window.location.search).get('tags') || '';
   var keyword = new URLSearchParams(window.location.search).get('keyword') || '';
