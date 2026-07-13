@@ -6641,9 +6641,10 @@ createApp({
           throw new Error('token 校验失败');
         }
       } catch (e) {
-        console.warn('Token 校验不通过，跳转登录页:', e.message);
-        this.token = '';
-        this.currentPage = 'dashboard';
+        // 校验失败时不清空 token，让用户能继续使用；
+        // 因为 Edge 跟踪防护可能临时拦截了 /auth/me 请求
+        console.warn('Token 校验失败（可能 Edge 拦截），保留 token 让用户继续使用:', e.message);
+        // 不清空 this.token，不重置 currentPage
         return;
       }
       // token 有效，加载数据
