@@ -47,8 +47,11 @@
     href="sites/default/files/css/css_omGwTuIhTAIrOAtS9TAhZzxzJ8ya9bmpczQ2tEDKhlc.css" />
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
-  <link rel="stylesheet" media="all"
+  <!-- 537KB 主题CSS 异步加载，不阻塞首屏渲染 -->
+  <link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
     href="sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+  <noscript><link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" /></noscript>
   <!-- 修复 Drupal main{display:flex} 导致的页面结构错乱 -->
   <style>
     .path-personal-care main#app,
@@ -493,14 +496,20 @@
         }
 
         onMounted(async function() {
-          try {
-            // 1. 加载页面区块
-            var res = await axios.get('/api/content/pages/personal-care?t=' + Date.now());
-            var pageData = res.data?.data;
+          // 并行加载所有数据，减少串行等待时间
+          var [blocksRes, newsRes, eventRes, formRes] = await Promise.allSettled([
+            axios.get('/api/content/pages/personal-care?t=' + Date.now()),
+            axios.get('/api/news', { params: { type: 'article', category: 'pc', limit: 4 } }),
+            axios.get('/api/news', { params: { type: 'event', category: 'pc', limit: 3 } }),
+            axios.get('/api/formulations', { params: { limit: 3 } })
+          ]);
+
+          // 1. 处理页面区块
+          if (blocksRes.status === 'fulfilled') {
+            var pageData = blocksRes.value.data?.data;
             if (pageData && pageData.content) {
               var blocks = typeof pageData.content === 'string' ? JSON.parse(pageData.content) : pageData.content;
               data.blocks = blocks;
-              console.log('[DIAG] blocks loaded:', blocks.map(function(b){return b.type;}).join(','));
               // 提取 hero 用于面包屑/背景
               var heroBlock = blocks.find(function(b) { return b.type === 'hero'; });
               if (heroBlock) {
@@ -512,12 +521,11 @@
                 data.hero.videoType = heroBlock.data.videoType || 'youtube';
               }
             }
-          } catch(e) { console.error('Failed to load page blocks:', e); }
+          } else { console.error('Failed to load page blocks:', blocksRes.reason); }
 
-          try {
-            // 2. 加载最新新闻/文章
-            var newsRes = await axios.get('/api/news', { params: { type: 'article', category: 'pc', limit: 4 } });
-            var newsItems = newsRes.data?.data?.list || [];
+          // 2. 处理新闻/文章
+          if (newsRes.status === 'fulfilled') {
+            var newsItems = newsRes.value.data?.data?.list || [];
             if (newsItems.length > 0) {
               data.newsData = [newsItems[0]];
               data.articlesData = newsItems.slice(1);
@@ -539,12 +547,11 @@
                 item.catName = item.articleType || '文章';
               });
             }
-          } catch(e) { console.error('Failed to load news:', e); }
+          } else { console.error('Failed to load news:', newsRes.reason); }
 
-          try {
-            // 3. 加载活动/事件
-            var eventRes = await axios.get('/api/news', { params: { type: 'event', category: 'pc', limit: 3 } });
-            var eventItems = eventRes.data?.data?.list || [];
+          // 3. 处理活动/事件
+          if (eventRes.status === 'fulfilled') {
+            var eventItems = eventRes.value.data?.data?.list || [];
             data.eventData = eventItems.map(function(item) {
               var f = fmtDate(item.publishedDate);
               var ef = item.eventEndDate ? fmtDate(item.eventEndDate) : { date: '' };
@@ -560,12 +567,11 @@
                 country: ''
               };
             });
-          } catch(e) { console.error('Failed to load events:', e); }
+          } else { console.error('Failed to load events:', eventRes.reason); }
 
-          try {
-            // 4. 加载配方
-            var formRes = await axios.get('/api/formulations', { params: { limit: 3 } });
-            var formItems = formRes.data?.data?.list || [];
+          // 4. 处理配方
+          if (formRes.status === 'fulfilled') {
+            var formItems = formRes.value.data?.data?.list || [];
             data.formulationList = formItems.map(function(item) {
               return {
                 goodsName: item.name,
@@ -576,7 +582,7 @@
                 favUrl: '/account.html?url=/personal-care/formulation-finder.html'
               };
             });
-          } catch(e) { console.error('Failed to load formulations:', e); }
+          } else { console.error('Failed to load formulations:', formRes.reason); }
         });
 
         // 获取 hero 背景样式
@@ -605,7 +611,6 @@
     });
     app.mount("#app");
   </script>
-<script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>   
 
 <script defer src="sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
 <script defer src="sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
