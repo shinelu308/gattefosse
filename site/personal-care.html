@@ -382,21 +382,21 @@
               </div>
             </div>
 
-            <!-- 双CTA卡片区块（独立渲染，位置在 events 下方） -->
+            <!-- 双CTA卡片区块（独立渲染，位置在 events 下方，样式匹配原站Drupal c-card） -->
             <div v-if="getCtaBlock() && getCtaBlock().data && getCtaBlock().data.cards && getCtaBlock().data.cards.length > 0" class="js-block-contents s-tunnel-content" style="margin-bottom:40px;">
               <div class="container">
                 <h2 v-if="getCtaBlock().data.title" class="u-title-styled" style="text-align:center;margin-bottom:24px;">{{ getCtaBlock().data.title }}</h2>
-                <div class="js-block-contents-slider s-tunnel-content__slider" style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
-                  <div v-for="(card, ci) in getCtaBlock().data.cards" :key="ci" class="c-card c-card--bordered" style="flex:1;min-width:280px;max-width:480px;">
+                <div class="c-cards" style="display:flex;gap:2.4rem 3.15rem;flex-wrap:wrap;justify-content:center;">
+                  <div v-for="(card, ci) in getCtaBlock().data.cards" :key="ci" class="c-card c-card--bordered" style="flex:1;max-width:36.9rem;min-width:28rem;">
                     <div class="c-card__image">
-                      <img :src="card.imageUrl" :alt="card.title" width="369" height="208" loading="lazy" class="img-fluid" style="width:100%;display:block;">
+                      <img :src="card.imageUrl" :alt="card.title" loading="lazy" class="img-fluid">
                     </div>
-                    <div class="c-card__content" style="padding:20px;">
-                      <span v-if="card.subtitle" class="c-card__category" style="font-size:12px;color:var(--green);text-transform:uppercase;">{{ card.subtitle }}</span>
-                      <h3 class="c-card__title" style="font-size:16px;margin:8px 0;">
-                        <a :href="card.linkUrl" class="u-cover">{{ card.title }}</a>
+                    <div class="c-card__content" style="padding:2rem;">
+                      <span v-if="card.subtitle" class="c-card__category">{{ card.subtitle }}</span>
+                      <h3 class="c-card__title" style="margin-top:0.8rem !important;">
+                        <a :href="card.linkUrl" class="c-card__title-link u-cover">{{ card.title }}</a>
                       </h3>
-                      <p class="c-card__summary" style="font-size:13px;color:#666;">{{ card.description }}</p>
+                      <p class="c-card__summary" style="font-size:1.3rem;color:#666;line-height:1.5;margin:0.8rem 0 0 0;">{{ card.description }}</p>
                     </div>
                   </div>
                 </div>
