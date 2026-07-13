@@ -3675,17 +3675,20 @@ const safeStorage = {
       const lsVal = localStorage.getItem(key);
       // 如果 localStorage 有值，同时同步到 cookie（双保险）
       if (lsVal) { try { this._cookieSet(key, lsVal); } catch(e) {} }
-      return lsVal || cookieVal;
+      return lsVal || cookieVal || sessionStorage.getItem(key);
     }
-    return cookieVal;
+    // localStorage 不可用时，优先 cookie，再试 sessionStorage
+    return cookieVal || sessionStorage.getItem(key);
   },
   setItem(key, value) {
     try { localStorage.setItem(key, value); } catch(e) {}
+    try { sessionStorage.setItem(key, value); } catch(e) {}
     // 无论 localStorage 是否可用，都写 cookie 兜底
     try { this._cookieSet(key, value); } catch(e) {}
   },
   removeItem(key) {
     try { localStorage.removeItem(key); } catch(e) {}
+    try { sessionStorage.removeItem(key); } catch(e) {}
     try { this._cookieSet(key, '', 0); } catch(e) {}
   },
 };
