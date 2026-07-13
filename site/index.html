@@ -142,8 +142,8 @@
             <div class="container">
               <h2 class="s-tunnel-news__title u-title-styled"><a href="/news.html?type=1">新闻与活动</a></h2>
               <div class="s-home-news__grid">
-                <div class="s-home-news__first">
-	          <div :class="data.formData[0].class" class="c-card--img">
+                <div class="s-home-news__first" v-if="data.formData[0]">
+                  <div :class="data.formData[0].class" class="c-card--img">
                     <div class="c-card__content">
                       <ul class="c-card__tag">
                         <li class="c-card__tag-item">{{data.formData[0].goodsCatName}}</li>
@@ -154,39 +154,24 @@
                       <div class="c-card__summary">{{data.formData[0].summary}} </div>
                     </div>
                     <div class="c-card__image">
-                      <img :src="data.formData[0].thumb" width="569" height="425" alt="incos-awards-dermolea"
+                      <img :src="data.formData[0].thumb" width="569" height="425" :alt="data.formData[0].title"
                         class="card__image img-fluid" loading="lazy">
                     </div>
                   </div>
                 </div>
                 <div class="s-home-news__second">
-                  <div :class="data.formData[1].class" style="height:197px">
+                  <div v-for="(item, fi) in data.formData.slice(1)" :key="fi" :class="item.class" style="height:197px">
                     <div class="c-card__content">
                       <ul class="c-card__tag">
-                        <li class="c-card__tag-item">{{data.formData[1].goodsCatName}}</li>
+                        <li class="c-card__tag-item">{{item.goodsCatName}}</li>
                       </ul>
                       <h3 class="c-card__title">
-                        <a :href="data.formData[1].url" class="c-card__title-link">{{data.formData[1].title}}</a>
+                        <a :href="item.url" class="c-card__title-link">{{item.title}}</a>
                       </h3>
-                      <div class="c-card__summary">{{data.formData[1].summary}} </div>
+                      <div class="c-card__summary">{{item.summary}} </div>
                     </div>
                     <div class="c-card__image">
-                      <img :src="data.formData[1].thumb" width="261" height="197"
-                        alt="Makeup kit 2023 - Color Cosmetics Essentials" class="card__image img-fluid" loading="lazy">
-                    </div>
-                  </div>
-                  <div :class="data.formData[2].class" style="height:197px">
-                    <div class="c-card__content">
-                      <ul class="c-card__tag">
-                        <li class="c-card__tag-item">{{data.formData[2].goodsCatName}}</li>
-                      </ul>
-                      <h3 class="c-card__title">
-                        <a :href="data.formData[2].url" class="c-card__title-link">{{data.formData[2].title}}</a>
-                      </h3>
-                      <div class="c-card__summary">{{data.formData[2].summary}} </div>
-                    </div>
-                    <div class="c-card__image">
-                      <img :src="data.formData[2].thumb" width="261" height="197" alt="Emulium dermolea MB"
+                      <img :src="item.thumb" width="261" height="197" :alt="item.title"
                         class="card__image img-fluid" loading="lazy">
                     </div>
                   </div>
@@ -201,68 +186,23 @@
                 <div class="s-tunnel-events__list">
                   <div class="js-events-slider">
                     <div class="view-content">
-                      <div  :class="data.eventData[0].class">
+                      <div v-for="(evt, ei) in data.eventData" :key="ei" :class="evt.class">
                         <div class="c-card__content">
-                          <h3 class="c-card__title">{{data.eventData[0].title}}</h3>
+                          <h3 class="c-card__title">{{evt.title}}</h3>
                           <div class="c-card__left">
                             <p class="c-card__date" style="padding-right: 2.2rem; padding-top: 1.6rem; line-height: 2rem;">
-                              <span class="date" style="font-size:14px">{{data.eventData[0].eventTimeDate}}日~{{data.eventData[0].eventEndTimeDate}}<span v-if="data.eventData[0].eventEndTimeDate != null">日</span></span>
-                              <span class="year" style="font-size:16px">{{data.eventData[0].eventTimeYear}}</span>
+                              <span class="date" style="font-size:14px">{{evt.eventTimeDate}}日~{{evt.eventEndTimeDate}}<span v-if="evt.eventEndTimeDate != null">日</span></span>
+                              <span class="year" style="font-size:16px">{{evt.eventTimeYear}}</span>
                             </p>
                             <div class="c-card__event-info">
                               <p class="c-card__place">
-                                {{data.eventData[0].eventAddress}}
+                                {{evt.eventAddress}}
                               </p>
-                              <!--p class="c-card__city">{{data.eventData[0].city}}, {{data.eventData[0].country}}</p-->
                             </div>
                           </div>
                           <div class="c-card__right">
                             <ul class="c-card__tag">
-                              <li class="c-card__tag-item">{{data.eventData[0].goodsCatName}}</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div  :class="data.eventData[1].class">
-                        <div class="c-card__content">
-                          <h3 class="c-card__title">{{data.eventData[1].title}}</h3>
-                          <div class="c-card__left">
-                            <p class="c-card__date" style="padding-right: 2.2rem; padding-top: 1.6rem; line-height: 2rem;">
-                              <span class="date" style="font-size:14px">{{data.eventData[1].eventTimeDate}}日~{{data.eventData[1].eventEndTimeDate}}<span v-if="data.eventData[1].eventEndTimeDate != null">日</span></span>
-                              <span class="year" style="font-size:16px">{{data.eventData[1].eventTimeYear}}</span>
-                            </p>
-                            <div class="c-card__event-info">
-                              <p class="c-card__place">
-                                {{data.eventData[1].eventAddress}}
-                              </p>
-                              <!--p class="c-card__city">{{data.eventData[1].city}}, {{data.eventData[1].country}}</p-->
-                            </div>
-                          </div>
-                          <div class="c-card__right">
-                            <ul class="c-card__tag">
-                              <li class="c-card__tag-item">{{data.eventData[1].goodsCatName}}</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div  :class="data.eventData[2].class">
-                        <div class="c-card__content">
-                          <h3 class="c-card__title">{{data.eventData[2].title}}</h3>
-                          <div class="c-card__left">
-                            <p class="c-card__date" style="padding-right: 2.2rem; padding-top: 1.6rem; line-height: 2rem;">
-                              <span class="date" style="font-size:14px">{{data.eventData[2].eventTimeDate}}日~{{data.eventData[2].eventEndTimeDate}}<span v-if="data.eventData[2].eventEndTimeDate != null">日</span></span>
-                              <span class="year" style="font-size:16px">{{data.eventData[2].eventTimeYear}}</span>
-                            </p>
-                            <div class="c-card__event-info">
-                              <p class="c-card__place">
-                                {{data.eventData[2].eventAddress}}
-                              </p>
-                              <!--p class="c-card__city">{{data.eventData[2].city}}, {{data.eventData[2].country}}</p-->
-                            </div>
-                          </div>
-                          <div class="c-card__right">
-                            <ul class="c-card__tag">
-                              <li class="c-card__tag-item">{{data.eventData[2].goodsCatName}}</li>
+                              <li class="c-card__tag-item">{{evt.goodsCatName}}</li>
                             </ul>
                           </div>
                         </div>
