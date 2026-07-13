@@ -56,8 +56,19 @@ app.use('/admin', (req, res, next) => {
   next();
 }, express.static(path.resolve(__dirname, '../../admin')));
 
-// 前端网站静态文件
-app.use(express.static(path.resolve(__dirname, '../../site')));
+// 前端网站静态文件（CSS/JS/图片缓存1天，HTML缓存1小时）
+app.use((req, res, next) => {
+  // 仅对静态资源路径生效，不缓存 API 请求
+  if (req.path.startsWith('/api/')) return next();
+  const url = req.url;
+  const ext = url.split('?')[0].split('.').pop()?.toLowerCase() || '';
+  if (['css', 'js', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot'].includes(ext)) {
+    res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+  } else if (url.endsWith('.html') || url === '/' || !url.includes('.')) {
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+  }
+  next();
+}, express.static(path.resolve(__dirname, '../../site')));
 
 // 健康检查
 app.get('/api/health', (_req, res) => {
