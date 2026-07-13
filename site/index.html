@@ -40,6 +40,7 @@
   <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <link rel="stylesheet" media="all"
     href="/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css" />
   <link rel="stylesheet" media="all"
@@ -49,8 +50,11 @@
     href="/sites/default/files/css/css_JbGzQTXzOW_df1NA8cwUqkKCq0TpkqeMa4YWI2XM-Qo.css" />
   <link rel="stylesheet" media="all"
     href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
-  <link rel="stylesheet" media="all"
+  <!-- 552KB 主题CSS 异步加载，不阻塞首屏 -->
+  <link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
     href="/sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" />
+  <noscript><link rel="stylesheet" media="all"
+    href="/sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" /></noscript>
 </head>
 
 <body class="path-frontpage    bg- d-flex flex-column">
@@ -156,7 +160,7 @@
               </div>
             </div>
           </div>
-          <div class="s-tunnel-news s-home-news is-homepage">
+          <div class="s-tunnel-news s-home-news is-homepage" v-if="data.formData.length > 0">
             <div class="container">
               <h2 class="s-tunnel-news__title u-title-styled"><a href="/news.html?type=1">新闻与活动</a></h2>
               <div class="s-home-news__grid">
@@ -212,7 +216,7 @@
               </div> <!--newsApp end-->
             </div>
           </div>
-          <div class="s-tunnel-events">
+          <div class="s-tunnel-events" v-if="data.eventData.length > 0">
             <div class="container">
               <div class="s-tunnel-events__container">
                 <h2 class="s-tunnel-events__title u-title-styled"><a href="/news.html?type=2">遇见我们</a></h2>
@@ -473,59 +477,99 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: [{
-          title: '第94届API China制药展',
-          summary: '05月13日~05月15日 2026 / 上海国家会展中心 2.1F30',
-          goodsCatName: '药用辅料',
-          class: 'c-card c-card--bordered c-card--horizontal has-img theme-pharma',
-          url: 'news-detail.html?id=1',
-          thumb: '/sites/default/files/styles/card_default_big/public/2023-11/thumbnail-incos-awards-dermolea2.jpg.jpg',
-          CreatedAt: '2026-05-13',
-          catName: '新闻与活动'
-        }, {
-          title: '2026 In-Cosmetics 国际化妆品原料展',
-          summary: '04月14日~04月16日 2026 / 法国巴黎 展位号:3G80',
-          goodsCatName: '个人护理',
-          class: 'c-card c-card--bordered c-card--horizontal has-img theme-cosm',
-          url: 'news-detail.html?id=2',
-          thumb: '/sites/default/files/styles/card_default_big/public/2024-05/design-sans-titre-2.png.webp',
-          CreatedAt: '2026-04-14',
-          catName: '新闻与活动'
-        }, {
-          title: '嘉法狮亮相中法美妆日',
-          summary: '03月27日~2026',
-          goodsCatName: '公司资讯',
-          class: 'c-card c-card--bordered c-card--horizontal has-img',
-          url: 'news-detail.html?id=3',
-          thumb: '/sites/default/files/styles/card_default_big/public/2023-09/2-peaux-sensibles-372x208.jpg.jpg',
-          CreatedAt: '2026-03-27',
-          catName: '新闻与活动'
-        }],
-        eventData: [{
-          title: '2026 In-Cosmetics 国际化妆品原料展',
-          eventTimeYear: '2026', eventTimeDate: '04月14', eventEndTimeDate: '04月16',
-          eventAddress: '法国巴黎 展位号:3G80',
-          goodsCatName: '个人护理', class: 'c-card c-card--bordered c-card--event theme-cosm', catName: '遇见我们'
-        }, {
-          title: '2026中国化妆品、个人和家庭护理用品原料展览会 (PCHi)',
-          eventTimeYear: '2026', eventTimeDate: '03月18', eventEndTimeDate: '03月20',
-          eventAddress: '中国杭州 杭州大会展中心 展位号2F08',
-          goodsCatName: '个人护理', class: 'c-card c-card--bordered c-card--event theme-cosm', catName: '遇见我们'
-        }, {
-          title: '第94届API China制药展',
-          eventTimeYear: '2026', eventTimeDate: '05月13', eventEndTimeDate: '05月15',
-          eventAddress: '上海国家会展中心 2.1F30',
-          goodsCatName: '药用辅料', class: 'c-card c-card--bordered c-card--event theme-pharma', catName: '遇见我们'
-        }],
+        // 页面区块（从 API 加载）
+        blocks: [],
+        // 新闻/活动（从 API 加载）
+        formData: [],
+        eventData: [],
+        // hero 引用
+        hero: { title: '', summary: '', backgroundImage: '', buttons: [] },
+        // 主题图片
         indexAd: [
           { adUploadFile: '/sites/default/files/styles/homepage_bu/public/2023-06/gettyimages-1460122345-copie_0.webp' },
           { adUploadFile: '/sites/default/files/styles/homepage_bu/public/2023-06/pharma-site.webp' }
         ]
       });
+
+      // 格式化日期
+      function fmtDate(d) {
+        if (!d) return { year: '', date: '' };
+        var parts = d.split('-');
+        if (parts.length === 3) return { year: parts[0], date: parts[1] + '月' + parseInt(parts[2]) };
+        return { year: '', date: d };
+      }
+
+      onMounted(async function() {
+        // 并行加载页面区块 + 新闻 + 活动
+        var [blocksRes, newsRes, eventRes] = await Promise.allSettled([
+          axios.get('/api/content/pages/index?t=' + Date.now()),
+          axios.get('/api/news', { params: { type: 'news', limit: 3 } }),
+          axios.get('/api/news', { params: { type: 'event', limit: 3 } })
+        ]);
+
+        // 1. 处理页面区块
+        if (blocksRes.status === 'fulfilled') {
+          var pageData = blocksRes.value.data?.data;
+          if (pageData && pageData.content) {
+            var blocks = typeof pageData.content === 'string' ? JSON.parse(pageData.content) : pageData.content;
+            data.blocks = blocks;
+            // 提取 hero
+            var heroBlock = blocks.find(function(b) { return b.type === 'hero'; });
+            if (heroBlock) {
+              data.hero.title = heroBlock.data.title || '';
+              data.hero.summary = heroBlock.data.summary || '';
+              data.hero.backgroundImage = heroBlock.data.backgroundImage || '';
+              data.hero.buttons = heroBlock.data.buttons || [];
+            }
+          }
+        }
+
+        // 2. 处理新闻
+        if (newsRes.status === 'fulfilled') {
+          var newsItems = newsRes.value.data?.data?.list || [];
+          data.formData = newsItems.map(function(item) {
+            var f = fmtDate(item.publishedDate);
+            var cat = item.category === 'pc' ? '个人护理' : item.category === 'pharma' ? '药用辅料' : '公司资讯';
+            var theme = item.category === 'pc' ? 'theme-cosm' : item.category === 'pharma' ? 'theme-pharma' : '';
+            return {
+              title: item.title,
+              summary: (f.date ? f.date + '日 ' : '') + (item.location || '') + (item.booth ? ' 展位号:' + item.booth : ''),
+              goodsCatName: cat,
+              class: 'c-card c-card--bordered c-card--horizontal has-img ' + theme,
+              url: '/news-detail.html?id=' + item.id,
+              thumb: item.imageUrl || '',
+              CreatedAt: item.publishedDate,
+              catName: '新闻与活动'
+            };
+          });
+        }
+
+        // 3. 处理活动
+        if (eventRes.status === 'fulfilled') {
+          var eventItems = eventRes.value.data?.data?.list || [];
+          data.eventData = eventItems.map(function(item) {
+            var f = fmtDate(item.publishedDate);
+            var ef = item.eventEndDate ? fmtDate(item.eventEndDate) : { date: '' };
+            var cat = item.category === 'pc' ? '个人护理' : item.category === 'pharma' ? '药用辅料' : '公司资讯';
+            var theme = item.category === 'pc' ? 'theme-cosm' : item.category === 'pharma' ? 'theme-pharma' : '';
+            return {
+              title: item.title,
+              eventTimeYear: f.year,
+              eventTimeDate: f.date,
+              eventEndTimeDate: ef.date,
+              eventAddress: (item.location || '') + (item.booth ? ' 展位号:' + item.booth : ''),
+              goodsCatName: cat,
+              class: 'c-card c-card--bordered c-card--event ' + theme,
+              catName: '遇见我们'
+            };
+          });
+        }
+      });
+
       return { data };
     }
   });
@@ -533,15 +577,14 @@
 </script>  
   <script type="application/json"
     data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node","currentPathIsAdmin":false,"isFront":true,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"bootstrap5\/bootstrap5-js-latest,bootstrap5\/global-styling,classy\/base,classy\/messages,classy\/node,core\/normalize,eolas_core\/cookie,eolas_core\/custom_css,eolas_core\/custom_js,extlink\/drupal.extlink,gattefosse\/global-styling,gattefosse\/homepage,gattefosse_home\/gattefosse_home,miniorange_saml\/miniorange_saml.admin,system\/base,views\/views.module","theme":"gattefosse","theme_token":null},"ajaxTrustedUrl":[],"data":{"extlink":{"extTarget":true,"extTargetNoOverride":true,"extNofollow":false,"extNoreferrer":true,"extFollowNoOverride":false,"extClass":"0","extLabel":"(link is external)","extImgClass":false,"extSubdomains":true,"extExclude":"","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":false,"extAlertText":"This link will take you to an external web site. We are not responsible for their content.","mailtoClass":"0","mailtoLabel":"(link sends email)","extUseFontAwesome":false,"extIconPlacement":"append","extFaLinkClasses":"fa fa-external-link","extFaMailtoClasses":"fa fa-envelope-o","whitelistedDomains":[]}},"domain_host":"matomo.eolas-services.com","matomo_tag_manager_id":"iB2UuiIw","user":{"uid":0,"permissionsHash":"a60b7506b39bcbb4f6258d25c37d24ce9be3caf126bc235874c3028aa6769123"}}</script>
-  <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
-  <script src="/sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
-  <script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1702986458"></script>
-  <script src="/sites/default/files/js/js_CakTCKDXbas6h4cjO-p3cfdeXS2Ta6Z3VRSKuH1NOuI.js"></script>
-  <script src="/sites/default/files/js/js_Gcam5urN617_ozhMyCDb5j0XZ8quFKM-cXiX4dWQiC8.js"></script>
-  <script defer src="https://umami.onlystyle.com.cn/script.js"
-    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
-</body>
+  <!-- 占位 tarteaucitron 和 slick，避免 Drupal 聚合 JS 调用时报错 -->
   <script>
-  function checkLoginStatus() { return false; }
-
+    window.tarteaucitron = { addScript: function(){}, load: function(){} };
+    if (typeof jQuery !== 'undefined') { (function($){ $.fn.slick = $.fn.slick || function(){}; })(jQuery); }
+  </script>
+<script defer src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
+<script defer src="/sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
+<script defer src="/sites/default/files/js/js_CakTCKDXbas6h4cjO-p3cfdeXS2Ta6Z3VRSKuH1NOuI.js"></script>
+<script defer src="/sites/default/files/js/js_Gcam5urN617_ozhMyCDb5j0XZ8quFKM-cXiX4dWQiC8.js"></script>
+</body>
 </html>
