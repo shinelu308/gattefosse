@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>系统设置</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; background: #f6f6f6; padding: 24px; }
+h1 { font-size: 20px; margin-bottom: 4px; color: #232426; }
+.subtitle { font-size: 13px; color: #999; margin-bottom: 20px; }
+.card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); max-width: 800px; }
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #333; }
+input, textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+button { padding: 8px 20px; background: #8EB73C; color: white; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; }
+.save-btn { margin-top: 20px; }
+.loading { color: #999; padding: 20px; text-align: center; }
+</style>
+</head>
+<body>
+<h1>系统设置</h1>
+<p class="subtitle">管理网站全局配置和SEO信息</p>
+<div class="card">
+<form id="settingsForm">
+  <div class="form-group">
+    <label>网站名称</label>
+    <input name="site_name" placeholder="站点名称">
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>联系邮箱</label>
+      <input name="contact_email" placeholder="info@gattefosse.cn">
+    </div>
+    <div class="form-group">
+      <label>联系地址</label>
+      <input name="contact_address" placeholder="办公地址">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>联系电话</label>
+      <input name="contact_phone" placeholder="+86 21 xxx">
+    </div>
+    <div class="form-group">
+      <label>ICP 备案号</label>
+      <input name="icp_number" placeholder="沪ICP备xxx号">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>首页 Meta 标题</label>
+    <input name="home_meta_title" placeholder="首页 SEO 标题">
+  </div>
+  <div class="form-group">
+    <label>首页 Meta 描述</label>
+    <textarea name="home_meta_description" rows="2" placeholder="首页 SEO 描述"></textarea>
+  </div>
+  <div class="form-group">
+    <label>页脚版权</label>
+    <input name="footer_copyright" placeholder="© 2024 Gattefossé">
+  </div>
+  <div class="form-group">
+    <label>社交媒体链接 (JSON)</label>
+    <textarea name="social_links" rows="3" placeholder='{"linkedin":"https://...","wechat":"..."}' style="font-family:monospace;"></textarea>
+  </div>
+  <button type="button" class="save-btn" onclick="saveSettings()">保存设置</button>
+</form>
+</div>
+<script>
+const API = parent.location.protocol + '//' + parent.location.host + '/api';
+function getToken() { return localStorage.getItem('admin_token') || ''; }
+async function api(path, opts = {}) {
+  const res = await fetch(API + path, {
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+    ...opts
+  });
+  const data = await res.json();
+  if (data.code !== 0) throw new Error(data.message);
+  return data.data;
+}
+async function loadSettings() {
+  try {
+    const list = await api('/settings');
+    const form = document.getElementById('settingsForm');
+    list.forEach(item => {
+      const el = form.elements[item.key];
+      if (el) el.value = item.value || '';
+    });
+  } catch(e) { console.error('Load failed:', e); }
+}
+async function saveSettings() {
+  const form = document.getElementById('settingsForm');
+  const formData = new FormData(form);
+  const settings = {};
+  for (const [k, v] of formData.entries()) settings[k] = v;
+  try {
+    await api('/settings', { method: 'POST', body: JSON.stringify({ settings }) });
+    alert('保存成功');
+  } catch(e) { alert('保存失败: ' + e.message); }
+}
+loadSettings();
+</script>
+</body>
+</html>

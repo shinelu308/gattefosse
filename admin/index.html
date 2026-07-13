@@ -747,6 +747,11 @@ const QUILL_TOOLBAR = [
 
       <div class="content">
 
+        <!-- iframe 子页面占位：作者管理/系统设置/标签管理 用独立子页面渲染 -->
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage'">
+          <iframe :src="iframeUrl" style="width:100%;height:85vh;border:0;background:white;display:block;" @load="onIframeLoad"></iframe>
+        </div>
+
         <!-- ==================== 总览 ==================== -->
         <div v-if="currentPage === 'dashboard'">
           <h1 class="page-title">总览</h1>
@@ -3818,6 +3823,15 @@ createApp({
     };
   },
   computed: {
+    iframeUrl() {
+      const map = {
+        'author-list': '/admin/authors-standalone.html',
+        'author-edit': '/admin/authors-standalone.html',
+        settings: '/admin/settings-standalone.html',
+        'tag-manage': '/admin/tag-manage-standalone.html',
+      };
+      return map[this.currentPage] || '';
+    },
     breadcrumbText() {
       const m = {
         dashboard: '总览',
@@ -3881,6 +3895,11 @@ createApp({
     },
   },
   methods: {
+    onIframeLoad(e) {
+      try {
+        e.target.style.height = e.target.contentWindow.document.body.scrollHeight + 50 + 'px';
+      } catch(ex) { /* cross-origin */ }
+    },
     pageRange(totalPages) {
       const n = Math.max(1, totalPages);
       const pages = [];
