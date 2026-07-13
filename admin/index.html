@@ -3572,7 +3572,7 @@ const QUILL_TOOLBAR = [
           </div>
 
           <!-- 标签编辑弹框 -->
-          <div class="modal-overlay" v-if="tagForm.show" @click.self="tagForm.show=false">
+          <div class="modal-overlay" v-show="tagForm.show" @click.self="tagForm.show=false">
             <div class="confirm-dialog" style="text-align:left;">
               <h3 class="confirm-title">{{ tagForm.isEdit ? '编辑标签' : '新增标签' }}</h3>
               <div class="form-group">
@@ -3613,7 +3613,7 @@ const QUILL_TOOLBAR = [
     </main>
 
     <!-- 确认弹框 -->
-    <div class="modal-overlay" v-if="confirmDialog.show" @click.self="confirmDialog.show=false">
+    <div class="modal-overlay" v-show="confirmDialog.show" @click.self="confirmDialog.show=false">
       <div class="confirm-dialog">
         <div class="confirm-icon">⚠</div>
         <h3 class="confirm-title">{{ confirmDialog.title }}</h3>
@@ -3626,9 +3626,9 @@ const QUILL_TOOLBAR = [
     </div>
 
     <!-- 信息提示弹框（替代浏览器 alert） -->
-    <div class="modal-overlay" v-if="alertDialog.show" @click.self="alertDialog.show=false">
+    <div class="modal-overlay" v-show="alertDialog.show" @click.self="alertDialog.show=false">
       <div class="confirm-dialog">
-        <div class="confirm-icon" :class="alertDialog.type">{{ alertDialog.type === 'error' ? '✕' : '✓' }}</div>
+        <div class="confirm-icon" :class="alertDialog.type">!</div>
         <h3 class="confirm-title">{{ alertDialog.title }}</h3>
         <p class="confirm-msg" style="white-space:pre-wrap;">{{ alertDialog.message }}</p>
         <div class="confirm-btns" style="justify-content:center;">
