@@ -481,7 +481,7 @@
           formulationList: [],
           eventData: [],
           // hero 快捷引用（从 blocks 中提取）
-          hero: { title: '个人护理', summary: '', backgroundImage: '', buttons: [], videoUrl: '', videoType: 'youtube' }
+          hero: { title: '个人护理', summary: '', backgroundImage: '', buttons: [], videoUrl: '', videoType: '' }
         });
         const ui = reactive({
           videoModalVisible: false
@@ -518,7 +518,7 @@
                 data.hero.backgroundImage = heroBlock.data.backgroundImage || '';
                 data.hero.buttons = heroBlock.data.buttons || [];
                 data.hero.videoUrl = heroBlock.data.videoUrl || '';
-                data.hero.videoType = heroBlock.data.videoType || 'youtube';
+                data.hero.videoType = heroBlock.data.videoType || '';
               }
             }
           } else { console.error('Failed to load page blocks:', blocksRes.reason); }
