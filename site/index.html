@@ -506,7 +506,7 @@
       onMounted(async function() {
         // 并行加载页面区块 + 新闻 + 活动
         var [blocksRes, newsRes, eventRes] = await Promise.allSettled([
-          axios.get('/api/content/pages/index?t=' + Date.now()),
+          axios.get('/api/content/pages/home?t=' + Date.now()),
           axios.get('/api/news', { params: { type: 'news', limit: 3 } }),
           axios.get('/api/news', { params: { type: 'event', limit: 3 } })
         ]);
