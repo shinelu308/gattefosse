@@ -227,15 +227,19 @@ model NewsEvent {
 
 // ===== 文章作者表 =====
 model Author {
-  id        Int       @id @default(autoincrement())
-  name      String
-  avatar    String?   // 头像 URL
-  bio       String?   // 作者简介
-  sortOrder Int       @default(0) @map("sort_order")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  id         Int       @id @default(autoincrement())
+  name       String
+  title      String?   // 职位，如 "Chief Operating Officer"
+  avatar     String?   // 头像 URL
+  bio        String?   // 作者简介/个人描述
+  department String?   // 所属部门，如 "Personal Care / R&D"
+  region     String?   // 所在地区，如 "USA" "France"
+  linkedin   String?   // LinkedIn 链接
+  sortOrder  Int       @default(0) @map("sort_order")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
 
-  articles  NewsEvent[]
+  articles   NewsEvent[]
 
   @@map("authors")
 }

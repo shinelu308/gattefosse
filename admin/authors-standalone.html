@@ -47,22 +47,28 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
         <th style="width:80px;">头像</th>
         <th style="width:160px;">姓名</th>
         <th>简介</th>
-        <th style="width:80px;">排序</th>
+        <th style="width:80px;">头像</th>
+        <th style="width:120px;">姓名</th>
+        <th style="width:140px;">职位</th>
+        <th>简介</th>
+        <th style="width:90px;">地区</th>
+        <th style="width:60px;">排序</th>
         <th style="width:160px;">操作</th>
       </tr></thead>
       <tbody>
         <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id }}</td>
           <td><img :src="item.avatar || ''" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid #ddd;" @error="$event.target.style.display='none'"></td>
           <td><strong>{{ item.name }}</strong></td>
-          <td style="color:#666;font-size:12px;">{{ item.bio || '-' }}</td>
+          <td style="color:#666;font-size:12px;">{{ item.title || '-' }}</td>
+          <td style="color:#666;font-size:12px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ item.bio || '-' }}</td>
+          <td>{{ item.region || '-' }}</td>
           <td>{{ item.sortOrder }}</td>
           <td>
-            <button class="btn" @click="editItem = item; showEdit = true">编辑</button>
+            <button class="btn" @click="editAuthor(item)">编辑</button>
             <button class="btn btn-danger" @click="deleteAuthor(item.id)">删除</button>
           </td>
         </tr>
-        <tr v-if="list.length === 0"><td colspan="6" style="text-align:center;padding:40px;color:#999;">暂无作者</td></tr>
+        <tr v-if="list.length === 0"><td colspan="7" style="text-align:center;padding:40px;color:#999;">暂无作者</td></tr>
       </tbody>
     </table>
     <div class="card-footer">共 {{ total }} 位作者</div>
@@ -70,20 +76,38 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
 
   <!-- 编辑弹框 -->
   <div v-if="showEdit" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;" @click.self="showEdit=false">
-    <div class="card" style="width:500px;margin:0;">
+    <div class="card" style="width:560px;max-height:90vh;overflow-y:auto;margin:0;">
       <div class="card-header"><h3 style="font-size:15px;">{{ editItem.id ? '编辑作者' : '新增作者' }}</h3></div>
       <div class="card-body">
         <div class="form-group">
-          <label>姓名</label>
+          <label>姓名 <span style="color:red;">*</span></label>
           <input class="form-control" v-model="editItem.name" placeholder="作者姓名">
+        </div>
+        <div class="form-group">
+          <label>职位</label>
+          <input class="form-control" v-model="editItem.title" placeholder="如：Technical Marketing Lead">
         </div>
         <div class="form-group">
           <label>头像 URL</label>
           <input class="form-control" v-model="editItem.avatar" placeholder="https://...">
         </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="form-group">
+            <label>部门</label>
+            <input class="form-control" v-model="editItem.department" placeholder="如：Personal Care / R&D">
+          </div>
+          <div class="form-group">
+            <label>地区</label>
+            <input class="form-control" v-model="editItem.region" placeholder="如：France / USA">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>LinkedIn</label>
+          <input class="form-control" v-model="editItem.linkedin" placeholder="https://linkedin.com/in/...">
+        </div>
         <div class="form-group">
           <label>简介</label>
-          <textarea class="form-control" v-model="editItem.bio" placeholder="作者简介..."></textarea>
+          <textarea class="form-control" v-model="editItem.bio" rows="3" placeholder="作者简介..."></textarea>
         </div>
         <div class="form-group">
           <label>排序</label>
@@ -112,7 +136,7 @@ createApp({
       total: 0,
       keyword: '',
       showEdit: false,
-      editItem: { id: null, name: '', avatar: '', bio: '', sortOrder: 0 },
+      editItem: { id: null, name: '', title: '', avatar: '', bio: '', department: '', region: '', linkedin: '', sortOrder: 0 },
       saving: false,
     };
   },
@@ -146,6 +170,10 @@ createApp({
         this.loadAuthors();
       } catch(e) { alert('保存失败: ' + e.message); }
       finally { this.saving = false; }
+    },
+    editAuthor(item) {
+      this.editItem = { ...item, sortOrder: item.sortOrder || 0 };
+      this.showEdit = true;
     },
     async deleteAuthor(id) {
       if (!confirm('确定删除?')) return;

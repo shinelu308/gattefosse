@@ -12,7 +12,12 @@ export async function listAuthors(req: Request, res: Response) {
     const limitNum = Math.min(100, Math.max(1, parseInt(String(limit))));
     const where: Record<string, unknown> = {};
     if (keyword) {
-      where.OR = [{ name: { contains: String(keyword) } }, { bio: { contains: String(keyword) } }];
+      where.OR = [
+        { name: { contains: String(keyword) } },
+        { bio: { contains: String(keyword) } },
+        { title: { contains: String(keyword) } },
+        { department: { contains: String(keyword) } },
+      ];
     }
     const [total, items] = await Promise.all([
       prisma.author.count({ where }),
@@ -50,10 +55,19 @@ export async function getAuthor(req: Request, res: Response) {
  */
 export async function createAuthor(req: Request, res: Response) {
   try {
-    const { name, avatar, bio, sortOrder } = req.body;
+    const { name, title, avatar, bio, department, region, linkedin, sortOrder } = req.body;
     if (!name) return res.status(400).json(fail('作者姓名不能为空'));
     const item = await prisma.author.create({
-      data: { name, avatar: avatar || null, bio: bio || null, sortOrder: sortOrder || 0 },
+      data: {
+        name,
+        title: title || null,
+        avatar: avatar || null,
+        bio: bio || null,
+        department: department || null,
+        region: region || null,
+        linkedin: linkedin || null,
+        sortOrder: sortOrder || 0,
+      },
     });
     return res.json(success(item, '创建成功'));
   } catch (error) {
@@ -70,11 +84,15 @@ export async function updateAuthor(req: Request, res: Response) {
     const id = parseInt(req.params.id);
     const existing = await prisma.author.findUnique({ where: { id } });
     if (!existing) return res.status(404).json(fail('作者不存在'));
-    const { name, avatar, bio, sortOrder } = req.body;
+    const { name, title, avatar, bio, department, region, linkedin, sortOrder } = req.body;
     const updateData: Record<string, unknown> = {};
     if (name !== undefined) updateData.name = name;
+    if (title !== undefined) updateData.title = title || null;
     if (avatar !== undefined) updateData.avatar = avatar || null;
     if (bio !== undefined) updateData.bio = bio || null;
+    if (department !== undefined) updateData.department = department || null;
+    if (region !== undefined) updateData.region = region || null;
+    if (linkedin !== undefined) updateData.linkedin = linkedin || null;
     if (sortOrder !== undefined) updateData.sortOrder = sortOrder;
     const item = await prisma.author.update({ where: { id }, data: updateData });
     return res.json(success(item, '更新成功'));
