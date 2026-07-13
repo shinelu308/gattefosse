@@ -8,10 +8,19 @@
 <meta http-equiv="Expires" content="0">
 <title>嘉法狮后台管理系统</title>
 <script>
-  // 防止浏览器缓存旧版后台页面：无版本参数时强制刷新一次
-  if (window.location.search.indexOf('v=3') === -1) {
-    window.location.replace(window.location.pathname + '?v=3' + window.location.hash);
-  }
+  (function() {
+    var qs = window.location.search;
+    var m = qs.match(/v=(\d+)/);
+    if (m) {
+      var age = Date.now() - parseInt(m[1]);
+      // 时间戳超过 5 秒则用新时间戳刷新，彻底破缓存
+      if (age > 5000) {
+        window.location.replace(window.location.pathname + '?v=' + Date.now() + window.location.hash);
+      }
+    } else {
+      window.location.replace(window.location.pathname + '?v=' + Date.now() + window.location.hash);
+    }
+  })();
 </script>
 <link rel="stylesheet" href="icon-font.css?v=3">
 <style>
