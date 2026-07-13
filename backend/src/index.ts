@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import compression from 'compression';
 
 import { config } from './config';
 import { prisma } from './utils/prisma';
@@ -30,6 +31,16 @@ const app = express();
 app.use(cors({
   origin: config.env === 'development' ? true : config.cors.frontendUrl,
   credentials: true,
+}));
+// Gzip 压缩：仅压缩文本类资源（CSS/JS/HTML/JSON）
+app.use(compression({
+  threshold: 1024,
+  level: 6,
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false;
+    const ct = res.getHeader('Content-Type') || '';
+    return /text|json|javascript|xml/i.test(String(ct));
+  },
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
