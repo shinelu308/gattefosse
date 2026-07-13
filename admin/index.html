@@ -3044,7 +3044,6 @@ const QUILL_TOOLBAR = [
           <div class="tabs">
             <button class="tab" :class="{ active: contentEditTab === 'basic' }" @click="contentEditTab = 'basic'">基本信息</button>
             <button class="tab" :class="{ active: contentEditTab === 'blocks' }" @click="contentEditTab = 'blocks'">区块内容</button>
-            <button class="tab" :class="{ active: contentEditTab === 'seo' }" @click="contentEditTab = 'seo'">SEO</button>
           </div>
           <!-- 基本信息 -->
           <div v-show="contentEditTab === 'basic'" class="card">
@@ -3059,10 +3058,6 @@ const QUILL_TOOLBAR = [
                 <label>前端路径 <span class="hint">（如：personal-care，对应 /personal-care.html）</span></label>
                 <input class="form-control" v-model="editingContent.slug" placeholder="留空则使用 pageKey" />
                 <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">填写后「查看页面」按钮将跳转到 /{此值}.html</div>
-              </div>
-              <div class="form-group">
-                <label>页面内容 (HTML) <span class="hint">—— 建议用"区块内容"中的结构化区块代替</span></label>
-                <textarea class="form-control" v-model="editingContent.contentHtml" rows="8" placeholder="支持 HTML 标签..." style="font-family:monospace;font-size:12px;"></textarea>
               </div>
             </div>
           </div>
@@ -3319,20 +3314,6 @@ const QUILL_TOOLBAR = [
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <!-- SEO -->
-          <div v-show="contentEditTab === 'seo'" class="card">
-            <div class="card-header"><h3>SEO 设置</h3></div>
-            <div class="card-body">
-              <div class="form-group">
-                <label>Meta 标题 <span class="hint">（留空则使用页面标题）</span></label>
-                <input class="form-control" v-model="editingContent.metaTitle" placeholder="SEO 标题">
-              </div>
-              <div class="form-group">
-                <label>Meta 描述</label>
-                <textarea class="form-control" rows="3" v-model="editingContent.metaDescription" placeholder="SEO 描述..."></textarea>
               </div>
             </div>
           </div>
