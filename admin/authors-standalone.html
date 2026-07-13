@@ -8,26 +8,45 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 100%; }
-body { font-family: system-ui, sans-serif; background: #f6f6f6; min-height: 100vh; }
-.page-title { font-size: 18px; font-weight: 500; color: #232426; margin: 24px 0 4px; }
-.page-subtitle { font-size: 13px; color: #999; margin: 0 0 20px; }
-.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin: 0 0 20px; }
-.card-header { padding: 14px 20px; border-bottom: 1px solid #eee; display:flex; align-items:center; justify-content:space-between; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f6f7; min-height: 100vh; color: #232426; }
+.page-title { font-size: 22px; font-weight: 600; color: #232426; margin: 0 0 4px; }
+.page-subtitle { font-size: 13px; color: #888; margin: 0 0 20px; }
+.card { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin: 0 0 20px; overflow: hidden; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid #eee; display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
 .card-body { padding: 20px; }
-.card-footer { padding: 12px 20px; border-top: 1px solid #eee; font-size: 13px; color: #999; }
+.card-footer { padding: 12px 20px; border-top: 1px solid #eee; font-size: 13px; color: #999; background: #fafafa; }
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 10px 16px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; }
-th { font-weight: 600; color: #555; }
-.btn { padding: 6px 14px; border-radius: 5px; border: 1px solid #ddd; background: #fff; cursor: pointer; font-size: 13px; }
+th { padding: 12px 16px; text-align: left; background: #fafbfc; font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #eee; }
+td { padding: 14px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: middle; }
+tbody tr:hover { background: #fafbfc; }
+tbody tr:last-child td { border-bottom: 0; }
+.btn { padding: 7px 14px; border-radius: 5px; border: 1px solid #ddd; background: #fff; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+.btn:hover { border-color: #999; }
 .btn-primary { background: #8EB73C; color: #fff; border-color: #8EB73C; }
+.btn-primary:hover { background: #7aa030; border-color: #7aa030; }
 .btn-danger { background: #e74c3c; color: #fff; border-color: #e74c3c; }
-.btn:hover { opacity: 0.9; }
-.form-control { padding: 6px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none; }
-.form-control:focus { border-color: #8EB73C; }
+.btn-danger:hover { background: #c0392b; border-color: #c0392b; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.form-control { padding: 7px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none; transition: border-color 0.15s; }
+.form-control:focus { border-color: #8EB73C; box-shadow: 0 0 0 2px rgba(142, 183, 60, 0.1); }
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #333; }
-textarea.form-control { width: 100%; min-height: 80px; resize: vertical; }
-input[type="text"], input[type="number"], input[type="file"], select.form-control { width: 100%; max-width: 400px; }
+textarea.form-control { width: 100%; min-height: 80px; resize: vertical; font-family: inherit; }
+input[type="text"], input[type="number"], input[type="file"], select.form-control { width: 100%; max-width: 100%; }
+.search-box { position: relative; }
+.search-box input { padding-left: 32px; width: 220px; }
+.search-box::before { content: "🔍"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; opacity: 0.5; }
+.author-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.author-name { font-weight: 600; color: #232426; }
+.region-tag { display: inline-block; padding: 2px 8px; background: #e8f5e0; color: #5a8030; border-radius: 10px; font-size: 11px; font-weight: 500; }
+.dept-tag { display: inline-block; padding: 2px 8px; background: #f0f4fa; color: #3a5a8c; border-radius: 10px; font-size: 11px; font-weight: 500; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+.modal-card { width: 600px; max-width: 100%; max-height: 90vh; overflow-y: auto; margin: 0; }
+.modal-card .card-header { background: #fafbfc; }
+.modal-card .card-body { padding: 24px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.required { color: #e74c3c; }
+.hint { color: #999; font-size: 12px; font-weight: normal; margin-left: 4px; }
 </style>
 </head>
 <body>
@@ -36,62 +55,81 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
   <p class="page-subtitle">管理文章作者，供文章编辑时选择</p>
   <div class="card">
     <div class="card-header">
-      <input class="form-control" style="width:200px;" placeholder="搜索作者姓名..." v-model="keyword" @keyup.enter="loadAuthors()">
+      <div class="search-box">
+        <input class="form-control" placeholder="搜索作者姓名、职位、部门..." v-model="keyword" @keyup.enter="loadAuthors()">
+      </div>
       <button class="btn btn-primary" @click="loadAuthors()">搜索</button>
       <button class="btn" @click="keyword = ''; loadAuthors();">重置</button>
-      <button class="btn btn-primary" @click="showEdit = true; editItem = { name: '', avatar: '', bio: '', sortOrder: 0 }" style="margin-left:auto;">+ 新增作者</button>
+      <span style="flex:1;"></span>
+      <span style="font-size:13px;color:#888;">共 {{ total }} 位作者</span>
+      <button class="btn btn-primary" @click="addNew()">+ 新增作者</button>
     </div>
     <table>
       <thead><tr>
-        <th style="width:60px;">ID</th>
-        <th style="width:80px;">头像</th>
-        <th style="width:160px;">姓名</th>
+        <th style="width:70px;">头像</th>
+        <th style="width:140px;">姓名</th>
+        <th style="width:200px;">职位</th>
         <th>简介</th>
-        <th style="width:80px;">头像</th>
-        <th style="width:120px;">姓名</th>
-        <th style="width:140px;">职位</th>
-        <th>简介</th>
-        <th style="width:90px;">地区</th>
-        <th style="width:60px;">排序</th>
-        <th style="width:160px;">操作</th>
+        <th style="width:90px;">部门</th>
+        <th style="width:80px;">地区</th>
+        <th style="width:50px;">排序</th>
+        <th style="width:150px;">操作</th>
       </tr></thead>
       <tbody>
         <tr v-for="item in list" :key="item.id">
-          <td><img :src="item.avatar || ''" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid #ddd;" @error="$event.target.style.display='none'"></td>
-          <td><strong>{{ item.name }}</strong></td>
-          <td style="color:#666;font-size:12px;">{{ item.title || '-' }}</td>
-          <td style="color:#666;font-size:12px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ item.bio || '-' }}</td>
-          <td>{{ item.region || '-' }}</td>
-          <td>{{ item.sortOrder }}</td>
+          <td><img :src="item.avatar || ''" class="author-avatar" @error="$event.target.style.display='none'"></td>
           <td>
-            <button class="btn" @click="editAuthor(item)">编辑</button>
-            <button class="btn btn-danger" @click="deleteAuthor(item.id)">删除</button>
+            <div class="author-name">{{ item.name }}</div>
+            <div v-if="item.linkedin" style="font-size:11px;color:#888;margin-top:2px;">
+              <a :href="item.linkedin" target="_blank" style="color:#003CC5;text-decoration:none;">LinkedIn ↗</a>
+            </div>
+          </td>
+          <td>{{ item.title || '-' }}</td>
+          <td style="color:#666;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ item.bio || '-' }}</td>
+          <td><span v-if="item.department" class="dept-tag">{{ item.department }}</span><span v-else>-</span></td>
+          <td><span v-if="item.region" class="region-tag">{{ item.region }}</span><span v-else>-</span></td>
+          <td style="text-align:center;color:#888;">{{ item.sortOrder }}</td>
+          <td>
+            <button class="btn btn-sm" @click="editAuthor(item)">编辑</button>
+            <button class="btn btn-sm btn-danger" @click="deleteAuthor(item.id)" style="margin-left:4px;">删除</button>
           </td>
         </tr>
-        <tr v-if="list.length === 0"><td colspan="7" style="text-align:center;padding:40px;color:#999;">暂无作者</td></tr>
+        <tr v-if="list.length === 0"><td colspan="8" style="text-align:center;padding:60px;color:#999;">暂无作者，点击「+ 新增作者」开始</td></tr>
       </tbody>
     </table>
-    <div class="card-footer">共 {{ total }} 位作者</div>
   </div>
 
   <!-- 编辑弹框 -->
-  <div v-if="showEdit" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;" @click.self="showEdit=false">
-    <div class="card" style="width:560px;max-height:90vh;overflow-y:auto;margin:0;">
-      <div class="card-header"><h3 style="font-size:15px;">{{ editItem.id ? '编辑作者' : '新增作者' }}</h3></div>
+  <div v-if="showEdit" class="modal-overlay" @click.self="showEdit=false">
+    <div class="card modal-card">
+      <div class="card-header">
+        <h3 style="font-size:16px;font-weight:600;">{{ editItem.id ? '编辑作者' : '新增作者' }}</h3>
+        <span style="flex:1;"></span>
+        <button class="btn btn-sm" @click="showEdit=false">✕</button>
+      </div>
       <div class="card-body">
-        <div class="form-group">
-          <label>姓名 <span style="color:red;">*</span></label>
-          <input class="form-control" v-model="editItem.name" placeholder="作者姓名">
+        <div class="form-row">
+          <div class="form-group">
+            <label>姓名 <span class="required">*</span></label>
+            <input class="form-control" v-model="editItem.name" placeholder="作者姓名">
+          </div>
+          <div class="form-group">
+            <label>排序</label>
+            <input type="number" class="form-control" v-model.number="editItem.sortOrder" placeholder="0">
+          </div>
         </div>
         <div class="form-group">
           <label>职位</label>
-          <input class="form-control" v-model="editItem.title" placeholder="如：Technical Marketing Lead">
+          <input class="form-control" v-model="editItem.title" placeholder="如：Technical Marketing Lead – Personal Care">
         </div>
         <div class="form-group">
           <label>头像 URL</label>
           <input class="form-control" v-model="editItem.avatar" placeholder="https://...">
+          <div v-if="editItem.avatar" style="margin-top:8px;">
+            <img :src="editItem.avatar" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.1);" @error="$event.target.style.display='none'">
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-row">
           <div class="form-group">
             <label>部门</label>
             <input class="form-control" v-model="editItem.department" placeholder="如：Personal Care / R&D">
@@ -107,13 +145,9 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
         </div>
         <div class="form-group">
           <label>简介</label>
-          <textarea class="form-control" v-model="editItem.bio" rows="3" placeholder="作者简介..."></textarea>
+          <textarea class="form-control" v-model="editItem.bio" rows="3" placeholder="作者简介、专长领域等"></textarea>
         </div>
-        <div class="form-group">
-          <label>排序</label>
-          <input type="number" class="form-control" v-model.number="editItem.sortOrder" style="max-width:120px;">
-        </div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid #eee;">
           <button class="btn" @click="showEdit=false">取消</button>
           <button class="btn btn-primary" @click="saveAuthor()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
         </div>
@@ -173,6 +207,10 @@ createApp({
     },
     editAuthor(item) {
       this.editItem = { ...item, sortOrder: item.sortOrder || 0 };
+      this.showEdit = true;
+    },
+    addNew() {
+      this.editItem = { id: null, name: '', title: '', avatar: '', bio: '', department: '', region: '', linkedin: '', sortOrder: this.list.length + 1 };
       this.showEdit = true;
     },
     async deleteAuthor(id) {
