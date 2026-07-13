@@ -291,6 +291,27 @@
               </div>
             </div>
           </div>
+        </div>
+        </div>
+      </main>
+  <script>
+  const { createApp, reactive, onMounted } = Vue;
+  const app = createApp({
+    setup() {
+      const data = reactive({
+        blocks: [],
+        formData: [],
+        eventData: [],
+        hero: { title: '', summary: '', backgroundImage: '', buttons: [] }
+      });
+
+      const fmtDate = (d) => {
+        if (!d) return { year: '', date: '' };
+        var parts = d.split('-');
+        if (parts.length === 3) return { year: parts[0], date: parts[1] + '月' + parseInt(parts[2]) };
+        return { year: '', date: d };
+      };
+
       onMounted(async function() {
         // 并行加载页面区块 + 新闻 + 活动
         var [blocksRes, newsRes, eventRes] = await Promise.allSettled([
@@ -359,12 +380,10 @@
       });
 
       // 区块查找 helper
-      function getBlockByType(type) {
-        return (data.blocks || []).find(function(b) { return b.type === type; });
-      }
-      function getTaglineBlock() { return getBlockByType('tagline'); }
-      function getThemesBlock() { return getBlockByType('home_themes'); }
-      function getStatsBlock() { return getBlockByType('stats'); }
+      const getBlockByType = (type) => (data.blocks || []).find(b => b.type === type);
+      const getTaglineBlock = () => getBlockByType('tagline');
+      const getThemesBlock = () => getBlockByType('home_themes');
+      const getStatsBlock = () => getBlockByType('stats');
 
       return { data, getTaglineBlock, getThemesBlock, getStatsBlock };
     }
