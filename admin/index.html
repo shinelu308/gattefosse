@@ -3066,7 +3066,9 @@ const QUILL_TOOLBAR = [
             <div class="card-header">
               <h3>结构化区块</h3>
               <div style="display:flex;gap:6px;">
-                <button class="btn btn-sm btn-outline" @click="addPageBlock('hero')">+ 头部</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('hero')">+ 头部横幅</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('tagline')">+ 标语</button>
+                <button class="btn btn-sm btn-outline" @click="addPageBlock('home_themes')">+ 双主题</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('feature_cards')">+ 特征卡片</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('product_promo')">+ 产品推广</button>
                 <button class="btn btn-sm btn-outline" @click="addPageBlock('stats')">+ 统计数据</button>
@@ -3235,13 +3237,16 @@ const QUILL_TOOLBAR = [
                   </div>
                   <!-- type: stats -->
                   <div v-if="blk.type === 'stats'">
-                    <div v-for="(item, si) in blk.data.items" :key="si" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-                      <input class="form-control" v-model="item.number" placeholder="数字" style="width:100px;font-size:13px;">
-                      <input class="form-control" v-model="item.unit" placeholder="单位(如%)" style="width:80px;font-size:13px;">
-                      <input class="form-control" v-model="item.label" placeholder="说明文字" style="flex:1;font-size:13px;">
-                      <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.items.splice(si,1)" v-if="blk.data.items.length > 1">×</button>
+                    <div v-for="(item, si) in blk.data.items" :key="si" style="border:1px solid #eee;border-radius:6px;padding:8px;margin-bottom:8px;">
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <input class="form-control" v-model="item.number" placeholder="数字" style="width:80px;font-size:13px;">
+                        <input class="form-control" v-model="item.unit" placeholder="单位(如%)" style="width:70px;font-size:13px;">
+                        <input class="form-control" v-model="item.label" placeholder="说明文字" style="flex:1;font-size:13px;">
+                        <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.items.splice(si,1)" v-if="blk.data.items.length > 1">×</button>
+                      </div>
+                      <input class="form-control" v-model="item.link" placeholder="了解更多链接 URL（如：/find-us.html）" style="font-size:13px;">
                     </div>
-                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ number:'', unit:'', label:'' })">+ 添加统计项</button>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ number:'', unit:'', label:'', link:'' })">+ 添加统计项</button>
                   </div>
                   <!-- type: text -->
                   <div v-if="blk.type === 'text'">
@@ -3312,6 +3317,43 @@ const QUILL_TOOLBAR = [
                     <div class="form-group" style="margin-bottom:0;">
                       <input class="form-control" v-model="blk.data.title" placeholder="作者职衔" style="font-size:13px;">
                     </div>
+                  </div>
+                  <!-- type: tagline（标语） -->
+                  <div v-if="blk.type === 'tagline'">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label style="font-size:12px;font-weight:600;">标语标题</label>
+                      <input class="form-control" v-model="blk.data.title" placeholder="如：人兴则名扬" style="font-size:13px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label style="font-size:12px;font-weight:600;">描述文字（支持HTML）</label>
+                      <textarea class="form-control" v-model="blk.data.description" rows="4" placeholder="描述文字..." style="font-size:13px;"></textarea>
+                    </div>
+                  </div>
+                  <!-- type: home_themes（双主题区块） -->
+                  <div v-if="blk.type === 'home_themes'">
+                    <div v-for="(item, ti) in blk.data.items" :key="ti" style="border:1px solid #eee;border-radius:6px;padding:10px;margin-bottom:8px;">
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <span style="font-weight:600;font-size:12px;color:var(--text-secondary);">主题 {{ ti+1 }}</span>
+                        <select class="form-control" v-model="item.theme" style="width:120px;font-size:12px;">
+                          <option value="theme-cosm">个人护理(粉)</option>
+                          <option value="theme-pharma">药用辅料(蓝)</option>
+                        </select>
+                        <button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 6px;" @click="blk.data.items.splice(ti,1)" v-if="blk.data.items.length > 1">×</button>
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="item.name" placeholder="主题名称（如：个人护理）" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <input class="form-control" v-model="item.link" placeholder="链接 URL（如：/personal-care.html）" style="font-size:13px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:6px;">
+                        <textarea class="form-control" v-model="item.description" rows="2" placeholder="描述文字（支持HTML）" style="font-size:13px;"></textarea>
+                      </div>
+                      <div class="form-group" style="margin-bottom:0;">
+                        <input class="form-control" v-model="item.image" placeholder="图片 URL" style="font-size:13px;">
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ name:'', link:'', description:'', image:'', theme:'theme-cosm' })">+ 添加主题</button>
                   </div>
                 </div>
               </div>
@@ -6410,16 +6452,18 @@ createApp({
     },
     // 页面的区块操作方法
     blockTypeLabel(type) {
-      var map = { hero: '头部', feature_cards: '特征卡片', product_promo: '产品推广', stats: '统计数据', text: '文本', pillar_cards: '三卡片', cta_cards: '双CTA卡片', quote: '引语' };
+      var map = { hero: '头部横幅', tagline: '标语', home_themes: '双主题区块', feature_cards: '特征卡片', product_promo: '产品推广', stats: '统计数据', text: '文本', pillar_cards: '三卡片', cta_cards: '双CTA卡片', quote: '引语' };
       return map[type] || type;
     },
     addPageBlock(type) {
       if (!this.editingContent._blocks) this.editingContent._blocks = [];
       var defaults = {
         hero: { title: '', summary: '', backgroundImage: '', buttons: [], videoUrl: '', videoType: '' },
+        tagline: { title: '', description: '' },
+        home_themes: { items: [{ name: '', link: '', description: '', image: '', theme: 'theme-cosm' }] },
         feature_cards: { title: '', items: [{ imageUrl: '', icon: '', title: '', description: '', linkUrl: '' }] },
         product_promo: { title: '', subtitle: '', description: '', imageUrl: '', linkUrl: '', linkLabel: '阅读更多' },
-        stats: { items: [{ number: '', unit: '', label: '' }] },
+        stats: { items: [{ number: '', unit: '', label: '', link: '' }] },
         text: { html: '' },
         pillar_cards: { cards: [{ imageUrl: '', title: '', description: '', linkUrl: '' }] },
         cta_cards: { title: '', cards: [{ imageUrl: '', subtitle: '', title: '', description: '', linkUrl: '' }] },
