@@ -385,7 +385,6 @@
             <!-- 双CTA卡片区块（独立渲染，位置在 events 下方，样式匹配原站Drupal c-card） -->
             <div v-if="getCtaBlock() && getCtaBlock().data && getCtaBlock().data.cards && getCtaBlock().data.cards.length > 0" class="js-block-contents s-tunnel-content" style="margin-bottom:40px;">
               <div class="container">
-                <h2 v-if="getCtaBlock().data.title" class="u-title-styled" style="text-align:center;margin-bottom:24px;">{{ getCtaBlock().data.title }}</h2>
                 <div class="c-cards" style="display:flex;gap:2.4rem 3.15rem;flex-wrap:wrap;justify-content:center;">
                   <div v-for="(card, ci) in getCtaBlock().data.cards" :key="ci" class="c-card c-card--bordered" style="flex:1;max-width:36.9rem;min-width:28rem;">
                     <div class="c-card__image">
