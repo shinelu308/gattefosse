@@ -3574,7 +3574,10 @@ const QUILL_TOOLBAR = [
           <!-- 标签编辑弹框 -->
           <div class="modal-overlay" v-show="tagForm.show" @click.self="tagForm.show=false">
             <div class="confirm-dialog" style="text-align:left;">
-              <h3 class="confirm-title" v-text="tagForm.isEdit ? '编辑标签' : '新增标签'"></h3>
+              <h3 class="confirm-title">
+                <template v-if="tagForm.isEdit">编辑标签</template>
+                <template v-else>新增标签</template>
+              </h3>
               <div class="form-group">
                 <label>产品线</label>
                 <select class="form-control" v-model="tagForm.productLine" :disabled="tagForm.isEdit">
@@ -6621,6 +6624,10 @@ createApp({
     },
   },
   async mounted() {
+    // 强制关闭所有 modal（防止刷新时弹框残留）
+    this.alertDialog.show = false;
+    this.confirmDialog.show = false;
+    this.tagForm.show = false;
     console.log('[Admin] Token exists:', !!this.token, '|前20位:', this.token ? this.token.substring(0,20) : '(空)');
     if (this.token) {
       // 先用 /auth/me 校验 token 有效性（独立 fetch，不走 api() 避免误清）
