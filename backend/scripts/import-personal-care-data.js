@@ -35,7 +35,7 @@ const blocks = [
         'items': [
           {
             'imageUrl': '/sites/default/files/2023-06/ingredients_0.svg',
-            'icon': '',
+            'icon': 'aaaaaa',
             'title': '原料',
             'description': '为您开发项目寻找最合适的成分。',
             'linkUrl': '/personal-care/product-finder.html'
