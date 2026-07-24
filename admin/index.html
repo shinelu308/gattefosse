@@ -38,6 +38,9 @@
   --header-h: 56px;
 }
 
+/* Vue 挂载前遮罩：消除刷新瞬间闪现登录页/未编译模板 */
+[v-cloak] { display: none !important; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: var(--font);
@@ -99,7 +102,7 @@ body {
   transition: border-color 0.15s;
 }
 .login-card input:focus { border-color: var(--green); }
-.login-card .login-error { color: var(--red); font-size: 13px; min-height: 20px; }
+.login-card .login-error { color: var(--red); font-size: 13px; line-height: 20px; }
 .login-card .login-btn {
   width: 100%;
   padding: 11px;
@@ -489,8 +492,9 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.4); z-index: 999;
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
 }
+.modal-overlay.is-open { display: flex; }
 .modal {
   background: var(--white); border-radius: var(--radius-lg);
   box-shadow: 0 20px 60px rgba(0,0,0,0.15); width: 100%;
@@ -591,7 +595,7 @@ const QUILL_TOOLBAR = [
 </head>
 <body>
 
-<div id="app">
+<div id="app" v-cloak>
 
   <!-- ==================== 登录页 ==================== -->
   <div v-if="!token" class="login-container">
@@ -601,7 +605,7 @@ const QUILL_TOOLBAR = [
       <div style="display:flex;flex-direction:column;gap:14px;">
         <input v-model="loginForm.email" placeholder="邮箱" @keyup.enter="doLogin">
         <input v-model="loginForm.password" type="password" placeholder="密码" @keyup.enter="doLogin">
-        <div class="login-error" v-if="loginError">{{ loginError }}</div>
+        <div class="login-error" v-if="loginError" v-text="loginError"></div>
         <button class="login-btn" @click="doLogin" :disabled="loggingIn">{{ loggingIn ? '登录中...' : '登 录' }}</button>
       </div>
     </div>
@@ -3595,7 +3599,7 @@ const QUILL_TOOLBAR = [
           </div>
 
           <!-- 标签编辑弹框 -->
-          <div class="modal-overlay" v-show="tagForm.show" @click.self="tagForm.show=false">
+          <div class="modal-overlay" :class="{'is-open': tagForm.show}" @click.self="tagForm.show=false">
             <div class="confirm-dialog" style="text-align:left;">
               <h3 class="confirm-title">
                 <template v-if="tagForm.isEdit">编辑标签</template>
@@ -3639,7 +3643,7 @@ const QUILL_TOOLBAR = [
     </main>
 
     <!-- 确认弹框 -->
-    <div class="modal-overlay" v-show="confirmDialog.show" @click.self="confirmDialog.show=false">
+    <div class="modal-overlay" :class="{'is-open': confirmDialog.show}" @click.self="confirmDialog.show=false">
       <div class="confirm-dialog">
         <div class="confirm-icon">⚠</div>
         <h3 class="confirm-title" v-text="confirmDialog.title"></h3>
@@ -3652,7 +3656,7 @@ const QUILL_TOOLBAR = [
     </div>
 
     <!-- 信息提示弹框（替代浏览器 alert） -->
-    <div class="modal-overlay" v-show="alertDialog.show" @click.self="alertDialog.show=false">
+    <div class="modal-overlay" :class="{'is-open': alertDialog.show}" @click.self="alertDialog.show=false">
       <div class="confirm-dialog">
         <div class="confirm-icon" :class="alertDialog.type">!</div>
         <h3 class="confirm-title" v-text="alertDialog.title"></h3>
