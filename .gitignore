@@ -23,3 +23,4 @@ backend/data/
 _original_detail.html
 import_pharma.py
 .localize_tmp/
+site/.localize_tmp_backup_*.html
