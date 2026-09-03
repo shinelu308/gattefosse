@@ -170,6 +170,8 @@ export async function createNewsItem(req: Request, res: Response) {
       isPublished,
       articleType,
       tags,
+      publicationName,
+      authorName,
       pdfUrl,
       videoUrl,
       lock,
@@ -211,6 +213,8 @@ export async function createNewsItem(req: Request, res: Response) {
         isPublished: isPublished !== undefined ? isPublished : false,
         articleType: articleType || null,
         tags: tags || null,
+        publicationName: publicationName || null,
+        authorName: authorName || null,
         pdfUrl: pdfUrl || null,
         videoUrl: videoUrl || null,
         lock: lock !== undefined ? lock : false,
@@ -269,6 +273,8 @@ export async function updateNewsItem(req: Request, res: Response) {
       isPublished,
       articleType,
       tags,
+      publicationName,
+      authorName,
       pdfUrl,
       videoUrl,
       lock,
@@ -296,6 +302,8 @@ export async function updateNewsItem(req: Request, res: Response) {
     if (isPublished !== undefined) updateData.isPublished = isPublished;
     if (articleType !== undefined) updateData.articleType = articleType || null;
     if (tags !== undefined) updateData.tags = tags || null;
+    if (publicationName !== undefined) updateData.publicationName = publicationName || null;
+    if (authorName !== undefined) updateData.authorName = authorName || null;
     if (pdfUrl !== undefined) updateData.pdfUrl = pdfUrl || null;
     if (videoUrl !== undefined) updateData.videoUrl = videoUrl || null;
     if (lock !== undefined) updateData.lock = lock;

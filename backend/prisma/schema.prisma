@@ -203,8 +203,10 @@ model NewsEvent {
   isPublished    Boolean   @default(false) @map("is_published")
   views          Int       @default(0)             // 阅读量
   // 获取灵感模块扩展字段
-  articleType    String?   @map("article_type")  // article子类型：应用领域/专业知识/灵感和趋势/质地与配方/其他
+  articleType    String?   @map("article_type")  // article子类型：应用领域/专业知识/灵感和趋势/质地与配方/其他；publication子类型：会议交流/海报/科技出版物
   tags           String?   // JSON数组，如 ["活性成分","抗衰老","舒缓"]，用于文章/研讨会标签筛选
+  publicationName String?  @map("publication_name") // publication：会议/出版物名称（如 53rd Annual ESDR Meeting）
+  authorName     String?   @map("author_name")   // publication/magazine：作者长文本（如 Paula LENNON, Wanping ZHANG...）
   pdfUrl         String?   @map("pdf_url")       // 出版物/杂志 PDF 下载链接
   videoUrl       String?   @map("video_url")     // 研讨会回放视频链接
   lock           Boolean   @default(false)       // 是否需要登录查看

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -369,159 +369,77 @@ var publicationType = params.get('publicationType');
 var w = params.get('keyword');
 var baseUrl = window.location.pathname;
 
-// ===== 硬编码数据（来自真实API） =====
-var pubTypeList = [{ID:5,typeName:'会议交流'},{ID:6,typeName:'海报'},{ID:7,typeName:'科技出版物'}];
-
-var tagGroups = [{ID:54,tagName:'成分',tagNameEn:'Ingredients',children:[{ID:56,tagName:'EleVastin™'},{ID:57,tagName:'Emulium® Mellifera MB'},{ID:58,tagName:'EnergiNius®'},{ID:59,tagName:'Gatuline® Skin-Repair AF'},{ID:60,tagName:'Solastemis™'}]},{ID:55,tagName:'年份',tagNameEn:'Year',children:[{ID:61,tagName:'2023'},{ID:62,tagName:'2022'},{ID:63,tagName:'2021'},{ID:64,tagName:'2019'},{ID:65,tagName:'2018'},{ID:66,tagName:'2017'},{ID:67,tagName:'2016'}]}];
-
-var allPubData = [{ID:334,title:"Preparation and characterization of liquid crystal emulsions based on a wax ester emulsifier",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"Liquid crystals have fascinated the cosmetic world for many decades because of the interest in terms of biomimetism, moisturization/barrier function, active controlled release, and stability they bring to emulsions. In this study the effects of manufacturing process and formulation composition on the formation of liquid crystals with a wax ester emulsifier will be presented.",author:"Paula LENNON, Wanping ZHANG, Qianjie ZHANG, Jin ZHANG, Linghua SHEN, Vincent HUBICHE",url:"https://www.gattefosse.com/files/2841/poster_ifsccbrazil_emulium_dolcea_mb_9c_0.pdf",tag:"[]"},{ID:335,title:"Construction of spheroids from melanocytes of different ethnic origins: screening model and variation",typeType:6,eventTimeYear:"",publicationName:"53rd Annual ESDR Meeting (4-7 September 2024, Lisbon, Portugal)  - Sep 2024",summary:"Melanogenesis is a complex porcess, ans its in vitro modeling remains a challenge to develop relevant test suitable for rapid preclinical evaluation of the efficacy of lightening products to modulate human skin pigmentation.",author:"Nicolas Bechetoille, S\u00e9bastien Bonnet et Chlo\u00e9 Lorion",url:"https://www.gattefosse.com/files/2739/bechetoille_nicolas_p472.pdf",tag:"[]"},{ID:140,title:"Elastogenic potential and antisagging properties of a novel Murraya koenigii extract",typeType:7,eventTimeYear:"2023",publicationName:"",summary:"The newly discovered extract of Murraya koenigii leafy stems represents an innovative antiaging ingredient suited for elasticity-boosting and antisagging claims.",author:"C. Lorion PhD, V. Bardin, S. Bonnet, A. Lopez-Gaydon, B. Vogelgesang, N. Bechetoille PhD",url:"https://www.gattefosse.com/files/2354/j-of-cosmetic-dermatology-2023-lorion-elastogenic-potential-and-antisagging-properties-of-a-novel-murraya-koenigii.pdf",tag:"[[55,61],[54,56]]"},{ID:141,title:"A multiparametric, stepwise in vitro approach to identify anti-dark circle and anti-puffiness ingredients",typeType:6,eventTimeYear:"2022",publicationName:"",summary:"A unique plant extract with promising anti-puffiness and anti-dark circle potential has been identified using the stepwise selection model.",author:"C. Lorion PhD, C. Lavastre, A. Rascalou, A. Lopez-Gaydon, S. Bonnet, T. Rinaldi, V. Charton, B. Vogelgesang, N. Bechetoille PhD",url:"https://www.gattefosse.com/files/2156/a-multiparametric-stepwise-in-vitro-approach-to-identify-anti-dark-circle-and-anti-puffiness-ingredients_7t.pdf",tag:"[[55,62]]"},{ID:142,title:"Advanced translational cosmetics: using the world\u2019s first non-invasive bioimpedance 3D bioprinted skin chips to link cosmetics lab testing to humans",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"This model enables advanced translational lab-to-donor data to help bring sophisticated cosmetics ingredients to market faster, safely and more affordably.",author:"McGuckin, Bechetoille, Legues, Milet, Besseyre, Boyer, Ferrier, Sanchez, Forraz, Vogelgesang",url:"https://www.gattefosse.com/files/2157/advanced-translational-cosmetics-using-the-worlds-first-non-invasive-bioimpedance-3d-bioprinted-skin-chips-to-link-cosmetics-lab-testing-to-humans._4c.pd",tag:"[[55,62]]"},{ID:143,title:"A NaDES extract of Rose \u2018Jardin de Granville\u00ae\u2019 displays pro-resolving and epidermal strengthening properties",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"The fructose/propanediol/water (NaDES FPW113) extract of \u201cJardin de Granville\u201d Rose flowers has demonstrated great potential in vitro and ex vivo to support epidermal homeostasis and counteract the inflammaging process.",author:"Pecher V., Franchi J., Charton V., Dubourdeau M, Van Goethem E., Baillif V., Nizard C., Choisy P., Vogelgesang B., Bechetoille N.",url:"https://www.gattefosse.com/files/2158/a-nades-extract-of-rose-jardin-de-granviller-displays-pro-resolving-andepidermal-strengthening-properties_6w.pdf",tag:"[[55,62]]"},{ID:145,title:"Unexpected elasticity-booting properties of a traditional ayurvedic plant",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"Murraya koenigii extract displays undeniable elasticity boosting properties, highlighted at molecular, cellular and tissue levels, and appears as a powerful anti-aging ingredient.",author:"Chlo\u00e9 Lorion PhD, S\u00e9bastien Bonnet, Amandine Lopez-Gaydon, Anna Drillat, Virginie Charton, Nicolas Bechetoille PhD",url:"https://www.gattefosse.com/files/2159/poster-esdr-2021-604f6a6d7db44596095754.pdf",tag:"[[55,63],[54,56]]"},{ID:146,title:"Biobased and non-ionic LTTMs composed of fructose and glycerol: water and temperature impact on the supramolecular organization",typeType:5,eventTimeYear:"2024",publicationName:"",summary:"The objective is to understand interactions at the molecular level for various F/G/W mixtures and establish a relationship between their micro and macroscopical features.",author:"Benoit Caprin",url:"https://www.gattefosse.com/files/2160/biobased-and-non-ionic-lttms-composed-of-fructose-and-glycerol-water-and-temperature-impact-on-the-supramolecular-organization.pdf",tag:"[[55,63]]"},{ID:147,title:"Generation of homogeneous, scaffold-free adipose spheroids for screening of lipolytic agents",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"Adipose spheroids provide an interesting in vitro model of pre-adipocyte maturation and adipocyte expansion.",author:"S\u00e9bastien Bonnet, Amandine Lopez-Gaydon, Cindy Lavastre, Chlo\u00e9 Lorion, Nicolas Bechetoille",url:"https://www.gattefosse.com/files/2128/generation-of-homogeneous-scaffold-free-adipose-spheroids-for-screening-of-lipolytic-agents_9s.pdf",tag:"[[55,63]]"},{ID:148,title:"Fibroblasts extracellular vesicles modulate human keratinocytes differentiation during skin aging",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"Microvesicles and exosomes, once considered as mechanisms of waste elimination, are now emerging as key players in intercellular communications.",author:"J. Rorteau, FP. Chevalier, T. Barth\u00e9l\u00e9my, M. Dos Santos, N. Bechetoille, J. Lamartine",url:"https://www.gattefosse.com/files/2129/fibroblasts-extracellular-vesicles-modulate-human-keratinocytes-differentiation-during-skin-aging_5y.pdf",tag:"[[55,63]]"},{ID:149,title:"Differential profile of proinflammatory/proresolving lipid mediators in acute inflammation model using young and old skin biopsies",typeType:7,eventTimeYear:"2024",publicationName:"",summary:"Skin aging may involve an endogenous inflammation resolution program displaying dysregulation and/or absence of proresolving mediators.",author:"Lopez-Gaydon Amandine, Baillif Vincent, Bertholon Cindy, Van Goethem Emeline, Demarne Fr\u00e9d\u00e9ric, Dubourdeau Marc, Bechetoille Nicolas",url:"https://www.gattefosse.com/files/2134/2019_differential-profile-of-proinflammatory.pdf",tag:"[[55,63],[54,59]]"},{ID:150,title:"An efficient method to determine the Hydrophile-Lipophile Balance of surfactants using the phase inversion temperature deviation of CiEj/n-octane/water emulsions",typeType:7,eventTimeYear:"2024",publicationName:"",summary:"A fast and accurate method has been developed to determine the hydrophilic-lipophilic balance (HLB) number of amphiphilic chemicals.",author:"M. Nollet, H. Boulghobra, E. Calligaro, J.-D. Rodier",url:"https://www.gattefosse.com/files/2135/nollet_et_al-2019-an-efficient-method-to-determine-the-hydrophile-lipophile-balance.pdf",tag:"[[55,64],[54,57]]"},{ID:151,title:"Structural and biomechanical properties of a novel 3d microdermis model: the spheroid",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"Spheroids as micro-tissues are a powerful alternative to standard 2D cell culture for in vitro studies.",author:"Chlo\u00e9 Lorion PhD, Amandine Lopez-Gaydon, S\u00e9bastien Bonnet, Anna Drillat, Pascale Milani PhD, Nicolas Bechetoille",url:"https://www.gattefosse.com/files/2142/esdr_2019_poster_spheroid-structural-and-biomechanical-properties.pdf",tag:"[[55,64],[54,56]]"},{ID:152,title:"Keratinocyte stem cells are more resistant to UVA radiation than their direct progeny",typeType:7,eventTimeYear:"2024",publicationName:"",summary:"Keratinocyte stem cells, which are responsible for epidermal renewal throughout life, are equipped with an efficient arsenal against several genotoxic agents.",author:"Elodie Metral, Nicolas Bechetoille, Fr\u00e9d\u00e9ric Demarne, Odile Damour, Walid Rachidi",url:"https://www.gattefosse.com/files/2144/keratinocyte-stem-cells-are-more-resistant-to-uva-radiation-than-their-direct-progeny.pdf",tag:"[[55,65],[54,60]]"},{ID:153,title:"Harmful effects of screen-emitted artificial visible light in dermis: an additional environmental stress not to be neglected",typeType:6,eventTimeYear:"2024",publicationName:"",summary:"We have investigated the effects of artificial visible light in human dermal fibroblasts and we described a patented plant extract of Withania somnifera root able to protect those skin cells.",author:"Adeline Rascalou , Fr\u00e9d\u00e9ric Demarne PhD, Nicolas Bechetoille PhD",url:"https://www.gattefosse.com/files/2145/2018_poster_iid_jinvestdermatol_harmful-effects-of-screen-emitted-artifical.pdf",tag:"[[55,65],[54,58]]"},{ID:154,title:"\u03b16 Integrin/Transferrin receptor (CD71) low keratinocyte stem cells are more potent for generating reconstructed skin epidermis than rapid adherent cells",typeType:7,eventTimeYear:"2024",publicationName:"",summary:"Cells isolated by a rapid adherent method are not the same population as keratinocytes stem cells isolated by flow cytometry following \u03b16high/CD71low phenotype.",author:"Elodie Metral, Nicolas Bechetoille, Fr\u00e9d\u00e9ric Demarne, Walid Rachidi, Odile Damour",url:"https://www.gattefosse.com/files/2146/keratinocyte-stem-cells-are-more-potent-for-generating-reconstructed-skin-epidermis.pdf",tag:"[[55,66]]"},{ID:235,title:"Scrutiny of the supramolecular structure of bio-sourced fructose/glycerol/water ternary mixtures: towards green low transition temperature mixtures",typeType:7,eventTimeYear:"2021",publicationName:"Journal of Molecular Liquids",summary:"This comprehensive study is a prerequisite for a further industrial implementation of eco-designed solvents in various applicative attractive domains, as in cosmetic field.",author:"B. Caprin, V. Charton, J-D. Rodier, B. Vogelgesang, A. Charlot, F. Da Cruz-Boisson, E. Fleury",url:"",tag:"[[55,63]]"},{ID:236,title:"A rapid and sensitive method for characterization and quantification of polyglycerol esters by supercritical fluid chromatography coupled to high-resolution mass spectrometry (SFC-HRMS)",typeType:7,eventTimeYear:"2021",publicationName:"The International Journal of Pure and Applied Analytical Chemistry",summary:"Polyglycerol esters of fatty acids are widely used in cosmetics. However, no study related to the purification and the absolute quantification of these compounds has been described yet.",author:"Thi Phuong Thuy Hoang, Nicolas Ritter, Jean-David Rodier, David Touboul",url:"",tag:"[[55,63]]"},{ID:237,title:"The use of NADES to support innovation in the cosmetic industry",typeType:7,eventTimeYear:"2021",publicationName:"Advances in Botanical Research",summary:"Since their introduction, natural deep eutectic solvents (NaDES) have emerged as a promising, eco-friendly alternative to petrochemicals to dissolve plant metabolites.",author:"Caprin Benoit, Charton Virginie, Vogelgesang Boris",url:"",tag:"[[55,63]]"},{ID:238,title:"The Camera Never Lies: Visualizing Sun Protection Loss and Ways to Fortify Films",typeType:7,eventTimeYear:"2019",publicationName:"Cosmetics&Toiletries",summary:"Visualizing sun protection loss and ways to fortify films.",author:"Vincent Hubiche, Malorie Duvent, Viviane Bardin, Paula Lennon",url:"",tag:"[[55,64]]"},{ID:239,title:"Differential profiles of pro-inflammatory and specialized pro-resolving lipid mediators in PMA-treated skin biopsies from young and old donors",typeType:7,eventTimeYear:"2018",publicationName:"Journal of Investigative Dermatology",summary:"The skin immune system is regulated by bioactive lipids that initiate and amplify inflammation but control its efficient ending also called resolution.",author:"N. Bechetoille, V. Baillif, A. Lopez-Gaydon, E. Van Goethem, F. Demarne, M. Dubourdeau",url:"",tag:"[[55,65],[54,59]]"},{ID:240,title:"Mitochondrial damage and cytoskeleton reorganization in human dermal fibroblasts exposed to artificial visible light similar to screen-emitted light",typeType:7,eventTimeYear:"2018",publicationName:"Journal of Dermatological Science",summary:"",author:"Adeline Rascalou, J\u00e9r\u00f4me Lamartine, Pauline Poydenot, Fr\u00e9d\u00e9ric Demarne, Nicolas Bechetoille",url:"",tag:"[[55,65],[54,58]]"},{ID:241,title:"Long-term genoprotection effect of Sechium edule fruit extract against UVA irradiation in keratinocytes",typeType:7,eventTimeYear:"2017",publicationName:"Photochemistry and Photobiology",summary:"The objective of this study was to investigate the effects of a Sechium edule fruit extrac in terms of photoprotection against UVA in primary human keratinocytes.",author:"Elodie Metral, Walid Rachidi, Odile Damour, Fr\u00e9d\u00e9ric Demarne, Nicolas Bechetoille",url:"",tag:"[[55,66],[54,60]]"},{ID:242,title:"Distinct photoprotective effects on UVA irradiated-keratinocytes",typeType:7,eventTimeYear:"2016",publicationName:"Journal of Investigative Dermatology",summary:"Using different techniques enable to explore cellular responses against UVA stress and to demonstrate the photoprotective effects of products against UV irradiation.",author:"N. Bechetoille, E. Metral, F. Demarne, O. Damour, W. Rachidi",url:"",tag:"[[55,67],[54,60]]"}];
-
-// ===== 筛选逻辑 =====
-var typeMap = {5:'\u4f1a\u8bae\u4ea4\u6d41',6:'\u6d77\u62a5',7:'\u79d1\u6280\u51fa\u7248\u7269'};
-
-function filterData() {
-  var filtered = allPubData.slice();
-  if (publicationType && publicationType != '0') {
-    var pt = parseInt(publicationType);
-    filtered = filtered.filter(function(p) { return p.typeType == pt; });
-  }
-  if (tagId && tagId != '0') {
-    var tid = parseInt(tagId);
-    filtered = filtered.filter(function(p) {
-      try {
-        var tags = JSON.parse(p.tag);
-        for (var i = 0; i < tags.length; i++) {
-          if (tags[i][1] == tid) return true;
-        }
-      } catch(e) {}
-      return false;
-    });
-  }
-  if (w && w != '') {
-    var kw = w.toLowerCase();
-    filtered = filtered.filter(function(p) {
-      return (p.title && p.title.toLowerCase().indexOf(kw) >= 0) ||
-             (p.summary && p.summary.toLowerCase().indexOf(kw) >= 0) ||
-             (p.author && p.author.toLowerCase().indexOf(kw) >= 0);
-    });
-  }
-  // Set typeName for each item
-  for (var i = 0; i < filtered.length; i++) {
-    filtered[i].typeName = typeMap[filtered[i].typeType] || '';
-  }
-  return filtered;
-}
-
-var filteredResult = filterData();
-var pageSize = 9;
-var totalItems = filteredResult.length;
-var totalPages = Math.ceil(totalItems / pageSize);
-if (curPage < 1 || curPage > totalPages || isNaN(curPage)) curPage = 1;
-
-function getPageData(page) {
-  var s = (page - 1) * pageSize;
-  var e = Math.min(s + pageSize, filteredResult.length);
-  return filteredResult.slice(s, e);
-}
-
-// ===== 构建标签列表（侧边栏筛选器） =====
-function buildTagList() {
-  var result = [];
-  for (var gi = 0; gi < tagGroups.length; gi++) {
-    var g = tagGroups[gi];
-    var tn = g.tagName;
-    var tmp = tn.replace(/ /g, '_');
-    var group = {
-      tagName: tn,
-      tagNameEn: g.tagNameEn,
-      ID: g.ID,
-      nameId: "collapse-filtre-accordion-" + tn + "_" + g.ID,
-      sharpeNameId: "#collapse-filtre-accordion-" + tn + "_" + g.ID,
-      headerNameId: "heading-filtre-accordion-publications_personal_care_" + tmp,
-      accordionNameId: "accordion-filtre-accordion-publications_personal_care_" + tmp,
-      dataBlockPluginId: "facet_block:publications_personal-care_" + tmp,
-      panelDivId1: tmp + "_" + g.ID,
-      class: "facet-inactive block-facet--checkbox block block-facets ",
-      children: []
-    };
-    for (var ci = 0; ci < g.children.length; ci++) {
-      var c = g.children[ci];
-      var u = baseUrl + '?page=1&tagId=' + c.ID;
-      if (publicationType) u += '&publicationType=' + publicationType;
-      if (w) u += '&keyword=' + encodeURIComponent(w);
-      group.children.push({
-        ID: c.ID,
-        tagName: c.tagName,
-        tagUrl: u,
-        dataDrupalFacetItemId: "market-" + c.ID,
-        facetItemClass: ci < 6 ? "facet-item1" : "facet-item1 hidden"
-      });
-    }
-    result.push(group);
-  }
-  return result;
-}
-
-var tagList = buildTagList();
-
-// ===== 构建URL辅助 =====
-function makeUrl(p, tp, tg) {
-  var u = baseUrl + '?page=' + p;
-  if (tp) u += '&publicationType=' + tp;
-  if (tg) u += '&tagId=' + tg;
-  if (w) u += '&keyword=' + encodeURIComponent(w);
-  return u;
-}
+// ===== 类型 ID → 中文名（原站 facet taxonomy 映射） =====
+var PUB_TYPE_MAP = {5: '会议交流', 6: '海报', 7: '科技出版物'};
+var apiBase = '/api';
 
 // ===== Vue应用 =====
 var app = createApp({
   setup() {
     var data = reactive({
-      formData: getPageData(curPage),
-      publicationTypeList: pubTypeList,
-      tagList: tagList,
-      total: totalItems,
-      total_page: totalPages,
+      formData: [],
+      total: 0,
+      total_page: 1,
       cur_page: curPage,
-      page_size: pageSize,
-      publicationType: publicationType,
+      page_size: 9,
       tagId: tagId,
+      tagList: [],
       curFilterTagName: '',
+      publicationType: publicationType && PUB_TYPE_MAP[publicationType] ? publicationType : null,
+      publicationTypeId: publicationType && PUB_TYPE_MAP[publicationType] ? publicationType : null,
+      publicationTypeList: [],
       curFilterTypeName: '',
-      activeFilterClass: (tagId && tagId != '0') || (publicationType && publicationType != '0') ? 'showDiv' : 'hidden',
-      allTypeUrl: baseUrl + (tagId && tagId != '0' ? '?tagId=' + tagId : (w ? '?keyword=' + encodeURIComponent(w) : '')),
-      prev_url: curPage > 1 ? makeUrl(curPage - 1, publicationType, tagId) : null,
-      next_url: curPage < totalPages ? makeUrl(curPage + 1, publicationType, tagId) : null,
-      userEnabled: null
+      allTypeUrl: baseUrl,
+      activeFilterClass: 'hidden',
+      prev_url: '',
+      next_url: '',
+      keyword: w
     });
-    // Set filter display names
-    if (publicationType && publicationType != '0') {
-      for (var i = 0; i < pubTypeList.length; i++) {
-        if (pubTypeList[i].ID == publicationType) { data.curFilterTypeName = pubTypeList[i].typeName; break; }
-      }
+    // 类型按钮列表（所有类型 + 3 类）
+    if (data.publicationType) {
+      data.curFilterTypeName = PUB_TYPE_MAP[data.publicationType];
+      data.activeFilterClass = 'showDiv';
     }
-    if (tagId && tagId != '0') {
-      for (var gi = 0; gi < tagGroups.length; gi++) {
-        for (var ci = 0; ci < tagGroups[gi].children.length; ci++) {
-          if (tagGroups[gi].children[ci].ID == tagId) { data.curFilterTagName = tagGroups[gi].children[ci].tagName; break; }
-        }
-      }
+    data.publicationTypeList = [];
+    for (var id in PUB_TYPE_MAP) {
+      var u = baseUrl + '?page=1&publicationType=' + id;
+      if (w) u += '&keyword=' + encodeURIComponent(w);
+      if (tagId) u += '&tagId=' + encodeURIComponent(tagId);
+      data.publicationTypeList.push({ ID: id, typeName: PUB_TYPE_MAP[id], url: u });
     }
-    function seeAll(event) {
-      var btn = event.currentTarget;
-      var body = btn.closest('.panel-body');
+    // ===== 工具方法 =====
+    const seeAll = (event) => {
+      const btn = event.currentTarget;
+      const body = btn.closest('.panel-body');
       if (!body) return;
-      var ul = body.querySelector('ul');
+      const ul = body.querySelector('ul');
       if (!ul) return;
-      var items = ul.querySelectorAll('li');
-      var expanded = btn.getAttribute('data-aria-expanded') === 'true';
-      items.forEach(function(li, idx) { if (idx >= 6) { if (expanded) li.classList.add('hidden'); else li.classList.remove('hidden'); } });
+      const items = ul.querySelectorAll('li');
+      const expanded = btn.getAttribute('data-aria-expanded') === 'true';
+      items.forEach(function (li, idx) {
+        if (idx >= 6) {
+          if (expanded) { li.classList.add('hidden'); } else { li.classList.remove('hidden'); }
+        }
+      });
       btn.textContent = expanded ? btn.getAttribute('data-show') : btn.getAttribute('data-hide');
       btn.setAttribute('data-aria-expanded', expanded ? 'false' : 'true');
     }
-    function goToUrl(url) { window.location.href = url; }
-    function delParamAndGotoUrl(p) {
-      var url = delUrlParam(curUrl, p);
+    const setTagStyle = () => {
+      const parentElement = document.querySelectorAll('.facets-widget-checkbox');
+      parentElement.forEach((element) => {
+        const childElements = element.querySelectorAll('.facet-item1');
+        if (childElements.length > 6) {
+          const seeAllBt = element.querySelector('.js-see-all');
+          if (seeAllBt) seeAllBt.className = "moreBt showDiv";
+        }
+      });
+    }
+    const goToUrl = (url) => { window.location.href = url; }
+    const delParamAndGotoUrl = (paramName) => {
+      if ((tagId == null || tagId == 0) && (publicationType == null || publicationType == 0)) {
+        data.activeFilterClass = "hidden";
+      }
+      var url = delUrlParam(curUrl, paramName);
       window.location.href = url;
     }
     // 清除所有筛选条件（重置过滤器）
@@ -529,13 +447,116 @@ var app = createApp({
       data.activeFilterClass = 'hidden';
       data.curFilterTagName = '';
       data.curFilterTypeName = '';
-      window.location.href = window.location.pathname || '/personal-care/get-inspired/publications.html';
+      window.location.href = baseUrl;
     }
+    // ===== 构建侧栏标签组（年份 + 成分） =====
+    function buildGroups(tags, curTagId) {
+      var yearGroup = [], ingGroup = [];
+      tags.forEach(function (t) {
+        var obj = { tagName: t };
+        if (/^\d{4}$/.test(t)) yearGroup.push(obj); else ingGroup.push(obj);
+      });
+      yearGroup.sort(function (a, b) { return b.tagName.localeCompare(a.tagName); });
+      ingGroup.sort(function (a, b) { return a.tagName.localeCompare(b.tagName); });
+      function mkGroup(tagName, id, children) {
+        var nameId = 'collapse-filtre-accordion-' + tagName + '_' + id;
+        return {
+          tagName: tagName, ID: id,
+          nameId: nameId,
+          sharpeNameId: '#' + nameId,
+          headerNameId: 'heading-filtre-accordion-publications_' + tagName,
+          accordionNameId: 'accordion-filtre-accordion-publications_' + tagName,
+          dataBlockPluginId: 'facet_block:publications_' + tagName,
+          panelDivId1: tagName + '_' + id,
+          class: 'facet-inactive block-facet--checkbox block block-facets ',
+          children: children.map(function (c, ci) {
+            var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(c.tagName);
+            if (data.publicationType) u += '&publicationType=' + data.publicationType;
+            if (w) u += '&keyword=' + encodeURIComponent(w);
+            if (tagId && decodeURIComponent(tagId) === c.tagName) {
+              data.curFilterTagName = c.tagName;
+              data.activeFilterClass = 'showDiv';
+            }
+            return {
+              ID: c.tagName,
+              tagName: c.tagName,
+              tagUrl: u,
+              dataDrupalFacetItemId: tagName + '-' + ci,
+              facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
+            };
+          })
+        };
+      }
+      var groups = [];
+      if (yearGroup.length) groups.push(mkGroup('年份', 55, yearGroup));
+      if (ingGroup.length) groups.push(mkGroup('成分', 54, ingGroup));
+      return groups;
+    }
+    // ===== API 动态加载出版物数据 =====
+    function buildApiUrl() {
+      var p = new URLSearchParams();
+      p.set('type', 'publication');
+      p.set('page', data.cur_page);
+      p.set('limit', '9');
+      if (w) p.set('keyword', w);
+      if (data.publicationType && PUB_TYPE_MAP[data.publicationType]) p.set('articleType', PUB_TYPE_MAP[data.publicationType]);
+      if (tagId && tagId != '0') p.set('tags', decodeURIComponent(tagId));
+      return apiBase + '/news?' + p.toString();
+    }
+    async function loadPublications() {
+      try {
+        var resp = await fetch(buildApiUrl());
+        var result = await resp.json();
+        if (result.code !== 0) throw new Error(result.message || '加载失败');
+        var d = result.data;
+        data.total = d.pagination.total;
+        data.total_page = d.pagination.totalPages;
+        data.cur_page = parseInt(d.pagination.page);
+        data.formData = d.list.map(function (item) {
+          var eventTimeYear = '';
+          if (item.publishedDate) { eventTimeYear = new Date(item.publishedDate).getFullYear(); }
+          return {
+            ID: item.id,
+            title: item.title,
+            typeName: item.articleType || '',
+            publicationName: item.publicationName || '',
+            eventTimeYear: eventTimeYear,
+            author: item.authorName || '',
+            summary: item.summary || '',
+            url: item.pdfUrl || ''
+          };
+        });
+        var tp = data.publicationType ? '&publicationType=' + data.publicationType : '';
+        var tg = tagId && tagId != '0' ? '&tagId=' + encodeURIComponent(tagId) : '';
+        var kw = w ? '&keyword=' + encodeURIComponent(w) : '';
+        data.prev_url = data.cur_page > 1 ? baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw : null;
+        data.next_url = data.cur_page < data.total_page ? baseUrl + '?page=' + (data.cur_page + 1) + tp + tg + kw : null;
+      } catch (e) {
+        console.error('加载出版物失败:', e);
+        data.formData = [];
+        data.total = 0;
+      }
+      setTimeout(function () { setTagStyle(); }, 100);
+    }
+    // 加载标签分组（年份 / 成分）
+    async function loadTags() {
+      try {
+        var resp = await fetch(apiBase + '/news/tags/list?type=publication');
+        var result = await resp.json();
+        if (result.code !== 0) return;
+        data.tagList = buildGroups(result.data || [], tagId);
+      } catch (e) {
+        console.error('加载标签列表失败:', e);
+      }
+    }
+    // 初始化：先加载标签，再加载出版物
+    loadTags().then(function () { loadPublications(); });
     return { data, seeAll, goToUrl, delParamAndGotoUrl, clearFilters };
   }
 });
 app.mount('#app');
 if (w) { document.getElementById('edit-keyword').value = w; }
+
 </script>
 
   <script defer src="https://umami.onlystyle.com.cn/script.js"

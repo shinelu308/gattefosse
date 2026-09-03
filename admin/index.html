@@ -2678,7 +2678,13 @@ const QUILL_TOOLBAR = [
               <tbody>
                 <tr v-for="item in publicationList" :key="item.id">
                   <td><input type="checkbox"></td>
-                  <td class="td-title">{{ item.title }}</td>
+                  <td class="td-title">
+                    {{ item.title }}
+                    <div v-if="item.articleType || item.authorName" style="margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                      <span class="check-tag" v-if="item.articleType" style="background:#EEEDFE;color:#3C3489;font-size:11px;">{{ item.articleType }}</span>
+                      <span v-if="item.authorName" style="font-size:11px;color:var(--text-tertiary);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ item.authorName }}</span>
+                    </div>
+                  </td>
                   <td><a :href="item.pdfUrl" target="_blank" v-if="item.pdfUrl" style="font-size:12px;">查看</a><span v-else style="color:var(--text-tertiary);font-size:12px;">无</span></td>
                   <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
                   <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
@@ -2709,11 +2715,46 @@ const QUILL_TOOLBAR = [
           <div class="card">
             <div class="form-grid">
               <div class="form-group"><label>标题 *</label><input class="form-control" v-model="editingPublication.title" placeholder="出版物标题"></div>
+              <div class="form-group">
+                <label>类型</label>
+                <select class="form-control" v-model="editingPublication.articleType">
+                  <option value="">请选择</option><option>会议交流</option><option>海报</option><option>科技出版物</option>
+                </select>
+              </div>
               <div class="form-group"><label>封面图 URL</label><input class="form-control" v-model="editingPublication.imageUrl" placeholder="https://..."></div>
               <div class="form-group"><label>PDF 下载链接</label><input class="form-control" v-model="editingPublication.pdfUrl" placeholder="https://... 或 /uploads/..."></div>
               <div class="form-group"><label>发布日期 *</label><input type="date" class="form-control" v-model="editingPublication.publishedDate"></div>
+              <div class="form-group"><label>会议/出版物名称</label><input class="form-control" v-model="editingPublication.publicationName" placeholder="如 53rd Annual ESDR Meeting"></div>
               <div class="form-group"><label>阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingPublication.readingTime" style="max-width:120px;"></div>
               <div class="form-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" v-model="editingPublication.lock"> 需要登录才能查看</label></div>
+            </div>
+            <div class="card-header" style="border-top:1px solid var(--border);margin-top:16px;"><h3>作者与标签</h3></div>
+            <div class="card-body">
+              <div class="form-group"><label>作者</label><input class="form-control" v-model="editingPublication.authorName" placeholder="如 Paula LENNON, Wanping ZHANG..."></div>
+              <div class="form-group">
+                <label>已有标签 <span class="hint">（点击快速添加，含年份与成分标签）</span></label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;cursor:pointer;" v-for="(tag, ti) in publicationTagList" :key="ti" @click="addPublicationTag(tag)">{{ tag }}</span>
+                  <span v-if="publicationTagList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无已存在的标签</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>新标签</label>
+                <div style="display:flex;gap:4px;">
+                  <input class="form-control" v-model="publicationTagInput" placeholder="输入标签回车添加" @keyup.enter="addPublicationTag(publicationTagInput)" style="flex:1;max-width:300px;">
+                  <button class="btn btn-sm btn-outline" @click="addPublicationTag(publicationTagInput)" :disabled="!publicationTagInput.trim()">添加</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>当前标签</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EAF3DE;color:#3B6D11;font-size:11px;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in editingPublication.tagsList" :key="ti">
+                    {{ tag }}
+                    <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removePublicationTag(ti)">×</span>
+                  </span>
+                  <span v-if="!editingPublication.tagsList || editingPublication.tagsList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无标签</span>
+                </div>
+              </div>
             </div>
             <div class="form-group"><label>摘要</label><textarea class="form-control" rows="4" v-model="editingPublication.summary" placeholder="出版物简介..."></textarea></div>
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
@@ -3841,7 +3882,9 @@ createApp({
       publicationList: [],
       publicationFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
       publicationPagination: { total: 0, totalPages: 0 },
-      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false },
+      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false, tagsList: [] },
+      publicationTagInput: '',
+      publicationTagList: [],
       // 获取灵感 — 杂志
       magazineList: [],
       magazineFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
@@ -6305,21 +6348,48 @@ createApp({
       catch (e) { console.error(e); }
     },
     resetPublicationEdit() {
-      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false };
+      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
+      this.publicationTagInput = '';
+      this.currentPage = 'publication-edit';
+      this.loadPublicationTags();
     },
     editPublication(item) {
       this.editingPublication = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      // 解析 tags JSON → tagsList
+      this.editingPublication.tagsList = [];
+      if (item.tags) {
+        try { this.editingPublication.tagsList = JSON.parse(item.tags); }
+        catch (e) { this.editingPublication.tagsList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
+      }
+      if (!Array.isArray(this.editingPublication.tagsList)) this.editingPublication.tagsList = [];
+      this.publicationTagInput = '';
       this.currentPage = 'publication-edit';
+      this.loadPublicationTags();
     },
     async savePublication() {
       if (!this.editingPublication.title) { this.showAlert('标题不能为空'); return; }
       if (!this.editingPublication.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
       try {
-        if (this.editingPublication.id) { await this.api('/news/' + this.editingPublication.id, { method: 'PUT', body: JSON.stringify(this.editingPublication) }); }
-        else { await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingPublication) }); }
+        const payload = { ...this.editingPublication, tags: JSON.stringify(this.editingPublication.tagsList || []) };
+        if (this.editingPublication.id) { await this.api('/news/' + this.editingPublication.id, { method: 'PUT', body: JSON.stringify(payload) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(payload) }); }
         this.currentPage = 'publication-list'; this.loadPublicationList();
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async loadPublicationTags() {
+      try { const d = await this.api('/news/tags/list?type=publication'); this.publicationTagList = d.data || []; }
+      catch (e) { console.error(e); }
+    },
+    addPublicationTag(tag) {
+      tag = (tag || '').trim();
+      if (!tag) return;
+      if (!this.editingPublication.tagsList) this.editingPublication.tagsList = [];
+      if (this.editingPublication.tagsList.indexOf(tag) === -1) { this.editingPublication.tagsList.push(tag); }
+      this.publicationTagInput = '';
+    },
+    removePublicationTag(index) {
+      if (this.editingPublication.tagsList) { this.editingPublication.tagsList.splice(index, 1); }
     },
     async togglePublicationPublish(item) {
       try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadPublicationList(); }
