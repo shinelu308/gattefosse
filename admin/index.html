@@ -3198,7 +3198,13 @@ const QUILL_TOOLBAR = [
             </div>
             <div class="card-body">
               <div v-if="!editingContent._blocks || editingContent._blocks.length === 0" style="padding:24px;text-align:center;color:var(--text-tertiary);border:1px dashed var(--border);border-radius:8px;">
-                暂无区块，点击上方按钮添加
+                <template v-if="editingContent.contentHtml && editingContent.contentHtml.trim().length > 0">
+                  该页面当前以<strong style="color:var(--primary);">整段 HTML</strong>形式保存（{{ editingContent.contentHtml.length }} 字符）。<br>
+                  请切到上方「<strong>HTML 源码</strong>」tab 查看与编辑；如需切换为结构化区块，请先清空 HTML 源码内容并保存。
+                </template>
+                <template v-else>
+                  暂无区块，点击上方按钮添加
+                </template>
               </div>
               <div class="block-list" v-if="editingContent._blocks && editingContent._blocks.length > 0">
                 <div v-for="(blk, bi) in editingContent._blocks" :key="bi" class="block-item">
@@ -3482,6 +3488,9 @@ const QUILL_TOOLBAR = [
             <div class="card-header"><h3>整段 HTML 源码</h3></div>
             <div class="card-body">
               <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 8px;">适用于「市场分类」等以整段富文本/交互组件（如图文左右分栏、cartography 交互地图）发布的页面。保存后前端页面直接按此 HTML 渲染。若下方为空，请使用「区块内容」结构化编辑。</p>
+              <div v-if="editingContent._blocks && editingContent._blocks.length > 0" style="background:#FFF7E6;border:1px solid #FFE0A0;border-radius:var(--radius);padding:10px 14px;font-size:12px;margin:0 0 8px;color:#B45309;">
+                ⚠️ 该页面同时存在结构化区块（{{ editingContent._blocks.length }} 个）。保存时将以「HTML 源码」内容为主，区块内容将被清空。如需保留结构化区块，请清空此 HTML 后切回「区块内容」编辑。
+              </div>
               <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
                 <span style="font-size:12px;color:var(--text-secondary);">contentHtml 长度：{{ (editingContent.contentHtml || '').length }} 字符</span>
                 <button class="btn btn-sm btn-outline" @click="contentHtmlWrap=!contentHtmlWrap" style="font-size:12px;padding:2px 8px;">{{ contentHtmlWrap ? '显示原始' : '显示格式化预览' }}</button>
@@ -6621,7 +6630,14 @@ createApp({
       }
       this.editingContent = full;
       this.isNewPage = false;
-      this.contentEditTab = 'basic';
+      // 智能选择默认 tab：优先有结构化区块的页面；否则走 HTML 源码（markets 类型）；都没有则基本信息
+      if (full._blocks && full._blocks.length > 0) {
+        this.contentEditTab = 'blocks';
+      } else if (full.contentHtml && full.contentHtml.trim().length > 0) {
+        this.contentEditTab = 'html';
+      } else {
+        this.contentEditTab = 'basic';
+      }
       // 初始化产品搜索状态
       this.productSearchData = {};
       if (full._blocks) {
