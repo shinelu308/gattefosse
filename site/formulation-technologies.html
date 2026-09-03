@@ -71,7 +71,7 @@
     <div class="region region-highlight">
       <div data-drupal-messages-fallback class="hidden"></div>
     </div>
-    <main role="main" class="s-page--inner main theme-pharma  no-image-banner" data-bs-spy="scroll">
+    <main role="main" class="s-page--inner main theme-pharma  no-image-banner" data-bs-spy="scroll" id="app">
       <!-- theme-pharma | theme-cosm -->
       <nav role="navigation" class="quick-access">
         <button class="quick-access__button quick-access__button--open js-open">
@@ -108,25 +108,14 @@
           </div>
         </div>
       </div>
-      <div class="region region-content" id="app">
+      <div class="region region-content">
         <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
           class="block block-system block-system-main-block">
           <article role="article" about="/formulation-technologies" typeof="schema:WebPage"
             class="node node--type-page node--view-mode-full">
             <div class="container">
               <div class="node__wrapper">
-                <div class="node__content-wrapper">
-                 <div class="block-title" v-if="data.formData">
-                    <h1 class="page-title u-title-styled">{{data.formData.title}}</h1>
-                  </div>
-                  <div class="block-accroche">
-                    <div
-                      class="clearfix text-formatted field field--name-field-chapeau field--type-text-long field--label-hidden field__item">
-                      <p>{{data.formData.summary}}</p>
-                    </div>
-                  </div>
-                  <div class="node__content" v-html="data.formData.content">
-                  </div>
+                <div class="node__content-wrapper" v-html="data.contentHtml">
                 </div>
               </div>
             </div>
@@ -190,11 +179,27 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '配方技术 ⋅ 嘉法狮', summary: '配方技术 ⋅ 嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>配方技术 ⋅ 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        title: '配方技术',
+        summary: '',
+        contentHtml: '<p>配方技术 ⋅ 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>',
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/formulation-technologies');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            data.title = p.title || data.title;
+            data.summary = p.metaDescription || '';
+            data.contentHtml = p.contentHtml || data.contentHtml;
+            document.title = p.metaTitle || (p.title + ' | 嘉法狮');
+          }
+        } catch (e) {
+          console.error('[formulation-technologies] fetch pageContent failed', e);
+        }
       });
       return { data };
     }

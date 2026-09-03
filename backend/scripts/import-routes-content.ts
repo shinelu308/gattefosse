@@ -1,5 +1,5 @@
 /**
- * 给药途径 3 子页面(oral/topical/rectal-and-vaginal)结构化导入
+ * 给药途径 3 子页面(oral/topical/rectal-and-vaginal) + 配方技术(formulation-technologies)结构化导入
  * 与 pharmaceuticals.html 一致：content 存 hero JSON 区块（含头图），contentHtml 存正文 HTML
  * 后台在「站点内容」直接管理
  *
@@ -129,6 +129,21 @@ const ROUTE_PAGES: RoutePage[] = [
 </ul>`
     ),
   },
+  {
+    // 配方技术页（无头图 banner，原站 main 为 no-image-banner）
+    pageKey: 'formulation-technologies',
+    title: '配方技术',
+    metaTitle: '配方技术 | 嘉法狮',
+    metaDescription:
+      '嘉法狮可以帮助您确定正在寻找的脂质辅料，并为您提供技术信息以帮助您正确使用。',
+    backgroundImage: '',
+    contentHtml: loadHtml(
+      'formulation-technologies',
+      `
+<p>配方技术：嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。</p>
+<p>按给药途径浏览配方技术分类，找到适合您开发项目的脂质辅料与工艺指导。</p>`
+    ),
+  },
 ];
 
 const HERO_BASE = {
@@ -172,7 +187,7 @@ async function main() {
     });
     console.log(`✅ ${p.pageKey} 已保存 id=${page.id} | 头图=${p.backgroundImage.slice(-50)}`);
   }
-  console.log(`\n完成: 共导入 ${ROUTE_PAGES.length} 个给药途径子页面`);
+  console.log(`\n完成: 共导入 ${ROUTE_PAGES.length} 个药用辅料子页面`);
 }
 
 main()
