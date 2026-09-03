@@ -222,6 +222,15 @@
   <script src="/sites/default/files/js/js_CsyIdu1wDwXVRDYNWl5It2Y_pq096ewn0Yfk5whPKdQ.js"></script>
   <script src="/sites/default/files/js/js_2mNc9WZm6LIH1QDAnAZOt4JIJSloG3vjQk0K6gYGs4E.js"></script>
   <script src="/sites/default/files/js/js_CQT8UYTJuSJOvNdF1_QG5Y9O8tzb6ju15QlcNogaY4E.js"></script>
+  <script>
+    // Drupal behaviors 需读取 drupalSettings；marker 位置已通过内联 style 直接还原，
+    // 此处只提供最小占位以避免 cartography behavior 在 path.currentPathIsAdmin 处抛错
+    window.drupalSettings = window.drupalSettings || {
+      cartography: { markers: {} },
+      path: { currentPathIsAdmin: false, currentPath: '/rectal-and-vaginal-drug-delivery' },
+      user: { uid: 0 },
+    };
+  </script>
   <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1716964566"></script>
   <script src="/sites/default/files/js/js_juDm6lflJ7mC38ty9qV92X_dj3D_bQnskSxS3fi-I1Q.js"></script>
 <script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>   
