@@ -65,6 +65,15 @@ const contentBlocks = [
       ],
     },
   },
+  {
+    type: 'product_promo',
+    data: {
+      title: 'Capryol® 90',
+      imageUrl: '/uploads/file/89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg',
+      linkUrl: '/pharmaceuticals/product-finder/product-detail.html?id=11053',
+      linkLabel: '阅读更多',
+    },
+  },
 ];
 
 // 医药主题文章（原错标为 pc → pharma）
