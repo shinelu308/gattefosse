@@ -120,9 +120,9 @@
                         </nav>
                     </div>
                 </div>
-                <div class="page-top__image  page-top__image--full"
-                    style="background-image: url(/sites/default/files/styles/page_banner_desktop_full/public/2024-01/cover-journees-galeniques-1140x405_0.jpg.webp)">
-                </div>
+<div class="page-top__image  page-top__image--full"
+                    :style="`background-image: url(${data.formData.topBackground})`">
+</div>
             </div>
             <div class="region region-content" id="app">
                 <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
@@ -203,19 +203,67 @@
 <script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>   
 
 <script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
-</body>
 
-</html>
+<!-- 真实数据：从本地 /api/news 拉取 type=page category=pharma 的 Journées Galéniques 单页记录 -->
 <script>
-  function checkLoginStatus() { return false; }
   const { createApp, reactive } = Vue;
+
+  function normalizePageTopBg(url) {
+    if (!url) return '';
+    if (/^https?:\/\//.test(url) || url.startsWith('//')) return url;
+    if (url.startsWith('/')) return url;
+    return '/' + url;
+  }
+
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '普罗旺斯圣雷米的盖伦时代 ⋅ Gattefossé', summary: '普罗旺斯圣雷米的盖伦时代 ⋅ Gattefossé - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>普罗旺斯圣雷米的盖伦时代 ⋅ Gattefossé。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        formData: {
+          title: '普罗旺斯圣雷米的盖伦时代 ⋅ Gattefossé',
+          summary: '',
+          content: '<p>加载中…</p>',
+          topBackground: '/sites/default/files/styles/page_banner_desktop_full/public/2024-01/cover-journees-galeniques-1140x405_0.jpg.webp',
+        },
+        docTitle: '普罗旺斯圣雷米的盖伦时代 ⋅ Gattefossé',
       });
+
+      function applyRecord(rec) {
+        if (!rec) return;
+        data.formData.title = rec.title || data.formData.title;
+        data.formData.summary = rec.summary || '';
+        data.formData.content = rec.contentHtml || '';
+        const bg = normalizePageTopBg(rec.topBackground || rec.imageUrl || '');
+        if (bg) data.formData.topBackground = bg;
+        if (rec.metaTitle) data.docTitle = rec.metaTitle;
+        document.title = data.docTitle;
+      }
+
+      async function loadRecord() {
+        try {
+          const resp = await axios.get('/api/news', {
+            params: { type: 'page', category: 'pharma', limit: '1', isPublished: 'true' },
+          });
+          const list = resp && resp.data && resp.data.data && resp.data.data.list;
+          if (Array.isArray(list) && list.length) {
+            applyRecord(list[0]);
+            return;
+          }
+          const resp2 = await axios.get('/api/news', {
+            params: { type: 'page', category: 'pharma', limit: '1' },
+          });
+          const list2 = resp2 && resp2.data && resp2.data.data && resp2.data.data.list;
+          if (Array.isArray(list2) && list2.length) applyRecord(list2[0]);
+        } catch (e) {
+          console.error('Journées Galéniques 页面加载失败：', e);
+        }
+      }
+
+      loadRecord();
       return { data };
     }
   });
   app.mount("#app");
 </script>
+</body>
+
+</html>

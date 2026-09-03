@@ -213,8 +213,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <textarea class="form-control" v-model="editing.summary" rows="2" placeholder="列表卡片展示的摘要文字"></textarea>
         </div>
 
-        <!-- 文章正文（仅 热点话题 article） -->
-        <div class="form-group" v-if="activeTab==='hot-topics'">
+        <!-- 文章正文（热点话题 + Journées Galéniques 专题页） -->
+        <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='journees'">
           <label>正文内容 <span class="form-hint">Quill 富文本，点击「正文」区块初始化；保存前会立即读取</span></label>
           <div class="quill-wrap">
             <div id="lm-quill-editor" class="quill-editor"></div>
@@ -318,6 +318,8 @@ createApp({
           subtitle: '管理「了解更多 — 出版物」内容（type=publication, category=pharma，排除「资料手册」）', typeOptions: ['海报','会议交流','科技出版物'] },
         { key: 'brochures', label: '资料手册', addLabel: '资料手册', type: 'publication', count: 0,
           subtitle: '管理「了解更多 — 资料手册」内容（type=publication, articleType=资料手册, category=pharma）', typeOptions: ['资料手册'] },
+        { key: 'journees', label: 'Journées Galéniques', addLabel: '专题页', type: 'page', count: 0,
+          subtitle: '管理「了解更多 → Journées Galéniques论坛」专题单页（type=page, category=pharma）', typeOptions: [] },
       ],
       activeTab: 'hot-topics',
       keyword: '',
@@ -474,8 +476,8 @@ createApp({
     async saveItem() {
       if (!this.editing.title) return alert('标题不能为空');
       if (!this.editing.publishedDate) return alert('发布日期不能为空');
-      // 从 Quill 读取正文
-      if (this.activeTab === 'hot-topics' && this._quill) {
+      // 从 Quill 读取正文（hot-topics 与 journees 都用富文本编辑）
+      if ((this.activeTab === 'hot-topics' || this.activeTab === 'journees') && this._quill) {
         this.editing.contentHtml = this._quill.root.innerHTML;
       }
       const m = this.activeMeta;
@@ -489,7 +491,7 @@ createApp({
         articleType: this.editing.articleType || (this.activeTab === 'brochures' ? '资料手册' : null),
         isPublished: !!this.editing.isPublished,
         lock: !!this.editing.lock,
-        contentHtml: this.activeTab === 'hot-topics' ? (this.editing.contentHtml || null) : undefined,
+        contentHtml: (this.activeTab === 'hot-topics' || this.activeTab === 'journees') ? (this.editing.contentHtml || null) : undefined,
         videoUrl: this.activeTab === 'webinar' ? (this.editing.videoUrl || null) : undefined,
         pdfUrl: (this.activeTab === 'publications' || this.activeTab === 'brochures') ? (this.editing.pdfUrl || null) : undefined,
         publicationName: this.activeTab === 'publications' ? (this.editing.publicationName || null) : undefined,
@@ -530,7 +532,7 @@ createApp({
     },
     // ---------- Quill ----------
     initQuill(html) {
-      if (this.activeTab !== 'hot-topics' || typeof Quill === 'undefined') return;
+      if ((this.activeTab !== 'hot-topics' && this.activeTab !== 'journees') || typeof Quill === 'undefined') return;
       const el = document.getElementById('lm-quill-editor');
       if (!el || this._quillInited) return;
       this._quillInited = true;
