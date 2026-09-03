@@ -11,6 +11,7 @@ backend/dist/
 backend/prisma/gattefosse.db
 backend/prisma/gattefosse.db-journal
 backend/prisma/gattefosse.db-wal
+backend/gattefosse.db            # 误创建的根目录空 db（实际 db 在 backend/prisma/）
 
 # 本地开发数据库
 backend/prisma/dev.db
