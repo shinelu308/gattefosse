@@ -110,14 +110,14 @@
                   技术中心
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="/characterization-methods">{{data.formData.title}}</a>
+                  <a href="/characterization-methods">表征方法</a>
                 </li>
               </ol>
             </nav>
           </div>
         </div>
         <div class="page-top__image  page-top__image--full"
-          style="background-image: url(/sites/default/files/styles/page_banner_desktop_full/public/2023-09/characterization-methods-1905x405_0.jpg.webp)">
+          :style="data.backgroundImage ? { backgroundImage: 'url(' + data.backgroundImage + ')' } : {}">
         </div>
       </div>
       <div class="region region-content">
@@ -127,12 +127,7 @@
             class="node node--type-page node--view-mode-full">
             <div class="container">
               <div class="node__wrapper">
-                <div class="node__content-wrapper">
-                  <div class="block-title">
-                    <h1 class="page-title u-title-styled">{{data.formData.title}}
-                    </h1>
-                  </div>
-                  <span v-html="data.formData.content"></span>
+                <div class="node__content-wrapper" v-html="data.contentHtml">
                 </div>
               </div>
             </div>
@@ -196,11 +191,31 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '表征方法 ⋅ 嘉法狮', summary: '表征方法 ⋅ 嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>表征方法 ⋅ 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        title: '表征方法',
+        summary: '',
+        backgroundImage: '',
+        contentHtml: '<div class="block-title"><h1 class="page-title u-title-styled">表征方法</h1></div><p>表征方法：详细介绍用于表征脂质辅料和脂质处方的方法。</p>',
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/characterization-methods');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            const blocks = typeof p.content === 'string' ? JSON.parse(p.content) : p.content;
+            const hero = (blocks || []).find((b) => b.type === 'hero');
+            data.title = p.title || data.title;
+            data.summary = p.metaDescription || '';
+            data.backgroundImage = hero && hero.data ? hero.data.backgroundImage : '';
+            data.contentHtml = p.contentHtml || data.contentHtml;
+            document.title = p.metaTitle || (p.title + ' | 嘉法狮');
+          }
+        } catch (e) {
+          console.error('[characterization-methods] fetch pageContent failed', e);
+        }
       });
       return { data };
     }

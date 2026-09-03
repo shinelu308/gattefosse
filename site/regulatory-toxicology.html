@@ -50,7 +50,7 @@
       "Connexion": "Non"
     });
   </script>
-  <title>Regulatory &amp; toxicology ⋅ Gattefossé</title>
+  <title>法规支持 ⋅ 嘉法狮</title>
   <link rel="apple-touch-icon" sizes="180x180" href="themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="themes/custom/gattefosse/images/favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="themes/custom/gattefosse/images/favicons/favicon-16x16.png">
@@ -110,14 +110,14 @@
                   <a href="/expertise.html">专业知识</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="/regulatory-toxicology.html">{{data.formData.title}}</a>
+                  <a href="/regulatory-toxicology.html">法规支持</a>
                 </li>
               </ol>
             </nav>
           </div>
         </div>
         <div class="page-top__image  page-top__image--full"
-          style="background-image: url(sites/default/files/styles/page_banner_desktop_full/public/2023-07/regulatory-toxicology.jpg.jpg)">
+          :style="data.backgroundImage ? { backgroundImage: 'url(' + data.backgroundImage + ')' } : {}">
         </div>
       </div>
       <div class="region region-content">
@@ -127,16 +127,7 @@
             class="node node--type-page node--view-mode-full">
             <div class="container">
               <div class="node__wrapper">
-                <div class="node__content-wrapper">
-                  <div class="block-title" v-if="data.formData">
-                    <h1 class="page-title u-title-styled">
-                      <font style="vertical-align: inherit;">
-                        <font style="vertical-align: inherit;">{{data.formData.title}}</font>
-                      </font>
-                    </h1>
-                  </div>
-                  <span v-html="data.formData.content">
-                  </span>
+                <div class="node__content-wrapper" v-html="data.contentHtml">
                 </div>
               </div>
             </div>
@@ -202,11 +193,31 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: 'Regulatory &amp; toxicology ⋅ Gattefossé', summary: 'Regulatory &amp; toxicology ⋅ Gattefossé - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>Regulatory &amp; toxicology ⋅ Gattefossé。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        title: '法规支持',
+        summary: '',
+        backgroundImage: '',
+        contentHtml: '<div class="block-title"><h1 class="page-title u-title-styled">法规支持</h1></div><p>法规支持：嘉法狮确保产品在所有专业市场符合法规，并提供完善的文件支持。</p>',
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/regulatory-toxicology');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            const blocks = typeof p.content === 'string' ? JSON.parse(p.content) : p.content;
+            const hero = (blocks || []).find((b) => b.type === 'hero');
+            data.title = p.title || data.title;
+            data.summary = p.metaDescription || '';
+            data.backgroundImage = hero && hero.data ? hero.data.backgroundImage : '';
+            data.contentHtml = p.contentHtml || data.contentHtml;
+            document.title = p.metaTitle || (p.title + ' | 嘉法狮');
+          }
+        } catch (e) {
+          console.error('[regulatory-toxicology] fetch pageContent failed', e);
+        }
       });
       return { data };
     }

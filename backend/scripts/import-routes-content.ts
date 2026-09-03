@@ -144,6 +144,51 @@ const ROUTE_PAGES: RoutePage[] = [
 <p>按给药途径浏览配方技术分类，找到适合您开发项目的脂质辅料与工艺指导。</p>`
     ),
   },
+  {
+    // 技术中心子页 1：处方开发（有 page-top 头图 banner）
+    pageKey: 'formulation-development',
+    title: '处方开发',
+    metaTitle: '处方开发 | 嘉法狮',
+    metaDescription:
+      '嘉法狮全球四大技术中心提供处方支持与知识共享，从表征辅料性能到优化药物递送工艺，帮助客户正确使用脂质辅料。',
+    backgroundImage:
+      '/sites/default/files/styles/page_banner_desktop_full/public/2023-09/formulation-support-1905x405.jpg.jpg',
+    contentHtml: loadHtml(
+      'formulation-development',
+      `
+<p>处方开发：嘉法狮（Gattefossé）功能性辅料及药物开发应用，奠定了其在医药科学领域的声望。</p>`
+    ),
+  },
+  {
+    // 技术中心子页 2：表征方法（有 page-top 头图 banner，正文含 bilibili 视频）
+    pageKey: 'characterization-methods',
+    title: '表征方法',
+    metaTitle: '表征方法 | 嘉法狮',
+    metaDescription:
+      '详细介绍用于表征脂质辅料和脂质处方的方法，涵盖稳定性测试、溶解度测量、混溶性测试、体外脂解、泰勒色散分析、PIT 偏差法与感官分析。',
+    backgroundImage:
+      '/sites/default/files/styles/page_banner_desktop_full/public/2023-09/characterization-methods-1905x405_0.jpg.webp',
+    contentHtml: loadHtml(
+      'characterization-methods',
+      `
+<p>表征方法：详细介绍用于表征脂质辅料和脂质处方的方法。</p>`
+    ),
+  },
+  {
+    // 技术中心子页 3：法规支持（有 page-top 头图 banner，含 6 个外部协会链接）
+    pageKey: 'regulatory-toxicology',
+    title: '法规支持',
+    metaTitle: '法规支持 | 嘉法狮',
+    metaDescription:
+      '嘉法狮持续关注法规动向和药典变化，确保辅料符合全球不同地区的法规要求，并遵循天然与有机标准提供认证产品，加速客户产品上市。',
+    backgroundImage:
+      '/sites/default/files/styles/page_banner_desktop_full/public/2023-07/regulatory-toxicology.jpg.jpg',
+    contentHtml: loadHtml(
+      'regulatory-toxicology',
+      `
+<p>法规支持：嘉法狮确保产品在所有专业市场符合法规，并提供完善的文件支持。</p>`
+    ),
+  },
 ];
 
 const HERO_BASE = {
