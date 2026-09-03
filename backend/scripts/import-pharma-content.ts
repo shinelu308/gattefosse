@@ -33,6 +33,38 @@ const contentBlocks = [
       html: '<p>嘉法狮在制药领域拥有超过60年的经验。我们的脂质化学专长覆盖口服固体制剂、半固体制剂等广泛剂型，为您的配方开发提供创新辅料与个性化技术支持。</p>',
     },
   },
+  {
+    type: 'feature_cards',
+    data: {
+      title: '关于药用辅料',
+      items: [
+        {
+          title: '产品检索',
+          description: '找到最适合您的开发项目的辅料。',
+          icon: '--ico-flask',
+          linkUrl: '/pharmaceuticals/product-finder.html',
+        },
+        {
+          title: '配方技术',
+          description: '了解如何使用我们的脂质辅料进行处方开发。',
+          icon: '--magnifying-glass',
+          linkUrl: '/formulation-technologies.html',
+        },
+        {
+          title: '市场分类',
+          description: '用于人用药、动物用药以及保健食品的辅料。',
+          icon: '--list',
+          linkUrl: '/markets.html',
+        },
+        {
+          title: '了解更多',
+          description: '我们的新闻、出版物、网络研讨会和产品手册。',
+          icon: '--book-open',
+          linkUrl: '/pharmaceuticals/learn-more.html',
+        },
+      ],
+    },
+  },
 ];
 
 // 医药主题文章（原错标为 pc → pharma）
