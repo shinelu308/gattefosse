@@ -350,44 +350,208 @@
   <script>
 function checkLoginStatus() { return false; }
 const { createApp, reactive } = Vue;
-var webinarsList = [
-  {ID:145,title:'Color catwalk',typeName:'\u5e94\u7528\u9886\u57df',summary:'Learn about the dichotomy of today\'s makeup trends and the high-performing ingredients that will help you create beautiful products for any look.',tagList:[],topBackground:'https://www.gattefossechina.cn/uploads/file/257d919e332ebbe96cec3879e555d106_20240726125935.webp',thumb:'https://www.gattefossechina.cn/uploads/file/257d919e332ebbe96cec3879e555d106_20240517105109.png',lock:true,url:'https://us02web.zoom.us/rec/component-page?hasValidToken=false&clusterId=us02&action=play&filePlayId=&componentName=recording-register&meetingId=3Kfoy8SuZCTGMYG02c9BuQDDl8aCsDpQFakyWa0TBD_PG9'},
-  {ID:146,title:'Biodegradability in cosmetics',typeName:'\u4e13\u4e1a\u77e5\u8bc6',summary:'Gather everything you need to know about biodegradability in cosmetics in just 20 minutes.',tagList:[],topBackground:'https://www.gattefossechina.cn/uploads/file/dcc8d188fb21a502826898453e707109_20240726125944.webp',thumb:'https://www.gattefossechina.cn/uploads/file/dcc8d188fb21a502826898453e707109_20240517105134.png',lock:true,url:'https://us02web.zoom.us/rec/component-page?hasValidToken=false&clusterId=us02&action=play&filePlayId=&componentName=recording-register&meetingId=8ZKE6nRJqmI-tMfZsldEc9-Oyn217XnNO68uL-RDyhZ-Je'},
-  {ID:147,title:'Pout perfect',typeName:'\u7075\u611f\u4e0e\u8d8b\u52bf',summary:'Discover the latest trends in lip cosmetics and the Gattefoss\u00e9 ingredients to help you innovate hybrid lip products.',tagList:[],topBackground:'',thumb:'https://www.gattefossechina.cn/uploads/file/8474f8ff8c80608d209aa28540facb4c_20240517105320.png',lock:true,url:'https://us02web.zoom.us/rec/component-page?hasValidToken=false&clusterId=us02&action=play&filePlayId=&componentName=recording-register&meetingId=O-WiTS2Au7-61Rt870xzu2QmSPsu7tPR5PF37RKs01Lssw'},
-  {ID:148,title:'Here comes the sun',typeName:'\u8d28\u5730\u4e0e\u914d\u65b9',summary:'Join our industry suncare expert as she reveals the best formulation practices and testing methods.',tagList:[],topBackground:'',thumb:'https://www.gattefossechina.cn/uploads/file/88ff30a395ed59b58fbe8ada4bcaac35_20240517105636.png',lock:true,url:'https://us02web.zoom.us/rec/component-page?hasValidToken=false&clusterId=us02&action=play&filePlayId=&componentName=recording-register&meetingId=N6MxLAR-VkYCDPjDhepuujagYu5J9ZMXbh6fHKCAk_nMVO'}
-];
+const params = new URLSearchParams(window.location.search);
+var w = params.get('keyword');       // 搜索关键词
+var curPage = params.get('page');    // 页码
+var tagId = params.get('tagId');     // 选中标签（中文名）
+var webinarsType = params.get('webinarsType'); // 类型 ID（1-4）
+var curUrl = window.location.href;
+var isLogin = checkLoginStatus();
+var userEnabled = localStorage.getItem("userEnabled");
+var curPageNum = curPage == null ? 1 : parseInt(curPage);
+var baseUrl = window.location.pathname || '/personal-care/get-inspired/webinars.html';
+var apiBase = '/api';
+// 类型 ID → articleType 中文名
+var TYPE_NAMES = ['', '应用领域', '专业知识', '灵感与趋势', '质地与配方'];
 var app = createApp({
   setup() {
     var data = reactive({
-      formData: webinarsList,
-      webinarsTypeList: [{ID:1,typeName:'\u5e94\u7528\u9886\u57df'},{ID:2,typeName:'\u4e13\u4e1a\u77e5\u8bc6'},{ID:3,typeName:'\u7075\u611f\u4e0e\u8d8b\u52bf'},{ID:4,typeName:'\u8d28\u5730\u4e0e\u914d\u65b9'}],
-      total: webinarsList.length,
+      formData: [],
+      total: 0,
       total_page: 1,
-      cur_page: 1,
-      page_size: 20,
-      userEnabled: null,
-      tagId: null,
+      cur_page: curPageNum,
+      page_size: 9,
+      userEnabled: userEnabled,
+      tagId: tagId,
       tagList: [],
       curFilterTagName: '',
-      webinarsTypeId: null,
+      webinarsTypeId: webinarsType && webinarsType > 0 ? webinarsType : null,
       curFilterTypeName: '',
-      webinarsType: null,
-      allTypeUrl: window.location.href.split('?')[0],
+      webinarsType: webinarsType && webinarsType > 0 ? parseInt(webinarsType) : null,
+      allTypeUrl: baseUrl,
       activeFilterClass: 'hidden',
       prev_url: '',
-      next_url: ''
+      next_url: '',
+      keyword: w
     });
+    // 构建类型列表（含选中状态与 URL）
+    data.webinarsTypeList = [];
+    for (var i = 1; i <= 4; i++) {
+      var u = baseUrl + '?page=1&webinarsType=' + i;
+      if (w) u += '&keyword=' + encodeURIComponent(w);
+      if (tagId) u += '&tagId=' + encodeURIComponent(tagId);
+      data.webinarsTypeList.push({ ID: i, typeName: TYPE_NAMES[i], url: u });
+      if (data.webinarsType == i) {
+        data.curFilterTypeName = TYPE_NAMES[i];
+        data.activeFilterClass = 'showDiv';
+      }
+    }
+    // ===== 工具方法 =====
+    const seeAll = (event) => {
+      const parentElement = event.currentTarget.parentElement;
+      if (event.target.getAttribute('data-aria-expanded') == 'false') {
+        const childlist = parentElement.querySelectorAll('.hidden');
+        childlist.forEach((element) => { element.className = "facet-item1 aad"; });
+        event.target.innerHTML = "收起";
+        event.target.setAttribute('data-aria-expanded', 'true');
+      } else {
+        const childlist = parentElement.querySelectorAll('.aad');
+        childlist.forEach((element) => { element.className = "facet-item1 hidden"; });
+        event.target.innerHTML = "查看所有";
+        event.target.setAttribute('data-aria-expanded', 'false');
+      }
+    }
+    const setTagStyle = () => {
+      const parentElement = document.querySelectorAll('.facets-widget-checkbox');
+      parentElement.forEach((element) => {
+        const childElements = element.querySelectorAll('.facet-item1');
+        if (childElements.length > 6) {
+          const seeAllBt = element.querySelector('.js-see-all');
+          if (seeAllBt) seeAllBt.className = "moreBt showDiv";
+        }
+      });
+    }
+    const goToUrl = (url) => { window.location.href = url; }
+    const delParamAndGotoUrl = (paramName) => {
+      if ((tagId == 0 && webinarsType == 0) || (tagId == null && webinarsType == null)) {
+        data.activeFilterClass = "hidden";
+      }
+      var url = delUrlParam(curUrl, paramName);
+      window.location.href = url;
+    }
     // 清除所有筛选条件（重置过滤器）
     const clearFilters = () => {
       data.activeFilterClass = 'hidden';
       data.curFilterTagName = '';
       data.curFilterTypeName = '';
-      window.location.href = window.location.pathname || '/personal-care/get-inspired/webinars.html';
+      window.location.href = baseUrl;
     }
-    return { data, clearFilters };
+    // ===== API 动态加载研讨会数据 =====
+    function buildApiUrl() {
+      var p = new URLSearchParams();
+      p.set('type', 'webinar');
+      p.set('page', data.cur_page);
+      p.set('limit', '9');
+      if (w) p.set('keyword', w);
+      if (data.webinarsType && data.webinarsType > 0) p.set('articleType', TYPE_NAMES[data.webinarsType]);
+      if (tagId && tagId != '0') p.set('tags', tagId);
+      return apiBase + '/news?' + p.toString();
+    }
+    async function loadWebinars() {
+      try {
+        var resp = await fetch(buildApiUrl());
+        var result = await resp.json();
+        if (result.code !== 0) throw new Error(result.message || '加载失败');
+        var d = result.data;
+        data.total = d.pagination.total;
+        data.total_page = d.pagination.totalPages;
+        data.cur_page = parseInt(d.pagination.page);
+        data.formData = d.list.map(function(item) {
+          var tagList = [];
+          if (item.tags) {
+            try { tagList = JSON.parse(item.tags); } catch(e) { tagList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
+          }
+          var eventTimeYear = '', eventTimeDate = '';
+          if (item.publishedDate) {
+            var d2 = new Date(item.publishedDate);
+            eventTimeYear = d2.getFullYear();
+            eventTimeDate = (d2.getMonth() + 1) + '月' + d2.getDate();
+          }
+          var typeName = item.articleType || '';
+          return {
+            ID: item.id,
+            title: item.title,
+            typeName: typeName,
+            eventTime: item.publishedDate,
+            eventTimeYear: eventTimeYear,
+            eventTimeDate: eventTimeDate,
+            summary: item.summary || '',
+            tagList: tagList,
+            lock: !!item.lock,
+            thumb: item.imageUrl || '/',
+            url: item.videoUrl || ''
+          };
+        });
+        var tp = data.webinarsType ? '&webinarsType=' + data.webinarsType : '';
+        var tg = tagId && tagId != '0' ? '&tagId=' + encodeURIComponent(tagId) : '';
+        var kw = w ? '&keyword=' + encodeURIComponent(w) : '';
+        data.prev_url = data.cur_page > 1 ? baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw : null;
+        data.next_url = data.cur_page < data.total_page ? baseUrl + '?page=' + (data.cur_page + 1) + tp + tg + kw : null;
+      } catch (e) {
+        console.error('加载研讨会失败:', e);
+        data.formData = [];
+        data.total = 0;
+      }
+      setTimeout(function() { setTagStyle(); }, 100);
+    }
+    // 加载标签筛选列表
+    async function loadTags() {
+      try {
+        var resp = await fetch(apiBase + '/news/tags/list?type=webinar');
+        var result = await resp.json();
+        if (result.code !== 0) return;
+        var tags = result.data || [];
+        var group = {
+          tagName: '主题', ID: 1,
+          nameId: 'collapse-filtre-accordion-主题_1',
+          sharpeNameId: '#collapse-filtre-accordion-主题_1',
+          headerNameId: 'heading-filtre-accordion-personal-care_主题',
+          accordionNameId: 'accordion-filtre-accordion-personal-care_主题',
+          dataBlockPluginId: 'facet_block:personal-care_主题',
+          panelDivId1: '主题_1',
+          class: 'facet-inactive block-facet--checkbox block block-facets ',
+          children: []
+        };
+        for (var ci = 0; ci < tags.length; ci++) {
+          var tagName = tags[ci];
+          var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(tagName);
+          if (data.webinarsType) u += '&webinarsType=' + data.webinarsType;
+          if (w) u += '&keyword=' + encodeURIComponent(w);
+          if (tagId && tagId === tagName) {
+            data.curFilterTagName = tagName;
+            data.activeFilterClass = 'showDiv';
+          }
+          group.children.push({
+            ID: tagName,
+            tagName: tagName,
+            tagUrl: u,
+            dataDrupalFacetItemId: 'tag-' + ci,
+            facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
+          });
+        }
+        data.tagList = [group];
+      } catch (e) {
+        console.error('加载标签列表失败:', e);
+      }
+    }
+    // 初始化：先加载标签，再加载研讨会
+    loadTags().then(function() { loadWebinars(); });
+    return { data, seeAll, goToUrl, delParamAndGotoUrl, clearFilters };
   }
 });
 app.mount('#app');
+function delUrlParam(url, paramName) {
+  paramName = paramName.replace(/[\[\]]/g, '\\$&');
+  var regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
+  var val = regular.exec(url);
+  if (val && val[2]) {
+    url = url.replace(new RegExp('[?&]' + paramName + '=' + val[2]), '');
+  }
+  if (url.indexOf('?') < 0) {
+    url = url.replace(/&/, '?');
+  }
+  return url;
+}
 </script></script>
     <style>
       .dialog {

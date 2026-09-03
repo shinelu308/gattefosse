@@ -2563,7 +2563,13 @@ const QUILL_TOOLBAR = [
               <tbody>
                 <tr v-for="item in webinarList" :key="item.id">
                   <td><input type="checkbox"></td>
-                  <td class="td-title">{{ item.title }}</td>
+                  <td class="td-title">
+                    {{ item.title }}
+                    <div style="margin-top:2px;">
+                      <span v-if="item.articleType" class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:10px;margin-right:4px;">{{ item.articleType }}</span>
+                      <span v-if="item.tags" style="font-size:10px;color:var(--text-tertiary);">{{ item.tags }}</span>
+                    </div>
+                  </td>
                   <td style="font-size:12px;">{{ item.videoUrl ? '有' : '无' }}</td>
                   <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
                   <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
@@ -2594,11 +2600,44 @@ const QUILL_TOOLBAR = [
           <div class="card">
             <div class="form-grid">
               <div class="form-group"><label>标题 *</label><input class="form-control" v-model="editingWebinar.title" placeholder="研讨会标题"></div>
+              <div class="form-group">
+                <label>类型</label>
+                <select class="form-control" v-model="editingWebinar.articleType">
+                  <option value="">请选择</option><option>应用领域</option><option>专业知识</option><option>灵感与趋势</option><option>质地与配方</option>
+                </select>
+              </div>
               <div class="form-group"><label>封面图 URL</label><input class="form-control" v-model="editingWebinar.imageUrl" placeholder="https://..."></div>
               <div class="form-group"><label>视频回放 URL</label><input class="form-control" v-model="editingWebinar.videoUrl" placeholder="https://..."></div>
               <div class="form-group"><label>发布日期 *</label><input type="date" class="form-control" v-model="editingWebinar.publishedDate"></div>
               <div class="form-group"><label>阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingWebinar.readingTime" style="max-width:120px;"></div>
               <div class="form-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" v-model="editingWebinar.lock"> 需要登录才能查看</label></div>
+            </div>
+            <div class="card-header" style="border-top:1px solid var(--border);margin-top:16px;"><h3>标签</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>已有标签 <span class="hint">（点击快速添加）</span></label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;cursor:pointer;" v-for="(tag, ti) in webinarTagList" :key="ti" @click="addWebinarTag(tag)">{{ tag }}</span>
+                  <span v-if="webinarTagList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无已存在的标签</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>新标签</label>
+                <div style="display:flex;gap:4px;">
+                  <input class="form-control" v-model="webinarTagInput" placeholder="输入标签回车添加" @keyup.enter="addWebinarTag(webinarTagInput)" style="flex:1;max-width:300px;">
+                  <button class="btn btn-sm btn-outline" @click="addWebinarTag(webinarTagInput)" :disabled="!webinarTagInput.trim()">添加</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>当前标签</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EAF3DE;color:#3B6D11;font-size:11px;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in editingWebinar.tagsList" :key="ti">
+                    {{ tag }}
+                    <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removeWebinarTag(ti)">×</span>
+                  </span>
+                  <span v-if="!editingWebinar.tagsList || editingWebinar.tagsList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无标签</span>
+                </div>
+              </div>
             </div>
             <div class="form-group"><label>摘要</label><textarea class="form-control" rows="3" v-model="editingWebinar.summary" placeholder="研讨会描述..."></textarea></div>
             <div class="form-group"><label>正文内容</label><textarea class="form-control" rows="10" v-model="editingWebinar.contentHtml" placeholder="支持 HTML..."></textarea></div>
@@ -3795,7 +3834,9 @@ createApp({
       webinarList: [],
       webinarFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
       webinarPagination: { total: 0, totalPages: 0 },
-      editingWebinar: { id: null, type: 'webinar', category: 'pc', title: '', summary: '', contentHtml: '', imageUrl: '', videoUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false },
+      editingWebinar: { id: null, type: 'webinar', category: 'pc', title: '', articleType: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', videoUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false, tagsList: [] },
+      webinarTagInput: '',
+      webinarTagList: [],
       // 获取灵感 — 出版物
       publicationList: [],
       publicationFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
@@ -6206,21 +6247,47 @@ createApp({
       catch (e) { console.error(e); }
     },
     resetWebinarEdit() {
-      this.editingWebinar = { id: null, type: 'webinar', category: 'pc', title: '', summary: '', contentHtml: '', imageUrl: '', videoUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false };
+      this.editingWebinar = { id: null, type: 'webinar', category: 'pc', title: '', articleType: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', videoUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
+      this.loadWebinarTags();
     },
     editWebinar(item) {
-      this.editingWebinar = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      let tagsList = [];
+      if (item.tags) {
+        try { tagsList = JSON.parse(item.tags); } catch(e) { tagsList = item.tags.split(',').map(t => t.trim()).filter(Boolean); }
+      }
+      this.editingWebinar = { ...item, tagsList, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
       this.currentPage = 'webinar-edit';
+      this.loadWebinarTags();
     },
     async saveWebinar() {
       if (!this.editingWebinar.title) { this.showAlert('标题不能为空'); return; }
       if (!this.editingWebinar.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
       try {
-        if (this.editingWebinar.id) { await this.api('/news/' + this.editingWebinar.id, { method: 'PUT', body: JSON.stringify(this.editingWebinar) }); }
-        else { await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingWebinar) }); }
+        const payload = { ...this.editingWebinar, tags: JSON.stringify(this.editingWebinar.tagsList || []) };
+        delete payload.tagsList;
+        if (this.editingWebinar.id) { await this.api('/news/' + this.editingWebinar.id, { method: 'PUT', body: JSON.stringify(payload) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(payload) }); }
         this.currentPage = 'webinar-list'; this.loadWebinarList();
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async loadWebinarTags() {
+      try { const d = await this.api('/news/tags/list?type=webinar'); this.webinarTagList = d.data || []; }
+      catch (e) { console.error(e); }
+    },
+    addWebinarTag(tag) {
+      tag = (tag || '').trim();
+      if (!tag) return;
+      if (!this.editingWebinar.tagsList) this.editingWebinar.tagsList = [];
+      if (this.editingWebinar.tagsList.indexOf(tag) === -1) {
+        this.editingWebinar.tagsList.push(tag);
+      }
+      this.webinarTagInput = '';
+    },
+    removeWebinarTag(index) {
+      if (this.editingWebinar.tagsList) {
+        this.editingWebinar.tagsList.splice(index, 1);
+      }
     },
     async toggleWebinarPublish(item) {
       try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadWebinarList(); }
