@@ -155,6 +155,9 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
         </div>
     </div>
+    <script type="application/json" data-drupal-selector="drupal-settings-json">
+    {"path":{"currentPath":"node/145","isFront":false,"currentQuery":"","currentPathIsAdmin":false},"user":{"uid":0},"cartography":{}}
+    </script>
     <script>
         $(document).ready(function () {
             $("#header").load("/header.html", function () {
@@ -175,8 +178,25 @@
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '市场分类 ⋅ Gattefossé', summary: '市场分类 ⋅ Gattefossé - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>市场分类 ⋅ Gattefossé。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        formData: { title: '市场分类', summary: '', content: '' }
       });
+      // 从后端 pageContents 动态加载市场分类页面内容（ID=904 原始 Drupal HTML）
+      const loadMarkets = async () => {
+        try {
+          const resp = await fetch('/api/content/pages/markets');
+          const json = await resp.json();
+          if (json.code === 0 && json.data) {
+            const d = json.data;
+            data.formData.title = d.title || '市场分类';
+            data.formData.content = d.contentHtml || d.content || '';
+          } else {
+            console.error('markets load fail:', json.msg || 'unknown');
+          }
+        } catch (e) {
+          console.error('markets load error:', e);
+        }
+      };
+      loadMarkets();
       return { data };
     }
   });

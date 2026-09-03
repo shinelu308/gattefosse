@@ -3161,6 +3161,7 @@ const QUILL_TOOLBAR = [
           <div class="tabs">
             <button class="tab" :class="{ active: contentEditTab === 'basic' }" @click="contentEditTab = 'basic'">基本信息</button>
             <button class="tab" :class="{ active: contentEditTab === 'blocks' }" @click="contentEditTab = 'blocks'">区块内容</button>
+            <button class="tab" :class="{ active: contentEditTab === 'html' }" @click="contentEditTab = 'html'">HTML 源码</button>
           </div>
           <!-- 基本信息 -->
           <div v-show="contentEditTab === 'basic'" class="card">
@@ -3473,6 +3474,21 @@ const QUILL_TOOLBAR = [
                     <button class="btn btn-sm btn-outline" @click="blk.data.items.push({ name:'', link:'', description:'', image:'', theme:'theme-cosm' })">+ 添加主题</button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <!-- HTML 源码（contentHtml 型页面，如市场分类 markets） -->
+          <div v-show="contentEditTab === 'html'" class="card">
+            <div class="card-header"><h3>整段 HTML 源码</h3></div>
+            <div class="card-body">
+              <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 8px;">适用于「市场分类」等以整段富文本/交互组件（如图文左右分栏、cartography 交互地图）发布的页面。保存后前端页面直接按此 HTML 渲染。若下方为空，请使用「区块内容」结构化编辑。</p>
+              <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+                <span style="font-size:12px;color:var(--text-secondary);">contentHtml 长度：{{ (editingContent.contentHtml || '').length }} 字符</span>
+                <button class="btn btn-sm btn-outline" @click="contentHtmlWrap=!contentHtmlWrap" style="font-size:12px;padding:2px 8px;">{{ contentHtmlWrap ? '显示原始' : '显示格式化预览' }}</button>
+              </div>
+              <textarea v-if="contentHtmlWrap" class="form-control code-editor" v-model="editingContent.contentHtml" rows="26" spellcheck="false" style="font-family:Consolas,Menlo,monospace;font-size:12px;line-height:1.6;white-space:pre;overflow-x:auto;" placeholder="在此粘贴整段 HTML..."></textarea>
+              <div v-else style="border:1px solid var(--border);border-radius:var(--radius);padding:16px;max-height:520px;overflow:auto;background:var(--white);">
+                <div v-html="editingContent.contentHtml" style="pointer-events:none;"></div>
               </div>
             </div>
           </div>
@@ -3941,6 +3957,7 @@ createApp({
       editingContent: { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', _blocks: [] },
       isNewPage: false,
       contentEditTab: 'basic',
+      contentHtmlWrap: false, // HTML 源码 tab 中是否显示原始代码
       subsidiaryList: [],
       editingSubsidiary: { id: null, name: '', country: '', city: '', address: '', phone: '', email: '', website: '', imageUrl: '', description: '', sortOrder: 0 },
       // Settings
