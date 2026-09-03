@@ -5824,7 +5824,7 @@ createApp({
     },
     // 获取灵感 — 文章 CRUD
     async loadArticleList() {
-      const params = new URLSearchParams({ page: this.articleFilter.page, limit: this.articleFilter.limit, type: 'article' });
+      const params = new URLSearchParams({ page: this.articleFilter.page, limit: this.articleFilter.limit, type: 'article', category: 'pc' });
       if (this.articleFilter.keyword) params.set('keyword', this.articleFilter.keyword);
       if (this.articleFilter.articleType) params.set('articleType', this.articleFilter.articleType);
       if (this.articleFilter.isPublished) params.set('isPublished', this.articleFilter.isPublished);
@@ -6166,7 +6166,7 @@ createApp({
     },
     // 获取灵感 — 在线研讨会 CRUD
     async loadWebinarList() {
-      const params = new URLSearchParams({ page: this.webinarFilter.page, limit: this.webinarFilter.limit, type: 'webinar' });
+      const params = new URLSearchParams({ page: this.webinarFilter.page, limit: this.webinarFilter.limit, type: 'webinar', category: 'pc' });
       if (this.webinarFilter.keyword) params.set('keyword', this.webinarFilter.keyword);
       if (this.webinarFilter.isPublished) params.set('isPublished', this.webinarFilter.isPublished);
       try { const d = await this.api('/news?' + params.toString()); this.webinarList = d.list; this.webinarPagination = d.pagination; }
@@ -6198,7 +6198,7 @@ createApp({
     },
     // 获取灵感 — 出版物 CRUD
     async loadPublicationList() {
-      const params = new URLSearchParams({ page: this.publicationFilter.page, limit: this.publicationFilter.limit, type: 'publication' });
+      const params = new URLSearchParams({ page: this.publicationFilter.page, limit: this.publicationFilter.limit, type: 'publication', category: 'pc' });
       if (this.publicationFilter.keyword) params.set('keyword', this.publicationFilter.keyword);
       if (this.publicationFilter.isPublished) params.set('isPublished', this.publicationFilter.isPublished);
       try { const d = await this.api('/news?' + params.toString()); this.publicationList = d.list; this.publicationPagination = d.pagination; }
@@ -6230,7 +6230,7 @@ createApp({
     },
     // 获取灵感 — 杂志 CRUD
     async loadMagazineList() {
-      const params = new URLSearchParams({ page: this.magazineFilter.page, limit: this.magazineFilter.limit, type: 'magazine' });
+      const params = new URLSearchParams({ page: this.magazineFilter.page, limit: this.magazineFilter.limit, type: 'magazine', category: 'pc' });
       if (this.magazineFilter.keyword) params.set('keyword', this.magazineFilter.keyword);
       if (this.magazineFilter.isPublished) params.set('isPublished', this.magazineFilter.isPublished);
       try { const d = await this.api('/news?' + params.toString()); this.magazineList = d.list; this.magazinePagination = d.pagination; }
