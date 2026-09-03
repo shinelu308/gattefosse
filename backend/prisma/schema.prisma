@@ -196,6 +196,7 @@ model NewsEvent {
   imageUrl       String?   @map("image_url")
   topBackground  String?   @map("top_background")  // 文章页头图（hero image）
   readingTime    Int?      @map("reading_time")
+  adminSort      Int?      @map("admin_sort")    // 后台手动排序值（大者靠前），null 时回退 publishedDate
   publishedDate  DateTime  @map("published_date")
   eventEndDate   DateTime? @map("event_end_date")
   location       String?

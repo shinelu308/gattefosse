@@ -93,7 +93,7 @@ export async function listNews(req: Request, res: Response) {
         include: NEWS_INCLUDE,
         skip: (pageNum - 1) * limitNum,
         take: limitNum,
-        orderBy: { publishedDate: 'desc' },
+        orderBy: [{ adminSort: 'desc' }, { publishedDate: 'desc' }],
       }),
     ]);
 

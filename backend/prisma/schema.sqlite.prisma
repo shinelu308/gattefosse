@@ -155,6 +155,7 @@ model NewsEvent {
   contentHtml    String?   @map("content_html")
   imageUrl       String?   @map("image_url")
   readingTime    Int?      @map("reading_time")
+  adminSort      Int?      @map("admin_sort")
   publishedDate  DateTime  @map("published_date")
   eventEndDate   DateTime? @map("event_end_date")
   location       String?
