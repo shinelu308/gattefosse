@@ -498,6 +498,7 @@ var app = createApp({
       p.set('type', 'publication');
       p.set('page', data.cur_page);
       p.set('limit', '9');
+      p.set('isPublished', 'true');
       if (w) p.set('keyword', w);
       if (data.publicationType && PUB_TYPE_MAP[data.publicationType]) p.set('articleType', PUB_TYPE_MAP[data.publicationType]);
       if (tagId && tagId != '0') p.set('tags', decodeURIComponent(tagId));

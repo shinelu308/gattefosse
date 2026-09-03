@@ -462,6 +462,7 @@ function buildApiUrl() {
   params.set('type', 'article');
   params.set('page', data.cur_page);
   params.set('limit', '9');
+  params.set('isPublished', 'true');
   if (w) params.set('keyword', w);
   if (articleType && articleType > 0) {
     var typeNames = ['','应用领域','专业知识','灵感和趋势','质地与配方'];
