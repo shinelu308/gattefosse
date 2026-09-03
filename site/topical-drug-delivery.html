@@ -83,7 +83,7 @@
     <div class="region region-highlight">
       <div data-drupal-messages-fallback class="hidden"></div>
     </div>
-    <main role="main" class="s-page--inner main theme-pharma " data-bs-spy="scroll"><!-- theme-pharma | theme-cosm -->
+    <main role="main" class="s-page--inner main theme-pharma " data-bs-spy="scroll" id="app"><!-- theme-pharma | theme-cosm -->
       <nav role="navigation" class="quick-access">
         <button class="quick-access__button quick-access__button--open js-open">
           <i class="o-icon --list" aria-hidden="true"></i>
@@ -122,17 +122,17 @@
           </div>
         </div>
         <div class="page-top__image  page-top__image--full"
-          style="background-image: url(sites/default/files/styles/page_banner_desktop_full/public/2023-07/topical-and-transdermal-application.jpg.jpg)">
+          :style="data.backgroundImage ? { backgroundImage: 'url(' + data.backgroundImage + ')' } : {}">
         </div>
       </div>
-      <div class="region region-content" id="app">
+      <div class="region region-content">
         <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
           class="block block-system block-system-main-block">
           <article role="article" about="/topical-drug-delivery" typeof="schema:WebPage"
             class="node node--type-page node--view-mode-full">
             <div class="container">
               <div class="node__wrapper">
-                <div class="node__content-wrapper" v-html="data.formData.content">
+                <div class="node__content-wrapper" v-html="data.contentHtml">
                 </div>
               </div>
             </div>
@@ -191,11 +191,31 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '外用给药 ⋅ Gattefossé', summary: '外用给药 ⋅ Gattefossé - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>外用给药 ⋅ Gattefossé。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        title: '外用给药',
+        summary: '',
+        backgroundImage: '',
+        contentHtml: '',
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/topical-drug-delivery');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            const blocks = typeof p.content === 'string' ? JSON.parse(p.content) : p.content;
+            const hero = (blocks || []).find((b) => b.type === 'hero');
+            data.title = p.title || data.title;
+            data.summary = p.metaDescription || '';
+            data.backgroundImage = hero && hero.data ? hero.data.backgroundImage : '';
+            data.contentHtml = p.contentHtml || '';
+            document.title = p.metaTitle || (p.title + ' | 嘉法狮');
+          }
+        } catch (e) {
+          console.error('[topical-drug-delivery] fetch pageContent failed', e);
+        }
       });
       return { data };
     }
