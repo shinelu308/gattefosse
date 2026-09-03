@@ -496,6 +496,7 @@ var app = createApp({
     function buildApiUrl() {
       var p = new URLSearchParams();
       p.set('type', 'publication');
+      p.set('category', 'pc');
       p.set('page', data.cur_page);
       p.set('limit', '9');
       p.set('isPublished', 'true');
@@ -542,7 +543,7 @@ var app = createApp({
     // 加载标签分组（年份 / 成分）
     async function loadTags() {
       try {
-        var resp = await fetch(apiBase + '/news/tags/list?type=publication');
+        var resp = await fetch(apiBase + '/news/tags/list?type=publication&category=pc');
         var result = await resp.json();
         if (result.code !== 0) return;
         data.tagList = buildGroups(result.data || [], tagId);

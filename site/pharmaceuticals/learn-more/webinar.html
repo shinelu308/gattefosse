@@ -148,7 +148,8 @@
                       <div class="c-filter__header">
                         <h2 class="c-filter__main-title">过滤器</h2>
                         <button type="reset" target="/pharmaceuticals/learn-more/webinar.html"
-                          class="c-filter__reset-btn btn btn-outline-secondary">重置过滤器
+                          @click.prevent="clearFilters"
+                          class="c-filter__reset-btn btn btn-outline-secondary">取消过滤
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
@@ -347,307 +348,175 @@
     });
   </script>
   <script setup>
+    const { createApp, reactive, onMounted } = Vue;
     const params = new URLSearchParams(window.location.search);
-    const tokenStr = params.get('_token');
-    const goodsCategoryId = 117; //params.get('i'); // "关联产品分类ID"
-    var w = params.get('keyword'); //搜索关键词
-    var atype = params.get('type'); //0所有，1新闻，2活动
-    var curPage = params.get('page');
-    var desc = params.get('order');
-    var tagId = params.get('tagId');
-    var webinarsType = params.get('webinarsType');
-    var goodsId = params.get('goodsId');
-    var curUrl = window.location.href;
-    var hasParam = curUrl.indexOf('?');
-    var hasTypeParam = curUrl.indexOf('i=');
-    var isLogin = checkLoginStatus();
-    let userEnabled = localStorage.getItem("userEnabled");
-    var total = 0, count_0 = 0, count_1 = 0, count_2 = 0;
-    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
-    const app = createApp({
-      data() {
-        return {
-          tagList: [], formData: []
-        }
-      },
-      setup() {
-        let randomNum = Math.floor(Math.random() * 100);
-        const data = reactive({
-          name: "aa",
-          formData: [],
-          total: 0,
-          count_0: 0,
-          count_1: 0,
-          count_2: 0,
-          cur_page: curPage == null ? 1 : curPage,
-          page_size: 9,
-          total_page: 1,
-          prev_url: '',
-          next_url: '',
-          keyword: w,
-          type: atype,
-          goodsCategoryId: goodsCategoryId,
-          hasParam: hasParam,
-          hasTypeParam: hasTypeParam,
-          randomNum: randomNum,
-          isLogin: isLogin,
-          tagId: tagId,
-          goodsId: goodsId,
-          curFilterTagName: '',
-          curFilterGoodsName: '',
-          activeFilterClass: 'hidden',
-          userEnabled: userEnabled,
-          webinarsTypeId: webinarsType,
-          curFilterTypeName: '',
-        });
-        const getTagList = () => {
-          var api = "/api/webWebniarsTag/getWebWebniarsTagList";
-          var personalCareId = 1;
-          var phamId = 117;
-          api += "?goodsCategoryId=" + phamId;
-          console.log("API call disabled");
-            for (var i = 0; i < data.tagList.length; i++) {
-              data.tagList[i].url = setUrlParam(curUrl, "tagId", data.tagList[i].ID);
-              let tmp = String(data.tagList[i].tagName);
-              let tmp_ = tmp.replace(" ", "_");
-              data.tagList[i].nameId = "collapse-filtre-accordion-" + data.tagList[i].tagName + "_" + data.tagList[i].ID;
-              data.tagList[i].sharpeNameId = "#" + data.tagList[i].nameId;
-              data.tagList[i].headerNameId = "heading-filtre-accordion-brochures_pharmaceuticals_" + tmp_;
-              data.tagList[i].accordionNameId = "accordion-filtre-accordion-brochures_pharmaceuticals_" + tmp_;
-              data.tagList[i].dataBlockPluginId = "facet_block:brochures_pharmaceuticals_" + tmp_;
-              data.tagList[i].panelDivId1 = tmp_ + "_" + data.tagList[i].ID;
-              for (var j = 0; j < data.tagList[i].children.length; j++) {
-                // data.tagList[i].children[j].tagUrl = "?f%5B" + i + "%5D=" + data.tagList[i].tagNameEn + "%3A" + data.tagList[i].children[j].ID;
-                data.tagList[i].children[j].tagUrl = setUrlParam(curUrl, "tagId", data.tagList[i].children[j].ID);
-                data.tagList[i].children[j].tagUrl = setUrlParam(data.tagList[i].children[j].tagUrl, "page", 1);
-                data.tagList[i].children[j].dataDrupalFacetItemId = "market-" + data.tagList[i].children[j].ID;
-                data.tagList[i].children[j].facetItemClass = j < 6 ? "facet-item1" : "facet-item1 hidden";
-                if (tagId > 0 && data.tagList[i].children[j].ID == tagId) {
-                  data.activeFilterClass = "showDiv"
-                  data.curFilterTagName = data.tagList[i].children[j].tagName
-                }
-              }
-            }
-            nextTick(() => {
-              getWebWebinarsTypeList();
-            });
-          }).catch((err, res) => {
-            console.log(err)
-          })
-        }
-        getTagList();
-        const seeAll = (event) => {
-          const parentElement = event.currentTarget.parentElement;
-          if (event.target.getAttribute('data-aria-expanded') == 'false') {
-            const childlist = parentElement.querySelectorAll('.hidden');
-            childlist.forEach((element) => {
-              element.className = "facet-item1 aad"
-            })
-            event.target.innerHTML = "收起"
-            event.target.setAttribute('data-aria-expanded', 'true')
-          } else {
-            const childlist = parentElement.querySelectorAll('.aad');
-            childlist.forEach((element) => {
-              element.className = "facet-item1 hidden"
-            })
-            event.target.innerHTML = "查看所有"
-            event.target.setAttribute('data-aria-expanded', 'false')
+    const baseUrl = window.location.pathname;                 // /pharmaceuticals/learn-more/webinar.html
+    const w = params.get('keyword') || '';                    // 搜索关键词
+    const pageParam = params.get('page');
+    var tagId = params.get('tagId') || null;                  // 标签（中文名）
+
+    const data = reactive({
+      formData: [],              // 研讨会卡片列表
+      cur_page: pageParam ? parseInt(pageParam) : 1,
+      page_size: 10,
+      total_page: 1,
+      prev_url: null,
+      next_url: null,
+      keyword: w,
+      tagId: tagId,
+      activeFilterClass: 'hidden',
+      curFilterTagName: '',
+      curFilterTypeName: '',
+      webinarsTypeList: [],      // 无类型维度，保持空
+      webinarsTypeId: null,
+      webinarsType: null,
+      tagList: [],
+      allTypeUrl: baseUrl,
+      userEnabled: (localStorage.getItem('userEnabled') || 0),
+    });
+
+    // ===== 从 API 加载研讨会列表 =====
+    async function loadWebinars() {
+      try {
+        var q = new URLSearchParams();
+        q.set('type', 'webinar');
+        q.set('category', 'pharma');
+        q.set('page', data.cur_page);
+        q.set('limit', data.page_size);
+        q.set('isPublished', 'true');
+        if (w) q.set('keyword', w);
+        if (tagId && tagId != '0') q.set('tags', decodeURIComponent(tagId));
+        var resp = await fetch('/api/news?' + q.toString());
+        var res = await resp.json();
+        if (res.code !== 0) throw new Error(res.message || '加载失败');
+        var d = res.data;
+        data.total_page = d.pagination.totalPages || 1;
+        data.cur_page = parseInt(d.pagination.page) || 1;
+        data.formData = (d.list || []).map(function (it) {
+          var tagList = [];
+          if (it.tags) {
+            try { tagList = JSON.parse(it.tags); } catch (e) { tagList = it.tags.split(',').map(function (t) { return t.trim(); }).filter(Boolean); }
           }
-        }
-        const setTagStyle = () => {
-          const parentElement = document.querySelectorAll('.facets-widget-checkbox');
-          parentElement.forEach((element) => {
-            const childElements = element.querySelectorAll('.facet-item1');
-            if (childElements.length > 6) {
-              const seeAllBt = element.querySelector('.js-see-all');
-              seeAllBt.className = "moreBt showDiv";
-            }
-            childElements.forEach((child) => {
-              // console.log(child.textContent); // 输出子元素的内容
-            });
+          var dateY = '', dateM = '', dateD = '';
+          if (it.publishedDate) {
+            var dd = new Date(it.publishedDate);
+            if (!isNaN(dd.getTime())) { dateY = dd.getFullYear(); dateM = (dd.getMonth() + 1) + '月'; dateD = dd.getDate(); }
+          }
+          return {
+            url: it.videoUrl || (it.pdfUrl || '/account.html'),
+            title: it.title,
+            tagList: tagList.length ? tagList : [],
+            summary: it.summary || '',
+            thumb: it.imageUrl || '/',
+            eventTime: it.publishedDate || '',
+            eventTimeYear: dateY,
+            eventTimeDate: dateM + dateD,
+            lock: (it.lock === true || it.lock === 1)
+          };
+        });
+        // 分页链接
+        var tp = '', tg = '', kw = '';
+        if (tagId && tagId != '0') tg = '&tagId=' + encodeURIComponent(tagId);
+        if (w) kw = '&keyword=' + encodeURIComponent(w);
+        if (data.cur_page > 1) data.prev_url = baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw;
+        if (data.cur_page < data.total_page) data.next_url = baseUrl + '?page=' + (data.cur_page + 1) + tp + tg + kw;
+        setTimeout(function () { setTagStyle(); }, 100);
+      } catch (e) {
+        console.error('加载网络研讨会失败:', e);
+        data.formData = [];
+      }
+    }
+
+    // ===== 加载标签侧栏（主题分组）=====
+    async function loadTags() {
+      try {
+        var resp = await fetch('/api/news/tags/list?type=webinar&category=pharma');
+        var res = await resp.json();
+        if (res.code !== 0) return;
+        var tags = res.data || [];
+        if (!tags.length) { data.tagList = []; return; }
+        var group = {
+          tagName: '主题',
+          nameId: 'collapse-filtre-accordion-主题_webinar',
+          sharpeNameId: '#collapse-filtre-accordion-主题_webinar',
+          headerNameId: 'heading-filtre-accordion-pharma_主题',
+          accordionNameId: 'accordion-filtre-accordion-pharma_主题',
+          dataBlockPluginId: 'facet_block:pharma_主题',
+          panelDivId1: '主题_webinar',
+          class: 'facet-inactive block-facet--checkbox block block-facets ',
+          children: []
+        };
+        for (var ci = 0; ci < tags.length; ci++) {
+          var tagName = tags[ci];
+          var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(tagName);
+          if (w) u += '&keyword=' + encodeURIComponent(w);
+          if (tagId && decodeURIComponent(tagId) === tagName) {
+            data.curFilterTagName = tagName;
+            data.activeFilterClass = 'showDiv';
+          }
+          group.children.push({
+            ID: tagName,
+            tagName: tagName,
+            tagUrl: u,
+            dataDrupalFacetItemId: 'tag-' + ci,
+            facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
           });
         }
-        const goToUrl = (url) => {
-          window.location.href = url;
-        }
-        const delParamAndGotoUrl = (paramName) => {
-          console.log(paramName)
-          if ((tagId == 0 && goodsId == 0) || (tagId == null && goodsId == null)) {
-            data.activeFilterClass = "hidden";
-          }
-          var url = delUrlParam(curUrl, paramName);
-          window.location.href = url;
-        }
-        // 网络研讨会类型列表
-        const getWebWebinarsTypeList = () => {
-          var api = "/api/webWebinarsType/getWebWebinarsTypeList";
-          api += "?pageSize=10000";
-          api += "&page=1";
-          api += "&goodsCategoryId=117";
-          if (data.selectedTypeValue == "") {
-            data.webinarsTypeList = []
-            return
-          }
-          console.log("API call disabled");
-            for (var i = 0; i < data.webinarsTypeList.length; i++) {
-              data.webinarsTypeList[i].url = setUrlParam(curUrl, "webinarsType", data.webinarsTypeList[i].ID);
-              data.webinarsTypeList[i].url = setUrlParam(data.webinarsTypeList[i].url, "page", 1);
-              data.webinarsTypeList[i].num = 0;
-              if (webinarsType > 0 && data.webinarsTypeList[i].ID == webinarsType) {
-                data.activeFilterClass = "showDiv"
-                data.curFilterTypeName = data.webinarsTypeList[i].typeName;
-              }
-            }
-            nextTick(() => {
-              getTableData();
-              setTagStyle();
-            });
-          }).catch((err, res) => {
-            console.log(err)
-          })
-        }
-        // 查询
-        const getTableData = () => {
-          var api = "/api/webWebinars/getWebWebinarsList?catId=30";
-          api += "&pageSize=" + data.page_size;
-          api += "&page=" + data.cur_page;
-          if (tagId != null && tagId != "" && tagId != 0) {
-            api += "&tag=" + tagId;
-          }
-          if (goodsCategoryId != null && goodsCategoryId != "") {
-            api += "&goodsCategoryId=" + goodsCategoryId;
-          }
-          if (webinarsType != null && webinarsType != "") {
-            api += "&typeType=" + webinarsType;
-          }
-          if (desc != null && desc != "") {
-            api += "&orderKey=sort";
-            if (desc == "DESC") {
-              api += "&desc=" + true;
-            } else {
-              api += "&desc=" + false;
-            }
-          }
-          if (w != null && w != "") {
-            api += "&title=" + w;
-          }
-          if (atype != 0 && atype != null) {
-            api += "&type=" + atype
-          }
-          var personalCareId = 1;
-          var phamId = 117;
-          //2.使用axios 进行get请求
-          console.log("API call disabled");
-            //请求成功的回调函数
-            data.formData = res.data.data.list;
-            let catList = res.data.data.catList
-            let goodsCatList = res.data.data.goodsCatList
-            // 分页
-            data.total_page = Math.ceil(data.total / data.page_size);
-            data.cur_page = res.data.data.page;
-            if (data.cur_page < data.total_page) {
-              data.next_url = setUrlParam(curUrl, 'page', data.cur_page + 1);
-            } else {
-              data.next_url = null
-            }
-            if (data.cur_page > 1) {
-              data.prev_url = setUrlParam(curUrl, 'page', data.cur_page - 1);
-            } else {
-              data.prev_url = null
-            }
-            for (var i = 0; i < data.formData.length; i++) {
-              if (data.formData[i].thumb.substring(1) != "/") {
-                data.formData[i].thumb = "/" + data.formData[i].thumb;
-              }
-              data.formData[i].CreatedAt = data.formData[i].CreatedAt.substring(0, 10);
-              if (data.formData[i].eventTime != null) {
-                data.formData[i].eventTimeYear = data.formData[i].eventTime.substring(0, 4);
-                data.formData[i].eventTimeDate = data.formData[i].eventTime.substring(5, 10).replace('-', '月');
-              }
-              if (data.formData[i].eventEndTime != null) {
-                data.formData[i].eventEndTimeDate = data.formData[i].eventEndTime.substring(5, 10).replace('-', '月');
-              }
-              if (data.formData[i].eventAddress != '') { // 活动
-                data.formData[i].class = "c-card c-card--horizontal" + " c-card--bordered c-card--event";
-              } else { // 资讯
-                data.formData[i].class = "c-card c-card--horizontal";
-              }
-              let tmp = data.formData[i];              
-              for (var j = 0; j < data.webinarsTypeList.length; j++) {
-                if (data.formData[i].typeType == data.webinarsTypeList[j].ID) {
-                  data.formData[i].typeName = data.webinarsTypeList[j].typeName;
-                  break;
-                }
-              }
-              data.formData[i].tagList = []
-              var jsonArray = JSON.parse(data.formData[i].tag);
-              for (var m = 0; m < jsonArray.length; m++) {
-                for (var k = 0; k < data.tagList.length; k++) {
-                  if (jsonArray[m][0] == data.tagList[k].ID) {
-                    for (var j = 0; j < data.tagList[k].children.length; j++) {                      
-                      if (jsonArray[m][1] == data.tagList[k].children[j].ID) {
-                        data.formData[i].tagList.push(data.tagList[k].children[j].tagName);
-                      }
-                    }
-                  }
-                }
-              }
-              /*for (var k = 0; k < catList.length; k++) {
-                if (catList[k].ID == tmp.catId) {
-                  data.formData[i].catName = catList[k].catName
-                }
-              }
-              if (tmp.goodsCategoryId == 0) {
-                data.formData[i].goodsCatName = '公司资讯'
-              } else {
-              }
-              for (var k = 0; k < goodsCatList.length; k++) {
-                if (goodsCatList[k].ID == tmp.goodsCategoryId) {
-                  data.formData[i].goodsCatName = goodsCatList[k].categoryName
-                  tmp.parentGoodscatId = tmp.goodsCategoryId;
-                }
-                if (goodsCatList[k].children != null) {
-                  for (var j = 0; j < goodsCatList[k].children.length; j++) {
-                    if (goodsCatList[k].children[j].ID == tmp.goodsCategoryId) {
-                      data.formData[i].goodsCatName = goodsCatList[k].categoryName
-                      tmp.parentGoodscatId = goodsCatList[k].ID;
-                    }
-                  }
-                }
-                if (tmp.parentGoodscatId == personalCareId) {
-                  if (data.formData[i].class.indexOf("theme") < 0) {
-                    data.formData[i].class += " theme-cosm"; // 个人护理
-                  }
-                }
-                if (tmp.parentGoodscatId == phamId) {
-                  if (data.formData[i].class.indexOf("theme") < 0) {
-                    data.formData[i].class += " theme-pharma"; //药用辅料
-                  }
-                }
-              }*/
-            }
-          }).catch((err, res) => {
-            console.log(err)
-          })
-        }
-        const loading = ref(false);
-        const items = ref([]);
-        data.allTypeUrl = delUrlParam(curUrl, "webinarsType");
-        data.webinarsType = webinarsType;
-        return {
-          data,
-          getTagList,
-          getTableData,
-          seeAll,
-          goToUrl,
-          delParamAndGotoUrl
-        };
-      },
-    });
-    let result = app.mount("#app");
-    if (w != null && w !== '') {
-      $('#edit-keyword').val(w);
+        data.tagList = [group];
+      } catch (e) {
+        console.error('加载标签失败:', e);
+        data.tagList = [];
+      }
     }
+
+    // ===== 侧栏展开/收起辅助 =====
+    function setTagStyle() {
+      var blocks = document.querySelectorAll('.facets-widget-checkbox');
+      blocks.forEach(function (element) {
+        var childs = element.querySelectorAll('.facet-item1');
+        if (childs.length > 6) {
+          var bt = element.querySelector('.js-see-all');
+          if (bt) bt.className = 'moreBt showDiv';
+        }
+      });
+    }
+    const seeAll = (event) => {
+      const parentElement = event.currentTarget.parentElement;
+      if (event.target.getAttribute('data-aria-expanded') == 'false') {
+        parentElement.querySelectorAll('.hidden').forEach((element) => { element.className = 'facet-item1 aad'; });
+        event.target.innerHTML = '收起';
+        event.target.setAttribute('data-aria-expanded', 'true');
+      } else {
+        parentElement.querySelectorAll('.aad').forEach((element) => { element.className = 'facet-item1 hidden'; });
+        event.target.innerHTML = '查看所有';
+        event.target.setAttribute('data-aria-expanded', 'false');
+      }
+    }
+    const goToUrl = (url) => { window.location.href = url; }
+    const delParamAndGotoUrl = (paramName) => {
+      if ((tagId == 0) || (tagId == null)) data.activeFilterClass = 'hidden';
+      window.location.href = delUrlParam(window.location.href, paramName);
+    }
+    const clearFilters = () => {
+      data.activeFilterClass = 'hidden';
+      data.curFilterTagName = '';
+      data.curFilterTypeName = '';
+      window.location.href = baseUrl;
+    }
+
+    // ===== 初始化 =====
+    loadTags().then(function () { loadWebinars(); });
+
+    const app = createApp({
+      setup() {
+        return { data, seeAll, goToUrl, delParamAndGotoUrl, clearFilters };
+      }
+    });
+    app.mount('#app');
+    if (w) {
+      setTimeout(function () { var el = document.getElementById('edit-keyword'); if (el) el.value = w; }, 50);
+    }
+
     function setUrlParam(url, paramName, paramValue) {
       paramName = paramName.replace(/[\[\]]/g, '\\$&');
       let regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
@@ -655,37 +524,23 @@
       if (val && val[2]) {
         url = url.replace(new RegExp(paramName + '=' + val[2]), `${paramName}=${paramValue}`);
       } else {
-        if (url.indexOf('?') < 0) {
-          url += `?${paramName}=${paramValue}`;
-        } else {
-          url += `&${paramName}=${paramValue}`;
-        }
+        if (url.indexOf('?') < 0) { url += `?${paramName}=${paramValue}`; }
+        else { url += `&${paramName}=${paramValue}`; }
       }
       return url;
     }
-
     function delUrlParam(url, paramName) {
       paramName = paramName.replace(/[\[\]]/g, '\\$&');
       let regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
       let val = regular.exec(url);
-      if (val && val[2]) {
-        url = url.replace(new RegExp('[?&]' + paramName + '=' + val[2]), ``);
-      }
-      if (url.indexOf('?') < 0) {
-        url = url.replace(/&/, '?');
-      }
+      if (val && val[2]) url = url.replace(new RegExp('[?&]' + paramName + '=' + val[2]), ``);
+      if (url.indexOf('?') < 0) url = url.replace(/&/, '?');
       return url;
     }
-
     function checkLoginStatus() {
-      if (localStorage.getItem('isLoggedIn') === 'true') {
-        return true;
-        // 执行进入首页的逻辑
-      } else {
-        // 执行未登录的逻辑，比如跳转到登录页面
-        return false;
-      }
+      return localStorage.getItem('isLoggedIn') === 'true';
     }
+
   </script>
 
   <script src="/sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>

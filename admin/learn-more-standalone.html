@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>了解更多 — 药用辅料内容管理</title>
+<script src="/admin/static/js/vue.global.prod.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f6f7; min-height: 100vh; color: #232426; }
+.page-title { font-size: 22px; font-weight: 600; color: #232426; margin: 0 0 4px; }
+.page-subtitle { font-size: 13px; color: #888; margin: 0 0 14px; }
+.page-lock { display:inline-block; margin-left:8px; padding: 2px 8px; background:#EDE7F6; color:#5E35B1; border-radius:10px; font-size:11px; vertical-align:middle; }
+
+/* Tabs */
+.tab-bar { display:flex; gap:4px; background:#fff; border-radius:10px; padding:6px; box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:16px; flex-wrap:wrap; }
+.tab { padding:9px 18px; border:0; background:transparent; border-radius:8px; font-size:14px; font-weight:500; color:#555; cursor:pointer; display:flex; align-items:center; gap:8px; transition:all .15s; }
+.tab:hover { background:#f0f1f2; }
+.tab.active { background:#8EB73C; color:#fff; }
+.tab .cnt { font-size:11px; background:rgba(0,0,0,0.08); border-radius:9px; padding:1px 7px; }
+.tab.active .cnt { background:rgba(255,255,255,0.25); }
+
+.card { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin: 0 0 20px; overflow: hidden; }
+.card-header { padding: 14px 20px; border-bottom: 1px solid #eee; display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
+.card-body { padding: 20px; }
+.card-footer { padding: 12px 20px; border-top: 1px solid #eee; font-size: 13px; color: #999; background: #fafafa; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 11px 14px; text-align: left; background: #fafbfc; font-weight: 600; color: #555; font-size: 12px; letter-spacing: 0.4px; border-bottom: 2px solid #eee; white-space:nowrap; }
+td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: middle; }
+tbody tr:hover { background: #fafbfc; }
+tbody tr:last-child td { border-bottom: 0; }
+.td-title { max-width: 340px; }
+.td-title .t { font-weight:600; color:#232426; line-height:1.4; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+.td-title .s { font-size:12px; color:#999; margin-top:3px; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+.thumb { width:64px; height:44px; object-fit:cover; border-radius:4px; border:1px solid #eee; background:#f7f7f7; }
+.thumb-empty { width:64px; height:44px; border-radius:4px; border:1px dashed #ddd; display:flex; align-items:center; justify-content:center; color:#bbb; font-size:10px; background:#fafbfc; }
+
+.btn { padding: 6px 13px; border-radius: 5px; border: 1px solid #ddd; background: #fff; cursor: pointer; font-size: 13px; transition: all 0.15s; white-space:nowrap; }
+.btn:hover { border-color: #999; }
+.btn-primary { background: #8EB73C; color: #fff; border-color: #8EB73C; }
+.btn-primary:hover { background: #7aa030; border-color: #7aa030; }
+.btn-danger { background: #e74c3c; color: #fff; border-color: #e74c3c; }
+.btn-danger:hover { background: #c0392b; border-color: #c0392b; }
+.btn-sm { padding: 4px 9px; font-size: 12px; }
+.btn-outline-danger { color:#E24A4A; border-color:#f0c4c4; background:#fff; }
+.btn-outline-danger:hover { background:#fff5f5; border-color:#E24A4A; }
+.form-control { padding: 7px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none; transition: border-color 0.15s; background:#fff; }
+.form-control:focus { border-color: #8EB73C; box-shadow: 0 0 0 2px rgba(142,183,60,0.1); }
+.search-box { position: relative; }
+.search-box input { padding-left: 32px; width: 230px; }
+.search-box::before { content: "🔍"; position:absolute; left:10px; top:50%; transform: translateY(-50%); font-size:12px; opacity:.5; }
+textarea.form-control { width:100%; min-height:80px; resize:vertical; font-family:inherit; }
+input[type="text"], input[type="date"], select.form-control { width:100%; max-width:100%; }
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; font-size:13px; font-weight:500; margin-bottom:4px; color:#333; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-hint { color:#999; font-size:12px; font-weight:normal; margin-left:4px; }
+.required { color:#e74c3c; }
+
+.status-tag { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:500; }
+.status-true { background:#EAF3DE; color:#3B6D11; }
+.status-false { background:#FCEBEB; color:#993556; }
+.type-tag { display:inline-block; padding:2px 9px; background:#EEEDFE; color:#3C3489; border-radius:10px; font-size:11px; font-weight:500; }
+.lock-tag { display:inline-block; padding:2px 8px; background:#FFF3E0; color:#B26A00; border-radius:10px; font-size:11px; font-weight:500; }
+.muted { color:#999; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+.modal-card { width: 760px; max-width: 100%; max-height: 92vh; overflow-y:auto; margin:0; }
+.modal-card .card-header { background:#fafbfc; position:sticky; top:0; z-index:2; }
+.modal-card .card-body { padding: 22px 24px; }
+.preview-img { margin-top:6px; max-width:180px; max-height:100px; border-radius:4px; border:1px solid #eee; object-fit:cover; display:block; }
+.quill-wrap { border:1px solid #ddd; border-radius:5px; }
+.quill-editor .ql-editor { min-height:220px; }
+.checkline { display:flex; align-items:center; gap:8px; font-size:13px; }
+.upload-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.empty-cell { text-align:center; color:#aaa; padding:50px 0 !important; }
+.pagination { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-top:1px solid #f0f0f0; font-size:13px; color:#888; }
+.pagination button { min-width:28px; height:28px; border:1px solid #ddd; background:#fff; border-radius:4px; cursor:pointer; color:#555; }
+.pagination button.active { background:#8EB73C; color:#fff; border-color:#8EB73C; }
+.pagination button:disabled { opacity:.4; cursor:default; }
+</style>
+</head>
+<body>
+<div id="app">
+  <h1 class="page-title">了解更多 <span class="page-lock">category = pharma</span></h1>
+  <p class="page-subtitle">{{ activeMeta.subtitle }}</p>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button v-for="t in tabs" :key="t.key" class="tab" :class="{ active: activeTab === t.key }" @click="switchTab(t.key)">
+      {{ t.label }} <span class="cnt">{{ t.count }}</span>
+    </button>
+  </div>
+
+  <!-- List -->
+  <div class="card">
+    <div class="card-header">
+      <div class="search-box">
+        <input class="form-control" placeholder="搜索标题、摘要..." v-model="keyword" @keyup.enter="reloadList()">
+      </div>
+      <button class="btn btn-primary" @click="reloadList()">搜索</button>
+      <button class="btn" @click="keyword=''; reloadList();">重置</button>
+      <span style="flex:1;"></span>
+      <span style="font-size:13px;color:#888;">共 {{ total }} 条</span>
+      <button class="btn btn-primary" @click="openNew()">+ 新增{{ activeMeta.addLabel }}</button>
+    </div>
+    <table>
+      <thead><tr>
+        <th style="width:80px;">封面</th>
+        <th>标题</th>
+        <th style="width:110px;" v-if="activeTab==='hot-topics' || activeTab==='publications'">子类型</th>
+        <th style="width:160px;" v-if="activeTab==='publications'">出版物 / 作者</th>
+        <th style="width:70px;" v-if="activeTab==='webinar' || activeTab==='brochures'">权限</th>
+        <th style="width:110px;">发布日期</th>
+        <th style="width:80px;">状态</th>
+        <th style="width:200px;">操作</th>
+      </tr></thead>
+      <tbody>
+        <tr v-for="item in list" :key="item.id">
+          <td>
+            <img v-if="item.imageUrl" :src="item.imageUrl" class="thumb" @error="$event.target.style.display='none'">
+            <div v-else class="thumb-empty">无图</div>
+          </td>
+          <td class="td-title">
+            <div class="t">{{ item.title || '-' }}</div>
+            <div class="s" v-if="item.summary">{{ item.summary }}</div>
+          </td>
+          <td v-if="activeTab==='hot-topics' || activeTab==='publications'">
+            <span class="type-tag" v-if="item.articleType">{{ item.articleType }}</span>
+            <span class="muted" v-else>-</span>
+          </td>
+          <td v-if="activeTab==='publications'" style="font-size:12px;">
+            <div v-if="item.publicationName" style="font-weight:500;color:#555;">{{ item.publicationName }}</div>
+            <div v-if="item.authorName" class="muted" style="margin-top:2px;">{{ item.authorName }}</div>
+            <span v-if="!item.publicationName && !item.authorName" class="muted">-</span>
+          </td>
+          <td v-if="activeTab==='webinar' || activeTab==='brochures'">
+            <span class="lock-tag" v-if="item.lock">🔒 会员</span>
+            <span class="muted" v-else>公开</span>
+          </td>
+          <td style="font-size:12px;color:#666;">{{ fmtDate(item.publishedDate) }}</td>
+          <td><span class="status-tag" :class="item.isPublished ? 'status-true' : 'status-false'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+          <td>
+            <button class="btn btn-sm" @click="openEdit(item)">编辑</button>
+            <button class="btn btn-sm" @click="togglePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+            <button class="btn btn-sm btn-outline-danger" @click="removeItem(item.id)">删除</button>
+          </td>
+        </tr>
+        <tr v-if="list.length === 0">
+          <td :colspan="colspanCount" class="empty-cell">暂无{{ activeMeta.label }}内容，点击「+ 新增」开始</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination" v-if="totalPages > 1">
+      <div>共 {{ total }} 条，第 {{ page }} / {{ totalPages }} 页</div>
+      <div style="display:flex;gap:4px;">
+        <button :disabled="page<=1" @click="page--; loadList();">‹</button>
+        <button v-for="p in pageNumbers" :key="p" :class="{ active: p===page }" @click="page=p; loadList();">{{ p }}</button>
+        <button :disabled="page>=totalPages" @click="page++; loadList();">›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 编辑弹框 ============ -->
+  <div v-if="showEdit" class="modal-overlay" @click.self="showEdit=false">
+    <div class="card modal-card">
+      <div class="card-header">
+        <h3 style="font-size:16px;font-weight:600;">{{ editing.id ? '编辑' : '新增' }} {{ activeMeta.label }}
+          <span style="font-weight:400;font-size:12px;color:#999;margin-left:8px;">type = {{ activeMeta.type }} · category = pharma</span>
+        </h3>
+        <span style="flex:1;"></span>
+        <button class="btn btn-sm" @click="showEdit=false">✕</button>
+      </div>
+      <div class="card-body">
+        <!-- 基本信息 -->
+        <div class="form-row">
+          <div class="form-group" style="grid-column:1 / -1;">
+            <label>标题 <span class="required">*</span></label>
+            <input class="form-control" v-model="editing.title" placeholder="内容标题">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>发布日期 <span class="required">*</span></label>
+            <input type="date" class="form-control" v-model="editing.publishedDate">
+          </div>
+          <div class="form-group">
+            <label>子类型 / 分类</label>
+            <select class="form-control" v-model="editing.articleType">
+              <option value="">（未分类）</option>
+              <option v-for="o in typeOptions" :key="o" :value="o">{{ o }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 封面图 -->
+        <div class="form-group">
+          <label>封面图 <span class="form-hint">列表页展示{{ activeTab==='hot-topics' ? '（详情页头图可选 topBackground）' : '' }}</span></label>
+          <div class="upload-row">
+            <input class="form-control" v-model="editing.imageUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:200px;">
+            <input type="file" accept="image/*" @change="uploadImage($event)">
+            <span v-if="uploading" style="font-size:12px;color:#999;">上传中...</span>
+          </div>
+          <img v-if="editing.imageUrl" :src="editing.imageUrl" class="preview-img" @error="$event.target.style.display='none'">
+        </div>
+
+        <!-- 简介 -->
+        <div class="form-group">
+          <label>简介 Summary</label>
+          <textarea class="form-control" v-model="editing.summary" rows="2" placeholder="列表卡片展示的摘要文字"></textarea>
+        </div>
+
+        <!-- 文章正文（仅 热点话题 article） -->
+        <div class="form-group" v-if="activeTab==='hot-topics'">
+          <label>正文内容 <span class="form-hint">Quill 富文本，点击「正文」区块初始化；保存前会立即读取</span></label>
+          <div class="quill-wrap">
+            <div id="lm-quill-editor" class="quill-editor"></div>
+          </div>
+        </div>
+
+        <!-- 研讨会专用 -->
+        <div v-if="activeTab==='webinar'">
+          <div class="form-group">
+            <label>研讨会视频 URL <span class="required">*</span><span class="form-hint">点击卡片跳转该链接</span></label>
+            <input class="form-control" v-model="editing.videoUrl" placeholder="https://...（支持 gotowebinar 等外部链接）">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>标签 Tags</label>
+              <input class="form-control" v-model="editing.tagsText" placeholder="多个标签用逗号分隔，如：口服制剂, 缓释">
+            </div>
+            <div class="form-group">
+              <label>权限</label>
+              <label class="checkline" style="margin-top:6px;cursor:pointer;">
+                <input type="checkbox" v-model="editing.lock"> 🔒 仅登录用户可查看
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 出版物专用（Publications 排除资料手册） -->
+        <div v-if="activeTab==='publications'">
+          <div class="form-row">
+            <div class="form-group">
+              <label>出版物名称</label>
+              <input class="form-control" v-model="editing.publicationName" placeholder="如：PBP / CPhI">
+            </div>
+            <div class="form-group">
+              <label>作者</label>
+              <input class="form-control" v-model="editing.authorName" placeholder="作者或演讲者">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>PDF 下载链接</label>
+            <div class="upload-row">
+              <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf" style="flex:1;min-width:200px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 资料手册专用 -->
+        <div v-if="activeTab==='brochures'">
+          <div class="form-group">
+            <label>PDF 下载链接</label>
+            <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf">
+          </div>
+          <label class="checkline" style="cursor:pointer;margin-bottom:14px;">
+            <input type="checkbox" v-model="editing.lock"> 🔒 仅登录用户可下载（资料手册常需留资）
+          </label>
+        </div>
+
+        <!-- 标签（热点话题文章用） -->
+        <div class="form-group" v-if="activeTab==='hot-topics'">
+          <label>标签 Tags <span class="form-hint">逗号分隔，前台侧栏主题筛选</span></label>
+          <input class="form-control" v-model="editing.tagsText" placeholder="如：热熔挤出, 口服多肽">
+        </div>
+
+        <!-- 发布状态 -->
+        <div class="form-group" style="border-top:1px solid #eee;padding-top:14px;">
+          <label class="checkline" style="cursor:pointer;">
+            <input type="checkbox" v-model="editing.isPublished" style="width:16px;height:16px;"> 立即发布（取消勾选则存为草稿）
+          </label>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px;">
+          <button class="btn" @click="showEdit=false">取消</button>
+          <button class="btn btn-primary" @click="saveItem()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const { createApp } = Vue;
+const API = location.protocol + '//' + location.host + '/api';
+function getToken() {
+  try { const t = parent.localStorage.getItem('admin_token'); if (t) return t; } catch(e) {}
+  return localStorage.getItem('admin_token') || '';
+}
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+createApp({
+  data() {
+    return {
+      tabs: [
+        { key: 'hot-topics', label: '热点话题', addLabel: '文章', type: 'article', count: 0,
+          subtitle: '管理「了解更多 — 热点话题」技术文章（type=article, category=pharma）', typeOptions: ['专业知识','应用领域','灵感和趋势','质地与配方'] },
+        { key: 'webinar', label: '在线研讨会', addLabel: '研讨会', type: 'webinar', count: 0,
+          subtitle: '管理「了解更多 — 在线研讨会」内容（type=webinar, category=pharma）', typeOptions: [] },
+        { key: 'publications', label: '出版物', addLabel: '出版物', type: 'publication', count: 0,
+          subtitle: '管理「了解更多 — 出版物」内容（type=publication, category=pharma，排除「资料手册」）', typeOptions: ['海报','会议交流','科技出版物'] },
+        { key: 'brochures', label: '资料手册', addLabel: '资料手册', type: 'publication', count: 0,
+          subtitle: '管理「了解更多 — 资料手册」内容（type=publication, articleType=资料手册, category=pharma）', typeOptions: ['资料手册'] },
+      ],
+      activeTab: 'hot-topics',
+      keyword: '',
+      list: [],
+      total: 0,
+      page: 1,
+      pageSize: 15,
+      totalPages: 1,
+      showEdit: false,
+      editing: {},
+      saving: false,
+      uploading: false,
+      _quill: null,
+      _quillInited: false,
+    };
+  },
+  computed: {
+    activeMeta() { return this.tabs.find(t => t.key === this.activeTab) || this.tabs[0]; },
+    typeOptions() {
+      // 资料手册锁死 articleType，编辑时强制为 资料手册
+      return this.activeTab === 'brochures' ? ['资料手册'] : this.activeMeta.typeOptions || [];
+    },
+    pageNumbers() {
+      const n = this.totalPages, p = this.page;
+      const arr = [];
+      const start = Math.max(1, p - 2), end = Math.min(n, p + 2);
+      for (let i = start; i <= end; i++) arr.push(i);
+      return arr;
+    },
+    colspanCount() {
+      let c = 5; // 封面/标题/日期/状态/操作
+      if (this.activeTab === 'hot-topics' || this.activeTab === 'publications') c++;
+      if (this.activeTab === 'publications') c++;
+      if (this.activeTab === 'webinar' || this.activeTab === 'brochures') c++;
+      return c;
+    },
+  },
+  mounted() {
+    // ?tab=hot-topics|webinar|publications|brochures
+    const q = new URLSearchParams(location.search);
+    const t = q.get('tab');
+    if (t && this.tabs.find(x => x.key === t)) this.activeTab = t;
+    this.loadList();
+    this.countAll();
+  },
+  methods: {
+    async api(path, opts) {
+      const token = getToken();
+      const res = await fetch(API + path, {
+        headers: { 'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : '' },
+        ...opts,
+      });
+      const d = await res.json();
+      if (d.code !== 0) throw new Error(d.message || '请求失败');
+      return d.data;
+    },
+    buildQuery() {
+      const m = this.activeMeta;
+      const q = new URLSearchParams();
+      q.set('type', m.type);
+      q.set('category', 'pharma');
+      q.set('page', this.page);
+      q.set('limit', this.pageSize);
+      if (this.activeTab === 'publications') q.set('excludeArticleType', '资料手册');
+      if (this.activeTab === 'brochures') q.set('articleType', '资料手册');
+      if (this.keyword) q.set('keyword', this.keyword);
+      return '/news?' + q.toString();
+    },
+    async loadList() {
+      try {
+        const d = await this.api(this.buildQuery());
+        this.list = d.list || [];
+        this.total = d.pagination?.total || 0;
+        this.totalPages = Math.max(1, d.pagination?.totalPages || 1);
+        this.page = parseInt(d.pagination?.page) || this.page;
+        const meta = this.activeMeta;
+        meta.count = this.total;
+      } catch (e) { console.error(e); this.list = []; this.total = 0; }
+    },
+    async countAll() {
+      // 统计其它 tab 的条数（total 只反映当前过滤）
+      for (const t of this.tabs) {
+        if (t.key === this.activeTab) continue;
+        try {
+          const q = new URLSearchParams();
+          q.set('type', t.type); q.set('category', 'pharma');
+          q.set('page', '1'); q.set('limit', '1');
+          if (t.key === 'publications') q.set('excludeArticleType', '资料手册');
+          if (t.key === 'brochures') q.set('articleType', '资料手册');
+          const d = await this.api('/news?' + q.toString());
+          t.count = d.pagination?.total || 0;
+        } catch(e) {}
+      }
+    },
+    switchTab(key) {
+      if (this.activeTab === key) return;
+      this.destroyQuill();
+      this.activeTab = key;
+      this.keyword = '';
+      this.page = 1;
+      this.loadList();
+    },
+    reloadList() { this.page = 1; this.loadList(); },
+    fmtDate(v) {
+      if (!v) return '-';
+      const d = new Date(v);
+      if (isNaN(d)) return '-';
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    },
+    // ---------- 编辑 ----------
+    defaultEditing() {
+      return {
+        id: null, title: '', publishedDate: todayStr(), imageUrl: '', summary: '',
+        articleType: this.activeTab === 'brochures' ? '资料手册' : '',
+        contentHtml: '', videoUrl: '', pdfUrl: '', publicationName: '', authorName: '',
+        lock: false, isPublished: false, tagsText: '', tags: null,
+      };
+    },
+    openNew() {
+      this.destroyQuill();
+      this.editing = this.defaultEditing();
+      this.showEdit = true;
+      this.$nextTick(() => this.initQuill(''));
+    },
+    openEdit(item) {
+      this.destroyQuill();
+      const e = this.defaultEditing();
+      let tags = [];
+      if (item.tags) {
+        try { const p = JSON.parse(item.tags); if (Array.isArray(p)) tags = p; } catch(err) {
+          tags = String(item.tags).split(',').map(s=>s.trim()).filter(Boolean);
+        }
+      }
+      Object.assign(e, {
+        id: item.id,
+        title: item.title || '',
+        publishedDate: item.publishedDate ? String(item.publishedDate).slice(0,10) : todayStr(),
+        imageUrl: item.imageUrl || '',
+        summary: item.summary || '',
+        articleType: this.activeTab === 'brochures' ? '资料手册' : (item.articleType || ''),
+        contentHtml: item.contentHtml || '',
+        videoUrl: item.videoUrl || '',
+        pdfUrl: item.pdfUrl || '',
+        publicationName: item.publicationName || '',
+        authorName: item.authorName || '',
+        lock: !!(item.lock === true || item.lock === 1),
+        isPublished: !!(item.isPublished === true || item.isPublished === 1),
+        tagsText: tags.join(', '),
+      });
+      this.editing = e;
+      this.showEdit = true;
+      this.$nextTick(() => this.initQuill(e.contentHtml));
+    },
+    async saveItem() {
+      if (!this.editing.title) return alert('标题不能为空');
+      if (!this.editing.publishedDate) return alert('发布日期不能为空');
+      // 从 Quill 读取正文
+      if (this.activeTab === 'hot-topics' && this._quill) {
+        this.editing.contentHtml = this._quill.root.innerHTML;
+      }
+      const m = this.activeMeta;
+      const payload = {
+        type: m.type,
+        category: 'pharma',
+        title: this.editing.title,
+        summary: this.editing.summary || null,
+        imageUrl: this.editing.imageUrl || null,
+        publishedDate: new Date(this.editing.publishedDate).toISOString(),
+        articleType: this.editing.articleType || (this.activeTab === 'brochures' ? '资料手册' : null),
+        isPublished: !!this.editing.isPublished,
+        lock: !!this.editing.lock,
+        contentHtml: this.activeTab === 'hot-topics' ? (this.editing.contentHtml || null) : undefined,
+        videoUrl: this.activeTab === 'webinar' ? (this.editing.videoUrl || null) : undefined,
+        pdfUrl: (this.activeTab === 'publications' || this.activeTab === 'brochures') ? (this.editing.pdfUrl || null) : undefined,
+        publicationName: this.activeTab === 'publications' ? (this.editing.publicationName || null) : undefined,
+        authorName: this.activeTab === 'publications' ? (this.editing.authorName || null) : undefined,
+        tags: this.editing.tagsText ? JSON.stringify(this.editing.tagsText.split(/[,，]/).map(s=>s.trim()).filter(Boolean)) : null,
+      };
+      // 研讨会校验 videoUrl
+      if (this.activeTab === 'webinar' && !payload.videoUrl) {
+        return alert('在线研讨会必须填写视频 URL');
+      }
+      this.saving = true;
+      try {
+        if (this.editing.id) {
+          await this.api('/news/' + this.editing.id, { method: 'PUT', body: JSON.stringify(payload) });
+        } else {
+          await this.api('/news', { method: 'POST', body: JSON.stringify(payload) });
+        }
+        this.showEdit = false;
+        this.destroyQuill();
+        this.loadList();
+        this.countAll();
+        alert('保存成功');
+      } catch (e) { alert('保存失败: ' + e.message); }
+      finally { this.saving = false; }
+    },
+    async togglePublish(item) {
+      try {
+        await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) });
+        item.isPublished = !item.isPublished;
+      } catch (e) { alert('操作失败: ' + e.message); }
+    },
+    async removeItem(id) {
+      if (!confirm('确定删除该内容？此操作不可恢复。')) return;
+      try {
+        await this.api('/news/' + id, { method: 'DELETE' });
+        this.loadList(); this.countAll();
+      } catch (e) { alert('删除失败: ' + e.message); }
+    },
+    // ---------- Quill ----------
+    initQuill(html) {
+      if (this.activeTab !== 'hot-topics' || typeof Quill === 'undefined') return;
+      const el = document.getElementById('lm-quill-editor');
+      if (!el || this._quillInited) return;
+      this._quillInited = true;
+      this._quill = new Quill(el, {
+        theme: 'snow',
+        placeholder: '输入文章正文…',
+        modules: { toolbar: [
+          [{ header: [2,3,4,false] }], ['bold','italic','underline','strike'],
+          [{ list:'ordered' }, { list:'bullet' }], ['link','image'], ['clean'],
+        ]},
+      });
+      if (html) {
+        try { this._quill.clipboard.dangerouslyPasteHTML(html); }
+        catch(e) { this._quill.root.innerHTML = html; }
+      }
+    },
+    destroyQuill() {
+      if (this._quill) {
+        try {
+          if (this._quillInited && document.contains(this._quill.root)) {
+            this._quill.root.innerHTML = '';
+          }
+        } catch(e) {}
+        this._quill = null;
+        this._quillInited = false;
+      }
+    },
+    // ---------- 图片上传 ----------
+    async uploadImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploading = true;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: getToken() ? { 'Authorization': 'Bearer ' + getToken() } : {},
+          body: fd,
+        });
+        const d = await res.json();
+        if (d.code === 0 && d.data && d.data.url) this.editing.imageUrl = d.data.url;
+        else alert('上传失败：' + (d.message || '未知错误'));
+      } catch (e) { alert('上传失败：' + e.message); }
+      finally { this.uploading = false; event.target.value = ''; }
+    },
+  },
+}).mount('#app');
+</script>
+</body>
+</html>

@@ -367,6 +367,7 @@ var app = createApp({
     function buildApiUrl() {
       var p = new URLSearchParams();
       p.set('type', 'magazine');
+      p.set('category', 'pc');
       p.set('page', String(data.cur_page));
       p.set('limit', '6');
       p.set('isPublished', 'true');
@@ -408,7 +409,7 @@ var app = createApp({
     // ===== 加载年份标签 =====
     async function loadTags() {
       try {
-        var resp = await fetch(apiBase + '/news/tags/list?type=magazine');
+        var resp = await fetch(apiBase + '/news/tags/list?type=magazine&category=pc');
         var result = await resp.json();
         if (result.code !== 0) return;
         var tags = result.data || [];

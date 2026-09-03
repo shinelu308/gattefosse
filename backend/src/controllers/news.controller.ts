@@ -19,6 +19,7 @@ export async function listNews(req: Request, res: Response) {
       type = 'all',
       category,
       articleType,
+      excludeArticleType,
       keyword,
       isPublished,
       tags,
@@ -59,6 +60,15 @@ export async function listNews(req: Request, res: Response) {
 
     if (articleType) {
       andConditions.push({ articleType: String(articleType) });
+    }
+
+    if (excludeArticleType) {
+      andConditions.push({
+        OR: [
+          { articleType: null },
+          { articleType: { not: String(excludeArticleType) } },
+        ],
+      });
     }
 
     if (isPublished !== undefined && isPublished !== '') {
@@ -389,10 +399,14 @@ export async function batchDeleteNews(req: Request, res: Response) {
  */
 export async function listNewsTags(req: Request, res: Response) {
   try {
-    const { type = 'article' } = req.query;
+    const { type = 'article', category } = req.query;
     const where: Record<string, unknown> = {};
     if (type && type !== 'all') {
       where.type = String(type);
+    }
+    if (category) {
+      const cats = String(category).split(',').map(s => s.trim()).filter(Boolean);
+      if (cats.length) where.category = { in: cats };
     }
     where.isPublished = true;
 

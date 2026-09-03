@@ -460,6 +460,7 @@ var apiBase = '/api';
 function buildApiUrl() {
   var params = new URLSearchParams();
   params.set('type', 'article');
+  params.set('category', 'pc');
   params.set('page', data.cur_page);
   params.set('limit', '9');
   params.set('isPublished', 'true');
@@ -528,7 +529,7 @@ async function loadArticles() {
 // 加载标签列表
 async function loadTags() {
   try {
-    var resp = await fetch(apiBase + '/news/tags/list?type=article');
+    var resp = await fetch(apiBase + '/news/tags/list?type=article&category=pc');
     var result = await resp.json();
     if (result.code !== 0) return;
     var tags = result.data || [];

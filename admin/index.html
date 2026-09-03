@@ -686,6 +686,32 @@ const QUILL_TOOLBAR = [
             杂志
           </a>
         </div>
+        <div class="nav-parent" @click="learnMoreCollapsed = !learnMoreCollapsed"
+          :class="{ active: currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' }">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          了解更多
+          <span class="arrow-icon" :class="{ open: !learnMoreCollapsed }">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+        <div class="nav-sublist" :class="{ collapsed: learnMoreCollapsed }">
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'lm-hot-topics' }" @click="goPage('lm-hot-topics')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+            热点话题
+          </a>
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'lm-webinar' }" @click="goPage('lm-webinar')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+            在线研讨会
+          </a>
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'lm-publications' }" @click="goPage('lm-publications')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+            出版物
+          </a>
+          <a class="nav-item nav-sub" :class="{ active: currentPage === 'lm-brochures' }" @click="goPage('lm-brochures')" style="padding-left:40px; font-size:12px;">
+            <span class="nav-icon" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+            资料手册
+          </a>
+        </div>
         <a class="nav-item" :class="{ active: currentPage === 'doc-list' }" @click="goPage('doc-list')">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></span>
           文档资源
@@ -746,8 +772,8 @@ const QUILL_TOOLBAR = [
 
       <div class="content">
 
-        <!-- iframe 子页面占位：作者管理/系统设置/标签管理 用独立子页面渲染 -->
-        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage'">
+        <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures'">
           <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad"></iframe>
         </div>
 
@@ -3875,6 +3901,7 @@ createApp({
       currentPage: 'dashboard',
       pcMenuCollapsed: false,
       getInspiredCollapsed: false,
+      learnMoreCollapsed: false,
       pcEditTab: 'basic',
       pharmaEditTab: 'basic',
       formulaEditTab: 'basic',
@@ -4003,6 +4030,10 @@ createApp({
         'author-edit': '/admin/authors-standalone.html',
         settings: '/admin/settings-standalone.html',
         'tag-manage': '/admin/tag-manage-standalone.html',
+        'lm-hot-topics': '/admin/learn-more-standalone.html?tab=hot-topics',
+        'lm-webinar': '/admin/learn-more-standalone.html?tab=webinar',
+        'lm-publications': '/admin/learn-more-standalone.html?tab=publications',
+        'lm-brochures': '/admin/learn-more-standalone.html?tab=brochures',
       };
       return map[this.currentPage] || '';
     },
@@ -4038,6 +4069,10 @@ createApp({
         'magazine-edit': '内容管理 / 获取灵感 / 杂志 / ' + (this.editingMagazine.id ? '编辑' : '新增'),
         'author-list': '系统 / 作者管理',
         'author-edit': '系统 / 作者管理 / ' + (this.editingAuthor.id ? '编辑' : '新增'),
+        'lm-hot-topics': '内容管理 / 了解更多 / 热点话题',
+        'lm-webinar': '内容管理 / 了解更多 / 在线研讨会',
+        'lm-publications': '内容管理 / 了解更多 / 出版物',
+        'lm-brochures': '内容管理 / 了解更多 / 资料手册',
       };
       return m[this.currentPage] || '管理后台';
     },

@@ -21,3 +21,4 @@ backend/data/
 # 临时文件
 _original_detail.html
 import_pharma.py
+.localize_tmp/

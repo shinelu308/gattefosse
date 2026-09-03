@@ -432,265 +432,122 @@
         });
     </script>
     <script setup>
-        const params = new URLSearchParams(window.location.search);
-        const tokenStr = params.get('_token');
-        var curUrl = window.location.href;
-        var hasParam = curUrl.indexOf('?');
-        var hasTypeParam = curUrl.indexOf('i=');
-        var total = 0, count_0 = 0, count_1 = 0, count_2 = 0;
-        var personalCareId = 1;
-        var phamId = 117;
-        var id = 205;
-        var isLogin = checkLoginStatus();
-        let userEnabled = localStorage.getItem("userEnabled");
-        const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
-        const app = createApp({
-            data() {
-                return {
-                    tagList: [],
-                    productList: [],
-                }
-            },
-            setup() {
-                let randomNum = Math.floor(Math.random() * 100);
-                const data = reactive({
-                    webBrochuresList: [],
-                    webinarsList: [],
-                    formData: [],
-                    total: 0,
-                    count_0: 0,
-                    count_1: 0,
-                    count_2: 0,
-                    cur_page: 1,
-                    page_size: 3,
-                    total_page: 1,
-                    prev_url: '',
-                    next_url: '',
-                    goodsCategoryId: phamId,
-                    hasParam: hasParam,
-                    hasTypeParam: hasTypeParam,
-                    randomNum: randomNum,
-                    isLogin: isLogin,
-                    userEnabled: userEnabled
-                });
-                // 查询
-                const getFormData = () => {
-                    var api = "/api/webNewsEvents/findWebNewsEvents";
-                    //2.使用axios 进行get请求
-                    console.log("API call disabled");
-                        }).catch((err, res) => {
-                            console.log(err)
-                        })
-                }
-                getFormData()
-                const getTagList = () => {
-                    var api = "/api/mallGoodsTag/getMallGoodsTagList";
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.tagList.length; i++) {
-                            data.tagList[i].url = "?tagId=" + data.tagList[i].ID;
-                            for (var j = 0; j < data.tagList[i].children.length; j++) {
-                                data.tagList[i].children[j].tagUrl = "/personal-care/formulation-finder.html?f%5B" + i + "%5D=" + data.tagList[i].tagNameEn + "%3A" + data.tagList[i].children[j].ID;
-                            }
-                        }
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                const loading = ref(false);
-                getTagList();
-                const getArticlesTagList = () => {
-                    var api = "/api/webArticlesTag/getWebArticlesTagList";
-                    api += "?goodsCategoryId=" + phamId;
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.articlesTagList.length; i++) {
-                            data.articlesTagList[i].url = "?tagId=" + data.articlesTagList[i].ID;
-                            for (var j = 0; j < data.articlesTagList[i].children.length; j++) {
-                                // data.articlesTagList[i].children[j].tagUrl = "?f%5B"+ i +"%5D=" + data.articlesTagList[i].tagNameEn + "%3A" + data.articlesTagList[i].children[j].ID;
-                                data.articlesTagList[i].children[j].tagUrl = setUrlParam(curUrl, "tagId", data.articlesTagList[i].children[j].ID);
-                                data.articlesTagList[i].children[j].tagUrl = setUrlParam(data.articlesTagList[i].children[j].tagUrl, "page", 1);
-                            }
-                        }
-                      nextTick(() => {
-                            console.log('ok');
-                        });
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getArticlesTagList();
-                // 文章类型列表
-                const getWebArticlesTypeList = () => {
-                    var api = "/api/webArticlesType/getWebArticlesTypeList";
-                    api += "?pageSize=10000";
-                    api += "&page=1";
-                    api += "&goodsCategoryId=" + phamId;
-                    if (data.selectedTypeValue == "") {
-                        data.articleTypeList = []
-                        return
-                    }
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.articleTypeList.length; i++) {
-                            data.articleTypeList[i].url = setUrlParam(curUrl, "articleType", data.articleTypeList[i].ID);
-                            data.articleTypeList[i].num = 0;
-                        }
-                        nextTick(() => {
-                            console.log("articleType ok");
-                        });
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getWebArticlesTypeList()
-                const getArticlesData = () => {
-                    var api = "/api/webArticles/getWebArticlesList?catId=30";
-                    api += "&pageSize=" + data.page_size;
-                    api += "&page=" + data.cur_page;
-                    api += "&goodsCategoryId=" + phamId;
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.articleList.length; i++) {
-                            data.articleList[i].url = "/pharmaceuticals-article-detail.html?id=" + data.articleList[i].ID;
-                            data.articleList[i].thumb = "/" + data.articleList[i].thumb;
-                        }
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getArticlesData();
-                // 网络研讨会类型列表
-                const getWebWebinarsTypeList = () => {
-                    var api = "/api/webWebinarsType/getWebWebinarsTypeList";
-                    api += "?pageSize=10000";
-                    api += "&page=1";
-                    api += "&goodsCategoryId=" + phamId;
-                    if (data.selectedTypeValue == "") {
-                        data.webinarsTypeList = []
-                        return
-                    }
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.webinarsTypeList.length; i++) {
-                            data.webinarsTypeList[i].url = setUrlParam(curUrl, "webinarsType", data.webinarsTypeList[i].ID);
-                            data.webinarsTypeList[i].num = 0;
-                        }
-                        nextTick(() => {
-                            console.log("webinarsType ok");
-                        });
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getWebWebinarsTypeList()
-                // 查询
-                const getWebWebinarsList = () => {
-                    var api = "/api/webWebinars/getWebWebinarsList?catId=30";
-                    api += "&pageSize=" + data.page_size;
-                    api += "&page=" + data.cur_page;
-                    api += "&goodsCategoryId=" + phamId;
-                    //2.使用axios 进行get请求
-                    console.log("API call disabled");
-                        let catList = res.data.data.catList
-                        let goodsCatList = res.data.data.goodsCatList
-                        // 分页            
-                        for (var i = 0; i < data.webinarsList.length; i++) {
-                            // data.webinarsList[i].url = "/article-normal-template-top.html?id=" + data.webinarsList[i].ID;
-                            if (data.webinarsList[i].thumb.substring(1) != "/") {
-                                data.webinarsList[i].thumb = "/" + data.webinarsList[i].thumb;
-                            }
-                            if (data.webinarsList[i].topBackground.substring(1) != "/") {
-                                data.webinarsList[i].topBackground = "/" + data.webinarsList[i].topBackground;
-                            }
-                            data.webinarsList[i].CreatedAt = data.webinarsList[i].CreatedAt.substring(0, 10);
-                            if (data.webinarsList[i].eventTime != null) {
-                                data.webinarsList[i].eventTimeYear = data.webinarsList[i].eventTime.substring(0, 4);
-                                data.webinarsList[i].eventTimeMonth = data.webinarsList[i].eventTime.substring(5, 7)
-                            }
-                            if (data.webinarsList[i].eventEndTime != null) {
-                                data.webinarsList[i].eventEndTimeDate = data.webinarsList[i].eventEndTime.substring(5, 10).replace('-', '月');
-                            }
-                            if (data.webinarsList[i].eventAddress != '') { // 活动
-                                data.webinarsList[i].class = "c-card c-card--horizontal" + " c-card--bordered c-card--event";
-                            } else { // 资讯
-                                data.webinarsList[i].class = "c-card c-card--horizontal";
-                            }
-                            let tmp = data.webinarsList[i];
-                            if (tmp.goodsCategoryId == 0) {
-                                data.webinarsList[i].goodsCatName = '公司资讯'
-                            } else {
-                            }
-                        }
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getWebWebinarsList()
-                const getPublicationList = () => {
-                    var api = "/api/webPublications/getWebPublicationsList?catId=30";
-                    api += "&pageSize=" + data.page_size;
-                    api += "&page=" + data.cur_page;
-                    api += "&goodsCategoryId=" + phamId;
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.publicationList.length; i++) {
-                            data.publicationList[i].thumb = "/" + data.publicationList[i].thumb;
-                            if (data.publicationList[i].eventTime != null) {
-                                data.publicationList[i].eventTimeYear = data.publicationList[i].eventTime.substring(0, 4);
-                                data.publicationList[i].eventTimeMonth = data.publicationList[i].eventTime.substring(5, 7)
-                                data.publicationList[i].eventTimeDate = data.publicationList[i].eventTime.substring(5, 10).replace('-', '月');
-                            }
-                        }
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getPublicationList();
-                const getWebBrochuresList = () => {
-                    var api = "/api/webBrochures/getWebBrochuresList?catId=30";
-                    api += "&pageSize=" + data.page_size;
-                    api += "&page=" + data.cur_page;
-                    api += "&goodsCategoryId=" + phamId;
-                    console.log("API call disabled");
-                        for (var i = 0; i < data.webBrochuresList.length; i++) {
-                            data.webBrochuresList[i].thumb = "/" + data.webBrochuresList[i].thumb;
-                            if (data.webBrochuresList[i].eventTime != null) {
-                                data.webBrochuresList[i].eventTimeYear = data.webBrochuresList[i].eventTime.substring(0, 4);
-                                data.webBrochuresList[i].eventTimeMonth = data.webBrochuresList[i].eventTime.substring(5, 7)
-                            }
-                        }
-                    }).catch((err, res) => {
-                        console.log(err)
-                    })
-                }
-                getWebBrochuresList();
-                return {
-                    data
-                };
-            },
-        });
-        let result = app.mount("#app");
-        function setUrlParam(url, paramName, paramValue) {
-            paramName = paramName.replace(/[\[\]]/g, '\\$&');
-            let regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
-            let val = regular.exec(url);
-            if (val && val[2]) {
-                url = url.replace(new RegExp(paramName + '=' + val[2]), `${paramName}=${paramValue}`);
-            } else {
-                if (url.indexOf('?') < 0) {
-                    url += `?${paramName}=${paramValue}`;
-                } else {
-                    url += `&${paramName}=${paramValue}`;
-                }
-            }
-            return url;
-        }
-        function checkLoginStatus() {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                return true;
-                console.log('用户已登录，欢迎', localStorage.getItem('username'));
-                // 执行进入首页的逻辑
-            } else {
-                // 执行未登录的逻辑，比如跳转到登录页面
-                return false;
-            }
-        }
-    </script>
+  const { createApp, reactive, onMounted } = Vue;
+
+  // ===== 页面静态元信息（了解更多索引页标题/描述） =====
+  const data = reactive({
+    formData: {
+      title: '了解更多',
+      summary: '在本节中，您将通过科学前沿的新闻、热门话题和出版物了解更多关于嘉法狮制药的专业知识，您可以浏览按需网络研讨会库，并下载我们最新的手册。'
+    },
+    articleList: [],       // 热点话题 (type=article)
+    webinarsList: [],      // 网络研讨会 (type=webinar)
+    publicationList: [],   // 出版物 (type=publication, 排除资料手册)
+    webBrochuresList: [],  // 宣传册 (type=publication + articleType=资料手册)
+    userEnabled: (localStorage.getItem('userEnabled') || 0),
+  });
+
+  async function apiList(params) {
+    try {
+      var q = new URLSearchParams();
+      for (var k in params) q.set(k, params[k]);
+      var resp = await fetch('/api/news?' + q.toString());
+      var res = await resp.json();
+      if (res.code !== 0) return [];
+      return res.data.list || [];
+    } catch (e) { console.error('learn-more 加载失败', e); return []; }
+  }
+
+  function fmtPubDate(evt) {
+    var y = '', m = '';
+    if (evt) {
+      var d = new Date(evt);
+      if (!isNaN(d.getTime())) { y = d.getFullYear(); m = (d.getMonth() + 1); }
+    }
+    return { eventTimeYear: y, eventTimeMonth: m, eventTime: evt || '' };
+  }
+
+  // 热点话题（文章）前 3 条
+  async function loadArticles() {
+    var list = await apiList({ type: 'article', category: 'pharma', limit: '3', isPublished: 'true' });
+    data.articleList = list.map(function (it) {
+      return {
+        title: it.title,
+        summary: it.summary || '',
+        url: '/personal-care-article-detail.html?id=' + it.id,
+        thumb: it.imageUrl || '/',
+        lock: false
+      };
+    });
+  }
+
+  // 网络研讨会前 2 条（横向大卡）
+  async function loadWebinars() {
+    var list = await apiList({ type: 'webinar', category: 'pharma', limit: '2', isPublished: 'true' });
+    data.webinarsList = list.map(function (it) {
+      return {
+        title: it.title,
+        summary: it.summary || '',
+        url: it.videoUrl || '',
+        topBackground: it.topBackground || it.imageUrl || '',
+        lock: it.lock === true
+      };
+    });
+  }
+
+  // 出版物前 3 条（排除资料手册）
+  async function loadPublications() {
+    var list = await apiList({ type: 'publication', category: 'pharma', excludeArticleType: '资料手册', limit: '3', isPublished: 'true' });
+    data.publicationList = list.map(function (it) {
+      var pd = fmtPubDate(it.publishedDate);
+      return {
+        title: it.title,
+        publicationName: it.publicationName || '',
+        summary: it.summary || '',
+        url: it.pdfUrl || '#',
+        eventTimeYear: pd.eventTimeYear,
+        eventTimeMonth: pd.eventTimeMonth,
+        eventTime: pd.eventTime,
+        lock: false
+      };
+    });
+  }
+
+  // 资料手册前 3 条
+  async function loadBrochures() {
+    var list = await apiList({ type: 'publication', category: 'pharma', articleType: '资料手册', limit: '3', isPublished: 'true' });
+    data.webBrochuresList = list.map(function (it) {
+      var pd = fmtPubDate(it.publishedDate);
+      return {
+        title: it.title,
+        summary: it.summary || '',
+        url: it.pdfUrl || '#',
+        thumb: it.imageUrl || '/',
+        eventTimeYear: pd.eventTimeYear,
+        eventTimeMonth: pd.eventTimeMonth,
+        eventTime: pd.eventTime,
+        lock: it.lock === true
+      };
+    });
+  }
+
+  const app = createApp({
+    setup() {
+      onMounted(function () {
+        loadArticles();
+        loadWebinars();
+        loadPublications();
+        loadBrochures();
+      });
+      return { data };
+    }
+  });
+  app.mount('#app');
+
+  function checkLoginStatus() {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  }
+</script>
     <script defer src="https://umami.onlystyle.com.cn/script.js"
         data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
 </body>

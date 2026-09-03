@@ -440,6 +440,7 @@ var app = createApp({
     function buildApiUrl() {
       var p = new URLSearchParams();
       p.set('type', 'webinar');
+      p.set('category', 'pc');
       p.set('page', data.cur_page);
       p.set('limit', '9');
       p.set('isPublished', 'true');
@@ -498,7 +499,7 @@ var app = createApp({
     // 加载标签筛选列表
     async function loadTags() {
       try {
-        var resp = await fetch(apiBase + '/news/tags/list?type=webinar');
+        var resp = await fetch(apiBase + '/news/tags/list?type=webinar&category=pc');
         var result = await resp.json();
         if (result.code !== 0) return;
         var tags = result.data || [];
