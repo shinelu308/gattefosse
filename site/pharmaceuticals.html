@@ -18,6 +18,8 @@
   <link rel="alternate" hreflang="en" href="pharmaceuticals.html" />
   <link rel="alternate" hreflang="fr" href="fr/pharmaceuticals.html" />
   <link rel="icon" href="themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
+  <link rel="preload" href="/static/js/vue.global.prod.js" as="script">
+  <link rel="preload" href="/static/js/jquery-3.7.1.min.js" as="script">
   <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
@@ -50,8 +52,20 @@
     href="sites/default/files/css/css_omGwTuIhTAIrOAtS9TAhZzxzJ8ya9bmpczQ2tEDKhlc.css" />
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
-  <link rel="stylesheet" media="all"
+  <!-- 537KB 主题CSS 异步加载，不阻塞首屏渲染 -->
+  <link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
     href="sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+  <noscript><link rel="stylesheet" media="all"
+    href="sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" /></noscript>
+  <!-- 修复 Drupal main{display:flex} 导致的页面结构错乱 + pharma 主题变量 -->
+  <style>
+    .path-pharmaceuticals main#app,
+    .path-pharmaceuticals main.main { display: block !important; }
+    /* 区块渲染中的容器间距 */
+    .s-tunnel-page .s-tunnel-page__title { font-size: 3.2rem; }
+    /* 区块内富文本基础样式（从原站 body 字段继承） */
+    .page-tunnel-pharmaceuticals .field--name-body p { line-height: 1.8; color: #555; }
+  </style>
 </head>
 
 <body class="path-pharmaceuticals    bg- d-flex flex-column">
@@ -91,31 +105,24 @@
                   <a href="index.html">首页</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="/pharmaceuticals.html">{{data.baseData.title}}</a>
+                  <a href="/pharmaceuticals.html">{{data.hero.title}}</a>
                 </li>
               </ol>
             </nav>
           </div>
         </div>
-        <div class="s-tunnel-header__img" :style="data.baseData.styleBackground">
+        <div class="s-tunnel-header__img" :style="heroBg()">
         </div>
         <div class="s-tunnel-header__content">
-          <h1 class="s-tunnel-header__title page-title u-title-styled">{{data.baseData.title}}</h1>
+          <h1 class="s-tunnel-header__title page-title u-title-styled">{{data.hero.title}}</h1>
           <div class="s-tunnel-header__desc">
-            <p v-html="data.baseData.summary"></p>
-          </div>
-          <div class="s-tunnel-header__video">
-            <!--button id="btn-video" class=" btn-video btn btn-outline-secondary">See the video
-              <i class="o-icon --play" aria-hidden="true"></i>
-            </button-->
+            <p v-html="data.hero.summary"></p>
           </div>
         </div>
         <div class="s-tunnel-header__btns">
-          <a class="btn btn-primary" href="pharmaceuticals/product-finder.html">查找产品
-            <i class="o-icon --ico-flask" aria-hidden="true"></i>
-          </a>
-          <a class="btn btn-primary" href="pharmaceuticals/learn-more/publications.html">查找出版物
-            <i class="o-icon --document" aria-hidden="true"></i>
+          <a v-for="btn in data.hero.buttons" :key="btn.label" class="btn btn-primary" :href="btn.url">
+            {{ btn.label }}
+            <i class="o-icon" :class="btn.url.indexOf('product-finder') > -1 ? '--ico-flask' : '--document'" aria-hidden="true"></i>
           </a>
         </div>
       </div>
@@ -123,101 +130,122 @@
         <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
           class="block block-system block-system-main-block">
           <div class="page-tunnel-pharmaceuticals">
-            <span v-html="data.baseData.content"></span>
-            <div class="s-tunnel-product" v-if="data.productList[0]">
-              <div class="s-tunnel-product__content">
-                <h3>
-                  
-                    {{data.productList[0].goodsName}}
-                  
-                </h3>
-                <a class="s-tunnel-product__btn btn btn-primary" :href="data.productList[0].url">
-                  
-                    阅读更多
-                  
-                </a>
+            <!-- 区块渲染（结构化内容） -->
+            <template v-for="(blk, bi) in data.blocks" :key="bi">
+
+              <!-- 文本区块 -->
+              <div v-if="blk.type === 'text'" class="block-region-text" style="padding:4rem 0;">
+                <div class="container">
+                  <div v-html="blk.data.html" class="field--name-body"></div>
+                </div>
               </div>
-              <div class="s-tunnel-product__img" :style="data.productList[0].styleBackground">
+
+              <!-- 特征卡片 -->
+              <div v-if="blk.type === 'feature_cards'" class="s-tunnel-page theme-pharma">
+                <div class="container">
+                  <div class="s-tunnel-page__container">
+                    <h2 v-if="blk.data.title" class="s-tunnel-page__title u-title-styled">{{ blk.data.title }}</h2>
+                    <ul class="s-tunnel-page__list">
+                      <li v-for="(item, fi) in blk.data.items" :key="fi" class="s-tunnel-page__item">
+                        <img v-if="item.imageUrl" :src="item.imageUrl" alt="" width="48" height="48" loading="lazy" class="img-fluid s-tunnel-page__item-img">
+                        <i v-else-if="item.icon" class="o-icon img-fluid s-tunnel-page__item-img" :class="item.icon" style="display:flex;align-items:center;justify-content:center;font-size:32px;"></i>
+                        <div class="s-tunnel-page__item-content">
+                          <h3 class="s-tunnel-page__item-title">
+                            <a v-if="item.linkUrl" :href="item.linkUrl" class="u-cover">{{ item.title }}</a>
+                            <span v-else>{{ item.title }}</span>
+                          </h3>
+                          <div class="s-tunnel-page__item-txt">
+                            <p>{{ item.description }}</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="s-tunnel-news">
+
+              <!-- 产品推广大图 -->
+              <div v-if="blk.type === 'product_promo'" class="s-tunnel-product">
+                <div class="s-tunnel-product__content">
+                  <h3 class="s-tunnel-product__title">{{ blk.data.title }}</h3>
+                  <p v-if="blk.data.subtitle" class="s-tunnel-product__tagline">{{ blk.data.subtitle }}</p>
+                  <div class="s-tunnel-product__description" v-html="blk.data.description"></div>
+                  <a v-if="blk.data.linkUrl" class="s-tunnel-product__btn btn btn-primary" :href="blk.data.linkUrl">{{ blk.data.linkLabel || '阅读更多' }}</a>
+                </div>
+                <div v-if="blk.data.imageUrl" class="s-tunnel-product__img" :style="{ backgroundImage: 'url(' + blk.data.imageUrl + ')' }"></div>
+              </div>
+
+            </template>
+
+            <!-- 最新资讯（真实 API：pharma 新闻 / 文章 + 出版物） -->
+            <div class="s-tunnel-news" v-if="data.newsItems.length > 0 || data.publicationData.length > 0">
               <div class="container">
                 <h2 class="s-tunnel-news__title u-title-styled">
-                  
-                    最新资讯
-                  
+                  最新资讯
                 </h2>
-                <div class="s-tunnel-news__grid" v-if="data.newsData.length > 0">
-                  <div class="s-tunnel-news__card s-tunnel-news__card--first" v-if="data.newsData[0]">
+                <div class="s-tunnel-news__grid">
+                  <div class="s-tunnel-news__card s-tunnel-news__card--first" v-if="data.newsItems[0]">
                     <div class="c-card c-card--bordered theme-pharma c-card--private">
-                      <a :href="data.newsData[0].url" class="c-card__private-btn">
-                      </a>
+                      <a :href="data.newsItems[0].url" class="c-card__private-btn"></a>
                       <div class="c-card__content">
                         <h3 class="c-card__title">
-                          {{data.newsData[0].title}}
+                          <a class="c-card__title-link" :href="data.newsItems[0].url">{{data.newsItems[0].title}}</a>
                         </h3>
                         <ul class="c-card__breadcrumb">
-                          <li class="category">
-                            {{data.newsData[0].catName}}</li>
+                          <li class="category">{{data.newsItems[0].catName}}</li>
                         </ul>
                         <p class="c-card__info">
-                          <span class="c-card__date"><time :datetime="data.newsData[0].eventTime" class="datetime">
-                              {{data.newsData[0].eventTimeYear}}年{{data.newsData[0].eventTimeDate}}日</time>
+                          <span class="c-card__date">
+                            {{data.newsItems[0].eventTimeYear}}年{{data.newsItems[0].eventTimeDate}}日
                           </span>
                         </p>
-                        <p class="c-card__summary">
-                          {{data.newsData[0].summary}}</p>
+                        <p class="c-card__summary">{{data.newsItems[0].summary}}</p>
                       </div>
                       <div class="c-card__image">
-                        <img :src="data.newsData[0].thumb" :data-src="data.newsData[0].thumb"
-                          alt="vet-injectable-delivery" width="803" height="453" class="card__image img-fluid"
-                          loading="lazy">
+                        <img :src="data.newsItems[0].thumb" :data-src="data.newsItems[0].thumb"
+                          alt="" width="803" height="453" class="card__image img-fluid" loading="lazy">
                       </div>
                     </div>
                   </div>
-                  <div class="s-tunnel-news__card" v-for="(item, index) in data.news2Data">
+                  <div class="s-tunnel-news__card" v-for="(item, index) in data.newsItems.slice(1)" :key="item.id">
                     <div class="c-card c-card--bordered theme-pharma c-card--private">
-                      <a :href="item.url" class="c-card__private-btn">
-                      </a>
+                      <a :href="item.url" class="c-card__private-btn"></a>
                       <div class="c-card__content">
                         <h3 class="c-card__title">
-                          {{item.title}}
+                          <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
                         </h3>
                         <ul class="c-card__breadcrumb">
-                          <li class="category">{{item.categoryName}}</li>
+                          <li class="category">{{item.catName}}</li>
                         </ul>
                         <p class="c-card__info">
-                          <span class="c-card__date"><time :datetime="item.eventTime"
-                              class="datetime">{{data.newsData[0].eventTimeYear}}年{{data.newsData[0].eventTimeDate}}日</time>
-                          </span>
+                          <span class="c-card__date">{{item.eventTimeYear}}年{{item.eventTimeDate}}日</span>
                         </p>
                         <p class="c-card__summary">{{item.summary}}</p>
                       </div>
                       <div class="c-card__image">
-                        <img :src="item.thumb" :data-src="item.thumb" alt="vet-oral-delivery" width="369" height="208"
+                        <img :src="item.thumb" :data-src="item.thumb" alt="" width="369" height="208"
                           class="card__image img-fluid" loading="lazy">
                       </div>
                     </div>
                   </div>
-                  <div class="s-tunnel-news__card" v-for="(item, index) in data.publicationData">
+                  <!-- 出版物卡片 -->
+                  <div class="s-tunnel-news__card" v-for="(pub, pi) in data.publicationData" :key="'pub' + pub.id">
                     <div class="c-card c-card--pub c-card--bordered theme-pharma">
                       <div class="c-card__content">
                         <h3 class="c-card__title">
-                          {{item.title}}
+                          {{pub.title}}
                         </h3>
                         <ul class="c-card__breadcrumb">
                           <li>出版物</li>
-                          <li class="category" alt="Poster">海报</li>
+                          <li class="category">{{pub.catName || '海报'}}</li>
                         </ul>
                         <p class="c-card__info">
-                          <span class="c-card__date">
-                            {{item.eventTimeYear}}年{{item.eventTimeDate}}日</span>
+                          <span class="c-card__date">{{pub.eventTimeYear}}年{{pub.eventTimeDate}}日</span>
                         </p>
-                        <p class="c-card__summary">{{item.summary}}
-                        </p>
-                        <div class="c-card__cta" v-if="item.url">
-                          <a class="btn btn-primary" :href="item.url" :title="item.title" target="_blank">
-                            下载 (.pdf - 287.97 KB)
+                        <p class="c-card__summary">{{pub.summary}}</p>
+                        <div class="c-card__cta" v-if="pub.pdfUrl">
+                          <a class="btn btn-primary" :href="pub.pdfUrl" :title="pub.title" target="_blank">
+                            下载 (PDF)
                           </a>
                         </div>
                       </div>
@@ -225,59 +253,54 @@
                   </div>
                 </div>
                 <div class="s-tunnel-news__btn-container">
-                  <a class="btn btn-outline-secondary" href="/news.html?i=117&type=1">                    
-                      所有新闻                    
+                  <a class="btn btn-outline-secondary" href="/news.html?i=117&type=1">
+                    所有新闻
                   </a>
                 </div>
               </div>
             </div>
-            <div class="s-tunnel-events">
+
+            <!-- 遇见我们（真实 API：pharma 活动） -->
+            <div class="s-tunnel-events" v-if="data.eventData.length >= 1">
               <div class="container">
                 <div class="s-tunnel-events__container">
                   <h2 class="s-tunnel-events__title u-title-styled" style="font-size:4rem;">
-                      遇见我们
+                    遇见我们
                   </h2>
                   <div class="s-tunnel-events__list">
                     <div class="js-events-slider">
                       <div class="views-element-container">
                         <div
                           class="view view-pharmaceutical-events view-id-pharmaceutical_events view-display-id-block_pharmaceutical_events js-view-dom-id-f400f958f299d98936aae83487f97a4456ea8c0f228678261d3bcdb83ecd2e1e">
-                          <div class="view-content" v-if="data.eventData">
+                          <div class="view-content">
                             <div class="c-card c-card--bordered c-card--event theme-pharma"
-                              v-for="item in data.eventData">
+                              v-for="(item, ei) in data.eventData" :key="ei">
                               <div class="c-card__content">
                                 <h3 class="c-card__title">
-                                    {{item.title}}                                  
+                                  {{item.title}}
                                 </h3>
                                 <div class="c-card__left">
                                   <p class="c-card__date" style="padding-right: 2.2rem; padding-top: 1.6rem; line-height: 2rem;">
-                                    <span class="date" style="font-size:14px">                                      
-                                        {{item.eventTimeDate}}日~{{item.eventEndTimeDate}}<span v-if="item.eventEndTimeDate != null">日</span>                                    
+                                    <span class="date" style="font-size:14px">
+                                      {{item.eventTimeDate}}日~{{item.eventEndTimeDate}}<span v-if="item.eventEndTimeDate != null">日</span>
                                     </span>
-                                    <span class="year">                                      
-                                        {{item.eventTimeYear}}                                      
+                                    <span class="year">
+                                      {{item.eventTimeYear}}
                                     </span>
                                   </p>
                                   <div class="c-card__event-info">
-                                    <p class="c-card__place">                                        
-                                          {{item.eventAddress}}
+                                    <p class="c-card__place">
+                                      {{item.eventAddress}}
                                       <br>
                                     </p>
-                                    <p class="c-card__time"> 
+                                    <p class="c-card__time">
                                     </p>
                                   </div>
                                 </div>
                                 <div class="c-card__right">
-                                  <!--div class="c-card__cta">
-                                    <a href="https://attendee.gotowebinar.com/register/6497823884765701472?source=website2"
-                                      class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer">
-                                                                              登记
-                                      
-                                    </a>
-                                  </div-->
                                   <ul class="c-card__tag theme-pharma">
-                                    <li class="c-card__tag-item">                                      
-                                        药用辅料                                      
+                                    <li class="c-card__tag-item">
+                                      药用辅料
                                     </li>
                                   </ul>
                                 </div>
@@ -290,23 +313,29 @@
                   </div>
                 </div>
                 <div class="s-tunnel-events__btn-container">
-                  <a class="btn btn-outline-secondary" href="/news.html?i=117&type=2">                    
-                      所有活动                    
+                  <a class="btn btn-outline-secondary" href="/news.html?i=117&type=2">
+                    所有活动
                   </a>
                 </div>
               </div>
             </div>
-          </div>
-          <div id="video-modal" class="modal video-modal">
-            <div class="modal-content formulaire">
-              <span class="btn-close"></span>
-              <div class="o-video media media--type-remote-video media--view-mode-full">
-                <div class="video__container">
-                  <div class="youtube_player js-video-wrapper" videoid="HfB-84VxctE"><iframe title="YouTube iframe"
-                      type="text/html" width="null" height="null" src="//www.youtube-nocookie.com/embed/HfB-84VxctE?"
-                      webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></div>
-                </div>
-                <div class="video__footer">
+
+            <!-- 双CTA卡片区块 -->
+            <div v-if="getCtaBlock() && getCtaBlock().data && getCtaBlock().data.cards && getCtaBlock().data.cards.length > 0" class="js-block-contents s-tunnel-content" style="margin-bottom:40px;">
+              <div class="container">
+                <div class="c-cards" style="display:flex;gap:2.4rem 3.15rem;flex-wrap:wrap;justify-content:center;">
+                  <div v-for="(card, ci) in getCtaBlock().data.cards" :key="ci" class="c-card c-card--bordered" style="flex:1;max-width:36.9rem;min-width:28rem;">
+                    <div class="c-card__image">
+                      <img :src="card.imageUrl" :alt="card.title" loading="lazy" class="img-fluid">
+                    </div>
+                    <div class="c-card__content" style="padding:2rem;">
+                      <span v-if="card.subtitle" class="c-card__category">{{ card.subtitle }}</span>
+                      <h3 class="c-card__title" style="margin-top:0.8rem !important;">
+                        <a :href="card.linkUrl" class="c-card__title-link u-cover">{{ card.title }}</a>
+                      </h3>
+                      <p class="c-card__summary" style="font-size:1.3rem;color:#666;line-height:1.5;margin:0.8rem 0 0 0;">{{ card.description }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -347,14 +376,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
     </div>
   </div>
-  <script type="application/json"
-    data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"pharmaceuticals","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"bootstrap5\/bootstrap5-js-latest,bootstrap5\/global-styling,classy\/base,classy\/messages,classy\/node,core\/normalize,eolas_core\/cookie,eolas_core\/custom_css,eolas_core\/custom_js,extlink\/drupal.extlink,gattefosse\/global-styling,gattefosse_tunnel_pharmaceuticals\/gattefosse_tunnel_pharmaceuticals,miniorange_saml\/miniorange_saml.admin,system\/base,views\/views.module","theme":"gattefosse","theme_token":null},"ajaxTrustedUrl":[],"data":{"extlink":{"extTarget":true,"extTargetNoOverride":true,"extNofollow":false,"extNoreferrer":true,"extFollowNoOverride":false,"extClass":"0","extLabel":"(link is external)","extImgClass":false,"extSubdomains":true,"extExclude":"","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":false,"extAlertText":"This link will take you to an external web site. We are not responsible for their content.","mailtoClass":"0","mailtoLabel":"(link sends email)","extUseFontAwesome":false,"extIconPlacement":"append","extFaLinkClasses":"fa fa-external-link","extFaMailtoClasses":"fa fa-envelope-o","whitelistedDomains":[]}},"domain_host":"matomo.eolas-services.com","matomo_tag_manager_id":"iB2UuiIw","user":{"uid":0,"permissionsHash":"a60b7506b39bcbb4f6258d25c37d24ce9be3caf126bc235874c3028aa6769123"}}</script>
-  <script src="sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
-  <script src="sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
-  <script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron5d7a.js?1702896676"></script>
-  <script src="sites/default/files/js/js_Lwj7IGtPHD_w51PAokouh2rvLsiZRf77JISxDzVS4dg.js"></script>
   <script>
-
     $(document).ready(function () {
       $("#header").load("/header.html", function () {
         let tmp = checkLoginStatus();
@@ -369,29 +391,155 @@
       $("#worldList").load("/world.html");
     });
   </script>
-  <script defer src="https://umami.onlystyle.com.cn/script.js"
-    data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
+  <script>
+    function checkLoginStatus() { return false; }
+    const { createApp, reactive, onMounted } = Vue;
+    const app = createApp({
+      setup() {
+        const data = reactive({
+          // 从 API 加载的页面区块
+          blocks: [],
+          // 动态数据（pharma 新闻 + 出版物 + 活动）
+          newsItems: [],
+          publicationData: [],
+          eventData: [],
+          // hero 快捷引用（从 blocks 中提取）
+          hero: { title: '药用辅料', summary: '', backgroundImage: '', buttons: [] }
+        });
+        const ui = reactive({});
+
+        // 格式化日期：'2026-05-13' → { year:'2026', date:'05月13' }
+        function fmtDate(d) {
+          if (!d) return { year: '', date: '' };
+          var parts = String(d).split('T')[0].split('-');
+          if (parts.length === 3) {
+            return { year: parts[0], date: parts[1] + '月' + parseInt(parts[2], 10) };
+          }
+          return { year: '', date: d };
+        }
+        // 兼容后端毫秒时间戳
+        function normDate(d) {
+          if (!d) return '';
+          if (typeof d === 'number') {
+            var dt = new Date(d);
+            return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+          }
+          return String(d);
+        }
+
+        onMounted(async function () {
+          var [blocksRes, newsRes, eventRes, pubRes] = await Promise.allSettled([
+            axios.get('/api/content/pages/pharmaceuticals?t=' + Date.now()),
+            axios.get('/api/news', { params: { type: 'article', category: 'pharma', limit: 4 } }),
+            axios.get('/api/news', { params: { type: 'event', category: 'pharma', limit: 6 } }),
+            axios.get('/api/news', { params: { type: 'publication', category: 'pharma', limit: 3 } })
+          ]);
+
+          // 1. 处理页面区块
+          if (blocksRes.status === 'fulfilled') {
+            var pageData = blocksRes.value.data?.data;
+            if (pageData && pageData.content) {
+              var blocks = typeof pageData.content === 'string' ? JSON.parse(pageData.content) : pageData.content;
+              data.blocks = blocks || [];
+              // 提取 hero
+              var heroBlock = (blocks || []).find(function (b) { return b.type === 'hero'; });
+              if (heroBlock) {
+                data.hero.title = heroBlock.data.title || '药用辅料';
+                data.hero.summary = heroBlock.data.summary || '';
+                data.hero.backgroundImage = heroBlock.data.backgroundImage || '';
+                data.hero.buttons = heroBlock.data.buttons || [];
+              }
+            }
+          } else {
+            console.error('Failed to load page blocks:', blocksRes.reason);
+          }
+
+          // 2. 处理新闻/文章（pharma）
+          if (newsRes.status === 'fulfilled') {
+            var newsItems = newsRes.value.data?.data?.list || [];
+            data.newsItems = newsItems.map(function (item) {
+              var f = fmtDate(normDate(item.publishedDate));
+              return {
+                id: item.id,
+                title: item.title || '',
+                catName: item.articleType || item.category || '新闻',
+                summary: item.summary || '',
+                thumb: item.imageUrl || '',
+                url: '/news-detail.html?id=' + item.id,
+                eventTimeYear: f.year,
+                eventTimeDate: f.date
+              };
+            });
+          } else {
+            console.error('Failed to load news:', newsRes.reason);
+          }
+
+          // 3. 处理活动/事件（pharma）
+          if (eventRes.status === 'fulfilled') {
+            var eventItems = eventRes.value.data?.data?.list || [];
+            data.eventData = eventItems.map(function (item) {
+              var f = fmtDate(normDate(item.publishedDate));
+              var ef = item.eventEndDate ? fmtDate(normDate(item.eventEndDate)) : { date: '' };
+              return {
+                title: item.title || '',
+                eventTimeYear: f.year,
+                eventTimeDate: f.date,
+                eventEndTimeDate: ef.date,
+                eventAddress: item.location || item.booth || '',
+                goodsCatName: '药用辅料',
+                catName: '遇见我们'
+              };
+            });
+          } else {
+            console.error('Failed to load events:', eventRes.reason);
+          }
+
+          // 4. 处理出版物（pharma）
+          if (pubRes.status === 'fulfilled') {
+            var pubItems = pubRes.value.data?.data?.list || [];
+            data.publicationData = pubItems.map(function (item) {
+              var f = fmtDate(normDate(item.publishedDate));
+              return {
+                id: item.id,
+                title: item.title || '',
+                catName: item.articleType || item.publicationName || '海报',
+                summary: item.summary || '',
+                pdfUrl: item.pdfUrl || '',
+                eventTimeYear: f.year,
+                eventTimeDate: f.date
+              };
+            });
+          } else {
+            console.error('Failed to load publications:', pubRes.reason);
+          }
+        });
+
+        // 获取 hero 背景样式
+        function heroBg() {
+          return data.hero.backgroundImage ? 'background-image: url(' + data.hero.backgroundImage + ')' : '';
+        }
+
+        // 获取 cta_cards 区块
+        function getCtaBlock() {
+          return (data.blocks || []).find(function (b) { return b.type === 'cta_cards'; });
+        }
+
+        return { data, ui, heroBg, getCtaBlock };
+      }
+    });
+    app.mount("#app");
+  </script>
+  <!-- 占位 tarteaucitron，避免 Drupal 聚合 JS 调用时报错 -->
+  <script>
+    window.tarteaucitron = { addScript: function(){}, load: function(){} };
+    if (typeof jQuery !== 'undefined') { (function($){ $.fn.slick = $.fn.slick || function(){}; })(jQuery); }
+  </script>
+
+<script defer src="sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
+<script defer src="sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
+<script defer src="sites/default/files/js/js_5WOLE2rEV4C7OV8GPbm3ogNdePOpdul9JBaMBz_IZIA.js"></script>
 
 <script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
 </body>
 
 </html>
-<script>
-  function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
-  const app = createApp({
-    setup() {
-      const data = reactive({
-        baseData: { title: '药用辅料', summary: '我们提供创新的脂质辅料，由经验丰富的专家提供个性化技术支持。', styleBackground: 'background-image: url(/sites/default/files/styles/page_banner_desktop_full/public/2023-07/gattefosse_oral_lipid_excipients.jpg.jpg)', content: '<p>嘉法狮在制药领域拥有超过60年的经验。</p>' },
-        productList: [{ goodsName: '脂质辅料解决方案', subtitle: '加速药物开发的创新辅料', description: '我们的脂质辅料涵盖多种剂型。', url: '/pharmaceuticals/product-finder/product-detail.html?id=201', goodsCoverImg: '/sites/default/files/styles/card_default/public/2023-09/sustained-release-formulations.jpg18a1.jpg', styleBackground: 'background-image: url(/sites/default/files/styles/card_default/public/2023-09/sustained-release-formulations.jpg18a1.jpg)' }],
-        publicationData: [{ title: '口服脂质制剂开发指南', summary: '全面了解口服脂质制剂的配方策略。', goodsCoverImg: '/sites/default/files/2023-07/gattefosse_oral_lipid_excipients.jpg', eventTimeYear: '2025', eventTimeDate: '01月' }, { title: '脂质辅料在难溶性药物中的应用', summary: '探讨如何利用脂质辅料提高难溶性药物的生物利用度。', goodsCoverImg: '/sites/default/files/2023-07/regulatory-toxicology.jpg', eventTimeYear: '2025', eventTimeDate: '06月' }],
-        newsData: [{ title: '第94届API China制药展', summary: '05月13日~05月15日 2026 上海国家会展中心 2.1F30', thumb: '/sites/default/files/styles/card_default_big/public/2023-11/thumbnail-incos-awards-dermolea2.jpg.jpg', url: 'pharmaceuticals-news-detail.html?id=11', catName: '新闻与活动', eventTimeYear: '2026', eventTimeDate: '05月13' }, { title: '新型脂质辅料获FDA批准', summary: '嘉法狮新型脂质辅料获得FDA批准。', thumb: '/sites/default/files/styles/card_default_big/public/2023-09/sustained-release-formulations.jpg18a1.jpg', url: 'pharmaceuticals-news-detail.html?id=12', catName: '新闻与活动', eventTimeYear: '2026', eventTimeDate: '04月20' }],
-        news2Data: [{ title: '脂质制剂技术研讨会', summary: '参加我们的脂质制剂技术研讨会。', thumb: '/sites/default/files/styles/card_default_big/public/2023-09/formulation-support-1905x405.jpg360a.jpg', url: 'pharmaceuticals-news-detail.html?id=13', catName: '新闻与活动', eventTimeYear: '2026', eventTimeDate: '03月15' }],
-        eventData: [{ title: '第94届API China制药展', eventTimeYear: '2026', eventTimeDate: '05月13', eventEndTimeDate: '05月15', eventAddress: '上海国家会展中心 2.1F30', goodsCatName: '药用辅料', catName: '遇见我们' }, { title: '2026中国制药峰会', eventTimeYear: '2026', eventTimeDate: '09月10', eventEndTimeDate: '09月12', eventAddress: '北京国家会议中心', goodsCatName: '药用辅料', catName: '遇见我们' }],
-        total: 2
-      });
-      return { data };
-    }
-  });
-  app.mount("#app");
-</script>
