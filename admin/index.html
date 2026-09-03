@@ -2830,6 +2830,33 @@ const QUILL_TOOLBAR = [
               <div class="form-group"><label>发布日期 *</label><input type="date" class="form-control" v-model="editingMagazine.publishedDate"></div>
               <div class="form-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" v-model="editingMagazine.lock"> 需要登录才能查看</label></div>
             </div>
+            <div class="card-header" style="border-top:1px solid var(--border);margin-top:16px;"><h3>年份标签</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>已有年份标签 <span class="hint">（点击快速添加）</span></label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;cursor:pointer;" v-for="(tag, ti) in magazineTagList" :key="ti" @click="addMagazineTag(tag)">{{ tag }}</span>
+                  <span v-if="magazineTagList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无已存在的年份标签</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>新标签</label>
+                <div style="display:flex;gap:4px;">
+                  <input class="form-control" v-model="magazineTagInput" placeholder="如 2024，回车添加" @keyup.enter="addMagazineTag(magazineTagInput)" style="flex:1;max-width:300px;">
+                  <button class="btn btn-sm btn-outline" @click="addMagazineTag(magazineTagInput)" :disabled="!magazineTagInput.trim()">添加</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>当前标签</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EAF3DE;color:#3B6D11;font-size:11px;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in editingMagazine.tagsList" :key="ti">
+                    {{ tag }}
+                    <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removeMagazineTag(ti)">×</span>
+                  </span>
+                  <span v-if="!editingMagazine.tagsList || editingMagazine.tagsList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无标签</span>
+                </div>
+              </div>
+            </div>
             <div class="form-group"><label>摘要</label><textarea class="form-control" rows="4" v-model="editingMagazine.summary" placeholder="杂志简介..."></textarea></div>
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
               <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;"><input type="checkbox" v-model="editingMagazine.isPublished"> 保存并发布</label>
@@ -3889,7 +3916,9 @@ createApp({
       magazineList: [],
       magazineFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
       magazinePagination: { total: 0, totalPages: 0 },
-      editingMagazine: { id: null, type: 'magazine', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', publishedDate: '', lock: false, isPublished: false },
+      editingMagazine: { id: null, type: 'magazine', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', publishedDate: '', lock: false, isPublished: false, tagsList: [] },
+      magazineTagInput: '',
+      magazineTagList: [],
       // Orders
       orderList: [],
       orderFilter: { page: 1, limit: 20, keyword: '', status: '' },
@@ -5975,7 +6004,7 @@ createApp({
       });
     },
     async loadArticleTags() {
-      try { const d = await this.api('/news/tags/list?type=article'); this.articleTagList = d.data || []; }
+      try { const d = await this.api('/news/tags/list?type=article'); this.articleTagList = d || []; }
       catch (e) { console.error('加载标签列表失败:', e); }
     },
     async loadAuthorList() {
@@ -6315,7 +6344,7 @@ createApp({
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
     },
     async loadWebinarTags() {
-      try { const d = await this.api('/news/tags/list?type=webinar'); this.webinarTagList = d.data || []; }
+      try { const d = await this.api('/news/tags/list?type=webinar'); this.webinarTagList = d || []; }
       catch (e) { console.error(e); }
     },
     addWebinarTag(tag) {
@@ -6378,7 +6407,7 @@ createApp({
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
     },
     async loadPublicationTags() {
-      try { const d = await this.api('/news/tags/list?type=publication'); this.publicationTagList = d.data || []; }
+      try { const d = await this.api('/news/tags/list?type=publication'); this.publicationTagList = d || []; }
       catch (e) { console.error(e); }
     },
     addPublicationTag(tag) {
@@ -6407,21 +6436,48 @@ createApp({
       catch (e) { console.error(e); }
     },
     resetMagazineEdit() {
-      this.editingMagazine = { id: null, type: 'magazine', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false };
+      this.editingMagazine = { id: null, type: 'magazine', category: 'pc', title: '', summary: '', imageUrl: '', pdfUrl: '', publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
+      this.magazineTagInput = '';
+      this.loadMagazineTags();
     },
     editMagazine(item) {
       this.editingMagazine = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      // 解析 tags JSON → tagsList
+      this.editingMagazine.tagsList = [];
+      if (item.tags) {
+        try { this.editingMagazine.tagsList = JSON.parse(item.tags); }
+        catch (e) { this.editingMagazine.tagsList = item.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean); }
+      }
+      if (!Array.isArray(this.editingMagazine.tagsList)) this.editingMagazine.tagsList = [];
+      this.magazineTagInput = '';
       this.currentPage = 'magazine-edit';
+      this.loadMagazineTags();
     },
     async saveMagazine() {
       if (!this.editingMagazine.title) { this.showAlert('标题不能为空'); return; }
       if (!this.editingMagazine.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
       try {
-        if (this.editingMagazine.id) { await this.api('/news/' + this.editingMagazine.id, { method: 'PUT', body: JSON.stringify(this.editingMagazine) }); }
-        else { await this.api('/news', { method: 'POST', body: JSON.stringify(this.editingMagazine) }); }
+        const payload = { ...this.editingMagazine, tags: JSON.stringify(this.editingMagazine.tagsList || []) };
+        delete payload.tagsList;
+        if (payload.id) { await this.api('/news/' + payload.id, { method: 'PUT', body: JSON.stringify(payload) }); }
+        else { await this.api('/news', { method: 'POST', body: JSON.stringify(payload) }); }
         this.currentPage = 'magazine-list'; this.loadMagazineList();
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    async loadMagazineTags() {
+      try { const d = await this.api('/news/tags/list?type=magazine'); this.magazineTagList = d || []; }
+      catch (e) { console.error(e); }
+    },
+    addMagazineTag(tag) {
+      tag = (tag || '').trim();
+      if (!tag) return;
+      if (!this.editingMagazine.tagsList) this.editingMagazine.tagsList = [];
+      if (this.editingMagazine.tagsList.indexOf(tag) === -1) { this.editingMagazine.tagsList.push(tag); }
+      this.magazineTagInput = '';
+    },
+    removeMagazineTag(index) {
+      if (this.editingMagazine.tagsList) { this.editingMagazine.tagsList.splice(index, 1); }
     },
     async toggleMagazinePublish(item) {
       try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadMagazineList(); }

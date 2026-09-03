@@ -256,6 +256,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" id="worldList">
     </div>
   </div>
+  <script src="/static/js/auth.js"></script>
   <script>
     let isLoginJs = false;
     $(document).ready(function () {
@@ -281,117 +282,20 @@
   <script src="/sites/default/files/js/js_W8q5R4oIsmRhsRjsbPGB5rAGV5-VpUYHfAmsY7Pxc74.js"></script>
   <script>
 const { createApp, reactive } = Vue;
-
-// ===== 杂志数据 =====
-var brochuresList = [
-  {ID:161,title:'addiactive #126: Spotted!',eventTimeYear:'2024',eventTimeDate:'7\u670826\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/3085d34979e5d5c8fdd9f2e15409e75c_20240726123130.jpg',url:'https://www.gattefosse.com/files/2730/addiactive-126-en-v3.pdf',lock:false},
-  {ID:139,title:'Once Upon a Time',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/c9691a3e96ae30036a852ee8a95e1a2c_20240524101101.png',url:'https://www.gattefosse.com/files/2691/addiactive-125-en.pdf',lock:false},
-  {ID:140,title:'addiactive #124 : EuphorIA',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/7bd8623d9fa65a57e314e6eefc86e3c8_20240524101131.jpg',url:'https://www.gattefosse.com/files/2583/addiactive-124-en-vf.pdf',lock:false},
-  {ID:141,title:'addiactive #123',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/9598b8a3bc3e9589e14265f423d2f4a3_20240524101153.jpg',url:'https://www.gattefosse.com/files/2266/addiactive-123-en-bd.pdf',lock:false},
-  {ID:142,title:'addiactive #122',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/916b936d73f26f04dcfd5d7988526b0e_20240524101214.jpg',url:'https://www.gattefosse.com/files/350/addiactive-122-en-v3.pdf',lock:false},
-  {ID:143,title:'addiactive #121',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/526e6f0753a49a269d7136248097dcc1_20240524101233.jpg',url:'https://www.gattefosse.com/files/1205/addiactive-121-en-v3.pdf',lock:false},
-  {ID:144,title:'addiactive #120',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/c77edabfda7ab194c5cd6b2b2b018105_20240524101250.jpg',url:'https://www.gattefosse.com/files/1201/addiactive-120-en.pdf',lock:false},
-  {ID:145,title:'addiactive #116',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/dd7e1f58eea6a6e7ed5079d29c580ab7_20240524101325.jpg',url:'https://www.gattefosse.com/files/1192/addiactive-116-en-v4.pdf',lock:false},
-  {ID:146,title:'addiactive #115',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/95e80a0d51c7d0a4b96f13fa3601818e_20240524101438.jpg',url:'https://www.gattefosse.com/files/1188/addiactive-115-en-bd.pdf',lock:false},
-  {ID:147,title:'addiactive #114',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/25231d990fbc1a6cffc915170bc73d70_20240524101444.jpg',url:'https://www.gattefosse.com/files/1184/addiactive-114-en-bd-1.pdf',lock:false},
-  {ID:148,title:'addiactive #113',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/f60313fc28ec7b0dd9592fa802364647_20240524101518.jpg',url:'https://www.gattefosse.com/files/727/addiactive-113-en-bd.pdf',lock:false},
-  {ID:149,title:'addiactive #112',eventTimeYear:'2024',eventTimeDate:'5\u670824\u65e5',thumb:'https://www.gattefossechina.cn/uploads/file/71e4c32675c39ae07ed855eed94f3a83_20240524101523.jpg',url:'https://www.gattefosse.com/files/346/addiactive-112-en-bd-2.pdf',lock:false}
-];
+var isLoginNow = false;
+try { if (typeof checkLoginStatus === 'function') isLoginNow = checkLoginStatus(); } catch (e) {}
 
 // ===== URL参数 =====
 var curUrl = window.location.href;
 var params = new URLSearchParams(window.location.search);
 var curPage = parseInt(params.get('page')) || 1;
-var tagId = params.get('tagId');
+var tagId = params.get('tagId'); // 年份字符串，如 2024
 var w = params.get('keyword');
 var baseUrl = window.location.pathname;
+var apiBase = '/api';
 
-// ===== 年份标签数据（对应真实网站 tagId: 302=2019 ... 307=2024） =====
-var yearTagData = [
-  {ID:307,tagName:'2024'},
-  {ID:306,tagName:'2023'},
-  {ID:305,tagName:'2022'},
-  {ID:304,tagName:'2021'},
-  {ID:303,tagName:'2020'},
-  {ID:302,tagName:'2019'}
-];
-
-// ===== 构建标签列表 =====
-function buildTagList() {
-  var result = [];
-  var group = {
-    tagName: '\u5e74\u4efd',
-    ID: 1,
-    nameId: 'collapse-filtre-accordion-year_1',
-    sharpeNameId: '#collapse-filtre-accordion-year_1',
-    headerNameId: 'heading-filtre-accordion-addiactive_year',
-    accordionNameId: 'accordion-filtre-accordion-addiactive_year',
-    dataBlockPluginId: 'facet_block:addiactive_year',
-    panelDivId1: 'year_1',
-    class: 'facet-inactive block-facet--links block block-facets block-facet-blockaddiactive-year',
-    children: []
-  };
-  for (var i = 0; i < yearTagData.length; i++) {
-    var c = yearTagData[i];
-    var u = baseUrl + '?tagId=' + c.ID + '&page=1';
-    if (w) u += '&keyword=' + encodeURIComponent(w);
-    group.children.push({
-      ID: c.ID,
-      tagName: c.tagName,
-      tagUrl: u,
-      dataDrupalFacetItemId: 'year-' + c.ID,
-      facetItemClass: 'facet-item'
-    });
-  }
-  result.push(group);
-  return result;
-}
-
-// ===== 筛选逻辑 =====
-function filterBrochures() {
-  var filtered = brochuresList.slice();
-  // 按年份筛选
-  if (tagId && tagId != '0') {
-    var tid = parseInt(tagId);
-    // tagId 302-307 对应年份 2019-2024
-    var yearMap = {302:'2019',303:'2020',304:'2021',305:'2022',306:'2023',307:'2024'};
-    var targetYear = yearMap[tid];
-    if (targetYear) {
-      filtered = filtered.filter(function(p) { return p.eventTimeYear == targetYear; });
-    }
-  }
-  // 按关键词搜索
-  if (w && w != '') {
-    var kw = w.toLowerCase();
-    filtered = filtered.filter(function(p) {
-      return (p.title && p.title.toLowerCase().indexOf(kw) >= 0);
-    });
-  }
-  return filtered;
-}
-
-// ===== 分页 =====
-var filteredResult = filterBrochures();
-var pageSize = 3;
-var totalItems = filteredResult.length;
-var totalPages = Math.ceil(totalItems / pageSize);
-if (curPage < 1 || curPage > totalPages || isNaN(curPage)) curPage = 1;
-if (totalPages < 1) totalPages = 1;
-
-function getPageData(page) {
-  var s = (page - 1) * pageSize;
-  var e = Math.min(s + pageSize, filteredResult.length);
-  return filteredResult.slice(s, e);
-}
-
-// ===== 构建URL辅助 =====
-function makeUrl(p, tg) {
-  var u = baseUrl + '?page=' + p;
-  if (tg) u += '&tagId=' + tg;
-  if (w) u += '&keyword=' + encodeURIComponent(w);
-  return u;
-}
-
+// ===== 工具方法 =====
+function goToUrl(url) { window.location.href = url; }
 function delUrlParam(url, paramName) {
   paramName = paramName.replace(/[\[\]]/g, '\\$&');
   let regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
@@ -400,41 +304,124 @@ function delUrlParam(url, paramName) {
   if (url.indexOf('?') < 0) { url = url.replace(/&/, '?'); }
   return url;
 }
-
-// ===== 当前选中年份名称 =====
-var curFilterTagName = '';
-if (tagId && tagId != '0') {
-  for (var i = 0; i < yearTagData.length; i++) {
-    if (yearTagData[i].ID == tagId) { curFilterTagName = yearTagData[i].tagName; break; }
-  }
+function delParamAndGotoUrl(p) {
+  var url = delUrlParam(curUrl, p);
+  window.location.href = url;
 }
 
 // ===== Vue应用 =====
-var tagList = buildTagList();
 var app = createApp({
   setup() {
-    var formData = getPageData(curPage);
     var data = reactive({
-      formData: formData,
-      brochuresList: brochuresList,
-      tagList: tagList,
+      formData: [],
+      tagList: [{ tagName: '\u5e74\u4efd', ID: 1, children: [] }], // [{tagName:'年份', children:[{ID,tagName,tagUrl}]}]
       tagId: tagId,
-      total: totalItems,
-      page_size: pageSize,
-      total_page: totalPages,
+      curFilterTagName: '',
+      total: 0,
+      page_size: 6,
+      total_page: 1,
       cur_page: curPage,
-      isLogin: typeof isLoginJs !== 'undefined' ? isLoginJs : false,
+      isLogin: isLoginNow,
       userEnabled: null,
-      curFilterTagName: curFilterTagName,
-      activeFilterClass: (tagId && tagId != '0') ? 'showDiv' : 'hidden',
-      prev_url: curPage > 1 ? makeUrl(curPage - 1, tagId) : '#',
-      next_url: curPage < totalPages ? makeUrl(curPage + 1, tagId) : '#'
+      activeFilterClass: (tagId && tagId != '0' && tagId != '') ? 'showDiv' : 'hidden',
+      prev_url: '',
+      next_url: '',
+      keyword: w
     });
-    function goToUrl(url) { window.location.href = url; }
-    function delParamAndGotoUrl(p) {
-      var url = delUrlParam(curUrl, p);
-      window.location.href = url;
+
+    // ===== 构建年份标签组（仅一组：年份） =====
+    function buildGroups(years) {
+      var group = {
+        tagName: '年份', // 年份
+        ID: 1,
+        nameId: 'collapse-filtre-accordion-year_1',
+        sharpeNameId: '#collapse-filtre-accordion-year_1',
+        headerNameId: 'heading-filtre-accordion-addiactive_year',
+        accordionNameId: 'accordion-filtre-accordion-addiactive_year',
+        dataBlockPluginId: 'facet_block:addiactive_year',
+        panelDivId1: 'year_1',
+        class: 'facet-inactive block-facet--links block block-facets block-facet-blockaddiactive-year',
+        children: []
+      };
+      (years || []).forEach(function (y) {
+        var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(y);
+        if (w) u += '&keyword=' + encodeURIComponent(w);
+        if (tagId && decodeURIComponent(tagId) === String(y)) {
+          data.curFilterTagName = String(y);
+          data.activeFilterClass = 'showDiv';
+        }
+        group.children.push({
+          ID: String(y),
+          tagName: String(y),
+          tagUrl: u,
+          dataDrupalFacetItemId: 'year-' + y,
+          facetItemClass: 'facet-item'
+        });
+      });
+      var groups = [];
+      groups.push(group);
+      return groups;
     }
+
+    // ===== API URL =====
+    function buildApiUrl() {
+      var p = new URLSearchParams();
+      p.set('type', 'magazine');
+      p.set('page', String(data.cur_page));
+      p.set('limit', '6');
+      if (w) p.set('keyword', w);
+      if (tagId && tagId != '0' && tagId != '') p.set('tags', decodeURIComponent(tagId));
+      return apiBase + '/news?' + p.toString();
+    }
+
+    // ===== 加载杂志数据 =====
+    async function loadMagazines() {
+      try {
+        var resp = await fetch(buildApiUrl());
+        var result = await resp.json();
+        if (result.code !== 0) throw new Error(result.message || '加载失败');
+        var d = result.data;
+        data.total = d.pagination.total;
+        data.total_page = d.pagination.totalPages;
+        data.cur_page = parseInt(d.pagination.page);
+        data.formData = d.list.map(function (item) {
+          return {
+            ID: item.id,
+            title: item.title || '',
+            thumb: item.imageUrl || '',
+            url: item.pdfUrl || '',
+            lock: !!item.lock
+          };
+        });
+        var tp = (tagId && tagId != '0' && tagId != '') ? '&tagId=' + encodeURIComponent(tagId) : '';
+        var kw = w ? '&keyword=' + encodeURIComponent(w) : '';
+        data.prev_url = data.cur_page > 1 ? baseUrl + '?page=' + (data.cur_page - 1) + tp + kw : '#';
+        data.next_url = data.cur_page < data.total_page ? baseUrl + '?page=' + (data.cur_page + 1) + tp + kw : '#';
+      } catch (e) {
+        console.error('加载杂志失败:', e);
+        data.formData = [];
+        data.total = 0;
+      }
+    }
+
+    // ===== 加载年份标签 =====
+    async function loadTags() {
+      try {
+        var resp = await fetch(apiBase + '/news/tags/list?type=magazine');
+        var result = await resp.json();
+        if (result.code !== 0) return;
+        var tags = result.data || [];
+        var years = tags.filter(function (t) { return /^\d{4}$/.test(String(t)); });
+        years.sort(function (a, b) { return b - a; }); // 降序：2024→2019
+        data.tagList = buildGroups(years);
+      } catch (e) {
+        console.error('加载年份标签失败:', e);
+        data.tagList = buildGroups([]);
+      }
+    }
+
+    // 初始化：先加载标签，再加载杂志
+    loadTags().then(function () { loadMagazines(); });
     return { data, goToUrl, delParamAndGotoUrl };
   }
 });
@@ -443,7 +430,7 @@ app.mount('#app');
 // 如果有关键词，回填搜索框
 if (w && w != '') {
   var kwInput = document.getElementById('edit-keyword');
-  if (kwInput) kwInput.value = decodeURIComponent(w);
+  if (kwInput) kwInput.value = w;
 }
 </script>
 </body>
