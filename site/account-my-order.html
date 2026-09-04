@@ -36,6 +36,180 @@
     <link rel="mask-icon" href="/themes/custom/gattefosse/images/favicons/safari-pinned-tab.svg" color="#8eb73c">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
+    <style>
+        /* ===== 我的订单：订单卡片 ===== */
+        .order-page {
+            display: block !important;
+            padding: 30px 0 60px;
+        }
+        .order-count {
+            font-size: 1.4rem;
+            color: #74797D;
+            margin: 0 0 20px;
+        }
+        .order-count strong {
+            color: #3a3f42;
+        }
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .order-card {
+            background: #fff;
+            border: 1px solid #ece7d8;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .order-card__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 16px 24px;
+            background: #faf8f2;
+            border-bottom: 1px solid #f0ece0;
+        }
+        .order-card__no {
+            font-size: 1.4rem;
+            color: #74797D;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .order-card__no strong {
+            font-size: 1.5rem;
+            color: #3a3f42;
+        }
+        .order-card__badge {
+            display: inline-block;
+            font-size: 1.2rem;
+            line-height: 1;
+            padding: 5px 12px;
+            border-radius: 999px;
+            letter-spacing: .05em;
+        }
+        .order-card__badge.is-submitted { background: #eef4fd; color: #2f6fbf; }
+        .order-card__badge.is-processing { background: #fdf3e7; color: #c07a2f; }
+        .order-card__badge.is-shipped { background: #e9f5f4; color: #2f8f88; }
+        .order-card__badge.is-completed { background: #f0f6e3; color: #6f9a24; }
+        .order-card__badge.is-cancelled { background: #f2f3f4; color: #8a9196; }
+        .order-card__badge.is-draft { background: #f2f3f4; color: #8a9196; }
+        .order-card__date {
+            font-size: 1.3rem;
+            color: #a6acb0;
+        }
+        .order-card__body {
+            padding: 10px 24px;
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f2ea;
+            text-decoration: none;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .order-item__img {
+            flex: 0 0 64px;
+            width: 64px;
+            height: 64px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #f7f5ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c9c2ad;
+            font-size: 2.2rem;
+        }
+        .order-item__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .order-item__info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .order-item__name {
+            font-size: 1.6rem;
+            color: #3a3f42;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .order-item:hover .order-item__name {
+            color: #8eb73c;
+        }
+        .order-item__cat {
+            font-size: 1.2rem;
+            color: #8eb73c;
+            letter-spacing: .05em;
+        }
+        .order-item__qty {
+            flex: 0 0 auto;
+            font-size: 1.4rem;
+            color: #74797D;
+        }
+        .order-card__foot {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 14px 24px;
+            border-top: 1px solid #f0ece0;
+        }
+        .order-card__contact {
+            font-size: 1.3rem;
+            color: #74797D;
+        }
+        .order-card__note {
+            font-size: 1.3rem;
+            color: #a6acb0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 40%;
+        }
+
+        /* ===== 空状态 ===== */
+        .order-empty {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .order-empty__icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: #f3f7e8;
+            color: #8eb73c;
+            font-size: 3.6rem;
+            margin-bottom: 24px;
+        }
+        .order-empty__title {
+            font-size: 2rem;
+            color: #3a3f42;
+            margin: 0 0 8px;
+        }
+        .order-empty__tip {
+            font-size: 1.4rem;
+            color: #74797D;
+            margin: 0 0 28px;
+        }
+    </style>
     <link rel="stylesheet" media="all"
         href="/sites/default/files/css/css_VReceDAmMvwZ-zGjf3J2Cz04lQy72pkaj4cVAETXvtc.css" />
     <link rel="stylesheet" media="all"
@@ -85,7 +259,7 @@
                                     <a href="/">首页</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="/account-my-favorite.html">我的收藏</a>
+                                    <a href="/account-my-order.html">我的订单</a>
                                 </li>
                             </ol>
                         </nav>
@@ -103,13 +277,51 @@
                                     </h1>
                                 </div>
                             </div>
-                            <div class="s-page__wrapper">
-                                <ul>
-                                    <li style="list-style: none; line-height: 36px; color: #58616B;"
-                                        v-for="item in data.formData">
-                                        <span>{{item.sampleList}} - {{item.CreatedAt}}</span>
-                                    </li>
-                                </ul>
+                            <div class="s-page__wrapper order-page">
+                                <p class="order-count" v-if="data.formData.length > 0">
+                                    共 <strong>{{ data.formData.length }}</strong> 个订单
+                                </p>
+                                <div class="order-list" v-if="data.formData.length > 0">
+                                    <div class="order-card" v-for="order in data.formData" :key="order.id">
+                                        <div class="order-card__head">
+                                            <div class="order-card__no">
+                                                订单号 <strong>{{ order.orderNumber }}</strong>
+                                                <span class="order-card__badge" :class="'is-' + order.status">{{ statusText(order.status) }}</span>
+                                            </div>
+                                            <span class="order-card__date">{{ order.createdAt }}</span>
+                                        </div>
+                                        <div class="order-card__body">
+                                            <a class="order-item" v-for="(it, ii) in order.items" :key="ii"
+                                                :href="it.url">
+                                                <span class="order-item__img">
+                                                    <img v-if="it.imageUrl" :src="it.imageUrl" :alt="it.name"
+                                                        loading="lazy">
+                                                    <i v-else class="o-icon --tote-bag" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="order-item__info">
+                                                    <span class="order-item__name">{{ it.name }}</span>
+                                                    <span class="order-item__cat" v-if="it.cat">{{ it.cat }}</span>
+                                                </span>
+                                                <span class="order-item__qty">x{{ it.qty }}</span>
+                                            </a>
+                                        </div>
+                                        <div class="order-card__foot">
+                                            <span class="order-card__contact">
+                                                <template v-if="order.contactName">联系人：{{ order.contactName }}</template>
+                                                <template v-if="order.phone"> · {{ order.phone }}</template>
+                                                <template v-if="order.companyName"> · {{ order.companyName }}</template>
+                                            </span>
+                                            <span class="order-card__note" v-if="order.notes">备注：{{ order.notes }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order-empty" v-else>
+                                    <span class="order-empty__icon"><i class="o-icon --tote-bag"
+                                            aria-hidden="true"></i></span>
+                                    <p class="order-empty__title">暂无订单</p>
+                                    <p class="order-empty__tip">在产品页申请样品并提交后，订单会显示在这里</p>
+                                    <a href="/personal-care/product-finder.html" class="btn btn-primary">去申请样品</a>
+                                </div>
                             </div>
                         </section>
                     </div>
@@ -206,23 +418,72 @@
                     hasTypeParam: hasTypeParam,
                 });
                 // 查询
+                const pad = (n) => String(n).padStart(2, '0');
+                const formatTime = (val) => {
+                    if (!val) return '';
+                    const d = new Date(val);
+                    if (isNaN(d.getTime())) return '';
+                    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+                };
+                const STATUS_TEXT = {
+                    draft: '草稿', submitted: '已提交', processing: '处理中',
+                    shipped: '已发货', completed: '已完成', cancelled: '已取消'
+                };
+                const statusText = (s) => STATUS_TEXT[s] || s;
+                const snippet = (s) => (s || '').split('\n')[0].replace(/\s+/g, ' ').trim().slice(0, 50);
+                // 解析单个订单项的产品信息（类型后端只存 productType/productId，需前端反查）
+                const fallbackItem = (item) => ({
+                    name: snippet((item.productType || 'product') + ' #' + item.productId),
+                    cat: '', imageUrl: '', url: '#', qty: item.quantity || 1
+                });
+                const detailFor = (item) => {
+                    const t = String(item.productType || '').toLowerCase();
+                    if (t.indexOf('pc') > -1) {
+                        return GatteAPI.PcProduct.detail(item.productId).then((r) => {
+                            const p = r.data || {};
+                            return {
+                                name: p.name || ('产品 #' + item.productId),
+                                cat: '个人护理', imageUrl: p.imageUrl || '',
+                                url: '/personal-care/product-finder/product-detail.html?id=' + item.productId,
+                                qty: item.quantity || 1
+                            };
+                        }).catch(() => fallbackItem(item));
+                    }
+                    if (t.indexOf('pharma') > -1) {
+                        return GatteAPI.PharmaProduct.detail(item.productId).then((r) => {
+                            const p = r.data || {};
+                            return {
+                                name: p.name || ('产品 #' + item.productId),
+                                cat: '药用辅料', imageUrl: p.imageUrl || '',
+                                url: '/pharmaceuticals/product-finder/product-detail.html?id=' + item.productId,
+                                qty: item.quantity || 1
+                            };
+                        }).catch(() => fallbackItem(item));
+                    }
+                    return Promise.resolve(fallbackItem(item));
+                };
                 const getTableData = () => {
                     GatteAPI.Order.list({ limit: 20 }).then((res) => {
-                        const orders = res.data.list;
+                        const orders = res.data.list || [];
                         if (!orders || orders.length === 0) {
                             data.formData = [];
                             return;
                         }
-                        data.formData = orders.map((order) => {
-                            // 构建 sampleList 显示字符串
-                            const itemLabels = (order.items || []).map((item) => {
-                                return (item.productType || '') + '-' + item.productId + ' x' + item.quantity;
-                            });
-                            return {
-                                ...order,
-                                sampleList: itemLabels.join(', '),
-                                CreatedAt: order.submittedAt ? order.submittedAt.substring(0, 10) : '',
-                            };
+                        const orderPromises = orders.map((order) => {
+                            return Promise.all((order.items || []).map(detailFor)).then((items) => ({
+                                id: order.id,
+                                orderNumber: order.orderNumber || ('#' + order.id),
+                                status: order.status || 'submitted',
+                                createdAt: formatTime(order.submittedAt || order.createdAt),
+                                contactName: order.contactName || '',
+                                phone: order.phone || '',
+                                companyName: order.companyName || '',
+                                notes: order.notes || '',
+                                items
+                            }));
+                        });
+                        Promise.all(orderPromises).then((list) => {
+                            data.formData = list;
                         });
                     }).catch((err) => {
                         console.log(err);
@@ -231,6 +492,7 @@
                 getTableData()
                 return {
                     data,
+                    statusText
                 };
             }
         });
