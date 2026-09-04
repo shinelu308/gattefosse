@@ -401,9 +401,11 @@
           };
           
           GatteAPI.Order.create(orderData).then((res) => {
-            if (res.code == 0 || res.data && res.data.code == 0) {
+            // 拦截器保证 code:0 才会进 then；res.data 为订单对象
+            if (res.data && res.data.id) {
               clearCart()
               alert("您的预定信息已经提交，我们的工作人员会与您联系确认！");
+              window.location.href = '/account-my-order.html';
             } else {
               alert("预定失败！");
             }
