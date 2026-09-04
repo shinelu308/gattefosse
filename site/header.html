@@ -429,12 +429,16 @@
   function getCartNum() {
     if (checkLoginStatus() && typeof GatteAPI !== 'undefined') {
       GatteAPI.Cart.count().then(function (res) {
-        $("#cartNum").html(res.count || 0);
+        // 拦截器解包后业务数据在 res.data = {count}
+        var n = (res.data && res.data.count) || 0;
+        var $num = $("#cartNum");
+        $num.html(n > 0 ? n : '');
+        $num.css('visibility', n > 0 ? 'visible' : 'hidden');
       }).catch(function () {
-        $("#cartNum").html(0);
+        $("#cartNum").html('').css('visibility', 'hidden');
       });
     } else {
-      $("#cartNum").html(0);
+      $("#cartNum").html('').css('visibility', 'hidden');
     }
   }
 

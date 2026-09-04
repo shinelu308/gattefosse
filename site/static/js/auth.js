@@ -110,17 +110,21 @@
    */
   function updateCartCount() {
     if (!checkLoginStatus()) {
-      var badge = document.querySelector('.cart-count-badge, .header__cart-count');
-      if (badge) badge.textContent = '0';
+      var badge = document.querySelector('.cart-count-badge, .header__cart-count, #cartNum');
+      if (badge) { badge.textContent = ''; badge.style.visibility = 'hidden'; }
       return;
     }
     GatteAPI.Cart.count().then(function (res) {
-      var count = res.data.count || 0;
-      var badge = document.querySelector('.cart-count-badge, .header__cart-count');
-      if (badge) badge.textContent = count;
-      // 也更新全局变量
-      if (typeof window.updateHeaderCartCount === 'function') {
-        window.updateHeaderCartCount(count);
+      // 拦截器解包后业务数据在 res.data = {count}
+      var count = (res.data && res.data.count) || 0;
+      var badge = document.querySelector('.cart-count-badge, .header__cart-count, #cartNum');
+      if (badge) {
+        badge.textContent = count > 0 ? count : '';
+        badge.style.visibility = count > 0 ? 'visible' : 'hidden';
+      }
+      // 同步 header 里的 jQuery 注入版本
+      if (typeof window.jQuery !== 'undefined') {
+        window.jQuery('#cartNum').html(count > 0 ? count : '').css('visibility', count > 0 ? 'visible' : 'hidden');
       }
     }).catch(function () {
       // 静默失败
