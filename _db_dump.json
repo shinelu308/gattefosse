@@ -18243,18 +18243,6 @@
       "updatedAt": "2026-07-06T16:29:52.581Z"
     },
     {
-      "id": 3,
-      "pageKey": "expertise_lipid",
-      "title": "脂质化学",
-      "contentHtml": "<p>脂质化学内容，请在管理后台编辑。</p>",
-      "content": null,
-      "slug": null,
-      "sortOrder": 40,
-      "metaTitle": null,
-      "metaDescription": null,
-      "updatedAt": "2026-07-06T16:29:48.212Z"
-    },
-    {
       "id": 4,
       "pageKey": "expertise_plant",
       "title": "植物化学",
@@ -18457,6 +18445,18 @@
       "metaTitle": "专业知识 ⋅ 嘉法狮",
       "metaDescription": "近 140 年来，一代又一代的嘉法狮科学家一直致力于发展在植物提取和油脂化学方面的专业知识。多年来，这种专业知识已扩展到其他互补领域，旨在开发、生产和营销始终如一的高品质一流产品和服务。",
       "updatedAt": "2026-09-04T06:40:34.645Z"
+    },
+    {
+      "id": 87,
+      "pageKey": "lipid-chemistry",
+      "title": "油脂化学",
+      "contentHtml": "<div class=\"block-accroche\">\n<div class=\"clearfix text-formatted field field--name-field-chapeau field--type-text-long field--label-hidden field__item\">\n<p>过去 70 年来，嘉法狮在油脂化学领域积累了独特的、受公众认可的专业知识。我们为化妆品和制药行业设计和生产功能性成分。</p>\n</div>\n</div>\n<div class=\"node__content\">\n<div id=\"p4357\" class=\"paragraph paragraph--type--texte-encadre paragraph--view-mode--default\">\n<div class=\"clearfix text-formatted field field--name-field-texte-encadre field--type-text-long field--label-hidden field__item\">\n<h2>嘉法狮和油脂化学的历史渊源，可追溯至 1937 年&nbsp;</h2>\n<p>追随 Emile Mahler 的脚步，嘉法狮在油脂化学领域积累了独特且受公众认可的专业知识。&nbsp;&nbsp;</p>\n<p>油脂化学是一门开创性学科，至今仍在不断的发展。自从嘉法狮生产出第一个水包油乳液以来，将油脂化学引入个人护理和制药两个关键市场后，我们塑造了一系列核心业务。 &nbsp;</p>\n<p>&nbsp;</p>\n<h2>稳健的工艺带来卓越的品质&nbsp;</h2>\n<p>油脂化学是围绕众所周知的酯化、<strong>酯交换和氢化反应</strong>建立的。复杂的工程工艺和精细的表征分析获得了具有特定性能的产品。</p>\n<p>我们的科学家不断提高他们在分析、酶催化、分子蒸馏和提取等各个领域的技能。他们与<strong>国家和国际间</strong>更广泛的科学网络联系以确保了嘉法狮及其产品数十年来始终保持着卓越水平。&nbsp;</p>\n<p>&nbsp;</p>\n<h2>用于个人护理和制药行业的脂质材料&nbsp;</h2>\n<p>我们的脂质产品生产的原材料为植物油、多种植物来源的脂肪酸和不同的醇。我们的油脂化学家能够通过原材料的选择、合成反应的设计和控制来开发具有目标特性的高质量功能性药用辅料和个人护理成分。&nbsp;</p>\n<p>嘉法狮提供多种成分如：<strong>用于个人护理品的乳化剂、润肤剂、肤感调节剂和稳定剂</strong>。它们为<strong>面部护理、身体护理和头发护理</strong>等产品提供更好质感；它们还可以添加到诸多化妆品和防晒配方中。&nbsp;</p>\n<p>这些产品还用于<strong>溶解和递送</strong>药物活性成分，<strong>提高</strong>和<strong>调节其生物利用度</strong>，或<strong>掩味</strong>。我们的辅料种类丰富，可用于<strong>口服</strong><strong>、皮肤、直肠或阴道给药</strong>。当然，嘉法狮辅料同时符合全球药典的质量标准。&nbsp;</p>\n<p>&nbsp;</p>\n<h2>致力于高水平的科学和企业社会责任</h2>\n<p>嘉法狮始终将科学与社会责任结合起来，创造创新的化妆品和药物成分。我们特别关注我们的运营控制，以减少对环境的影响，并确保我们对生物多样性的尊重。&nbsp;</p>\n<p>嘉法狮长期以来一直致力于负责任的原材料采购。除了成为可持续棕榈油圆桌会议 （RSPO）的成员外，我们还支持那些参与可持续生产的油脂产品生产商。&nbsp;&nbsp;</p>\n<p>&nbsp;&nbsp;</p>\n</div>\n</div>\n<div id=\"related-content\" class=\"paragraph paragraph--type--linked-content paragraph--type--linked-content paragraph--view-mode--default\">\n<h2 class=\"field field--name-field-titre field--type-string field--label-hidden field--item\">相关内容</h2>\n<div class=\"field field--name-field-contenu-asso field--type-entity-reference-revisions field--label-hidden field__items\">\n<div class=\"c-cards\">\n<div class=\"c-card c-card--bordered\">\n<div class=\"c-card__content\">\n<h3 class=\"c-card__title\"><a class=\"c-card__title-link\" href=\"/plant-chemistry.html\">植物化学</a></h3>\n<ul class=\"c-card__breadcrumb\">\n<li>专业知识</li>\n</ul>\n<p class=\"c-card__summary u-truncate\">嘉法狮长期以来在植物化学领域表现出色。这一切都可以追溯到上世纪之交，当时在法国普罗旺斯进行精油蒸馏。公司逐渐扩展了这一核心业务，包括选择性提取植物化学物质，为化妆品行业提供创新、有效的活性物质。</p>\n</div>\n<div class=\"c-card__image\"><img class=\"card__image img-fluid\" src=\"/sites/default/files/styles/card_default/public/2023-07/plant-chemistry.jpg.webp\" alt=\"\" width=\"369\" height=\"208\" loading=\"lazy\"></div>\n</div>\n<div class=\"c-card c-card--bordered\">\n<div class=\"c-card__content\">\n<h3 class=\"c-card__title\"><a class=\"c-card__title-link\" href=\"/sensory-analysis.html\">感官分析</a></h3>\n<ul class=\"c-card__breadcrumb\">\n<li>专业知识</li>\n</ul>\n<p class=\"c-card__summary u-truncate\">作为该领域的领导者，我们建立了一个专门研究质地特征（化妆品和外用药物配方）的专家小组。他们可以准确评估任何产品的物理和感官特性，并将这些印象转化为客观数据，无论他们评估的是我们自己的配方还是市场上的任何其他产品。</p>\n</div>\n<div class=\"c-card__image\"><img class=\"card__image img-fluid\" src=\"/sites/default/files/styles/card_default/public/2023-07/sensory-analysis.jpg.webp\" alt=\"\" width=\"369\" height=\"208\" loading=\"lazy\"></div>\n</div>\n<div class=\"c-card c-card--bordered\">\n<div class=\"c-card__content\">\n<h3 class=\"c-card__title\"><a class=\"c-card__title-link\" href=\"/skin-biology.html\">皮肤生物学</a></h3>\n<ul class=\"c-card__breadcrumb\">\n<li>专业知识</li>\n</ul>\n<p class=\"c-card__summary u-truncate\">嘉法狮于 2013 年在其总部开设了一个细胞生物学实验室，包括洁净室。实验室技术人员和科学家致力于皮肤细胞和组织的研究，并开展皮肤生物学研究，旨在开发...</p>\n</div>\n<div class=\"c-card__image\"><img src=\"/sites/default/files/styles/card_default/public/2023-07/skin-biology-2_0.jpg.webp\" alt=\"\" width=\"369\" height=\"208\" class=\"card__image img-fluid\" loading=\"lazy\"></div>\n</div>\n</div>\n</div>\n</div>\n</div>",
+      "content": "[{\"type\":\"hero\",\"data\":{\"title\":\"油脂化学\",\"summary\":\"过去 70 年来，嘉法狮在油脂化学领域积累了独特的、受公众认可的专业知识。我们为化妆品和制药行业设计和生产功能性成分。\",\"backgroundImage\":\"/sites/default/files/styles/page_banner_desktop_full/public/2023-07/lipid-chemistry.jpg.jpg\",\"buttons\":[],\"videoUrl\":\"\",\"videoType\":\"\"}}]",
+      "slug": null,
+      "sortOrder": 36,
+      "metaTitle": "油脂化学 ⋅ 嘉法狮",
+      "metaDescription": "过去 70 年来，嘉法狮在油脂化学领域积累了独特的、受公众认可的专业知识。我们为化妆品和制药行业设计和生产功能性成分。",
+      "updatedAt": "2026-09-04T09:58:09.934Z"
     }
   ]
 }
