@@ -24,6 +24,7 @@ async function collect() {
   data.document = await prisma.document.findMany({ orderBy: { id: 'asc' } });
   data.user = await prisma.user.findMany({ orderBy: { id: 'asc' } });
   data.tagDictionary = await prisma.tagDictionary.findMany({ orderBy: { id: 'asc' } });
+  data.page_contents = await prisma.pageContent.findMany({ orderBy: { id: 'asc' } });
 
   return data;
 }

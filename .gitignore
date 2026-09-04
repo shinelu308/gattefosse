@@ -24,3 +24,6 @@ _original_detail.html
 import_pharma.py
 .localize_tmp/
 site/.localize_tmp_backup_*.html
+.shotp3/
+.shotv2-profile/
+csr_dom.html
