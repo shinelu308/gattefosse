@@ -42,11 +42,13 @@ tbody tr:last-child td { border-bottom: 0; }
 .btn:hover { border-color: #999; }
 .btn-primary { background: #8EB73C; color: #fff; border-color: #8EB73C; }
 .btn-primary:hover { background: #7aa030; border-color: #7aa030; }
-.btn-danger { background: #e74c3c; color: #fff; border-color: #e74c3c; }
-.btn-danger:hover { background: #c0392b; border-color: #c0392b; }
+.btn-danger { background: #fff; color: #d9534f; border-color: #d9534f; }
+.btn-danger:hover { background: #fdf2f2; border-color: #d9534f; }
 .btn-sm { padding: 4px 9px; font-size: 12px; }
-.btn-outline-danger { color:#E24A4A; border-color:#f0c4c4; background:#fff; }
-.btn-outline-danger:hover { background:#fff5f5; border-color:#E24A4A; }
+.btn-outline { background: #fff; color: #666; border-color: #e0e0e0; }
+.btn-outline:hover { background: #f5f6f7; color: #232426; }
+.btn-slate { background: #fff; color: #54616C; border-color: #54616C; }
+.btn-slate:hover { background: #f5f6f7; }
 .form-control { padding: 7px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none; transition: border-color 0.15s; background:#fff; }
 .form-control:focus { border-color: #8EB73C; box-shadow: 0 0 0 2px rgba(142,183,60,0.1); }
 .search-box { position: relative; }
@@ -61,8 +63,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 .required { color:#e74c3c; }
 
 .status-tag { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:500; }
-.status-true { background:#EAF3DE; color:#3B6D11; }
-.status-false { background:#FCEBEB; color:#993556; }
+.status-true { background:#f4f9e9; color:#8EB73C; }
+.status-false { background:#e8ebed; color:#54616C; }
 .type-tag { display:inline-block; padding:2px 9px; background:#EEEDFE; color:#3C3489; border-radius:10px; font-size:11px; font-weight:500; }
 .lock-tag { display:inline-block; padding:2px 8px; background:#FFF3E0; color:#B26A00; border-radius:10px; font-size:11px; font-weight:500; }
 .muted { color:#999; }
@@ -115,7 +117,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         <th style="width:160px;" v-if="activeTab==='publications'">出版物 / 作者</th>
         <th style="width:70px;" v-if="activeTab==='webinar' || activeTab==='brochures'">权限</th>
         <th style="width:110px;">发布日期</th>
-        <th style="width:80px;">状态</th>
+        <th style="width:90px;">状态</th>
         <th style="width:200px;">操作</th>
       </tr></thead>
       <tbody>
@@ -144,9 +146,9 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <td style="font-size:12px;color:#666;">{{ fmtDate(item.publishedDate) }}</td>
           <td><span class="status-tag" :class="item.isPublished ? 'status-true' : 'status-false'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
           <td>
-            <button class="btn btn-sm" @click="openEdit(item)">编辑</button>
-            <button class="btn btn-sm" @click="togglePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
-            <button class="btn btn-sm btn-outline-danger" @click="removeItem(item.id)">删除</button>
+            <button class="btn btn-sm btn-outline" @click="openEdit(item)">编辑</button>
+            <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+            <button class="btn btn-sm btn-danger" @click="removeItem(item.id)">删除</button>
           </td>
         </tr>
         <tr v-if="list.length === 0">
