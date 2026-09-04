@@ -271,11 +271,29 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '与嘉法狮一起工作 ⋅ 嘉法狮', summary: '与嘉法狮一起工作 ⋅ 嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>与嘉法狮一起工作 ⋅ 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        formData: { title: '与嘉法狮共事', content: '' }
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/working-gattefosse');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            data.formData = {
+              title: p.title || '与嘉法狮共事',
+              content: p.contentHtml || '',
+            };
+            document.title = p.metaTitle || (p.title + ' ⋅ 嘉法狮');
+          } else {
+            data.formData = { title: '与嘉法狮共事', content: '<p>页面数据加载失败，请稍后重试。</p>' };
+          }
+        } catch (e) {
+          console.error('[working-gattefosse] fetch pageContent failed', e);
+          data.formData = { title: '与嘉法狮共事', content: '<p>页面数据加载失败，请稍后重试。</p>' };
+        }
       });
       return { data };
     }
