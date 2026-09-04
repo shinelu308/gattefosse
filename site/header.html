@@ -404,7 +404,12 @@
     var loggedIn = checkLoginStatus();
     var btnTxt = document.getElementById("buttonTxt");
     if (btnTxt) {
-      btnTxt.textContent = loggedIn ? "会员中心" : "登录/注册";
+      var userName = "";
+      try {
+        var u = JSON.parse(localStorage.getItem("user") || "null");
+        if (u && u.fullName) { userName = String(u.fullName).trim(); }
+      } catch (e) { /* ignore */ }
+      btnTxt.textContent = loggedIn ? ("会员 " + (userName || "中心")) : "登录/注册";
     }
     // 人形图标登录态视觉：品牌绿 + 在线徽标点 + 悬浮显示用户名
     var accBtn = document.querySelector(".btn--account");
