@@ -557,7 +557,8 @@
       
       try {
         const result = await GatteAPI.Auth.login(email, password);
-        const { token, user } = result;
+        // 响应拦截器已将 response.data 解包为业务数据 {token, user}
+        const { token, user } = result.data;
         saveLogin(token, user);
         
         // 重定向到目标页面
