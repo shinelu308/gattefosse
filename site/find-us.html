@@ -365,12 +365,95 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
+      const params = new URLSearchParams(window.location.search);
+      const curUrl = window.location.href;
+      const countryIdParam = params.get('countryId');
+      const PAGE_SIZE = 12;
+
+      function setUrlParam(url, key, value) {
+        const u = new URL(url);
+        u.searchParams.set(key, value);
+        return u.pathname + u.search;
+      }
+
       const data = reactive({
-        formData: { title: '找到我们 | 嘉法狮', summary: '找到我们 | 嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>找到我们 | 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        allItems: [],
+        formData: [],
+        countries: [],
+        cur_page: parseInt(params.get('page') || '1', 10),
+        page_size: PAGE_SIZE,
+        total_page: 1,
+        total: 0,
+        prev_url: '',
+        next_url: '',
+        curCountryId: countryIdParam
       });
+
+      function buildItems(rows) {
+        return rows.map((r) => {
+          let extra = {};
+          try { extra = typeof r.extra === 'string' ? JSON.parse(r.extra) : (r.extra || {}); } catch (e) { extra = {}; }
+          const expertise = Array.isArray(extra.expertise)
+            ? extra.expertise.join(' ')
+            : String(extra.expertise || '');
+          const type = extra.type;
+          return {
+            title: r.name,
+            address: r.address || '',
+            country: r.country || '',
+            mapUrl: extra.mapUrl || '',
+            type: type,
+            companyType: type === 0 ? '总部' : type === 1 ? '分公司' : type === 2 ? '经销商' : '',
+            tag_personal_care: expertise.indexOf('个人护理') >= 0,
+            tag_pharmaceuticals: expertise.indexOf('药用辅料') >= 0,
+            tag_application_laboratory: expertise.indexOf('应用实验室') >= 0,
+            url: '/affiliates-detail.html?id=' + (extra.originId || r.id),
+            enUrl: extra.enUrl || ''
+          };
+        });
+      }
+
+      function applyFilter() {
+        let list = data.allItems;
+        if (data.curCountryId) {
+          list = list.filter((it) => {
+            // countryId 参数原站为字典 value（数字），本地用国家名序号近似不可行 →
+            // 直接按国家名匹配：URL 中 countryId 值即国家名或其原站数字
+            return it.countryId == data.curCountryId || it.country === data.curCountryId;
+          });
+        }
+        data.total = list.length;
+        data.total_page = Math.max(1, Math.ceil(data.total / data.page_size));
+        if (data.cur_page > data.total_page) data.cur_page = data.total_page;
+        const start = (data.cur_page - 1) * data.page_size;
+        data.formData = list.slice(start, start + data.page_size);
+        data.next_url = data.cur_page < data.total_page ? setUrlParam(curUrl, 'page', data.cur_page + 1) : null;
+        data.prev_url = data.cur_page > 1 ? setUrlParam(curUrl, 'page', data.cur_page - 1) : null;
+      }
+
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/subsidiaries');
+          const rows = (res.data && res.data.data) || [];
+          const items = buildItems(rows);
+          // 国家名 → countryId（本地约定：extra.originIdCountry 不可用，改用国家名索引映射）
+          const countryNames = Array.from(new Set(items.map((it) => it.country).filter(Boolean)));
+          items.forEach((it) => { it.countryId = countryNames.indexOf(it.country) + 1; });
+          data.allItems = items;
+          data.countries = countryNames.map((label, idx) => ({
+            label: label,
+            value: String(idx + 1),
+            url: setUrlParam(curUrl, 'countryId', String(idx + 1))
+          }));
+          applyFilter();
+        } catch (e) {
+          console.error('[find-us] fetch subsidiaries failed', e);
+        }
+      });
+
       return { data };
     }
   });
