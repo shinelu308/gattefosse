@@ -369,6 +369,7 @@ table tbody tr:last-child td { border-bottom: none; }
 .badge-secondary { background: var(--slate-lightest); color: var(--slate); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
 .badge-warning { background: var(--amber-light); color: var(--amber); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
 .badge-danger { background: var(--red-light); color: var(--red); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+td .badge, th .badge { white-space: nowrap; }
 
 /* 表格空状态 */
 .cell-center { text-align: center; padding: 40px; color: var(--text-muted); }
@@ -2099,18 +2100,16 @@ const QUILL_TOOLBAR = [
                           <input type="checkbox" v-model="docEditForm.isPublic"> 公开
                         </label>
                       </template>
-                      <template v-else><span class="badge" :class="item.isPublic?'badge-success':'badge-secondary'">{{ item.isPublic ? '公开' : '需登录' }}</span></template>
+                      <template v-else><span :class="item.isPublic ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublic ? '公开' : '需登录' }}</span></template>
                     </td>
-                    <td>
+                    <td class="table-actions">
                       <template v-if="docEditing === item.id">
                         <button class="btn btn-sm btn-primary" @click="saveDocRow(item.id)" :disabled="docSaving">{{ docSaving ? '保存中...' : '保存' }}</button>
                         <button class="btn btn-sm btn-outline" @click="docEditing = null">取消</button>
                       </template>
                       <template v-else>
-                        <div style="display:flex;gap:4px;">
-                          <button class="btn btn-sm btn-outline" @click="editDoc(item)">编辑</button>
-                          <button class="btn btn-sm btn-danger" @click="deleteDoc(item.id)">删除</button>
-                        </div>
+                        <button class="btn btn-outline btn-sm" @click="editDoc(item)">编辑</button>
+                        <button class="btn btn-sm btn-danger" @click="deleteDoc(item.id)">删除</button>
                       </template>
                     </td>
                   </tr>
@@ -2161,12 +2160,12 @@ const QUILL_TOOLBAR = [
                   <tr v-for="item in newsList">
                     <td><span class="tag" :class="item.type==='event'?'tag-amber':'tag-blue'">{{ item.type==='event'?'活动':'新闻' }}</span></td>
                     <td><strong>{{ item.title }}</strong><br><span style="font-size:12px;color:var(--text-muted);">{{ (item.summary||'').substring(0,50) }}</span></td>
-                    <td><span class="tag" :class="'tag-'+(item.category==='pc'?'cosm':item.category==='pharma'?'pharma':'corp')" style="font-size:11px;padding:2px 8px;border-radius:3px;">{{ {corporate:'企业',pc:'个护',pharma:'药用'}[item.category]||item.category }}</span></td>
+                    <td><span class="tag" :class="'tag-'+(item.category==='pc'?'cosm':item.category==='pharma'?'pharma':'corp')">{{ {corporate:'企业',pc:'个护',pharma:'药用'}[item.category]||item.category }}</span></td>
                     <td class="table-date">{{ item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '-' }}</td>
-                    <td><span class="badge" :class="item.isPublished?'badge-success':'badge-secondary'">{{ item.isPublished?'已发布':'草稿' }}</span></td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" @click="editNews(item)">编辑</button>
-                      <button class="btn btn-sm btn-slate" :class="item.isPublished?'':'btn-outline'" @click="toggleNewsPublish(item)">{{ item.isPublished?'下架':'发布' }}</button>
+                    <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                    <td class="table-actions">
+                      <button class="btn btn-outline btn-sm" @click="editNews(item)">编辑</button>
+                      <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleNewsPublish(item)">{{ item.isPublished?'下架':'发布' }}</button>
                       <button class="btn btn-sm btn-danger" @click="deleteNews(item.id)">删除</button>
                     </td>
                   </tr>
@@ -2935,8 +2934,8 @@ const QUILL_TOOLBAR = [
                     <td>{{ item.contactName || '-' }}</td>
                     <td><span class="tag" :class="orderStatusTag(item.status)">{{ orderStatusText(item.status) }}</span></td>
                     <td class="table-date">{{ item.submittedAt ? new Date(item.submittedAt).toISOString().slice(0,10) : '-' }}</td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" @click="viewOrder(item)">详情</button>
+                    <td class="table-actions">
+                      <button class="btn btn-outline btn-sm" @click="viewOrder(item)">详情</button>
                       <select class="form-control" style="display:inline-block;width:auto;padding:4px 8px;font-size:12px;margin-left:4px;" :value="item.status" @change="changeOrderStatus(item.id, $event.target.value)">
                         <option value="draft">草稿</option>
                         <option value="submitted">已提交</option>
@@ -3171,7 +3170,7 @@ const QUILL_TOOLBAR = [
                   <td>{{ s.country }} {{ s.city }}</td>
                   <td class="text-sm">{{ s.email || '-' }}</td>
                   <td>{{ s.sortOrder }}</td>
-                  <td>
+                  <td class="table-actions">
                     <button class="btn btn-sm btn-outline" @click="editSubsidiary(s)">编辑</button>
                     <button class="btn btn-sm btn-danger" @click="deleteSubsidiary(s.id)" v-if="userInfo?.role === 'super_admin'">删除</button>
                   </td>
