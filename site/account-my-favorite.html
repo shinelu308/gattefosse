@@ -298,16 +298,18 @@
                     hasTypeParam: hasTypeParam,
                 });
                 // 查询
-                const getTableData = () => {
-                    GatteAPI.Favorite.list({ limit: 50 }).then((res) => {
-                        const favorites = res.data;
-                        if (!favorites || favorites.length === 0) {
-                            data.formData = [];
-                            return;
-                        }
-                        // 批量获取产品详情
-                        const detailPromises = favorites.map((fav) => {
-                            if (fav.itemType === 'pc' || fav.itemType === 'PcProduct') {
+                    const getTableData = () => {
+                        GatteAPI.Favorite.list({ limit: 50 }).then((res) => {
+                            // 拦截器解包后 res.data = {list, pagination}；兼容数组
+                            const payload = res.data;
+                            const favorites = Array.isArray(payload) ? payload : (payload && Array.isArray(payload.list) ? payload.list : []);
+                            if (favorites.length === 0) {
+                                data.formData = [];
+                                return;
+                            }
+                            // 批量获取产品详情
+                            const detailPromises = favorites.map((fav) => {
+                                if (fav.itemType === 'pc_ingredient' || fav.itemType === 'pc' || fav.itemType === 'PcProduct') {
                                 return GatteAPI.PcProduct.detail(fav.itemId).then((prodRes) => {
                                     const product = prodRes.data;
                                     return {
