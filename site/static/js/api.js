@@ -162,7 +162,8 @@
   // ==================== 订单 Orders ====================
   var OrderAPI = {
     list: function (params) {
-      return http.get('/api/orders', { params: params });
+      // 我的订单列表（后端路由为 GET /api/orders/my）
+      return http.get('/api/orders/my', { params: params });
     },
     detail: function (id) {
       return http.get('/api/orders/' + id);
