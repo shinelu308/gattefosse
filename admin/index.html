@@ -3053,14 +3053,6 @@ const QUILL_TOOLBAR = [
                     <td class="table-date">{{ item.submittedAt ? new Date(item.submittedAt).toISOString().slice(0,10) : '-' }}</td>
                     <td class="table-actions">
                       <button class="btn btn-outline btn-sm" @click="viewOrder(item)">详情</button>
-                      <select class="form-control" style="display:inline-block;width:auto;padding:4px 8px;font-size:12px;margin-left:4px;" :value="item.status" @change="changeOrderStatus(item.id, $event.target.value)">
-                        <option value="draft">草稿</option>
-                        <option value="submitted">已提交</option>
-                        <option value="processing">处理中</option>
-                        <option value="shipped">已发货</option>
-                        <option value="completed">已完成</option>
-                        <option value="cancelled">已取消</option>
-                      </select>
                     </td>
                   </tr>
                 </tbody>
@@ -3080,8 +3072,28 @@ const QUILL_TOOLBAR = [
         <!-- ==================== 订单详情弹窗 ==================== -->
         <div v-if="currentPage === 'order-detail'">
           <h1 class="page-title">订单详情 — {{ viewingOrder.orderNumber }}</h1>
-          <p class="page-subtitle">{{ orderStatusText(viewingOrder.status) }} · {{ viewingOrder.submittedAt ? new Date(viewingOrder.submittedAt).toLocaleString('zh-CN') : '-' }}</p>
+          <p class="page-subtitle">{{ viewingOrder.submittedAt ? new Date(viewingOrder.submittedAt).toLocaleString('zh-CN') : '-' }}</p>
+
+          <!-- 状态流转 -->
           <div class="card">
+            <div class="card-header"><h3>订单状态</h3></div>
+            <div class="card-body" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+              <div style="text-align:center;">
+                <span class="tag" :class="orderStatusTag(viewingOrder.status)" style="font-size:14px;padding:5px 16px;border-radius:14px;">{{ orderStatusText(viewingOrder.status) }}</span>
+                <div style="font-size:11px;color:var(--text-tertiary);margin-top:6px;">当前状态</div>
+              </div>
+              <div style="width:1px;height:40px;background:var(--border-light);"></div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-size:12px;color:var(--text-muted);">流转到：</span>
+                <template v-if="nextOrderActions.length">
+                  <button v-for="a in nextOrderActions" :key="a.to" class="btn btn-sm" :class="a.danger ? 'btn-danger' : a.primary ? 'btn-primary' : 'btn-outline'" @click="changeOrderStatus(viewingOrder.id, a.to)">{{ a.label }}</button>
+                </template>
+                <span v-else style="font-size:12px;color:var(--text-muted);">订单已结束，无可用流转</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
             <div class="card-header"><h3>订单信息</h3></div>
             <div class="card-body">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;">
@@ -3935,6 +3947,19 @@ createApp({
     };
   },
   computed: {
+    /* ===== 订单状态流转（按业务顺序给出下一步动作） ===== */
+    nextOrderActions() {
+      const s = this.viewingOrder && this.viewingOrder.status;
+      const map = {
+        draft:      [{ to: 'submitted', label: '标记已提交', primary: true }, { to: 'cancelled', label: '取消订单', danger: true }],
+        submitted:  [{ to: 'processing', label: '开始处理', primary: true }, { to: 'cancelled', label: '取消订单', danger: true }],
+        processing: [{ to: 'shipped', label: '标记已发货', primary: true }, { to: 'completed', label: '标记已完成' }, { to: 'cancelled', label: '取消订单', danger: true }],
+        shipped:    [{ to: 'completed', label: '标记已完成', primary: true }, { to: 'cancelled', label: '取消订单', danger: true }],
+        cancelled:  [{ to: 'submitted', label: '恢复为已提交' }],
+        completed:  [],
+      };
+      return map[s] || [];
+    },
     /* ===== 总览访问统计 ===== */
     /* ===== 页面中文名 + 地区图 ===== */
     regionList() {
@@ -6667,6 +6692,10 @@ createApp({
     async changeOrderStatus(orderId, newStatus) {
       try {
         await this.api('/admin/orders/' + orderId + '/status', { method: 'PUT', body: JSON.stringify({ status: newStatus }) });
+        if (this.currentPage === 'order-detail' && this.viewingOrder.id === orderId) {
+          this.viewingOrder.status = newStatus;
+          this.showAlert('状态已更新为「' + this.orderStatusText(newStatus) + '」');
+        }
         this.loadOrderList();
       } catch (e) { this.showAlert('状态更新失败：' + e.message); }
     },
