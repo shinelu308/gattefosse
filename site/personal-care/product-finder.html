@@ -740,6 +740,18 @@
           data.prev_url = data.cur_page > 1 ? '?page=' + (data.cur_page - 1) + (data.keyword ? '&keyword=' + encodeURIComponent(data.keyword) : '') : null;
           data.next_url = data.cur_page < data.total_page ? '?page=' + (data.cur_page + 1) + (data.keyword ? '&keyword=' + encodeURIComponent(data.keyword) : '') : null;
           data.loading = false;
+          // 收藏状态回显：已登录时拉取收藏列表，点亮已收藏产品的星标
+          if (checkLoginStatus()) {
+            GatteAPI.Favorite.list({ itemType: 'pc_ingredient', limit: 500 }).then(function (res) {
+              var payload = res.data;
+              var favs = Array.isArray(payload) ? payload : (payload && Array.isArray(payload.list) ? payload.list : []);
+              var favIds = {};
+              favs.forEach(function (f) { favIds[String(f.itemId)] = true; });
+              data.productList.forEach(function (p) {
+                if (favIds[String(p.ID)]) p.inFav = true;
+              });
+            }).catch(function () { /* 静默：回显失败不影响列表 */ });
+          }
         }).catch(function (err) {
           console.error('加载产品失败:', err);
           data.productList = [];
