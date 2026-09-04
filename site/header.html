@@ -392,7 +392,7 @@
     var curUrl = window.location.href;
     if (checkLoginStatus()) {
       // 已登录，跳转到会员中心
-      window.location.href = "/account-my-favorite.html";
+      window.location.href = "/account-after-login.html";
     } else {
       var url = "/account.html?url=" + encodeURIComponent(curUrl);
       window.location.href = url;
