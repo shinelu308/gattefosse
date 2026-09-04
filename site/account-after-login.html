@@ -21,6 +21,8 @@
     <script src="/static/js/axios.min.js"></script>
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/auth.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -117,6 +119,16 @@
                         <div class="s-account">
                             <div class="s-account__container">
                                 <h1 class="s-account__title u-title-styled">会员中心</h1>
+                                <div class="s-account__profile" v-if="data.user">
+                                    <h2 class="s-account__profile-title">个人信息</h2>
+                                    <ul class="s-account__profile-list">
+                                        <li><span class="label">姓名</span><span>{{ data.user.fullName || '-' }}</span></li>
+                                        <li><span class="label">公司/机构</span><span>{{ data.user.company || '-' }}</span></li>
+                                        <li><span class="label">联系电话</span><span>{{ data.user.phone || '-' }}</span></li>
+                                        <li><span class="label">邮箱</span><span>{{ data.user.email || '-' }}</span></li>
+                                        <li><span class="label">最近登录</span><span>{{ data.user.lastLogin ? formatTime(data.user.lastLogin) : '-' }}</span></li>
+                                    </ul>
+                                </div>
                                 <div class="s-account__wrapper">
                                     <ul>
                                     <li>                              
@@ -184,42 +196,43 @@
     </div>
 
     <script setup>
-        const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
+        const { createApp, reactive } = Vue;
         const app = createApp({
-            data() {
-                return { formData: [] }
-            },
             setup() {
-                let randomNum = Math.floor(Math.random() * 100);
                 const data = reactive({
-                    errshow: 'display:none',
-                    formData: {
-
-                    },
+                    user: null
                 });
-                // 获取用户信息
-                const getMallUserFunc = async () => {
-                    let token = localStorage.getItem("_token");
-                    let userId = localStorage.getItem("userId");
-                    var api = "/api/mallUser/getMallUser";
-                    console.log("API call disabled - static mode");
-                        if (res.data.code == 0) {
-                            data.formData = res.data.data.remallUser
-                            console.log(data.formData)
-                        } else {
+                const formatTime = (val) => {
+                    if (!val) return '-';
+                    const d = new Date(val);
+                    if (isNaN(d.getTime())) return '-';
+                    const p = (n) => String(n).padStart(2, '0');
+                    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+                };
+                const loadUserInfo = async () => {
+                    if (!checkLoginStatus()) {
+                        window.location.href = "account.html";
+                        return;
+                    }
+                    try {
+                        const res = await GatteAPI.Auth.me();
+                        data.user = res.data || null;
+                        if (data.user) {
+                            localStorage.setItem('user', JSON.stringify(data.user));
                         }
-                    });
-                }
-                getMallUserFunc()
+                    } catch (e) {
+                        // 接口异常时用本地缓存兜底展示
+                        try { data.user = JSON.parse(localStorage.getItem('user') || 'null'); } catch (err) { /* ignore */ }
+                    }
+                };
+                loadUserInfo();
                 return {
                     data,
-                    getMallUserFunc,
-                    updateMallUserFunc,
-                    resetPasswordFunc
+                    formatTime
                 };
             },
         });
-        let result = app.mount("#app");
+        app.mount("#app");
     </script>
     <script src="/sites/default/files/js/js_9H6SPlMlyZ9EyjY2MwCDt9q3QzVmFZunCan9fow0dBU.js"></script>
     <script src="/sites/default/files/js/js_LTKAN3sFbDc5sT7m4u9gaorav7wUoRiGzL5fg7SCVw0.js"></script>
@@ -251,6 +264,38 @@
         }
         .s-account__wrapper li {
             margin-bottom: 26px;
+        }
+        .s-account__profile {
+            border: 1px solid #E1D9C3;
+            border-top: 3px solid #8eb73c;
+            background: #fff;
+            padding: 28px 32px;
+            margin-bottom: 36px;
+        }
+        .s-account__profile-title {
+            font-size: 2rem;
+            margin: 0 0 20px;
+            color: #3a3f42;
+        }
+        .s-account__profile-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .s-account__profile-list li {
+            display: flex;
+            align-items: baseline;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0ede4;
+            font-size: 1.5rem;
+            color: #3a3f42;
+        }
+        .s-account__profile-list li:last-child {
+            border-bottom: none;
+        }
+        .s-account__profile-list .label {
+            flex: 0 0 120px;
+            color: #74797D;
         }
     </style>
 

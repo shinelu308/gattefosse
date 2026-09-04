@@ -183,12 +183,6 @@
                       @click="clearCart()"><i class="o-icon --delete" aria-hidden="true"></i>清空购物车</button>
                   </div>
                     <span :style="data.show">
-                  <div class="cart-fields" style="margin-top: 30px;">
-                    <input type="text" class="cart-field-input" v-model="formData.companyName" placeholder="公司名称 *">
-                    <input type="text" class="cart-field-input" v-model="formData.name" placeholder="联系人 *">
-                    <input type="tel" class="cart-field-input" v-model="formData.phone" placeholder="联系电话 *">
-                    <input type="text" class="cart-field-input" v-model="formData.address" placeholder="地址">
-                  </div>
                   <textarea rows="5" class="s-block-sample" style="margin-top: 30px; height: 271px; color: gray"
                     id="cart_comment"  v-model="formData.comment" placeholder="请描述拟申请样品的具体应用....." @focus="setComment"> </textarea>*</span>
                     
@@ -384,19 +378,6 @@
           if (simpleList.charAt(simpleList.length - 1) == ',') {
             simpleList = simpleList.substring(0, simpleList.length - 1);
           }
-          // 新增：必填信息校验
-          if (!String(formData.value.companyName || '').trim()) {
-            alert("请填写公司名称");
-            return;
-          }
-          if (!String(formData.value.name || '').trim()) {
-            alert("请填写联系人");
-            return;
-          }
-          if (!String(formData.value.phone || '').trim()) {
-            alert("请填写联系电话");
-            return;
-          }
           // 新增：判断邮箱后缀
           const email = formData.value.email || '';
           const forbiddenDomains = ['163.com', '126.com', 'qq.com', '139.com', '189.cn'];
@@ -553,6 +534,30 @@
         const loading = ref(false);
         const items = ref([]);
         getTableData()
+        // 从会员注册信息自动填充下单联系信息（公司/联系人/电话/邮箱）
+        const fillUserInfo = () => {
+          if (!checkLoginStatus()) return;
+          // 先用 localStorage 缓存快速填充
+          try {
+            const cached = JSON.parse(localStorage.getItem('user') || 'null');
+            if (cached) {
+              formData.value.companyName = cached.company || formData.value.companyName || '';
+              formData.value.name = cached.fullName || formData.value.name || '';
+              formData.value.phone = cached.phone || formData.value.phone || '';
+              formData.value.email = cached.email || formData.value.email || '';
+            }
+          } catch (e) { /* ignore */ }
+          // 再从 /api/auth/me 拉取最新资料覆盖
+          GatteAPI.Auth.me().then((res) => {
+            const user = res.data || {};
+            formData.value.companyName = user.company || formData.value.companyName || '';
+            formData.value.name = user.fullName || formData.value.name || '';
+            formData.value.phone = user.phone || formData.value.phone || '';
+            formData.value.email = user.email || formData.value.email || '';
+            localStorage.setItem('user', JSON.stringify(user));
+          }).catch(() => { /* 未登录或接口异常时静默忽略 */ });
+        };
+        fillUserInfo()
         return {
           data,
           handleClick,
@@ -630,31 +635,5 @@
         padding: 5px 10px;
         border: none;
         cursor: pointer;
-    }
-
-    .cart-fields {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .cart-field-input {
-        width: 100%;
-        height: 44px;
-        padding: 0 14px;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-        font-size: 14px;
-        color: #333;
-        outline: none;
-        box-sizing: border-box;
-    }
-
-    .cart-field-input::placeholder {
-        color: #999;
-    }
-
-    .cart-field-input:focus {
-        border-color: #8eb73c;
     }
 </style>

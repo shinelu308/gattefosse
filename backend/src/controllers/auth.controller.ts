@@ -136,6 +136,7 @@ export async function me(req: Request, res: Response) {
         email: true,
         fullName: true,
         company: true,
+        phone: true,
         role: true,
         status: true,
         lastLogin: true,
