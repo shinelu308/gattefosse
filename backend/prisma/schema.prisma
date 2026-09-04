@@ -418,3 +418,19 @@ model TagDictionary {
 
   @@map("tag_dictionary")
 }
+
+// ===== 页面访问统计表 =====
+model PageView {
+  id        Int      @id @default(autoincrement())
+  path      String   // 页面路径（去 query，如 /personal-care.html）
+  visitorId String   // 访客标识（cookie uuid，回退 ip+ua hash）
+  ip        String?
+  ua        String?
+  referer   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([visitorId])
+  @@map("page_views")
+}

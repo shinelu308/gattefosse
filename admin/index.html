@@ -483,6 +483,24 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 /* 两列布局 */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
+/* 总览：趋势 + TOP 榜布局 */
+.dash-row { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+.dash-chart-wrap { width: 100%; }
+.dash-chart-wrap svg { width: 100%; height: auto; display: block; }
+.chart-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--text-secondary); }
+.chart-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.top-list { display: flex; flex-direction: column; gap: 12px; }
+.top-item .t-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.top-item .t-path { font-size: 12px; color: var(--text); max-width: 78%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top-item .t-pv { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+.top-item .t-bar { height: 6px; border-radius: 3px; background: var(--slate-lightest); overflow: hidden; }
+.top-item .t-bar i { display: block; height: 100%; border-radius: 3px; background: var(--green); }
+.stat-accent { border-left: 3px solid var(--green); }
+
+@media (max-width: 1280px) {
+  .dash-row { grid-template-columns: 1fr; }
+}
+
 /* 占位页面 */
 .placeholder-page { text-align: center; padding: 80px 20px; color: var(--text-muted); }
 .placeholder-page .ph-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.35; }
@@ -785,8 +803,75 @@ const QUILL_TOOLBAR = [
         <!-- ==================== 总览 ==================== -->
         <div v-if="currentPage === 'dashboard'">
           <h1 class="page-title">总览</h1>
-          <p class="page-subtitle">嘉法狮产品与内容管理总览</p>
-          <div class="stats-grid">
+          <p class="page-subtitle">网站访问与内容运营数据一览</p>
+
+          <!-- 访问统计 -->
+          <div class="stats-grid" v-if="visit">
+            <div class="stat-card stat-accent">
+              <div class="stat-label">今日访问量（PV）</div>
+              <div class="stat-value">{{ visit.today.pv }}</div>
+              <div class="stat-change" :class="pvDelta >= 0 ? 'up' : 'down'">{{ pvDeltaText }}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">今日访客数（UV）</div>
+              <div class="stat-value">{{ visit.today.uv }}</div>
+              <div class="stat-change">独立访客</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">昨日访问量</div>
+              <div class="stat-value">{{ visit.yesterday.pv }}</div>
+              <div class="stat-change">访客 {{ visit.yesterday.uv }}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">累计访问量</div>
+              <div class="stat-value">{{ visit.total.pv }}</div>
+              <div class="stat-change">累计访客 {{ visit.total.uv }}</div>
+            </div>
+          </div>
+          <div class="dash-row" style="margin-top:24px;">
+            <div class="card">
+              <div class="card-header">
+                <h3>近 7 天访问趋势</h3>
+                <div class="chart-legend">
+                  <span><i class="dot" style="background:var(--green);"></i>访问量 PV</span>
+                  <span><i class="dot" style="background:var(--slate);"></i>访客数 UV</span>
+                </div>
+              </div>
+              <div class="card-body dash-chart-wrap" v-if="visit">
+                <svg viewBox="0 0 640 240">
+                  <g v-for="g in chartGrid" :key="'g'+g.y">
+                    <line :x1="chartPad.left" :y1="g.y" :x2="620" :y2="g.y" stroke="#f0f0f0" stroke-width="1"></line>
+                    <text :x="chartPad.left - 8" :y="g.y + 4" text-anchor="end" font-size="11" fill="#9aa0a6">{{ g.v }}</text>
+                  </g>
+                  <polyline :points="chartPointsPv" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                  <polyline :points="chartPointsUv" fill="none" stroke="var(--slate)" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                  <g v-for="(p, i) in chartDots" :key="'d'+i">
+                    <circle :cx="p.x" :cy="p.yPv" r="3.5" fill="#fff" stroke="var(--green)" stroke-width="2"><title>{{ p.label }} · PV {{ p.vPv }} / UV {{ p.vUv }}</title></circle>
+                    <circle :cx="p.x" :cy="p.yUv" r="3" fill="#fff" stroke="var(--slate)" stroke-width="2"><title>{{ p.label }} · PV {{ p.vPv }} / UV {{ p.vUv }}</title></circle>
+                    <text :x="p.x" :y="222" text-anchor="middle" font-size="11" fill="#9aa0a6">{{ p.label }}</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>热门页面 <span class="hint">（近 7 天）</span></h3></div>
+              <div class="card-body" v-if="visit">
+                <div class="top-list" v-if="visit.topPages.length">
+                  <div class="top-item" v-for="t in visit.topPages" :key="t.path">
+                    <div class="t-row">
+                      <span class="t-path" :title="t.path">{{ t.path }}</span>
+                      <span class="t-pv">{{ t.pv }}</span>
+                    </div>
+                    <div class="t-bar"><i :style="{ width: Math.max(6, Math.round(t.pv / topMaxPv * 100)) + '%' }"></i></div>
+                  </div>
+                </div>
+                <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无访问数据</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 内容统计 -->
+          <div class="stats-grid" style="margin-top:24px;">
             <div class="stat-card">
               <div class="stat-label">成分</div>
               <div class="stat-value">{{ stats.pcCount }}</div>
@@ -808,7 +893,7 @@ const QUILL_TOOLBAR = [
               <div class="stat-change">待审核 {{ stats.pendingUsers }}</div>
             </div>
           </div>
-          <div class="two-col">
+          <div class="two-col" style="margin-top:24px;">
             <div class="card">
               <div class="card-header">
                 <h3>快捷操作</h3>
@@ -816,6 +901,8 @@ const QUILL_TOOLBAR = [
               <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
                 <button class="btn btn-primary" @click="resetPcEdit();goPage('pc-edit')">+ 新增成分</button>
                 <button class="btn btn-primary" style="background:var(--slate);border-color:var(--slate);" @click="goPage('pharma-edit')">+ 新增药用辅料</button>
+                <button class="btn btn-outline" @click="resetFormulaEdit();goPage('formula-edit')">+ 新增配方</button>
+                <button class="btn btn-outline" @click="resetNewsEdit();goPage('news-edit')">+ 发布新闻</button>
               </div>
             </div>
             <div class="card">
@@ -3702,6 +3789,7 @@ createApp({
       globalSearch: '',
       // Stats
       stats: { pcCount: 0, pcPublished: 0, pharmaCount: 0, pharmaPublished: 0, formulaCount: 0, formulaPublished: 0, userCount: 0, pendingUsers: 0 },
+      visit: null,
       // Tag dict
       tagDict: { pc: {}, pharma: {} },
       // PC
@@ -3819,6 +3907,72 @@ createApp({
     };
   },
   computed: {
+    /* ===== 总览访问统计 ===== */
+    pvDelta() {
+      if (!this.visit || !this.visit.yesterday) return 0;
+      const y = this.visit.yesterday.pv;
+      if (!y) return this.visit.today.pv > 0 ? 100 : 0;
+      return Math.round((this.visit.today.pv - y) / y * 100);
+    },
+    pvDeltaText() {
+      const d = this.pvDelta;
+      if (!this.visit) return '';
+      if (!this.visit.yesterday.pv && this.visit.today.pv > 0) return '较昨日 ↑ 新增访问';
+      return '较昨日 ' + (d >= 0 ? '↑ +' : '↓ ') + d + '%';
+    },
+    chartPad() {
+      return { left: 36, right: 20, top: 16, bottom: 30 };
+    },
+    chartMaxY() {
+      if (!this.visit) return 4;
+      const m = Math.max(4, ...this.visit.trend.map(t => Math.max(t.pv, t.uv)));
+      return Math.ceil(m / 4) * 4;
+    },
+    chartGrid() {
+      const H = 240, pad = this.chartPad;
+      const steps = 4, out = [];
+      for (let i = 0; i <= steps; i++) {
+        const v = Math.round(this.chartMaxY * (steps - i) / steps);
+        const y = pad.top + (H - pad.top - pad.bottom) * i / steps;
+        out.push({ y: Math.round(y), v });
+      }
+      return out;
+    },
+    chartXs() {
+      const W = 640, pad = this.chartPad;
+      const n = this.visit ? this.visit.trend.length : 7;
+      return Array.from({ length: n }, (_, i) => Math.round(pad.left + (W - pad.left - pad.right) * i / (n - 1)));
+    },
+    chartPointsPv() {
+      if (!this.visit) return '';
+      const H = 240, pad = this.chartPad;
+      return this.visit.trend.map((t, i) => {
+        const y = pad.top + (H - pad.top - pad.bottom) * (1 - t.pv / this.chartMaxY);
+        return this.chartXs[i] + ',' + Math.round(y);
+      }).join(' ');
+    },
+    chartPointsUv() {
+      if (!this.visit) return '';
+      const H = 240, pad = this.chartPad;
+      return this.visit.trend.map((t, i) => {
+        const y = pad.top + (H - pad.top - pad.bottom) * (1 - t.uv / this.chartMaxY);
+        return this.chartXs[i] + ',' + Math.round(y);
+      }).join(' ');
+    },
+    chartDots() {
+      if (!this.visit) return [];
+      const H = 240, pad = this.chartPad;
+      return this.visit.trend.map((t, i) => ({
+        x: this.chartXs[i],
+        yPv: Math.round(pad.top + (H - pad.top - pad.bottom) * (1 - t.pv / this.chartMaxY)),
+        yUv: Math.round(pad.top + (H - pad.top - pad.bottom) * (1 - t.uv / this.chartMaxY)),
+        vPv: t.pv, vUv: t.uv, label: t.date,
+      }));
+    },
+    topMaxPv() {
+      if (!this.visit || !this.visit.topPages.length) return 1;
+      return this.visit.topPages[0].pv || 1;
+    },
     contentPageTotalPages() {
       return Math.max(1, Math.ceil(this.contentPages.length / this.contentPageFilter.size));
     },
@@ -4004,6 +4158,17 @@ createApp({
       if (page === 'news-edit' && !this.editingNews.id) this.resetNewsEdit();
     },
     // Init
+    async loadVisitStats() {
+      try {
+        const resp = await fetch(API + '/stats/overview', {
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token, 'Content-Type': 'application/json' } : {}
+        });
+        if (resp.ok) {
+          const d = await resp.json();
+          if (d.code === 0 && d.data) this.visit = d.data;
+        }
+      } catch (e) { /* 无权限或网络异常不影响主流程 */ }
+    },
     async initData() {
       try {
         const [pcTags, pharmaTags, formulaTags, pcData, pharmaData, formulaData] = await Promise.all([
@@ -4034,6 +4199,8 @@ createApp({
             }
           }
         } catch (e) { /* 非管理员用户无权限或无网络，不影响主流程 */ }
+        // 访问统计（编辑员及以上）
+        this.loadVisitStats();
       } catch (e) { console.error('Init error:', e); }
     },
     // PC CRUD

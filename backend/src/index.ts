@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 
 import { config } from './config';
 import { prisma } from './utils/prisma';
@@ -24,6 +25,8 @@ import searchRoutes from './routes/search.routes';
 import orderPublicRoutes from './routes/order-public.routes';
 import blockRoutes from './routes/block.routes';
 import authorRoutes from './routes/authors.routes';
+import statsRoutes from './routes/stats.routes';
+import { pageViewTracker } from './middleware/tracker';
 
 const app = express();
 
@@ -44,6 +47,7 @@ app.use(compression({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // 静态文件服务（上传的文件）
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
@@ -57,6 +61,8 @@ app.use('/admin', (req, res, next) => {
 }, express.static(path.resolve(__dirname, '../../admin')));
 
 // 前端网站静态文件（CSS/JS/图片缓存1天，HTML缓存1小时）
+// 前台页面访问埋点（仅统计 HTML 页面 GET，排除 api/admin/uploads/静态资源）
+app.use(pageViewTracker);
 app.use((req, res, next) => {
   // 仅对静态资源路径生效，不缓存 API 请求
   if (req.path.startsWith('/api/')) return next();
@@ -95,6 +101,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/orders', orderPublicRoutes);
 app.use('/api/blocks', blockRoutes);
 app.use('/api/authors', authorRoutes);
+app.use('/api/stats', statsRoutes);
 
 // 404 处理
 app.use('*', (_req, res) => {
