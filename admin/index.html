@@ -2315,12 +2315,12 @@ const QUILL_TOOLBAR = [
                   <td class="td-title">{{ item.title }}</td>
                   <td><span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;">{{ item.articleType || '-' }}</span></td>
                   <td>{{ item.readingTime || '-' }} 分钟</td>
-                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
                   <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
-                  <td>
-                    <button class="btn btn-sm btn-outline" @click="editArticle(item)">编辑</button>
-                    <button class="btn btn-sm btn-outline" @click="toggleArticlePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
-                    <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deleteArticle(item.id)">删除</button>
+                  <td class="table-actions">
+                    <button class="btn btn-outline btn-sm" @click="editArticle(item)">编辑</button>
+                    <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleArticlePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-danger" @click="deleteArticle(item.id)">删除</button>
                   </td>
                 </tr>
                 <tr v-if="articleList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
@@ -2587,7 +2587,7 @@ const QUILL_TOOLBAR = [
                 <th style="width:60px;">需登录</th>
                 <th style="width:80px;">状态</th>
                 <th style="width:100px;">更新时间</th>
-                <th style="width:110px;">操作</th>
+                <th style="width:150px;">操作</th>
               </tr></thead>
               <tbody>
                 <tr v-for="item in webinarList" :key="item.id">
@@ -2601,14 +2601,12 @@ const QUILL_TOOLBAR = [
                   </td>
                   <td style="font-size:12px;">{{ item.videoUrl ? '有' : '无' }}</td>
                   <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
-                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }" style="white-space:nowrap;">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
                   <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
-                  <td>
-                    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start;">
-                      <button class="btn btn-sm btn-outline" @click="editWebinar(item)">编辑</button>
-                      <button class="btn btn-sm btn-outline" @click="toggleWebinarPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
-                      <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deleteWebinar(item.id)">删除</button>
-                    </div>
+                  <td class="table-actions">
+                    <button class="btn btn-outline btn-sm" @click="editWebinar(item)">编辑</button>
+                    <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleWebinarPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-danger" @click="deleteWebinar(item.id)">删除</button>
                   </td>
                 </tr>
                 <tr v-if="webinarList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
@@ -2704,7 +2702,7 @@ const QUILL_TOOLBAR = [
                 <th style="width:60px;">需登录</th>
                 <th style="width:80px;">状态</th>
                 <th style="width:100px;">更新时间</th>
-                <th style="width:110px;">操作</th>
+                <th style="width:150px;">操作</th>
               </tr></thead>
               <tbody>
                 <tr v-for="item in publicationList" :key="item.id">
@@ -2718,14 +2716,12 @@ const QUILL_TOOLBAR = [
                   </td>
                   <td><a :href="item.pdfUrl" target="_blank" v-if="item.pdfUrl" style="font-size:12px;">查看</a><span v-else style="color:var(--text-tertiary);font-size:12px;">无</span></td>
                   <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
-                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }" style="white-space:nowrap;">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
                   <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
-                  <td>
-                    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start;">
-                      <button class="btn btn-sm btn-outline" @click="editPublication(item)">编辑</button>
-                      <button class="btn btn-sm btn-outline" @click="togglePublicationPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
-                      <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deletePublication(item.id)">删除</button>
-                    </div>
+                  <td class="table-actions">
+                    <button class="btn btn-outline btn-sm" @click="editPublication(item)">编辑</button>
+                    <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublicationPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-danger" @click="deletePublication(item.id)">删除</button>
                   </td>
                 </tr>
                 <tr v-if="publicationList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
@@ -2822,7 +2818,7 @@ const QUILL_TOOLBAR = [
                 <th style="width:60px;">需登录</th>
                 <th style="width:80px;">状态</th>
                 <th style="width:100px;">更新时间</th>
-                <th style="width:110px;">操作</th>
+                <th style="width:150px;">操作</th>
               </tr></thead>
               <tbody>
                 <tr v-for="item in magazineList" :key="item.id">
@@ -2830,14 +2826,12 @@ const QUILL_TOOLBAR = [
                   <td class="td-title">{{ item.title }}</td>
                   <td><a :href="item.pdfUrl" target="_blank" v-if="item.pdfUrl" style="font-size:12px;">查看</a><span v-else style="color:var(--text-tertiary);font-size:12px;">无</span></td>
                   <td style="text-align:center;">{{ item.lock ? '🔒' : '公开' }}</td>
-                  <td><span class="check-tag" :style="{ background: item.isPublished ? '#EAF3DE' : '#FCEBEB', color: item.isPublished ? '#3B6D11' : '#993556' }" style="white-space:nowrap;">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
                   <td style="color:var(--text-tertiary);font-size:12px;">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
-                  <td>
-                    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start;">
-                      <button class="btn btn-sm btn-outline" @click="editMagazine(item)">编辑</button>
-                      <button class="btn btn-sm btn-outline" @click="toggleMagazinePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
-                      <button class="btn btn-sm btn-outline" style="color:#E24A4A;border-color:#f5c1c1;" @click="deleteMagazine(item.id)">删除</button>
-                    </div>
+                  <td class="table-actions">
+                    <button class="btn btn-outline btn-sm" @click="editMagazine(item)">编辑</button>
+                    <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleMagazinePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-danger" @click="deleteMagazine(item.id)">删除</button>
                   </td>
                 </tr>
                 <tr v-if="magazineList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
