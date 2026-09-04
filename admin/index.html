@@ -832,6 +832,38 @@ const QUILL_TOOLBAR = [
               <div class="stat-change">累计访客 {{ visit.total.uv }}</div>
             </div>
           </div>
+          <!-- 访问地区 -->
+          <div class="dash-row" style="margin-top:24px;" v-if="visit">
+            <div class="card">
+              <div class="card-header">
+                <h3>访问地区 <span class="hint">（近 7 天）</span></h3>
+                <div class="region-tabs">
+                  <button :class="{ active: regionTab === 'china' }" @click="regionTab = 'china'; renderRegionChart()">中国</button>
+                  <button :class="{ active: regionTab === 'world' }" @click="regionTab = 'world'; renderRegionChart()">世界</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div ref="regionChartEl" style="width:100%;height:360px;"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>地区排行</h3></div>
+              <div class="card-body">
+                <div class="top-list" v-if="regionList.length">
+                  <div class="top-item" v-for="r in regionList" :key="r.name">
+                    <div class="t-row">
+                      <span class="t-path">{{ r.name }}</span>
+                      <span class="t-pv">{{ r.pv }}</span>
+                    </div>
+                    <div class="t-bar"><i :style="{ width: Math.max(6, Math.round(r.pv / regionMaxPv * 100)) + '%' }"></i></div>
+                  </div>
+                </div>
+                <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无地区数据</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 近 7 天访问趋势 + 热门页面 -->
           <div class="dash-row" style="margin-top:24px;">
             <div class="card">
               <div class="card-header">
@@ -870,37 +902,6 @@ const QUILL_TOOLBAR = [
                   </div>
                 </div>
                 <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无访问数据</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 访问地区 -->
-          <div class="dash-row" style="margin-top:24px;" v-if="visit">
-            <div class="card">
-              <div class="card-header">
-                <h3>访问地区 <span class="hint">（近 7 天）</span></h3>
-                <div class="region-tabs">
-                  <button :class="{ active: regionTab === 'china' }" @click="regionTab = 'china'; renderRegionChart()">中国</button>
-                  <button :class="{ active: regionTab === 'world' }" @click="regionTab = 'world'; renderRegionChart()">世界</button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div ref="regionChartEl" style="width:100%;height:360px;"></div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header"><h3>地区排行</h3></div>
-              <div class="card-body">
-                <div class="top-list" v-if="regionList.length">
-                  <div class="top-item" v-for="r in regionList" :key="r.name">
-                    <div class="t-row">
-                      <span class="t-path">{{ r.name }}</span>
-                      <span class="t-pv">{{ r.pv }}</span>
-                    </div>
-                    <div class="t-bar"><i :style="{ width: Math.max(6, Math.round(r.pv / regionMaxPv * 100)) + '%' }"></i></div>
-                  </div>
-                </div>
-                <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无地区数据</div>
               </div>
             </div>
           </div>
