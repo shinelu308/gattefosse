@@ -27,3 +27,9 @@ site/.localize_tmp_backup_*.html
 .shotp3/
 .shotv2-profile/
 csr_dom.html
+
+# Chrome CDP 临时 profile
+.diag-profile/
+.diag-profile2/
+.shotv2-profile/
+.diag-profile2/
