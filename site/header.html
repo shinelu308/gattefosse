@@ -328,6 +328,25 @@
     </div>
   </div>
 </div>
+<style>
+  /* 登录态人形图标视觉：已登录 = 品牌绿 + 右上角在线徽标点 */
+  .btn--account { position: relative; }
+  .btn--account.is-logged-in .o-icon--user {
+    color: #8EB73C;
+  }
+  .btn--account.is-logged-in::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #8EB73C;
+    border: 2px solid #fff;
+    box-shadow: 0 0 3px rgba(142, 183, 60, 0.6);
+  }
+</style>
 <script>
   // 检查登录状态 — 基于 JWT Token
   function checkLoginStatus() {
@@ -382,16 +401,25 @@
 
   // 更新登录按钮文字
   function updateLoginButton() {
+    var loggedIn = checkLoginStatus();
     var btnTxt = document.getElementById("buttonTxt");
     if (btnTxt) {
-      if (checkLoginStatus()) {
-        btnTxt.textContent = "会员中心";
+      btnTxt.textContent = loggedIn ? "会员中心" : "登录/注册";
+    }
+    // 人形图标登录态视觉：品牌绿 + 在线徽标点 + 悬浮显示用户名
+    var accBtn = document.querySelector(".btn--account");
+    if (accBtn) {
+      accBtn.classList.toggle("is-logged-in", loggedIn);
+      if (loggedIn) {
+        var name = "";
+        try { name = (JSON.parse(localStorage.getItem("user") || "{}").fullName) || ""; } catch (e) {}
+        accBtn.setAttribute("title", name ? ("已登录：" + name) : "已登录");
       } else {
-        btnTxt.textContent = "登录/注册";
+        accBtn.removeAttribute("title");
       }
     }
     // 加载对应菜单
-    if (checkLoginStatus()) {
+    if (loggedIn) {
       $("#collapseAccMenu").load("/account-menu-after-login.html");
     } else {
       $("#collapseAccMenu").load("/account-menu.html");
