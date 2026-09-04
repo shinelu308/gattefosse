@@ -22,10 +22,10 @@ class="block block-gattefosse-core block-footer-block">
           邮箱：<br>
           网址：</div>
         <div class="box2" style="text-align: left; width:200px;overflow: hidden; float: left;">
-          上海市浦东新区伽利略路338弄<br>5号楼301室<br>
-          021-5895 8010<br>
-          021-5895 8015<br>info@gattefossecn.com<br>
-          https://www.gattefossechina.cn/
+          <span id="ft-address">上海市浦东新区伽利略路338弄<br>5号楼301室</span><br>
+          <span id="ft-phone">021-5895 8010</span><br>
+          <span id="ft-fax">021-5895 8015</span><br><span id="ft-email">info@gattefossecn.com</span><br>
+          <span id="ft-website">https://www.gattefossechina.cn/</span>
         </div>
       </div>
     </div>
@@ -86,10 +86,10 @@ class="block block-menu navigation menu--bottom">
       </li>
     </ul>
     <div style="font-size:1.2rem;color:#999;display:flex;align-items:center;gap:4px;">
-      <a href="https://beian.miit.gov.cn" style="color:#999;text-decoration:none;">沪ICP备2020030140号</a>
+      <a href="https://beian.miit.gov.cn" id="ft-icp" style="color:#999;text-decoration:none;">沪ICP备2020030140号</a>
       <span style="margin:0 4px;">|</span>
       <img src="/themes/custom/gattefosse/images/gonganbeianlogo.png" style="width:14px;vertical-align:middle;">
-      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=31011502401615" rel="noreferrer" target="_blank" style="color:#999;text-decoration:none;">沪公网安备31011502401615</a>
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=31011502401615" id="ft-gongan" rel="noreferrer" target="_blank" style="color:#999;text-decoration:none;">沪公网安备31011502401615</a>
     </div>
   </div>
 </div>
@@ -112,3 +112,27 @@ class="block block-menu navigation menu--bottom">
     }
   }
 </style>
+<script>
+/* 页脚企业信息：从后台「系统设置 → 企业基本信息」动态同步（设置为空时保留默认值） */
+(function () {
+  function applyFooterSettings(map) {
+    if (!map) return;
+    var set = function (id, val) {
+      var el = document.getElementById(id);
+      if (el && val) el.textContent = val;
+    };
+    set('ft-address', map.contact_address);
+    set('ft-phone', map.contact_phone);
+    set('ft-fax', map.contact_fax);
+    set('ft-email', map.contact_email);
+    set('ft-website', map.contact_website);
+    set('ft-icp', map.icp_number);
+    set('ft-gongan', map.gongan_beian);
+  }
+  try {
+    fetch('/api/settings').then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.code === 0) applyFooterSettings(d.data);
+    }).catch(function () { /* 静默降级：保留页脚默认文案 */ });
+  } catch (e) { /* ignore */ }
+})();
+</script>

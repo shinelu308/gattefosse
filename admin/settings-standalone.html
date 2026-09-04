@@ -9,64 +9,167 @@ html, body { width: 100%; }
 body { font-family: system-ui, sans-serif; background: #f6f6f6; padding: 24px; }
 h1 { font-size: 20px; margin-bottom: 4px; color: #232426; }
 .subtitle { font-size: 13px; color: #999; margin-bottom: 20px; }
-.card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); width: 100%; }
+/* tabs */
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #e8e8e8; }
+.tab { padding: 10px 22px; background: none; color: #666; font-size: 14px; border: 0; border-radius: 0; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tab.active { color: #8EB73C; font-weight: 600; border-bottom-color: #8EB73C; }
+.tab .tab-no { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; background: #eef3e2; color: #6f9a24; border-radius: 50%; font-size: 12px; margin-right: 6px; }
+.tab.active .tab-no { background: #8EB73C; color: #fff; }
+/* card */
+.card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); width: 100%; display: none; }
+.card.active { display: block; }
+.card-title { font-size: 15px; font-weight: 600; color: #232426; margin-bottom: 4px; }
+.card-desc { font-size: 12px; color: #999; margin-bottom: 18px; }
 .form-group { margin-bottom: 14px; }
 label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #333; }
+label .hint { font-weight: 400; color: #aaa; font-size: 12px; }
 input, textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+input:focus, textarea:focus { outline: none; border-color: #8EB73C; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 button { padding: 8px 20px; background: #8EB73C; color: white; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; }
-.save-btn { margin-top: 20px; }
+button:hover:not(:disabled) { background: #7da334; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button.btn-outline { background: #fff; color: #555; border: 1px solid #ddd; }
+button.btn-outline:hover { border-color: #8EB73C; color: #8EB73C; background: #fff; }
+button.btn-sm { padding: 4px 12px; font-size: 12px; }
+.save-bar { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+.save-msg { font-size: 13px; color: #6f9a24; display: none; }
 .loading { color: #999; padding: 20px; text-align: center; }
+.sync-tip { display: flex; align-items: center; gap: 6px; background: #f4f8ea; border: 1px solid #dce8c2; color: #6f9a24; font-size: 12px; padding: 8px 12px; border-radius: 5px; margin-bottom: 16px; }
+/* org structure */
+.org-list { display: flex; flex-direction: column; gap: 12px; }
+.org-item { border: 1px solid #e5e5e5; border-radius: 6px; padding: 14px 16px; background: #fafbfa; }
+.org-item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.org-item-head .org-idx { font-size: 12px; color: #8EB73C; font-weight: 600; }
+.org-item-head .org-del { background: none; border: 0; color: #d9534f; font-size: 12px; cursor: pointer; padding: 2px 6px; }
+.org-item-head .org-del:hover { text-decoration: underline; }
+.org-grid { display: grid; grid-template-columns: 1fr 1fr 90px; gap: 10px; }
+.org-grid .form-group { margin-bottom: 8px; }
+.org-grid textarea { grid-column: 1 / -1; min-height: 52px; resize: vertical; font-family: inherit; }
+.org-empty { text-align: center; color: #999; font-size: 13px; padding: 30px 0; }
+.add-org { margin-top: 12px; }
+/* permission matrix */
+.perm-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.perm-table th, .perm-table td { border: 1px solid #e8e8e8; padding: 9px 12px; text-align: left; }
+.perm-table thead th { background: #fafbfa; font-size: 12px; color: #666; }
+.perm-table td.center, .perm-table th.center { text-align: center; }
+.perm-table input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #8EB73C; }
+.perm-note { font-size: 12px; color: #999; margin-top: 12px; line-height: 1.7; }
+.role-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; }
+.role-super { background: #eef3e2; color: #6f9a24; }
+.role-editor { background: #e8f1fb; color: #3a6ea5; }
+.role-user { background: #f0f0f0; color: #777; }
 </style>
 </head>
 <body>
 <h1>系统设置</h1>
-<p class="subtitle">管理网站全局配置和SEO信息</p>
-<div class="card">
-<form id="settingsForm">
-  <div class="form-group">
-    <label>网站名称</label>
-    <input name="site_name" placeholder="站点名称">
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label>联系邮箱</label>
-      <input name="contact_email" placeholder="info@gattefosse.cn">
-    </div>
-    <div class="form-group">
-      <label>联系地址</label>
-      <input name="contact_address" placeholder="办公地址">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label>联系电话</label>
-      <input name="contact_phone" placeholder="+86 21 xxx">
-    </div>
-    <div class="form-group">
-      <label>ICP 备案号</label>
-      <input name="icp_number" placeholder="沪ICP备xxx号">
-    </div>
-  </div>
-  <div class="form-group">
-    <label>首页 Meta 标题</label>
-    <input name="home_meta_title" placeholder="首页 SEO 标题">
-  </div>
-  <div class="form-group">
-    <label>首页 Meta 描述</label>
-    <textarea name="home_meta_description" rows="2" placeholder="首页 SEO 描述"></textarea>
-  </div>
-  <div class="form-group">
-    <label>页脚版权</label>
-    <input name="footer_copyright" placeholder="© 2024 Gattefossé">
-  </div>
-  <div class="form-group">
-    <label>社交媒体链接 (JSON)</label>
-    <textarea name="social_links" rows="3" placeholder='{"linkedin":"https://...","wechat":"..."}' style="font-family:monospace;"></textarea>
-  </div>
-  <button type="button" class="save-btn" onclick="saveSettings()">保存设置</button>
-</form>
+<p class="subtitle">企业信息 · 组织架构 · 功能权限</p>
+
+<div class="tabs">
+  <button class="tab active" data-tab="basic" onclick="switchTab('basic')"><span class="tab-no">1</span>企业基本信息</button>
+  <button class="tab" data-tab="org" onclick="switchTab('org')"><span class="tab-no">2</span>企业组织架构</button>
+  <button class="tab" data-tab="perm" onclick="switchTab('perm')"><span class="tab-no">3</span>系统功能权限</button>
 </div>
+
+<!-- ======== Tab 1：企业基本信息 ======== -->
+<div class="card active" id="tab-basic">
+  <div class="card-title">企业基本信息</div>
+  <div class="card-desc">网站名称、联系方式与 SEO 信息</div>
+  <div class="sync-tip">✦ 保存后，联系方式 / 地址 / 传真 / 邮箱 / 网址 / 备案号 将自动同步到网站前台页脚</div>
+  <form id="basicForm">
+    <div class="form-group">
+      <label>网站名称</label>
+      <input name="site_name" placeholder="站点名称">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>联系邮箱</label>
+        <input name="contact_email" placeholder="info@gattefosse.cn">
+      </div>
+      <div class="form-group">
+        <label>联系地址</label>
+        <input name="contact_address" placeholder="办公地址">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>联系电话</label>
+        <input name="contact_phone" placeholder="+86 21 xxxx xxxx">
+      </div>
+      <div class="form-group">
+        <label>传真</label>
+        <input name="contact_fax" placeholder="+86 21 xxxx xxxx">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>公司网址</label>
+        <input name="contact_website" placeholder="https://www.gattefossechina.cn/">
+      </div>
+      <div class="form-group">
+        <label>ICP 备案号</label>
+        <input name="icp_number" placeholder="沪ICP备xxx号">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>公安备案号</label>
+      <input name="gongan_beian" placeholder="沪公网安备xxxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label>首页 Meta 标题 <span class="hint">（SEO）</span></label>
+      <input name="home_meta_title" placeholder="首页浏览器标题">
+    </div>
+    <div class="form-group">
+      <label>首页 Meta 描述 <span class="hint">（SEO）</span></label>
+      <textarea name="home_meta_description" rows="2" placeholder="首页 meta description"></textarea>
+    </div>
+    <div class="form-group">
+      <label>页脚版权</label>
+      <input name="footer_copyright" placeholder="© 2026 Gattefossé. All rights reserved.">
+    </div>
+    <div class="form-group">
+      <label>社交媒体链接 <span class="hint">（JSON，可选）</span></label>
+      <textarea name="social_links" rows="2" placeholder='{"linkedin":"https://...","wechat":"..."}' style="font-family:monospace;"></textarea>
+    </div>
+  </form>
+</div>
+
+<!-- ======== Tab 2：企业组织架构 ======== -->
+<div class="card" id="tab-org">
+  <div class="card-title">企业组织架构</div>
+  <div class="card-desc">维护公司部门 / 团队结构，按排序值从小到大展示</div>
+  <div class="org-list" id="orgList"></div>
+  <div class="org-empty" id="orgEmpty" style="display:none;">暂无部门，点击下方按钮添加</div>
+  <button class="btn-outline add-org" onclick="addOrgRow()">+ 添加部门</button>
+</div>
+
+<!-- ======== Tab 3：系统功能权限 ======== -->
+<div class="card" id="tab-perm">
+  <div class="card-title">系统功能权限设置</div>
+  <div class="card-desc">按角色分配后台功能模块的访问权限，保存后重新登录生效</div>
+  <table class="perm-table">
+    <thead>
+      <tr>
+        <th>功能模块</th>
+        <th class="center"><span class="role-badge role-super">超级管理员</span></th>
+        <th class="center"><span class="role-badge role-editor">编辑员</span></th>
+        <th class="center"><span class="role-badge role-user">普通用户</span></th>
+      </tr>
+    </thead>
+    <tbody id="permBody"></tbody>
+  </table>
+  <div class="perm-note">
+    · 超级管理员始终拥有全部模块权限（不可修改）<br>
+    · 未勾选的模块对相应角色隐藏侧边栏入口并禁止访问<br>
+    · 权限保存后，对应用户重新登录后台后生效
+  </div>
+</div>
+
+<div class="save-bar">
+  <button onclick="saveAll()" id="saveBtn">保存全部设置</button>
+  <span class="save-msg" id="saveMsg">✓ 已保存</span>
+</div>
+
 <script>
 const API = parent.location.protocol + '//' + parent.location.host + '/api';
 function getToken() { return localStorage.getItem('admin_token') || ''; }
@@ -79,27 +182,121 @@ async function api(path, opts = {}) {
   if (data.code !== 0) throw new Error(data.message);
   return data.data;
 }
-async function loadSettings() {
-  try {
-    const list = await api('/settings');
-    const form = document.getElementById('settingsForm');
-    list.forEach(item => {
-      const el = form.elements[item.key];
-      if (el) el.value = item.value || '';
-    });
-  } catch(e) { console.error('Load failed:', e); }
+
+/* ===== tabs ===== */
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.card').forEach(c => c.classList.toggle('active', c.id === 'tab-' + name));
 }
-async function saveSettings() {
-  const form = document.getElementById('settingsForm');
-  const formData = new FormData(form);
-  const settings = {};
-  for (const [k, v] of formData.entries()) settings[k] = v;
+
+/* ===== 模块定义（与后台侧边栏一致） ===== */
+const MODULES = [
+  { key: 'pc',        label: '个人护理（产品管理）' },
+  { key: 'pharma',    label: '药用辅料（产品管理）' },
+  { key: 'formula',   label: '配方（产品管理）' },
+  { key: 'news',      label: '新闻与活动（资讯/文章/研讨会/出版物/杂志）' },
+  { key: 'learnmore', label: '了解更多（热点话题/资料手册等 5 个子页）' },
+  { key: 'docs',      label: '文档资源' },
+  { key: 'content',   label: '站点内容' },
+  { key: 'authors',   label: '作者管理' },
+  { key: 'orders',    label: '样品订单' },
+  { key: 'users',     label: '用户管理' },
+  { key: 'tags',      label: '标签管理' },
+  { key: 'settings',  label: '系统设置' },
+];
+const PERM_ROLES = ['editor', 'user'];
+let permData = {};   // { editor: [module...], user: [...] }
+let orgData = [];    // [{ name, leader, desc, sort }]
+
+/* ===== load ===== */
+async function loadAll() {
   try {
-    await api('/settings', { method: 'POST', body: JSON.stringify({ settings }) });
-    alert('保存成功');
-  } catch(e) { alert('保存失败: ' + e.message); }
+    const map = await api('/settings');
+    // Tab1 基本信息表单
+    const form = document.getElementById('basicForm');
+    for (const [k, v] of Object.entries(map)) {
+      const el = form.elements[k];
+      if (el && k !== 'org_structure' && k !== 'role_permissions') el.value = v || '';
+    }
+    // Tab2 组织架构
+    try { orgData = JSON.parse(map.org_structure || '[]'); } catch (e) { orgData = []; }
+    renderOrg();
+    // Tab3 权限矩阵
+    try { permData = JSON.parse(map.role_permissions || 'null') || {}; } catch (e) { permData = {}; }
+    renderPerm();
+  } catch (e) { console.error('Load failed:', e); }
 }
-loadSettings();
+
+/* ===== Tab2 组织架构 ===== */
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+function renderOrg() {
+  const wrap = document.getElementById('orgList');
+  document.getElementById('orgEmpty').style.display = orgData.length ? 'none' : 'block';
+  wrap.innerHTML = orgData.map((o, i) => `
+    <div class="org-item">
+      <div class="org-item-head">
+        <span class="org-idx">部门 ${i + 1}</span>
+        <button class="org-del" onclick="removeOrgRow(${i})">✕ 删除</button>
+      </div>
+      <div class="org-grid">
+        <div class="form-group"><label>部门名称</label><input value="${esc(o.name)}" oninput="orgData[${i}].name=this.value" placeholder="如：市场部"></div>
+        <div class="form-group"><label>负责人</label><input value="${esc(o.leader)}" oninput="orgData[${i}].leader=this.value" placeholder="如：张三"></div>
+        <div class="form-group"><label>排序</label><input type="number" value="${Number(o.sort) || 0}" oninput="orgData[${i}].sort=Number(this.value)||0"></div>
+        <textarea oninput="orgData[${i}].desc=this.value" placeholder="职责说明（可选）">${esc(o.desc)}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+function addOrgRow() {
+  orgData.push({ name: '', leader: '', desc: '', sort: (orgData.length + 1) * 10 });
+  renderOrg();
+}
+function removeOrgRow(i) {
+  orgData.splice(i, 1);
+  renderOrg();
+}
+
+/* ===== Tab3 权限矩阵 ===== */
+function renderPerm() {
+  const body = document.getElementById('permBody');
+  body.innerHTML = MODULES.map(m => `
+    <tr>
+      <td>${m.label}</td>
+      <td class="center"><input type="checkbox" checked disabled title="超级管理员始终拥有全部权限"></td>
+      ${PERM_ROLES.map(r => {
+        const allowed = !permData[r] || permData[r].includes(m.key);
+        return `<td class="center"><input type="checkbox" ${allowed ? 'checked' : ''} onchange="togglePerm('${r}','${m.key}',this.checked)"></td>`;
+      }).join('')}
+    </tr>
+  `).join('');
+}
+function togglePerm(role, mod, checked) {
+  if (!permData[role]) permData[role] = [];
+  const arr = permData[role];
+  const idx = arr.indexOf(mod);
+  if (checked && idx === -1) arr.push(mod);
+  if (!checked && idx > -1) arr.splice(idx, 1);
+}
+
+/* ===== save ===== */
+async function saveAll() {
+  const btn = document.getElementById('saveBtn');
+  const msg = document.getElementById('saveMsg');
+  btn.disabled = true; msg.style.display = 'none';
+  try {
+    const form = document.getElementById('basicForm');
+    const settings = {};
+    new FormData(form).forEach((v, k) => { settings[k] = v; });
+    settings.org_structure = JSON.stringify(orgData.filter(o => o.name && o.name.trim()));
+    settings.role_permissions = JSON.stringify(permData);
+    await api('/settings/batch', { method: 'POST', body: JSON.stringify(settings) });
+    msg.style.display = 'inline';
+    setTimeout(() => { msg.style.display = 'none'; }, 2500);
+  } catch (e) { alert('保存失败: ' + e.message); }
+  finally { btn.disabled = false; }
+}
+
+loadAll();
 </script>
 </body>
 </html>
