@@ -123,8 +123,14 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
           <input class="form-control" v-model="editItem.title" placeholder="如：Technical Marketing Lead – Personal Care">
         </div>
         <div class="form-group">
-          <label>头像 URL</label>
-          <input class="form-control" v-model="editItem.avatar" placeholder="https://...">
+          <label>头像 <span style="font-weight:400;color:#888;">（URL 或本地上传）</span></label>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <input class="form-control" v-model="editItem.avatar" placeholder="https://... 或点击右侧选择本地图片" style="flex:1;min-width:200px;">
+            <label class="btn btn-outline" style="margin:0;cursor:pointer;white-space:nowrap;">
+              {{ uploadingAvatar ? '上传中...' : '本地上传' }}
+              <input type="file" accept="image/*" style="display:none;" @change="uploadAvatar($event)">
+            </label>
+          </div>
           <div v-if="editItem.avatar" style="margin-top:8px;">
             <img :src="editItem.avatar" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.1);" @error="$event.target.style.display='none'">
           </div>
@@ -172,6 +178,7 @@ createApp({
       showEdit: false,
       editItem: { id: null, name: '', title: '', avatar: '', bio: '', department: '', region: '', linkedin: '', sortOrder: 0 },
       saving: false,
+      uploadingAvatar: false,
     };
   },
   mounted() { this.loadAuthors(); },
@@ -208,6 +215,30 @@ createApp({
     editAuthor(item) {
       this.editItem = { ...item, sortOrder: item.sortOrder || 0 };
       this.showEdit = true;
+    },
+    async uploadAvatar(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!/^image\//.test(file.type)) { alert('请选择图片文件'); event.target.value = ''; return; }
+      if (file.size > 5 * 1024 * 1024) { alert('图片不能超过 5MB'); event.target.value = ''; return; }
+      this.uploadingAvatar = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const token = getToken();
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editItem.avatar = data.data.url;
+        } else {
+          alert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { alert('上传失败：' + e.message); }
+      finally { this.uploadingAvatar = false; event.target.value = ''; }
     },
     addNew() {
       this.editItem = { id: null, name: '', title: '', avatar: '', bio: '', department: '', region: '', linkedin: '', sortOrder: this.list.length + 1 };
