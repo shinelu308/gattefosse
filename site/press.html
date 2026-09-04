@@ -184,16 +184,48 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '新闻媒体 ⋅ Gattefossé', summary: '新闻媒体 ⋅ Gattefossé - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>新闻媒体 ⋅ Gattefossé。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        formData: { title: '新闻媒体', content: '' }
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/press');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            data.formData = {
+              title: p.title || '新闻媒体',
+              content: p.contentHtml || '',
+            };
+            document.title = p.metaTitle || (p.title + ' ⋅ 嘉法狮');
+            await Vue.nextTick();
+            initPressBehaviors();
+          } else {
+            data.formData = { title: '新闻媒体', content: '<p>页面数据加载失败，请稍后重试。</p>' };
+          }
+        } catch (e) {
+          console.error('[press] fetch pageContent failed', e);
+          data.formData = { title: '新闻媒体', content: '<p>页面数据加载失败，请稍后重试。</p>' };
+        }
       });
       return { data };
     }
   });
   app.mount("#app");
+  // accordion 注入后等待 Drupal behaviors 就绪再 attach（折叠组初始化）
+  function initPressBehaviors(tries) {
+    tries = tries || 0;
+    if (window.Drupal && Drupal.attachBehaviors) {
+      try {
+        var article = document.querySelector('.region-content article');
+        Drupal.attachBehaviors(article || document);
+      } catch (e) { console.error('[press] attachBehaviors', e); }
+    } else if (tries < 60) {
+      setTimeout(function () { initPressBehaviors(tries + 1); }, 100);
+    }
+  }
 </script>
     <script src="sites/default/files/js/js_CgNyoAz4OLa5vvP3hfEm88q-44JjhKSP85sJZiRBSH0.js"></script>
     <script src="sites/default/files/js/js_Ao9yLE2DoX4rsNLQQYBV5LPbbsyuuUQBGff5XBViulk.js"></script>
