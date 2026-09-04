@@ -872,13 +872,10 @@
           return;
         }
         GatteAPI.Cart.add({
-          goodsId: item.ID,
-          goodsCategoryId: 1,
-          goodsName: item.goodsName,
-          goodsCoverImg: item.goodsCoverImg,
-          goodsIntro: item.goodsIntro,
-          subtitle: item.subtitle,
-          type: 6
+          productType: 'pc_ingredient',
+          productId: item.ID,
+          productName: item.goodsName,
+          quantity: 1
         }).then(function (res) {
           item.inCart = true;
           item.flex = 'display:none';
