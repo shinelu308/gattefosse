@@ -18457,6 +18457,18 @@
       "metaTitle": "植物化学 ⋅ 嘉法狮",
       "metaDescription": "嘉法狮长期以来在植物化学领域表现出色。这一切都可以追溯到上世纪之交，当时在法国普罗旺斯进行精油蒸馏。该公司逐渐扩展了这一核心专业知识，包括选择性提取植物化学物质，为化妆品行业提供创新、有效的活性物质。",
       "updatedAt": "2026-09-04T10:18:37.170Z"
+    },
+    {
+      "id": 89,
+      "pageKey": "skin-biology",
+      "title": "皮肤生物学",
+      "contentHtml": "<div class=\"block-accroche\">\n<div class=\"clearfix text-formatted field field--name-field-chapeau field--type-text-long field--label-hidden field__item\">\n<p><strong><span>嘉法狮于 2013 年在其总部开设了一个细胞生物学实验室，包括洁净室。实验室技术人员和科学家致力于皮肤细胞和组织的研究，并开展皮肤生物学研究，旨在开发化妆品验证测试和创新研究模型。</span></strong></p>\n</div>\n</div>\n<div class=\"node__content\">\n<div id=\"cell-culture-models-substantiate-cosmetic-active-ingredients\" class=\"paragraph paragraph--type--titre-h2 paragraph--view-mode--default\">\n<h2 id=\"p4088\"><span>细胞培养模型证实化妆品活性成分</span></h2>\n</div>\n<div id=\"p4089\" class=\"paragraph paragraph--type--texte-encadre paragraph--view-mode--default\">\n<div class=\"clearfix text-formatted field field--name-field-texte-encadre field--type-text-long field--label-hidden field__item\">\n<p><span>我们的活性成分通过一系列适合分子筛选的功效测试得到证实：</span></p>\n<ul>\n<li><strong><span>单层细胞培养的简单模型</span></strong><span>（成纤维细胞、角质细胞、黑素细胞、脂肪细胞和皮脂细胞）用于研究活性成分对细胞代谢（细胞增殖和蛋白质合成）的功效，</span></li>\n<li><strong><span>开发多分层模型</span></strong><span>（例如球体培养物）以达到基质目标并完成筛选过程。</span></li>\n</ul>\n</div>\n</div>\n<div id=\"3d-models-artificial-skin\" class=\"paragraph paragraph--type--titre-h2 paragraph--view-mode--default\">\n<h2 id=\"p4090\"><span>人造皮肤 3D 模型</span></h2>\n</div>\n<div id=\"p4091\" class=\"paragraph paragraph--type--texte-encadre paragraph--view-mode--default\">\n<div class=\"clearfix text-formatted field field--name-field-texte-encadre field--type-text-long field--label-hidden field__item\">\n<p><span>我们还使用</span><strong><span>先进的 3D 人造皮肤模型和重建表皮、真皮和皮肤</span></strong><span>。人体皮肤活检用于模拟皮肤生理学并分离创新的生物机制和目标。这些模型能够识别我们活性成分的作用机制和生物特性。</span></p>\n</div>\n</div>\n<div id=\"innovation-through-research-skin-biology\" class=\"paragraph paragraph--type--titre-h2 paragraph--view-mode--default\">\n<h2 id=\"p4092\"><span>通过皮肤生物学研究进行创新</span></h2>\n</div>\n<div id=\"p4093\" class=\"paragraph paragraph--type--texte-encadre paragraph--view-mode--default\">\n<div class=\"clearfix text-formatted field field--name-field-texte-encadre field--type-text-long field--label-hidden field__item\">\n<p><span>我们与学术研究机构合作进行的皮肤生物学研究为我们提供了最前沿的创新技术。</span><strong><span>3D 人造皮肤培养不仅可以证明功效，还可以作为研究模型，以更好地了解皮肤病理生理学（衰老、紫外线、污染和压力），并发现活性成分开发的新美容目标。</span></strong></p>\n<p><span>嘉法狮在细胞培养和组织工程方面的专业知识与生化、酶学和免疫学方法以及显微镜和图像分析相匹配。</span></p>\n</div>\n</div>\n</div>",
+      "content": "[{\"type\":\"hero\",\"data\":{\"title\":\"皮肤生物学\",\"summary\":\"嘉法狮于 2013 年在其总部开设了一个细胞生物学实验室，包括洁净室。实验室技术人员和科学家致力于皮肤细胞和组织的研究，并开展皮肤生物学研究，旨在开发化妆品验证测试和创新研究模型。\",\"backgroundImage\":\"/sites/default/files/styles/page_banner_desktop_full/public/2023-07/skin-biology-2_0.jpg.jpg\",\"buttons\":[],\"videoUrl\":\"\",\"videoType\":\"\"}}]",
+      "slug": null,
+      "sortOrder": 38,
+      "metaTitle": "皮肤生物学 ⋅ 嘉法狮",
+      "metaDescription": "嘉法狮于 2013 年在其总部开设了一个细胞生物学实验室，包括洁净室。实验室技术人员和科学家致力于皮肤细胞和组织的研究，并开展皮肤生物学研究，旨在开发化妆品验证测试和创新研究模型。",
+      "updatedAt": "2026-09-04T10:31:26.847Z"
     }
   ]
 }
