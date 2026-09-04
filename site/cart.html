@@ -423,7 +423,7 @@
           // 使用新的 Cart API 删除商品
           GatteAPI.Cart.remove(item.ID).then((res) => {
             console.log(res);
-            if (res.code == 0 || res.data && res.data.code == 0) {
+            if (res.data) {
               item.show = "display:none";
               if (item.goodsCategoryId == 117) {
                 const index = data.pharmaceuticals.list.findIndex(i => i.ID === item.ID);
