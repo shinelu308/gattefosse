@@ -19,6 +19,7 @@ model User {
   company       String?
   industry      String?
   jobFunction   String?   @map("job_function")
+  department    String?   // 员工所属部门（企业组织架构内管理，会员为空）
   phone         String?
   role          String    @default("user")
   status        String    @default("pending")

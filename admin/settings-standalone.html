@@ -23,8 +23,9 @@ h1 { font-size: 20px; margin-bottom: 4px; color: #232426; }
 .form-group { margin-bottom: 14px; }
 label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #333; }
 label .hint { font-weight: 400; color: #aaa; font-size: 12px; }
-input, textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+input, textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; background: #fff; }
 input:focus, textarea:focus { outline: none; border-color: #8EB73C; }
+input:disabled { background: #f5f6f7; color: #999; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 button { padding: 8px 20px; background: #8EB73C; color: white; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; }
 button:hover:not(:disabled) { background: #7da334; }
@@ -32,11 +33,16 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 button.btn-outline { background: #fff; color: #555; border: 1px solid #ddd; }
 button.btn-outline:hover { border-color: #8EB73C; color: #8EB73C; background: #fff; }
 button.btn-sm { padding: 4px 12px; font-size: 12px; }
+button.btn-danger-sm { padding: 4px 12px; font-size: 12px; background: #fff; color: #d9534f; border: 1px solid #d9534f; }
+button.btn-danger-sm:hover { background: #fdf2f2; }
 .save-bar { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
 .save-msg { font-size: 13px; color: #6f9a24; display: none; }
-.loading { color: #999; padding: 20px; text-align: center; }
 .sync-tip { display: flex; align-items: center; gap: 6px; background: #f4f8ea; border: 1px solid #dce8c2; color: #6f9a24; font-size: 12px; padding: 8px 12px; border-radius: 5px; margin-bottom: 16px; }
+.staff-tip { display: flex; align-items: center; gap: 6px; background: #f0f6fb; border: 1px solid #cfe2f2; color: #3a6ea5; font-size: 12px; padding: 8px 12px; border-radius: 5px; margin-bottom: 16px; }
 /* org structure */
+.section-head { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 14px; }
+.section-title { font-size: 14px; font-weight: 600; color: #232426; }
+.section-title .cnt { font-size: 12px; color: #999; font-weight: 400; margin-left: 6px; }
 .org-list { display: flex; flex-direction: column; gap: 12px; }
 .org-item { border: 1px solid #e5e5e5; border-radius: 6px; padding: 14px 16px; background: #fafbfa; }
 .org-item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -46,8 +52,30 @@ button.btn-sm { padding: 4px 12px; font-size: 12px; }
 .org-grid { display: grid; grid-template-columns: 1fr 1fr 90px; gap: 10px; }
 .org-grid .form-group { margin-bottom: 8px; }
 .org-grid textarea { grid-column: 1 / -1; min-height: 52px; resize: vertical; font-family: inherit; }
+.org-members { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e5e5e5; }
+.org-members .m-label { font-size: 12px; color: #999; margin-bottom: 6px; }
+.org-members .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.member-chip { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #e0e6d8; border-radius: 14px; padding: 3px 10px; font-size: 12px; color: #333; }
+.member-chip .avatar { width: 20px; height: 20px; border-radius: 50%; background: #8EB73C; color: #fff; font-size: 11px; line-height: 20px; text-align: center; flex: none; }
+.member-chip .r { font-size: 10px; padding: 0 6px; border-radius: 8px; }
+.r-super { background: #eef3e2; color: #6f9a24; }
+.r-editor { background: #e8f1fb; color: #3a6ea5; }
+.member-chip .none { color: #bbb; font-size: 12px; }
 .org-empty { text-align: center; color: #999; font-size: 13px; padding: 30px 0; }
 .add-org { margin-top: 12px; }
+/* staff table */
+.staff-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.staff-table th, .staff-table td { border-bottom: 1px solid #f0f0f0; padding: 10px 12px; text-align: left; vertical-align: middle; }
+.staff-table thead th { background: #fafbfa; font-size: 12px; color: #666; white-space: nowrap; }
+.staff-table td .avatar { width: 32px; height: 32px; border-radius: 50%; background: #8EB73C; color: #fff; font-size: 13px; line-height: 32px; text-align: center; display: inline-block; margin-right: 8px; vertical-align: middle; }
+.staff-table select { width: auto; min-width: 120px; padding: 5px 8px; font-size: 12px; }
+.staff-table .actions { white-space: nowrap; }
+.status-tag { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; white-space: nowrap; }
+.st-active { background: #f4f9e9; color: #6f9a24; }
+.st-disabled { background: #e8ebed; color: #54616C; }
+/* staff form */
+.staff-form { border: 1px solid #e5e5e5; border-radius: 6px; padding: 16px; background: #fafbfa; margin-bottom: 16px; }
+.staff-form .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 /* permission matrix */
 .perm-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .perm-table th, .perm-table td { border: 1px solid #e8e8e8; padding: 9px 12px; text-align: left; }
@@ -59,11 +87,12 @@ button.btn-sm { padding: 4px 12px; font-size: 12px; }
 .role-super { background: #eef3e2; color: #6f9a24; }
 .role-editor { background: #e8f1fb; color: #3a6ea5; }
 .role-user { background: #f0f0f0; color: #777; }
+.loading { color: #999; padding: 20px; text-align: center; }
 </style>
 </head>
 <body>
 <h1>系统设置</h1>
-<p class="subtitle">企业信息 · 组织架构 · 功能权限</p>
+<p class="subtitle">企业信息 · 组织架构与员工 · 功能权限</p>
 
 <div class="tabs">
   <button class="tab active" data-tab="basic" onclick="switchTab('basic')"><span class="tab-no">1</span>企业基本信息</button>
@@ -137,10 +166,76 @@ button.btn-sm { padding: 4px 12px; font-size: 12px; }
 <!-- ======== Tab 2：企业组织架构 ======== -->
 <div class="card" id="tab-org">
   <div class="card-title">企业组织架构</div>
-  <div class="card-desc">维护公司部门 / 团队结构，按排序值从小到大展示</div>
+  <div class="card-desc">管理公司部门结构及各部门人员 · 部门结构随「保存全部设置」提交，人员分配调整后即时生效</div>
+
+  <!-- 部门结构 -->
+  <div class="section-head">
+    <div class="section-title">部门结构 <span class="cnt" id="orgCnt"></span></div>
+  </div>
   <div class="org-list" id="orgList"></div>
   <div class="org-empty" id="orgEmpty" style="display:none;">暂无部门，点击下方按钮添加</div>
   <button class="btn-outline add-org" onclick="addOrgRow()">+ 添加部门</button>
+
+  <!-- 员工账号 -->
+  <div class="section-head" style="margin-top:32px;">
+    <div class="section-title">员工账号 <span class="cnt" id="staffCnt"></span></div>
+    <button class="btn-sm" onclick="showStaffForm()">+ 新增员工</button>
+  </div>
+  <div class="staff-tip">✦ 超级管理员与编辑员等系统操作人员在此管理，不再出现在「用户管理」—— 用户管理仅显示前台注册会员</div>
+
+  <!-- 新增/编辑员工表单 -->
+  <div class="staff-form" id="staffFormWrap" style="display:none;">
+    <div class="form-group" style="margin-top:0;">
+      <label id="staffFormTitle">新增员工</label>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>姓名 <span class="hint">（必填）</span></label>
+        <input id="sf_fullName" placeholder="如：张三">
+      </div>
+      <div class="form-group">
+        <label>邮箱 <span class="hint" id="sf_emailHint">（必填，登录账号）</span></label>
+        <input id="sf_email" placeholder="name@gattefosse.cn">
+      </div>
+      <div class="form-group" id="sf_pwdGroup">
+        <label>初始密码 <span class="hint">（至少 6 位）</span></label>
+        <input id="sf_password" type="password" placeholder="登录密码">
+      </div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>系统角色</label>
+        <select id="sf_role">
+          <option value="editor">编辑员</option>
+          <option value="super_admin">超级管理员</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>所属部门</label>
+        <select id="sf_department"><option value="">未分配</option></select>
+      </div>
+      <div class="form-group">
+        <label>职位</label>
+        <input id="sf_jobFunction" placeholder="如：市场经理">
+      </div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>电话</label>
+        <input id="sf_phone" placeholder="+86 138 xxxx xxxx">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-sm" id="staffSaveBtn" onclick="saveStaffForm()">创建员工</button>
+      <button class="btn-outline btn-sm" onclick="hideStaffForm()">取消</button>
+      <button class="btn-outline btn-sm" id="staffResetPwdBtn" style="display:none;" onclick="resetStaffPwd()">重置登录密码</button>
+    </div>
+  </div>
+
+  <table class="staff-table">
+    <thead><tr><th>姓名</th><th>邮箱</th><th>系统角色</th><th>所属部门</th><th>状态</th><th class="actions">操作</th></tr></thead>
+    <tbody id="staffBody"><tr><td colspan="6" class="loading">加载中...</td></tr></tbody>
+  </table>
 </div>
 
 <!-- ======== Tab 3：系统功能权限 ======== -->
@@ -187,6 +282,7 @@ async function api(path, opts = {}) {
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.card').forEach(c => c.classList.toggle('active', c.id === 'tab-' + name));
+  if (name === 'org') refreshStaff(); // 回到该页时刷新员工列表
 }
 
 /* ===== 模块定义（与后台侧边栏一致） ===== */
@@ -205,8 +301,10 @@ const MODULES = [
   { key: 'settings',  label: '系统设置' },
 ];
 const PERM_ROLES = ['editor', 'user'];
-let permData = {};   // { editor: [module...], user: [...] }
-let orgData = [];    // [{ name, leader, desc, sort }]
+let permData = {};    // { editor: [module...], user: [...] }
+let orgData = [];     // [{ name, leader, desc, sort }]
+let staffList = [];   // 后台员工（super_admin / editor）
+let editingStaffId = null; // null=新增模式
 
 /* ===== load ===== */
 async function loadAll() {
@@ -220,6 +318,7 @@ async function loadAll() {
     }
     // Tab2 组织架构
     try { orgData = JSON.parse(map.org_structure || '[]'); } catch (e) { orgData = []; }
+    await refreshStaff();
     renderOrg();
     // Tab3 权限矩阵
     try { permData = JSON.parse(map.role_permissions || 'null') || {}; } catch (e) { permData = {}; }
@@ -227,25 +326,40 @@ async function loadAll() {
   } catch (e) { console.error('Load failed:', e); }
 }
 
-/* ===== Tab2 组织架构 ===== */
+/* ===== Tab2 组织架构：部门 ===== */
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 function renderOrg() {
   const wrap = document.getElementById('orgList');
   document.getElementById('orgEmpty').style.display = orgData.length ? 'none' : 'block';
-  wrap.innerHTML = orgData.map((o, i) => `
+  document.getElementById('orgCnt').textContent = orgData.length ? '（' + orgData.length + ' 个部门）' : '';
+  wrap.innerHTML = orgData.map((o, i) => {
+    const members = staffList.filter(s => s.department === o.name);
+    const chips = members.length
+      ? members.map(s => `
+          <span class="member-chip">
+            <span class="avatar">${esc((s.fullName || '?').charAt(0))}</span>
+            ${esc(s.fullName)}
+            <span class="r ${s.role === 'super_admin' ? 'r-super' : 'r-editor'}">${s.role === 'super_admin' ? '超管' : '编辑'}</span>
+          </span>`).join('')
+      : '<span class="none">暂无人员，可在下方员工账号中分配</span>';
+    return `
     <div class="org-item">
       <div class="org-item-head">
         <span class="org-idx">部门 ${i + 1}</span>
         <button class="org-del" onclick="removeOrgRow(${i})">✕ 删除</button>
       </div>
       <div class="org-grid">
-        <div class="form-group"><label>部门名称</label><input value="${esc(o.name)}" oninput="orgData[${i}].name=this.value" placeholder="如：市场部"></div>
+        <div class="form-group"><label>部门名称</label><input value="${esc(o.name)}" oninput="orgData[${i}].name=this.value" onchange="renderOrg()" placeholder="如：市场部"></div>
         <div class="form-group"><label>负责人</label><input value="${esc(o.leader)}" oninput="orgData[${i}].leader=this.value" placeholder="如：张三"></div>
         <div class="form-group"><label>排序</label><input type="number" value="${Number(o.sort) || 0}" oninput="orgData[${i}].sort=Number(this.value)||0"></div>
         <textarea oninput="orgData[${i}].desc=this.value" placeholder="职责说明（可选）">${esc(o.desc)}</textarea>
       </div>
-    </div>
-  `).join('');
+      <div class="org-members">
+        <div class="m-label">部门人员（${members.length} 人，随下方员工账号的「所属部门」自动归组）</div>
+        <div class="chips">${chips}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 function addOrgRow() {
   orgData.push({ name: '', leader: '', desc: '', sort: (orgData.length + 1) * 10 });
@@ -254,6 +368,134 @@ function addOrgRow() {
 function removeOrgRow(i) {
   orgData.splice(i, 1);
   renderOrg();
+}
+
+/* ===== Tab2 组织架构：员工账号 ===== */
+function deptOptions(selected) {
+  return '<option value="">未分配</option>' + orgData.filter(o => o.name && o.name.trim())
+    .map(o => `<option value="${esc(o.name)}" ${o.name === selected ? 'selected' : ''}>${esc(o.name)}</option>`).join('');
+}
+async function refreshStaff() {
+  try {
+    const data = await api('/admin/users?scope=staff&limit=100');
+    staffList = data.list || [];
+    document.getElementById('staffCnt').textContent = staffList.length ? '（' + staffList.length + ' 人）' : '';
+    renderStaff();
+    renderOrg(); // 部门卡片成员联动
+  } catch (e) {
+    document.getElementById('staffBody').innerHTML = '<tr><td colspan="6" class="loading">加载失败：' + esc(e.message) + '</td></tr>';
+  }
+}
+function renderStaff() {
+  const body = document.getElementById('staffBody');
+  if (!staffList.length) {
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;padding:30px 0;">暂无员工账号，点击「+ 新增员工」创建</td></tr>';
+    return;
+  }
+  body.innerHTML = staffList.map(s => `
+    <tr>
+      <td><span class="avatar">${esc((s.fullName || '?').charAt(0))}</span><strong>${esc(s.fullName)}</strong>${s.jobFunction ? '<div style="font-size:11px;color:#999;margin-left:40px;">' + esc(s.jobFunction) + '</div>' : ''}</td>
+      <td>${esc(s.email)}${s.phone ? '<div style="font-size:11px;color:#999;">' + esc(s.phone) + '</div>' : ''}</td>
+      <td><span class="role-badge ${s.role === 'super_admin' ? 'role-super' : 'role-editor'}">${s.role === 'super_admin' ? '超级管理员' : '编辑员'}</span></td>
+      <td><select onchange="assignDept(${s.id}, this.value)">${deptOptions(s.department)}</select></td>
+      <td><span class="status-tag ${s.status === 'active' ? 'st-active' : 'st-disabled'}">${s.status === 'active' ? '启用' : '已禁用'}</span></td>
+      <td class="actions">
+        <button class="btn-outline btn-sm" onclick="editStaff(${s.id})">编辑</button>
+        <button class="btn-outline btn-sm" onclick="toggleStaffStatus(${s.id}, '${s.status === 'active' ? 'disabled' : 'active'}')">${s.status === 'active' ? '禁用' : '启用'}</button>
+        <button class="btn-danger-sm" onclick="delStaff(${s.id}, '${esc(s.fullName)}')">删除</button>
+      </td>
+    </tr>
+  `).join('');
+}
+async function assignDept(id, dept) {
+  try {
+    await api('/admin/users/' + id, { method: 'PUT', body: JSON.stringify({ department: dept }) });
+    const s = staffList.find(x => x.id === id);
+    if (s) s.department = dept || null;
+    renderOrg();
+  } catch (e) { alert('分配失败: ' + e.message); refreshStaff(); }
+}
+function fillDeptSelect() {
+  document.getElementById('sf_department').innerHTML = deptOptions('');
+}
+function showStaffForm() {
+  editingStaffId = null;
+  document.getElementById('staffFormTitle').textContent = '新增员工';
+  document.getElementById('staffSaveBtn').textContent = '创建员工';
+  document.getElementById('staffResetPwdBtn').style.display = 'none';
+  document.getElementById('sf_email').disabled = false;
+  ['sf_fullName','sf_email','sf_password','sf_jobFunction','sf_phone'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sf_role').value = 'editor';
+  fillDeptSelect();
+  document.getElementById('staffFormWrap').style.display = 'block';
+}
+function editStaff(id) {
+  const s = staffList.find(x => x.id === id);
+  if (!s) return;
+  editingStaffId = id;
+  document.getElementById('staffFormTitle').textContent = '编辑员工 — ' + s.fullName;
+  document.getElementById('staffSaveBtn').textContent = '保存修改';
+  document.getElementById('staffResetPwdBtn').style.display = 'inline-block';
+  document.getElementById('sf_fullName').value = s.fullName || '';
+  document.getElementById('sf_email').value = s.email || '';
+  document.getElementById('sf_email').disabled = true; // 邮箱是登录账号，编辑时不可改
+  document.getElementById('sf_password').value = '';
+  document.getElementById('sf_role').value = s.role;
+  fillDeptSelect();
+  document.getElementById('sf_department').value = s.department || '';
+  document.getElementById('sf_jobFunction').value = s.jobFunction || '';
+  document.getElementById('sf_phone').value = s.phone || '';
+  document.getElementById('staffFormWrap').style.display = 'block';
+  document.getElementById('staffFormWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function hideStaffForm() {
+  document.getElementById('staffFormWrap').style.display = 'none';
+  editingStaffId = null;
+}
+async function saveStaffForm() {
+  const fullName = document.getElementById('sf_fullName').value.trim();
+  const email = document.getElementById('sf_email').value.trim();
+  const password = document.getElementById('sf_password').value;
+  const role = document.getElementById('sf_role').value;
+  const department = document.getElementById('sf_department').value;
+  const jobFunction = document.getElementById('sf_jobFunction').value.trim();
+  const phone = document.getElementById('sf_phone').value.trim();
+  const btn = document.getElementById('staffSaveBtn');
+  btn.disabled = true;
+  try {
+    if (editingStaffId) {
+      await api('/admin/users/' + editingStaffId, { method: 'PUT', body: JSON.stringify({ fullName, role, department, jobFunction, phone }) });
+    } else {
+      if (!fullName || !email || !password) { alert('姓名、邮箱、初始密码为必填项'); return; }
+      await api('/admin/users', { method: 'POST', body: JSON.stringify({ fullName, email, password, role, department, jobFunction, phone }) });
+    }
+    hideStaffForm();
+    await refreshStaff();
+  } catch (e) { alert('保存失败: ' + e.message); }
+  finally { btn.disabled = false; }
+}
+async function resetStaffPwd() {
+  if (!editingStaffId) return;
+  const pwd = prompt('为该员工设置新密码（至少 6 位）：');
+  if (pwd === null) return;
+  if (pwd.length < 6) { alert('密码至少 6 位'); return; }
+  try {
+    await api('/admin/users/' + editingStaffId + '/password', { method: 'PUT', body: JSON.stringify({ password: pwd }) });
+    alert('✓ 密码已重置');
+  } catch (e) { alert('重置失败: ' + e.message); }
+}
+async function toggleStaffStatus(id, status) {
+  try {
+    await api('/admin/users/' + id + '/status', { method: 'PUT', body: JSON.stringify({ status }) });
+    await refreshStaff();
+  } catch (e) { alert('操作失败: ' + e.message); }
+}
+async function delStaff(id, name) {
+  if (!confirm('确定删除员工「' + name + '」？此操作不可恢复。')) return;
+  try {
+    await api('/admin/users/' + id, { method: 'DELETE' });
+    await refreshStaff();
+  } catch (e) { alert('删除失败: ' + e.message); }
 }
 
 /* ===== Tab3 权限矩阵 ===== */

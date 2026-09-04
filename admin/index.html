@@ -3115,43 +3115,36 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
-        <!-- ==================== 用户列表 ==================== -->
+        <!-- ==================== 用户列表（前台注册会员） ==================== -->
         <div v-if="currentPage === 'user-list'">
           <h1 class="page-title">用户管理</h1>
-          <p class="page-subtitle">管理注册用户，审核账号，分配角色</p>
+          <p class="page-subtitle">管理前台注册会员，审核账号 · 公司员工与系统操作人员请在「系统设置 → 企业组织架构」中管理</p>
           <div class="card">
             <div class="card-header">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                 <input type="text" class="form-control" style="max-width:220px;" placeholder="搜索姓名/邮箱/公司..." v-model="userFilter.keyword" @keyup.enter="loadUserList()">
-                <select class="form-control" style="max-width:120px;" v-model="userFilter.role" @change="loadUserList()">
-                  <option value="">全部角色</option>
-                  <option value="super_admin">超级管理员</option>
-                  <option value="editor">编辑员</option>
-                  <option value="user">普通用户</option>
-                </select>
                 <select class="form-control" style="max-width:100px;" v-model="userFilter.status" @change="loadUserList()">
                   <option value="">全部状态</option>
                   <option value="active">已激活</option>
                   <option value="pending">待审核</option>
                   <option value="disabled">已禁用</option>
                 </select>
-                <span style="font-size:13px;color:var(--text-muted);margin-left:8px;">共 {{ userPagination.total }} 人</span>
+                <span style="font-size:13px;color:var(--text-muted);margin-left:8px;">共 {{ userPagination.total }} 位会员</span>
               </div>
             </div>
             <div class="card-body" style="padding:0;">
               <table class="table">
-                <thead><tr><th>姓名</th><th>邮箱</th><th>公司</th><th>角色</th><th>状态</th><th>注册时间</th><th>操作</th></tr></thead>
+                <thead><tr><th>姓名</th><th>邮箱</th><th>公司</th><th style="white-space:nowrap;">状态</th><th>注册时间</th><th style="white-space:nowrap;">操作</th></tr></thead>
                 <tbody>
-                  <tr v-if="userList.length===0"><td colspan="7" class="cell-center">暂无用户数据</td></tr>
-                  <tr v-for="item in userList">
+                  <tr v-if="userList.length===0"><td colspan="6" class="cell-center">暂无会员数据</td></tr>
+                  <tr v-for="item in userList" :key="item.id">
                     <td><strong>{{ item.fullName }}</strong></td>
                     <td>{{ item.email }}</td>
                     <td>{{ item.company || '-' }}</td>
-                    <td><span class="tag" :class="item.role==='super_admin'?'tag-red':item.role==='editor'?'tag-amber':'tag-slate'">{{ {super_admin:'超管',editor:'编辑员',user:'用户'}[item.role] }}</span></td>
-                    <td><span class="badge" :class="item.status==='active'?'badge-success':item.status==='pending'?'badge-warning':'badge-danger'">{{ {active:'已激活',pending:'待审核',disabled:'已禁用'}[item.status] }}</span></td>
+                    <td><span :class="item.status==='active' ? 'tag tag-green' : item.status==='pending' ? 'tag tag-amber' : 'tag tag-red'">{{ {active:'已激活',pending:'待审核',disabled:'已禁用'}[item.status] }}</span></td>
                     <td class="table-date">{{ item.createdAt ? new Date(item.createdAt).toISOString().slice(0,10) : '-' }}</td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" @click="editUser(item)">编辑</button>
+                    <td class="table-actions">
+                      <button class="btn btn-outline btn-sm" @click="editUser(item)">编辑</button>
                       <button v-if="item.status==='pending'" class="btn btn-sm btn-primary" @click="updateUserStatus(item.id,'active')">审核通过</button>
                       <button v-if="item.status==='active'" class="btn btn-sm btn-slate" @click="updateUserStatus(item.id,'disabled')">禁用</button>
                       <button v-if="item.status==='disabled'" class="btn btn-sm btn-outline" @click="updateUserStatus(item.id,'active')">启用</button>
@@ -3205,20 +3198,16 @@ const QUILL_TOOLBAR = [
               </div>
               <div class="form-row">
                 <div class="form-group">
-                  <label>角色</label>
-                  <select class="form-control" v-model="editingUser.role">
-                    <option value="user">普通用户</option>
-                    <option value="editor">编辑员</option>
-                    <option value="super_admin">超级管理员</option>
-                  </select>
-                </div>
-                <div class="form-group">
                   <label>状态</label>
                   <select class="form-control" v-model="editingUser.status">
                     <option value="active">已激活</option>
                     <option value="pending">待审核</option>
                     <option value="disabled">已禁用</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label>会员类型 <span class="hint">（不可更改）</span></label>
+                  <input type="text" class="form-control" value="前台注册会员" disabled>
                 </div>
               </div>
             </div>
@@ -6689,11 +6678,10 @@ createApp({
       const m = { draft:'草稿', submitted:'已提交', processing:'处理中', shipped:'已发货', completed:'已完成', cancelled:'已取消' };
       return m[status] || status;
     },
-    // User Management
+    // User Management（仅前台注册会员，员工在企业组织架构内管理）
     async loadUserList() {
-      const params = new URLSearchParams({ page: this.userFilter.page, limit: this.userFilter.limit });
+      const params = new URLSearchParams({ page: this.userFilter.page, limit: this.userFilter.limit, scope: 'member' });
       if (this.userFilter.keyword) params.set('keyword', this.userFilter.keyword);
-      if (this.userFilter.role) params.set('role', this.userFilter.role);
       if (this.userFilter.status) params.set('status', this.userFilter.status);
       try {
         const data = await this.api('/admin/users?' + params.toString());
