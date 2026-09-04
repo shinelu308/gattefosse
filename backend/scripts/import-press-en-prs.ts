@@ -88,6 +88,19 @@ async function main() {
   // 4) 底部相关卡图：本地无 about-us.jpg.webp，重写为已有 .jpg.jpg 变体
   html = html.split('2023-06/about-us.jpg.webp').join('2023-06/about-us.jpg.jpg');
 
+  // 5) 官方图片区：删除多余的 rd2 竖图条目（英文站为 12 张无此图，竖图会撑乱 4 列网格）
+  const rd2Idx = html.indexOf('gattefosse_rd2_chloelapeyssonnie');
+  if (rd2Idx !== -1) {
+    const fs2 = html.lastIndexOf('<div class="field__item">', rd2Idx);
+    const fe2 = html.indexOf('</article>', rd2Idx) + '</article>'.length;
+    html = html.slice(0, fs2) + html.slice(fe2);
+  }
+
+  // 6) 官方图片区：rd1 条目后多一个 </div> 提前闭合 gallery 容器，导致 garden1 被挤出 4 列网格
+  const badClose = '</article>\n</div>\n\n</div>\n<div class="field__item">\n<article';
+  const goodClose = '</article>\n</div>\n<div class="field__item">\n<article';
+  html = html.split(badClose).join(goodClose);
+
   await prisma.pageContent.update({ where: { id: 97 }, data: { contentHtml: html } });
 
   // 自检

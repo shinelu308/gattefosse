@@ -1,0 +1,77 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "logo-round256.png",
+         "16": "logo-round128.png",
+         "32": "logo-round128.png",
+         "48": "logo-round128.png"
+      },
+      "default_title": "__MSG_action_title__"
+   },
+   "background": {
+      "service_worker": "static/js/background.js"
+   },
+   "commands": {
+      "advanced_select": {
+         "description": "多链接总结",
+         "suggested_key": {
+            "default": "Alt+Q"
+         }
+      },
+      "commands_modal": {
+         "description": "快捷弹窗",
+         "suggested_key": {
+            "default": "Alt+K"
+         }
+      },
+      "summary_page": {
+         "description": "页面总结",
+         "suggested_key": {
+            "default": "Alt+S"
+         }
+      },
+      "web_translate": {
+         "description": "网页翻译",
+         "suggested_key": {
+            "default": "Alt+T"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "js": [ "static/js/content.js" ],
+      "matches": [ "\u003Call_urls>" ]
+   } ],
+   "default_locale": "zh_CN",
+   "description": "__MSG_extension_description__",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "logo-round256.png",
+      "16": "logo-round128.png",
+      "32": "logo-round128.png",
+      "48": "logo-round128.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyHSi5fKRTULFH2xGfRIwOIqFVdGoD1pREgodKWhtJp/Wl1ZZkQCgubIs53ovV5ZYkHZcrXTRyjoPSsX87JWexE9hzxlAZRi67gqA654/ufiCtnSvymu3RWL8k2gpCzkfkKOe1Z1vZLaTll/X6N4CraYoXtM0wAmn05y7BLVzTalTb7jWRQeyJKkl0Mg2Mc9otY04UkOeBJ3QMCGAv8dw8muHShHQMq7VYitekF5ssO+5elXUhX3zZDY88GhgsgeVbhVzRxLzRFKl31F1OaP6tWnbCBVqks5yNGMP6eLkVjlR624ewTbn0mtTfDurfVKR6B0jgdehv0FRZUt5UREa/QIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_extension_name__",
+   "options_page": "options.html",
+   "permissions": [ "storage", "activeTab", "sidePanel", "contextMenus", "scripting", "tabs", "cookies", "tts", "alarms", "nativeMessaging" ],
+   "short_name": "__MSG_action_title__",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.27",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "*.css" ]
+   }, {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "*.js" ]
+   }, {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "static/css/*" ]
+   }, {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "prompts.json" ]
+   }, {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "static/media/*" ]
+   } ]
+}

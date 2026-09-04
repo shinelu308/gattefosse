@@ -69,6 +69,16 @@
     href="sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" />
+  <style>
+    /* 官方图片区：对齐英文站 gallery_image_blocs 统一裁剪（230x130），防竖图撑乱网格 */
+    .c-gallery--blocs .image-blocs .field__items > .field__item { width: 25%; }
+    .c-gallery--blocs .c-image__container img.image-style-gallery-image-blocs {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 230 / 130;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
   <nav role="navigation" aria-label="Accès rapide au contenu">
