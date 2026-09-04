@@ -447,6 +447,28 @@
     }
   }
 
+  // 会员下拉菜单：鼠标移出自动收起（200ms 延迟防误触）
+  var accMenuWrap = document.querySelector(".account-menu");
+  if (accMenuWrap) {
+    var accHideTimer = null;
+    accMenuWrap.addEventListener("mouseleave", function () {
+      accHideTimer = setTimeout(function () {
+        var el = document.getElementById("collapseAccMenu");
+        if (el && el.classList.contains("show")) {
+          if (window.bootstrap && bootstrap.Collapse) {
+            var inst = bootstrap.Collapse.getInstance(el);
+            if (inst) { inst.hide(); } else { el.classList.remove("show"); }
+          } else {
+            el.classList.remove("show");
+          }
+        }
+      }, 200);
+    });
+    accMenuWrap.addEventListener("mouseenter", function () {
+      if (accHideTimer) { clearTimeout(accHideTimer); accHideTimer = null; }
+    });
+  }
+
   // 页面加载完成后执行
   $(document).ready(function () {
     updateLoginButton();
