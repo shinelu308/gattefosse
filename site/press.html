@@ -71,7 +71,6 @@
     href="sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" />
   <style>
     /* 官方图片区：对齐英文站 gallery_image_blocs 统一裁剪（230x130），防竖图撑乱网格 */
-    .c-gallery--blocs .image-blocs .field__items > .field__item { width: 25%; }
     .c-gallery--blocs .c-image__container img.image-style-gallery-image-blocs {
       width: 100%;
       height: auto;
@@ -237,11 +236,29 @@
     }
   }
 </script>
+    <script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron5fcd.js?1702897171"></script>
     <script src="sites/default/files/js/js_CgNyoAz4OLa5vvP3hfEm88q-44JjhKSP85sJZiRBSH0.js"></script>
     <script src="sites/default/files/js/js_Ao9yLE2DoX4rsNLQQYBV5LPbbsyuuUQBGff5XBViulk.js"></script>
-    <script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron5fcd.js?1702897171"></script>
     <script src="sites/default/files/js/js_d1hNotEhqCPM2X6I2qDnZnWvzJJmU85s9LFYf-tteVY.js"></script>
     <script src="sites/default/files/js/js_5CqLZg4kw6oKphrndr5b3xDqkEX9sG9D28caXcR5-r4.js"></script>
+    <script>
+      /* Cookie 管理面板：本地无 drupal-settings-json，Drupal behaviors 链不执行，
+         聚合 JS 里的 tarteaucitron.init 不会被调用。此处以相同配置显式初始化
+         （必须放在聚合 JS 之后，避免 tarteaucitronForceLanguage 被其覆盖为空） */
+      window.tarteaucitronForceLanguage = 'zh';
+      window.tarteaucitron.init({
+        'privacyUrl': '', 'hashtag': '#tarteaucitron', 'cookieName': 'tarteaucitron',
+        'orientation': 'bottom', 'closePopup': true, 'showIcon': false, 'iconPosition': 'BottomLeft',
+        'adblocker': false, 'DenyAllCta': true, 'AcceptAllCta': true, 'highPrivacy': true,
+        'handleBrowserDNTRequest': false, 'removeCredit': true, 'moreInfoLink': true,
+        'useExternalCss': false, 'useExternalJs': false, 'readmoreLink': '/cookies', 'mandatory': true
+      });
+      if (window.jQuery) {
+        jQuery(document).on('click', '.cookieOpenDialogBtn', function () {
+          tarteaucitron.userInterface.openPanel(); return false;
+        });
+      }
+    </script>
 <script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>   
 
 <script>/* checkLoginStatus 由 auth.js 统一管理 */</script>

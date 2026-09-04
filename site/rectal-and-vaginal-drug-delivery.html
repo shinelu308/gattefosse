@@ -236,5 +236,25 @@
 <script defer src="https://umami.onlystyle.com.cn/script.js" data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>   
 
 <script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
+
+<!-- Cookie 管理面板（tarteaucitron）：库 + 显式初始化（本地无 Drupal behaviors 链） -->
+<script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron5fcd.js"></script>
+<script>
+  window.tarteaucitronForceLanguage = 'zh';
+  if (window.tarteaucitron && window.tarteaucitron.init) {
+    window.tarteaucitron.init({
+      'privacyUrl': '', 'hashtag': '#tarteaucitron', 'cookieName': 'tarteaucitron',
+      'orientation': 'bottom', 'closePopup': true, 'showIcon': false, 'iconPosition': 'BottomLeft',
+      'adblocker': false, 'DenyAllCta': true, 'AcceptAllCta': true, 'highPrivacy': true,
+      'handleBrowserDNTRequest': false, 'removeCredit': true, 'moreInfoLink': true,
+      'useExternalCss': false, 'useExternalJs': false, 'readmoreLink': '/cookies', 'mandatory': true
+    });
+    if (window.jQuery) {
+      jQuery(document).on('click', '.cookieOpenDialogBtn', function () {
+        tarteaucitron.userInterface.openPanel(); return false;
+      });
+    }
+  }
+</script>
 </body>
 </html>

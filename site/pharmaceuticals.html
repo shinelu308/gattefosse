@@ -529,17 +529,33 @@
     });
     app.mount("#app");
   </script>
-  <!-- 占位 tarteaucitron，避免 Drupal 聚合 JS 调用时报错 -->
-  <script>
-    window.tarteaucitron = { addScript: function(){}, load: function(){} };
-    if (typeof jQuery !== 'undefined') { (function($){ $.fn.slick = $.fn.slick || function(){}; })(jQuery); }
-  </script>
+  
 
 <script defer src="sites/default/files/js/js_i5lI8vq7DHLJcOEWGS5A-g6sfOp4mcnqdPWwI1EB-28.js"></script>
 <script defer src="sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
 <script defer src="sites/default/files/js/js_5WOLE2rEV4C7OV8GPbm3ogNdePOpdul9JBaMBz_IZIA.js"></script>
 
 <script>/* checkLoginStatus 由 auth.js 统一管理 */</script>
+
+<!-- Cookie 管理面板（tarteaucitron）：库 + 显式初始化（本地无 Drupal behaviors 链） -->
+<script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron5fcd.js"></script>
+<script>
+  window.tarteaucitronForceLanguage = 'zh';
+  if (window.tarteaucitron && window.tarteaucitron.init) {
+    window.tarteaucitron.init({
+      'privacyUrl': '', 'hashtag': '#tarteaucitron', 'cookieName': 'tarteaucitron',
+      'orientation': 'bottom', 'closePopup': true, 'showIcon': false, 'iconPosition': 'BottomLeft',
+      'adblocker': false, 'DenyAllCta': true, 'AcceptAllCta': true, 'highPrivacy': true,
+      'handleBrowserDNTRequest': false, 'removeCredit': true, 'moreInfoLink': true,
+      'useExternalCss': false, 'useExternalJs': false, 'readmoreLink': '/cookies', 'mandatory': true
+    });
+    if (window.jQuery) {
+      jQuery(document).on('click', '.cookieOpenDialogBtn', function () {
+        tarteaucitron.userInterface.openPanel(); return false;
+      });
+    }
+  }
+</script>
 </body>
 
 </html>
