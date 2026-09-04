@@ -427,6 +427,7 @@ model PageView {
   ip        String?
   ua        String?
   referer   String?
+  region    String?  // 归属地：国家|省份（如 中国|上海、美国|）
   createdAt DateTime @default(now()) @map("created_at")
 
   @@index([createdAt])

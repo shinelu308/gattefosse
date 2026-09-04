@@ -30,10 +30,10 @@ export async function getVisitOverview(_req: Request, res: Response) {
     prisma.pageView.groupBy({ by: ['visitorId'] }).then((r) => r.length),
   ]);
 
-  // 近 7 天趋势（含今天，共 7 天）
+  // 近 7 天趋势（含今天，共 7 天）+ 地区聚合（同一批数据）
   const sinceRows = await prisma.pageView.findMany({
     where: { createdAt: { gte: days7_0 } },
-    select: { createdAt: true, visitorId: true },
+    select: { createdAt: true, visitorId: true, region: true },
   });
   const trend: { date: string; pv: number; uv: number }[] = [];
   const dayMap = new Map<string, { pv: Set<string> }>();
@@ -48,6 +48,11 @@ export async function getVisitOverview(_req: Request, res: Response) {
     const d = new Date(days7_0.getTime() + i * 24 * 3600 * 1000);
     keyOrder.push(localKey(d));
   }
+  // 地区计数：中国按省份（省图名称），海外按国家（世界图名称）
+  const chinaMap = new Map<string, number>();
+  const overseasMap = new Map<string, number>();
+  const normProvince = (p: string) =>
+    p.replace(/(维吾尔|回族|壮族)?自治区$/, '').replace(/(省|市|特别行政区)$/, '');
   for (const row of sinceRows) {
     const key = localKey(row.createdAt);
     const idx = keyOrder.indexOf(key);
@@ -55,8 +60,21 @@ export async function getVisitOverview(_req: Request, res: Response) {
       trend[idx].pv++;
       dayMap.get(key)!.pv.add(row.visitorId);
     }
+    if (row.region) {
+      const [country, province] = row.region.split('|');
+      if (country === '中国') {
+        // 台湾访问归入中国省份统计
+        const name = province ? normProvince(province) : '未知';
+        chinaMap.set(name, (chinaMap.get(name) || 0) + 1);
+      } else if (country && country !== '内网') {
+        overseasMap.set(country, (overseasMap.get(country) || 0) + 1);
+      }
+    }
   }
   trend.forEach((t, i) => { t.uv = dayMap.get(keyOrder[i])!.pv.size; });
+  const toList = (m: Map<string, number>) =>
+    [...m.entries()].map(([name, pv]) => ({ name, pv })).sort((a, b) => b.pv - a.pv).slice(0, 30);
+  const regions = { china: toList(chinaMap), overseas: toList(overseasMap) };
 
   // 近 7 天热门页面 TOP 8
   const topRows = await prisma.pageView.groupBy({
@@ -74,5 +92,6 @@ export async function getVisitOverview(_req: Request, res: Response) {
     total: { pv: totalPv, uv: totalUv },
     trend,
     topPages,
+    regions,
   }));
 }

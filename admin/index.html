@@ -492,6 +492,10 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .top-list { display: flex; flex-direction: column; gap: 12px; }
 .top-item .t-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .top-item .t-path { font-size: 12px; color: var(--text); max-width: 78%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top-item .t-path .t-subpath { font-size: 11px; color: var(--text-tertiary); margin-left: 6px; }
+.region-tabs { display: flex; gap: 6px; }
+.region-tabs button { padding: 4px 14px; border: 1px solid var(--border); background: #fff; border-radius: 14px; font-size: 12px; cursor: pointer; color: var(--text-secondary); }
+.region-tabs button.active { background: var(--green); border-color: var(--green); color: #fff; }
 .top-item .t-pv { font-size: 12px; font-weight: 500; color: var(--text-muted); }
 .top-item .t-bar { height: 6px; border-radius: 3px; background: var(--slate-lightest); overflow: hidden; }
 .top-item .t-bar i { display: block; height: 100%; border-radius: 3px; background: var(--green); }
@@ -859,13 +863,44 @@ const QUILL_TOOLBAR = [
                 <div class="top-list" v-if="visit.topPages.length">
                   <div class="top-item" v-for="t in visit.topPages" :key="t.path">
                     <div class="t-row">
-                      <span class="t-path" :title="t.path">{{ t.path }}</span>
+                      <span class="t-path" :title="t.path">{{ pageName(t.path) }}<span class="t-subpath">{{ t.path }}</span></span>
                       <span class="t-pv">{{ t.pv }}</span>
                     </div>
                     <div class="t-bar"><i :style="{ width: Math.max(6, Math.round(t.pv / topMaxPv * 100)) + '%' }"></i></div>
                   </div>
                 </div>
                 <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无访问数据</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 访问地区 -->
+          <div class="dash-row" style="margin-top:24px;" v-if="visit">
+            <div class="card">
+              <div class="card-header">
+                <h3>访问地区 <span class="hint">（近 7 天）</span></h3>
+                <div class="region-tabs">
+                  <button :class="{ active: regionTab === 'china' }" @click="regionTab = 'china'; renderRegionChart()">中国</button>
+                  <button :class="{ active: regionTab === 'world' }" @click="regionTab = 'world'; renderRegionChart()">世界</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div ref="regionChartEl" style="width:100%;height:360px;"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>地区排行</h3></div>
+              <div class="card-body">
+                <div class="top-list" v-if="regionList.length">
+                  <div class="top-item" v-for="r in regionList" :key="r.name">
+                    <div class="t-row">
+                      <span class="t-path">{{ r.name }}</span>
+                      <span class="t-pv">{{ r.pv }}</span>
+                    </div>
+                    <div class="t-bar"><i :style="{ width: Math.max(6, Math.round(r.pv / regionMaxPv * 100)) + '%' }"></i></div>
+                  </div>
+                </div>
+                <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无地区数据</div>
               </div>
             </div>
           </div>
@@ -3716,6 +3751,7 @@ const QUILL_TOOLBAR = [
 </div>
 
 <script src="/admin/static/js/vue.global.prod.js"></script>
+<script src="/admin/static/js/echarts.min.js"></script>
 <script>
 const { createApp } = Vue;
 const API = 'http://localhost:3000/api';
@@ -3790,6 +3826,8 @@ createApp({
       // Stats
       stats: { pcCount: 0, pcPublished: 0, pharmaCount: 0, pharmaPublished: 0, formulaCount: 0, formulaPublished: 0, userCount: 0, pendingUsers: 0 },
       visit: null,
+      regionTab: 'china',
+      mapsReady: false,
       // Tag dict
       tagDict: { pc: {}, pharma: {} },
       // PC
@@ -3908,6 +3946,13 @@ createApp({
   },
   computed: {
     /* ===== 总览访问统计 ===== */
+    /* ===== 页面中文名 + 地区图 ===== */
+    regionList() {
+      return this.visit ? (this.regionTab === 'china' ? this.visit.regions.china : this.visit.regions.overseas) : [];
+    },
+    regionMaxPv() {
+      return this.regionList.length ? this.regionList[0].pv : 1;
+    },
     pvDelta() {
       if (!this.visit || !this.visit.yesterday) return 0;
       const y = this.visit.yesterday.pv;
@@ -4165,9 +4210,90 @@ createApp({
         });
         if (resp.ok) {
           const d = await resp.json();
-          if (d.code === 0 && d.data) this.visit = d.data;
+          if (d.code === 0 && d.data) {
+            this.visit = d.data;
+            this.$nextTick(() => this.renderRegionChart());
+          }
         }
       } catch (e) { /* 无权限或网络异常不影响主流程 */ }
+    },
+    /* ===== 页面中文名 + 地区图 ===== */
+    pageName(path) {
+      const PAGE_NAMES = {
+        '/(首页)': '首页', '/index.html': '首页',
+        '/personal-care.html': '个人护理', '/pharmaceuticals.html': '药用辅料',
+        '/news.html': '新闻与活动', '/news-detail.html': '新闻详情',
+        '/personal-care-news-detail.html': '个护新闻详情', '/pharmaceuticals-news-detail.html': '药用新闻详情',
+        '/pharmaceuticals-article-detail.html': '药用文章详情',
+        '/about-us.html': '关于我们', '/expertise.html': '专业领域', '/markets.html': '市场应用',
+        '/history.html': '发展历史', '/international-presence.html': '全球布局', '/find-us.html': '查找我们',
+        '/contact-form.html': '联系我们', '/cart.html': '样品购物车',
+        '/account.html': '登录/注册', '/account-after-login.html': '会员中心',
+        '/account-my-favorite.html': '我的收藏', '/account-my-order.html': '我的订单',
+        '/account-change-password.html': '修改密码', '/account-forget-pwd.html': '忘记密码', '/account-reset-password.html': '重置密码',
+        '/legal-notice.html': '法律声明', '/personal-data-policy.html': '隐私政策',
+        '/csr.html': '企业社会责任', '/corporate-social-responsability.html': '企业社会责任',
+        '/caring-our-people.html': '关爱员工', '/acting-world-citizen.html': '世界公民',
+        '/affiliates-detail.html': '分公司详情', '/application-laboratories.html': '应用实验室',
+        '/characterization-methods.html': '表征方法', '/formulation-development.html': '配方开发',
+        '/formulation-technologies.html': '配方技术', '/formulation-technologies-detail.html': '配方技术详情',
+        '/industrial-operations.html': '工业运营', '/lipid-chemistry.html': '脂质化学',
+        '/oral-drug-delivery.html': '口服给药', '/journees-galeniques-saint-remy-de-provence.html': 'Galéniques 研讨日',
+        '/job-form.html': '职位申请', '/404.html': '404 页面',
+        '/personal-care/formulation-finder.html': '配方查询', '/personal-care/product-finder.html': '产品查询',
+        '/personal-care/product-finder/formulation-detail.html': '产品详情', '/personal-care/product-finder/product-detail.html': '产品详情',
+        '/personal-care/get-inspired.html': '获取灵感', '/pharmaceuticals-directory.html': '药用辅料目录',
+        '/pharmaceuticals/learn-more/hot-topics.html': '热点话题', '/pharmaceuticals/learn-more/webinar.html': '在线研讨会',
+        '/pharmaceuticals/learn-more/publications.html': '出版物', '/pharmaceuticals/learn-more/brochures.html': '资料手册',
+        '/personal-care/get-inspired/articles.html': '文章', '/personal-care/get-inspired/webinars.html': '在线研讨会',
+        '/personal-care/get-inspired/publications.html': '出版物', '/personal-care/get-inspired/addiactive.html': 'Addiactive 杂志',
+      };
+      return PAGE_NAMES[path] || path.replace(/^\//, '').replace(/\.html$/, '');
+    },
+    async ensureMaps() {
+      if (this.mapsReady) return;
+      if (!this._mapsPromise) {
+        this._mapsPromise = Promise.all([
+          fetch('/admin/static/map/china.json').then(r => r.json()),
+          fetch('/admin/static/map/world.json').then(r => r.json()),
+        ]).then(([cn, wd]) => {
+          echarts.registerMap('china-standard', cn);
+          echarts.registerMap('world-standard', wd);
+          this.mapsReady = true;
+        });
+      }
+      await this._mapsPromise;
+    },
+    async renderRegionChart() {
+      if (!this.visit || !window.echarts) return;
+      try { await this.ensureMaps(); } catch (e) { return; }
+      await this.$nextTick();
+      const el = this.$refs.regionChartEl;
+      if (!el) return;
+      if (!this.regionChart) this.regionChart = echarts.init(el);
+      const isChina = this.regionTab === 'china';
+      // 中国：短名 → DataV 全称匹配；世界：中文国名 → echarts 英文名
+      const PROV_FULL = { 北京:'北京市',天津:'天津市',河北:'河北省',山西:'山西省',内蒙古:'内蒙古自治区',辽宁:'辽宁省',吉林:'吉林省',黑龙江:'黑龙江省',上海:'上海市',江苏:'江苏省',浙江:'浙江省',安徽:'安徽省',福建:'福建省',江西:'江西省',山东:'山东省',河南:'河南省',湖北:'湖北省',湖南:'湖南省',广东:'广东省',广西:'广西壮族自治区',海南:'海南省',重庆:'重庆市',四川:'四川省',贵州:'贵州省',云南:'云南省',西藏:'西藏自治区',陕西:'陕西省',甘肃:'甘肃省',青海:'青海省',宁夏:'宁夏回族自治区',新疆:'新疆维吾尔自治区',台湾:'台湾省',香港:'香港特别行政区',澳门:'澳门特别行政区' };
+      const COUNTRY_EN = { 美国:'United States',英国:'United Kingdom',法国:'France',德国:'Germany',日本:'Japan',韩国:'Korea',新加坡:'Singapore',澳大利亚:'Australia',加拿大:'Canada',印度:'India',俄罗斯:'Russia',意大利:'Italy',西班牙:'Spain',荷兰:'Netherlands',瑞士:'Switzerland',瑞典:'Sweden',巴西:'Brazil',墨西哥:'Mexico',阿联酋:'United Arab Emirates',沙特阿拉伯:'Saudi Arabia',马来西亚:'Malaysia',泰国:'Thailand',越南:'Vietnam',印度尼西亚:'Indonesia',菲律宾:'Philippines',新西兰:'New Zealand',以色列:'Israel',波兰:'Poland',比利时:'Belgium',奥地利:'Austria',丹麦:'Denmark',挪威:'Norway',芬兰:'Finland',爱尔兰:'Ireland',葡萄牙:'Portugal',希腊:'Greece',土耳其:'Turkey',埃及:'Egypt',南非:'South Africa',阿根廷:'Argentina',智利:'Chile',哥伦比亚:'Colombia' };
+      const src = isChina ? this.visit.regions.china : this.visit.regions.overseas;
+      const data = src.map(r => ({ name: isChina ? (PROV_FULL[r.name] || r.name) : (COUNTRY_EN[r.name] || r.name), value: r.pv }));
+      const maxV = Math.max(1, ...data.map(d => d.value));
+      this.regionChart.setOption({
+        tooltip: { trigger: 'item', formatter: p => (p.value != null ? (p.name + '：' + p.value + ' 次') : p.name) },
+        visualMap: {
+          min: 0, max: maxV, left: 'left', top: 'bottom',
+          text: ['高', '低'], calculable: false,
+          inRange: { color: ['#f4f9e9', '#c4dc8d', '#8EB73C', '#5c8520'] },
+          textStyle: { fontSize: 11, color: '#8a9096' },
+        },
+        series: [{
+          type: 'map', map: isChina ? 'china-standard' : 'world-standard',
+          roam: false, layoutCenter: ['50%', '50%'], layoutSize: '92%',
+          emphasis: { label: { show: false }, itemStyle: { areaColor: '#7aa030' } },
+          select: { disabled: true },
+          data,
+        }],
+      }, { notMerge: true });
     },
     async initData() {
       try {

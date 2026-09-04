@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
+import path from 'path';
 import { prisma } from '../utils/prisma';
+import { newWithFileOnly, defaultDbFile } from 'ip2region-ts';
 
 // 不统计的前缀（管理后台 / 上传文件 / API）
 const EXCLUDED_PREFIXES = ['/api', '/admin', '/uploads'];
@@ -9,6 +11,9 @@ const EXCLUDED_EXTS = new Set([
   'css', 'js', 'mjs', 'map', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'svg', 'ico',
   'woff', 'woff2', 'ttf', 'eot', 'otf', 'txt', 'xml', 'json', 'pdf', 'mp4', 'webm',
 ]);
+
+// ip2region 搜索器（惰性初始化，进程级复用）
+let ipSearcher: ReturnType<typeof newWithFileOnly> | null = null;
 
 /**
  * 页面访问埋点中间件
@@ -32,15 +37,35 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
       visitorId = crypto.createHash('md5').update(req.ip + '|' + (req.headers['user-agent'] || '')).digest('hex').slice(0, 16);
     }
     const path = pathname === '/' ? '/(首页)' : pathname;
-    prisma.pageView.create({
-      data: {
-        path,
-        visitorId,
-        ip: req.ip || null,
-        ua: (req.headers['user-agent'] || '').slice(0, 250) || null,
-        referer: (req.headers.referer || '').slice(0, 250) || null,
-      },
-    }).catch(() => { /* 统计失败不影响业务 */ });
+
+    // 异步链：解析 IP 归属地（国家|省份）后一并落库，失败不影响业务
+    const ip = req.ip || '';
+    Promise.resolve()
+      .then(async () => {
+        let region: string | null = null;
+        try {
+          const searcher = ipSearcher || (ipSearcher = newWithFileOnly(defaultDbFile));
+          const r = await searcher.search(ip);
+          if (r && r.region) {
+            const parts = r.region.split('|');
+            const country = parts[0] && parts[0] !== '0' ? parts[0] : '';
+            const province = parts[2] && parts[2] !== '0' ? parts[2] : '';
+            if (country === '0' && province.includes('内网')) region = '内网|';
+            else if (country) region = country + '|' + province;
+          }
+        } catch { /* 解析失败忽略 */ }
+        return prisma.pageView.create({
+          data: {
+            path,
+            visitorId,
+            ip: ip || null,
+            ua: (req.headers['user-agent'] || '').slice(0, 250) || null,
+            referer: (req.headers.referer || '').slice(0, 250) || null,
+            region,
+          },
+        });
+      })
+      .catch(() => { /* 统计失败不影响业务 */ });
 
     // 下发访客 cookie（无则种一年）
     if (!(req.cookies as Record<string, string> | undefined)?.__gv) {
