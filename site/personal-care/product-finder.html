@@ -844,10 +844,8 @@
           return;
         }
         GatteAPI.Favorite.add({
-          targetId: item.ID,
-          goodsCategoryId: 1,
-          goodsName: item.goodsName,
-          type: 6
+          itemType: 'pc_ingredient',
+          itemId: item.ID
         }).then(function (res) {
           item.inFav = true;
         }).catch(function (err) {
