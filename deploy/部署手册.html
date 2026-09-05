@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>嘉法狮网站 · 上线部署手册（照着做版）</title>
+<style>
+:root{
+  --green:#8EB73C; --green-dark:#6f9420; --green-light:#f4f9e9;
+  --ink:#232426; --muted:#6b7280; --line:#e5e7eb; --bg:#f7f8f7;
+  --warn:#b45309; --warn-bg:#fffbeb; --danger:#b91c1c; --danger-bg:#fef2f2;
+  --info:#1d4ed8; --info-bg:#eff6ff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.75;font-size:15px}
+.wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+header{border-bottom:3px solid var(--green);padding-bottom:20px;margin-bottom:32px}
+h1{font-size:28px;font-weight:700;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:14px;margin-top:6px}
+h2{font-size:21px;margin:44px 0 16px;padding-left:12px;border-left:5px solid var(--green);line-height:1.3}
+h3{font-size:16px;margin:26px 0 10px;color:var(--green-dark)}
+p{margin:10px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin:16px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:#fff}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+thead th{background:var(--green-light);font-weight:600;color:var(--green-dark)}
+tbody tr:nth-child(even){background:#fafafa}
+.tip{background:var(--info-bg);border-left:4px solid var(--info);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:14px}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:14px}
+.danger{background:var(--danger-bg);border-left:4px solid var(--danger);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:14px}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:0;margin:18px 0;overflow:hidden}
+.step-head{background:var(--green);color:#fff;padding:12px 20px;font-weight:600;font-size:16px;display:flex;align-items:center;gap:10px}
+.step-head .no{background:rgba(255,255,255,.25);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+.step-body{padding:18px 22px}
+.step-body ol{margin-left:20px}
+.step-body li{margin:8px 0}
+code{background:#f1f2f4;padding:2px 6px;border-radius:4px;font-family:Consolas,Monaco,monospace;font-size:13px;color:#c7254e}
+pre{background:#232426;color:#e6e6e6;padding:14px 16px;border-radius:8px;overflow-x:auto;font-family:Consolas,Monaco,monospace;font-size:13px;line-height:1.6;margin:10px 0}
+pre code{background:none;color:inherit;padding:0}
+.kbd{display:inline-block;background:#fff;border:1px solid #ccc;border-bottom-width:2px;border-radius:4px;padding:1px 7px;font-size:13px;font-family:inherit}
+ul{margin-left:20px}
+li{margin:6px 0}
+.checklist{list-style:none;margin-left:0}
+.checklist li{padding-left:28px;position:relative;margin:10px 0}
+.checklist li:before{content:"☐";position:absolute;left:0;font-size:18px;color:var(--green)}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.b-must{background:#fee2e2;color:#b91c1c}
+.b-opt{background:#e0e7ff;color:#3730a3}
+.b-time{background:#fef3c7;color:#92400e}
+footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>嘉法狮网站 · 上线部署手册</h1>
+  <p class="sub">不需要懂技术，按顺序点、按顺序填，就能把你现在电脑上的网站搬到腾讯云上，让全国人都能访问<br>预计耗时：备案等待 7–20 天（纯等待）+ 动手操作约 1 小时</p>
+</header>
+
+<!-- ============ 0. 先弄懂 5 个词 ============ -->
+<h2>零、先弄懂 5 个词（30 秒，后面全靠它们）</h2>
+<table>
+  <thead><tr><th style="width:110px">名词</th><th>大白话是什么</th></tr></thead>
+  <tbody>
+    <tr><td><b>服务器</b></td><td>腾讯云上租的一台「永远不关机的电脑」。你的网站文件就放在这台电脑里，24 小时运行</td></tr>
+    <tr><td><b>域名</b></td><td>网站的门牌号，比如 <code>www.gattefossechina.cn</code>。别人在浏览器输入它就能找到你的网站</td></tr>
+    <tr><td><b>备案</b></td><td>相当于「营业执照」。中国大陆的服务器，域名<b>没有备案就无法对外访问</b>，这是硬性规定</td></tr>
+    <tr><td><b>Nginx</b></td><td>前台接待员。访客敲的是 80 号门（网页默认门），Nginx 负责把人带到 3000 号房间（你的程序）</td></tr>
+    <tr><td><b>PM2</b></td><td>保姆。程序万一崩溃了自动拉起来，服务器重启后也自动启动，不用你管</td></tr>
+  </tbody>
+</table>
+<div class="tip">💡 <b>你的网站结构很简单</b>：前台网页 + 后台管理 + 接口程序，<b>全部由同一个 Node 程序提供</b>（端口 3000），数据库是一个文件（SQLite）。所以服务器上不需要装 MySQL，这一步省了很多麻烦。</div>
+
+<!-- ============ 1. 条件 ============ -->
+<h2>一、上线前必须备齐的 4 样东西</h2>
+<table>
+  <thead><tr><th style="width:150px">要准备什么</th><th>具体要求</th><th style="width:110px">去哪弄</th><th style="width:100px">大概开销</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>1. 腾讯云轻量服务器</b><br><span class="badge b-must">必须</span></td>
+      <td>建议：<b>2 核 4G 内存 / 60G 硬盘 / 4–6 Mbps 带宽</b><br>系统镜像选 <b>「宝塔面板」</b>（省事）或 Ubuntu 22.04<br>地域选离用户近的，如上海、北京</td>
+      <td>腾讯云官网 → 轻量应用服务器 → 新建</td>
+      <td>约 100–200 元/月</td>
+    </tr>
+    <tr>
+      <td><b>2. 域名</b><br><span class="badge b-must">必须</span></td>
+      <td>你已有 <code>gattefossechina.cn</code>，直接用<br>（要在腾讯云或域名商后台做「解析」，后面第 7 步会讲）</td>
+      <td>已有 / 腾讯云域名注册</td>
+      <td>约 30–80 元/年</td>
+    </tr>
+    <tr>
+      <td><b>3. ICP 备案</b><br><span class="badge b-must">必须</span><span class="badge b-time">耗时最长</span></td>
+      <td>用腾讯云「备案小程序」提交：身份证 + 域名 + 网站信息 + 幕布拍照<br><b>没备案 = 网站打不开</b>，建议<b>今天就先提交</b>，等审核期间正好做其他步骤</td>
+      <td>微信小程序搜「腾讯云备案」</td>
+      <td>免费</td>
+    </tr>
+    <tr>
+      <td><b>4. 放行端口</b><br><span class="badge b-must">必须</span></td>
+      <td>在腾讯云控制台「防火墙」里放行：<b>22、80、443、8888</b>（宝塔面板用）<br>这步不做，后面全都连不上</td>
+      <td>轻量服务器控制台 → 防火墙</td>
+      <td>免费</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="warn">⚠️ <b>最重要的提醒</b>：备案是整个流程里唯一要「等」的环节（通常 7–20 天）。<b>建议你现在就去提交备案</b>，等备案通过的那几天，正好把服务器和代码都弄好，两边不耽误。</div>
+
+<!-- ============ 2. 步骤 ============ -->
+<h2>二、8 步操作（每步都有「怎么算成功」）</h2>
+
+<!-- 步骤 1 -->
+<div class="step">
+  <div class="step-head"><span class="no">1</span>买服务器 + 选镜像</div>
+  <div class="step-body">
+    <ol>
+      <li>打开 <b>腾讯云官网 → 轻量应用服务器 → 新建实例</b></li>
+      <li>地域：选「上海」或「北京」；镜像：<b>应用镜像 → 宝塔面板</b>（强烈推荐，图形界面，不用敲命令）</li>
+      <li>套餐：2 核 4G / 60G SSD / 5 Mbps；购买时长选 1 年起（更便宜）</li>
+      <li>付款后，在实例列表里能看到你的服务器和<b>公网 IP</b>（一串数字，如 <code>129.204.x.x</code>），把这个 IP 记下来</li>
+    </ol>
+    <div class="tip">✅ <b>怎么算成功</b>：实例状态显示「运行中」，能看到公网 IP。</div>
+  </div>
+</div>
+
+<!-- 步骤 2 -->
+<div class="step">
+  <div class="step-head"><span class="no">2</span>放行端口（防火墙）</div>
+  <div class="step-body">
+    <ol>
+      <li>控制台 → 点击你的实例 → <b>防火墙</b> → 添加规则</li>
+      <li>依次添加 4 条，应用类型选「自定义」：</li>
+    </ol>
+    <table>
+      <thead><tr><th>端口</th><th>用途</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr><td>22</td><td>远程登录（SSH）</td><td>全部 IPv4</td></tr>
+        <tr><td>80</td><td>网页访问（http）</td><td>全部 IPv4</td></tr>
+        <tr><td>443</td><td>加密网页（https）</td><td>全部 IPv4</td></tr>
+        <tr><td>8888</td><td>宝塔面板</td><td>全部 IPv4</td></tr>
+      </tbody>
+    </table>
+    <div class="tip">✅ <b>怎么算成功</b>：浏览器输入 <code>http://你的公网IP:8888</code> 能打开宝塔登录页。</div>
+  </div>
+</div>
+
+<!-- 步骤 3 -->
+<div class="step">
+  <div class="step-head"><span class="no">3</span>登录宝塔，安装运行环境</div>
+  <div class="step-body">
+    <ol>
+      <li>进入宝塔面板（首次登录会让你绑定手机号，按提示来）</li>
+      <li>首次登录会弹窗推荐安装套件 → 勾选 <b>Nginx</b>，其他可先不装，点「一键安装」</li>
+      <li>装完后，左侧点 <b>软件商店</b> → 搜索 <b>「Node.js 版本管理器」</b> → 安装</li>
+      <li>打开 Node.js 版本管理器 → 版本选 <b>Node 20</b> → 安装；再点「命令行版本」设置为 20</li>
+      <li>回到宝塔「终端」（左侧菜单），输入以下命令安装 PM2 并回车（耐心等 1 分钟）：<pre><code>npm install -g pm2 --registry=https://registry.npmmirror.com</code></pre></li>
+    </ol>
+    <div class="tip">✅ <b>怎么算成功</b>：终端里输入 <code>node -v</code> 显示 v20.x，输入 <code>pm2 -v</code> 显示版本号。</div>
+  </div>
+</div>
+
+<!-- 步骤 4 -->
+<div class="step">
+  <div class="step-head"><span class="no">4</span>把网站文件搬到服务器</div>
+  <div class="step-body">
+    <p><b>在你自己电脑上先打包</b>（不要包含 node_modules，太大）：</p>
+    <ul>
+      <li>把整个 <code>嘉法狮网站重建</code> 文件夹压缩成 <code>gattefosse.zip</code><br>
+      <span style="color:var(--muted);font-size:13px">（如果压缩包超过 700MB，主要是 site 里的 PDF 资料，可以先把 <code>site</code> 里的 <code>*.pdf</code> 暂时移走，上线后再单独传）</span></li>
+    </ul>
+    <p><b>然后上传到服务器</b>：</p>
+    <ol>
+      <li>宝塔左侧 → <b>文件</b> → 进入 <code>/www/wwwroot</code> → 点「上传」，选择刚才的 zip</li>
+      <li>上传完，右键 zip → <b>解压</b> → 解压到 <code>/www/wwwroot/gattefosse</code></li>
+    </ol>
+    <div class="warn">⚠️ 解压后请确认目录结构是这个样子：<pre><code>/www/wwwroot/gattefosse/
+├── backend/     （后端程序）
+│   ├── dist/    （编译后代码，本地已生成）
+│   └── prisma/gattefosse.db   ← 数据库，你的全部数据在这
+├── site/        （前台网页）
+├── admin/       （后台管理页）
+├── uploads/     （上传的图片/PDF）
+└── deploy/      （我给你准备好的配置文件）</code></pre></div>
+    <div class="tip">✅ <b>怎么算成功</b>：宝塔文件管理里能看到 <code>/www/wwwroot/gattefosse/backend/dist/index.js</code> 这个文件。</div>
+  </div>
+</div>
+
+<!-- 步骤 5 -->
+<div class="step">
+  <div class="step-head"><span class="no">5</span>改 3 处配置（我已经准备好模板）</div>
+  <div class="step-body">
+    <ol>
+      <li>宝塔文件管理，进入 <code>/www/wwwroot/gattefosse/backend/</code></li>
+      <li>找到我准备好的 <code>deploy/.env.production.example</code>，<b>复制一份</b>，命名为 <code>.env</code>，放在 <code>backend/</code> 目录下</li>
+      <li>双击编辑 <code>.env</code>，只改 3 处（其他保持原样）：</li>
+    </ol>
+    <table>
+      <thead><tr><th style="width:180px">要改的项</th><th>改成什么</th></tr></thead>
+      <tbody>
+        <tr><td><code>JWT_SECRET</code></td><td>换成一串随机字符（乱打 30 个字母数字都行）。<b>这是登录令牌的钥匙，不换有安全风险</b></td></tr>
+        <tr><td><code>FRONTEND_URL</code></td><td><code>https://www.你的域名.com</code></td></tr>
+        <tr><td><code>BASE_URL</code></td><td><code>https://www.你的域名.com</code></td></tr>
+      </tbody>
+    </table>
+    <div class="danger">🔒 <b>安全提醒</b>：JWT_SECRET 一定要改。它相当于网站后台登录的万能钥匙，用默认值等于把钥匙放在门口。</div>
+  </div>
+</div>
+
+<!-- 步骤 6 -->
+<div class="step">
+  <div class="step-head"><span class="no">6</span>启动网站程序</div>
+  <div class="step-body">
+    <ol>
+      <li>宝塔左侧 → <b>终端</b>，粘贴下面命令回车（首次约 2–5 分钟）：<pre><code>cd /www/wwwroot/gattefosse && bash deploy/deploy.sh</code></pre></li>
+      <li>这个脚本会自动帮你：装依赖 → 生成数据库客户端 → 编译 → 用 PM2 启动并设置开机自启</li>
+      <li>看到「部署完成」就是成功了</li>
+    </ol>
+    <div class="tip">✅ <b>怎么算成功</b>：终端输入 <code>curl http://127.0.0.1:3000/api/health</code>，返回 <code>{"status":"ok"...}</code>。<br>
+    再输入 <code>pm2 status</code>，能看到 gattefosse 状态是 <b>online</b>。</div>
+    <div class="warn">如果状态码不是 online，输入 <code>pm2 logs gattefosse</code> 看报错，把报错内容发给我，我帮你看。</div>
+  </div>
+</div>
+
+<!-- 步骤 7 -->
+<div class="step">
+  <div class="step-head"><span class="no">7</span>把域名指向服务器</div>
+  <div class="step-body">
+    <ol>
+      <li>打开你的<b>域名管理后台</b>（腾讯云 → 域名管理 → 解析）</li>
+      <li>添加两条记录：</li>
+    </ol>
+    <table>
+      <thead><tr><th>主机记录</th><th>记录类型</th><th>记录值</th></tr></thead>
+      <tbody>
+        <tr><td><code>www</code></td><td>A</td><td>你的服务器公网 IP</td></tr>
+        <tr><td><code>@</code></td><td>A</td><td>你的服务器公网 IP</td></tr>
+      </tbody>
+    </table>
+    <div class="tip">✅ <b>怎么算成功</b>：等 5 分钟后，在你电脑上打开「命令提示符」，输入 <code>ping www.你的域名.com</code>，显示的 IP 是你的服务器 IP 就对了。</div>
+  </div>
+</div>
+
+<!-- 步骤 8 -->
+<div class="step">
+  <div class="step-head"><span class="no">8</span>配置网站入口 + 申请 HTTPS 小绿锁</div>
+  <div class="step-body">
+    <p><b>A. 添加站点</b>（宝塔 → 网站 → 添加站点）：</p>
+    <ul>
+      <li>域名：填 <code>www.你的域名.com</code> 和 <code>你的域名.com</code>（两个都填）</li>
+      <li>根目录：<code>/www/wwwroot/gattefosse/site</code></li>
+      <li>数据库、PHP：都<b>不</b>选（我们用不上）</li>
+    </ul>
+    <p><b>B. 设置反向代理</b>（关键一步，让 80 门通向 3000 房间）：</p>
+    <ol>
+      <li>网站列表 → 点你刚建的站点「设置」→ <b>反向代理</b> → 添加反向代理</li>
+      <li>代理名称：<code>gattefosse</code>；目标 URL：<code>http://127.0.0.1:3000</code>；其他默认 → 提交</li>
+    </ol>
+    <p><b>C. 申请 HTTPS 证书</b>（小绿锁）：</p>
+    <ol>
+      <li>站点设置 → <b>SSL</b> → Let's Encrypt → 选「文件验证」→ 申请</li>
+      <li>申请成功后打开「强制 HTTPS」开关</li>
+    </ol>
+    <div class="tip">✅ <b>怎么算成功</b>：浏览器打开 <code>https://www.你的域名.com</code> 能看到网站首页；打开 <code>https://www.你的域名.com/admin</code> 能看到后台登录页。</div>
+  </div>
+</div>
+
+<!-- ============ 3. 验收 ============ -->
+<h2>三、上线验收清单（逐条打勾）</h2>
+<ul class="checklist">
+  <li>打开 <code>https://你的域名.com</code> → 前台首页正常显示，图片能加载</li>
+  <li>打开 <code>https://你的域名.com/admin</code> → 后台登录页，用超管账号能登录进去</li>
+  <li>后台「总览」→ 能看到访问统计地图和数据</li>
+  <li>随便点开一个产品页 → 图片、PDF 下载链接都正常</li>
+  <li>前台注册一个新会员 → 后台「用户管理」里能看到（验证数据库写入正常）</li>
+  <li>地址栏左侧是<b>小绿锁</b>（HTTPS 生效）</li>
+</ul>
+
+<!-- ============ 4. 更新 ============ -->
+<h2>四、以后怎么更新网站（改了代码后）</h2>
+<div class="card">
+  <p><b>在你自己电脑上</b>改完代码、测试没问题后：</p>
+  <ol>
+    <li>本地执行 <code>cd backend && npx tsc</code> 重新编译</li>
+    <li>把改动的文件（或整个目录重新打包）上传到服务器覆盖</li>
+    <li>宝塔终端执行：<code>cd /www/wwwroot/gattefosse && bash deploy/deploy.sh</code></li>
+    <li>刷新网页即可（前台页面记得 Ctrl+F5 强刷）</li>
+  </ol>
+  <p style="margin-top:12px;color:var(--muted);font-size:14px">数据不会丢——所有内容都存在 <code>backend/prisma/gattefosse.db</code> 这一个文件里，更新代码不会动它。</p>
+</div>
+
+<!-- ============ 5. 坑 ============ -->
+<h2>五、新手最容易踩的 5 个坑</h2>
+<table>
+  <thead><tr><th style="width:200px">坑</th><th>怎么避开</th></tr></thead>
+  <tbody>
+    <tr><td><b>域名没备案</b></td><td>网站一定打不开。这是硬性规定，先备案再谈其他</td></tr>
+    <tr><td><b>忘了放行 80/443 端口</b></td><td>症状是「服务器能 ping 通但网页打不开」。先查防火墙</td></tr>
+    <tr><td><b>上传时丢了数据库文件</b></td><td>一定要确认 <code>backend/prisma/gattefosse.db</code> 一起传上去了，否则是空网站</td></tr>
+    <tr><td><b>上传的文件打不开</b></td><td>给 <code>backend/uploads</code> 目录设置权限 755（宝塔文件管理右键 → 权限）</td></tr>
+    <tr><td><b>JWT_SECRET 没改</b></td><td>任何人都能伪造登录令牌，务必换成随机字符串</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 6. 备份 ============ -->
+<h2>六、上线后要做的 2 件保命事</h2>
+<div class="card">
+  <h3>1. 开自动快照（服务器整机备份）</h3>
+  <p>腾讯云控制台 → 轻量服务器 → 快照 → 设置<b>自动快照策略</b>（每天一次，保留 7 天）。<br>收费很少，出问题时能一键把服务器恢复到昨天。</p>
+  <h3>2. 定期下载数据库文件</h3>
+  <p>宝塔文件管理 → 进入 <code>/www/wwwroot/gattefosse/backend/prisma/</code> → 右键 <code>gattefosse.db</code> → 下载。<br><b>建议每周下载一次存到自己电脑</b>——这是你网站全部内容的唯一副本，1.4MB 很小，比什么都重要。</p>
+</div>
+
+<!-- ============ 7. 我可以帮你 ============ -->
+<h2>七、想让我替你操作？</h2>
+<div class="card">
+  <p>如果你在 WorkBuddy 里把腾讯云的密钥配置好（一次配置，长期有效），我就能<b>直接在你的服务器上执行这些命令</b>——装环境、传代码、启动服务、查日志、排查故障，你只需要看着就行。</p>
+  <p style="margin-top:10px"><b>怎么配置</b>：打开 <code>C:\Users\Shine Lu\.workbuddy\mcp.json</code>，把里面两处占位符替换成你的真实密钥：</p>
+  <pre><code>"TENCENTCLOUD_SECRET_ID": "YOUR_SECRET_ID_HERE"   ← 换成你的 SecretId
+"TENCENTCLOUD_SECRET_KEY": "YOUR_SECRET_KEY_HERE" ← 换成你的 SecretKey</code></pre>
+  <p>密钥在腾讯云控制台 → 右上角头像 → <b>访问管理 → 访问密钥 → 新建密钥</b> 获取。<br>配好后重启一下 WorkBuddy，告诉我一声，剩下的我来做。</p>
+</div>
+
+<footer>
+  嘉法狮网站重建项目 · 部署手册 · 配套文件在 <code>deploy/</code> 目录（Nginx 配置 / PM2 配置 / 环境变量模板 / 一键部署脚本）
+</footer>
+
+</div>
+</body>
+</html>
