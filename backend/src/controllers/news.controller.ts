@@ -128,6 +128,16 @@ export async function listNews(req: Request, res: Response) {
     (result as any).counts = counts;
     (result as any).tagCounts = tagCounts;
 
+    // 阅读时长兜底：无值时按正文长度估算（约 400 字/分钟，中文为主的译文合理）
+    for (const it of (result as any).list || []) {
+      if (!it.readingTime && it.contentHtml) {
+        const text = String(it.contentHtml).replace(/<[^>]*>/g, ' ').replace(/\s+/g, '').trim();
+        if (text.length >= 50) {
+          it.readingTime = Math.max(1, Math.round(text.length / 400));
+        }
+      }
+    }
+
     return res.json(
       success(result, '获取成功')
     );

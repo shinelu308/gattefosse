@@ -44,6 +44,9 @@
     href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
   <link rel="stylesheet" media="all"
     href="/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+    <!-- 原站 hot-topics 页主题聚合样式（卡片主题标签/日期行/蓝色标题等） -->
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_3uDOmdtDWx7zJzKHfwBFyQRGdMBmkr-vugKEhBZZzTc.css" />
   <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
@@ -246,14 +249,16 @@
                           <span class="c-card__private-icon" aria-hidden="true"></span>
                         </a>
                         <div class="c-card__content">
+                          <ul class="c-card__breadcrumb">
+                            <li v-if="item.articleType" class="category">{{ item.articleType }}</li>
+                          </ul>
+                          <p class="c-card__info">
+                            <span class="c-card__date" v-if="item.dateText">{{ item.dateText }}</span>
+                            <span class="c-card__reading" v-if="item.readingTime">阅读时长：{{ item.readingTime }} 分钟</span>
+                          </p>
                           <h3 class="c-card__title">
                             <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
                           </h3>
-                          <ul class="c-card__breadcrumb">                            
-                            <li v-for="item2 in item.tagList" class="category">{{item2}}</li>
-                          </ul>
-                          <p class="c-card__info">
-                          </p>
                           <p class="c-card__summary u-truncate">{{item.summary}}</p>
                           <ul class="c-card__tag">
                           </ul>
@@ -391,14 +396,20 @@
           if (it.tags) {
             try { tagList = JSON.parse(it.tags); } catch (e) { tagList = it.tags.split(',').map(function (t) { return t.trim(); }).filter(Boolean); }
           }
-          var dateY = '', dateD = '';
+          var dateY = '', dateD = '', dateText = '';
           if (it.publishedDate) {
             var dd = new Date(it.publishedDate);
-            if (!isNaN(dd.getTime())) { dateY = dd.getFullYear(); dateD = (dd.getMonth() + 1) + '月' + dd.getDate() + '日'; }
+            if (!isNaN(dd.getTime())) {
+              dateY = dd.getFullYear(); dateD = (dd.getMonth() + 1) + '月' + dd.getDate() + '日';
+              dateText = dd.getFullYear() + '年' + (dd.getMonth() + 1) + '月' + dd.getDate() + '日';
+            }
           }
           return {
             url: '/pharmaceuticals-article-detail.html?id=' + it.id,
             title: it.title,
+            articleType: it.articleType || '',
+            dateText: dateText,
+            readingTime: it.readingTime || null,
             tagList: tagList.length ? tagList : [],
             summary: it.summary || '',
             thumb: it.imageUrl || '/',
