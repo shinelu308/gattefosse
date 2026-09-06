@@ -316,6 +316,7 @@ body {
   font-size: 13px; font-weight: 500; font-family: var(--font);
   cursor: pointer; border: 1px solid transparent;
   transition: all 0.15s; text-decoration: none; line-height: 1.4;
+  white-space: nowrap; flex-shrink: 0;
 }
 .btn-primary { background: var(--green); color: white; border-color: var(--green); }
 .btn-primary:hover { background: var(--green-hover); border-color: var(--green-hover); }
@@ -563,11 +564,64 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 
 /* 响应式 */
 @media (max-width: 1280px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* 移动端汉堡按钮（桌面隐藏） */
+.topbar-menu-btn {
+  display: none; width: 34px; height: 34px; flex-shrink: 0;
+  align-items: center; justify-content: center;
+  border: none; background: transparent; border-radius: var(--radius);
+  cursor: pointer; color: var(--text);
+}
+.topbar-menu-btn:hover { background: var(--slate-lightest); }
+.sidebar-overlay {
+  display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 1000;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+}
+
 @media (max-width: 1024px) {
-  .sidebar { display: none; }
+  .topbar-menu-btn { display: flex; }
+  /* 侧边栏 → 抽屉 */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    flex: none; width: 264px; max-width: 82vw;
+    z-index: 1001; transform: translateX(-105%);
+    transition: transform 0.2s ease;
+    box-shadow: 0 0 24px rgba(0,0,0,0.12);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
   .main { margin-left: 0; }
   .form-row { grid-template-columns: 1fr; }
   .two-col { grid-template-columns: 1fr; }
+  /* 顶栏防挤压 */
+  .topbar { padding: 0 12px; gap: 10px; }
+  .topbar-breadcrumb { min-width: 0; flex-shrink: 1; white-space: nowrap; overflow: hidden; }
+  .topbar-breadcrumb .crumb-root, .topbar-breadcrumb .sep { display: none; }
+  .topbar-breadcrumb .current { overflow: hidden; text-overflow: ellipsis; }
+  .topbar-search { flex: 1; min-width: 0; margin-left: 0; }
+  .topbar-search input { width: 100%; max-width: 220px; }
+  .topbar-actions { flex-shrink: 0; }
+  .topbar-logout { white-space: nowrap; }
+  /* 弹窗与确认框 */
+  .modal { max-width: 94vw; }
+  .confirm-dialog { min-width: 0; width: 86vw; max-width: 420px; padding: 24px 20px; }
+}
+
+@media (max-width: 640px) {
+  .content { padding: 16px 12px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { padding: 14px; }
+  .page-title { font-size: 16px; }
+  .modal-body { padding: 14px; }
+  .modal-header { padding: 12px 14px; }
+  .modal-footer { padding: 10px 14px; }
+  /* 内联 flex 工具栏允许换行，防止按钮竖排挤字（兼容 display:flex 与 display: flex 两种写法） */
+  [style*="display:flex"], [style*="display: flex"] { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .login-card { width: 92vw; max-width: 420px; padding: 28px 20px; }
 }
 </style>
 
@@ -638,7 +692,8 @@ const QUILL_TOOLBAR = [
   <div v-else class="layout">
 
     <!-- 侧边栏 -->
-    <aside class="sidebar">
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-logo">
         <svg width="93" height="52" viewBox="0 0 93 52" fill="none" style="width:36px;height:auto;">
           <path d="M43.8104 18.0694C43.8104 28.0451 35.765 36.1388 25.8276 36.1388C15.8902 36.1388 7.85434 28.0451 7.85434 18.0694C7.85434 8.0938 15.8998 0 25.8372 0C35.7745 0 43.82 8.0842 43.82 18.0694H43.8104Z" fill="#54616C"/>
@@ -648,7 +703,7 @@ const QUILL_TOOLBAR = [
         </svg>
         <span>后台管理</span>
       </div>
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" @click="onSidebarNavClick">
         <div class="nav-section"><div class="nav-section-title">主菜单</div></div>
         <a class="nav-item" :class="{ active: currentPage === 'dashboard' }" @click="currentPage = 'dashboard'">
           <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
@@ -781,8 +836,11 @@ const QUILL_TOOLBAR = [
     <!-- 主区域 -->
     <main class="main">
       <header class="topbar">
+        <button class="topbar-menu-btn" @click="sidebarOpen = true" aria-label="打开菜单">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
         <div class="topbar-breadcrumb">
-          <span>后台管理</span>
+          <span class="crumb-root">后台管理</span>
           <span class="sep">/</span>
           <span class="current">{{ breadcrumbText }}</span>
         </div>
@@ -3818,6 +3876,7 @@ createApp({
       loggingIn: false,
       // Nav
       currentPage: 'dashboard',
+      sidebarOpen: false,
       pcMenuCollapsed: false,
       getInspiredCollapsed: false,
       learnMoreCollapsed: false,
@@ -4180,6 +4239,10 @@ createApp({
       finally { this.loggingIn = false; }
     },
     doLogout() { this.token = ''; this.userInfo = null; safeStorage.removeItem('admin_token'); this.currentPage = 'dashboard'; },
+    onSidebarNavClick(e) {
+      // 移动端抽屉：点击具体菜单项（非父级折叠）后自动收起
+      if (e.target.closest('.nav-item')) this.sidebarOpen = false;
+    },
     goPage(page) {
       if (!this.canAccessPage(page)) {
         this.showAlert('您的账号无权访问该模块，请联系管理员', 'error');
