@@ -1,5 +1,6 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { config } from '../config';
 
 // 文件类型过滤
@@ -82,4 +83,26 @@ export const uploadVideo = multer({
     }
   },
   limits: { fileSize: config.upload.maxFileSize },
+});
+
+// 翻译 Word 上传配置（文章翻译回填用，用完即删的临时文件）
+export const uploadTranslationDoc = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      const dir = path.join(config.upload.dir, 'tmp');
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (_req, file, cb) => {
+      cb(null, 'translation_' + Date.now() + '.docx');
+    },
+  }),
+  fileFilter: (_req, file, cb) => {
+    if (file.originalname.toLowerCase().endsWith('.docx')) {
+      cb(null, true);
+    } else {
+      cb(new Error('只支持 .docx 文件'));
+    }
+  },
+  limits: { fileSize: 20 * 1024 * 1024 },
 });

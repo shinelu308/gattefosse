@@ -119,7 +119,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         <th style="width:70px;" v-if="activeTab==='webinar' || activeTab==='brochures'">权限</th>
         <th style="width:110px;">发布日期</th>
         <th style="width:90px;">状态</th>
-        <th style="width:200px;">操作</th>
+        <th v-if="activeTab==='hot-topics'" style="width:250px;">操作</th>
+        <th v-else style="width:200px;">操作</th>
       </tr></thead>
       <tbody>
         <tr v-for="item in list" :key="item.id">
@@ -150,6 +151,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             <button class="btn btn-sm btn-outline" @click="openEdit(item)">编辑</button>
             <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
             <button class="btn btn-sm btn-danger" @click="removeItem(item.id)">删除</button>
+            <button class="btn btn-sm btn-slate" v-if="activeTab==='hot-topics'" @click="pickTranslation(item)" title="上传双语对照翻译 Word，自动回填中文">📄 译文</button>
           </td>
         </tr>
         <tr v-if="list.length === 0">
@@ -319,6 +321,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         </div>
       </div>
     </div>
+      <input type="file" ref="transFile" accept=".docx" style="display:none" @change="uploadTranslation($event)">
   </div>
 </div>
 
@@ -480,6 +483,37 @@ createApp({
     openImport() {
       this.importUrl = '';
       this.showImport = true;
+    },
+    // ---------- 翻译 Word 回填 ----------
+    pickTranslation(item) {
+      this._transItem = item;
+      this.$refs.transFile.value = '';
+      this.$refs.transFile.click();
+    },
+    async uploadTranslation(event) {
+      const file = event.target.files[0];
+      const item = this._transItem;
+      if (!file || !item) return;
+      if (!confirm('确定将「' + file.name + '」回填到《' + (item.title || '该文章') + '》？\n\n要求：双语对照格式（英文段+中文段）。\n正文将被中文替换，图片与区块布局保留。')) return;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch(API + '/news/' + item.id + '/apply-docx', {
+          method: 'POST',
+          headers: getToken() ? { 'Authorization': 'Bearer ' + getToken() } : {},
+          body: fd,
+        });
+        const d = await res.json();
+        if (d.code === 0) {
+          alert(d.message + '\n\n正在打开编辑窗口，请检查回填效果（未匹配部分保留英文，可手动补充）。');
+          this.loadList();
+          try {
+            const fresh = await this.api('/news/' + item.id);
+            if (fresh) this.openEdit(fresh);
+          } catch (e) {}
+        } else { alert('回填失败：' + d.message); }
+      } catch (e) { alert('回填失败：' + e.message); }
+      finally { event.target.value = ''; this._transItem = null; }
     },
     isImportedHtml(html) {
       return /adp-img-table|paragraph--type--|c-highlighted-text/.test(html || '');

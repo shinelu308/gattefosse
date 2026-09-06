@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import http from 'http';
+import AdmZip from 'adm-zip';
 import { prisma } from '../utils/prisma';
 import { success, fail } from '../utils/response';
 import { config } from '../config';
@@ -339,4 +340,186 @@ export async function importArticleFromSite(req: Request, res: Response) {
     downloadErrors,
     skippedBlocks: [...skippedTypes],
   }, '导入成功，已保存为草稿'));
+}
+
+// ==================== 翻译 Word 回填 ====================
+
+/** 判断文本是否以中文为主 */
+function isChineseText(t: string): boolean {
+  const cjk = (t.match(/[\u4e00-\u9fff]/g) || []).length;
+  if (cjk === 0) return false;
+  return cjk / Math.max(1, t.replace(/\s/g, '').length) > 0.15;
+}
+
+/** 归一化文本用于匹配（去空白/标点/大小写/弯引号差异） */
+function normalizeForMatch(t: string): string {
+  return t
+    .toLowerCase()
+    .replace(/[\u2018\u2019\u201c\u201d\u00b4`]/g, "'")
+    .replace(/[\u2013\u2014\u2015]/g, '-')
+    .replace(/[\u00ae\u2122\u00a9]/g, '')
+    .replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
+}
+
+interface DocxParagraph { text: string; }
+
+/** 从 docx 二进制中按顺序提取全部段落文本（含表格单元格，保持文档顺序） */
+export function extractDocxParagraphs(buf: Buffer): DocxParagraph[] {
+  const zip = new AdmZip(buf);
+  const entry = zip.getEntry('word/document.xml');
+  if (!entry) throw new Error('不是有效的 Word (.docx) 文件');
+  const xml = entry.getData().toString('utf8');
+  const paras: DocxParagraph[] = [];
+  const re = /<w:p\b[^>]*>([\s\S]*?)<\/w:p>|<w:p\b[^>]*\/>/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(xml)) !== null) {
+    const body = m[1] || '';
+    const texts = [...body.matchAll(/<w:t[^>]*>([^<]*)<\/w:t>/g)].map(x => x[1]).join('');
+    paras.push({ text: texts });
+  }
+  return paras;
+}
+
+/** 从双语对照段落序列构建 英文→中文 映射 */
+function buildTranslationMap(paras: DocxParagraph[]): Map<string, string> {
+  const map = new Map<string, string>();
+  for (let i = 0; i < paras.length; i++) {
+    const cur = paras[i].text.trim();
+    if (!cur) continue;
+
+    // 模式 A：单段内「英文... 中文...」混排（常见于表格单元格），按首个中文字符拆分
+    const firstCjk = cur.search(/[\u4e00-\u9fff]/);
+    if (firstCjk > 0) {
+      const enPart = cur.slice(0, firstCjk).trim();
+      const zhPart = cur.slice(firstCjk).trim();
+      const key = normalizeForMatch(enPart);
+      if (key.length >= 4 && isChineseText(zhPart) && !map.has(key)) map.set(key, zhPart);
+    }
+
+    // 模式 B：英文段落紧跟中文段落
+    if (i < paras.length - 1) {
+      const next = paras[i + 1].text.trim();
+      if (!next) continue;
+      if (isChineseText(cur) || !isChineseText(next)) continue;
+      const key = normalizeForMatch(cur);
+      if (key.length >= 6 && !map.has(key)) map.set(key, next);
+    }
+  }
+  return map;
+}
+
+/** 在映射中查找翻译：先全文匹配，再前 40 字符前缀匹配 */
+function lookupTranslation(map: Map<string, string>, text: string): string | null {
+  const key = normalizeForMatch(text);
+  if (!key) return null;
+  if (map.has(key)) return map.get(key) || null;
+  // 前缀匹配（Word 与网页文本常有尾注号/标点差异）
+  if (key.length >= 40) {
+    const prefix = key.slice(0, 40);
+    for (const [k, v] of map) {
+      if (k.startsWith(prefix) || key.startsWith(k.slice(0, 40))) return v;
+    }
+  }
+  return null;
+}
+
+/** 单个元素内部 HTML 的纯文本 */
+function elementText(inner: string): string {
+  return inner.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+}
+
+/**
+ * 应用翻译 Word：POST /api/news/:id/apply-docx（multer file 字段）
+ * 以英文原稿 HTML 的文本元素为锚点，用双语对照 Word 中的中文逐段替换
+ */
+export async function applyDocxTranslation(req: Request, res: Response) {
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).json(fail('缺少文章 ID'));
+  if (!req.file) return res.status(400).json(fail('请选择要上传的翻译 Word 文档（.docx）'));
+
+  const item = await prisma.newsEvent.findUnique({ where: { id } });
+  if (!item) return res.status(404).json(fail('文章不存在'));
+  if (!item.contentHtml) return res.status(400).json(fail('该文章没有正文内容，无法回填翻译'));
+
+  // 1. 解析 Word，构建翻译映射
+  let paras: DocxParagraph[];
+  try {
+    paras = extractDocxParagraphs(fs.readFileSync(req.file.path));
+  } catch (e: any) {
+    return res.status(400).json(fail('解析 Word 失败：' + e.message));
+  } finally {
+    try { fs.unlinkSync(req.file.path); } catch { /* 临时文件清理失败可忽略 */ }
+  }
+  const map = buildTranslationMap(paras);
+  if (map.size < 3) return res.status(400).json(fail('未在 Word 中找到「英文+中文」对照内容，请确认上传的是双语对照翻译稿'));
+
+  let replaced = 0;
+  const untranslated: string[] = [];
+
+  // 2. 替换正文中的 h2/h3/p/li/td/th/span 文本元素
+  let html = item.contentHtml;
+  const elemRe = /<(h[23]|p|li|td|th|span)(?=[\s/>])((?:"[^"]*"|[^">])*)>([\s\S]*?)<\/\1>/g;
+  html = html.replace(elemRe, (full, tag: string, attrs: string, inner: string) => {
+    // 含图片/其他媒体或仅剩换行的元素不处理
+    if (/<img|<video|<iframe/i.test(inner)) return full;
+    const text = elementText(inner);
+    if (!text || text.length < 2) return full;
+    let zh = lookupTranslation(map, text);
+    // 表格单元格整体未匹配时，按 <br>/块级子元素拆行逐行匹配
+    if (!zh && (tag === 'td' || tag === 'th') && /<br|<(?:p|div|h\d)\b/i.test(inner)) {
+      const parts = inner.split(/(<br\s*\/?>|<(?:p|div|h\d)\b[^>]*>[\s\S]*?<\/(?:p|div|h\d)>)/i);
+      let changed = false;
+      const newParts = parts.map((part: string) => {
+        if (/^<br/i.test(part) || /^</.test(part)) return part;
+        const t = part.trim();
+        if (!t) return part;
+        const z = lookupTranslation(map, t);
+        if (z) { changed = true; return z; }
+        return part;
+      });
+      if (changed) { replaced++; return `<${tag}${attrs}>${newParts.join('')}</${tag}>`; }
+      zh = null;
+    }
+    if (zh) {
+      replaced++;
+      return `<${tag}${attrs}>${zh}</${tag}>`;
+    }
+    // 兜底：整体未匹配时，按内联标签/<br>边界拆分逐段匹配（处理"Key components:Labrasol®..."这类拼接段）
+    if (text.length >= 8 && /[a-zA-Z]/.test(text) && /<(?:br|\/(?:span|em|strong|b|i|sup|sub|u))/.test(inner)) {
+      const parts = inner.split(/(<br\s*\/?>|<\/?(?:span|em|strong|b|i|sup|sub|u|a)\b[^>]*>)/i);
+      let changed = false;
+      const newParts = parts.map((part: string) => {
+        if (/^</.test(part)) return part;
+        const t = part.trim();
+        if (!t || t.length < 3 || isChineseText(t)) return part;
+        const z = lookupTranslation(map, t);
+        if (z) { changed = true; return part.replace(t, z); }
+        return part;
+      });
+      if (changed) { replaced++; return `<${tag}${attrs}>${newParts.join('')}</${tag}>`; }
+    }
+    if (text.length >= 20 && !isChineseText(text) && !/^https?:/.test(text)) untranslated.push(text.slice(0, 60));
+    return full;
+  });
+
+  // 3. 标题与摘要回填
+  const zhTitle = lookupTranslation(map, item.title);
+
+  const updateData: any = { contentHtml: html };
+  if (zhTitle && isChineseText(zhTitle)) updateData.title = zhTitle;
+  if (item.summary) {
+    const zhSummary = lookupTranslation(map, item.summary);
+    if (zhSummary && isChineseText(zhSummary)) updateData.summary = zhSummary;
+  }
+
+  await prisma.newsEvent.update({ where: { id }, data: updateData });
+
+  return res.json(success({
+    id,
+    replaced,
+    untranslated: untranslated.slice(0, 15),
+    untranslatedCount: untranslated.length,
+    titleUpdated: !!(zhTitle && isChineseText(zhTitle)),
+    mapSize: map.size,
+  }, `回填完成：替换 ${replaced} 段` + (untranslated.length ? `，${untranslated.length} 处未匹配（保留英文）` : '')));
 }
