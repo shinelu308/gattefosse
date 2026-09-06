@@ -107,6 +107,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       <button class="btn" @click="keyword=''; reloadList();">重置</button>
       <span style="flex:1;"></span>
       <span style="font-size:13px;color:#888;">共 {{ total }} 条</span>
+      <button class="btn btn-slate" v-if="activeTab==='hot-topics'" @click="openImport()">⬇ 从原站导入</button>
       <button class="btn btn-primary" @click="openNew()">+ 新增{{ activeMeta.addLabel }}</button>
     </div>
     <table>
@@ -294,6 +295,31 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       </div>
     </div>
   </div>
+
+  <!-- ============ 原站导入弹框 ============ -->
+  <div v-if="showImport" class="modal-overlay" @click.self="showImport=false">
+    <div class="card modal-card" style="width:600px;">
+      <div class="card-header">
+        <h3 style="font-size:16px;font-weight:600;">从原站导入文章</h3>
+        <span style="flex:1;"></span>
+        <button class="btn btn-sm" @click="showImport=false">✕</button>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>原站文章链接 <span class="required">*</span></label>
+          <input class="form-control" v-model="importUrl" placeholder="https://www.gattefosse.com/pharmaceuticals/learn-more/..." @keyup.enter="doImport()">
+        </div>
+        <div style="font-size:12px;color:#888;background:#fafbfc;border:1px solid #eee;border-radius:6px;padding:10px 12px;line-height:1.8;">
+          系统将自动完成：抓取正文与标题 → 下载全部图片到本站 → 转换原站区块（重点框/图片横排/CTA）→ 保存为<b>草稿</b>。<br>
+          导入后正文为英文，请在编辑时借助 AI 助手完成中文翻译，再发布。
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
+          <button class="btn" @click="showImport=false">取消</button>
+          <button class="btn btn-primary" @click="doImport()" :disabled="importing">{{ importing ? '正在抓取与下载图片（约 10~30 秒）...' : '开始导入' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -336,6 +362,10 @@ createApp({
       uploading: false,
       _quill: null,
       _quillInited: false,
+      showImport: false,
+      importUrl: '',
+      importing: false,
+      editMode: 'visual',
     };
   },
   computed: {
@@ -442,9 +472,32 @@ createApp({
     },
     openNew() {
       this.destroyQuill();
+      this.editMode = 'visual';
       this.editing = this.defaultEditing();
       this.showEdit = true;
       this.$nextTick(() => this.initQuill(''));
+    },
+    openImport() {
+      this.importUrl = '';
+      this.showImport = true;
+    },
+    isImportedHtml(html) {
+      return /adp-img-table|paragraph--type--|c-highlighted-text/.test(html || '');
+    },
+    async doImport() {
+      if (!this.importUrl) return alert('请粘贴原站文章链接');
+      this.importing = true;
+      try {
+        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.importUrl.trim() }) });
+        this.showImport = false;
+        this.loadList(); this.countAll();
+        if (d.item) this.openEdit(d.item);
+        let msg = '导入成功：' + (d.imagesDownloaded || 0) + '/' + (d.imagesTotal || 0) + ' 张图片已本地化';
+        if (d.downloadErrors && d.downloadErrors.length) msg += '\n⚠ ' + d.downloadErrors.length + ' 张图片下载失败：\n' + d.downloadErrors.join('\n');
+        if (d.skippedBlocks && d.skippedBlocks.length) msg += '\n已跳过区块：' + d.skippedBlocks.join('、');
+        alert(msg);
+      } catch (e) { alert('导入失败：' + e.message); }
+      finally { this.importing = false; }
     },
     openEdit(item) {
       this.destroyQuill();
@@ -478,8 +531,8 @@ createApp({
     async saveItem() {
       if (!this.editing.title) return alert('标题不能为空');
       if (!this.editing.publishedDate) return alert('发布日期不能为空');
-      // 从 Quill 读取正文（hot-topics 与 journees 都用富文本编辑）
-      if ((this.activeTab === 'hot-topics' || this.activeTab === 'journees') && this._quill) {
+      // 从 Quill 读取正文（仅可视化模式；源码模式直接用 contentHtml）
+      if ((this.activeTab === 'hot-topics' || this.activeTab === 'journees') && this.editMode === 'visual' && this._quill) {
         this.editing.contentHtml = this._quill.root.innerHTML;
       }
       const m = this.activeMeta;
