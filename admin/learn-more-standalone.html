@@ -220,10 +220,18 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 
         <!-- 文章正文（热点话题 + Journées Galéniques 专题页） -->
         <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='journees'">
-          <label>正文内容 <span class="form-hint">Quill 富文本，点击「正文」区块初始化；保存前会立即读取</span></label>
-          <div class="quill-wrap">
+          <label>正文内容
+            <select class="form-control" v-model="editMode" @change="switchEditMode()" :disabled="contentLocked" style="width:170px;display:inline-block;margin-left:8px;padding:4px 8px;">
+              <option value="html">HTML 源码</option>
+              <option value="visual" v-if="!contentLocked">可视化编辑</option>
+            </select>
+            <span class="form-hint" v-if="contentLocked">🔒 原站导入内容锁定为源码模式（可视化会破坏图片横排/重点框/表格样式）</span>
+            <span class="form-hint" v-else>手动撰写的内容可用可视化编辑</span>
+          </label>
+          <div class="quill-wrap" v-show="editMode==='visual'">
             <div id="lm-quill-editor" class="quill-editor"></div>
           </div>
+          <textarea v-show="editMode==='html'" class="form-control" style="min-height:280px;font-family:Consolas,monospace;font-size:12px;line-height:1.6;" v-model="editing.contentHtml" placeholder="直接编辑 HTML 源码，保存时原样入库"></textarea>
         </div>
 
         <!-- 研讨会专用 -->
@@ -371,6 +379,7 @@ createApp({
       importUrl: '',
       importing: false,
       editMode: 'visual',
+      contentLocked: false,
     };
   },
   computed: {
@@ -561,8 +570,20 @@ createApp({
         tagsText: tags.join(', '),
       });
       this.editing = e;
+      // 原站导入内容含 .paragraph 等自定义区块，锁定为源码模式（Quill 可视化会剥掉标记）
+      this.contentLocked = this.isImportedHtml(e.contentHtml);
+      this.editMode = this.contentLocked ? 'html' : 'visual';
       this.showEdit = true;
-      this.$nextTick(() => this.initQuill(e.contentHtml));
+      if (this.editMode === 'visual') this.$nextTick(() => this.initQuill(e.contentHtml));
+    },
+    switchEditMode() {
+      if (this.contentLocked) return;
+      if (this.editMode === 'html') {
+        if (this._quill) this.editing.contentHtml = this._quill.root.innerHTML;
+        this.destroyQuill();
+      } else {
+        this.$nextTick(() => this.initQuill(this.editing.contentHtml || ''));
+      }
     },
     async saveItem() {
       if (!this.editing.title) return alert('标题不能为空');
