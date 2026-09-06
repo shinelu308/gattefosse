@@ -4,7 +4,7 @@ import { success, fail, paginate } from '../utils/response';
 
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
-  author: { select: { id: true, name: true, avatar: true, bio: true } },
+  author: { select: { id: true, name: true, title: true, avatar: true, bio: true } },
   blocks: { orderBy: { sortOrder: 'asc' as const } },
 };
 

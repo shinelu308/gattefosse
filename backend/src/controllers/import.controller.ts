@@ -273,7 +273,25 @@ export async function importArticleFromSite(req: Request, res: Response) {
   // 7. 封面图：第一张本地化的正文图
   const firstLocal = [...imgMap.values()][0] || null;
 
-  // 8. 落库（草稿）
+  // 8. 作者关联：按姓名匹配 authors 表，无则自动创建（头像后台可补）
+  let authorId: number | null = null;
+  if (authorName) {
+    // 去掉学位后缀（如 "Nick DiFranco, MEM" → "Nick DiFranco"）
+    const coreName = authorName.split(',')[0].trim();
+    let author = await prisma.author.findFirst({
+      where: { name: { equals: coreName } },
+    });
+    if (!author) {
+      author = await prisma.author.create({
+        data: { name: coreName, title: authorPoste || null, sortOrder: 99 },
+      });
+    } else if (authorPoste && !author.title) {
+      author = await prisma.author.update({ where: { id: author.id }, data: { title: authorPoste } });
+    }
+    authorId = author.id;
+  }
+
+  // 9. 落库（草稿）
   const slugBase = url.split('/').filter(Boolean).pop() || null;
   const created = await prisma.newsEvent.create({
     data: {
@@ -287,6 +305,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
       readingTime,
       publishedDate,
       isPublished: false,
+      authorId,
       authorName: authorName ? (authorPoste ? `${authorName}（${authorPoste}）` : authorName) : null,
     },
   });

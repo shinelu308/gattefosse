@@ -281,7 +281,7 @@
                                                 </picture>
                                                 <div class="s-article__author-info">
                                                     <span class="s-article__author-name">{{ article.author.name }}</span>
-                                                    <span class="s-article__author-poste" v-if="article.author.bio">{{ article.author.bio }}</span>
+                                                    <span class="s-article__author-poste" v-if="article.author.title || article.author.bio">{{ article.author.title || article.author.bio }}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md">
