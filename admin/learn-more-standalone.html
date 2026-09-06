@@ -298,6 +298,9 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
     </div>
   </div>
 
+  <!-- 隐藏的翻译 Word 文件选择框（必须在 v-if 之外，否则弹窗关闭时 ref 不存在） -->
+  <input type="file" ref="transFile" accept=".docx" style="display:none" @change="uploadTranslation($event)">
+
   <!-- ============ 原站导入弹框 ============ -->
   <div v-if="showImport" class="modal-overlay" @click.self="showImport=false">
     <div class="card modal-card" style="width:600px;">
@@ -321,7 +324,6 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         </div>
       </div>
     </div>
-      <input type="file" ref="transFile" accept=".docx" style="display:none" @change="uploadTranslation($event)">
   </div>
 </div>
 
