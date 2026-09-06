@@ -246,57 +246,15 @@ export async function importArticleFromSite(req: Request, res: Response) {
   for (const child of children) {
     const cls = getAttr(child, 'class') || '';
 
-    if (cls.includes('paragraph--type--titre-h2')) {
-      const inner = /<h\d[^>]*>([\s\S]*?)<\/h\d>/.exec(child);
-      if (inner) blocks.push(`<h2>${inner[1].trim()}</h2>`);
-    } else if (cls.includes('paragraph--type--titre-h3')) {
-      const inner = /<h\d[^>]*>([\s\S]*?)<\/h\d>/.exec(child);
-      if (inner) blocks.push(`<h3>${inner[1].trim()}</h3>`);
-    } else if (cls.includes('paragraph--type--image')) {
-      const srcM = /<img[^>]*\ssrc="([^"]+)"/.exec(child);
-      if (srcM) {
-        const local = imgMap.get(srcM[1]) || absoluteUrl(srcM[1]);
-        blocks.push(`<p><a href="${local}"><img src="${local}" style="max-width:100%;"></a></p>`);
-      }
-    } else if (cls.includes('paragraph--type--widget') || cls.includes('salesforce')) {
+    // 嵌入表单（salesforce widget）跳过
+    if (cls.includes('paragraph--type--widget') || cls.includes('salesforce')) {
       skippedTypes.add('嵌入表单(widget)');
-    } else if (cls.includes('s-zone') && cls.includes('zone-')) {
-      // 多栏区块：拆出其中的图片 → 横排表格；其中的 texte-encadre → 保留
-      const imgs: string[] = [];
-      const imgRe2 = /<img[^>]*\ssrc="([^"]+)"/g;
-      let im2: RegExpExecArray | null;
-      while ((im2 = imgRe2.exec(child)) !== null) imgs.push(im2[1]);
-      if (imgs.length >= 2) {
-        const tds = imgs.map((src) => {
-          const local = imgMap.get(src) || absoluteUrl(src);
-          return `            <td><a href="${local}"><img src="${local}" style="max-width:100%;"></a></td>\n`;
-        }).join('');
-        blocks.push(`<table class="adp-img-table">\n<tbody>\n<tr>\n${tds}        </tr>\n</tbody>\n</table>`);
-      } else if (imgs.length === 1) {
-        const local = imgMap.get(imgs[0]) || absoluteUrl(imgs[0]);
-        blocks.push(`<p><a href="${local}"><img src="${local}" style="max-width:100%;"></a></p>`);
-      }
-      // 栏内的文字/跳转框（如 Jump to a section）按 texte-encadre 保留
-      for (const sub of splitChildDivs(child)) {
-        const subCls = getAttr(sub, 'class') || '';
-        if (subCls.includes('paragraph--type--texte-encadre')) {
-          const inner = innerOfFieldItem(sub);
-          if (inner && stripTags(inner)) blocks.push(`<div class="paragraph--type--texte-encadre"><div class="field__item">${rewrite(inner)}</div></div>`);
-        }
-      }
-    } else if (cls.includes('paragraph--type--texte-encadre')) {
-      const inner = innerOfFieldItem(child);
-      if (inner && stripTags(inner)) blocks.push(`<div class="paragraph--type--texte-encadre"><div class="field__item">${rewrite(inner)}</div></div>`);
-    } else if (cls.includes('paragraph--type--highlighted-block')) {
-      blocks.push(rewrite(child));
-    } else if (cls.includes('paragraph--type--texte') || /paragraph--type--(list|table|video)/.test(cls)) {
-      const inner = innerOfFieldItem(child);
-      if (inner && stripTags(inner)) blocks.push(rewrite(inner));
-    } else if (cls.trim() === '' || cls.includes('paragraph')) {
-      // 其他未知段落：保底提取纯 HTML
-      const inner = innerOfFieldItem(child) || child;
-      if (stripTags(inner)) blocks.push(rewrite(inner));
+      continue;
     }
+
+    // 其余区块一律原样保留原站标记（.paragraph 包装层承载原站全部样式，
+    // 拍平会导致 .paragraph h2 / .text-formatted 等选择器失配），仅重写图片与链接
+    if (stripTags(child)) blocks.push(rewrite(child));
   }
 
   const contentHtml = blocks.join('\n');

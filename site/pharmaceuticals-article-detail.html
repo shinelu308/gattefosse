@@ -21,6 +21,9 @@
         href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
     <link rel="stylesheet" media="all"
         href="/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" />
+    <!-- 原站 hot-topics 文章页主题聚合样式（正文 h2 颜色 / texte-encadre / c-highlighted-text / 表格等区块规则） -->
+    <link rel="stylesheet" media="all"
+        href="/sites/default/files/css/css_3uDOmdtDWx7zJzKHfwBFyQRGdMBmkr-vugKEhBZZzTc.css" />
 
     <!-- Custom styles matching original article detail layout -->
     <style>
@@ -203,67 +206,7 @@
             border: 1px solid #E3E8EE;
         }
 
-        /* ===== Content typography (matching English site) ===== */
-        .adp-content {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #3C4248;
-        }
-        .adp-content > p {
-            margin-bottom: 1.25em;
-            margin-top: 0;
-        }
-        .adp-content h2 {
-            font-size: 26px;
-            font-weight: 600;
-            color: #232426;
-            margin: 48px 0 18px;
-            line-height: 1.35;
-        }
-        .adp-content h2:first-child { margin-top: 24px; }
-        .adp-content h3 {
-            font-size: 21px;
-            font-weight: 600;
-            color: #232426;
-            margin: 36px 0 14px;
-            line-height: 1.4;
-        }
-        .adp-content strong {
-            font-weight: 700;
-            color: #232426;
-        }
-        .adp-content em,
-        .adp-content i {
-            font-style: italic;
-            color: #58616B;
-        }
-        .adp-content ul,
-        .adp-content ol {
-            padding-left: 26px;
-            margin: 0 0 1.25em;
-        }
-        .adp-content li {
-            margin-bottom: 6px;
-        }
-        .adp-content a {
-            color: #8EB73C;
-            text-decoration: underline;
-        }
-        .adp-content a:hover {
-            color: #598305;
-        }
-        .adp-content blockquote {
-            border-left: 4px solid #8EB73C;
-            padding-left: 22px;
-            margin: 28px 0;
-            color: #58616B;
-            font-style: italic;
-        }
-        .adp-content hr {
-            border: none;
-            border-top: 1px solid #E3E8EE;
-            margin: 36px 0;
-        }
+        /* 正文排版样式已移交原站主题聚合 CSS（css_3uDOmdt），保留原站 .paragraph 标记后由其全权渲染 */
 
         /* 视频（原站正文内嵌 bilibili iframe 等）自适应 */
         .adp-content iframe {
@@ -371,7 +314,7 @@
                                     </div>
 
                                     <!-- Body Content (with processed HTML for image galleries) -->
-                                    <div class="adp-content" v-html="article.processedContentHtml"></div>
+                                    <div class="adp-content node__content" v-html="article.processedContentHtml"></div>
 
                                 </div>
                             </div>
