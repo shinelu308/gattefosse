@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="zh-CN" data-page-node-id="XW1EQtzOTyvvIeCZB41bv0">
+<head data-page-node-id="gbEHgp7aARhylBj96qF3lP">
+<meta charset="UTF-8" data-page-node-id="EAse7RwlR4JdrDnW4FpADg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="VxMdgx6TFiq2J4GaKSgoMq">
 <title>嘉法狮网站 · 上线部署手册（照着做版）</title>
 <style>
 :root{
@@ -51,130 +51,130 @@ li{margin:6px 0}
 footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center}
 </style>
 </head>
-<body>
-<div class="wrap">
+<body data-page-node-id="8YAbtQYScf3gag3rcSNJMc">
+<div class="wrap" data-page-node-id="uEhTIQOzBeSGjIKpLBkube">
 
-<header>
-  <h1>嘉法狮网站 · 上线部署手册</h1>
-  <p class="sub">不需要懂技术，按顺序点、按顺序填，就能把你现在电脑上的网站搬到腾讯云上，让全国人都能访问<br>预计耗时：备案等待 7–20 天（纯等待）+ 动手操作约 1 小时</p>
+<header data-page-node-id="MEAUQXmmDURizQ33MMuiae">
+  <h1 data-page-node-id="KPJQHMbFVaxTe3g1khUnIg">嘉法狮网站 · 上线部署手册</h1>
+  <p class="sub" data-page-node-id="kJN9YwHJo3EdGH6JXhdSEH">不需要懂技术，按顺序点、按顺序填，就能把你现在电脑上的网站搬到腾讯云上，让全国人都能访问<br data-page-node-id="9H1DvTCQLDQ918Nvp3HlrQ">预计耗时：备案等待 7–20 天（纯等待）+ 动手操作约 1 小时</p>
 </header>
 
 <!-- ============ 0. 先弄懂 5 个词 ============ -->
-<h2>零、先弄懂 5 个词（30 秒，后面全靠它们）</h2>
-<table>
-  <thead><tr><th style="width:110px">名词</th><th>大白话是什么</th></tr></thead>
-  <tbody>
-    <tr><td><b>服务器</b></td><td>腾讯云上租的一台「永远不关机的电脑」。你的网站文件就放在这台电脑里，24 小时运行</td></tr>
-    <tr><td><b>域名</b></td><td>网站的门牌号，比如 <code>www.gattefossechina.cn</code>。别人在浏览器输入它就能找到你的网站</td></tr>
-    <tr><td><b>备案</b></td><td>相当于「营业执照」。中国大陆的服务器，域名<b>没有备案就无法对外访问</b>，这是硬性规定</td></tr>
-    <tr><td><b>Nginx</b></td><td>前台接待员。访客敲的是 80 号门（网页默认门），Nginx 负责把人带到 3000 号房间（你的程序）</td></tr>
-    <tr><td><b>PM2</b></td><td>保姆。程序万一崩溃了自动拉起来，服务器重启后也自动启动，不用你管</td></tr>
+<h2 data-page-node-id="83Lou4ZkN55rHtohDC34XD">零、先弄懂 5 个词（30 秒，后面全靠它们）</h2>
+<table data-page-node-id="yijb32ktbgjHr1RA9JzURP">
+  <thead data-page-node-id="qfDs991gfxVby3C9dPsHG3"><tr data-page-node-id="7MuHkIbdbPnx40ajoTHU8D"><th style="width:110px" data-page-node-id="ByFNB0SdTeVTjW0E0NprXj">名词</th><th data-page-node-id="1hzsT7dX8vVc9hLvyRhTHF">大白话是什么</th></tr></thead>
+  <tbody data-page-node-id="fBUxtXtzX9XjSopNhy2q16">
+    <tr data-page-node-id="baUrc1Zz372Bqg9W9FMm53"><td data-page-node-id="OHSesxyCAyxgaEpsdHGp7x"><b data-page-node-id="CHyqkyYbsGFEFyfa6wdZpE">服务器</b></td><td data-page-node-id="XPF3iL1HYPl6uD0Jy8FGqS">腾讯云上租的一台「永远不关机的电脑」。你的网站文件就放在这台电脑里，24 小时运行</td></tr>
+    <tr data-page-node-id="NsnsChoHgpiGcmXHCB1c46"><td data-page-node-id="1qLqhBA01MFmNzdqLdbrrD"><b data-page-node-id="n7OVczitfK0XlKx9U4sqbb">域名</b></td><td data-page-node-id="Lza2e0EtCcdZylYwHJgN4p">网站的门牌号，比如 <code data-page-node-id="MyEg7B2SYmDgFJAYRLycPc">www.gattefossechina.cn</code>。别人在浏览器输入它就能找到你的网站</td></tr>
+    <tr data-page-node-id="F9ycZZGu0toMlrZZ2ybf1z"><td data-page-node-id="gVCDwLqvDroNoDzFMp788L"><b data-page-node-id="dJx9ReU34kWdfBmzVKJk3L">备案</b></td><td data-page-node-id="ZkbJ91SdZsrPVdwknnfYNL">相当于「营业执照」。中国大陆的服务器，域名<b data-page-node-id="nz1ZxF1mbe7p15OcDapt9d">没有备案就无法对外访问</b>，这是硬性规定</td></tr>
+    <tr data-page-node-id="Hm8CBE8Y78SboLw5wKEjel"><td data-page-node-id="BI1G7jZdHfxr4dRYxA6XCd"><b data-page-node-id="aRFcHU4eo0g6eArtQecoO8">Nginx</b></td><td data-page-node-id="nGiMfwpm6uV1nhMy92f5TR">前台接待员。访客敲的是 80 号门（网页默认门），Nginx 负责把人带到 3000 号房间（你的程序）</td></tr>
+    <tr data-page-node-id="AG4cQVSlPnsWOxu3kJ234B"><td data-page-node-id="WscaRMDLxI0ZlgVuij7pb6"><b data-page-node-id="EpMLrcsHPD5C3vjDnwe07V">PM2</b></td><td data-page-node-id="tGiDqDWvzu27dO8aDMfppJ">保姆。程序万一崩溃了自动拉起来，服务器重启后也自动启动，不用你管</td></tr>
   </tbody>
 </table>
-<div class="tip">💡 <b>你的网站结构很简单</b>：前台网页 + 后台管理 + 接口程序，<b>全部由同一个 Node 程序提供</b>（端口 3000），数据库是一个文件（SQLite）。所以服务器上不需要装 MySQL，这一步省了很多麻烦。</div>
+<div class="tip" data-page-node-id="zMdYJo6dJy9H0GQjzOk7NG">💡 <b data-page-node-id="doblNa1L3Hr7b5ZdRTSeJn">你的网站结构很简单</b>：前台网页 + 后台管理 + 接口程序，<b data-page-node-id="G6MoHTfjNQAYEH9HHF9Rq7">全部由同一个 Node 程序提供</b>（端口 3000），数据库是一个文件（SQLite）。所以服务器上不需要装 MySQL，这一步省了很多麻烦。</div>
 
 <!-- ============ 1. 条件 ============ -->
-<h2>一、上线前必须备齐的 4 样东西</h2>
-<table>
-  <thead><tr><th style="width:150px">要准备什么</th><th>具体要求</th><th style="width:110px">去哪弄</th><th style="width:100px">大概开销</th></tr></thead>
-  <tbody>
-    <tr>
-      <td><b>1. 腾讯云轻量服务器</b><br><span class="badge b-must">必须</span></td>
-      <td>建议：<b>2 核 4G 内存 / 60G 硬盘 / 4–6 Mbps 带宽</b><br>系统镜像选 <b>「宝塔面板」</b>（省事）或 Ubuntu 22.04<br>地域选离用户近的，如上海、北京</td>
-      <td>腾讯云官网 → 轻量应用服务器 → 新建</td>
-      <td>约 100–200 元/月</td>
+<h2 data-page-node-id="FHWfQT4pCmnZTBIiPizIjV">一、上线前必须备齐的 4 样东西</h2>
+<table data-page-node-id="KbSWn3gS6oFEJSX6vqSu9j">
+  <thead data-page-node-id="GDdmQEhZ0rhGn27uENS0IF"><tr data-page-node-id="6qC3rIavxLSjuHrQ31Neyr"><th style="width:150px" data-page-node-id="fIuASB829KwQdeHYh3xBTu">要准备什么</th><th data-page-node-id="oqybNQYBsijaJd0S4SKrvl">具体要求</th><th style="width:110px" data-page-node-id="af7pCpxAOykWDr9yMsQ9n1">去哪弄</th><th style="width:100px" data-page-node-id="vLMHklH1r3CSFVHXu6FSrK">大概开销</th></tr></thead>
+  <tbody data-page-node-id="aXUsw8IVewfZQ8KaGpGrAg">
+    <tr data-page-node-id="GR6hXm3A93G93yuD7xOiwc">
+      <td data-page-node-id="9AlRGX6mmWubBGb9Py4Jhb"><b data-page-node-id="VctZNZVmdy3NlZy20sC7P2">1. 腾讯云轻量服务器</b><br data-page-node-id="bhpW61UoZG24idHCDw1AMs"><span class="badge b-must" data-page-node-id="G1MuCM1roXdxx42xhIfSvA">必须</span></td>
+      <td data-page-node-id="pFpXprCbosajdDlWhUvrmw">建议：<b data-page-node-id="IwTAabuE1uvD684p991iOq">2 核 4G 内存 / 60G 硬盘 / 4–6 Mbps 带宽</b><br data-page-node-id="lucdAEb8eh2TsjlTZ3Zx9G">系统镜像选 <b data-page-node-id="x1gHlw9icAaJYco1VFgCv7">「宝塔面板」</b>（省事）或 Ubuntu 22.04<br data-page-node-id="CDnSqcLMK6bHjQvboU9AAk">地域选离用户近的，如上海、北京</td>
+      <td data-page-node-id="R1Z0ZpcQlQQ3hYlIqHV5kS">腾讯云官网 → 轻量应用服务器 → 新建</td>
+      <td data-page-node-id="zuSXcToKtSgfiUb4U9jF59">约 100–200 元/月</td>
     </tr>
-    <tr>
-      <td><b>2. 域名</b><br><span class="badge b-must">必须</span></td>
-      <td>你已有 <code>gattefossechina.cn</code>，直接用<br>（要在腾讯云或域名商后台做「解析」，后面第 7 步会讲）</td>
-      <td>已有 / 腾讯云域名注册</td>
-      <td>约 30–80 元/年</td>
+    <tr data-page-node-id="768g7L11lNeCJrWKQttPha">
+      <td data-page-node-id="iQS56dehK9wirdBFjMRhsb"><b data-page-node-id="FdLipSM0sXpi0yAEHlg0PF">2. 域名</b><br data-page-node-id="ZMJvHgl7VsDev2wL1jHMXC"><span class="badge b-must" data-page-node-id="zWwdGU3NKtcZtNBJMFDtym">必须</span></td>
+      <td data-page-node-id="LQ8ACHIFuJoa04XAU88gfG">你已有 <code data-page-node-id="2Unm6UwJAMeMQQWJpyjPVG">gattefossechina.cn</code>，直接用<br data-page-node-id="z4wEUK245cDOGGrEmWosZs">（要在腾讯云或域名商后台做「解析」，后面第 7 步会讲）</td>
+      <td data-page-node-id="TH3IrjOfbGsIHMeCsDGcm1">已有 / 腾讯云域名注册</td>
+      <td data-page-node-id="aXfhcuscADQBUQbTXpmBIW">约 30–80 元/年</td>
     </tr>
-    <tr>
-      <td><b>3. ICP 备案</b><br><span class="badge b-must">必须</span><span class="badge b-time">耗时最长</span></td>
-      <td>用腾讯云「备案小程序」提交：身份证 + 域名 + 网站信息 + 幕布拍照<br><b>没备案 = 网站打不开</b>，建议<b>今天就先提交</b>，等审核期间正好做其他步骤</td>
-      <td>微信小程序搜「腾讯云备案」</td>
-      <td>免费</td>
+    <tr data-page-node-id="DaYbpcn6A0bxH57sy5Jxmz">
+      <td data-page-node-id="1HD6OxI2msIPePWIR2xRO8"><b data-page-node-id="kQYijuwm0fXhBLd0Sibtop">3. ICP 备案</b><br data-page-node-id="dM31OW0Qk7DtQw044BmF3S"><span class="badge b-must" data-page-node-id="Er9PGSxj1WRfb7BRUkdENH">必须</span><span class="badge b-time" data-page-node-id="C924QV1AJX8X9bB363yXXK">耗时最长</span></td>
+      <td data-page-node-id="SqJLLEPiC4oUIOuCcUEwxY">用腾讯云「备案小程序」提交：身份证 + 域名 + 网站信息 + 幕布拍照<br data-page-node-id="kJIiTHLaxKdeLw5Gfh9Sn0"><b data-page-node-id="bunw9iCBcRgcQKH71SaSoe">没备案 = 网站打不开</b>，建议<b data-page-node-id="LXABgyITNSe1zWQUVZceFS">今天就先提交</b>，等审核期间正好做其他步骤</td>
+      <td data-page-node-id="70jjKTTvJ3HKAlvhGYFXU4">微信小程序搜「腾讯云备案」</td>
+      <td data-page-node-id="DN2QeC8bBmL0GlnlqlDMDe">免费</td>
     </tr>
-    <tr>
-      <td><b>4. 放行端口</b><br><span class="badge b-must">必须</span></td>
-      <td>在腾讯云控制台「防火墙」里放行：<b>22、80、443、8888</b>（宝塔面板用）<br>这步不做，后面全都连不上</td>
-      <td>轻量服务器控制台 → 防火墙</td>
-      <td>免费</td>
+    <tr data-page-node-id="cFbFuG7jOF6A6YBHiDQRPs">
+      <td data-page-node-id="BLY3FBSQ5iBG6iwX7QJxad"><b data-page-node-id="MwfHieZ5trOsmmSJKMz6JJ">4. 放行端口</b><br data-page-node-id="ad6uKXDUk5o2EYjEh8MXl7"><span class="badge b-must" data-page-node-id="oP5FLvs1uW1TW33BSqChqW">必须</span></td>
+      <td data-page-node-id="Iu102Ll9uDi6MI0eZ8GePW">在腾讯云控制台「防火墙」里放行：<b data-page-node-id="jVz0x5K1XM1OQdSGY6nU7N">22、80、443、8888</b>（宝塔面板用）<br data-page-node-id="1cGlggA5XehGkswE8A3S2k">这步不做，后面全都连不上</td>
+      <td data-page-node-id="GxXGi9G7hMxV6iRQtZFcyI">轻量服务器控制台 → 防火墙</td>
+      <td data-page-node-id="AZnmDyXjWF4Y3ttHiSXuG9">免费</td>
     </tr>
   </tbody>
 </table>
 
-<div class="warn">⚠️ <b>最重要的提醒</b>：备案是整个流程里唯一要「等」的环节（通常 7–20 天）。<b>建议你现在就去提交备案</b>，等备案通过的那几天，正好把服务器和代码都弄好，两边不耽误。</div>
+<div class="warn" data-page-node-id="XevgUmBXuY4gvPXDFR4rbN">⚠️ <b data-page-node-id="ZVKnMNAaZrpDzI9SUsLgp4">最重要的提醒</b>：备案是整个流程里唯一要「等」的环节（通常 7–20 天）。<b data-page-node-id="vRlLnOcYpjbJbhntWGnFi0">建议你现在就去提交备案</b>，等备案通过的那几天，正好把服务器和代码都弄好，两边不耽误。</div>
 
 <!-- ============ 2. 步骤 ============ -->
-<h2>二、8 步操作（每步都有「怎么算成功」）</h2>
+<h2 data-page-node-id="ChkrZaOeHaP7SCxrTu2jyX">二、8 步操作（每步都有「怎么算成功」）</h2>
 
 <!-- 步骤 1 -->
-<div class="step">
-  <div class="step-head"><span class="no">1</span>买服务器 + 选镜像</div>
-  <div class="step-body">
-    <ol>
-      <li>打开 <b>腾讯云官网 → 轻量应用服务器 → 新建实例</b></li>
-      <li>地域：选「上海」或「北京」；镜像：<b>应用镜像 → 宝塔面板</b>（强烈推荐，图形界面，不用敲命令）</li>
-      <li>套餐：2 核 4G / 60G SSD / 5 Mbps；购买时长选 1 年起（更便宜）</li>
-      <li>付款后，在实例列表里能看到你的服务器和<b>公网 IP</b>（一串数字，如 <code>129.204.x.x</code>），把这个 IP 记下来</li>
+<div class="step" data-page-node-id="RRT3tVpOY4sq9AhKXYuIYZ">
+  <div class="step-head" data-page-node-id="df5VZRTAt6Jiv5UIOd5up1"><span class="no" data-page-node-id="XjJAOd59zTPo3B1jnEEnxd">1</span>买服务器 + 选镜像</div>
+  <div class="step-body" data-page-node-id="xmVhgJ8FCeWtdCmG73iEu2">
+    <ol data-page-node-id="VHavMG3q7WMoG2gDxmuXIC">
+      <li data-page-node-id="Kf2fWagQlry8d0oHbsdQIX">打开 <b data-page-node-id="UkjkFplaix98jMJh7rfE5D">腾讯云官网 → 轻量应用服务器 → 新建实例</b></li>
+      <li data-page-node-id="rv89dMlf6YBsHi85jS3XZM">地域：选「上海」或「北京」；镜像：<b data-page-node-id="9MrDggZKhhVzOJUDCTKHzY">应用镜像 → 宝塔面板</b>（强烈推荐，图形界面，不用敲命令）</li>
+      <li data-page-node-id="9pFM27jIYoxlTEpILOtgcR">套餐：2 核 4G / 60G SSD / 5 Mbps；购买时长选 1 年起（更便宜）</li>
+      <li data-page-node-id="TP7UzrcUG5jCl7nvNRKb4e">付款后，在实例列表里能看到你的服务器和<b data-page-node-id="h9uTFABR9v9vfr6fKjCSkV">公网 IP</b>（一串数字，如 <code data-page-node-id="9S4zuQTZEfYWuxO8JFd32L">129.204.x.x</code>），把这个 IP 记下来</li>
     </ol>
-    <div class="tip">✅ <b>怎么算成功</b>：实例状态显示「运行中」，能看到公网 IP。</div>
+    <div class="tip" data-page-node-id="bg7csXc6JXbXaxuNeFlTYh">✅ <b data-page-node-id="QVHzD5FV3sQYvV7H0bSz8A">怎么算成功</b>：实例状态显示「运行中」，能看到公网 IP。</div>
   </div>
 </div>
 
 <!-- 步骤 2 -->
-<div class="step">
-  <div class="step-head"><span class="no">2</span>放行端口（防火墙）</div>
-  <div class="step-body">
-    <ol>
-      <li>控制台 → 点击你的实例 → <b>防火墙</b> → 添加规则</li>
-      <li>依次添加 4 条，应用类型选「自定义」：</li>
+<div class="step" data-page-node-id="TZyCING0VKy2AJc4cPP7vs">
+  <div class="step-head" data-page-node-id="xxwSggEvVyfxSBWMadjJVi"><span class="no" data-page-node-id="XJzaQ3PvFSSDwNUzTnXJTD">2</span>放行端口（防火墙）</div>
+  <div class="step-body" data-page-node-id="Gv52jaS7jNPHtUnP29MgCX">
+    <ol data-page-node-id="DtjRdjMTYiBhbHcesD2CjP">
+      <li data-page-node-id="mHQ0InaHK8NWZ0aSdTtqCi">控制台 → 点击你的实例 → <b data-page-node-id="mdO8FIKVVZkLqCr66ak9Y7">防火墙</b> → 添加规则</li>
+      <li data-page-node-id="pV2YB6yXSj2UZfy1w0Ph0d">依次添加 4 条，应用类型选「自定义」：</li>
     </ol>
-    <table>
-      <thead><tr><th>端口</th><th>用途</th><th>来源</th></tr></thead>
-      <tbody>
-        <tr><td>22</td><td>远程登录（SSH）</td><td>全部 IPv4</td></tr>
-        <tr><td>80</td><td>网页访问（http）</td><td>全部 IPv4</td></tr>
-        <tr><td>443</td><td>加密网页（https）</td><td>全部 IPv4</td></tr>
-        <tr><td>8888</td><td>宝塔面板</td><td>全部 IPv4</td></tr>
+    <table data-page-node-id="dw9sLgAdGtxS74JNqAF0km">
+      <thead data-page-node-id="HMI4TDABCvNaaUEwVFhE8P"><tr data-page-node-id="ERPqdDbK6GFXbB0pDx8CLj"><th data-page-node-id="qBJFfjkbvQ8jWXs9mMc8jl">端口</th><th data-page-node-id="MrhHlx05ntsA2md07DJ4Xx">用途</th><th data-page-node-id="x3ja3t3M2ULtBQnTLVRCnY">来源</th></tr></thead>
+      <tbody data-page-node-id="ohZCklPMVjudMk1lkbZ2zm">
+        <tr data-page-node-id="LhTc7K4RawVzGRBIgt8ABo"><td data-page-node-id="6RNUE7fsd305HdL3T4Qjud">22</td><td data-page-node-id="NJlH6imaVWAJWaAq7LINyS">远程登录（SSH）</td><td data-page-node-id="83HhEGUh3HQmUaIxACnM0v">全部 IPv4</td></tr>
+        <tr data-page-node-id="dD0L5UjGHXw9TJHHoc38iC"><td data-page-node-id="Wn60I47dUAyFRgx31NwctH">80</td><td data-page-node-id="DNfAyxLTg5fSHkxMhmIWDQ">网页访问（http）</td><td data-page-node-id="83F2IODdWS0JbFSdc6ZTwo">全部 IPv4</td></tr>
+        <tr data-page-node-id="T0PNLeWeQ4z2Ei9vAP4iMF"><td data-page-node-id="kVbnQWqnDNciPEQ2V39A5d">443</td><td data-page-node-id="0I7kKkjKLyzSAQHAlqo39H">加密网页（https）</td><td data-page-node-id="yoq1mFxJvgMgdSfhBgM8p0">全部 IPv4</td></tr>
+        <tr data-page-node-id="ueE7W9dgrK3uiRobHkHKFU"><td data-page-node-id="rNNbN4D3CNuuOvoiEsFH3a">8888</td><td data-page-node-id="29O3CInCA5TGRpSQn9FrRC">宝塔面板</td><td data-page-node-id="3kaWAAbMx58TZlN2P8i6cR">全部 IPv4</td></tr>
       </tbody>
     </table>
-    <div class="tip">✅ <b>怎么算成功</b>：浏览器输入 <code>http://你的公网IP:8888</code> 能打开宝塔登录页。</div>
+    <div class="tip" data-page-node-id="8UCB1uIeU8Rwi4CACQ9DQe">✅ <b data-page-node-id="Edcp7aSGAbXzye98bgVEuV">怎么算成功</b>：浏览器输入 <code data-page-node-id="DC3ksZ6Ia1aVL5BOLdbzGl">http://你的公网IP:8888</code> 能打开宝塔登录页。</div>
   </div>
 </div>
 
 <!-- 步骤 3 -->
-<div class="step">
-  <div class="step-head"><span class="no">3</span>登录宝塔，安装运行环境</div>
-  <div class="step-body">
-    <ol>
-      <li>进入宝塔面板（首次登录会让你绑定手机号，按提示来）</li>
-      <li>首次登录会弹窗推荐安装套件 → 勾选 <b>Nginx</b>，其他可先不装，点「一键安装」</li>
-      <li>装完后，左侧点 <b>软件商店</b> → 搜索 <b>「Node.js 版本管理器」</b> → 安装</li>
-      <li>打开 Node.js 版本管理器 → 版本选 <b>Node 20</b> → 安装；再点「命令行版本」设置为 20</li>
-      <li>回到宝塔「终端」（左侧菜单），输入以下命令安装 PM2 并回车（耐心等 1 分钟）：<pre><code>npm install -g pm2 --registry=https://registry.npmmirror.com</code></pre></li>
+<div class="step" data-page-node-id="icwO5B6Be7sz5OKGukaW6l">
+  <div class="step-head" data-page-node-id="SoA8PVBWjA9Z7GiTETJpa6"><span class="no" data-page-node-id="cLATR8YaoLsSmPPwdJt2Ot">3</span>登录宝塔，安装运行环境</div>
+  <div class="step-body" data-page-node-id="qoDSivqeg6hCCEKMemTMEP">
+    <ol data-page-node-id="jF4tR9dZs3eTy7kQGygX5j">
+      <li data-page-node-id="hHhEF0DBFcPZA0VwHSvLkv">进入宝塔面板（首次登录会让你绑定手机号，按提示来）</li>
+      <li data-page-node-id="t0hksvPE9v3m7dpk8eSfb5">首次登录会弹窗推荐安装套件 → 勾选 <b data-page-node-id="TnplAdDBWmjFdwzh21OPSl">Nginx</b>，其他可先不装，点「一键安装」</li>
+      <li data-page-node-id="CeZllahgORkITzSonaB81g">装完后，左侧点 <b data-page-node-id="DFHIgzCjhsRxkjuqnHrRJG">软件商店</b> → 搜索 <b data-page-node-id="4LUn0eSZKiFncaTkAoD0Dc">「Node.js 版本管理器」</b> → 安装</li>
+      <li data-page-node-id="m7ijgOegR0KGZetmabLddZ">打开 Node.js 版本管理器 → 版本选 <b data-page-node-id="KhgdQn1XoFYEbZM1CsRcVl">Node 20</b> → 安装；再点「命令行版本」设置为 20</li>
+      <li data-page-node-id="4GZNcD46PZjpul9jxOT63F">回到宝塔「终端」（左侧菜单），输入以下命令安装 PM2 并回车（耐心等 1 分钟）：<pre data-page-node-id="iI5FKCzA2geoBriNtwwYKE"><code data-page-node-id="xN3GoVvKgHTTsMykhzxaRH">npm install -g pm2 --registry=https://registry.npmmirror.com</code></pre></li>
     </ol>
-    <div class="tip">✅ <b>怎么算成功</b>：终端里输入 <code>node -v</code> 显示 v20.x，输入 <code>pm2 -v</code> 显示版本号。</div>
+    <div class="tip" data-page-node-id="d6hNZ4mMATCtUs2SZzWbgq">✅ <b data-page-node-id="j9lLb9KZIYXrk7S6H0EPSj">怎么算成功</b>：终端里输入 <code data-page-node-id="s7MyHAhLPZYrJp9smxfrIP">node -v</code> 显示 v20.x，输入 <code data-page-node-id="vpWp27pYarKOPOKjiuTnKH">pm2 -v</code> 显示版本号。</div>
   </div>
 </div>
 
 <!-- 步骤 4 -->
-<div class="step">
-  <div class="step-head"><span class="no">4</span>把网站文件搬到服务器</div>
-  <div class="step-body">
-    <p><b>在你自己电脑上先打包</b>（不要包含 node_modules，太大）：</p>
-    <ul>
-      <li>把整个 <code>嘉法狮网站重建</code> 文件夹压缩成 <code>gattefosse.zip</code><br>
-      <span style="color:var(--muted);font-size:13px">（如果压缩包超过 700MB，主要是 site 里的 PDF 资料，可以先把 <code>site</code> 里的 <code>*.pdf</code> 暂时移走，上线后再单独传）</span></li>
+<div class="step" data-page-node-id="RnHIlUhe66EP77TdXWFpMU">
+  <div class="step-head" data-page-node-id="ZipJHjNfBO0qDcAuypWZLB"><span class="no" data-page-node-id="D5kcCZQcCxEHjyoQFHZM8h">4</span>把网站文件搬到服务器</div>
+  <div class="step-body" data-page-node-id="SkDGK8A9YMntLJk3ekuatE">
+    <p data-page-node-id="1LVGmrUZvBGF1SFU5MToKH"><b data-page-node-id="J80ZUHW2hDe0LuBPTtvtil">在你自己电脑上先打包</b>（不要包含 node_modules，太大）：</p>
+    <ul data-page-node-id="4R4Yplx4oTkIXpzXTtidMH">
+      <li data-page-node-id="sxB8MkC5mtePn76SyIdaB7">把整个 <code data-page-node-id="c6ZY2y2AFEewqj0J7KbTFV">嘉法狮网站重建</code> 文件夹压缩成 <code data-page-node-id="3OL4s6spGqFmpKhE0yDHFs">gattefosse.zip</code><br data-page-node-id="Bnlq18vn85cMqErSWyrfci">
+      <span style="color:var(--muted);font-size:13px" data-page-node-id="dd6yJ9cB50xwH9Jf2v2paI">（如果压缩包超过 700MB，主要是 site 里的 PDF 资料，可以先把 <code data-page-node-id="4PcLiYRWrVENKVEX3Z2ZLw">site</code> 里的 <code data-page-node-id="DDsYw8AMT69y5hTQSoQgFN">*.pdf</code> 暂时移走，上线后再单独传）</span></li>
     </ul>
-    <p><b>然后上传到服务器</b>：</p>
-    <ol>
-      <li>宝塔左侧 → <b>文件</b> → 进入 <code>/www/wwwroot</code> → 点「上传」，选择刚才的 zip</li>
-      <li>上传完，右键 zip → <b>解压</b> → 解压到 <code>/www/wwwroot/gattefosse</code></li>
+    <p data-page-node-id="9LlRH3ZlOAzP2T1KvZBoMw"><b data-page-node-id="0pCDEVBEDV16bKtxrcavHb">然后上传到服务器</b>：</p>
+    <ol data-page-node-id="EE7iy7fw54OKNGXxCtCeod">
+      <li data-page-node-id="xnoAlhK4rGEw1HpsDHOnhA">宝塔左侧 → <b data-page-node-id="o6RlNwChPeHwvoXgcNm1Sc">文件</b> → 进入 <code data-page-node-id="2z7dEgm4VydNHvYDQFSAwx">/www/wwwroot</code> → 点「上传」，选择刚才的 zip</li>
+      <li data-page-node-id="jaXQUGu52bwc6pomlWBCzC">上传完，右键 zip → <b data-page-node-id="zwEaj0We5gdMBR8nk10QmO">解压</b> → 解压到 <code data-page-node-id="OD2ez4BY3etKBn9RhDPCHD">/www/wwwroot/gattefosse</code></li>
     </ol>
-    <div class="warn">⚠️ 解压后请确认目录结构是这个样子：<pre><code>/www/wwwroot/gattefosse/
+    <div class="warn" data-page-node-id="FkfHpVrkCPJxjruInIh9ze">⚠️ 解压后请确认目录结构是这个样子：<pre data-page-node-id="F1Kf7cQ1fMjIQO6fWD7wbv"><code data-page-node-id="SOawatLbjDhoDyO66i0jWM">/www/wwwroot/gattefosse/
 ├── backend/     （后端程序）
 │   ├── dist/    （编译后代码，本地已生成）
 │   └── prisma/gattefosse.db   ← 数据库，你的全部数据在这
@@ -182,147 +182,147 @@ footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);color:v
 ├── admin/       （后台管理页）
 ├── uploads/     （上传的图片/PDF）
 └── deploy/      （我给你准备好的配置文件）</code></pre></div>
-    <div class="tip">✅ <b>怎么算成功</b>：宝塔文件管理里能看到 <code>/www/wwwroot/gattefosse/backend/dist/index.js</code> 这个文件。</div>
+    <div class="tip" data-page-node-id="EDVnLpzf8dpa4DTIsSosm9">✅ <b data-page-node-id="1IpBc1lalB3DACzeYTgYuX">怎么算成功</b>：宝塔文件管理里能看到 <code data-page-node-id="CYPTbE1G7Vqf5rYPZXPjj7">/www/wwwroot/gattefosse/backend/dist/index.js</code> 这个文件。</div>
   </div>
 </div>
 
 <!-- 步骤 5 -->
-<div class="step">
-  <div class="step-head"><span class="no">5</span>改 3 处配置（我已经准备好模板）</div>
-  <div class="step-body">
-    <ol>
-      <li>宝塔文件管理，进入 <code>/www/wwwroot/gattefosse/backend/</code></li>
-      <li>找到我准备好的 <code>deploy/.env.production.example</code>，<b>复制一份</b>，命名为 <code>.env</code>，放在 <code>backend/</code> 目录下</li>
-      <li>双击编辑 <code>.env</code>，只改 3 处（其他保持原样）：</li>
+<div class="step" data-page-node-id="Cy9X0tLoeCiwSsrF3u7Zfz">
+  <div class="step-head" data-page-node-id="rs7P1G8FghSE2Z3TpWUSR0"><span class="no" data-page-node-id="vQDvH8chqT2M8K3AgQacEE">5</span>改 3 处配置（我已经准备好模板）</div>
+  <div class="step-body" data-page-node-id="XzZRDqA1F6G3wGpLRYuu4B">
+    <ol data-page-node-id="FkaHzuacrmLz4Q9JnbJKiy">
+      <li data-page-node-id="kdE76OCkbXFLlHPn1fh5el">宝塔文件管理，进入 <code data-page-node-id="HSxBEQyVEy6MMXX3p2yJsD">/www/wwwroot/gattefosse/backend/</code></li>
+      <li data-page-node-id="NHshsRBwtWHUNAtubo1dhX">找到我准备好的 <code data-page-node-id="4H7L8OZwESjte3L15exOSC">deploy/.env.production.example</code>，<b data-page-node-id="otqBRoXnxzsraeL2ho1lOE">复制一份</b>，命名为 <code data-page-node-id="qLqsA1eFCnOhgCYO6QsXbN">.env</code>，放在 <code data-page-node-id="qaQqDKiY19JG6fiiXg8ev2">backend/</code> 目录下</li>
+      <li data-page-node-id="TjSWSQvrM3DSG8B5doAr9C">双击编辑 <code data-page-node-id="Uxdxsw2yDCl4dLDK2ypT2z">.env</code>，只改 3 处（其他保持原样）：</li>
     </ol>
-    <table>
-      <thead><tr><th style="width:180px">要改的项</th><th>改成什么</th></tr></thead>
-      <tbody>
-        <tr><td><code>JWT_SECRET</code></td><td>换成一串随机字符（乱打 30 个字母数字都行）。<b>这是登录令牌的钥匙，不换有安全风险</b></td></tr>
-        <tr><td><code>FRONTEND_URL</code></td><td><code>https://www.你的域名.com</code></td></tr>
-        <tr><td><code>BASE_URL</code></td><td><code>https://www.你的域名.com</code></td></tr>
+    <table data-page-node-id="8fJIhgxOQEQBd9X4gGUnG7">
+      <thead data-page-node-id="9YJZuZEzF3EzeGk5GDa1r7"><tr data-page-node-id="t4GVUhP5mZcHrCw74BWfZ3"><th style="width:180px" data-page-node-id="MGPVaDLVHNteiMBJru6fgz">要改的项</th><th data-page-node-id="EwHMYfPQsKCrGeseP1RJGA">改成什么</th></tr></thead>
+      <tbody data-page-node-id="XP572Z1L3gagbHgezdcmiq">
+        <tr data-page-node-id="dGrXAEs1Vl62Oq4fKIW6Fr"><td data-page-node-id="cmxwWLwEsJcOReZDnVko4m"><code data-page-node-id="rdsTNEWwHkmsRQ8ocXEkSZ">JWT_SECRET</code></td><td data-page-node-id="hUmyZHRiLx9Hl3RowhjIVV">换成一串随机字符（乱打 30 个字母数字都行）。<b data-page-node-id="MXDaTR7x5EatWS419IFcat">这是登录令牌的钥匙，不换有安全风险</b></td></tr>
+        <tr data-page-node-id="1rHd9Fz09gukHqiuD4o77s"><td data-page-node-id="BYw2dFgcXxd0WOO5G1u642"><code data-page-node-id="8qjW7XfHbankWBPwa7CEDU">FRONTEND_URL</code></td><td data-page-node-id="9dO9aHsWcuMOOEb4DDMnho"><code data-page-node-id="yGBOhPYo0ZmA4bnxGjdBr7">https://www.你的域名.com</code></td></tr>
+        <tr data-page-node-id="t7KYGMWlbiQX6aKWJ69kpw"><td data-page-node-id="5uqJqIEfumiEiDguTfOnZX"><code data-page-node-id="I07yFvJDuj6xqWL4IPKrQ8">BASE_URL</code></td><td data-page-node-id="3CguIpSW4wtHsGtqKIK6Fj"><code data-page-node-id="lToypEU4SmGXNRjnEM0RZL">https://www.你的域名.com</code></td></tr>
       </tbody>
     </table>
-    <div class="danger">🔒 <b>安全提醒</b>：JWT_SECRET 一定要改。它相当于网站后台登录的万能钥匙，用默认值等于把钥匙放在门口。</div>
+    <div class="danger" data-page-node-id="3Hea382cVN0tpBfFqpfZN4">🔒 <b data-page-node-id="F8ktPkrPRkn9jUOCSqLR6k">安全提醒</b>：JWT_SECRET 一定要改。它相当于网站后台登录的万能钥匙，用默认值等于把钥匙放在门口。</div>
   </div>
 </div>
 
 <!-- 步骤 6 -->
-<div class="step">
-  <div class="step-head"><span class="no">6</span>启动网站程序</div>
-  <div class="step-body">
-    <ol>
-      <li>宝塔左侧 → <b>终端</b>，粘贴下面命令回车（首次约 2–5 分钟）：<pre><code>cd /www/wwwroot/gattefosse && bash deploy/deploy.sh</code></pre></li>
-      <li>这个脚本会自动帮你：装依赖 → 生成数据库客户端 → 编译 → 用 PM2 启动并设置开机自启</li>
-      <li>看到「部署完成」就是成功了</li>
+<div class="step" data-page-node-id="ZpxHtXv4fe9t4GQf2C0WTp">
+  <div class="step-head" data-page-node-id="JlGJbMHoApkbcWvrI3Mztr"><span class="no" data-page-node-id="2VQR1HrjZRF56fY4Z9G963">6</span>启动网站程序</div>
+  <div class="step-body" data-page-node-id="kfXpshk7jWybOjGO9pkD4V">
+    <ol data-page-node-id="CvxGVBnlhQUMELX0d6YYZD">
+      <li data-page-node-id="3AsTSeOPLtQkW3dbnDI5nx">宝塔左侧 → <b data-page-node-id="DwQG8ec9Dw0lBfWkA6ZzUw">终端</b>，粘贴下面命令回车（首次约 2–5 分钟）：<pre data-page-node-id="PvfNo3ESCB3quweZvyJbZo"><code data-page-node-id="ArocjpFrApmqLxz8319jbz">cd /www/wwwroot/gattefosse && bash deploy/deploy.sh</code></pre></li>
+      <li data-page-node-id="xSIfuHQgZJtiDKs89f8wFx">这个脚本会自动帮你：装依赖 → 生成数据库客户端 → 编译 → 用 PM2 启动并设置开机自启</li>
+      <li data-page-node-id="fiq3OtBhz0tVgThw6LYeH3">看到「部署完成」就是成功了</li>
     </ol>
-    <div class="tip">✅ <b>怎么算成功</b>：终端输入 <code>curl http://127.0.0.1:3000/api/health</code>，返回 <code>{"status":"ok"...}</code>。<br>
-    再输入 <code>pm2 status</code>，能看到 gattefosse 状态是 <b>online</b>。</div>
-    <div class="warn">如果状态码不是 online，输入 <code>pm2 logs gattefosse</code> 看报错，把报错内容发给我，我帮你看。</div>
+    <div class="tip" data-page-node-id="YVw2YVaoIRYxZA9SNgR88u">✅ <b data-page-node-id="UiegjJq1b9LhkFCB10JoZV">怎么算成功</b>：终端输入 <code data-page-node-id="uvz5MNSLOylKgQUONon1Bh">curl http://127.0.0.1:3000/api/health</code>，返回 <code data-page-node-id="lsiXG9VW7qwL7MpTWd3qkk">{"status":"ok"...}</code>。<br data-page-node-id="aBBud7ykJuxWkk8vtP30VJ">
+    再输入 <code data-page-node-id="rU6HdWl0td5VjCnrDqBTJ6">pm2 status</code>，能看到 gattefosse 状态是 <b data-page-node-id="47rirgLYrOaYDIidzrSZEk">online</b>。</div>
+    <div class="warn" data-page-node-id="515nuztfFXE4HG5QucqiTM">如果状态码不是 online，输入 <code data-page-node-id="Hw7TE1bN1lNwRaEsEiiCxm">pm2 logs gattefosse</code> 看报错，把报错内容发给我，我帮你看。</div>
   </div>
 </div>
 
 <!-- 步骤 7 -->
-<div class="step">
-  <div class="step-head"><span class="no">7</span>把域名指向服务器</div>
-  <div class="step-body">
-    <ol>
-      <li>打开你的<b>域名管理后台</b>（腾讯云 → 域名管理 → 解析）</li>
-      <li>添加两条记录：</li>
+<div class="step" data-page-node-id="d3V6fqdT0jhpZKaJlFwqxZ">
+  <div class="step-head" data-page-node-id="M2xUyOhqkhXnOs8IjGVW6Z"><span class="no" data-page-node-id="2uFgh2bvh1VrsnzjtGHp9R">7</span>把域名指向服务器</div>
+  <div class="step-body" data-page-node-id="CWD2Q7ON3WdAuQa4LLUAgv">
+    <ol data-page-node-id="JwiVDqj6bKMVpczw4jGafu">
+      <li data-page-node-id="dhXCF1ZVzgVTS6qZjgmLE5">打开你的<b data-page-node-id="pfvhQmYSDWrP5KifVSBjHt">域名管理后台</b>（腾讯云 → 域名管理 → 解析）</li>
+      <li data-page-node-id="GEQMn6IDQSLiwp5lw98OwM">添加两条记录：</li>
     </ol>
-    <table>
-      <thead><tr><th>主机记录</th><th>记录类型</th><th>记录值</th></tr></thead>
-      <tbody>
-        <tr><td><code>www</code></td><td>A</td><td>你的服务器公网 IP</td></tr>
-        <tr><td><code>@</code></td><td>A</td><td>你的服务器公网 IP</td></tr>
+    <table data-page-node-id="YqIHZw07DrQaeq7DaFWvgT">
+      <thead data-page-node-id="8BapZV0QmcCaNGQuRh64vm"><tr data-page-node-id="Ul8JBxOzQGHFo61wB4CkD4"><th data-page-node-id="WIt0asjkQgZo6xv1bPUWVA">主机记录</th><th data-page-node-id="St6L0F77MvGFVcq72yskRo">记录类型</th><th data-page-node-id="ncWe0qKnd5W7RuchoDUm5h">记录值</th></tr></thead>
+      <tbody data-page-node-id="PYvXvVCYqsPBkrvJTtAvRm">
+        <tr data-page-node-id="5iXhe0GkEFESBJJftTCAaP"><td data-page-node-id="C5vXwPIBvLSUNssllp54XO"><code data-page-node-id="lPfGn5XysD3i43z6QEI55B">www</code></td><td data-page-node-id="Uxaa9FEKPa4UYiHB0gpZQO">A</td><td data-page-node-id="fmF9kTINpF69NkBHnU7Are">你的服务器公网 IP</td></tr>
+        <tr data-page-node-id="7Hm1PGOen9d7bQ66uEGnXf"><td data-page-node-id="T6muReu8ab59BxBQJYc5yK"><code data-page-node-id="v9aSrxVZUif0DOsRJUoR2Y">@</code></td><td data-page-node-id="6CeeouWg3SfyNQxGJ8ZqQN">A</td><td data-page-node-id="q5aYZpKkMltrLgqnWEY9c3">你的服务器公网 IP</td></tr>
       </tbody>
     </table>
-    <div class="tip">✅ <b>怎么算成功</b>：等 5 分钟后，在你电脑上打开「命令提示符」，输入 <code>ping www.你的域名.com</code>，显示的 IP 是你的服务器 IP 就对了。</div>
+    <div class="tip" data-page-node-id="61RC5uFlx9aUzqMa6cH7ix">✅ <b data-page-node-id="SdEPjykVfnyDwRDp02ZQ4Q">怎么算成功</b>：等 5 分钟后，在你电脑上打开「命令提示符」，输入 <code data-page-node-id="5kGq0xnfzKx9DPkKDVnWbd">ping www.你的域名.com</code>，显示的 IP 是你的服务器 IP 就对了。</div>
   </div>
 </div>
 
 <!-- 步骤 8 -->
-<div class="step">
-  <div class="step-head"><span class="no">8</span>配置网站入口 + 申请 HTTPS 小绿锁</div>
-  <div class="step-body">
-    <p><b>A. 添加站点</b>（宝塔 → 网站 → 添加站点）：</p>
-    <ul>
-      <li>域名：填 <code>www.你的域名.com</code> 和 <code>你的域名.com</code>（两个都填）</li>
-      <li>根目录：<code>/www/wwwroot/gattefosse/site</code></li>
-      <li>数据库、PHP：都<b>不</b>选（我们用不上）</li>
+<div class="step" data-page-node-id="boAmG9aZSUEXfsFOlERqWk">
+  <div class="step-head" data-page-node-id="VsuCgmNpCDvS50ihlaIRkk"><span class="no" data-page-node-id="rSLwf7vyW0pqKeqdvF1UPx">8</span>配置网站入口 + 申请 HTTPS 小绿锁</div>
+  <div class="step-body" data-page-node-id="DODst4BXXXu1v0ipbXhgvI">
+    <p data-page-node-id="uDLuDLLJXbFMKjSFYSTNHl"><b data-page-node-id="jkhkQmxc3DBFjqDoV3DpZs">A. 添加站点</b>（宝塔 → 网站 → 添加站点）：</p>
+    <ul data-page-node-id="HgCH3IQIoxF5ZMGu9gj4YE">
+      <li data-page-node-id="eIAWIiY9FaiaOvfBRZ3e4w">域名：填 <code data-page-node-id="f0IFfeCainF7RFofJBhoZG">www.你的域名.com</code> 和 <code data-page-node-id="W46361Gstvq1lYrrRjgfX8">你的域名.com</code>（两个都填）</li>
+      <li data-page-node-id="TLYDLkG6PBhsvIjzZ2T4ca">根目录：<code data-page-node-id="f7IqGA0yQrhon0DNPgzhoQ">/www/wwwroot/gattefosse/site</code></li>
+      <li data-page-node-id="VSTah97sh9PfmeYLYFuXCY">数据库、PHP：都<b data-page-node-id="cEAdbFlLHdaEsOnwlbB7Pw">不</b>选（我们用不上）</li>
     </ul>
-    <p><b>B. 设置反向代理</b>（关键一步，让 80 门通向 3000 房间）：</p>
-    <ol>
-      <li>网站列表 → 点你刚建的站点「设置」→ <b>反向代理</b> → 添加反向代理</li>
-      <li>代理名称：<code>gattefosse</code>；目标 URL：<code>http://127.0.0.1:3000</code>；其他默认 → 提交</li>
+    <p data-page-node-id="igzSzUy8G5KU9vzOxQGsBa"><b data-page-node-id="7jfl1wrIJYv245HE1qlYTA">B. 设置反向代理</b>（关键一步，让 80 门通向 3000 房间）：</p>
+    <ol data-page-node-id="C4Klv0zk6ssPHaqRpxu0j3">
+      <li data-page-node-id="zUS7QvPMzoDBRQbdgjEOVJ">网站列表 → 点你刚建的站点「设置」→ <b data-page-node-id="c9dFjME37ZbCT3THWFq1by">反向代理</b> → 添加反向代理</li>
+      <li data-page-node-id="mfg1E3RHFk0MRQ3CYgdEm6">代理名称：<code data-page-node-id="4xOMHxymN7PsaDTGtee9VS">gattefosse</code>；目标 URL：<code data-page-node-id="c9akjwyctgi8a7wFCmyGGF">http://127.0.0.1:3000</code>；其他默认 → 提交</li>
     </ol>
-    <p><b>C. 申请 HTTPS 证书</b>（小绿锁）：</p>
-    <ol>
-      <li>站点设置 → <b>SSL</b> → Let's Encrypt → 选「文件验证」→ 申请</li>
-      <li>申请成功后打开「强制 HTTPS」开关</li>
+    <p data-page-node-id="gmAv952haS02HzkwOBLJ58"><b data-page-node-id="VMsZwAATwNT2Yfb0LAoFm0">C. 申请 HTTPS 证书</b>（小绿锁）：</p>
+    <ol data-page-node-id="BoqSeKb7XhkGNr98lIGXh5">
+      <li data-page-node-id="dPdAS8tLDZFhswnMcVRwRW">站点设置 → <b data-page-node-id="jWZiEbfvkkiNf8zM3IJF2b">SSL</b> → Let's Encrypt → 选「文件验证」→ 申请</li>
+      <li data-page-node-id="ruZsdO9iEEZc8BvxB0pAtq">申请成功后打开「强制 HTTPS」开关</li>
     </ol>
-    <div class="tip">✅ <b>怎么算成功</b>：浏览器打开 <code>https://www.你的域名.com</code> 能看到网站首页；打开 <code>https://www.你的域名.com/admin</code> 能看到后台登录页。</div>
+    <div class="tip" data-page-node-id="DCL8maaj63w9eMiP7uAbyd">✅ <b data-page-node-id="l8fGr5FburFBtsrTfG6uCG">怎么算成功</b>：浏览器打开 <code data-page-node-id="zDErmTDs3hALWNkcCOh9z4">https://www.你的域名.com</code> 能看到网站首页；打开 <code data-page-node-id="dQNdiSBmlN8SZ8BNGShzQI">https://www.你的域名.com/admin</code> 能看到后台登录页。</div>
   </div>
 </div>
 
 <!-- ============ 3. 验收 ============ -->
-<h2>三、上线验收清单（逐条打勾）</h2>
-<ul class="checklist">
-  <li>打开 <code>https://你的域名.com</code> → 前台首页正常显示，图片能加载</li>
-  <li>打开 <code>https://你的域名.com/admin</code> → 后台登录页，用超管账号能登录进去</li>
-  <li>后台「总览」→ 能看到访问统计地图和数据</li>
-  <li>随便点开一个产品页 → 图片、PDF 下载链接都正常</li>
-  <li>前台注册一个新会员 → 后台「用户管理」里能看到（验证数据库写入正常）</li>
-  <li>地址栏左侧是<b>小绿锁</b>（HTTPS 生效）</li>
+<h2 data-page-node-id="uL1kLv3wLHBADupnr0uDUe">三、上线验收清单（逐条打勾）</h2>
+<ul class="checklist" data-page-node-id="HKCCIo9hk9623fwIcTOySs">
+  <li data-page-node-id="Ya9L0Wlmb02ku5IQRyq8od">打开 <code data-page-node-id="AOL8xR8aQd6f6s3sqGxFSn">https://你的域名.com</code> → 前台首页正常显示，图片能加载</li>
+  <li data-page-node-id="mRKn6l1khWGdHVCXgTO0vs">打开 <code data-page-node-id="xCS4fgQQyUIa8vqgIwcfEs">https://你的域名.com/admin</code> → 后台登录页，用超管账号能登录进去</li>
+  <li data-page-node-id="RBzDvQvYGyD2QjzQKfx3zM">后台「总览」→ 能看到访问统计地图和数据</li>
+  <li data-page-node-id="BzyWP42jn7LSjG9MYTaHFI">随便点开一个产品页 → 图片、PDF 下载链接都正常</li>
+  <li data-page-node-id="dVUxPWD5TVDfitm1ArpbmW">前台注册一个新会员 → 后台「用户管理」里能看到（验证数据库写入正常）</li>
+  <li data-page-node-id="NEfwzIjQqghRnXDDCCZDRd">地址栏左侧是<b data-page-node-id="4pS7UI2J69eXPS5fP3Kx2w">小绿锁</b>（HTTPS 生效）</li>
 </ul>
 
 <!-- ============ 4. 更新 ============ -->
-<h2>四、以后怎么更新网站（改了代码后）</h2>
-<div class="card">
-  <p><b>在你自己电脑上</b>改完代码、测试没问题后：</p>
-  <ol>
-    <li>本地执行 <code>cd backend && npx tsc</code> 重新编译</li>
-    <li>把改动的文件（或整个目录重新打包）上传到服务器覆盖</li>
-    <li>宝塔终端执行：<code>cd /www/wwwroot/gattefosse && bash deploy/deploy.sh</code></li>
-    <li>刷新网页即可（前台页面记得 Ctrl+F5 强刷）</li>
+<h2 data-page-node-id="Iqjhrk0rAl7iGLNQftvhnS">四、以后怎么更新网站（改了代码后）</h2>
+<div class="card" data-page-node-id="07svj4ksGNXzucF15pMP7Z">
+  <p data-page-node-id="uJO0oX4WItlEZkBoXqnLw8"><b data-page-node-id="SzSCbWiLuXnAXe4uW10BAS">在你自己电脑上</b>改完代码、测试没问题后：</p>
+  <ol data-page-node-id="rUEOrecQgzDA6rZSnbSOmW">
+    <li data-page-node-id="lv6rcLHtjqYoFkvr4AHNm2">本地执行 <code data-page-node-id="iOOeREBPxVzPcpWcauQvap">cd backend && npx tsc</code> 重新编译</li>
+    <li data-page-node-id="LfQYdFmR4JvW3qPx2xph4W">把改动的文件（或整个目录重新打包）上传到服务器覆盖</li>
+    <li data-page-node-id="hBDvQtx0GCfrEihP9PnnQL">宝塔终端执行：<code data-page-node-id="Z6BPw89FZEyuz0C1qJ2OfO">cd /www/wwwroot/gattefosse && bash deploy/deploy.sh</code></li>
+    <li data-page-node-id="3gTF421lBiByjz9hACZsy2">刷新网页即可（前台页面记得 Ctrl+F5 强刷）</li>
   </ol>
-  <p style="margin-top:12px;color:var(--muted);font-size:14px">数据不会丢——所有内容都存在 <code>backend/prisma/gattefosse.db</code> 这一个文件里，更新代码不会动它。</p>
+  <p style="margin-top:12px;color:var(--muted);font-size:14px" data-page-node-id="Pr8WdWAGFledmFVrHcUVuD">数据不会丢——所有内容都存在 <code data-page-node-id="d9IwYL6u9FbLnGj9PjsWJB">backend/prisma/gattefosse.db</code> 这一个文件里，更新代码不会动它。</p>
 </div>
 
 <!-- ============ 5. 坑 ============ -->
-<h2>五、新手最容易踩的 5 个坑</h2>
-<table>
-  <thead><tr><th style="width:200px">坑</th><th>怎么避开</th></tr></thead>
-  <tbody>
-    <tr><td><b>域名没备案</b></td><td>网站一定打不开。这是硬性规定，先备案再谈其他</td></tr>
-    <tr><td><b>忘了放行 80/443 端口</b></td><td>症状是「服务器能 ping 通但网页打不开」。先查防火墙</td></tr>
-    <tr><td><b>上传时丢了数据库文件</b></td><td>一定要确认 <code>backend/prisma/gattefosse.db</code> 一起传上去了，否则是空网站</td></tr>
-    <tr><td><b>上传的文件打不开</b></td><td>给 <code>backend/uploads</code> 目录设置权限 755（宝塔文件管理右键 → 权限）</td></tr>
-    <tr><td><b>JWT_SECRET 没改</b></td><td>任何人都能伪造登录令牌，务必换成随机字符串</td></tr>
+<h2 data-page-node-id="Hm9V4ZMg1295S9FROWAWKa">五、新手最容易踩的 5 个坑</h2>
+<table data-page-node-id="WrAMtJ7AFICc3oB6frCGH6">
+  <thead data-page-node-id="Xut8mWhUfAX4qEhB9iK0vN"><tr data-page-node-id="WUFVr0scbBbRdi2OKTRAcO"><th style="width:200px" data-page-node-id="kEagsSAdjTlLUk1D1jwfyo">坑</th><th data-page-node-id="yxovFiCv4pXwTLMzU2185G">怎么避开</th></tr></thead>
+  <tbody data-page-node-id="XcEoQc7kFCfolj0niDf1lD">
+    <tr data-page-node-id="T9zWRH2yVBEhKsMYUA6VBA"><td data-page-node-id="CcAEkjdhcM2GN9V0ipIMHv"><b data-page-node-id="hsHCBYv9FjuABhA1ttoDCA">域名没备案</b></td><td data-page-node-id="6D6Up4a5ppEzj8dfqSS5hu">网站一定打不开。这是硬性规定，先备案再谈其他</td></tr>
+    <tr data-page-node-id="TfkJKGp8Zx8AfcgkUKCUTA"><td data-page-node-id="IQpzvR1vmVL4dV4jJEeAoW"><b data-page-node-id="MgMMzViTbbvPU6gpFdV1NG">忘了放行 80/443 端口</b></td><td data-page-node-id="dgxHIpJvJcNzWGDIxbWD4t">症状是「服务器能 ping 通但网页打不开」。先查防火墙</td></tr>
+    <tr data-page-node-id="AZSGNhwaU5tl8s2M71gRDx"><td data-page-node-id="1R740IImjS9Zie4B0QepL7"><b data-page-node-id="GmybMv1m6CPHwt1YIDYAdH">上传时丢了数据库文件</b></td><td data-page-node-id="2fzBfXTzjJ7RLeGKNHmFsn">一定要确认 <code data-page-node-id="0es0pugdfUyAQrubL7w39N">backend/prisma/gattefosse.db</code> 一起传上去了，否则是空网站</td></tr>
+    <tr data-page-node-id="5LwTVhF9KhAAPyJS8eA7aw"><td data-page-node-id="QV9FkVv5HWRMxK0MTSgTud"><b data-page-node-id="LCvk26PgLKLdcQ8ihdJsyr">上传的文件打不开</b></td><td data-page-node-id="MGxxSqJiBOEGOutkW2tx3G">给 <code data-page-node-id="5J2XQmatHRiPCqIlI9gpqH">backend/uploads</code> 目录设置权限 755（宝塔文件管理右键 → 权限）</td></tr>
+    <tr data-page-node-id="JuNUKDcpmqkdhDJmWLDLbF"><td data-page-node-id="NE2SCGOKpttw3vg3LTwlTX"><b data-page-node-id="VfSeQMtEQXI8oqA0Fhtn5r">JWT_SECRET 没改</b></td><td data-page-node-id="RPV8kTTl7xvyqasMhPWS81">任何人都能伪造登录令牌，务必换成随机字符串</td></tr>
   </tbody>
 </table>
 
 <!-- ============ 6. 备份 ============ -->
-<h2>六、上线后要做的 2 件保命事</h2>
-<div class="card">
-  <h3>1. 开自动快照（服务器整机备份）</h3>
-  <p>腾讯云控制台 → 轻量服务器 → 快照 → 设置<b>自动快照策略</b>（每天一次，保留 7 天）。<br>收费很少，出问题时能一键把服务器恢复到昨天。</p>
-  <h3>2. 定期下载数据库文件</h3>
-  <p>宝塔文件管理 → 进入 <code>/www/wwwroot/gattefosse/backend/prisma/</code> → 右键 <code>gattefosse.db</code> → 下载。<br><b>建议每周下载一次存到自己电脑</b>——这是你网站全部内容的唯一副本，1.4MB 很小，比什么都重要。</p>
+<h2 data-page-node-id="aeyJGRYtpjkIHvaTEQgipT">六、上线后要做的 2 件保命事</h2>
+<div class="card" data-page-node-id="lxIs84MzKSxD1xKxBVFKU4">
+  <h3 data-page-node-id="fbD2UkBiL414LlWblWraAu">1. 开自动快照（服务器整机备份）</h3>
+  <p data-page-node-id="A8DnBVQpEFtnKNnIVCP6cm">腾讯云控制台 → 轻量服务器 → 快照 → 设置<b data-page-node-id="XUyYC7DYp3EIMT41BLPON2">自动快照策略</b>（每天一次，保留 7 天）。<br data-page-node-id="eXWKWGMFoU3CyvE8mCn8Ic">收费很少，出问题时能一键把服务器恢复到昨天。</p>
+  <h3 data-page-node-id="402TD6bJDrwC9OTSpw4dQQ">2. 定期下载数据库文件</h3>
+  <p data-page-node-id="26FYcxADwDWGtOd7fZXhss">宝塔文件管理 → 进入 <code data-page-node-id="Bf4kHvAciGbYdB8kjtDVW1">/www/wwwroot/gattefosse/backend/prisma/</code> → 右键 <code data-page-node-id="hEcrjCcf63kWvteYDl58Vv">gattefosse.db</code> → 下载。<br data-page-node-id="lGGyYm8qYoXpzlLY05EwaN"><b data-page-node-id="XXc6eUg1z8QC84VVaCRSe5">建议每周下载一次存到自己电脑</b>——这是你网站全部内容的唯一副本，1.4MB 很小，比什么都重要。</p>
 </div>
 
 <!-- ============ 7. 我可以帮你 ============ -->
-<h2>七、想让我替你操作？</h2>
-<div class="card">
-  <p>如果你在 WorkBuddy 里把腾讯云的密钥配置好（一次配置，长期有效），我就能<b>直接在你的服务器上执行这些命令</b>——装环境、传代码、启动服务、查日志、排查故障，你只需要看着就行。</p>
-  <p style="margin-top:10px"><b>怎么配置</b>：打开 <code>C:\Users\Shine Lu\.workbuddy\mcp.json</code>，把里面两处占位符替换成你的真实密钥：</p>
-  <pre><code>"TENCENTCLOUD_SECRET_ID": "YOUR_SECRET_ID_HERE"   ← 换成你的 SecretId
+<h2 data-page-node-id="OMBl4Y1StJzjDJXD5o157D">七、想让我替你操作？</h2>
+<div class="card" data-page-node-id="QnDyNLVi17eT2wEx9Nld4e">
+  <p data-page-node-id="EJ9Ie71SiYJGPsQOrc7sAJ">如果你在 WorkBuddy 里把腾讯云的密钥配置好（一次配置，长期有效），我就能<b data-page-node-id="pcnpofLk2AQdYNnYpvFa1q">直接在你的服务器上执行这些命令</b>——装环境、传代码、启动服务、查日志、排查故障，你只需要看着就行。</p>
+  <p style="margin-top:10px" data-page-node-id="nK8EArBm7d5ioJ5ockJZm0"><b data-page-node-id="Xp2UHrHEuFPbOH2brcinOd">怎么配置</b>：打开 <code data-page-node-id="cBhc5EpYt6YxZAa3Qkc04j">C:\Users\Shine Lu\.workbuddy\mcp.json</code>，把里面两处占位符替换成你的真实密钥：</p>
+  <pre data-page-node-id="JQdKaqkUMTovsdnKBdSwp2"><code data-page-node-id="VkGu8nGCoHXkgM0GBeqsnQ">"TENCENTCLOUD_SECRET_ID": "YOUR_SECRET_ID_HERE"   ← 换成你的 SecretId
 "TENCENTCLOUD_SECRET_KEY": "YOUR_SECRET_KEY_HERE" ← 换成你的 SecretKey</code></pre>
-  <p>密钥在腾讯云控制台 → 右上角头像 → <b>访问管理 → 访问密钥 → 新建密钥</b> 获取。<br>配好后重启一下 WorkBuddy，告诉我一声，剩下的我来做。</p>
+  <p data-page-node-id="vh5jAdkyJLjMiMxRPCqBmx">密钥在腾讯云控制台 → 右上角头像 → <b data-page-node-id="W7a0ap6DSSIylh5ftcGKqa">访问管理 → 访问密钥 → 新建密钥</b> 获取。<br data-page-node-id="R8FWsJQcHZWrAStWtAdBg9">配好后重启一下 WorkBuddy，告诉我一声，剩下的我来做。</p>
 </div>
 
-<footer>
-  嘉法狮网站重建项目 · 部署手册 · 配套文件在 <code>deploy/</code> 目录（Nginx 配置 / PM2 配置 / 环境变量模板 / 一键部署脚本）
+<footer data-page-node-id="z2a6GfEl8NLZ7PsGC9rVed">
+  嘉法狮网站重建项目 · 部署手册 · 配套文件在 <code data-page-node-id="ZLMadRkhZE9kTg6TxGyo8n">deploy/</code> 目录（Nginx 配置 / PM2 配置 / 环境变量模板 / 一键部署脚本）
 </footer>
 
 </div>

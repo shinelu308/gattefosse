@@ -30,3 +30,4 @@ node_modules/
 site/.localize_tmp_backup_*.html
 site/www/
 uploads/
+.tools/
