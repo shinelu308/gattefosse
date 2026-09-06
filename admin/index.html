@@ -3756,7 +3756,7 @@ const QUILL_TOOLBAR = [
 <script src="/admin/static/js/echarts.min.js"></script>
 <script>
 const { createApp } = Vue;
-const API = 'http://localhost:3000/api';
+const API = location.protocol + '//' + location.host + '/api';
 
 // localStorage 降级方案 — 被跟踪防护拦截时自动降级到 cookie
 const safeStorage = {
