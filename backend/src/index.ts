@@ -30,6 +30,9 @@ import { pageViewTracker } from './middleware/tracker';
 
 const app = express();
 
+// 信任反向代理（宝塔 Nginx）：让 req.ip 取到真实访客 IP 而非 127.0.0.1
+app.set('trust proxy', true);
+
 // 中间件
 app.use(cors({
   origin: config.env === 'development' ? true : config.cors.frontendUrl,
