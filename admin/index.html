@@ -4182,6 +4182,12 @@ createApp({
       return map[this.tagFilterProductLine] || map.pc;
     },
   },
+  watch: {
+    // 切回总览时重渲染地区地图（v-if 重建了容器，且总览菜单不经过 goPage）
+    currentPage(v) {
+      if (v === 'dashboard') this.$nextTick(() => this.renderRegionChart());
+    },
+  },
   methods: {
     onIframeLoad(e) {
       try {
