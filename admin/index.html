@@ -4360,7 +4360,15 @@ createApp({
       await this.$nextTick();
       const el = this.$refs.regionChartEl;
       if (!el) return;
-      if (!this.regionChart) this.regionChart = echarts.init(el);
+      // 切换页面后 DOM 会重建：缓存实例若绑定的是旧 DOM 则销毁重建，否则渲染到已卸载节点导致空白
+      if (this.regionChart && this.regionChart.getDom() !== el) {
+        this.regionChart.dispose();
+        this.regionChart = null;
+      }
+      if (!this.regionChart) {
+        this.regionChart = echarts.init(el);
+        window.addEventListener('resize', () => { try { this.regionChart && this.regionChart.resize(); } catch (e) {} });
+      }
       const isChina = this.regionTab === 'china';
       // 中国：短名 → DataV 全称匹配；世界：中文国名 → echarts 英文名
       const PROV_FULL = { 北京:'北京市',天津:'天津市',河北:'河北省',山西:'山西省',内蒙古:'内蒙古自治区',辽宁:'辽宁省',吉林:'吉林省',黑龙江:'黑龙江省',上海:'上海市',江苏:'江苏省',浙江:'浙江省',安徽:'安徽省',福建:'福建省',江西:'江西省',山东:'山东省',河南:'河南省',湖北:'湖北省',湖南:'湖南省',广东:'广东省',广西:'广西壮族自治区',海南:'海南省',重庆:'重庆市',四川:'四川省',贵州:'贵州省',云南:'云南省',西藏:'西藏自治区',陕西:'陕西省',甘肃:'甘肃省',青海:'青海省',宁夏:'宁夏回族自治区',新疆:'新疆维吾尔自治区',台湾:'台湾省',香港:'香港特别行政区',澳门:'澳门特别行政区' };
