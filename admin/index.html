@@ -3912,7 +3912,7 @@ const QUILL_TOOLBAR = [
         <p class="confirm-msg" v-text="confirmDialog.message" data-page-node-id="zu1HhfSmlfse3vG6jHpAPB"></p>
         <div class="confirm-btns" data-page-node-id="avnJYAsgRqD8BGNTAIefiE">
           <button class="btn btn-outline" @click="confirmDialog.show=false" data-page-node-id="XhoIF8XmgJNMCkLVUXB38E">取消</button>
-          <button class="btn btn-danger" @click="confirmDialog.onConfirm && confirmDialog.onConfirm(); confirmDialog.show=false;" data-page-node-id="ingFMuN5pEIVxQIzkhyPYB">确认删除</button>
+          <button class="btn" :class="confirmDialog.danger !== false ? 'btn-danger' : 'btn-primary'" @click="confirmDialog.onConfirm && confirmDialog.onConfirm(); confirmDialog.show=false;" v-text="confirmDialog.confirmText || '确认删除'"></button>
         </div>
       </div>
     </div>
@@ -4374,8 +4374,13 @@ createApp({
       else if (key === 'confirm') this.confirmDialog.show = false;
       else if (key === 'alert') this.alertDialog.show = false;
     },
-    showConfirm(title, message, onConfirm) {
-      this.confirmDialog = { show: true, title, message, onConfirm };
+    showConfirm(title, message, onConfirm, opts) {
+      // 兼容 (title, msg, onConfirm, opts) 与 (title, msg, opts, onConfirm) 两种传参顺序
+      if (onConfirm && typeof onConfirm === 'object' && typeof opts === 'function') {
+        const o = onConfirm; onConfirm = opts; opts = o;
+      }
+      const o = opts || {};
+      this.confirmDialog = { show: true, title, message, onConfirm, confirmText: o.confirmText || '', danger: o.danger !== false };
     },
     showAlert(msg, type) {
       const title = type === 'error' ? '错误' : '提示';
@@ -6567,7 +6572,7 @@ createApp({
     },
     // AI 自动翻译：英→中，保留 HTML 版式与图片，完成后打开编辑核对
     async aiTranslateNews(item) {
-      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文 / 相关卡片描述将替换为中文\n· HTML 版式、图片、链接完全保留\n· 进度会实时显示，期间请勿关闭页面', async () => {
+      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文 / 相关卡片描述将替换为中文\n· HTML 版式、图片、链接完全保留\n· 进度会实时显示，期间请勿关闭页面', { confirmText: '开始翻译', danger: false }, async () => {
         item._translating = true;
         try {
           const r = await this.runAiTranslateJob(item.id);
@@ -6617,7 +6622,7 @@ createApp({
     },
     // 文章 AI 自动翻译（复用新闻翻译后台任务，完成后打开编辑核对）
     async aiTranslateArticle(item) {
-      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文 / 相关卡片描述将替换为中文\n· HTML 版式、图片、链接完全保留\n· 进度会实时显示，期间请勿关闭页面', async () => {
+      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文 / 相关卡片描述将替换为中文\n· HTML 版式、图片、链接完全保留\n· 进度会实时显示，期间请勿关闭页面', { confirmText: '开始翻译', danger: false }, async () => {
         item._translating = true;
         try {
           const r = await this.runAiTranslateJob(item.id);
