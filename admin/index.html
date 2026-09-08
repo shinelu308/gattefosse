@@ -6503,8 +6503,8 @@ createApp({
       this.newsImporting = true;
       this.newsImportMsg = '⏳ 正在抓取并解析原站页面，约需 10~30 秒...';
       try {
-        await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.newsImport.url, type: 'news', category: this.newsImport.category }) });
-        this.newsImportMsg = '✅ 导入成功，已存为草稿（列表中筛选「草稿」可见），请核对内容后手动发布';
+        await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.newsImport.url, category: this.newsImport.category }) });
+        this.newsImportMsg = '✅ 导入成功，已存为草稿（类型已按原站自动识别，列表中筛选「草稿」可见），请核对内容后手动发布';
         this.newsImport.url = '';
         this.loadNewsList();
       } catch (e) {

@@ -245,7 +245,9 @@ export async function importArticleFromSite(req: Request, res: Response) {
   }
   const allowedTypes = ['article', 'news', 'event'];
   const allowedCategories = ['corporate', 'pc', 'pharma'];
-  const importType = allowedTypes.includes(String(rawType)) ? String(rawType) : 'article';
+  const userType = String(rawType || '');
+  const userSpecifiedType = allowedTypes.includes(userType);
+  const importType = userSpecifiedType ? userType : 'article';
   const importCategory = allowedCategories.includes(String(rawCategory)) ? String(rawCategory) : 'pharma';
 
   // 中文站分支：结构化接口导入（类型/分类自动识别）
@@ -294,8 +296,31 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const title = titleM ? stripTags(titleM[1]) : '';
   if (!title) return res.status(400).json(fail('未找到文章标题'));
 
+  // 日期：优先 <time datetime="..."> 精确时间戳，退回 "14 Aug 2026" 文本解析
+  const timeAttrM = /<time[^>]*\bdatetime="([^"]+)"/.exec(articleDiv);
   const dateM = /class="c-card__date"[\s\S]*?>([\s\S]*?)</.exec(articleDiv);
-  const publishedDate = (dateM && parseSiteDate(dateM[1])) || new Date();
+  const publishedDate =
+    (timeAttrM && !isNaN(Date.parse(timeAttrM[1])) && new Date(timeAttrM[1])) ||
+    (dateM && parseSiteDate(dateM[1])) ||
+    new Date();
+
+  // 分类标题（s-article__category-title：News / Event / Article…）→ 自动推断类型
+  const catTitleM = /s-article__category-title[^>]*>([\s\S]*?)</.exec(articleDiv);
+  const categoryTitle = catTitleM ? stripTags(catTitleM[1]) : '';
+  let finalType = importType;
+  let typeAutoDetected = false;
+  if (!userSpecifiedType && categoryTitle) {
+    const cat = categoryTitle.toLowerCase();
+    if (/event|show|trade|salon/.test(cat)) { finalType = 'event'; typeAutoDetected = true; }
+    else if (/news|actualit/.test(cat)) { finalType = 'news'; typeAutoDetected = true; }
+    else if (/article/.test(cat)) { finalType = 'article'; typeAutoDetected = true; }
+  }
+  // URL 路径兜底（无分类标题时）：/news/* → 新闻，/event/* → 活动
+  if (!userSpecifiedType && !typeAutoDetected) {
+    const lp = url.toLowerCase();
+    if (/\/event/.test(lp)) { finalType = 'event'; typeAutoDetected = true; }
+    else if (/\/news/.test(lp)) { finalType = 'news'; typeAutoDetected = true; }
+  }
 
   const readingM = /Reading\s*:?\s*(\d+)\s*mn/i.exec(articleDiv);
   const readingTime = readingM ? parseInt(readingM[1], 10) : null;
@@ -322,18 +347,50 @@ export async function importArticleFromSite(req: Request, res: Response) {
   if (!contentDiv) return res.status(400).json(fail('正文容器解析失败'));
   const children = splitChildDivs(contentDiv);
 
-  // 4. 图片收集与下载
-  const imgMap = new Map<string, string>(); // 原始 src → 本地路径
+  // 3.5 封面大图：page-top__image 的背景图（原站文章专用 banner 裁剪，1140×405）
+  // 优先于正文首图——正文首图常是 6000px 原始大图，直接当列表封面会模糊/比例失衡
   const uploadDir = path.resolve(__dirname, '../../uploads/articles');
   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-
-  const allSrcs: string[] = [];
-  const imgRe = /<img[^>]*\ssrc="([^"]+)"/g;
-  let im: RegExpExecArray | null;
-  while ((im = imgRe.exec(contentDiv)) !== null) allSrcs.push(im[1]);
-
   const downloadErrors: string[] = [];
   let seq = 0;
+  let coverRaw = '';
+  const bannerIdx = html.indexOf('page-top__image');
+  if (bannerIdx >= 0) {
+    const bgM = /background-image:\s*url\((['"]?)([^)'"]+)\1\)/.exec(html.slice(bannerIdx, bannerIdx + 1200));
+    if (bgM) coverRaw = bgM[2].split('?')[0].trim();
+  }
+  let coverLocal = '';
+  if (coverRaw) {
+    const abs = absoluteUrl(coverRaw);
+    if (/^https?:\/\/./.test(abs)) {
+      seq++;
+      let base = '';
+      try { base = decodeURIComponent(new URL(abs).pathname.split('/').pop() || ''); } catch { base = ''; }
+      base = base.replace(/\.webp$/i, '').replace(/[^\w.\-]+/g, '_');
+      if (!base || base.length > 80) base = `cover_${Date.now()}_${seq}`;
+      if (!/\.(jpe?g|png|gif|webp|svg)$/i.test(base)) base += '.webp';
+      const fname = `${Date.now()}_${seq}_${base}`;
+      try {
+        await downloadFile(abs, path.join(uploadDir, fname));
+        coverLocal = `/uploads/articles/${fname}`;
+      } catch (e: any) {
+        downloadErrors.push(`封面 ${coverRaw}（${e.message}）`);
+      }
+    }
+  }
+
+  // 4. 图片收集与下载
+  const imgMap = new Map<string, string>(); // 原始 src → 本地路径
+
+  const allSrcs: string[] = [];
+  const imgRe = /<img[^>]*\ssrc="([^"]+)"[^>]*>/g;
+  let im: RegExpExecArray | null;
+  while ((im = imgRe.exec(contentDiv)) !== null) {
+    // 过滤追踪像素（width/height="1" 的 1×1 监测图）
+    if (/\s(?:width|height)="1"/.test(im[0])) continue;
+    allSrcs.push(im[1]);
+  }
+
   for (const rawSrc of [...new Set(allSrcs)]) {
     const abs = absoluteUrl(rawSrc);
     if (!/^https?:\/\/./.test(abs)) continue;
@@ -356,7 +413,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
   // 5. 逐区块转换
   const blocks: string[] = [];
   const skippedTypes = new Set<string>();
-  let linkedContentHtml = ''; // 原站 Related content 区块（不进正文，单独转卡片区块）
+  const linkedContentBlocks: string[] = []; // 原站 Related content 区块（可能多个，不进正文，单独转卡片区块）
 
   // 本文自身的路径（用于把自引用链接改写为页内锚点）
   let selfPath = '';
@@ -407,7 +464,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
     // 原站 Related content（linked-content）：解析为卡片区块，不进正文
     if (cls.includes('paragraph--type--linked-content')) {
-      linkedContentHtml = child;
+      linkedContentBlocks.push(child);
       skippedTypes.add('相关内容(转独立卡片区块)');
       continue;
     }
@@ -433,7 +490,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
     }
   }
 
-  // 7. 封面图：第一张本地化的正文图
+  // 7. 封面兜底：正文第一张本地化图（无 banner 时使用）
   const firstLocal = [...imgMap.values()][0] || null;
 
   // 8. 作者关联：按姓名匹配 authors 表，无则自动创建（头像后台可补）
@@ -454,17 +511,18 @@ export async function importArticleFromSite(req: Request, res: Response) {
     authorId = author.id;
   }
 
-  // 9. 落库（草稿）
-  const slugBase = url.split('/').filter(Boolean).pop() || null;
+  // 9. 落库（草稿）；slug 清洗查询参数与锚点
+  const slugBase = url.split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || null;
   const created = await prisma.newsEvent.create({
     data: {
-      type: importType,
+      type: finalType,
       category: importCategory,
       title,
       slug: slugBase,
       summary: summary || null,
       contentHtml,
-      imageUrl: firstLocal,
+      imageUrl: coverLocal || firstLocal,
+      topBackground: coverLocal || null,
       readingTime,
       publishedDate,
       isPublished: false,
@@ -475,9 +533,9 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
   // 10. 相关内容卡片 → 独立区块（解析原站 linked-content，映射本站产品/配方）
   let relatedCount = 0;
-  if (linkedContentHtml) {
+  if (linkedContentBlocks.length) {
     try {
-      const relatedCards = extractRelatedCards(linkedContentHtml, imgMap);
+      const relatedCards = extractRelatedCards(linkedContentBlocks.join('\n'), imgMap);
       if (relatedCards.length > 0) {
         await resolveRelatedCards(relatedCards);
         await prisma.articleBlock.create({
@@ -515,7 +573,12 @@ export async function importArticleFromSite(req: Request, res: Response) {
     downloadErrors,
     skippedBlocks: [...skippedTypes],
     relatedCards: relatedCount,
-  }, '导入成功，已保存为草稿' + (relatedCount ? `，相关内容 ${relatedCount} 张卡片已转独立区块` : '')));
+    coverSource: coverLocal ? 'banner' : 'first-image',
+    typeAutoDetected,
+  }, '导入成功，已保存为草稿'
+    + (typeAutoDetected ? `（识别为${{ news: '新闻', event: '活动', article: '专栏文章' }[finalType]}）` : '')
+    + (relatedCount ? `，相关内容 ${relatedCount} 张卡片已转独立区块` : '')
+    + (coverLocal ? '，封面取自原站banner' : '')));
 }
 
 // ==================== 翻译 Word 回填 ====================
