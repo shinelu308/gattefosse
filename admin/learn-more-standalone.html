@@ -101,20 +101,26 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   <!-- List -->
   <div class="card">
     <div class="card-header">
-      <div class="search-box">
-        <input class="form-control" placeholder="搜索标题、摘要..." v-model="keyword" @keyup.enter="reloadList()">
-      </div>
+      <input class="form-control" style="width:200px;" placeholder="搜索标题、摘要..." v-model="keyword" @keyup.enter="reloadList()">
+      <select class="form-control" style="width:140px;" v-if="activeTab==='hot-topics' || activeTab==='publications'" v-model="filterArticleType">
+        <option value="">全部子类型</option>
+        <option v-for="t in activeMeta.typeOptions" :key="t" :value="t">{{ t }}</option>
+      </select>
+      <select class="form-control" style="width:100px;" v-model="filterPublished">
+        <option value="">全部状态</option>
+        <option value="true">已发布</option>
+        <option value="false">草稿</option>
+      </select>
       <button class="btn btn-primary" @click="reloadList()">搜索</button>
-      <button class="btn" @click="keyword=''; reloadList();">重置</button>
-      <span style="flex:1;"></span>
-      <span style="font-size:13px;color:#888;">共 {{ total }} 条</span>
-      <button class="btn btn-slate" v-if="activeTab==='hot-topics'" @click="openImport()">⬇ 从原站导入</button>
+      <button class="btn btn-outline" @click="keyword=''; filterArticleType=''; filterPublished=''; page=1; loadList();">重置</button>
       <button class="btn btn-primary" @click="openNew()">+ 新增{{ activeMeta.addLabel }}</button>
+      <button class="btn btn-slate" v-if="activeTab==='hot-topics'" @click="openImport()">⬇ 从原站导入</button>
+      <button class="btn btn-sm btn-danger" @click="batchDelete" :disabled="selectedIds.length === 0">批量删除 ({{ selectedIds.length }})</button>
     </div>
     <table>
       <thead><tr>
-        <th style="width:80px;">封面</th>
-        <th>标题</th>
+        <th style="width:40px;"><input type="checkbox" :checked="list.length > 0 && selectedIds.length === list.length" @change="toggleSelectAll" title="全选/取消全选"></th>
+        <th style="width:200px;">标题</th>
         <th style="width:110px;" v-if="activeTab==='hot-topics' || activeTab==='publications'">子类型</th>
         <th style="width:160px;" v-if="activeTab==='publications'">出版物 / 作者</th>
         <th style="width:70px;" v-if="activeTab==='webinar' || activeTab==='brochures'">权限</th>
@@ -125,14 +131,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       </tr></thead>
       <tbody>
         <tr v-for="item in list" :key="item.id">
-          <td>
-            <img v-if="item.imageUrl" :src="item.imageUrl" class="thumb" @error="$event.target.style.display='none'">
-            <div v-else class="thumb-empty">无图</div>
-          </td>
-          <td class="td-title">
-            <div class="t">{{ item.title || '-' }}</div>
-            <div class="s" v-if="item.summary">{{ item.summary }}</div>
-          </td>
+          <td><input type="checkbox" :value="item.id" v-model="selectedIds"></td>
+          <td class="td-title">{{ item.title || '-' }}</td>
           <td v-if="activeTab==='hot-topics' || activeTab==='publications'">
             <span class="type-tag" v-if="item.articleType">{{ item.articleType }}</span>
             <span class="muted" v-else>-</span>
@@ -149,11 +149,11 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <td style="font-size:12px;color:#666;">{{ fmtDate(item.publishedDate) }}</td>
           <td><span class="status-tag" :class="item.isPublished ? 'status-true' : 'status-false'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
           <td>
-            <button class="btn btn-sm btn-outline" @click="openEdit(item)">编辑</button>
+            <button class="btn btn-outline btn-sm" v-if="hasContentTab && isUntranslated(item.title)" :disabled="item._translating" @click="aiTranslateItem(item)" title="AI 自动翻译英文为中文（保留版式与图片）">{{ item._translating ? '翻译中…' : 'AI翻译' }}</button>
+            <button class="btn btn-outline btn-sm" @click="openEdit(item)">编辑</button>
             <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
             <button class="btn btn-sm btn-danger" @click="removeItem(item.id)">删除</button>
-            <button class="btn btn-sm btn-slate" v-if="hasContentTab" :disabled="item._translating" @click="aiTranslateItem(item)" title="AI 自动翻译英文为中文（保留版式与图片）">{{ item._translating ? '翻译中…' : '🤖 AI翻译' }}</button>
-            <button class="btn btn-sm btn-slate" v-if="activeTab==='hot-topics'" @click="pickTranslation(item)" title="上传双语对照翻译 Word，自动回填中文">📄 译文</button>
+            <button class="btn btn-sm btn-slate" v-if="activeTab==='hot-topics'" @click="pickTranslation(item)" title="上传双语对照翻译 Word，自动回填中文">译文</button>
           </td>
         </tr>
         <tr v-if="list.length === 0">
@@ -391,6 +391,9 @@ createApp({
       ],
       activeTab: 'hot-topics',
       keyword: '',
+      filterArticleType: '',
+      filterPublished: '',
+      selectedIds: [],
       list: [],
       total: 0,
       page: 1,
@@ -430,7 +433,7 @@ createApp({
       return arr;
     },
     colspanCount() {
-      let c = 5; // 封面/标题/日期/状态/操作
+      let c = 6; // 勾选/封面/标题/日期/状态/操作
       if (this.activeTab === 'hot-topics' || this.activeTab === 'publications') c++;
       if (this.activeTab === 'publications') c++;
       if (this.activeTab === 'webinar' || this.activeTab === 'brochures') c++;
@@ -479,8 +482,23 @@ createApp({
       q.set('limit', this.pageSize);
       if (this.activeTab === 'publications') q.set('excludeArticleType', '资料手册');
       if (this.activeTab === 'brochures') q.set('articleType', '资料手册');
+      if (this.activeTab === 'hot-topics' && this.filterArticleType) q.set('articleType', this.filterArticleType);
+      if (this.filterPublished) q.set('isPublished', this.filterPublished);
       if (this.keyword) q.set('keyword', this.keyword);
       return '/news?' + q.toString();
+    },
+    toggleSelectAll() {
+      if (this.selectedIds.length === this.list.length) this.selectedIds = [];
+      else this.selectedIds = this.list.map(i => i.id);
+    },
+    async batchDelete() {
+      if (!this.selectedIds.length) return;
+      if (!(await AdminDialog.confirm('确定删除选中的 ' + this.selectedIds.length + ' 条内容？此操作不可恢复。', { title: '批量删除确认', danger: true, confirmText: '删除' }))) return;
+      try {
+        await this.api('/news/batch-delete', { method: 'POST', body: JSON.stringify({ ids: this.selectedIds }) });
+        this.selectedIds = [];
+        this.loadList(); this.countAll();
+      } catch (e) { AdminDialog.alert('批量删除失败：' + e.message, { type: 'error' }); }
     },
     async loadList() {
       try {
@@ -513,6 +531,9 @@ createApp({
       this.destroyQuill();
       this.activeTab = key;
       this.keyword = '';
+      this.filterArticleType = '';
+      this.filterPublished = '';
+      this.selectedIds = [];
       this.page = 1;
       this.loadList();
     },
