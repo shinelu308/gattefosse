@@ -7,7 +7,7 @@ import { success, fail } from '../utils/response';
 import { config } from '../config';
 import {
   ORIGIN_BASE, downloadFile, fetchText, absoluteUrl, cleanBingLinks, translateTag,
-  findTagByClass, attrOfTag, stripImgParams, stripTags,
+  findTagByClass, attrOfTag, stripImgParams, stripTags, findCardThumbBySlug,
   extractBalancedDiv, extractDivByClass,
 } from '../utils/import-rules';
 import { verifyImportedArticle, reverifyArticle } from '../utils/import-verify';
@@ -339,6 +339,34 @@ export async function importArticleFromSite(req: Request, res: Response) {
     }
   }
 
+  // 3.7 列表缩略图（规则 R7）：优先取原站列表页卡片裁剪图（c-card__image > img.card__image），
+  // 与详情页 banner 不是同一张图；banner 只做详情页头图（topBackground）。取不到时回退 banner。
+  let thumbLocal = '';
+  let thumbSource: 'listing-card' | 'banner' | 'first-image' = 'first-image';
+  try {
+    let selfPathTmp = '';
+    try { selfPathTmp = new URL(url).pathname; } catch { selfPathTmp = ''; }
+    const listingHtml = await fetchText(SITE_ORIGIN + '/personal-care/get-inspired');
+    const cardThumbRaw = findCardThumbBySlug(listingHtml, selfPathTmp);
+    if (cardThumbRaw) {
+      seq++;
+      let base = '';
+      try { base = decodeURIComponent(new URL(cardThumbRaw).pathname.split('/').pop() || ''); } catch { base = ''; }
+      base = base.replace(/\.webp$/i, '').replace(/[^\w.\-]+/g, '_');
+      if (!base || base.length > 80) base = `thumb_${Date.now()}_${seq}`;
+      if (!/\.(jpe?g|png|gif|webp|svg)$/i.test(base)) base += '.webp';
+      const fname = `${Date.now()}_${seq}_${base}`;
+      try {
+        await downloadFile(cardThumbRaw, path.join(uploadDir, fname));
+        thumbLocal = `/uploads/articles/${fname}`;
+        thumbSource = 'listing-card';
+      } catch (e: any) {
+        downloadErrors.push(`列表缩略图 ${cardThumbRaw}（${e.message}）`);
+      }
+    }
+  } catch { /* 列表页抓取失败不阻塞导入，回退 banner */ }
+  if (!thumbLocal && coverLocal) thumbSource = 'banner';
+
   // 4. 图片收集与下载
   const imgMap = new Map<string, string>(); // 原始 src → 本地路径
   const widthMap = new Map<string, number>(); // 原始 src → 标记原始宽度（用于封面优选）
@@ -521,7 +549,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
       slug: slugBase,
       summary: summary || null,
       contentHtml,
-      imageUrl: coverLocal || firstLocal,
+      imageUrl: thumbLocal || coverLocal || firstLocal,
       topBackground: coverLocal || null,
       readingTime,
       publishedDate,
@@ -592,6 +620,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
     skippedBlocks: [...skippedTypes],
     relatedCards: relatedCount,
     coverSource: coverLocal ? 'banner' : 'first-image',
+    thumbSource,
     typeAutoDetected,
     cleanedLinks: cleaned.cleaned,
     unknownTags,
@@ -599,7 +628,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
   }, '导入成功，已保存为草稿'
     + (typeAutoDetected ? `（识别为${{ news: '新闻', event: '活动', article: '专栏文章' }[finalType]}）` : '')
     + (relatedCount ? `，相关内容 ${relatedCount} 张卡片已转独立区块` : '')
-    + (coverLocal ? '，封面取自原站banner' : '')
+    + (thumbSource === 'listing-card' ? '，列表缩略图取自原站卡片' : (coverLocal ? '，缩略图回退banner（列表页未找到卡片图）' : ''))
     + (verification.length ? `，校验 ${verification.filter(v => v.ok).length}/${verification.length} 项通过` : '')));
 }
 

@@ -129,6 +129,25 @@ export function attrOfTag(tagHtml: string, attr: string): string | null {
 }
 
 /**
+ * 剔除指定类型的 Drupal paragraph 区块（整个平衡 div，含内部嵌套内容）
+ * 用于结构比对前剥离 widget / linked-content 等导入时不进正文的区块
+ */
+export function removeParagraphBlocks(html: string, types: string[]): string {
+  for (const t of types) {
+    let idx: number;
+    let guard = 0;
+    while ((idx = html.indexOf('paragraph--type--' + t)) >= 0 && guard++ < 50) {
+      const start = html.lastIndexOf('<div class="paragraph', idx);
+      if (start < 0) break;
+      const frag = extractBalancedDiv(html, start);
+      if (!frag) break;
+      html = html.slice(0, start) + html.slice(start + frag.length);
+    }
+  }
+  return html;
+}
+
+/**
  * 规则 R3：图片地址清洗——剥离 ?w= / ?h= / ?itok= 等裁剪参数（ Drupal image style 参数）
  * 注意：仅用于取「原图」时；列表缩略图反而要保留 ?w= 参数以拿小图。
  */
@@ -224,4 +243,37 @@ export function structureSignature(html: string): string {
     }
   }
   return parts.join('>');
+}
+
+/**
+ * 规则 R7：列表缩略图取原站列表页的卡片裁剪图，不是详情页 banner
+ * 出处：详情页 page-top__image banner 是 1140×405 头图；列表页卡片用的是另一张
+ * Drupal image style 裁剪图（styles/publication_card 或 styles/card，369×208），
+ * 位于卡片 c-card__image > img.card__image（部分列表页外层包装类名不同，如 prov__image，
+ * 因此以 img 自身的 card__image class 为锚，遵循 R2 整标签匹配）
+ * 2026-09-09 用户指认缩略图抓取位置后固化
+ */
+export function findCardThumbBySlug(listingHtml: string, articlePath: string): string | null {
+  if (!articlePath) return null;
+  const pathRe = new RegExp('href="([^"]*' + articlePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([?#][^"]*)?)"');
+  const linkM = pathRe.exec(listingHtml);
+  if (!linkM) return null;
+  // 回溯卡片容器：链接在 c-card__content 内层 div 里，图片是其兄弟节点，
+  // 所以要逐层向外回溯，直到所在平衡 div 包含 card__image
+  let searchFrom = linkM.index;
+  for (let guard = 0; guard < 6; guard++) {
+    const cardStart = listingHtml.lastIndexOf('<div class="c-card', searchFrom);
+    if (cardStart < 0) return null;
+    const card = extractBalancedDiv(listingHtml, cardStart);
+    if (card && card.indexOf('card__image') >= 0) {
+      const imgTag = findTagByClass(card, 'img', 'card__image');
+      if (!imgTag) return null;
+      const src = attrOfTag(imgTag, 'src') || attrOfTag(imgTag, 'data-src');
+      if (!src) return null;
+      return absoluteUrl(stripImgParams(src));
+    }
+    searchFrom = cardStart - 1;
+    if (searchFrom < 0) return null;
+  }
+  return null;
 }

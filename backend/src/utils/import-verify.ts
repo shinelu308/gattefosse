@@ -9,6 +9,7 @@ import { prisma } from './prisma';
 import {
   ORIGIN_BASE, downloadFile, fetchText, absoluteUrl, findTagByClass, attrOfTag, stripImgParams,
   extractBalancedDiv, extractDivByClass, stripTags, normalizeForCompare, structureSignature,
+  removeParagraphBlocks,
 } from './import-rules';
 
 export interface VerifyItem {
@@ -60,12 +61,9 @@ function originContent(html: string): string {
   return extractBalancedDiv(articleDiv, start) || '';
 }
 
-/** 结构签名：widget/linked-content 在导入时被拆走或跳过，双侧统一排除 */
+/** 结构签名：widget/linked-content 在导入时被拆走或跳过，比对前整块剔除（含其内部图片） */
 function sig(html: string): string {
-  return structureSignature(html)
-    .split('>')
-    .filter(t => t && t !== 'widget' && t !== 'linked_content')
-    .join('>');
+  return structureSignature(removeParagraphBlocks(html, ['widget', 'linked-content']));
 }
 
 /** 统计正文中残留的外链图片 src */
