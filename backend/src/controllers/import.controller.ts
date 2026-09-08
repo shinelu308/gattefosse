@@ -337,9 +337,14 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const authorName = authorNameM ? stripTags(authorNameM[1]) : null;
   const authorPosteM = /s-article__author-poste[^>]*>([\s\S]*?)</.exec(articleDiv);
   const authorPoste = authorPosteM ? stripTags(authorPosteM[1]) : null;
-  // 作者头像（s-article__author-img）
-  const authorImgM = /s-article__author-img[^>]*src="([^"]+)"/.exec(articleDiv);
-  const authorImgRaw = authorImgM ? authorImgM[1].split('?')[0].trim() : null;
+  // 作者头像（s-article__author-img）：定位含该 class 的整个 img 标签再取 src（class 与 src 属性顺序不限，
+  // 原站两种写法都出现过：<img class="...author-img" src="..."> 和 <img src="..." class="...author-img">）
+  const authorImgTagM = /<img[^>]+s-article__author-img[^>]*>/i.exec(articleDiv);
+  const authorImgSrcM = authorImgTagM ? /src="([^"]+)"/.exec(authorImgTagM[0]) : null;
+  let authorImgRaw = authorImgSrcM ? authorImgSrcM[1].split('?')[0].trim() : null;
+  if (authorImgRaw && !/^https?:\/\//i.test(authorImgRaw)) {
+    authorImgRaw = 'https://www.gattefosse.com' + (authorImgRaw.startsWith('/') ? '' : '/') + authorImgRaw; // 原站相对路径补全域名
+  }
   // 主题标签（头部 s-article__data 内第一个 o-tag-list）
   const articleTags: string[] = [];
   const tagListM = /o-tag-list[^>]*>([\s\S]*?)<\/ul>/.exec(articleDiv);
@@ -576,11 +581,12 @@ export async function importArticleFromSite(req: Request, res: Response) {
     });
     if (!author) {
       author = await prisma.author.create({
-        data: { name: coreName, title: authorPoste || null, avatar: authorAvatar, sortOrder: 99 },
+        data: { name: coreName, title: authorPoste || null, bio: authorPoste || null, avatar: authorAvatar, sortOrder: 99 },
       });
     } else {
       const patch: any = {};
       if (authorPoste && !author.title) patch.title = authorPoste;
+      if (authorPoste && !author.bio) patch.bio = authorPoste; // 详情页职务行显示 bio 字段
       if (authorAvatar && !author.avatar) patch.avatar = authorAvatar;
       if (Object.keys(patch).length) {
         author = await prisma.author.update({ where: { id: author.id }, data: patch });
