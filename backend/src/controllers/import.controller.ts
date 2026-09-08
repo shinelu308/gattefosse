@@ -191,7 +191,13 @@ async function importFromChinaSite(url: string, fallbackCategory: string) {
   };
 
   const allSrcs = [...new Set([...contentHtml.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map(m => m[1]))];
-  for (const src of allSrcs) await localize(src);
+  // 并发本地化（5 并发），缩短导入总耗时
+  let cnCursor = 0;
+  await Promise.all(Array.from({ length: Math.min(5, allSrcs.length) }, async () => {
+    while (cnCursor < allSrcs.length) {
+      await localize(allSrcs[cnCursor++]);
+    }
+  }));
   contentHtml = contentHtml.replace(/(<img[^>]*\ssrc=")([^"]+)(")/g, (full, p1, src: string, p3) => {
     const local = imgMap.get(src);
     return local ? p1 + local + p3 : full;
@@ -391,24 +397,31 @@ export async function importArticleFromSite(req: Request, res: Response) {
     allSrcs.push(im[1]);
   }
 
-  for (const rawSrc of [...new Set(allSrcs)]) {
-    const abs = absoluteUrl(rawSrc);
-    if (!/^https?:\/\/./.test(abs)) continue;
-    // 跳过外部营销追踪图（1x1 之类）
-    seq++;
-    let base = '';
-    try { base = decodeURIComponent(new URL(abs).pathname.split('/').pop() || ''); } catch { base = ''; }
-    base = base.replace(/\.webp$/i, '').replace(/[^\w.\-]+/g, '_');
-    if (!base || base.length > 80) base = `img_${Date.now()}_${seq}`;
-    if (!/\.(jpe?g|png|gif|webp|svg)$/i.test(base)) base += '.webp';
-    const fname = `${Date.now()}_${seq}_${base}`;
-    try {
-      await downloadFile(abs, path.join(uploadDir, fname));
-      imgMap.set(rawSrc, `/uploads/articles/${fname}`);
-    } catch (e: any) {
-      downloadErrors.push(`${rawSrc}（${e.message}）`);
+  // 并发下载（5 并发）——串行下载多图常超过反代默认 60s 超时导致 nginx 返回 504 HTML 页
+  const rawList = [...new Set(allSrcs)];
+  let cursor = 0;
+  const worker = async (): Promise<void> => {
+    while (cursor < rawList.length) {
+      const rawSrc = rawList[cursor++];
+      const abs = absoluteUrl(rawSrc);
+      if (!/^https?:\/\/./.test(abs)) continue;
+      // 跳过外部营销追踪图（1x1 之类）
+      seq++;
+      let base = '';
+      try { base = decodeURIComponent(new URL(abs).pathname.split('/').pop() || ''); } catch { base = ''; }
+      base = base.replace(/\.webp$/i, '').replace(/[^\w.\-]+/g, '_');
+      if (!base || base.length > 80) base = `img_${Date.now()}_${seq}`;
+      if (!/\.(jpe?g|png|gif|webp|svg)$/i.test(base)) base += '.webp';
+      const fname = `${Date.now()}_${seq}_${base}`;
+      try {
+        await downloadFile(abs, path.join(uploadDir, fname));
+        imgMap.set(rawSrc, `/uploads/articles/${fname}`);
+      } catch (e: any) {
+        downloadErrors.push(`${rawSrc}（${e.message}）`);
+      }
     }
-  }
+  };
+  await Promise.all(Array.from({ length: Math.min(5, rawList.length) }, () => worker()));
 
   // 5. 逐区块转换
   const blocks: string[] = [];

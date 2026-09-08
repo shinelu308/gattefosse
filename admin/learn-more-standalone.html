@@ -448,7 +448,14 @@ createApp({
         headers: { 'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : '' },
         ...opts,
       });
-      const d = await res.json();
+      let d;
+      try {
+        d = await res.json();
+      } catch (e) {
+        // 网关/代理超时会返回 HTML 页（502/504），给出可理解的提示而非 JSON 解析错误
+        throw new Error('服务器返回异常（HTTP ' + res.status + '）' +
+          (path.indexOf('/import') >= 0 ? '。导入耗时可能超过网关超时，后台或许仍在处理，请稍后刷新列表查看是否已导入成功' : '，请稍后重试'));
+      }
       if (d.code !== 0) throw new Error(d.message || '请求失败');
       return d.data;
     },
