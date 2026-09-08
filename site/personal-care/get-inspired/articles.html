@@ -183,15 +183,15 @@
                             class="facet-inactive js-facets-links facet-list item-list__links">
                             <li class="facet-item1 facets-reset">
                               <a class="btn btn-outline-secondary is-active" v-if="data.articleType == null" 
-                              :href="data.allTypeUrl">所有类型{{data.articleType}}</a>
-                            <a class="btn btn-outline-secondary" v-if="data.articleType > 0 " 
-                                :href="data.allTypeUrl">所有类型</a>
+                              :href="data.allTypeUrl">所有类型 ({{data.typeCounts.all}})</a>
+                            <a class="btn btn-outline-secondary" v-if="data.articleType > 0 "
+                                :href="data.allTypeUrl">所有类型 ({{data.typeCounts.all}})</a>
                           </li>
                           <li v-for="item in data.articleTypeList" >
-                            <a class="btn btn-outline-secondary is-active"  v-if="item.ID == data.articleType" 
-                              :href="item.url">{{item.typeName}}</a>
-                              <a class="btn btn-outline-secondary"  v-else 
-                                :href="item.url">{{item.typeName}}</a>
+                            <a class="btn btn-outline-secondary is-active"  v-if="item.ID == data.articleType"
+                              :href="item.url">{{item.typeName}} ({{data.typeCounts[item.ID]}})</a>
+                              <a class="btn btn-outline-secondary"  v-else
+                                :href="item.url">{{item.typeName}} ({{data.typeCounts[item.ID]}})</a>
                             </li>
                           </ul>
                         </div>
@@ -385,7 +385,8 @@
           activeFilterClass: 'hidden',
           userEnabled: userEnabled,
           articleTypeId: articleType,
-          curFilterTypeName: ''
+          curFilterTypeName: '',
+          typeCounts: { all: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
         });
         // Tags disabled in static mode;
         const seeAll = (event) => {
@@ -474,6 +475,31 @@ function buildApiUrl() {
     params.set('tags', decodeURIComponent(tagId));
   }
   return apiBase + '/news?' + params.toString();
+}
+
+// 加载文章类型计数（对齐原站筛选按钮数量统计，如 ALL THEMES (61)）
+async function loadTypeCounts() {
+  try {
+    var params = new URLSearchParams();
+    params.set('type', 'article');
+    params.set('category', 'pc');
+    params.set('page', '1');
+    params.set('limit', '500');
+    params.set('isPublished', 'true');
+    if (w) params.set('keyword', w);
+    if (tagId && tagId != '0') params.set('tags', decodeURIComponent(tagId));
+    var resp = await fetch(apiBase + '/news?' + params.toString());
+    var result = await resp.json();
+    if (result.code !== 0) return;
+    var list = (result.data && result.data.list) || [];
+    var typeNames = { '应用领域': 1, '专业知识': 2, '灵感和趋势': 3, '质地与配方': 4 };
+    var counts = { all: list.length, 1: 0, 2: 0, 3: 0, 4: 0 };
+    for (var i = 0; i < list.length; i++) {
+      var tid = typeNames[list[i].articleType];
+      if (tid) counts[tid]++;
+    }
+    data.typeCounts = counts;
+  } catch (e) { console.error('加载类型计数失败:', e); }
 }
 
 // 加载文章数据
@@ -572,6 +598,7 @@ async function loadTags() {
 loadTags().then(function() {
   loadArticles();
 });
+loadTypeCounts();
         data.allTypeUrl = delUrlParam(curUrl, "articleType");
         data.articleType = articleType;
         return {
