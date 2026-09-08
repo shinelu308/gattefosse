@@ -81,6 +81,10 @@ async function importFromChinaSite(url: string, fallbackCategory: string, forceT
   const item = itemRes && itemRes.data && itemRes.data.reWebNewsEvents;
   if (!item) throw new Error('中文站接口未返回新闻数据（ID=' + newsId + '）');
 
+  // 防重复导入
+  const cnExist = await prisma.newsEvent.findFirst({ where: { slug: 'cn-' + newsId }, select: { id: true, title: true } });
+  if (cnExist) throw new Error(`该文章已导入过（ID=${cnExist.id}《${cnExist.title}》），请勿重复导入`);
+
   let contentHtml = '';
   if (item.contentId) {
     try {
@@ -204,6 +208,21 @@ export async function importArticleFromSite(req: Request, res: Response) {
       }, `导入成功（中文站，识别为${{ news: '新闻', event: '活动', article: '文章' }[r.autoType] || r.autoType}·${{ corporate: '企业', pc: '个护', pharma: '药用' }[r.autoCategory] || r.autoCategory}），已保存为草稿`));
     } catch (e: any) {
       return res.status(400).json(fail('中文站导入失败：' + e.message));
+    }
+  }
+
+  // 防重复导入：同一原站文章（slug 相同）只允许存在一条记录
+  //（2026-09-09 用户反馈：校验清单弹出后再点「开始导入」会生成重复文章）
+  const dupSlug = url.split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || '';
+  if (dupSlug) {
+    const existing = await prisma.newsEvent.findFirst({
+      where: { slug: dupSlug },
+      select: { id: true, title: true, isPublished: true },
+    });
+    if (existing) {
+      return res.status(400).json(fail(
+        `该文章已导入过（ID=${existing.id}《${existing.title}》${existing.isPublished ? '，已发布' : '，草稿'}），请勿重复导入。如需重导请先删除旧记录。`
+      ));
     }
   }
 

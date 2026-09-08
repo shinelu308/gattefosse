@@ -3899,8 +3899,9 @@ const QUILL_TOOLBAR = [
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" @click="articleImportOpen=false">取消</button>
+          <button v-if="articleImportLastId && articleImportMsg && articleImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="articleImporting" @click="openImportedEditor()">打开编辑</button>
           <button v-if="articleImportLastId && articleImportMsg && articleImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="articleImporting" @click="reverifyArticleImport()">{{ articleImporting ? '校验中...' : '重新校验' }}</button>
-          <button class="btn btn-primary" :disabled="articleImporting || !articleImport.url" @click="importArticleFromSite()">{{ articleImporting ? '导入中...' : '开始导入' }}</button>
+          <button class="btn btn-primary" :disabled="articleImporting || !articleImport.url || articleImportDoneUrl === articleImport.url.trim()" @click="importArticleFromSite()">{{ articleImporting ? '导入中...' : (articleImportDoneUrl === articleImport.url.trim() ? '已导入' : '开始导入') }}</button>
         </div>
       </div>
     </div>
@@ -4062,6 +4063,7 @@ createApp({
       articleImporting: false,
       articleImportMsg: '',
       articleImportLastId: null,
+      articleImportDoneUrl: null,
       articleImport: { url: '' },
       articleContentMode: 'visual',
       articleContentLocked: false,
@@ -6608,12 +6610,17 @@ createApp({
       if (!this.articleImport.url) return;
       this.articleImporting = true;
       this.articleImportLastId = null;
+      this.articleImportDoneUrl = null;
       this.articleImportMsg = '⏳ 正在抓取并解析原站页面，下载图片中...';
       try {
-        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.articleImport.url.trim(), category: 'pc', type: 'article' }) });
+        const importUrl = this.articleImport.url.trim();
+        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: importUrl, category: 'pc', type: 'article' }) });
         this.loadArticleList();
         const id = d && d.item && d.item.id;
-        if (id) this.articleImportLastId = id;
+        if (id) {
+          this.articleImportLastId = id;
+          this.articleImportDoneUrl = importUrl; // 锁定该 URL，防止再点「开始导入」造成重复文章
+        }
         // 第 2 层校验清单：全部通过则照常打开编辑器；有失败项则留在对话框展示清单
         const v = d && d.verification;
         if (v && v.length) {
@@ -6622,7 +6629,7 @@ createApp({
           if (pass === v.length) {
             this.articleImportMsg = '✅ 导入成功，已保存为草稿\n一致性校验 ' + pass + '/' + v.length + ' 项全部通过';
           } else {
-            this.articleImportMsg = '⚠️ 导入成功（草稿），一致性校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n') + '\n\n处理失败项后可点「重新校验」。';
+            this.articleImportMsg = '⚠️ 导入成功（草稿），一致性校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n') + '\n\n可点「打开编辑」处理失败项，或点「重新校验」复检。本链接已导入，不会重复建稿。';
             this.articleImporting = false;
             return; // 有失败项：留在对话框，不自动打开编辑器
           }
@@ -6637,6 +6644,11 @@ createApp({
       } catch (e) {
         this.articleImportMsg = '❌ 导入失败：' + e.message;
       } finally { this.articleImporting = false; }
+    },
+    // 打开刚导入文章的编辑器（校验有失败项时留在对话框处理）
+    async openImportedEditor() {
+      if (!this.articleImportLastId) return;
+      try { const fresh = await this.api('/news/' + this.articleImportLastId); this.editArticle(fresh); this.articleImportOpen = false; } catch (e) {}
     },
     // 重新校验刚导入的文章与原站一致性（第 2 层）
     async reverifyArticleImport() {

@@ -163,9 +163,16 @@ export function stripImgParams(src: string): string {
  */
 export function decodeBingRedirect(url: string): string | null {
   try {
-    const u = new URL(url);
+    // ⚠️ 原站 href 里的 & 是 HTML 实体 &amp;，直接 new URL 会把 amp; 当参数名导致 u 参数丢失（2026-09-09）
+    const cleaned = url.replace(/&amp;/gi, '&');
+    const u = new URL(cleaned);
     if (!/(^|\.)bing\.com$/i.test(u.hostname) || !/^\/ck\/a$/i.test(u.pathname)) return null;
-    const raw = u.searchParams.get('u') || '';
+    let raw = u.searchParams.get('u') || '';
+    if (!raw.startsWith('a1')) {
+      // 兜底：直接从字符串截取 u=a1<base64>
+      const m = /[?&]u=a1([A-Za-z0-9_-]+)/.exec(cleaned);
+      if (m) raw = 'a1' + m[1];
+    }
     if (!raw.startsWith('a1')) return null;
     let b64 = raw.slice(2).replace(/-/g, '+').replace(/_/g, '/');
     while (b64.length % 4) b64 += '=';
