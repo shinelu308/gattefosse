@@ -98,6 +98,14 @@
         /* ===== Article title ===== */
         .s-article__title { font-size: 48px !important; font-weight: 400 !important; line-height: 1.2; color: #232426; margin-bottom: 2px; }
 
+        /* ===== 正文内联链接（原站实测：绛红 #910039 + 下划线，2026-09-09）=====
+           原站规则落在 .text-formatted 容器内；bouton-cta 按钮不在其中不受影响，
+           本站全局 a 的绿色链接样式必须被覆盖 */
+        .s-article .adp-content .text-formatted a,
+        .s-article .adp-content p a,
+        .s-article .adp-content li a { color: #910039 !important; text-decoration: underline; }
+        .s-article .adp-content .text-formatted a:hover { color: #6e002b; }
+
         /* ===== Author info ===== */
         .s-article__author-name { font-size: 14px !important; font-weight: 700; color: #232426; }
         .s-article__author-poste { font-size: 12px !important; color: #74797D; }
