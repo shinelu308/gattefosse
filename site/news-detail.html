@@ -162,7 +162,7 @@
                   <div v-if="data.blocks.length" style="margin-top:48px;">
                     <div v-for="(blk, bi) in data.blocks" :key="bi">
                       <div v-if="blk.blockType === 'product_cards'" style="border-top:1px solid #E3E8EE;padding-top:40px;">
-                        <h2 v-if="blk.title" class="u-title-styled" style="text-align:center;font-size:26px;margin-bottom:32px;">{{ blk.title }} <span style="color:#C4004D;">●</span></h2>
+                        <h2 v-if="blk.title" class="u-title-styled" style="text-align:center;font-size:26px;margin-bottom:32px;">{{ blk.title }}</h2>
                         <div class="c-cards">
                           <div v-for="(card, ci) in renderRelatedCards(blk.content)" :key="ci" class="c-card c-card--bordered theme-cosm">
                             <div class="c-card__image">

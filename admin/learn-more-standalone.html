@@ -213,13 +213,24 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 
         <!-- 封面图 -->
         <div class="form-group">
-          <label>封面图 <span class="form-hint">列表页展示{{ activeTab==='hot-topics' ? '（详情页头图可选 topBackground）' : '' }}</span></label>
+          <label>封面图 <span class="form-hint">列表页展示</span></label>
           <div class="upload-row">
             <input class="form-control" v-model="editing.imageUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:200px;">
             <input type="file" accept="image/*" @change="uploadImage($event)">
             <span v-if="uploading" style="font-size:12px;color:#999;">上传中...</span>
           </div>
           <img v-if="editing.imageUrl" :src="editing.imageUrl" class="preview-img" @error="$event.target.style.display='none'">
+        </div>
+
+        <!-- 详情页大图（热点话题） -->
+        <div class="form-group" v-if="activeTab==='hot-topics'">
+          <label>详情页大图 topBackground <span class="form-hint">详情页顶部横幅；导入时自动取原站 banner，可在此替换</span></label>
+          <div class="upload-row">
+            <input class="form-control" v-model="editing.topBackground" placeholder="图片 URL 或上传" style="flex:1;min-width:200px;">
+            <input type="file" accept="image/*" @change="uploadTopImage($event)">
+            <span v-if="uploadingTop" style="font-size:12px;color:#999;">上传中...</span>
+          </div>
+          <img v-if="editing.topBackground" :src="editing.topBackground" class="preview-img" @error="$event.target.style.display='none'">
         </div>
 
         <!-- 简介 -->
@@ -383,6 +394,7 @@ createApp({
       editing: {},
       saving: false,
       uploading: false,
+      uploadingTop: false,
       _quill: null,
       _quillInited: false,
       showImport: false,
@@ -496,7 +508,7 @@ createApp({
     // ---------- 编辑 ----------
     defaultEditing() {
       return {
-        id: null, title: '', publishedDate: todayStr(), imageUrl: '', summary: '',
+        id: null, title: '', publishedDate: todayStr(), imageUrl: '', topBackground: '', summary: '',
         articleType: this.activeTab === 'brochures' ? '资料手册' : '',
         contentHtml: '', videoUrl: '', pdfUrl: '', publicationName: '', authorName: '', authorId: '',
         lock: false, isPublished: false, tagsText: '', tags: null,
@@ -556,6 +568,9 @@ createApp({
         this.loadList(); this.countAll();
         if (d.item) this.openEdit(d.item);
         let msg = '导入成功：' + (d.imagesDownloaded || 0) + '/' + (d.imagesTotal || 0) + ' 张图片已本地化';
+        if (d.coverSource === 'banner') msg += '\n✓ 封面与详情页大图已取自原站 banner';
+        if (d.typeAutoDetected && d.item && d.item.type) msg += '\n✓ 类型已按原站自动识别：' + ({ news: '新闻', event: '活动', article: '文章' }[d.item.type] || d.item.type);
+        if (d.relatedCards) msg += '\n✓ 相关内容 ' + d.relatedCards + ' 张卡片已转独立区块';
         if (d.downloadErrors && d.downloadErrors.length) msg += '\n⚠ ' + d.downloadErrors.length + ' 张图片下载失败：\n' + d.downloadErrors.join('\n');
         if (d.skippedBlocks && d.skippedBlocks.length) msg += '\n已跳过区块：' + d.skippedBlocks.join('、');
         alert(msg);
@@ -576,6 +591,7 @@ createApp({
         title: item.title || '',
         publishedDate: item.publishedDate ? String(item.publishedDate).slice(0,10) : todayStr(),
         imageUrl: item.imageUrl || '',
+        topBackground: item.topBackground || '',
         summary: item.summary || '',
         articleType: this.activeTab === 'brochures' ? '资料手册' : (item.articleType || ''),
         contentHtml: item.contentHtml || '',
@@ -618,6 +634,7 @@ createApp({
         title: this.editing.title,
         summary: this.editing.summary || null,
         imageUrl: this.editing.imageUrl || null,
+        topBackground: this.activeTab === 'hot-topics' ? (this.editing.topBackground || null) : undefined,
         publishedDate: new Date(this.editing.publishedDate).toISOString(),
         articleType: this.editing.articleType || (this.activeTab === 'brochures' ? '资料手册' : null),
         isPublished: !!this.editing.isPublished,
@@ -710,6 +727,24 @@ createApp({
         else alert('上传失败：' + (d.message || '未知错误'));
       } catch (e) { alert('上传失败：' + e.message); }
       finally { this.uploading = false; event.target.value = ''; }
+    },
+    async uploadTopImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingTop = true;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: getToken() ? { 'Authorization': 'Bearer ' + getToken() } : {},
+          body: fd,
+        });
+        const d = await res.json();
+        if (d.code === 0 && d.data && d.data.url) this.editing.topBackground = d.data.url;
+        else alert('上传失败：' + (d.message || '未知错误'));
+      } catch (e) { alert('上传失败：' + e.message); }
+      finally { this.uploadingTop = false; event.target.value = ''; }
     },
   },
 }).mount('#app');

@@ -67,6 +67,16 @@
             margin: 0 !important;
         }
 
+        /* ===== node__content 网格兜底：手写内容（无 .paragraph 包装）占满整行 ===== */
+        .adp-content.node__content > *:not(.paragraph) { grid-column: 1 / 13; }
+
+        /* ===== 阅读进度圆窗：圆形首图缩略 + 红点沿圆环指示进度（还原原站效果） ===== */
+        .reading-orb { position: fixed; top: 96px; left: 40px; width: 96px; height: 96px; cursor: pointer; z-index: 60; }
+        .reading-orb img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+        .reading-orb__ring { position: absolute; top: 50%; left: 50%; width: 116px; height: 116px; margin: -58px 0 0 -58px; border-radius: 50%; pointer-events: none; }
+        .reading-orb__ring::before { content: ''; position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: #C4004D; }
+        @media (max-width: 1100px) { .reading-orb { display: none; } }
+
         /* ===== Article title ===== */
         .s-article__title { font-size: 48px !important; font-weight: 700; line-height: 1.2; color: #232426; margin-bottom: 2px; }
 
@@ -365,24 +375,27 @@
                                     </div>
 
                                     <!-- Body Content (with processed HTML for image galleries) -->
-                                    <div class="adp-content" v-html="article.processedContentHtml"></div>
+                                    <div class="adp-content node__content" v-html="article.processedContentHtml"></div>
 
-                                    <!-- 附加区块渲染 -->
-                                    <div v-if="article.blocks && article.blocks.length > 0" class="adp-blocks">
+                                    <!-- 相关内容卡片区块（导入器自动生成：产品/配方/外部内容映射本站数据） -->
+                                    <div v-if="article.blocks && article.blocks.length" style="margin-top:48px;">
                                       <div v-for="(blk, bi) in article.blocks" :key="bi">
-                                        <!-- product_cards -->
-                                        <div v-if="blk.blockType === 'product_cards'" class="c-cards" style="margin-top:32px;">
-                                          <div v-for="(card, ci) in renderProductCards(blk.content)" :key="ci" class="c-card c-card--bordered theme-cosm">
-                                            <div class="c-card__image">
-                                              <img :src="card.imageUrl || '/images/placeholder.png'" alt="" class="card__image img-fluid" loading="lazy">
-                                            </div>
-                                            <div class="c-card__content">
-                                              <ul class="c-card__breadcrumb"><li>{{ card.typeLabel || 'Ingredient' }}</li></ul>
-                                              <h3 class="c-card__title"><a class="c-card__title-link" :href="card.url || '#'">{{ card.name }}</a></h3>
-                                              <p class="c-card__summary">{{ card.summary || '' }}</p>
-                                              <ul class="c-card__tag" v-if="card.tags && card.tags.length">
-                                                <li class="c-card__tag-item" v-for="(t, ti) in card.tags" :key="ti">{{ t }}</li>
-                                              </ul>
+                                        <div v-if="blk.blockType === 'product_cards'" style="border-top:1px solid #E3E8EE;padding-top:40px;">
+                                          <h2 v-if="blk.title" class="u-title-styled" style="text-align:center;font-size:26px;margin-bottom:32px;">{{ blk.title }}</h2>
+                                          <div class="c-cards">
+                                            <div v-for="(card, ci) in renderRelatedCards(blk.content)" :key="ci" class="c-card c-card--bordered theme-cosm">
+                                              <div class="c-card__image">
+                                                <img :src="card.imageUrl || '/static/images/default-thumb.jpg'" alt="" class="card__image img-fluid" loading="lazy">
+                                              </div>
+                                              <div class="c-card__content">
+                                                <ul class="c-card__breadcrumb"><li>{{ card.typeLabel }}</li></ul>
+                                                <h3 class="c-card__title"><a class="c-card__title-link" :href="card.url || 'javascript:;'">{{ card.name }}</a></h3>
+                                                <p class="c-card__code" v-if="card.code">{{ card.code }}</p>
+                                                <p class="c-card__summary">{{ card.summary }}</p>
+                                                <ul class="c-card__tag" v-if="card.tags && card.tags.length">
+                                                  <li class="c-card__tag-item" v-for="(t, ti) in card.tags" :key="ti">{{ t }}</li>
+                                                </ul>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -418,6 +431,12 @@
             </div>
             <div class="region region-content" v-else>
                 <div class="container"><p style="text-align:center;padding:80px 20px;color:#999;">文章不存在或已下架</p></div>
+            </div>
+
+            <!-- 阅读进度圆窗：正文第一张图 + 红点进度，点击回顶部 -->
+            <div class="reading-orb" v-show="article.orb && article.orb.visible" @click="scrollTop()" title="回到顶部">
+                <img :src="article.orb ? article.orb.image : ''" alt="">
+                <span class="reading-orb__ring" :style="{ transform: 'rotate(' + (article.orb ? article.orb.angle : 0) + 'deg)' }"></span>
             </div>
 
             <a href="#main-content" id="js_back-to-top" title="回到顶部" class="c-back-to-top smoothHide d-none"></a>
@@ -507,8 +526,26 @@
             data: function () {
                 return { article: {}, loading: true };
             },
-            mounted: function () { this.fetchArticle(); },
+            mounted: function () {
+                this.fetchArticle();
+                window.addEventListener('scroll', this.onScroll, { passive: true });
+            },
+            beforeUnmount: function () {
+                window.removeEventListener('scroll', this.onScroll);
+            },
             methods: {
+                onScroll: function () {
+                    if (!this.article.orb) return;
+                    var doc = document.documentElement;
+                    var st = window.pageYOffset || doc.scrollTop || 0;
+                    var total = doc.scrollHeight - doc.clientHeight;
+                    var p = total > 0 ? Math.min(1, Math.max(0, st / total)) : 0;
+                    this.article.orb.visible = st > 260 && p < 0.995;
+                    this.article.orb.angle = Math.round(p * 360);
+                },
+                scrollTop: function () {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
                 fetchArticle: function () {
                     var self = this;
                     if (!articleId) { self.loading = false; return; }
@@ -549,7 +586,7 @@
                                 var rawContent = item.contentHtml || '';
                                 var processedContent = processContentHtml(rawContent);
 
-                                // Parse blocks (parse JSON content strings)
+                                // Parse blocks (相关内容卡片等，导入器自动生成)
                                 var blocks = [];
                                 if (Array.isArray(item.blocks)) {
                                     blocks = item.blocks.map(function(b) {
@@ -559,6 +596,9 @@
                                     });
                                 }
 
+                                // 阅读进度圆窗：取正文第一张图
+                                var orbImgM = /<img[^>]*\ssrc="([^"]+)"/.exec(processedContent);
+
                                 self.article = Object.assign({}, item, {
                                     topBackground: item.topBackground || item.imageUrl || '',
                                     tagsList: tagsList,
@@ -566,7 +606,8 @@
                                     summaryLabel: summaryLabel,
                                     contentHtml: rawContent,
                                     processedContentHtml: processedContent,
-                                    blocks: blocks
+                                    blocks: blocks,
+                                    orb: { visible: false, angle: 0, image: orbImgM ? orbImgM[1] : '' }
                                 });
 
                                 document.title = (item.metaTitle || item.title) + ' | 嘉法狮';
@@ -576,25 +617,24 @@
                         .catch(function (e) { console.error('加载文章失败:', e); })
                         .then(function () { self.loading = false; });
                 },
-                renderProductCards: function(content) {
+                // 相关内容卡片渲染：kind 决定跳转与类型标签（产品/配方/外部内容）
+                renderRelatedCards: function(content) {
                     if (!content || !content.products || !Array.isArray(content.products)) return [];
                     return content.products.map(function(p) {
-                        // 标签处理：兼容字符串或数组格式（使用产品应用领域标签）
-                        var tags = [];
-                        if (p.applicationTag) {
-                            if (typeof p.applicationTag === 'string') {
-                                tags = p.applicationTag.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
-                            } else if (Array.isArray(p.applicationTag)) {
-                                tags = p.applicationTag;
-                            }
-                        }
+                        var kind = p.kind || 'pc';
+                        var typeLabel = p.typeLabel || (kind === 'formulation' ? 'Formulation' : 'Ingredient');
+                        var url = '';
+                        if (kind === 'pc' && p.id) url = '/personal-care/product-finder/product-detail.html?id=' + p.id;
+                        else if (kind === 'formulation' && p.id) url = '/personal-care/formulation-finder/product-detail.html?id=' + p.id;
+                        var tags = Array.isArray(p.tags) ? p.tags.slice(0, 3) : [];
                         return {
-                            name: p.name || '产品 #' + p.id,
-                            typeLabel: 'Ingredient',
+                            name: p.name || '',
+                            typeLabel: typeLabel,
+                            code: p.code || '',
                             imageUrl: p.imageUrl || '',
-                            summary: p.description || p.inciName || '',
+                            summary: p.description || '',
                             tags: tags,
-                            url: '/personal-care/product-finder/product-detail.html?id=' + p.id
+                            url: url
                         };
                     });
                 },
