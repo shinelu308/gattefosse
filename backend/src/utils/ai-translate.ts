@@ -146,8 +146,8 @@ export async function translateText(text: string, cfg?: AiConfig): Promise<strin
 // 背景：整段 HTML 交给大模型翻译时，LLM 会丢失闭合标签、合并/重排 div、篡改链接 URL，
 // 导致译文样式与原站不一致。此方案保证除文本内容外 HTML 结构 100% 不变。
 
-const TEXT_BATCH_MAX_NODES = 20;   // 单批最多文本节点数
-const TEXT_BATCH_MAX_CHARS = 2500; // 单批最大字符数
+const TEXT_BATCH_MAX_NODES = 10;   // 单批最多文本节点数（过大易致模型输出截断/漏条）
+const TEXT_BATCH_MAX_CHARS = 1200; // 单批最大字符数
 const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'CODE', 'PRE', 'TEXTAREA']);
 
 /** 批量翻译编号文本行：输入 [i|||text]，输出按编号回填；解析失败重试一次，仍失败回退原文 */
@@ -159,24 +159,25 @@ async function translateNumberedTexts(texts: string[], cfg: AiConfig): Promise<s
 
 ${numbered}`;
 
+  const best = new Map<number, string>();
   for (let attempt = 1; attempt <= 2; attempt++) {
     const res = await chatCallRetry(cfg, [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: userPrompt },
-    ], 4000);
-    const out = new Map<number, string>();
+    ], 8000);
     for (const line of res.split('\n')) {
       const m = /^\s*(\d+)\s*\|\|\|\s*(.+)$/.exec(line);
-      if (m) out.set(parseInt(m[1], 10), m[2].trim());
+      if (m) best.set(parseInt(m[1], 10), m[2].trim());
     }
-    if (texts.every((_, i) => out.has(i + 1))) {
-      return texts.map((_, i) => out.get(i + 1) as string);
-    }
-    if (attempt === 2) {
-      console.warn(`[ai-translate] 批量翻译解析不完整（${out.size}/${texts.length}），缺失项回退原文`);
+    if (texts.every((_, i) => best.has(i + 1))) {
+      return texts.map((_, i) => best.get(i + 1) as string);
     }
   }
-  return texts; // 两次都失败 → 全部回退原文，绝不破坏内容
+  // 两次尝试后仍不完整：按条合并（已解析的用译文，缺失的保留原文），绝不整批丢弃
+  if (best.size < texts.length) {
+    console.warn(`[ai-translate] 批量翻译解析不完整（${best.size}/${texts.length}），缺失项回退原文`);
+  }
+  return texts.map((t, i) => best.get(i + 1) || t);
 }
 
 /**
