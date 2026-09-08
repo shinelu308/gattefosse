@@ -22,6 +22,9 @@
     <link rel="stylesheet" media="all"
         href="/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css" data-page-node-id="V5VGDOOUr6ooPSXoJipelV" />
 
+    <!-- R8 渲染一致性共享样式（单一来源，全站详情页统一引用；改名后需同步所有引用页） -->
+    <link rel="stylesheet" href="/static/css/article-render-260909.css" />
+
     <!-- Custom styles matching English gattefosse.com article pages -->
     <style>
         [v-cloak] { display: none !important; }
@@ -37,56 +40,8 @@
         .adp-no-image .breadcrumb { position: static; width: auto; background: none; padding-left: 0; }
         .adp-no-image .node__wrapper { margin-top: auto; padding-top: 0; }
 
-        /* ===== 摘要区（匹配原站 .s-article__subtitle + .block-accroche）===== */
-        .adp-summary-wrap { margin-top: 0; }
-
-        /* 副标题行：小字、靠左、无大写 */
-        .adp-summary-wrap .s-article__subtitle {
-            display: block !important;
-            font-size: 13px !important;
-            letter-spacing: 0.04em !important;
-            color: #3C4248 !important;
-            margin-bottom: 25px !important;
-            text-align: left !important;
-        }
-
-        /* 摘要正文：大号灰色字体 + 金色底边线（原站实测 20px/30px Light 灰） */
-        .block-accroche {
-            font-family: "Din Next Lt Pro Light", "Microsoft YaHei", sans-serif !important;
-            font-size: 20px !important;
-            line-height: 30px !important;
-            color: #74797D !important;
-            border-bottom: 1px solid #E1D9C3 !important;
-            padding-bottom: 12px !important;
-            margin-bottom: 20px !important;
-        }
-        .block-accroche p,
-        .block-accroche * {
-            font-size: inherit !important;
-            color: inherit !important;
-            margin: 0 !important;
-        }
-
-        /* ===== 正文区块标题（原站 theme-cosm 文章排版实测值）===== */
-        /* h2 章节题：Slab 粗体 40px 品红（theme accent）；s-zone 布局的标题无 titre-h2 包装，按容器统一命中 */
-        .s-article .adp-content h2 {
-            font-family: "Din Next Slab Pro Bold", "Din Next Lt Pro Bold", "Microsoft YaHei", sans-serif !important;
-            font-size: 40px !important;
-            font-weight: 400 !important;
-            line-height: 48px !important;
-            color: #C4004D !important;
-        }
-        /* h3 小节题：Lt 粗体 33px 深灰 */
-        .s-article .paragraph--type--titre-h3 h3 {
-            font-family: "Din Next Lt Pro Bold", "Microsoft YaHei", sans-serif !important;
-            font-size: 33px !important;
-            font-weight: 400 !important;
-            line-height: 39.6px !important;
-            color: #232426 !important;
-        }
-
-        /* ===== node__content 网格兜底：手写内容（无 .paragraph 包装）占满整行 ===== */
-        .adp-content.node__content > *:not(.paragraph) { grid-column: 1 / 13; }
+        /* 摘要区/区块标题/网格兜底/大标题/CTA/内链/作者/meta 样式已抽到共享文件
+           /static/css/article-render-260909.css（R8 单一来源），此处不再重复 */
 
         /* ===== 阅读进度圆窗：圆形首图缩略 + 红点沿圆环指示进度（还原原站效果） ===== */
         .reading-orb { position: fixed; top: 96px; left: 40px; width: 96px; height: 96px; cursor: pointer; z-index: 60; }
@@ -95,41 +50,8 @@
         .reading-orb__ring::before { content: ''; position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: #C4004D; }
         @media (max-width: 1100px) { .reading-orb { display: none; } }
 
-        /* ===== Article title ===== */
-        .s-article__title { font-size: 48px !important; font-weight: 400 !important; line-height: 1.2; color: #232426; margin-bottom: 2px; }
+        /* ===== 大标题/CTA 按钮/内联链接/作者信息/meta 行 → 已抽到共享文件 article-render-260909.css ===== */
 
-        /* ===== 正文 CTA 按钮（原站实测：白字、无下划线、品红底 #C4004D）=====
-           按钮链接不带 p/text-formatted 包装，会继承全站 a 的绿色+下划线，必须显式压回 */
-        .s-article .adp-content .paragraph--type--bouton-cta a { color: #fff !important; text-decoration: none !important; }
-        .s-article .adp-content .paragraph--type--bouton-cta a span { color: inherit !important; text-decoration: none !important; }
-
-        /* ===== 正文内联链接（原站实测：绛红 #910039 + 下划线，2026-09-09）=====
-           原站规则落在 .text-formatted 容器内；bouton-cta 按钮不在其中不受影响，
-           本站全局 a 的绿色链接样式必须被覆盖 */
-        .s-article .adp-content .text-formatted a,
-        .s-article .adp-content p a,
-        .s-article .adp-content li a { color: #910039 !important; text-decoration: underline; }
-        .s-article .adp-content .text-formatted a:hover { color: #6e002b; }
-        /* 链接文字常包在 <strong>/<b>/<span> 里，站内 strong 有显式深色会盖掉继承，强制回归链接色 */
-        .s-article .adp-content .text-formatted a strong,
-        .s-article .adp-content .text-formatted a b,
-        .s-article .adp-content .text-formatted a em,
-        .s-article .adp-content .text-formatted a span,
-        .s-article .adp-content p a strong,
-        .s-article .adp-content p a b,
-        .s-article .adp-content p a em,
-        .s-article .adp-content p a span,
-        .s-article .adp-content li a strong,
-        .s-article .adp-content li a b,
-        .s-article .adp-content li a em,
-        .s-article .adp-content li a span { color: inherit !important; }
-
-        /* ===== Author info ===== */
-        .s-article__author-name { font-size: 14px !important; font-weight: 700; color: #232426; }
-        .s-article__author-poste { font-size: 12px !important; color: #74797D; }
-        .s-article__category-title { font-size: 11px !important; letter-spacing: 0.08em; text-transform: uppercase; }
-        .c-card__date { font-size: 13px !important; color: #A5A9AE; }
-        .c-card__reading { font-size: 12px !important; color: #A5A9AE; }
         .breadcrumb { font-size: 12px !important; }
 
         /* ===== IMAGE TABLE (auto-generated from consecutive images) ===== */

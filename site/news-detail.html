@@ -68,6 +68,8 @@
     href="/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css" />
   <link rel="stylesheet" media="all"
     href="/sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" />
+  <!-- R8 渲染一致性共享样式（单一来源，全站详情页统一引用；改名后需同步所有引用页） -->
+  <link rel="stylesheet" href="/static/css/article-render-260909.css" />
   <script src="/static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api-260908.js"></script>
   <script src="/static/js/auth-260908.js"></script>
@@ -94,8 +96,10 @@
   .reading-orb__ring { position: absolute; top: 50%; left: 50%; width: 116px; height: 116px; margin: -58px 0 0 -58px; border-radius: 50%; pointer-events: none; }
   .reading-orb__ring::before { content: ''; position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: #C4004D; }
   @media (max-width: 1100px) { .reading-orb { display: none; } }
-  /* 网格兜底：中文站/手写导入内容无 .paragraph 包装，占满整行（否则被塞进 1/12 列） */
-  .node__content > *:not(.paragraph) { grid-column: 1 / 13; }
+  /* 网格兜底规则已抽到共享文件 /static/css/article-render-260909.css */
+  /* 顶部 meta 行兜底（若主题聚合 CSS 未覆盖 s-article__data 布局） */
+  .s-article__data { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+  .s-article__data .col-md { flex: 0 0 auto; padding: 0; }
 </style>
 </head>
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
@@ -150,17 +154,33 @@
           class="block block-system block-system-main-block">
           <article role="article" about="/news-detail" typeof="schema:WebPage"
             class="node node--type-page node--view-mode-full">
-            <div class="container">
+            <div class="container s-article">
               <div class="node__wrapper" id="wrapper">
                 <div class="node__content-wrapper">
-                 <div class="block-title" v-if="data.formData && data.formData.title">
-                    <h1 class="page-title u-title-styled">{{data.formData.title}}</h1>
+                 <!-- 顶部区：meta 行（分类/日期/阅读时长）+ 大标题 + 摘要导语（对齐原站 s-article__top-part） -->
+                 <div class="s-article__top-part" v-if="data.loaded && data.formData.title">
+                    <div class="row s-article__data">
+                      <div class="col-md">
+                        <span class="s-article__category-title">{{ data.categoryLabel }}</span>
+                      </div>
+                      <div class="col-md">
+                        <div class="c-card__info s-article__date">
+                          <div class="c-card__date" v-if="data.dateLabel">
+                            <time datetime="" class="datetime">{{ data.dateLabel }}</time>
+                          </div>
+                          <div class="c-card__reading" v-if="data.readingLabel">Reading : {{ data.readingLabel }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h1 class="s-article__title page-title u-title-styled">{{data.formData.title}}</h1>
+                    </div>
+                    <div class="block-accroche" v-if="data.formData.summary">
+                      <p>{{data.formData.summary}}</p>
+                    </div>
                   </div>
                   <p v-if="!data.loaded" style="text-align:center;padding:80px 20px;color:#A5A9AE;">加载中...</p>
-                  <div class="node__content" v-if="data.loaded" v-html="data.formData.content"></div>
-                  <div class="block-accroche" v-if="data.formData && data.formData.summary">
-                    <p>{{data.formData.summary}}</p>
-                  </div>
+                  <div class="node__content adp-content" v-if="data.loaded" v-html="data.formData.content"></div>
                   <!-- 相关内容卡片区块（导入时自动生成 / 后台可调整） -->
                   <div v-if="data.blocks.length" style="margin-top:48px;">
                     <div v-for="(blk, bi) in data.blocks" :key="bi">
@@ -247,6 +267,9 @@
         related: [],
         blocks: [],
         loaded: false,
+        categoryLabel: 'News',
+        dateLabel: '',
+        readingLabel: '',
         orb: { visible: false, angle: 0, image: '' }
       });
 
@@ -290,6 +313,15 @@
             imageUrl: item.imageUrl || '',
             topBackground: item.topBackground || ''
           };
+          // 顶部 meta 行：分类 / 日期（14 Aug 2026）/ 阅读时长（对齐原站 s-article__data）
+          data.categoryLabel = item.type === 'event' ? 'Event' : 'News';
+          if (item.publishedDate) {
+            var d = new Date(item.publishedDate);
+            if (!isNaN(d.getTime())) {
+              data.dateLabel = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            }
+          }
+          data.readingLabel = item.readingTime ? item.readingTime + 'mn' : '';
           // 区块数据（相关内容卡片等）
           data.blocks = (item.blocks || []).map(function (b) {
             var parsed = {};

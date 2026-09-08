@@ -24,6 +24,8 @@
     <!-- 原站 hot-topics 文章页主题聚合样式（正文 h2 颜色 / texte-encadre / c-highlighted-text / 表格等区块规则） -->
     <link rel="stylesheet" media="all"
         href="/sites/default/files/css/css_3uDOmdtDWx7zJzKHfwBFyQRGdMBmkr-vugKEhBZZzTc.css" />
+    <!-- R8 渲染一致性共享样式（单一来源，全站详情页统一引用；改名后需同步所有引用页） -->
+    <link rel="stylesheet" href="/static/css/article-render-260909.css" />
 
     <!-- Custom styles matching original article detail layout -->
     <style>
@@ -40,38 +42,8 @@
         .adp-no-image .breadcrumb { position: static; width: auto; background: none; padding-left: 0; }
         .adp-no-image .node__wrapper { margin-top: auto; padding-top: 0; }
 
-        /* ===== 摘要区（匹配原站 .s-article__subtitle + .block-accroche）===== */
-        .adp-summary-wrap { margin-top: 0; }
-
-        /* 副标题行：小字、靠左、无大写 */
-        .adp-summary-wrap .s-article__subtitle {
-            display: block !important;
-            font-size: 13px !important;
-            letter-spacing: 0.04em !important;
-            color: #3C4248 !important;
-            margin-bottom: 25px !important;
-            text-align: left !important;
-        }
-
-        /* 摘要正文：大号灰色字体 + 金色底边线 */
-        .block-accroche {
-            font-family: "Din Next Lt Pro Light", "Microsoft YaHei", sans-serif !important;
-            font-size: 18px !important;
-            line-height: 1.35 !important;
-            color: #74797D !important;
-            border-bottom: 1px solid #E1D9C3 !important;
-            padding-bottom: 12px !important;
-            margin-bottom: 20px !important;
-        }
-        .block-accroche p,
-        .block-accroche * {
-            font-size: inherit !important;
-            color: inherit !important;
-            margin: 0 !important;
-        }
-
-        /* ===== node__content 网格兜底：手写内容（无 .paragraph 包装）占满整行 ===== */
-        .adp-content.node__content > *:not(.paragraph) { grid-column: 1 / 13; }
+        /* 摘要区/区块标题/网格兜底/大标题/CTA/内链/作者/meta 样式已抽到共享文件
+           /static/css/article-render-260909.css（R8 单一来源），此处不再重复 */
 
         /* ===== 阅读进度圆窗：圆形首图缩略 + 红点沿圆环指示进度（还原原站效果） ===== */
         .reading-orb { position: fixed; top: 96px; left: 40px; width: 96px; height: 96px; cursor: pointer; z-index: 60; }
@@ -80,15 +52,8 @@
         .reading-orb__ring::before { content: ''; position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: #C4004D; }
         @media (max-width: 1100px) { .reading-orb { display: none; } }
 
-        /* ===== Article title ===== */
-        .s-article__title { font-size: 48px !important; font-weight: 700; line-height: 1.2; color: #232426; margin-bottom: 2px; }
+        /* ===== 大标题/CTA 按钮/内联链接/作者信息/meta 行 → 已抽到共享文件 article-render-260909.css ===== */
 
-        /* ===== Author info ===== */
-        .s-article__author-name { font-size: 14px !important; font-weight: 700; color: #232426; }
-        .s-article__author-poste { font-size: 12px !important; color: #74797D; }
-        .s-article__category-title { font-size: 11px !important; letter-spacing: 0.08em; text-transform: uppercase; }
-        .c-card__date { font-size: 13px !important; color: #A5A9AE; }
-        .c-card__reading { font-size: 12px !important; color: #A5A9AE; }
         .breadcrumb { font-size: 12px !important; }
 
         /* ===== IMAGE TABLE (auto-generated from consecutive images) ===== */

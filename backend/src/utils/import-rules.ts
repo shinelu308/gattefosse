@@ -265,7 +265,18 @@ export function structureSignature(html: string): string {
  * 出处：2026-09-09 连环事故（h2 字体/h1 字重/内链颜色/按钮文字/下划线），全部为
  * 「原站各页 CSS 聚合不同、本地包缺失对应规则」导致，修复值均为原站 getComputedStyle 实测。
  * 校验工具：scripts/compare-article.js（双页截图 + 计算样式逐元素对比，含按钮/链接颜色维度）。
- * 以后发现新的样式偏差，先实测原站值 → 补进详情页 <style> → 同步更新本清单。
+ * 以后发现新的样式偏差，先实测原站值 → 补进共享 CSS → 同步更新本清单。
+ *
+ * ⚠️ 全局同步机制（2026-09-09 二次事故后确立）：渲染修复样式已从各页 <style> 抽出为共享文件
+ *    /static/css/article-render-260909.css（单一来源）。所有渲染导入内容的详情页
+ *    （personal-care-article-detail / pharmaceuticals-article-detail / news-detail …）
+ *    统一 <link> 引用，禁止再在页面内复制规则；修改样式只改共享文件。
+ *    ⚠️ 文件名带日期（宝塔对静态资源缓存激进）：修改内容后必须改名并同步所有引用页。
+ *    新增渲染导入内容的页面时必须引用该文件，否则必复发链接变绿/横线/字重类事故。
+ *    事故模式：修复只落在某一个详情页（如 PC 文章页），新闻详情页 news-detail.html 没有 →
+ *    导入新闻后链接绿色、摘要带上下边框渲染在底部（「两条横线」）、缺 meta 行。
+ *    news-detail.html 已重构为原站 s-article 布局（meta 行+大标题+导语在顶部，正文容器
+ *    挂 .node__content.adp-content）。
  *
  * 1. h1 标题：Din Next Slab Pro Bold 48px / weight 400（Slab Pro 族本身是 Bold，weight 必须 400，
  *    浏览器默认 700 会加粗过度）
@@ -278,7 +289,7 @@ export function structureSignature(html: string): string {
  *    对链接内 strong/b/em/span 强制 color:inherit
  * 6. CTA 按钮（.paragraph--type--bouton-cta a）：白字 / 无下划线 / 品红底 #C4004D；
  *    ⚠️ 按钮链接不在 .text-formatted/p/li 容器内，会继承全站 a 的绿色+下划线，必须显式压回
- * 7. 详情页 <style> 里的规则一律带实测值注释；对比工具的 SELECTORS 覆盖面必须与清单同步扩充
+ * 7. 修复规则一律落在共享 CSS（见上）并带实测值注释；对比工具的 SELECTORS 覆盖面必须与清单同步扩充
  */
 export function findCardThumbBySlug(listingHtml: string, articlePath: string): string | null {
   if (!articlePath) return null;

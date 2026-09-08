@@ -1,0 +1,99 @@
+/* ============================================================
+   导入内容渲染一致性共享样式（R8 经验库物化版）
+   文件名带日期：修改后必须改名并同步所有引用页（宝塔 .js/.css 缓存策略）
+   引用方：personal-care-article-detail.html / pharmaceuticals-article-detail.html
+           / news-detail.html 等所有渲染导入正文的详情页
+   规则来源：backend/src/utils/import-rules.ts R8（原站实测值，2026-09-09）
+   作用域约定：页面需把正文容器挂到 .s-article 下、正文 v-html 容器带
+   .adp-content（可与 .node__content 并存），本文件即可全站通用
+   ============================================================ */
+
+/* ===== 文章大标题（原站实测 48px / weight 400 / 深灰）===== */
+.s-article__title { font-size: 48px !important; font-weight: 400 !important; line-height: 1.2; color: #232426; margin-bottom: 2px; }
+
+/* ===== 顶部 meta 行：分类标签 / 日期 / 阅读时长 ===== */
+.s-article__category-title { font-size: 11px !important; letter-spacing: 0.08em; text-transform: uppercase; }
+.c-card__date { font-size: 13px !important; color: #A5A9AE; }
+.c-card__date time { font-size: inherit !important; color: inherit !important; }
+.c-card__reading { font-size: 12px !important; color: #A5A9AE; }
+
+/* ===== 摘要导语区（原站 .s-article__subtitle + .block-accroche）===== */
+.adp-summary-wrap .s-article__subtitle {
+    display: block !important;
+    font-size: 13px !important;
+    letter-spacing: 0.04em !important;
+    color: #3C4248 !important;
+    margin-bottom: 25px !important;
+    text-align: left !important;
+}
+/* 摘要正文：大号灰色字体 + 金色底边线（原站实测 20px/30px Light 灰） */
+.block-accroche {
+    font-family: "Din Next Lt Pro Light", "Microsoft YaHei", sans-serif !important;
+    font-size: 20px !important;
+    line-height: 30px !important;
+    color: #74797D !important;
+    border-bottom: 1px solid #E1D9C3 !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 20px !important;
+}
+.block-accroche p,
+.block-accroche * {
+    font-size: inherit !important;
+    color: inherit !important;
+    margin: 0 !important;
+}
+
+/* ===== 正文区块标题（原站 theme-cosm 实测值）===== */
+/* h2 章节题：Slab 粗体 40px 品红；必须容器级命中（.adp-content h2） */
+.s-article .adp-content h2 {
+    font-family: "Din Next Slab Pro Bold", "Din Next Lt Pro Bold", "Microsoft YaHei", sans-serif !important;
+    font-size: 40px !important;
+    font-weight: 400 !important;
+    line-height: 48px !important;
+    color: #C4004D !important;
+}
+/* h3 小节题：Lt 粗体 33px 深灰 */
+.s-article .adp-content h3 {
+    font-family: "Din Next Lt Pro Bold", "Microsoft YaHei", sans-serif !important;
+    font-size: 33px !important;
+    font-weight: 400 !important;
+    line-height: 39.6px !important;
+    color: #232426 !important;
+}
+
+/* ===== 正文 CTA 按钮（原站实测：白字、无下划线）=====
+   按钮链接不带 p/text-formatted 包装，会继承全站 a 的绿色+下划线，必须显式压回 */
+.s-article .adp-content .paragraph--type--bouton-cta a { color: #fff !important; text-decoration: none !important; }
+.s-article .adp-content .paragraph--type--bouton-cta a span { color: inherit !important; text-decoration: none !important; }
+
+/* ===== 正文内联链接（原站实测：绛红 #910039 + 下划线）=====
+   原站规则落在 .text-formatted 容器内；bouton-cta 按钮不在其中不受影响 */
+.s-article .adp-content .text-formatted a,
+.s-article .adp-content p a,
+.s-article .adp-content li a,
+.s-article .adp-content h5 a { color: #910039 !important; text-decoration: underline; }
+.s-article .adp-content .text-formatted a:hover { color: #6e002b; }
+/* 链接文字常包在 <strong>/<b>/<span> 里，站内 strong 有显式深色会盖掉继承，强制回归链接色 */
+.s-article .adp-content .text-formatted a strong,
+.s-article .adp-content .text-formatted a b,
+.s-article .adp-content .text-formatted a em,
+.s-article .adp-content .text-formatted a span,
+.s-article .adp-content p a strong,
+.s-article .adp-content p a b,
+.s-article .adp-content p a em,
+.s-article .adp-content p a span,
+.s-article .adp-content li a strong,
+.s-article .adp-content li a b,
+.s-article .adp-content li a em,
+.s-article .adp-content li a span,
+.s-article .adp-content h5 a strong,
+.s-article .adp-content h5 a b,
+.s-article .adp-content h5 a em,
+.s-article .adp-content h5 a span { color: inherit !important; }
+
+/* ===== 网格兜底：手写/导入内容（无 .paragraph 包装）占满整行 ===== */
+.adp-content.node__content > *:not(.paragraph) { grid-column: 1 / 13; }
+
+/* ===== 作者信息 ===== */
+.s-article__author-name { font-size: 14px !important; font-weight: 700; color: #232426; }
+.s-article__author-poste { font-size: 12px !important; color: #74797D; }
