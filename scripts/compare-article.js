@@ -6,8 +6,11 @@
  *   node scripts/compare-article.js "http://localhost:3000/personal-care-article-detail.html?id=503" "https://www.gattefosse.com/personal-care/get-inspired/xxx" admin/outputs
  * 输出：
  *   compare-<时间戳>/ours.png / origin.png 双页截图 + 对比报告（控制台 + report.json）
- * 对比维度：标题/h2/h3/正文段落/导语 的字体族、字号、行高、字重、颜色；
- * 段落数量与结构级差异（h2/h3 数量、图片数量）。
+ * 对比维度：标题/h2/h3/正文段落/导语/链接/按钮 的字体族、字号、行高、字重、颜色、下划线、背景；
+ * 段落数量与结构级差异。
+ * ⚠️ 2026-09-09 修复：选择器改为「本站/原站」双套——.adp-content 是本站独有类名，原站采不到样，
+ *    旧版对 h2/h3/段落/链接的对比实际是空的（只比到 h1/导语），药用文章主题色差未被发现。
+ * ⚠️ 主题色系：个护 theme-cosm 品红系 / 药用 theme-pharma 蓝系，对比取双方实测值，天然支持主题分档。
  */
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
@@ -60,12 +63,15 @@ const COLLECT_FN = (selectors) => {
   return result;
 };
 
-const SELECTORS = [
-  'h1', '.s-article .adp-content h2', '.s-article .paragraph--type--titre-h3 h3',
-  '.block-accroche', '.s-article .adp-content p',
-  // 链接与按钮（2026-09-09 补：按钮文字颜色/下划线漏检导致 CTA 变绿事故）
-  '.s-article .adp-content .paragraph--type--bouton-cta a',
-  '.s-article .adp-content p a',
+/** 对比项：本站与原站选择器成对（原站无 .adp-content，用 .node__content 等价物） */
+const SELECTOR_PAIRS = [
+  { name: 'h1', ours: '.s-article__title', origin: '.s-article__title' },
+  { name: 'h2', ours: '.s-article .adp-content h2', origin: '.node__content h2' },
+  { name: 'h3', ours: '.s-article .adp-content h3', origin: '.node__content h3' },
+  { name: 'lead', ours: '.block-accroche', origin: '.block-accroche' },
+  { name: 'para', ours: '.s-article .adp-content p', origin: '.node__content p' },
+  { name: 'link', ours: '.s-article .adp-content p a', origin: '.node__content p a' },
+  { name: 'cta', ours: '.s-article .adp-content .paragraph--type--bouton-cta a', origin: '.node__content .paragraph--type--bouton-cta a' },
 ];
 
 function fmtColor(c) {
@@ -77,13 +83,17 @@ function fmtColor(c) {
 
 function compareStyles(ours, origin) {
   const diffs = [];
-  for (const sel of SELECTORS) {
+  for (const pair of SELECTOR_PAIRS) {
+    const sel = pair.name;
     const a = ours[sel] || [];
     const b = origin[sel] || [];
-    if (a.length !== b.length && (sel === 'h1' || sel.includes('titre-h3'))) {
+    if (a.length !== b.length && (sel === 'h1' || sel === 'h2' || sel === 'h3')) {
       diffs.push({ sel, kind: '数量不一致', detail: `本站 ${a.length} 个 / 原站 ${b.length} 个` });
     }
     const n = Math.min(a.length, b.length);
+    if (!n && (sel === 'h1' || sel === 'h2')) {
+      diffs.push({ sel, kind: '采样为空', detail: `本站 ${a.length} 个 / 原站 ${b.length} 个（选择器未命中，需检查）` });
+    }
     for (let i = 0; i < n; i++) {
       const keys = ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'color', 'textDecorationLine', 'backgroundColor'];
       for (const k of keys) {
@@ -113,17 +123,22 @@ function compareStyles(ours, origin) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1440, height: 1000 });
 
-  const shoot = async (url, file) => {
+  const shoot = async (url, file, side) => {
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
     await new Promise(r => setTimeout(r, 1500));
     await page.screenshot({ path: path.join(OUT_DIR, file), fullPage: false });
-    return page.evaluate(COLLECT_FN, SELECTORS);
+    const sels = SELECTOR_PAIRS.map(p => p[side]);
+    const raw = await page.evaluate(COLLECT_FN, sels);
+    // 按 pair.name 归并
+    const out = {};
+    for (const p of SELECTOR_PAIRS) out[p.name] = raw[p[side]] || [];
+    return out;
   };
 
   console.log('📸 截图并采集本站样式:', OURS_URL);
-  const ours = await shoot(OURS_URL, 'ours.png');
+  const ours = await shoot(OURS_URL, 'ours.png', 'ours');
   console.log('📸 截图并采集原站样式:', ORIGIN_URL);
-  const origin = await shoot(ORIGIN_URL, 'origin.png');
+  const origin = await shoot(ORIGIN_URL, 'origin.png', 'origin');
   await browser.close();
 
   const diffs = compareStyles(ours, origin);

@@ -290,6 +290,11 @@ export function structureSignature(html: string): string {
  * 6. CTA 按钮（.paragraph--type--bouton-cta a）：白字 / 无下划线 / 品红底 #C4004D；
  *    ⚠️ 按钮链接不在 .text-formatted/p/li 容器内，会继承全站 a 的绿色+下划线，必须显式压回
  * 7. 修复规则一律落在共享 CSS（见上）并带实测值注释；对比工具的 SELECTORS 覆盖面必须与清单同步扩充
+ * 8. ⚠️ 主题色系分档（2026-09-09 三次事故）：原站按板块分两套主题——个护 theme-cosm（品红系：
+ *    h2 #C4004D / 链接 #910039）与药用 theme-pharma（蓝系：h2 #0075BB=rgb(0,117,187) /
+ *    链接 #00588D=rgb(0,88,141)，含目录跳转锚链接）。共享 CSS 默认品红，.theme-pharma 前缀覆盖；
+ *    两套详情页模板 <main> 已带对应主题类。校验/对比时必须先看原站 main 的 theme-* 类，
+ *    按主题选预期值——拿品红预期去比对药用文章会误报，拿品红样式渲染药用文章即事故。
  */
 export function findCardThumbBySlug(listingHtml: string, articlePath: string): string | null {
   if (!articlePath) return null;
