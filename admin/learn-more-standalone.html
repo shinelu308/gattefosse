@@ -347,9 +347,11 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           系统将自动完成：抓取正文与标题 → 下载全部图片到本站 → 转换原站区块（重点框/图片横排/CTA）→ 保存为<b>草稿</b>。<br>
           导入后正文为英文，请在编辑时借助 AI 助手完成中文翻译，再发布。
         </div>
+        <div v-if="importMsg" style="font-size:12px;margin-top:10px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ importMsg }}</div>
         <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
-          <button class="btn" @click="showImport=false">取消</button>
-          <button class="btn btn-primary" @click="doImport()" :disabled="importing">{{ importing ? '正在抓取与下载图片（约 10~30 秒）...' : '开始导入' }}</button>
+          <button class="btn" @click="showImport=false">{{ importMsg && importMsg.indexOf('✅')===0 ? '关闭' : '取消' }}</button>
+          <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
+          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl">{{ importing ? '正在抓取与下载图片...' : '开始导入' }}</button>
         </div>
       </div>
     </div>
@@ -399,6 +401,7 @@ createApp({
       _quillInited: false,
       showImport: false,
       importUrl: '',
+      importMsg: '',
       importing: false,
       editMode: 'visual',
       contentLocked: false,
@@ -530,6 +533,7 @@ createApp({
     },
     openImport() {
       this.importUrl = '';
+      this.importMsg = '';
       this.showImport = true;
     },
     // ---------- 翻译 Word 回填 ----------
@@ -569,20 +573,23 @@ createApp({
     async doImport() {
       if (!this.importUrl) return alert('请粘贴原站文章链接');
       this.importing = true;
+      this.importMsg = '⏳ 正在抓取并解析原站页面，下载图片中...';
       try {
         const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.importUrl.trim() }) });
-        this.showImport = false;
-        this.loadList(); this.countAll();
-        if (d.item) this.openEdit(d.item);
-        let msg = '导入成功：' + (d.imagesDownloaded || 0) + '/' + (d.imagesTotal || 0) + ' 张图片已本地化';
+        let msg = '✅ 导入成功，已保存为草稿';
         if (d.coverSource === 'banner') msg += '\n✓ 封面与详情页大图已取自原站 banner';
         if (d.typeAutoDetected && d.item && d.item.type) msg += '\n✓ 类型已按原站自动识别：' + ({ news: '新闻', event: '活动', article: '文章' }[d.item.type] || d.item.type);
         if (d.relatedCards) msg += '\n✓ 相关内容 ' + d.relatedCards + ' 张卡片已转独立区块';
-        if (d.downloadErrors && d.downloadErrors.length) msg += '\n⚠ ' + d.downloadErrors.length + ' 张图片下载失败：\n' + d.downloadErrors.join('\n');
+        msg += '\n✓ 图片 ' + (d.imagesDownloaded || 0) + '/' + (d.imagesTotal || 0) + ' 张已本地化';
+        if (d.downloadErrors && d.downloadErrors.length) msg += '\n⚠ ' + d.downloadErrors.length + ' 张图片下载失败';
         if (d.skippedBlocks && d.skippedBlocks.length) msg += '\n已跳过区块：' + d.skippedBlocks.join('、');
-        alert(msg);
-      } catch (e) { alert('导入失败：' + e.message); }
-      finally { this.importing = false; }
+        msg += '\n请在列表中打开编辑，完成中文翻译后发布';
+        this.importMsg = msg;
+        this.importUrl = '';
+        this.loadList(); this.countAll();
+      } catch (e) {
+        this.importMsg = '❌ 导入失败：' + e.message;
+      } finally { this.importing = false; }
     },
     openEdit(item) {
       this.destroyQuill();
