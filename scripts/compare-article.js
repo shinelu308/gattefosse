@@ -51,6 +51,8 @@ const COLLECT_FN = (selectors) => {
         fontWeight: cs.fontWeight,
         lineHeight: cs.lineHeight,
         color: cs.color,
+        textDecorationLine: cs.textDecorationLine,
+        backgroundColor: cs.backgroundColor,
         width: Math.round(r.width),
       };
     });
@@ -61,6 +63,9 @@ const COLLECT_FN = (selectors) => {
 const SELECTORS = [
   'h1', '.s-article .adp-content h2', '.s-article .paragraph--type--titre-h3 h3',
   '.block-accroche', '.s-article .adp-content p',
+  // 链接与按钮（2026-09-09 补：按钮文字颜色/下划线漏检导致 CTA 变绿事故）
+  '.s-article .adp-content .paragraph--type--bouton-cta a',
+  '.s-article .adp-content p a',
 ];
 
 function fmtColor(c) {
@@ -80,10 +85,10 @@ function compareStyles(ours, origin) {
     }
     const n = Math.min(a.length, b.length);
     for (let i = 0; i < n; i++) {
-      const keys = ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'color'];
+      const keys = ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'color', 'textDecorationLine', 'backgroundColor'];
       for (const k of keys) {
         let va = a[i][k], vb = b[i][k];
-        if (k === 'color') { va = fmtColor(va); vb = fmtColor(vb); }
+        if (k === 'color' || k === 'backgroundColor') { va = fmtColor(va); vb = fmtColor(vb); }
         if (k === 'lineHeight') {
           const na = parseFloat(va), nb = parseFloat(vb);
           if (!isNaN(na) && !isNaN(nb)) { va = na.toFixed(1); vb = nb.toFixed(1); }
