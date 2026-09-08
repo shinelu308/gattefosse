@@ -2330,8 +2330,10 @@ const QUILL_TOOLBAR = [
                   <option value="true" data-page-node-id="9JPebh1Wzcn109KJhaNfaC">已发布</option>
                   <option value="false" data-page-node-id="ntFPugPIn65QlJCu8nX5OA">草稿</option>
                 </select>
-                <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
+                <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" style="margin-left:auto;" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
                 <button class="btn btn-outline" @click="newsImportOpen = !newsImportOpen">⬇ 从原站导入</button>
+                <span v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedNewsIds.length }} 项</span>
+                <button class="btn btn-sm btn-danger" @click="batchDeleteNews" :disabled="selectedNewsIds.length === 0">批量删除 ({{ selectedNewsIds.length }})</button>
               </div>
               <div v-if="newsImportOpen" style="border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;">
                 <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
@@ -2357,10 +2359,11 @@ const QUILL_TOOLBAR = [
             </div>
             <div class="card-body" style="padding:0;" data-page-node-id="Ing3Onse7fzlifd1fyzyZK">
               <table class="table" data-page-node-id="N9gT513IsJDHAWchVkFmF6">
-                <thead data-page-node-id="zdGGAJHhWcmEHIIUxCiXgf"><tr data-page-node-id="YefAqEGu8crzj2UJwFmjBQ"><th data-page-node-id="IMdkqiDGfJHvaYyONMDoir">类型</th><th data-page-node-id="KrUDshM73UEYw9TJQWRtDI">标题</th><th data-page-node-id="2Oia46ply7vfnZfMfQRnFf">分类</th><th data-page-node-id="Xv1CoWUFFjoRCibKOQhVEm">发布日期</th><th style="white-space:nowrap;" data-page-node-id="5CCCyz7tEJgmdQJVaQREod">状态</th><th style="white-space:nowrap;" data-page-node-id="UC962gmQ2xdkHblB2LycMK">操作</th></tr></thead>
+                <thead data-page-node-id="zdGGAJHhWcmEHIIUxCiXgf"><tr data-page-node-id="YefAqEGu8crzj2UJwFmjBQ"><th style="width:40px;"><input type="checkbox" :checked="newsList.length > 0 && selectedNewsIds.length === newsList.length" @change="toggleSelectAllNews" title="全选本页"></th><th data-page-node-id="IMdkqiDGfJHvaYyONMDoir">类型</th><th data-page-node-id="KrUDshM73UEYw9TJQWRtDI">标题</th><th data-page-node-id="2Oia46ply7vfnZfMfQRnFf">分类</th><th data-page-node-id="Xv1CoWUFFjoRCibKOQhVEm">发布日期</th><th style="white-space:nowrap;" data-page-node-id="5CCCyz7tEJgmdQJVaQREod">状态</th><th style="white-space:nowrap;" data-page-node-id="UC962gmQ2xdkHblB2LycMK">操作</th></tr></thead>
                 <tbody data-page-node-id="W0wzOcfaGgExpCQumG67vm">
-                  <tr v-if="newsList.length===0" data-page-node-id="i8phER7vEULDVnrD25RgLq"><td colspan="6" class="cell-center" data-page-node-id="lw2TfPhYRsnYsHJbLRENYg">暂无新闻数据，点击「新增新闻」开始创建</td></tr>
+                  <tr v-if="newsList.length===0" data-page-node-id="i8phER7vEULDVnrD25RgLq"><td colspan="7" class="cell-center" data-page-node-id="lw2TfPhYRsnYsHJbLRENYg">暂无新闻数据，点击「新增新闻」开始创建</td></tr>
                   <tr v-for="item in newsList" data-page-node-id="YyXzuPa2caTDVQu8tD9WPK">
+                    <td><input type="checkbox" :value="item.id" v-model="selectedNewsIds"></td>
                     <td data-page-node-id="mw3RqSmQkHTQv1fX2gStuE"><span class="tag" :class="item.type==='event'?'tag-amber':'tag-blue'" data-page-node-id="7PMZeOIPq0Bcv0zyWpvk8s">{{ item.type==='event'?'活动':'新闻' }}</span></td>
                     <td data-page-node-id="vXkxPph3XlEeDiPlnj3USC"><strong data-page-node-id="ufIVBiAMGFlDEHbLghi9qS">{{ item.title }}</strong><br data-page-node-id="zq27femjZw3rocUbTITPmS"><span style="font-size:12px;color:var(--text-muted);" data-page-node-id="stIvdpxdtEMPjAgSzEQaJT">{{ (item.summary||'').substring(0,50) }}</span></td>
                     <td data-page-node-id="PKWnuIkMaCpUiyi3Ft4F9D"><span class="tag" :class="'tag-'+(item.category==='pc'?'cosm':item.category==='pharma'?'pharma':'corp')" data-page-node-id="Tk8tizJPUqVWT36jtJD9dx">{{ {corporate:'企业',pc:'个护',pharma:'药用'}[item.category]||item.category }}</span></td>
@@ -3952,6 +3955,7 @@ createApp({
       newsList: [],
       newsFilter: { page: 1, limit: 20, keyword: '', type: 'all', category: '', isPublished: '' },
       newsShowAdvanced: false,
+      selectedNewsIds: [],
       newsImportOpen: false,
       newsImporting: false,
       newsImportMsg: '',
@@ -6225,7 +6229,31 @@ createApp({
       try {
         const data = await this.api('/news?' + params.toString());
         this.newsList = data.list; this.newsPagination = data.pagination;
+        this.selectedNewsIds = [];
       } catch (e) { console.error(e); }
+    },
+    // ============ 全选 & 批量删除 - 新闻/活动 ============
+    toggleSelectAllNews() {
+      if (this.selectedNewsIds.length === this.newsList.length) {
+        this.selectedNewsIds = [];
+      } else {
+        this.selectedNewsIds = this.newsList.map(item => item.id);
+      }
+    },
+    async batchDeleteNews() {
+      if (this.selectedNewsIds.length === 0) return;
+      const ids = [...this.selectedNewsIds];
+      this.showConfirm('批量删除', '确定删除选中的 ' + ids.length + ' 条新闻/活动？此操作不可恢复。', async () => {
+        try {
+          await this.api('/news/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) });
+          this.selectedNewsIds = [];
+          this.loadNewsList();
+          this.showAlert('成功删除 ' + ids.length + ' 条新闻/活动');
+        } catch (e) {
+          console.error('批量删除异常:', e);
+          this.showAlert('批量删除失败：' + e.message);
+        }
+      });
     },
     resetNewsEdit() {
       this.editingNews = { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), eventEndDate: '', location: '', booth: '', isPublished: false, tags: null, tagInput: '' };
