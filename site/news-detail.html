@@ -142,7 +142,7 @@
             </nav>
           </div>
         </div>
-        <div class="page-top__image  page-top__image--full"
+        <div class="page-top__image  page-top__image--full" v-if="data.loaded"
           :style="(data.formData && (data.formData.topBackground || data.formData.imageUrl)) ? { backgroundImage: 'url(' + (data.formData.topBackground || data.formData.imageUrl) + ')' } : { backgroundImage: 'url(/sites/default/files/styles/page_banner_desktop_full/public/2023-06/about-us.jpg.jpg)' }"></div>
       </div>
       <div class="region region-content">
@@ -153,10 +153,11 @@
             <div class="container">
               <div class="node__wrapper" id="wrapper">
                 <div class="node__content-wrapper">
-                 <div class="block-title" v-if="data.formData">
+                 <div class="block-title" v-if="data.formData && data.formData.title">
                     <h1 class="page-title u-title-styled">{{data.formData.title}}</h1>
                   </div>
-                  <div class="node__content" v-html="data.formData.content"></div>
+                  <p v-if="!data.loaded" style="text-align:center;padding:80px 20px;color:#A5A9AE;">加载中...</p>
+                  <div class="node__content" v-if="data.loaded" v-html="data.formData.content"></div>
                   <div class="block-accroche" v-if="data.formData && data.formData.summary">
                     <p>{{data.formData.summary}}</p>
                   </div>
@@ -245,6 +246,7 @@
         formData: { title: '', summary: '', content: '', imageUrl: '', topBackground: '' },
         related: [],
         blocks: [],
+        loaded: false,
         orb: { visible: false, angle: 0, image: '' }
       });
 
@@ -277,7 +279,7 @@
       const loadNews = async () => {
         var params = new URLSearchParams(window.location.search);
         var id = params.get('id') || params.get('ID');
-        if (!id) return;
+        if (!id) { data.loaded = true; return; }
         try {
           var res = await GatteAPI.News.detail(id);
           var item = res.data || {};
@@ -300,6 +302,7 @@
         } catch (err) {
           console.error('News detail load failed:', err);
         }
+        data.loaded = true;
         try {
           var relRes = await GatteAPI.News.list({ limit: 3, isPublished: 'true', type: 'news,event' });
           var payload = relRes.data || {};
