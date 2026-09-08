@@ -98,6 +98,7 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   <button class="tab active" data-tab="basic" onclick="switchTab('basic')"><span class="tab-no">1</span>企业基本信息</button>
   <button class="tab" data-tab="org" onclick="switchTab('org')"><span class="tab-no">2</span>企业组织架构</button>
   <button class="tab" data-tab="perm" onclick="switchTab('perm')"><span class="tab-no">3</span>系统功能权限</button>
+  <button class="tab" data-tab="ai" onclick="switchTab('ai')"><span class="tab-no">4</span>AI 翻译配置</button>
 </div>
 
 <!-- ======== Tab 1：企业基本信息 ======== -->
@@ -260,6 +261,38 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   </div>
 </div>
 
+<!-- ======== Tab 4：AI 翻译配置 ======== -->
+<div class="card" id="tab-ai">
+  <div class="card-title">AI 翻译配置</div>
+  <div class="card-desc">配置后，「新闻与活动」「了解更多」中原站导入的英文文章可一键 AI 翻译成中文（保留版式与图片）</div>
+  <div class="sync-tip">✦ 推荐智谱 GLM（glm-4-flash 模型对个人用户免费）：注册 open.bigmodel.cn → 控制台创建 API Key 即可。DeepSeek / 通义 / Kimi / OpenAI 均支持</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>服务商</label>
+      <select id="ai_provider" onchange="onAiProviderChange()">
+        <option value="zhipu">智谱 GLM（glm-4-flash 免费）</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="qwen">通义千问</option>
+        <option value="moonshot">Kimi (Moonshot)</option>
+        <option value="openai">OpenAI</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>模型 <span class="hint">（留空用默认）</span></label>
+      <input id="ai_model" placeholder="glm-4-flash">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>API Key <span class="hint">（仅保存在本服务器数据库，前台与公开接口不可见）</span></label>
+    <input id="ai_api_key" type="password" placeholder="粘贴服务商控制台创建的 API Key">
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <button class="btn-sm" id="aiTestBtn" onclick="testAi()">测试连接</button>
+    <span id="aiTestMsg" style="font-size:13px;"></span>
+  </div>
+  <div class="perm-note">填写并保存后，到「新闻与活动」或「了解更多」列表点击「AI翻译」按钮即可自动翻译。长文翻译约需 1-3 分钟，请耐心等待完成提示。</div>
+</div>
+
 <div class="save-bar">
   <button onclick="saveAll()" id="saveBtn">保存全部设置</button>
   <span class="save-msg" id="saveMsg">✓ 已保存</span>
@@ -324,7 +357,38 @@ async function loadAll() {
     // Tab3 权限矩阵
     try { permData = JSON.parse(map.role_permissions || 'null') || {}; } catch (e) { permData = {}; }
     renderPerm();
+    // Tab4 AI 翻译配置
+    document.getElementById('ai_provider').value = map.aiTranslateProvider || 'zhipu';
+    document.getElementById('ai_model').value = map.aiTranslateModel || '';
+    document.getElementById('ai_api_key').value = map.aiTranslateApiKey || '';  // 已配置时为脱敏占位 ******
   } catch (e) { console.error('Load failed:', e); }
+}
+
+/* ===== Tab4 AI 翻译配置 ===== */
+const AI_DEFAULT_MODELS = { zhipu: 'glm-4-flash', deepseek: 'deepseek-chat', qwen: 'qwen-plus', moonshot: 'moonshot-v1-8k', openai: 'gpt-4o-mini' };
+function onAiProviderChange() {
+  const p = document.getElementById('ai_provider').value;
+  document.getElementById('ai_model').placeholder = AI_DEFAULT_MODELS[p] || '';
+}
+async function testAi() {
+  const btn = document.getElementById('aiTestBtn');
+  const msg = document.getElementById('aiTestMsg');
+  const provider = document.getElementById('ai_provider').value;
+  const model = document.getElementById('ai_model').value.trim();
+  let apiKey = document.getElementById('ai_api_key').value.trim();
+  if (apiKey === '******') apiKey = '';  // 占位符 = 沿用已保存的 Key
+  btn.disabled = true; msg.style.color = '#999'; msg.textContent = '⏳ 正在连接…';
+  try {
+    const res = await fetch(API + '/settings/ai-test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ provider, model, ...(apiKey ? { apiKey } : {}) }),
+    });
+    const d = await res.json();
+    if (d.code === 0) { msg.style.color = '#6f9a24'; msg.textContent = '✓ ' + (d.data && d.data.message ? d.data.message : '连接成功'); }
+    else { msg.style.color = '#D9534F'; msg.textContent = '✗ ' + (d.message || '连接失败'); }
+  } catch (e) { msg.style.color = '#D9534F'; msg.textContent = '✗ ' + e.message; }
+  finally { btn.disabled = false; }
 }
 
 /* ===== Tab2 组织架构：部门 ===== */
@@ -532,6 +596,10 @@ async function saveAll() {
     new FormData(form).forEach((v, k) => { settings[k] = v; });
     settings.org_structure = JSON.stringify(orgData.filter(o => o.name && o.name.trim()));
     settings.role_permissions = JSON.stringify(permData);
+    // Tab4 AI 翻译配置
+    settings.aiTranslateProvider = document.getElementById('ai_provider').value;
+    settings.aiTranslateModel = document.getElementById('ai_model').value.trim();
+    settings.aiTranslateApiKey = document.getElementById('ai_api_key').value.trim();  // '******' 占位后端自动跳过
     await api('/settings/batch', { method: 'POST', body: JSON.stringify(settings) });
     msg.style.display = 'inline';
     setTimeout(() => { msg.style.display = 'none'; }, 2500);

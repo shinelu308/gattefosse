@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
+import { getAiConfig, translateText, translateHtml, chunkHtml } from '../utils/ai-translate';
 
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -477,5 +478,91 @@ export async function incrementNewsViews(req: Request, res: Response) {
   } catch (error) {
     console.error('更新阅读量失败:', error);
     return res.status(500).json(fail('更新阅读量失败'));
+  }
+}
+
+/**
+ * AI 自动翻译（英→中）
+ * POST /api/news/:id/ai-translate
+ * 翻译 title / summary / contentHtml，保留 HTML 标签结构，图片与版式不动
+ */
+export async function aiTranslateNews(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    const item = await prisma.newsEvent.findUnique({ where: { id }, include: { blocks: true } });
+    if (!item) return res.status(404).json(fail('该内容不存在'));
+
+    const cfg = await getAiConfig();
+    if (!cfg) {
+      return res.json(fail('尚未配置 AI 翻译：请到「系统设置 → AI 翻译配置」选择服务商并填写 API Key，保存后即可使用'));
+    }
+
+    const started = Date.now();
+    // 1. 标题
+    const titleZh = item.title ? await translateText(item.title) : '';
+    // 2. 摘要
+    const summaryZh = item.summary ? await translateText(item.summary) : '';
+    // 3. 正文 HTML（长文自动分块）
+    let contentZh = '';
+    let chunks = 0;
+    if (item.contentHtml) {
+      contentZh = await translateHtml(item.contentHtml);
+      chunks = chunkHtml(item.contentHtml).length;
+    }
+
+    if (!titleZh && !summaryZh && !contentZh) {
+      return res.json(fail('该内容没有可翻译的文字'));
+    }
+
+    await prisma.newsEvent.update({
+      where: { id },
+      data: {
+        title: titleZh || item.title,
+        summary: summaryZh || item.summary,
+        contentHtml: contentZh || item.contentHtml,
+      },
+    });
+
+    // 4. 相关内容卡片区块（ArticleBlock product_cards）：只翻译卡片描述与类型标签，产品名/编码保留英文
+    let blocksTranslated = 0;
+    for (const b of item.blocks) {
+      if (b.blockType !== 'product_cards') continue;
+      let parsed: any;
+      try { parsed = JSON.parse(b.content); } catch { continue; }
+      if (!parsed || !Array.isArray(parsed.products)) continue;
+      let changed = false;
+      for (const card of parsed.products) {
+        if (card.description && !/[\u4e00-\u9fff]/.test(card.description)) {
+          card.description = await translateText(card.description);
+          changed = true;
+        }
+        if (card.typeLabel && !/[\u4e00-\u9fff]/.test(card.typeLabel)) {
+          card.typeLabel = await translateText(card.typeLabel);
+          changed = true;
+        }
+      }
+      if (changed) {
+        await prisma.articleBlock.update({ where: { id: b.id }, data: { content: JSON.stringify(parsed) } });
+        blocksTranslated++;
+      }
+    }
+
+    return res.json(success({
+      id,
+      titleTranslated: !!titleZh,
+      summaryTranslated: !!summaryZh,
+      contentTranslated: !!contentZh,
+      chunks,
+      blocksTranslated,
+      provider: cfg.provider,
+      model: cfg.model,
+      elapsedMs: Date.now() - started,
+    }, '翻译完成'));
+  } catch (error: any) {
+    if (error?.message === 'AI_NOT_CONFIGURED') {
+      return res.json(fail('尚未配置 AI 翻译：请到「系统设置 → AI 翻译配置」选择服务商并填写 API Key'));
+    }
+    console.error('AI 翻译失败:', error);
+    return res.status(500).json(fail('AI 翻译失败：' + (error?.message || '未知错误')));
   }
 }

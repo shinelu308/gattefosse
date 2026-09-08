@@ -1,11 +1,16 @@
 import { Router } from 'express';
 import { authMiddleware as auth } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
-import { getAllSettings, getSetting, saveSetting, batchSaveSettings } from '../controllers/setting.controller';
+import { getAllSettings, getSetting, saveSetting, batchSaveSettings, testAiSetting, getAiProviders } from '../controllers/setting.controller';
 
 const router = Router();
 
-// 公开：获取所有设置
+// AI 翻译：服务商预设（登录即可读，供设置页下拉；须注册在 /:key 之前）
+router.get('/ai-providers', auth, getAiProviders);
+// AI 翻译：连接测试（用传入的 key 或已保存配置）
+router.post('/ai-test', auth, requireRole('super_admin'), testAiSetting);
+
+// 公开：获取所有设置（API Key 等敏感项已脱敏）
 router.get('/', getAllSettings);
 router.get('/:key', getSetting);
 

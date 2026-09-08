@@ -557,7 +557,7 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .confirm-icon.error { background: #FFEBEE; color: #c62828; }
 .confirm-icon.info { background: #E3F2FD; color: #1565C0; }
 .confirm-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-.confirm-msg { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+.confirm-msg { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; white-space: pre-line; }
 .confirm-btns { display: flex; gap: 10px; justify-content: center; }
 .confirm-btns .btn-danger { background: #d9534f; color: #fff; border-color: #d9534f; }
 .confirm-btns .btn-danger:hover { background: #c9302c; border-color: #c9302c; }
@@ -2353,6 +2353,7 @@ const QUILL_TOOLBAR = [
                     <td class="table-date" data-page-node-id="VHR8OR7F4rBahQh63BGYej">{{ item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '-' }}</td>
                     <td data-page-node-id="iQcP1Zmqc6vFOkP7BsGFRZ"><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'" data-page-node-id="8gmSrdar8uztQ0CSdLtkyZ">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
                     <td class="table-actions" data-page-node-id="Xqh2BDfqTtUjnANAsDEWFF">
+                      <button class="btn btn-outline btn-sm" v-if="isUntranslated(item)" :disabled="item._translating" @click="aiTranslateNews(item)" title="AI 自动翻译英文为中文（保留版式与图片）">{{ item._translating ? '翻译中…' : 'AI翻译' }}</button>
                       <button class="btn btn-outline btn-sm" @click="editNews(item)" data-page-node-id="DSFpEuGguMgTc2yfeU9Eo1">编辑</button>
                       <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleNewsPublish(item)" data-page-node-id="cKopUt3tQpplffDdhtK0tG">{{ item.isPublished?'下架':'发布' }}</button>
                       <button class="btn btn-sm btn-danger" @click="deleteNews(item.id)" data-page-node-id="aLc5ERVMe3RogO5x4nu9LE">删除</button>
@@ -6504,6 +6505,27 @@ createApp({
       this.showConfirm('确认删除', '确定删除该新闻？此操作不可恢复。', async () => {
         try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadNewsList(); }
         catch (e) { this.showAlert('删除失败：' + e.message); }
+      });
+    },
+    // 是否未翻译（标题不含中文即视为英文原文，显示 AI翻译按钮）
+    isUntranslated(item) {
+      return !/[\u4e00-\u9fff]/.test(item.title || '');
+    },
+    // AI 自动翻译：英→中，保留 HTML 版式与图片，完成后打开编辑核对
+    async aiTranslateNews(item) {
+      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文 / 相关卡片描述将替换为中文\n· HTML 版式、图片、链接完全保留\n· 长文约需 1~3 分钟，期间请勿关闭页面', async () => {
+        item._translating = true;
+        try {
+          const r = await this.api('/news/' + item.id + '/ai-translate', { method: 'POST' });
+          this.showAlert('✅ 翻译完成（' + Math.round(r.elapsedMs / 1000) + ' 秒）\n· 模型：' + r.provider + ' / ' + r.model
+            + (r.chunks ? '\n· 正文 ' + r.chunks + ' 段已翻译' : '')
+            + (r.blocksTranslated ? '\n· 相关卡片 ' + r.blocksTranslated + ' 个区块已翻译' : '')
+            + '\n\n即将打开编辑窗口，请核对译文', 'success');
+          await this.loadNewsList();
+          try { const fresh = await this.api('/news/' + item.id); this.editNews(fresh); } catch (e) {}
+        } catch (e) {
+          this.showAlert('AI 翻译失败：' + e.message, 'error');
+        } finally { item._translating = false; }
       });
     },
     // 从原站导入新闻（复用热点话题导入器，存为草稿）
