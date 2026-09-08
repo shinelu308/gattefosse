@@ -2313,13 +2313,13 @@ const QUILL_TOOLBAR = [
           <div class="card" data-page-node-id="prdN5JwGih0frXunGrVMgz">
             <div class="card-header" data-page-node-id="HQsEvDwvaiQFG5RsNQzEqr">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="7wt5EfDHp1kzA95fNE8vNd">
-                <input type="text" class="form-control" style="max-width:220px;" placeholder="搜索标题..." v-model="newsFilter.keyword" @keyup.enter="loadNewsList()" data-page-node-id="QPYM4cM1s1C10rne3RQdKp">
-                <select class="form-control" style="max-width:120px;" v-model="newsFilter.type" @change="loadNewsList()" data-page-node-id="UXAMMfchebtib3mNAANhmJ">
+                <input type="text" class="form-control" style="max-width:180px;" placeholder="搜索标题、摘要..." v-model="newsFilter.keyword" @keyup.enter="loadNewsList()" data-page-node-id="QPYM4cM1s1C10rne3RQdKp">
+                <select class="form-control" style="max-width:110px;" v-model="newsFilter.type" @change="loadNewsList()" data-page-node-id="UXAMMfchebtib3mNAANhmJ">
                   <option value="news,event" data-page-node-id="HAiRP9rCkXrhvAZ2eytFVE">全部类型</option>
                   <option value="news" data-page-node-id="icX0O99cGUhmDLVEpjmE0D">新闻</option>
                   <option value="event" data-page-node-id="3HKVLCOgm8iXhYwsojn14U">活动</option>
                 </select>
-                <select class="form-control" style="max-width:140px;" v-model="newsFilter.category" @change="loadNewsList()" data-page-node-id="jqp24BiWVYHJSHyALD6aRe">
+                <select class="form-control" style="max-width:120px;" v-model="newsFilter.category" @change="loadNewsList()" data-page-node-id="jqp24BiWVYHJSHyALD6aRe">
                   <option value="" data-page-node-id="cvv9tjnB8KBUZT3G2esCI6">全部分类</option>
                   <option value="corporate" data-page-node-id="SaykgCgAAyjvtKpswqMIYU">企业新闻</option>
                   <option value="pc" data-page-node-id="lxrsBU3SBj2Svnl1FVBGoF">个人护理</option>
@@ -2330,35 +2330,15 @@ const QUILL_TOOLBAR = [
                   <option value="true" data-page-node-id="9JPebh1Wzcn109KJhaNfaC">已发布</option>
                   <option value="false" data-page-node-id="ntFPugPIn65QlJCu8nX5OA">草稿</option>
                 </select>
-                <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" style="margin-left:auto;" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
+                <button class="btn btn-primary" @click="loadNewsList()">搜索</button>
+                <button class="btn" @click="resetNewsFilter()">重置</button>
+                <span style="flex:1;"></span>
+                <span style="font-size:13px;color:var(--text-muted);">共 {{ newsPagination.total }} 条</span>
+                <button v-if="selectedNewsIds.length > 0" class="btn btn-sm btn-danger" @click="batchDeleteNews">批量删除 ({{ selectedNewsIds.length }})</button>
+                <button class="btn btn-slate" @click="newsImportOpen = true">⬇ 从原站导入</button>
+                <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
               </div>
-              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;">
-                <button class="btn btn-outline" @click="newsImportOpen = !newsImportOpen">⬇ 从原站导入</button>
-                <button class="btn btn-sm btn-danger" @click="batchDeleteNews" :disabled="selectedNewsIds.length === 0">批量删除 ({{ selectedNewsIds.length }})</button>
-                <span v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedNewsIds.length }} 项</span>
-              </div>
-              <div v-if="newsImportOpen" style="border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;">
-                <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
-                  <div class="form-group" style="flex:2;min-width:260px;margin:0;">
-                    <label>原站文章链接 <span class="hint">（gattefosse.com / gattefossechina.cn 文章详情页地址）</span></label>
-                    <input type="text" class="form-control" v-model="newsImport.url" placeholder="英文站 .../news/xxx 或中文站 ...-news-detail.html?id=293" @keyup.enter="importNewsFromSite()">
-                  </div>
-                  <div class="form-group" style="margin:0;">
-                    <label>保存分类</label>
-                    <select class="form-control" v-model="newsImport.category" style="width:140px;">
-                      <option value="corporate">企业新闻</option>
-                      <option value="pc">个人护理</option>
-                      <option value="pharma">药用辅料</option>
-                    </select>
-                  </div>
-                  <button class="btn btn-primary" :disabled="newsImporting || !newsImport.url" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : '开始导入' }}</button>
-                </div>
-                <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">
-                  导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
-                  英文站（gattefosse.com）导入后为英文稿；中文站（gattefossechina.cn）直接取中文内容，并自动识别新闻/活动类型与分类（面板所选分类仅作兜底）。
-                </div>
-                <div v-if="newsImportMsg" style="font-size:12px;margin-top:4px;" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ newsImportMsg }}</div>
-              </div>
+              <div v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);margin-top:8px;">已选 {{ selectedNewsIds.length }} 项</div>
             </div>
             <div class="card-body" style="padding:0;" data-page-node-id="Ing3Onse7fzlifd1fyzyZK">
               <table class="table" data-page-node-id="N9gT513IsJDHAWchVkFmF6">
@@ -3826,6 +3806,39 @@ const QUILL_TOOLBAR = [
 
       </div>
     </main>
+
+    <!-- 原站导入弹框（新闻与活动） -->
+    <div class="modal-overlay" :class="{'is-open': newsImportOpen}" @click.self="newsImportOpen=false">
+      <div class="modal" style="width:600px;">
+        <div class="modal-header">
+          <h3>从原站导入新闻/活动</h3>
+          <button class="btn btn-sm" @click="newsImportOpen=false">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>原站文章链接 <span class="hint">（gattefosse.com / gattefossechina.cn 文章详情页地址）</span></label>
+            <input type="text" class="form-control" v-model="newsImport.url" placeholder="英文站 .../news/xxx 或中文站 ...-news-detail.html?id=293" @keyup.enter="importNewsFromSite()">
+          </div>
+          <div class="form-group">
+            <label>保存分类</label>
+            <select class="form-control" v-model="newsImport.category" style="width:140px;">
+              <option value="corporate">企业新闻</option>
+              <option value="pc">个人护理</option>
+              <option value="pharma">药用辅料</option>
+            </select>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);background:#fafbfc;border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;">
+            导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
+            英文站（gattefosse.com）导入后为英文稿；中文站（gattefossechina.cn）直接取中文内容，并自动识别新闻/活动类型与分类（面板所选分类仅作兜底）。
+          </div>
+          <div v-if="newsImportMsg" style="font-size:12px;margin-top:8px;" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ newsImportMsg }}</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" @click="newsImportOpen=false">取消</button>
+          <button class="btn btn-primary" :disabled="newsImporting || !newsImport.url" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : '开始导入' }}</button>
+        </div>
+      </div>
+    </div>
 
     <!-- 确认弹框 -->
     <div class="modal-overlay" :class="{'is-open': confirmDialog.show}" @click.self="confirmDialog.show=false" data-page-node-id="SDvC7M1IUUfMBY4hkiNpvx">
@@ -6263,6 +6276,10 @@ createApp({
         this.newsList = data.list; this.newsPagination = data.pagination;
         this.selectedNewsIds = [];
       } catch (e) { console.error(e); }
+    },
+    resetNewsFilter() {
+      this.newsFilter = { page: 1, limit: 20, keyword: '', type: 'news,event', category: '', isPublished: '' };
+      this.loadNewsList();
     },
     // ============ 全选 & 批量删除 - 新闻/活动 ============
     toggleSelectAllNews() {

@@ -133,7 +133,7 @@
           </div>
         </div>
         <div class="page-top__image  page-top__image--full"
-          style="background-image: url(/static/images/carriere_0.jpg.jpg)"></div>
+          :style="data.formData && data.formData.imageUrl ? { backgroundImage: 'url(' + data.formData.imageUrl + ')' } : { backgroundImage: 'url(/sites/default/files/styles/page_banner_desktop_full/public/2023-06/about-us.jpg.jpg)' }"></div>
       </div>
       <div class="region region-content">
         <div id="block-gattefosse-content" data-block-plugin-id="system_main_block"
@@ -203,7 +203,7 @@
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '', summary: '', content: '' },
+        formData: { title: '', summary: '', content: '', imageUrl: '' },
         related: []
       });
 
@@ -217,7 +217,8 @@
           data.formData = {
             title: item.title || '',
             summary: item.summary || '',
-            content: item.contentHtml || item.content || ''
+            content: item.contentHtml || item.content || '',
+            imageUrl: item.imageUrl || ''
           };
         } catch (err) {
           console.error('News detail load failed:', err);

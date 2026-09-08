@@ -560,6 +560,7 @@
                                 }
 
                                 self.article = Object.assign({}, item, {
+                                    topBackground: item.topBackground || item.imageUrl || '',
                                     tagsList: tagsList,
                                     displayDate: displayDate,
                                     summaryLabel: summaryLabel,
