@@ -63,7 +63,8 @@ app.use('/admin', (req, res, next) => {
   next();
 }, express.static(path.resolve(__dirname, '../../admin')));
 
-// 前端网站静态文件（CSS/JS/图片缓存1天，HTML缓存1小时）
+// 前端网站静态文件（CSS/JS/图片缓存1天；HTML 一律不缓存——页面是动态内容入口，
+// 必须每次取最新，否则部署后用户最长 1 小时内会看到旧页面/旧 api.js 引用）
 // 前台页面访问埋点（仅统计 HTML 页面 GET，排除 api/admin/uploads/静态资源）
 app.use(pageViewTracker);
 app.use((req, res, next) => {
@@ -74,7 +75,9 @@ app.use((req, res, next) => {
   if (['css', 'js', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot'].includes(ext)) {
     res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
   } else if (url.endsWith('.html') || url === '/' || !url.includes('.')) {
-    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
   }
   next();
 }, express.static(path.resolve(__dirname, '../../site')));
