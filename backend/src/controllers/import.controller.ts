@@ -337,6 +337,43 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const authorName = authorNameM ? stripTags(authorNameM[1]) : null;
   const authorPosteM = /s-article__author-poste[^>]*>([\s\S]*?)</.exec(articleDiv);
   const authorPoste = authorPosteM ? stripTags(authorPosteM[1]) : null;
+  // 作者头像（s-article__author-img）
+  const authorImgM = /s-article__author-img[^>]*src="([^"]+)"/.exec(articleDiv);
+  const authorImgRaw = authorImgM ? authorImgM[1].split('?')[0].trim() : null;
+  // 主题标签（头部 s-article__data 内第一个 o-tag-list）
+  const articleTags: string[] = [];
+  const tagListM = /o-tag-list[^>]*>([\s\S]*?)<\/ul>/.exec(articleDiv);
+  if (tagListM) {
+    const liRe = /<li[^>]*>([\s\S]*?)<\/li>/g;
+    let liM: RegExpExecArray | null;
+    while ((liM = liRe.exec(tagListM[1]))) {
+      const t = stripTags(liM[1]).trim();
+      if (t) articleTags.push(t);
+    }
+  }
+
+  // 文章子类型：原站分类标题映射到前台子类型词表（Trends→灵感和趋势 等）
+  let articleTypeZh: string | null = null;
+  if (finalType === 'article' && categoryTitle) {
+    const cat = categoryTitle.toLowerCase();
+    if (/trend|inspir/.test(cat)) articleTypeZh = '灵感和趋势';
+    else if (/application/i.test(cat)) articleTypeZh = '应用领域';
+    else if (/expertise|science|knowledge/i.test(cat)) articleTypeZh = '专业知识';
+    else if (/texture|formul/i.test(cat)) articleTypeZh = '质地与配方';
+    else articleTypeZh = '其他';
+  }
+
+  // 原站主题标签 EN→CN 映射（未命中保留英文）
+  const TAG_ZH: Record<string, string> = {
+    'actives': '活性成分', 'aging': '抗老化', 'skin biology': '皮肤生物学', 'inspiration': '灵感',
+    'formulation': '配方', 'efficacy': '功效', 'sensory': '感官', 'texture': '质地', 'textures': '质地',
+    'sustainability': '可持续', 'microbiome': '微生态', 'wellness': '健康', 'sun care': '防晒',
+    'hair care': '洗护发', 'color cosmetics': '彩妆', 'emulsifiers': '乳化剂', 'soft focus': '柔焦',
+    'repair': '修护', 'soothing': '舒缓', 'moisturizing': '保湿', 'anti-pollution': '抗污染',
+    'biotech': '生物科技', 'clean beauty': '纯净美妆', 'blue beauty': '蓝色美妆', 'slower beauty': '慢美妆',
+    'skin longevity': '皮肤长寿', 'longevity': '长寿', 'resilience': '韧性', 'beauty': '美妆',
+  };
+  const tagsZh = articleTags.map(t => TAG_ZH[t.toLowerCase()] || t);
 
   // 导语（block-accroche）：位于 s-article__top-part、node__content 之外，需单独提取
   let accrocheText = '';
@@ -517,20 +554,37 @@ export async function importArticleFromSite(req: Request, res: Response) {
     if ((widthMap.get(s) || 0) >= 600) { firstLocal = imgMap.get(s) || null; break; }
   }
 
-  // 8. 作者关联：按姓名匹配 authors 表，无则自动创建（头像后台可补）
+  // 8. 作者关联：按姓名匹配 authors 表，无则自动创建；头像从原站下载补齐
   let authorId: number | null = null;
   if (authorName) {
     // 去掉学位后缀（如 "Nick DiFranco, MEM" → "Nick DiFranco"）
     const coreName = authorName.split(',')[0].trim();
+    // 下载作者头像到 /uploads/authors/
+    let authorAvatar: string | null = null;
+    if (authorImgRaw && /^https?:\/\/./.test(authorImgRaw)) {
+      const authorDir = path.resolve(__dirname, '../../uploads/authors');
+      if (!fs.existsSync(authorDir)) fs.mkdirSync(authorDir, { recursive: true });
+      const extM = /\.(jpe?g|png|webp|gif)$/i.exec(authorImgRaw.split('/').pop() || '');
+      const fname = `author_${Date.now()}_${Math.floor(Math.random() * 1000)}.${extM ? extM[1] : 'jpg'}`;
+      try {
+        await downloadFile(authorImgRaw, path.join(authorDir, fname));
+        authorAvatar = `/uploads/authors/${fname}`;
+      } catch { /* 头像下载失败不阻塞导入 */ }
+    }
     let author = await prisma.author.findFirst({
       where: { name: { equals: coreName } },
     });
     if (!author) {
       author = await prisma.author.create({
-        data: { name: coreName, title: authorPoste || null, sortOrder: 99 },
+        data: { name: coreName, title: authorPoste || null, avatar: authorAvatar, sortOrder: 99 },
       });
-    } else if (authorPoste && !author.title) {
-      author = await prisma.author.update({ where: { id: author.id }, data: { title: authorPoste } });
+    } else {
+      const patch: any = {};
+      if (authorPoste && !author.title) patch.title = authorPoste;
+      if (authorAvatar && !author.avatar) patch.avatar = authorAvatar;
+      if (Object.keys(patch).length) {
+        author = await prisma.author.update({ where: { id: author.id }, data: patch });
+      }
     }
     authorId = author.id;
   }
@@ -552,6 +606,9 @@ export async function importArticleFromSite(req: Request, res: Response) {
       isPublished: false,
       authorId,
       authorName: authorName ? (authorPoste ? `${authorName}（${authorPoste}）` : authorName) : null,
+      // 文章：自动补子类型与主题标签（保持与原站详情页一致）
+      ...(finalType === 'article' && articleTypeZh ? { articleType: articleTypeZh } : {}),
+      ...(finalType === 'article' && tagsZh.length ? { tags: JSON.stringify(tagsZh) } : {}),
     },
   });
 
