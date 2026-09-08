@@ -154,7 +154,7 @@
                  <div class="block-title" v-if="data.formData">
                     <h1 class="page-title u-title-styled">{{data.formData.title}}</h1>
                   </div>
-                  <span v-html="data.formData.content"></span>
+                  <div class="node__content" v-html="data.formData.content"></div>
                   <div class="block-accroche" v-if="data.formData && data.formData.summary">
                     <p>{{data.formData.summary}}</p>
                   </div>
