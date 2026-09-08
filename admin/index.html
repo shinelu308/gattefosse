@@ -2331,9 +2331,11 @@ const QUILL_TOOLBAR = [
                   <option value="false" data-page-node-id="ntFPugPIn65QlJCu8nX5OA">草稿</option>
                 </select>
                 <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" style="margin-left:auto;" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;">
                 <button class="btn btn-outline" @click="newsImportOpen = !newsImportOpen">⬇ 从原站导入</button>
-                <span v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedNewsIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeleteNews" :disabled="selectedNewsIds.length === 0">批量删除 ({{ selectedNewsIds.length }})</button>
+                <span v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedNewsIds.length }} 项</span>
               </div>
               <div v-if="newsImportOpen" style="border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;">
                 <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
@@ -2458,8 +2460,15 @@ const QUILL_TOOLBAR = [
                       <input type="text" class="form-control" v-model="editingNews.slug" placeholder="留空则自动生成">
                     </div>
                     <div class="form-group">
-                      <label>封面图片 URL</label>
-                      <input type="text" class="form-control" v-model="editingNews.imageUrl" placeholder="https://...">
+                      <label>封面图片 <span class="hint">（填 URL 或本地文件上传）</span></label>
+                      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <input type="text" class="form-control" v-model="editingNews.imageUrl" placeholder="https://... 或上传" style="flex:1;min-width:180px;">
+                        <input type="file" accept="image/*" @change="uploadNewsCover($event)" style="font-size:13px;">
+                        <span v-if="uploadingNewsCover" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                      </div>
+                      <div v-if="editingNews.imageUrl" style="margin-top:6px;">
+                        <img :src="editingNews.imageUrl" style="max-width:200px;max-height:100px;border-radius:4px;border:1px solid var(--border);object-fit:cover;">
+                      </div>
                     </div>
                   </div>
                   <div class="form-row">
@@ -4033,6 +4042,7 @@ createApp({
       confirmDialog: { show: false, title: '', message: '', onConfirm: null },
       alertDialog: { show: false, title: '', message: '', type: 'info' },
       uploadingImage: false,
+      uploadingNewsCover: false,
       uploadingDetailImage: false,
       uploadingBlockImage: false,
       uploadingBlockImageRight: false,
@@ -4615,6 +4625,27 @@ createApp({
         }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingDetailImage = false; event.target.value = ''; }
+    },
+    async uploadNewsCover(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingNewsCover = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingNews.imageUrl = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingNewsCover = false; event.target.value = ''; }
     },
     async uploadHeroBackgroundImage(event, bi) {
       const file = event.target.files[0];
