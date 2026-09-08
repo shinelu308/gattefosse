@@ -3869,12 +3869,14 @@ const QUILL_TOOLBAR = [
             导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
             英文站（gattefosse.com）导入后为英文稿；中文站（gattefossechina.cn）直接取中文内容，并自动识别新闻/活动类型与分类（面板所选分类仅作兜底）。
           </div>
-          <div v-if="newsImportMsg" style="font-size:12px;margin-top:8px;" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ newsImportMsg }}</div>
+          <div v-if="newsImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : (newsImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ newsImportMsg }}</div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" @click="newsImportOpen=false">取消</button>
+          <button v-if="newsImportLastId && newsImportMsg && newsImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="newsImporting" @click="openNewsImportEditor()">打开编辑</button>
+          <button v-if="newsImportLastId && newsImportMsg && newsImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="newsImporting" @click="reverifyNewsImport()">{{ newsImporting ? '校验中...' : '重新校验' }}</button>
           <button v-if="newsImportMsg && newsImportMsg.indexOf('✅')===0" class="btn btn-primary" @click="newsImportOpen=false">完成</button>
-          <button v-else class="btn btn-primary" :disabled="newsImporting || !newsImport.url" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : '开始导入' }}</button>
+          <button v-else class="btn btn-primary" :disabled="newsImporting || !newsImport.url || newsImportDoneUrl === newsImport.url.trim()" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : (newsImportDoneUrl === newsImport.url.trim() ? '已导入' : '开始导入') }}</button>
         </div>
       </div>
     </div>
@@ -4047,6 +4049,8 @@ createApp({
       newsShowAdvanced: false,
       selectedNewsIds: [],
       newsImportOpen: false,
+      newsImportLastId: null,
+      newsImportDoneUrl: null,
       newsImporting: false,
       newsImportMsg: '',
       newsImport: { url: '', category: 'corporate' },
@@ -6591,18 +6595,61 @@ createApp({
         } finally { item._translating = false; }
       });
     },
-    // 从原站导入新闻（复用热点话题导入器，存为草稿）
+    // 从原站导入新闻（复用热点话题导入器，存为草稿；校验/防重/锁定与文章导入同一套标准）
     async importNewsFromSite() {
       if (!this.newsImport.url) return;
       this.newsImporting = true;
+      this.newsImportLastId = null;
+      this.newsImportDoneUrl = null;
       this.newsImportMsg = '⏳ 正在抓取并解析原站页面，约需 10~30 秒...';
       try {
-        await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.newsImport.url, category: this.newsImport.category }) });
-        this.newsImportMsg = '✅ 导入成功，已存为草稿（类型已按原站自动识别，列表中筛选「草稿」可见），请核对内容后手动发布';
-        this.newsImport.url = '';
+        const importUrl = this.newsImport.url.trim();
+        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: importUrl, category: this.newsImport.category }) });
         this.loadNewsList();
+        const id = d && d.item && d.item.id;
+        if (id) {
+          this.newsImportLastId = id;
+          this.newsImportDoneUrl = importUrl; // 锁定该 URL，防止重复建稿
+        }
+        // 第 2 层校验清单（英文站导入才有；中文站为 JS 渲染无法比对，无此字段）
+        const v = d && d.verification;
+        if (v && v.length) {
+          const lines = v.map(x => (x.ok ? '✅ ' : '❌ ') + x.name + (x.fixed ? '（已自动修复）' : '') + (x.detail && !x.ok ? '：' + x.detail : ''));
+          const pass = v.filter(x => x.ok).length;
+          if (pass === v.length) {
+            this.newsImportMsg = '✅ 导入成功，已存为草稿\n一致性校验 ' + pass + '/' + v.length + ' 项全部通过';
+          } else {
+            this.newsImportMsg = '⚠️ 导入成功（草稿），一致性校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n') + '\n\n可点「打开编辑」处理失败项，或点「重新校验」复检。本链接已导入，不会重复建稿。';
+            this.newsImporting = false;
+            return;
+          }
+        } else {
+          this.newsImportMsg = '✅ 导入成功，已存为草稿（类型已按原站自动识别，列表中筛选「草稿」可见），请核对内容后手动发布';
+        }
+        this.newsImport.url = '';
       } catch (e) {
         this.newsImportMsg = '❌ 导入失败：' + e.message;
+      } finally { this.newsImporting = false; }
+    },
+    // 打开刚导入新闻的编辑器（校验有失败项时留在对话框处理）
+    async openNewsImportEditor() {
+      if (!this.newsImportLastId) return;
+      try { const fresh = await this.api('/news/' + this.newsImportLastId); this.editNews(fresh); this.newsImportOpen = false; } catch (e) {}
+    },
+    // 重新校验刚导入的新闻与原站一致性（第 2 层）
+    async reverifyNewsImport() {
+      if (!this.newsImportLastId) return;
+      this.newsImporting = true;
+      try {
+        const d = await this.api('/news/' + this.newsImportLastId + '/reverify', { method: 'POST' });
+        const v = d && d.verification;
+        if (v && v.length) {
+          const lines = v.map(x => (x.ok ? '✅ ' : '❌ ') + x.name + (x.fixed ? '（已自动修复）' : '') + (x.detail && !x.ok ? '：' + x.detail : ''));
+          const pass = v.filter(x => x.ok).length;
+          this.newsImportMsg = (pass === v.length ? '✅ ' : '⚠️ ') + '校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n');
+        }
+      } catch (e) {
+        this.newsImportMsg = '❌ 校验失败：' + e.message;
       } finally { this.newsImporting = false; }
     },
     // 从原站导入文章（获取灵感；分类固定 pc，类型固定 article）
