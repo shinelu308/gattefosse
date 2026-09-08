@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>了解更多 — 药用辅料内容管理</title>
 <script src="/admin/static/js/vue.global.prod.js"></script>
+<script src="/admin/static/js/admin-dialog.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <style>
@@ -170,7 +171,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   </div>
 
   <!-- ============ 编辑弹框 ============ -->
-  <div v-if="showEdit" class="modal-overlay" @click.self="showEdit=false">
+  <div v-if="showEdit" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'edit' : ''" @click="onOverlayClick($event, 'edit')">
     <div class="card modal-card">
       <div class="card-header">
         <h3 style="font-size:16px;font-weight:600;">{{ editing.id ? '编辑' : '新增' }} {{ activeMeta.label }}
@@ -331,7 +332,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   <input type="file" ref="transFile" accept=".docx" style="display:none" @change="uploadTranslation($event)">
 
   <!-- ============ 原站导入弹框 ============ -->
-  <div v-if="showImport" class="modal-overlay" @click.self="showImport=false">
+  <div v-if="showImport" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'import' : ''" @click="onOverlayClick($event, 'import')">
     <div class="card modal-card" style="width:600px;">
       <div class="card-header">
         <h3 style="font-size:16px;font-weight:600;">从原站导入文章</h3>
@@ -402,6 +403,7 @@ createApp({
       showImport: false,
       importUrl: '',
       importMsg: '',
+      overlayDown: '',
       importing: false,
       editMode: 'visual',
       contentLocked: false,
@@ -536,6 +538,15 @@ createApp({
       this.importMsg = '';
       this.showImport = true;
     },
+    // 遮罩点击关闭：仅当按下与松开都在遮罩上时才关闭，
+    // 避免在弹框内拖选文字、松开在遮罩上时被误判为点击遮罩而关闭弹框
+    onOverlayClick(e, key) {
+      const pressed = this.overlayDown === key;
+      this.overlayDown = '';
+      if (!pressed || e.target !== e.currentTarget) return;
+      if (key === 'edit') this.showEdit = false;
+      else if (key === 'import') this.showImport = false;
+    },
     // ---------- 翻译 Word 回填 ----------
     pickTranslation(item) {
       this._transItem = item;
@@ -546,7 +557,7 @@ createApp({
       const file = event.target.files[0];
       const item = this._transItem;
       if (!file || !item) return;
-      if (!confirm('确定将「' + file.name + '」回填到《' + (item.title || '该文章') + '》？\n\n要求：双语对照格式（英文段+中文段）。\n正文将被中文替换，图片与区块布局保留。')) return;
+      if (!(await AdminDialog.confirm('确定将「' + file.name + '」回填到《' + (item.title || '该文章') + '》？\n\n要求：双语对照格式（英文段+中文段）。\n正文将被中文替换，图片与区块布局保留。', { title: '翻译回填确认', confirmText: '开始回填' }))) return;
       try {
         const fd = new FormData();
         fd.append('file', file);
@@ -557,21 +568,21 @@ createApp({
         });
         const d = await res.json();
         if (d.code === 0) {
-          alert(d.message + '\n\n正在打开编辑窗口，请检查回填效果（未匹配部分保留英文，可手动补充）。');
+          AdminDialog.alert(d.message + '\n\n正在打开编辑窗口，请检查回填效果（未匹配部分保留英文，可手动补充）。', { type: 'success', title: '回填完成' });
           this.loadList();
           try {
             const fresh = await this.api('/news/' + item.id);
             if (fresh) this.openEdit(fresh);
           } catch (e) {}
-        } else { alert('回填失败：' + d.message); }
-      } catch (e) { alert('回填失败：' + e.message); }
+        } else { AdminDialog.alert('回填失败：' + d.message, { type: 'error' }); }
+      } catch (e) { AdminDialog.alert('回填失败：' + e.message, { type: 'error' }); }
       finally { event.target.value = ''; this._transItem = null; }
     },
     isImportedHtml(html) {
       return /adp-img-table|paragraph--type--|c-highlighted-text/.test(html || '');
     },
     async doImport() {
-      if (!this.importUrl) return alert('请粘贴原站文章链接');
+      if (!this.importUrl) return AdminDialog.alert('请粘贴原站文章链接', { type: 'warn' });
       this.importing = true;
       this.importMsg = '⏳ 正在抓取并解析原站页面，下载图片中...';
       try {
@@ -635,8 +646,8 @@ createApp({
       }
     },
     async saveItem() {
-      if (!this.editing.title) return alert('标题不能为空');
-      if (!this.editing.publishedDate) return alert('发布日期不能为空');
+      if (!this.editing.title) return AdminDialog.alert('标题不能为空', { type: 'warn' });
+      if (!this.editing.publishedDate) return AdminDialog.alert('发布日期不能为空', { type: 'warn' });
       // 从 Quill 读取正文（仅可视化模式；源码模式直接用 contentHtml）
       if ((this.activeTab === 'hot-topics' || this.activeTab === 'journees') && this.editMode === 'visual' && this._quill) {
         this.editing.contentHtml = this._quill.root.innerHTML;
@@ -663,7 +674,7 @@ createApp({
       };
       // 研讨会校验 videoUrl
       if (this.activeTab === 'webinar' && !payload.videoUrl) {
-        return alert('在线研讨会必须填写视频 URL');
+        return AdminDialog.alert('在线研讨会必须填写视频 URL', { type: 'warn' });
       }
       this.saving = true;
       try {
@@ -676,22 +687,22 @@ createApp({
         this.destroyQuill();
         this.loadList();
         this.countAll();
-        alert('保存成功');
-      } catch (e) { alert('保存失败: ' + e.message); }
+        AdminDialog.alert('保存成功', { type: 'success', title: '保存成功' });
+      } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
       finally { this.saving = false; }
     },
     async togglePublish(item) {
       try {
         await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) });
         item.isPublished = !item.isPublished;
-      } catch (e) { alert('操作失败: ' + e.message); }
+      } catch (e) { AdminDialog.alert('操作失败: ' + e.message, { type: 'error' }); }
     },
     async removeItem(id) {
-      if (!confirm('确定删除该内容？此操作不可恢复。')) return;
+      if (!(await AdminDialog.confirm('确定删除该内容？此操作不可恢复。', { title: '删除确认', danger: true, confirmText: '删除' }))) return;
       try {
         await this.api('/news/' + id, { method: 'DELETE' });
         this.loadList(); this.countAll();
-      } catch (e) { alert('删除失败: ' + e.message); }
+      } catch (e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
     },
     // ---------- Quill ----------
     initQuill(html) {
@@ -738,8 +749,8 @@ createApp({
         });
         const d = await res.json();
         if (d.code === 0 && d.data && d.data.url) this.editing.imageUrl = d.data.url;
-        else alert('上传失败：' + (d.message || '未知错误'));
-      } catch (e) { alert('上传失败：' + e.message); }
+        else AdminDialog.alert('上传失败：' + (d.message || '未知错误'), { type: 'error' });
+      } catch (e) { AdminDialog.alert('上传失败：' + e.message, { type: 'error' }); }
       finally { this.uploading = false; event.target.value = ''; }
     },
     async uploadTopImage(event) {
@@ -756,8 +767,8 @@ createApp({
         });
         const d = await res.json();
         if (d.code === 0 && d.data && d.data.url) this.editing.topBackground = d.data.url;
-        else alert('上传失败：' + (d.message || '未知错误'));
-      } catch (e) { alert('上传失败：' + e.message); }
+        else AdminDialog.alert('上传失败：' + (d.message || '未知错误'), { type: 'error' });
+      } catch (e) { AdminDialog.alert('上传失败：' + e.message, { type: 'error' }); }
       finally { this.uploadingTop = false; event.target.value = ''; }
     },
   },

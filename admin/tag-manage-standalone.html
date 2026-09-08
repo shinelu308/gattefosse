@@ -89,6 +89,7 @@ th { background: #f9f9f9; font-weight: 600; }
   </div>
 </div>
 
+<script src="/admin/static/js/admin-dialog.js"></script>
 <script>
 const API = parent.location.protocol + '//' + parent.location.host + '/api';
 const CATEGORY_MAP = {
@@ -188,7 +189,7 @@ async function saveTag() {
     value: document.getElementById('formValue').value,
     sortOrder: parseInt(document.getElementById('formSortOrder').value) || 0,
   };
-  if (!data.label) return alert('显示名称不能为空');
+  if (!data.label) return AdminDialog.alert('显示名称不能为空', { type: 'warn' });
   try {
     if (editingId) {
       await api('/tags/' + editingId, { method: 'PUT', body: JSON.stringify(data) });
@@ -197,13 +198,13 @@ async function saveTag() {
     }
     closeModal();
     loadTags();
-  } catch(e) { alert('保存失败: ' + e.message); }
+  } catch(e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
 }
 
 async function deleteTag(id, label) {
-  if (!confirm('确定删除标签「' + label + '」？')) return;
+  if (!(await AdminDialog.confirm('确定删除标签「' + label + '」？', { title: '删除确认', danger: true, confirmText: '删除' }))) return;
   try { await api('/tags/' + id, { method: 'DELETE' }); loadTags(); }
-  catch(e) { alert('删除失败: ' + e.message); }
+  catch(e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
 }
 
 document.getElementById('productLine').addEventListener('change', loadTags);

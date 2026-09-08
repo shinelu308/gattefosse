@@ -3844,7 +3844,7 @@ const QUILL_TOOLBAR = [
     </main>
 
     <!-- 原站导入弹框（新闻与活动） -->
-    <div class="modal-overlay" :class="{'is-open': newsImportOpen}" @click.self="newsImportOpen=false">
+    <div class="modal-overlay" :class="{'is-open': newsImportOpen}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'newsImport' : ''" @click="onOverlayClick($event, 'newsImport')">
       <div class="modal" style="width:600px;">
         <div class="modal-header">
           <h3>从原站导入新闻/活动</h3>
@@ -3878,7 +3878,7 @@ const QUILL_TOOLBAR = [
     </div>
 
     <!-- 确认弹框 -->
-    <div class="modal-overlay" :class="{'is-open': confirmDialog.show}" @click.self="confirmDialog.show=false" data-page-node-id="SDvC7M1IUUfMBY4hkiNpvx">
+    <div class="modal-overlay" :class="{'is-open': confirmDialog.show}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'confirm' : ''" @click="onOverlayClick($event, 'confirm')" data-page-node-id="SDvC7M1IUUfMBY4hkiNpvx">
       <div class="confirm-dialog" data-page-node-id="uEGZq3AmwtEa8fCxTabNrd">
         <div class="confirm-icon" data-page-node-id="z8ximDfhGZEf1aI0XawyaO">⚠</div>
         <h3 class="confirm-title" v-text="confirmDialog.title" data-page-node-id="ESj6ihndi0bSw82mQA44nW"></h3>
@@ -3891,7 +3891,7 @@ const QUILL_TOOLBAR = [
     </div>
 
     <!-- 信息提示弹框（替代浏览器 alert） -->
-    <div class="modal-overlay" :class="{'is-open': alertDialog.show}" @click.self="alertDialog.show=false" data-page-node-id="dfnCrt3z4NCzuFnum0Zpkl">
+    <div class="modal-overlay" :class="{'is-open': alertDialog.show}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'alert' : ''" @click="onOverlayClick($event, 'alert')" data-page-node-id="dfnCrt3z4NCzuFnum0Zpkl">
       <div class="confirm-dialog" data-page-node-id="tsqC323LhW4kJ90dxAoJCL">
         <div class="confirm-icon" :class="alertDialog.type" data-page-node-id="uXTMvV0bph1la6mc5rGe9L">!</div>
         <h3 class="confirm-title" v-text="alertDialog.title" data-page-node-id="eyAX39kw4tthvWInhE7zbQ"></h3>
@@ -4091,6 +4091,7 @@ createApp({
       // Common
       saving: false,
       // Confirm Dialog
+      overlayDown: '',
       confirmDialog: { show: false, title: '', message: '', onConfirm: null },
       alertDialog: { show: false, title: '', message: '', type: 'info' },
       uploadingImage: false,
@@ -4330,6 +4331,14 @@ createApp({
       }
       if (data.code !== 0) throw new Error(data.message || '请求失败');
       return data.data;
+    },
+    onOverlayClick(e, key) {
+      // 仅当按下与松开都发生在遮罩上时才关闭（避免正文拖选文字误关弹窗）
+      if (!this.overlayDown || e.target !== e.currentTarget) return;
+      this.overlayDown = '';
+      if (key === 'newsImport') this.newsImportOpen = false;
+      else if (key === 'confirm') this.confirmDialog.show = false;
+      else if (key === 'alert') this.alertDialog.show = false;
     },
     showConfirm(title, message, onConfirm) {
       this.confirmDialog = { show: true, title, message, onConfirm };

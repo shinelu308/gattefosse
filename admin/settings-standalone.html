@@ -265,6 +265,7 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   <span class="save-msg" id="saveMsg">✓ 已保存</span>
 </div>
 
+<script src="/admin/static/js/admin-dialog.js"></script>
 <script>
 const API = parent.location.protocol + '//' + parent.location.host + '/api';
 function getToken() { return localStorage.getItem('admin_token') || ''; }
@@ -413,7 +414,7 @@ async function assignDept(id, dept) {
     const s = staffList.find(x => x.id === id);
     if (s) s.department = dept || null;
     renderOrg();
-  } catch (e) { alert('分配失败: ' + e.message); refreshStaff(); }
+  } catch (e) { AdminDialog.alert('分配失败: ' + e.message, { type: 'error' }); refreshStaff(); }
 }
 function fillDeptSelect() {
   document.getElementById('sf_department').innerHTML = deptOptions('');
@@ -466,36 +467,36 @@ async function saveStaffForm() {
     if (editingStaffId) {
       await api('/admin/users/' + editingStaffId, { method: 'PUT', body: JSON.stringify({ fullName, role, department, jobFunction, phone }) });
     } else {
-      if (!fullName || !email || !password) { alert('姓名、邮箱、初始密码为必填项'); return; }
+      if (!fullName || !email || !password) { AdminDialog.alert('姓名、邮箱、初始密码为必填项', { type: 'warn' }); return; }
       await api('/admin/users', { method: 'POST', body: JSON.stringify({ fullName, email, password, role, department, jobFunction, phone }) });
     }
     hideStaffForm();
     await refreshStaff();
-  } catch (e) { alert('保存失败: ' + e.message); }
+  } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
   finally { btn.disabled = false; }
 }
 async function resetStaffPwd() {
   if (!editingStaffId) return;
-  const pwd = prompt('为该员工设置新密码（至少 6 位）：');
+  const pwd = await AdminDialog.prompt('为该员工设置新密码（至少 6 位）：', { title: '重置密码', placeholder: '至少 6 位' });
   if (pwd === null) return;
-  if (pwd.length < 6) { alert('密码至少 6 位'); return; }
+  if (pwd.length < 6) { AdminDialog.alert('密码至少 6 位', { type: 'warn' }); return; }
   try {
     await api('/admin/users/' + editingStaffId + '/password', { method: 'PUT', body: JSON.stringify({ password: pwd }) });
-    alert('✓ 密码已重置');
-  } catch (e) { alert('重置失败: ' + e.message); }
+    AdminDialog.alert('密码已重置', { type: 'success', title: '重置成功' });
+  } catch (e) { AdminDialog.alert('重置失败: ' + e.message, { type: 'error' }); }
 }
 async function toggleStaffStatus(id, status) {
   try {
     await api('/admin/users/' + id + '/status', { method: 'PUT', body: JSON.stringify({ status }) });
     await refreshStaff();
-  } catch (e) { alert('操作失败: ' + e.message); }
+  } catch (e) { AdminDialog.alert('操作失败: ' + e.message, { type: 'error' }); }
 }
 async function delStaff(id, name) {
-  if (!confirm('确定删除员工「' + name + '」？此操作不可恢复。')) return;
+  if (!(await AdminDialog.confirm('确定删除员工「' + name + '」？此操作不可恢复。', { title: '删除确认', danger: true, confirmText: '删除' }))) return;
   try {
     await api('/admin/users/' + id, { method: 'DELETE' });
     await refreshStaff();
-  } catch (e) { alert('删除失败: ' + e.message); }
+  } catch (e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
 }
 
 /* ===== Tab3 权限矩阵 ===== */
@@ -534,7 +535,7 @@ async function saveAll() {
     await api('/settings/batch', { method: 'POST', body: JSON.stringify(settings) });
     msg.style.display = 'inline';
     setTimeout(() => { msg.style.display = 'none'; }, 2500);
-  } catch (e) { alert('保存失败: ' + e.message); }
+  } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
   finally { btn.disabled = false; }
 }
 

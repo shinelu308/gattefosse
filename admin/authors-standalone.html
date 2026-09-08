@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>作者管理</title>
 <script src="/admin/static/js/vue.global.prod.js"></script>
+<script src="/admin/static/js/admin-dialog.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 100%; }
@@ -199,7 +200,7 @@ createApp({
       this.total = d.pagination?.total || 0;
     },
     async saveAuthor() {
-      if (!this.editItem.name) return alert('姓名不能为空');
+      if (!this.editItem.name) return AdminDialog.alert('姓名不能为空', { type: 'warn' });
       this.saving = true;
       try {
         if (this.editItem.id) {
@@ -209,7 +210,7 @@ createApp({
         }
         this.showEdit = false;
         this.loadAuthors();
-      } catch(e) { alert('保存失败: ' + e.message); }
+      } catch(e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
       finally { this.saving = false; }
     },
     editAuthor(item) {
@@ -219,8 +220,8 @@ createApp({
     async uploadAvatar(event) {
       const file = event.target.files[0];
       if (!file) return;
-      if (!/^image\//.test(file.type)) { alert('请选择图片文件'); event.target.value = ''; return; }
-      if (file.size > 5 * 1024 * 1024) { alert('图片不能超过 5MB'); event.target.value = ''; return; }
+      if (!/^image\//.test(file.type)) { AdminDialog.alert('请选择图片文件', { type: 'warn' }); event.target.value = ''; return; }
+      if (file.size > 5 * 1024 * 1024) { AdminDialog.alert('图片不能超过 5MB', { type: 'warn' }); event.target.value = ''; return; }
       this.uploadingAvatar = true;
       try {
         const formData = new FormData();
@@ -235,9 +236,9 @@ createApp({
         if (data.code === 0 && data.data && data.data.url) {
           this.editItem.avatar = data.data.url;
         } else {
-          alert('上传失败：' + (data.message || '未知错误'));
+          AdminDialog.alert('上传失败：' + (data.message || '未知错误'), { type: 'error' });
         }
-      } catch (e) { alert('上传失败：' + e.message); }
+      } catch (e) { AdminDialog.alert('上传失败：' + e.message, { type: 'error' }); }
       finally { this.uploadingAvatar = false; event.target.value = ''; }
     },
     addNew() {
@@ -245,11 +246,11 @@ createApp({
       this.showEdit = true;
     },
     async deleteAuthor(id) {
-      if (!confirm('确定删除?')) return;
+      if (!(await AdminDialog.confirm('确定删除该作者？此操作不可恢复。', { title: '删除确认', danger: true, confirmText: '删除' }))) return;
       try {
         await this.api('/authors/' + id, { method: 'DELETE' });
         this.loadAuthors();
-      } catch(e) { alert('删除失败: ' + e.message); }
+      } catch(e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
     },
   },
 }).mount('#app');
