@@ -86,6 +86,7 @@
       $("#worldList").load("/world.html");
     });
   </script>
+<style>[v-cloak]{display:none!important}</style>
 </head>
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
   <nav role="navigation" aria-label="Accès rapide au contenu">
@@ -99,7 +100,7 @@
     <div class="region region-highlight">
       <div data-drupal-messages-fallback class="hidden"></div>
     </div>
-    <main role="main" class="s-page--inner main  " data-bs-spy="scroll" id="app"><!-- theme-pharma | theme-cosm -->
+    <main role="main" class="s-page--inner main  " data-bs-spy="scroll" id="app" v-cloak><!-- theme-pharma | theme-cosm -->
       <nav role="navigation" class="quick-access">
         <button class="quick-access__button quick-access__button--open js-open">
           <i class="o-icon --list" aria-hidden="true"></i>
