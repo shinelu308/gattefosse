@@ -305,6 +305,16 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const authorPosteM = /s-article__author-poste[^>]*>([\s\S]*?)</.exec(articleDiv);
   const authorPoste = authorPosteM ? stripTags(authorPosteM[1]) : null;
 
+  // 导语（block-accroche）：位于 s-article__top-part、node__content 之外，需单独提取
+  let accrocheText = '';
+  const accrocheStart = articleDiv.indexOf('block-accroche');
+  if (accrocheStart >= 0) {
+    // 回退到该 class 所在 div 的开标签
+    const divOpen = articleDiv.lastIndexOf('<div', accrocheStart);
+    const accrocheDiv = divOpen >= 0 ? extractBalancedDiv(articleDiv, divOpen) : null;
+    if (accrocheDiv) accrocheText = stripTags(accrocheDiv).trim();
+  }
+
   // 3. 正文容器
   const contentStart = articleDiv.indexOf('<div class="node__content">');
   if (contentStart < 0) return res.status(400).json(fail('未找到正文容器（node__content）'));
@@ -411,14 +421,16 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const contentHtml = blocks.join('\n');
   if (!contentHtml) return res.status(400).json(fail('正文解析结果为空，请检查链接是否为文章详情页'));
 
-  // 6. 摘要：第一段有效文本（跳过导航跳转框、表格、纯标题）
-  let summary = '';
-  for (const b of blocks) {
-    const t = stripTags(b);
-    if (t.length < 60) continue;
-    if (/jump to a section/i.test(t)) continue;
-    summary = t.slice(0, 160) + (t.length > 160 ? '…' : '');
-    break;
+  // 6. 摘要：优先使用原站导语（block-accroche）；无导语时退回第一段有效文本
+  let summary = accrocheText.slice(0, 500);
+  if (!summary) {
+    for (const b of blocks) {
+      const t = stripTags(b);
+      if (t.length < 60) continue;
+      if (/jump to a section/i.test(t)) continue;
+      summary = t.slice(0, 160) + (t.length > 160 ? '…' : '');
+      break;
+    }
   }
 
   // 7. 封面图：第一张本地化的正文图
