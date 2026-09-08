@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
-import { getAiConfig, translateText, translateHtml, chunkHtml } from '../utils/ai-translate';
+import { getAiConfig, translateText, translateHtml, chunkHtml, mapPool } from '../utils/ai-translate';
 
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -482,40 +482,93 @@ export async function incrementNewsViews(req: Request, res: Response) {
 }
 
 /**
- * AI 自动翻译（英→中）
- * POST /api/news/:id/ai-translate
- * 翻译 title / summary / contentHtml，保留 HTML 标签结构，图片与版式不动
+ * AI 自动翻译（英→中）— 后台任务模式
+ * POST /api/news/:id/ai-translate 立即返回 jobId，翻译在后台执行
+ * GET /api/news/ai-translate/status/:jobId 轮询进度（须注册在 /:id 之前）
  */
-export async function aiTranslateNews(req: Request, res: Response) {
+interface TranslateJob {
+  id: string;
+  newsId: number;
+  status: 'running' | 'done' | 'error';
+  stage: string;      // 当前阶段描述
+  done: number;       // 已完成分块/条目
+  total: number;      // 总分块/条目
+  startedAt: number;
+  finishedAt?: number;
+  result?: any;
+  error?: string;
+}
+const translateJobs = new Map<string, TranslateJob>();
+// 任务最多保留 30 分钟，防止内存累积
+setInterval(() => {
+  const cutoff = Date.now() - 30 * 60 * 1000;
+  for (const [id, j] of translateJobs) {
+    if (j.finishedAt && j.finishedAt < cutoff) translateJobs.delete(id);
+  }
+}, 5 * 60 * 1000).unref();
+
+async function runTranslateJob(job: TranslateJob, itemId: number): Promise<void> {
   try {
-    const id = parseInt(req.params.id);
-    const item = await prisma.newsEvent.findUnique({ where: { id }, include: { blocks: true } });
-    if (!item) return res.status(404).json(fail('该内容不存在'));
-
+    const item = await prisma.newsEvent.findUnique({ where: { id: itemId }, include: { blocks: true } });
+    if (!item) throw new Error('该内容不存在');
     const cfg = await getAiConfig();
-    if (!cfg) {
-      return res.json(fail('尚未配置 AI 翻译：请到「系统设置 → AI 翻译配置」选择服务商并填写 API Key，保存后即可使用'));
-    }
+    if (!cfg) throw new Error('尚未配置 AI 翻译：请到「系统设置 → AI 翻译配置」选择服务商并填写 API Key，保存后即可使用');
 
-    const started = Date.now();
-    // 1. 标题
-    const titleZh = item.title ? await translateText(item.title) : '';
-    // 2. 摘要
-    const summaryZh = item.summary ? await translateText(item.summary) : '';
-    // 3. 正文 HTML（长文自动分块）
+    // 1. 标题 + 摘要（并行）
+    job.stage = '翻译标题与摘要';
+    const [titleZh, summaryZh] = await Promise.all([
+      item.title ? translateText(item.title, cfg) : Promise.resolve(''),
+      item.summary ? translateText(item.summary, cfg) : Promise.resolve(''),
+    ]);
+
+    // 2. 正文 HTML（长文分块并行，进度实时回写）
     let contentZh = '';
     let chunks = 0;
     if (item.contentHtml) {
-      contentZh = await translateHtml(item.contentHtml);
       chunks = chunkHtml(item.contentHtml).length;
+      job.total = chunks;
+      job.stage = '翻译正文';
+      contentZh = await translateHtml(item.contentHtml, cfg, (done, total) => {
+        job.done = done;
+        job.total = total;
+      });
     }
 
-    if (!titleZh && !summaryZh && !contentZh) {
-      return res.json(fail('该内容没有可翻译的文字'));
+    if (!titleZh && !summaryZh && !contentZh) throw new Error('该内容没有可翻译的文字');
+
+    // 3. 相关内容卡片区块：收集全部待翻译文本后并行翻译
+    job.stage = '翻译相关卡片';
+    interface CardRef { block: any; card: any; field: 'description' | 'typeLabel'; text: string; }
+    const refs: CardRef[] = [];
+    for (const b of item.blocks) {
+      if (b.blockType !== 'product_cards') continue;
+      let parsed: any;
+      try { parsed = JSON.parse(b.content); } catch { continue; }
+      if (!parsed || !Array.isArray(parsed.products)) continue;
+      for (const card of parsed.products) {
+        if (card.description && !/[\u4e00-\u9fff]/.test(card.description)) refs.push({ block: b, card, field: 'description', text: card.description });
+        if (card.typeLabel && !/[\u4e00-\u9fff]/.test(card.typeLabel)) refs.push({ block: b, card, field: 'typeLabel', text: card.typeLabel });
+      }
+    }
+    job.total = chunks + refs.length;
+    job.done = chunks;
+    await mapPool(refs, 3, async (ref) => {
+      ref.card[ref.field] = await translateText(ref.text, cfg);
+      job.done++;
+    });
+    const blockIds = new Set(refs.map(r => r.block.id));
+    let blocksTranslated = 0;
+    for (const b of item.blocks) {
+      if (b.blockType !== 'product_cards' || !blockIds.has(b.id)) continue;
+      const parsed = JSON.parse(b.content);
+      await prisma.articleBlock.update({ where: { id: b.id }, data: { content: JSON.stringify(parsed) } });
+      blocksTranslated++;
     }
 
+    // 4. 回写主表
+    job.stage = '保存译文';
     await prisma.newsEvent.update({
-      where: { id },
+      where: { id: itemId },
       data: {
         title: titleZh || item.title,
         summary: summaryZh || item.summary,
@@ -523,32 +576,10 @@ export async function aiTranslateNews(req: Request, res: Response) {
       },
     });
 
-    // 4. 相关内容卡片区块（ArticleBlock product_cards）：只翻译卡片描述与类型标签，产品名/编码保留英文
-    let blocksTranslated = 0;
-    for (const b of item.blocks) {
-      if (b.blockType !== 'product_cards') continue;
-      let parsed: any;
-      try { parsed = JSON.parse(b.content); } catch { continue; }
-      if (!parsed || !Array.isArray(parsed.products)) continue;
-      let changed = false;
-      for (const card of parsed.products) {
-        if (card.description && !/[\u4e00-\u9fff]/.test(card.description)) {
-          card.description = await translateText(card.description);
-          changed = true;
-        }
-        if (card.typeLabel && !/[\u4e00-\u9fff]/.test(card.typeLabel)) {
-          card.typeLabel = await translateText(card.typeLabel);
-          changed = true;
-        }
-      }
-      if (changed) {
-        await prisma.articleBlock.update({ where: { id: b.id }, data: { content: JSON.stringify(parsed) } });
-        blocksTranslated++;
-      }
-    }
-
-    return res.json(success({
-      id,
+    job.status = 'done';
+    job.finishedAt = Date.now();
+    job.result = {
+      id: itemId,
       titleTranslated: !!titleZh,
       summaryTranslated: !!summaryZh,
       contentTranslated: !!contentZh,
@@ -556,13 +587,47 @@ export async function aiTranslateNews(req: Request, res: Response) {
       blocksTranslated,
       provider: cfg.provider,
       model: cfg.model,
-      elapsedMs: Date.now() - started,
-    }, '翻译完成'));
-  } catch (error: any) {
-    if (error?.message === 'AI_NOT_CONFIGURED') {
-      return res.json(fail('尚未配置 AI 翻译：请到「系统设置 → AI 翻译配置」选择服务商并填写 API Key'));
-    }
-    console.error('AI 翻译失败:', error);
-    return res.status(500).json(fail('AI 翻译失败：' + (error?.message || '未知错误')));
+      elapsedMs: Date.now() - job.startedAt,
+    };
+  } catch (e: any) {
+    job.status = 'error';
+    job.finishedAt = Date.now();
+    job.error = e?.message === 'AI_NOT_CONFIGURED'
+      ? '尚未配置 AI 翻译：请到「系统设置 → AI 翻译配置」选择服务商并填写 API Key'
+      : (e?.message || '未知错误');
   }
+}
+
+/** 启动翻译任务：立即返回 jobId */
+export async function aiTranslateNews(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    const exists = await prisma.newsEvent.findUnique({ where: { id }, select: { id: true } });
+    if (!exists) return res.status(404).json(fail('该内容不存在'));
+
+    const jobId = 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    const job: TranslateJob = { id: jobId, newsId: id, status: 'running', stage: '准备中', done: 0, total: 0, startedAt: Date.now() };
+    translateJobs.set(jobId, job);
+    // 后台执行，不等待
+    runTranslateJob(job, id).catch(() => {});
+    return res.json(success({ jobId }, '翻译任务已启动'));
+  } catch (error: any) {
+    console.error('AI 翻译任务启动失败:', error);
+    return res.status(500).json(fail('AI 翻译任务启动失败：' + (error?.message || '未知错误')));
+  }
+}
+
+/** 查询翻译任务进度 */
+export function aiTranslateStatus(req: Request, res: Response) {
+  const job = translateJobs.get(String(req.params.jobId));
+  if (!job) return res.status(404).json(fail('任务不存在或服务已重启，请重新发起翻译'));
+  return res.json(success({
+    status: job.status,
+    stage: job.stage,
+    done: job.done,
+    total: job.total,
+    elapsedMs: (job.finishedAt || Date.now()) - job.startedAt,
+    result: job.status === 'done' ? job.result : undefined,
+    error: job.status === 'error' ? job.error : undefined,
+  }));
 }

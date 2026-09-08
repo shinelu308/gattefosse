@@ -171,6 +171,32 @@
         cancelText: '取消',
         confirmText: o.confirmText || '确认'
       });
+    },
+    /** 进度面板（长任务轮询用）：const p = AdminDialog.progress('标题'); p.update('文字'); p.close(); */
+    progress: function (title) {
+      ensure();
+      var el = document.createElement('div');
+      el.className = 'adlg-overlay is-open';
+      el.innerHTML =
+        '<div class="adlg-box" style="width:360px;text-align:center;">' +
+          '<div class="adlg-spinner"></div>' +
+          '<h3 class="adlg-title" style="margin-bottom:6px;"></h3>' +
+          '<p class="adlg-msg" style="margin:0;" ></p>' +
+        '</div>';
+      el.querySelector('.adlg-title').textContent = title || '处理中…';
+      var msgEl = el.querySelector('.adlg-msg');
+      document.body.appendChild(el);
+      return {
+        update: function (msg) { if (msgEl) msgEl.textContent = msg || ''; },
+        close: function () { if (el && el.parentNode) el.parentNode.removeChild(el); el = null; msgEl = null; }
+      };
     }
   };
+
+  // 进度圈样式（与弹框同套注入）
+  var progStyle = document.createElement('style');
+  progStyle.textContent =
+    '.adlg-spinner{width:36px;height:36px;border:4px solid #e8efda;border-top-color:#8EB73C;border-radius:50%;' +
+    'margin:0 auto 14px;animation:adlgSpin .8s linear infinite;}@keyframes adlgSpin{to{transform:rotate(360deg);}}';
+  document.head.appendChild(progStyle);
 })();

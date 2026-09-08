@@ -41,7 +41,7 @@ export async function getAiConfig(): Promise<AiConfig | null> {
 
 async function chatCall(cfg: AiConfig, messages: Array<{ role: string; content: string }>, maxTokens = 4000): Promise<string> {
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 300000); // 5 分钟超时（长文分块逐段翻译）
+  const timer = setTimeout(() => ctrl.abort(), 300000); // 5 分钟单次调用超时
   try {
     const res = await fetch(cfg.baseUrl.replace(/\/$/, '') + '/chat/completions', {
       method: 'POST',
@@ -60,6 +60,20 @@ async function chatCall(cfg: AiConfig, messages: Array<{ role: string; content: 
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** 简单并发池：按 n 个并发对数组逐项执行异步任务 */
+export async function mapPool<T, R>(arr: T[], n: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(arr.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(n, arr.length) }, async () => {
+    while (cursor < arr.length) {
+      const i = cursor++;
+      results[i] = await fn(arr[i], i);
+    }
+  });
+  await Promise.all(workers);
+  return results;
 }
 
 const SYSTEM_PROMPT = `你是一个专业的英译中翻译引擎，服务对象是特殊化学品公司（皮肤美容、个人护理、制药辅料领域）的官网内容。
@@ -100,31 +114,33 @@ export function chunkHtml(html: string, maxLen = 3500): string[] {
 }
 
 /** 翻译纯文本（标题/摘要） */
-export async function translateText(text: string): Promise<string> {
-  const cfg = await getAiConfig();
-  if (!cfg) throw new Error('AI_NOT_CONFIGURED');
-  const out = await chatCall(cfg, [
+export async function translateText(text: string, cfg?: AiConfig): Promise<string> {
+  const c = cfg || (await getAiConfig());
+  if (!c) throw new Error('AI_NOT_CONFIGURED');
+  const out = await chatCall(c, [
     { role: 'system', content: SYSTEM_PROMPT },
     { role: 'user', content: `翻译为简体中文：\n\n${text}` },
   ], 2000);
   return out.trim();
 }
 
-/** 翻译 HTML（保留全部标签结构，长文自动分块） */
-export async function translateHtml(html: string, onProgress?: (done: number, total: number) => void): Promise<string> {
-  const cfg = await getAiConfig();
-  if (!cfg) throw new Error('AI_NOT_CONFIGURED');
+/** 翻译 HTML（保留全部标签结构，长文自动分块，支持进度回调） */
+export async function translateHtml(html: string, cfg?: AiConfig, onProgress?: (done: number, total: number) => void): Promise<string> {
+  const c = cfg || (await getAiConfig());
+  if (!c) throw new Error('AI_NOT_CONFIGURED');
   const chunks = chunkHtml(html);
-  const out: string[] = [];
-  for (let i = 0; i < chunks.length; i++) {
-    const res = await chatCall(cfg, [
+  let done = 0;
+  // 并发 3 路翻译分块（过大易触发限流，3 为稳妥值）
+  const out = await mapPool(chunks, 3, async (chunk) => {
+    const res = await chatCall(c, [
       { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: `以下是需要翻译的 HTML 片段（第 ${i + 1}/${chunks.length} 段），保留所有标签结构，只翻译文本：\n\n${chunks[i]}` },
+      { role: 'user', content: `以下是需要翻译的 HTML 片段，保留所有标签结构，只翻译文本：\n\n${chunk}` },
     ]);
+    done++;
+    if (onProgress) onProgress(done, chunks.length);
     // 去掉模型偶尔包裹的 ```html 代码块围栏
-    out.push(res.trim().replace(/^```(?:html)?\s*\n?/, '').replace(/\n?```\s*$/, ''));
-    if (onProgress) onProgress(i + 1, chunks.length);
-  }
+    return res.trim().replace(/^```(?:html)?\s*\n?/, '').replace(/\n?```\s*$/, '');
+  });
   return out.join('');
 }
 
