@@ -74,6 +74,14 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 .modal-card { width: 760px; max-width: 100%; max-height: 92vh; overflow-y:auto; margin:0; }
 .modal-card .card-header { background:#fafbfc; position:sticky; top:0; z-index:2; }
 .modal-card .card-body { padding: 22px 24px; }
+/* 标准导入弹框（样式对齐 admin/index.html 基准 modal） */
+.modal { background:#fff; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.15); width:100%; max-height:90vh; overflow-y:auto; }
+.modal-header { padding:16px 20px; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; justify-content:space-between; }
+.modal-header h3 { font-size:15px; font-weight:500; color:#333; margin:0; }
+.modal-body { padding:20px; }
+.modal-footer { padding:12px 20px; border-top:1px solid #f0f0f0; display:flex; justify-content:flex-end; gap:8px; }
+.modal .form-group label { font-weight:600; color:#333; }
+.modal .form-group .hint { font-size:12px; color:#949494; font-weight:400; margin-left:4px; }
 .preview-img { margin-top:6px; max-width:180px; max-height:100px; border-radius:4px; border:1px solid #eee; object-fit:cover; display:block; }
 .quill-wrap { border:1px solid #ddd; border-radius:5px; }
 .quill-editor .ql-editor { min-height:220px; }
@@ -354,31 +362,30 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   <!-- 隐藏的翻译 Word 文件选择框（必须在 v-if 之外，否则弹窗关闭时 ref 不存在） -->
   <input type="file" ref="transFile" accept=".docx" style="display:none" @change="uploadTranslation($event)">
 
-  <!-- ============ 原站导入弹框 ============ -->
+  <!-- ============ 原站导入弹框（样式对齐 admin/index.html 基准） ============ -->
   <div v-if="showImport" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'import' : ''" @click="onOverlayClick($event, 'import')">
-    <div class="card modal-card" style="width:600px;">
-      <div class="card-header">
-        <h3 style="font-size:16px;font-weight:600;">从原站导入文章</h3>
-        <span style="flex:1;"></span>
+    <div class="modal" style="width:600px;">
+      <div class="modal-header">
+        <h3>从原站导入文章</h3>
         <button class="btn btn-sm" @click="showImport=false">✕</button>
       </div>
-      <div class="card-body">
+      <div class="modal-body">
         <div class="form-group">
-          <label>原站文章链接 <span class="required">*</span></label>
-          <input class="form-control" v-model="importUrl" placeholder="https://www.gattefosse.com/pharmaceuticals/learn-more/..." @keyup.enter="doImport()">
+          <label>原站文章链接 <span class="hint">（热点话题 / 了解更多文章详情页地址）</span></label>
+          <input type="text" class="form-control" v-model="importUrl" placeholder="https://www.gattefosse.com/pharmaceuticals/learn-more/xxx" @keyup.enter="doImport()">
         </div>
-        <div style="font-size:12px;color:#888;background:#fafbfc;border:1px solid #eee;border-radius:6px;padding:10px 12px;line-height:1.8;">
-          系统将自动完成：抓取正文与标题 → 下载全部图片到本站 → 转换原站区块（重点框/图片横排/CTA）→ 保存为<b>草稿</b>。<br>
-          导入后正文为英文，请在编辑时借助 AI 助手完成中文翻译，再发布。
+        <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
+          导入后保存为<strong>草稿</strong>（分类固定为热点话题），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
+          支持英文站（gattefosse.com）与中文站链接；导入内容含原站脱版标记，会自动以 HTML 源码模式打开编辑。
         </div>
-        <div v-if="importMsg" style="font-size:12px;margin-top:10px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
-          <button class="btn" @click="showImport=false">{{ importMsg && importMsg.indexOf('✅')===0 ? '关闭' : '取消' }}</button>
-          <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn" :disabled="importing" @click="openImportEditor()">打开编辑</button>
-          <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn" :disabled="importing" @click="reverifyImport()">{{ importing ? '校验中...' : '重新校验' }}</button>
-          <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
-          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()">{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
-        </div>
+        <div v-if="importMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" @click="showImport=false">{{ importMsg && importMsg.indexOf('✅')===0 ? '关闭' : '取消' }}</button>
+        <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="openImportEditor()">打开编辑</button>
+        <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="reverifyImport()">{{ importing ? '校验中...' : '重新校验' }}</button>
+        <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
+        <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()">{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
       </div>
     </div>
   </div>
