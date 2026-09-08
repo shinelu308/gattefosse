@@ -2335,7 +2335,7 @@ const QUILL_TOOLBAR = [
                 <span style="flex:1;"></span>
                 <span style="font-size:13px;color:var(--text-muted);">共 {{ newsPagination.total }} 条</span>
                 <button v-if="selectedNewsIds.length > 0" class="btn btn-sm btn-danger" @click="batchDeleteNews">批量删除 ({{ selectedNewsIds.length }})</button>
-                <button class="btn btn-slate" @click="newsImportOpen = true">⬇ 从原站导入</button>
+                <button class="btn btn-slate" @click="newsImportOpen = true; newsImportMsg = ''">⬇ 从原站导入</button>
                 <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
               </div>
               <div v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);margin-top:8px;">已选 {{ selectedNewsIds.length }} 项</div>
@@ -3835,7 +3835,8 @@ const QUILL_TOOLBAR = [
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" @click="newsImportOpen=false">取消</button>
-          <button class="btn btn-primary" :disabled="newsImporting || !newsImport.url" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : '开始导入' }}</button>
+          <button v-if="newsImportMsg && newsImportMsg.indexOf('✅')===0" class="btn btn-primary" @click="newsImportOpen=false">完成</button>
+          <button v-else class="btn btn-primary" :disabled="newsImporting || !newsImport.url" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : '开始导入' }}</button>
         </div>
       </div>
     </div>
