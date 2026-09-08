@@ -387,6 +387,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
   // 4. 图片收集与下载
   const imgMap = new Map<string, string>(); // 原始 src → 本地路径
+  const widthMap = new Map<string, number>(); // 原始 src → 标记原始宽度（用于封面优选）
 
   const allSrcs: string[] = [];
   const imgRe = /<img[^>]*\ssrc="([^"]+)"[^>]*>/g;
@@ -395,6 +396,8 @@ export async function importArticleFromSite(req: Request, res: Response) {
     // 过滤追踪像素（width/height="1" 的 1×1 监测图）
     if (/\s(?:width|height)="1"/.test(im[0])) continue;
     allSrcs.push(im[1]);
+    const wm = /\swidth="(\d{2,})"/.exec(im[0]);
+    if (wm) widthMap.set(im[1], parseInt(wm[1], 10));
   }
 
   // 并发下载（5 并发）——串行下载多图常超过反代默认 60s 超时导致 nginx 返回 504 HTML 页
@@ -503,8 +506,14 @@ export async function importArticleFromSite(req: Request, res: Response) {
     }
   }
 
-  // 7. 封面兜底：正文第一张本地化图（无 banner 时使用）
-  const firstLocal = [...imgMap.values()][0] || null;
+  // 7. 封面兜底：按正文顺序取第一张成功本地化、原始宽度≥600 的图；
+  // 无 banner 且无大图时退回第一张（并行下载完成顺序随机，不能按 imgMap 插入序取）
+  let firstLocal: string | null = null;
+  for (const s of allSrcs) {
+    if (!imgMap.has(s)) continue;
+    if (!firstLocal) firstLocal = imgMap.get(s) || null;
+    if ((widthMap.get(s) || 0) >= 600) { firstLocal = imgMap.get(s) || null; break; }
+  }
 
   // 8. 作者关联：按姓名匹配 authors 表，无则自动创建（头像后台可补）
   let authorId: number | null = null;

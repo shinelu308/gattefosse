@@ -533,7 +533,9 @@
                                 var orbImgM = /<img[^>]*\ssrc="([^"]+)"/.exec(processedContent);
 
                                 self.article = Object.assign({}, item, {
-                                    topBackground: item.topBackground || item.imageUrl || '',
+                                    // hero 仅在原站真 banner（topBackground）存在时显示；
+                                    // 无 banner 版式（部分热点话题）与原站一致：无顶部大图，正文插图自然呈现
+                                    topBackground: item.topBackground || '',
                                     tagsList: tagsList,
                                     displayDate: displayDate,
                                     summaryLabel: summaryLabel,
