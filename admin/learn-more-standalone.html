@@ -349,11 +349,13 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           系统将自动完成：抓取正文与标题 → 下载全部图片到本站 → 转换原站区块（重点框/图片横排/CTA）→ 保存为<b>草稿</b>。<br>
           导入后正文为英文，请在编辑时借助 AI 助手完成中文翻译，再发布。
         </div>
-        <div v-if="importMsg" style="font-size:12px;margin-top:10px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ importMsg }}</div>
+        <div v-if="importMsg" style="font-size:12px;margin-top:10px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
         <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
           <button class="btn" @click="showImport=false">{{ importMsg && importMsg.indexOf('✅')===0 ? '关闭' : '取消' }}</button>
+          <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn" :disabled="importing" @click="openImportEditor()">打开编辑</button>
+          <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn" :disabled="importing" @click="reverifyImport()">{{ importing ? '校验中...' : '重新校验' }}</button>
           <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
-          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl">{{ importing ? '正在抓取与下载图片...' : '开始导入' }}</button>
+          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()">{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
         </div>
       </div>
     </div>
@@ -404,6 +406,8 @@ createApp({
       showImport: false,
       importUrl: '',
       importMsg: '',
+      importLastId: null,
+      importDoneUrl: null,
       overlayDown: '',
       importing: false,
       editMode: 'visual',
@@ -622,22 +626,62 @@ createApp({
     async doImport() {
       if (!this.importUrl) return AdminDialog.alert('请粘贴原站文章链接', { type: 'warn' });
       this.importing = true;
+      this.importLastId = null;
+      this.importDoneUrl = null;
       this.importMsg = '⏳ 正在抓取并解析原站页面，下载图片中...';
       try {
-        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.importUrl.trim() }) });
+        const importUrl = this.importUrl.trim();
+        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: importUrl }) });
+        const id = d && d.item && d.item.id;
+        if (id) { this.importLastId = id; this.importDoneUrl = importUrl; } // 防重锁定
         let msg = '✅ 导入成功，已保存为草稿';
         if (d.coverSource === 'banner') msg += '\n✓ 封面与详情页大图已取自原站 banner';
+        if (d.thumbSource === 'listing-card') msg += '\n✓ 列表缩略图已取自原站列表卡片';
         if (d.typeAutoDetected && d.item && d.item.type) msg += '\n✓ 类型已按原站自动识别：' + ({ news: '新闻', event: '活动', article: '文章' }[d.item.type] || d.item.type);
         if (d.relatedCards) msg += '\n✓ 相关内容 ' + d.relatedCards + ' 张卡片已转独立区块';
         msg += '\n✓ 图片 ' + (d.imagesDownloaded || 0) + '/' + (d.imagesTotal || 0) + ' 张已本地化';
         if (d.downloadErrors && d.downloadErrors.length) msg += '\n⚠ ' + d.downloadErrors.length + ' 张图片下载失败';
         if (d.skippedBlocks && d.skippedBlocks.length) msg += '\n已跳过区块：' + d.skippedBlocks.join('、');
+        // 第 2 层校验清单：有失败项则留在对话框展示，可重新校验/打开编辑
+        const v = d && d.verification;
+        if (v && v.length) {
+          const lines = v.map(x => (x.ok ? '✅ ' : '❌ ') + x.name + (x.fixed ? '（已自动修复）' : '') + (x.detail && !x.ok ? '：' + x.detail : ''));
+          const pass = v.filter(x => x.ok).length;
+          if (pass === v.length) {
+            msg += '\n✓ 一致性校验 ' + pass + '/' + v.length + ' 项全部通过';
+          } else {
+            this.importMsg = '⚠️ 导入成功（草稿），一致性校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n') + '\n\n可点「打开编辑」处理失败项，或点「重新校验」复检。本链接已导入，不会重复建稿。';
+            this.importing = false;
+            return;
+          }
+        }
         msg += '\n请在列表中打开编辑，完成中文翻译后发布';
         this.importMsg = msg;
         this.importUrl = '';
         this.loadList(); this.countAll();
       } catch (e) {
         this.importMsg = '❌ 导入失败：' + e.message;
+      } finally { this.importing = false; }
+    },
+    // 打开刚导入文章的编辑器（校验有失败项时留在对话框处理）
+    async openImportEditor() {
+      if (!this.importLastId) return;
+      try { const fresh = await this.api('/news/' + this.importLastId); this.openEdit(fresh); this.showImport = false; } catch (e) { AdminDialog.alert('打开失败：' + e.message, { type: 'error' }); }
+    },
+    // 重新校验刚导入文章与原站一致性（第 2 层）
+    async reverifyImport() {
+      if (!this.importLastId) return;
+      this.importing = true;
+      try {
+        const d = await this.api('/news/' + this.importLastId + '/reverify', { method: 'POST' });
+        const v = d && d.verification;
+        if (v && v.length) {
+          const lines = v.map(x => (x.ok ? '✅ ' : '❌ ') + x.name + (x.fixed ? '（已自动修复）' : '') + (x.detail && !x.ok ? '：' + x.detail : ''));
+          const pass = v.filter(x => x.ok).length;
+          this.importMsg = (pass === v.length ? '✅ ' : '⚠️ ') + '校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n');
+        }
+      } catch (e) {
+        this.importMsg = '❌ 校验失败：' + e.message;
       } finally { this.importing = false; }
     },
     openEdit(item) {
