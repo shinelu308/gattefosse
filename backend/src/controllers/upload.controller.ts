@@ -31,7 +31,7 @@ export async function uploadImage(req: Request, res: Response) {
       .resize(268, 201, { fit: 'cover', position: 'centre' })
       .toFile(thumbPath);
 
-    const url = `${config.baseUrl}/uploads/images/${originalName}`;
+    const url = `/uploads/images/${originalName}`;
     return res.json(success({ url, filename: originalName, thumbnail: thumbName }, '上传成功'));
   } catch (error) {
     console.error('图片上传失败:', error);
@@ -68,7 +68,7 @@ export async function uploadImages(req: Request, res: Response) {
         .toFile(thumbPath);
 
       return {
-        url: `${config.baseUrl}/uploads/images/${originalName}`,
+        url: `/uploads/images/${originalName}`,
         filename: originalName,
         thumbnail: thumbName,
       };
@@ -90,7 +90,7 @@ export async function uploadDocument(req: Request, res: Response) {
       return res.status(400).json(fail('请选择要上传的文档'));
     }
 
-    const url = `${config.baseUrl}/uploads/documents/${req.file.filename}`;
+    const url = `/uploads/documents/${req.file.filename}`;
     return res.json(
       success({
         url,
@@ -114,7 +114,7 @@ export async function uploadVideo(req: Request, res: Response) {
       return res.status(400).json(fail('请选择要上传的视频'));
     }
 
-    const url = `${config.baseUrl}/uploads/videos/${req.file.filename}`;
+    const url = `/uploads/videos/${req.file.filename}`;
     return res.json(
       success({
         url,
