@@ -2537,7 +2537,8 @@ const QUILL_TOOLBAR = [
                 </select>
                 <button class="btn btn-primary" @click="loadArticleList()" data-page-node-id="wL3G0VOAZFxgDcjCc2Jmt3">搜索</button>
                 <button class="btn btn-outline" @click="articleFilter = { page:1, limit:20, keyword:'', articleType:'', isPublished:'' }; loadArticleList();" data-page-node-id="2ynIWezkxhhbtKZDIFrAbU">重置</button>
-                <button class="btn btn-primary" @click="currentPage='article-edit'; resetArticleEdit()" style="margin-left:auto;" data-page-node-id="qOB3KiqDvBswc6RN08Mi87">+ 新增文章</button>
+                <button class="btn btn-primary" @click="currentPage='article-edit'; resetArticleEdit()" data-page-node-id="qOB3KiqDvBswc6RN08Mi87">+ 新增文章</button>
+                <button class="btn btn-slate" @click="articleImportOpen = true; articleImportMsg = ''; articleImport.url = ''">⬇ 从原站导入</button>
                 <span v-if="selectedArticleIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedArticleIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeleteArticle" :disabled="selectedArticleIds.length === 0" data-page-node-id="iiqacKuwfrlOmKpriYY1ye">批量删除 ({{ selectedArticleIds.length }})</button>
               </div>
@@ -2561,6 +2562,7 @@ const QUILL_TOOLBAR = [
                   <td data-page-node-id="3LXbIQwfugVjmVi91bHv1p"><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'" data-page-node-id="3jTymsD7SI82LCVyyZ9GAY">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
                   <td style="color:var(--text-tertiary);font-size:12px;" data-page-node-id="90qGocG7PN8Fn3ePdnFdHR">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
                   <td class="table-actions" data-page-node-id="DiQBOq15PcmumwC9re5ky1">
+                    <button class="btn btn-outline btn-sm" v-if="isUntranslated(item)" :disabled="item._translating" @click="aiTranslateArticle(item)" title="AI 自动翻译英文为中文（保留版式与图片）">{{ item._translating ? '翻译中…' : 'AI翻译' }}</button>
                     <button class="btn btn-outline btn-sm" @click="editArticle(item)" data-page-node-id="tsPPX6BSG0M36HE7UkqBRG">编辑</button>
                     <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="toggleArticlePublish(item)" data-page-node-id="egXvapNS0nuLt1zC85rc3D">{{ item.isPublished ? '下架' : '发布' }}</button>
                     <button class="btn btn-sm btn-danger" @click="deleteArticle(item.id)" data-page-node-id="1Avfjl5y2VMJqRWR5NZWQP">删除</button>
@@ -2721,8 +2723,13 @@ const QUILL_TOOLBAR = [
           <div v-show="articleEditTab === 'content'" class="card" data-page-node-id="fpSeT53Q1GvknOXRaFIOck">
             <div class="card-header" data-page-node-id="XDr7ig3VjRdx04G9o4gj71"><h3 data-page-node-id="xp8vjrtfYsYGq2ynBenWk1">正文内容</h3></div>
             <div class="card-body" data-page-node-id="YaJqNYGtNElMAJdFCAvTdf">
-              <div :id="'article-quill-editor'" class="quill-editor" style="min-height:400px;" data-page-node-id="4ROjTL4kkyX1sKr24fpNKO"></div>
-              <textarea class="form-control" v-model="editingArticle.contentHtml" style="display:none;"></textarea>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+                <button class="btn btn-sm" :class="articleContentMode==='visual' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('visual')">可视化编辑</button>
+                <button class="btn btn-sm" :class="articleContentMode==='html' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('html')">HTML 源码</button>
+                <span v-if="articleContentLocked" style="font-size:12px;color:#B45309;">🔒 原站导入内容，已锁定源码模式（可视化编辑会破坏原站版式）</span>
+              </div>
+              <div :id="'article-quill-editor'" class="quill-editor" style="min-height:400px;" v-show="articleContentMode==='visual'" data-page-node-id="4ROjTL4kkyX1sKr24fpNKO"></div>
+              <textarea class="form-control" v-model="editingArticle.contentHtml" v-show="articleContentMode==='html'" rows="22" style="font-family:monospace;font-size:13px;white-space:pre;" spellcheck="false"></textarea>
 
               <!-- 附加区块 -->
               <div style="margin-top:32px;border-top:2px solid var(--border);padding-top:20px;" data-page-node-id="RjvgsXEmNsciGBDLTGjenS">
@@ -3878,6 +3885,31 @@ const QUILL_TOOLBAR = [
       </div>
     </div>
 
+    <!-- 原站导入弹框（获取灵感 / 文章） -->
+    <div class="modal-overlay" :class="{'is-open': articleImportOpen}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'articleImport' : ''" @click="onOverlayClick($event, 'articleImport')">
+      <div class="modal" style="width:600px;">
+        <div class="modal-header">
+          <h3>从原站导入文章</h3>
+          <button class="btn btn-sm" @click="articleImportOpen=false">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>原站文章链接 <span class="hint">（获取灵感 / 专栏文章详情页地址）</span></label>
+            <input type="text" class="form-control" v-model="articleImport.url" placeholder="https://www.gattefosse.com/inspirations/xxx" @keyup.enter="importArticleFromSite()">
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);background:#fafbfc;border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;">
+            导入后保存为<strong>草稿</strong>（分类固定为个人护理 / 获取灵感），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
+            支持英文站（gattefosse.com）与中文站链接；导入内容含原站版式标记，会自动以 HTML 源码模式打开编辑。
+          </div>
+          <div v-if="articleImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: articleImportMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ articleImportMsg }}</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" @click="articleImportOpen=false">取消</button>
+          <button class="btn btn-primary" :disabled="articleImporting || !articleImport.url" @click="importArticleFromSite()">{{ articleImporting ? '导入中...' : '开始导入' }}</button>
+        </div>
+      </div>
+    </div>
+
     <!-- 确认弹框 -->
     <div class="modal-overlay" :class="{'is-open': confirmDialog.show}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'confirm' : ''" @click="onOverlayClick($event, 'confirm')" data-page-node-id="SDvC7M1IUUfMBY4hkiNpvx">
       <div class="confirm-dialog" data-page-node-id="uEGZq3AmwtEa8fCxTabNrd">
@@ -4030,6 +4062,12 @@ createApp({
       selectedArticleIds: [],
       articleFilter: { page: 1, limit: 20, keyword: '', articleType: '', isPublished: '' },
       articlePagination: { total: 0, totalPages: 0 },
+      articleImportOpen: false,
+      articleImporting: false,
+      articleImportMsg: '',
+      articleImport: { url: '' },
+      articleContentMode: 'visual',
+      articleContentLocked: false,
       editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] },
       articleEditTab: 'basic',
       articleTagInput: '',
@@ -4338,6 +4376,7 @@ createApp({
       if (!this.overlayDown || e.target !== e.currentTarget) return;
       this.overlayDown = '';
       if (key === 'newsImport') this.newsImportOpen = false;
+      else if (key === 'articleImport') this.articleImportOpen = false;
       else if (key === 'confirm') this.confirmDialog.show = false;
       else if (key === 'alert') this.alertDialog.show = false;
     },
@@ -6542,6 +6581,42 @@ createApp({
         this.newsImportMsg = '❌ 导入失败：' + e.message;
       } finally { this.newsImporting = false; }
     },
+    // 从原站导入文章（获取灵感；分类固定 pc，类型固定 article）
+    async importArticleFromSite() {
+      if (!this.articleImport.url) return;
+      this.articleImporting = true;
+      this.articleImportMsg = '⏳ 正在抓取并解析原站页面，下载图片中...';
+      try {
+        const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.articleImport.url.trim(), category: 'pc', type: 'article' }) });
+        this.articleImportMsg = '✅ 导入成功，已保存为草稿';
+        this.articleImport.url = '';
+        this.loadArticleList();
+        const id = d && d.item && d.item.id;
+        this.articleImportOpen = false;
+        if (id) {
+          try { const fresh = await this.api('/news/' + id); this.editArticle(fresh); } catch (e) {}
+        }
+      } catch (e) {
+        this.articleImportMsg = '❌ 导入失败：' + e.message;
+      } finally { this.articleImporting = false; }
+    },
+    // 文章 AI 自动翻译（复用新闻翻译接口，完成后打开编辑核对）
+    async aiTranslateArticle(item) {
+      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文 / 相关卡片描述将替换为中文\n· HTML 版式、图片、链接完全保留\n· 长文约需 1~3 分钟，期间请勿关闭页面', async () => {
+        item._translating = true;
+        try {
+          const r = await this.api('/news/' + item.id + '/ai-translate', { method: 'POST' });
+          this.showAlert('✅ 翻译完成（' + Math.round(r.elapsedMs / 1000) + ' 秒）\n· 模型：' + r.provider + ' / ' + r.model
+            + (r.chunks ? '\n· 正文 ' + r.chunks + ' 段已翻译' : '')
+            + (r.blocksTranslated ? '\n· 相关卡片 ' + r.blocksTranslated + ' 个区块已翻译' : '')
+            + '\n\n即将打开编辑窗口，请核对译文', 'success');
+          await this.loadArticleList();
+          try { const fresh = await this.api('/news/' + item.id); this.editArticle(fresh); } catch (e) {}
+        } catch (e) {
+          this.showAlert('AI 翻译失败：' + e.message, 'error');
+        } finally { item._translating = false; }
+      });
+    },
     // 获取灵感 — 文章 CRUD
     async loadArticleList() {
       const params = new URLSearchParams({ page: this.articleFilter.page, limit: this.articleFilter.limit, type: 'article', category: 'pc' });
@@ -6619,6 +6694,7 @@ createApp({
     },
     initArticleQuill() {
       var self = this;
+      if (this.articleContentMode !== 'visual') return;
       var el = document.getElementById('article-quill-editor');
       if (!el) return;
       // 如果已存在 Quill 编辑器，直接恢复内容，不重复创建
@@ -6662,9 +6738,30 @@ createApp({
       var self = this;
       if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
       this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] };
+      this.articleContentMode = 'visual';
+      this.articleContentLocked = false;
       this.loadArticleTags();
       this.loadAuthorList();
       this.articleEditTab = 'basic';
+    },
+    // 原站导入内容含 .paragraph 等自定义区块标记，Quill 可视化会剥掉标记 → 锁定为源码模式
+    isImportedArticleHtml(html) {
+      return /adp-img-table|paragraph--type--|c-highlighted-text/.test(html || '');
+    },
+    setArticleContentMode(mode) {
+      if (mode === 'visual' && this.articleContentLocked) {
+        this.showAlert('本文含原站导入的版式标记（.paragraph 等），可视化编辑会破坏版式，已锁定为 HTML 源码模式');
+        return;
+      }
+      if (mode === 'visual') {
+        this.articleContentMode = mode;
+        this.$nextTick(this.initArticleQuill);
+      } else {
+        if (this.articleQuill && this.articleQuill.root) {
+          this.editingArticle.contentHtml = this.articleQuill.root.innerHTML;
+        }
+        this.articleContentMode = mode;
+      }
     },
     editArticle(item) {
       var self = this;
@@ -6703,6 +6800,9 @@ createApp({
         });
       }
       this.editingArticle = { ...item, tagsList, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '', blocks: blocks };
+      // 原站导入内容锁定为源码模式（Quill 可视化会剥掉 .paragraph 等标记）
+      this.articleContentLocked = this.isImportedArticleHtml(item.contentHtml);
+      this.articleContentMode = this.articleContentLocked ? 'html' : 'visual';
       this.loadArticleTags();
       this.loadAuthorList();
       this.currentPage = 'article-edit';
@@ -6712,8 +6812,8 @@ createApp({
       if (!this.editingArticle.title) { this.showAlert('标题不能为空'); return; }
       if (!this.editingArticle.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
-      // 同步 Quill 内容
-      if (this.articleQuill && this.articleQuill.root) {
+      // 同步 Quill 内容（仅可视化模式）
+      if (this.articleContentMode === 'visual' && this.articleQuill && this.articleQuill.root) {
         this.editingArticle.contentHtml = this.articleQuill.root.innerHTML;
       }
       // 构建区块数据
