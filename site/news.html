@@ -679,7 +679,8 @@
       const loadNews = async () => {
         data.loading = true;
         var params = { limit: limit, page: data.cur_page, isPublished: 'true' };
-        if (data.typeFilter) params.type = data.typeFilter;
+        // 「全部新闻与活动」只统计新闻+活动；技术文章/出版物等由各自页面展示
+        params.type = data.typeFilter || 'news,event';
         if (data.categoryFilter && data.categoryFilter.length) params.category = data.categoryFilter.join(',');
         if (data.keyword) params.keyword = data.keyword;
         if (data.subjectFilter && data.subjectFilter.length) params.tags = data.subjectFilter.join(',');

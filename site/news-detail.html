@@ -839,7 +839,7 @@
           console.error('News detail load failed:', err);
         }
         try {
-          var relRes = await GatteAPI.News.list({ limit: 3, isPublished: 'true' });
+          var relRes = await GatteAPI.News.list({ limit: 3, isPublished: 'true', type: 'news,event' });
           var payload = relRes.data || {};
           var list = payload.list || payload.items || (Array.isArray(payload) ? payload : []);
           data.related = list.filter(function (n) { return String(n.id) !== String(id); }).slice(0, 3);

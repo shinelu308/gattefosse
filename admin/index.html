@@ -2315,7 +2315,7 @@ const QUILL_TOOLBAR = [
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="7wt5EfDHp1kzA95fNE8vNd">
                 <input type="text" class="form-control" style="max-width:220px;" placeholder="搜索标题..." v-model="newsFilter.keyword" @keyup.enter="loadNewsList()" data-page-node-id="QPYM4cM1s1C10rne3RQdKp">
                 <select class="form-control" style="max-width:120px;" v-model="newsFilter.type" @change="loadNewsList()" data-page-node-id="UXAMMfchebtib3mNAANhmJ">
-                  <option value="all" data-page-node-id="HAiRP9rCkXrhvAZ2eytFVE">全部类型</option>
+                  <option value="news,event" data-page-node-id="HAiRP9rCkXrhvAZ2eytFVE">全部类型</option>
                   <option value="news" data-page-node-id="icX0O99cGUhmDLVEpjmE0D">新闻</option>
                   <option value="event" data-page-node-id="3HKVLCOgm8iXhYwsojn14U">活动</option>
                 </select>
@@ -3954,7 +3954,7 @@ createApp({
       docEditForm: { title: '', type: 'TDS', language: 'zh', isPublic: false, filePath: '', fileUrl: '' },
       // News
       newsList: [],
-      newsFilter: { page: 1, limit: 20, keyword: '', type: 'all', category: '', isPublished: '' },
+      newsFilter: { page: 1, limit: 20, keyword: '', type: 'news,event', category: '', isPublished: '' },
       newsShowAdvanced: false,
       selectedNewsIds: [],
       newsImportOpen: false,
@@ -6224,7 +6224,7 @@ createApp({
     async loadNewsList() {
       const params = new URLSearchParams({ page: this.newsFilter.page, limit: this.newsFilter.limit });
       if (this.newsFilter.keyword) params.set('keyword', this.newsFilter.keyword);
-      if (this.newsFilter.type && this.newsFilter.type !== 'all') params.set('type', this.newsFilter.type);
+      if (this.newsFilter.type) params.set('type', this.newsFilter.type);
       if (this.newsFilter.category) params.set('category', this.newsFilter.category);
       if (this.newsFilter.isPublished) params.set('isPublished', this.newsFilter.isPublished);
       try {

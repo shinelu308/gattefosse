@@ -50,8 +50,12 @@ export async function listNews(req: Request, res: Response) {
       });
     }
 
-    if (type && type !== 'all') {
-      andConditions.push({ type: String(type) });
+    // type 支持逗号分隔多值（如 type=news,event）；'all' 不过滤
+    const typeList = type && type !== 'all' ? parseMulti(type) : [];
+    if (typeList.length === 1) {
+      andConditions.push({ type: typeList[0] });
+    } else if (typeList.length > 1) {
+      andConditions.push({ type: { in: typeList } });
     }
 
     if (categories.length) {
@@ -98,8 +102,12 @@ export async function listNews(req: Request, res: Response) {
     ]);
 
     // 统计各 category 和 tags 的数量（静态总数，供前端侧栏筛选展示）
+    // 侧栏计数与列表过滤条件保持一致（同一 type 范围内统计）
+    const countWhere: Record<string, unknown> = { isPublished: true };
+    if (typeList.length === 1) countWhere.type = typeList[0];
+    else if (typeList.length > 1) countWhere.type = { in: typeList };
     const allPublished = await prisma.newsEvent.findMany({
-      where: { isPublished: true },
+      where: countWhere,
       select: { category: true, tags: true },
     });
     const counts: Record<string, number> = { all: allPublished.length, corporate: 0, pc: 0, pharma: 0 };
