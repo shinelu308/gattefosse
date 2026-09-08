@@ -2588,14 +2588,8 @@ const QUILL_TOOLBAR = [
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;" data-page-node-id="jwxzVeBhphlfbAuDE8gtQM">
             <button class="btn btn-sm btn-outline" @click="goPage('article-list')" data-page-node-id="9xff04FWSLPrG8ENqJUCFV">← 返回列表</button>
           </div>
-          <div class="tabs" data-page-node-id="ZlowRfbM8OE0FZ1aOTACYM">
-            <button class="tab" :class="{ active: articleEditTab === 'basic' }" @click="articleEditTab = 'basic'" data-page-node-id="QgXVwewKLSCQzX09j887xw">基本信息</button>
-            <button class="tab" :class="{ active: articleEditTab === 'media' }" @click="articleEditTab = 'media'" data-page-node-id="58tgXaCUJXBNlLcCsopeuR">图片与作者</button>
-            <button class="tab" :class="{ active: articleEditTab === 'tags' }" @click="articleEditTab = 'tags'" data-page-node-id="CjcR2qO5OEtDBmhCbU6eVC">标签与SEO</button>
-            <button class="tab" :class="{ active: articleEditTab === 'content' }" @click="articleEditTab = 'content'; $nextTick(initArticleQuill)" data-page-node-id="fEG8RL07LoJJBlS7kQFVPX">正文内容</button>
-          </div>
-          <!-- 基本信息 -->
-          <div v-show="articleEditTab === 'basic'" class="card" data-page-node-id="pRz6ioZUDlGjwGWHQA8BPM">
+          <!-- 一页式布局：基本信息 / 图片与作者 / 标签与SEO / 正文内容 依次排列 -->
+          <div class="card" data-page-node-id="pRz6ioZUDlGjwGWHQA8BPM">
             <div class="card-header" data-page-node-id="v9PlFtCBORvptcQtwNqKPg"><h3 data-page-node-id="aWfAnrnkkCUp91qyYo8zp9">基本信息</h3></div>
             <div class="card-body" data-page-node-id="uqgDe0Qse1hzIa9zt0H377">
               <div class="form-group" data-page-node-id="GgOQhBrl5CcqGLvugXD3o4">
@@ -2634,7 +2628,7 @@ const QUILL_TOOLBAR = [
             </div>
           </div>
           <!-- 图片与作者 -->
-          <div v-show="articleEditTab === 'media'" class="card" data-page-node-id="DPNcHlbBnwpuzxUxHkfZ5o">
+          <div class="card" data-page-node-id="DPNcHlbBnwpuzxUxHkfZ5o">
             <div class="card-header" data-page-node-id="7VHpzP0VmwPPrJJAGIuTIy"><h3 data-page-node-id="7P4RUvJxpxaYG97jD0M23b">图片</h3></div>
             <div class="card-body" data-page-node-id="z4eYeScuXx1TYKfyjFWG81">
               <div class="form-group" data-page-node-id="DcLAvhYgh86bH3mXu9NFoM">
@@ -2675,7 +2669,7 @@ const QUILL_TOOLBAR = [
             </div>
           </div>
           <!-- 标签与SEO -->
-          <div v-show="articleEditTab === 'tags'" class="card" data-page-node-id="HD5xqRLfsIxVBY2TVpnrQN">
+          <div class="card" data-page-node-id="HD5xqRLfsIxVBY2TVpnrQN">
             <div class="card-header" data-page-node-id="kSW4umonjFHschHDSWFFWD"><h3 data-page-node-id="TdBqDzmrPOiD2w4sO2U63a">标签</h3></div>
             <div class="card-body" data-page-node-id="2iIfEQ0UaSLNf8JernZAWF">
               <div class="form-group" data-page-node-id="bUf1BHpCf5ruThs5mM3aka">
@@ -2720,7 +2714,7 @@ const QUILL_TOOLBAR = [
             </div>
           </div>
           <!-- 正文 -->
-          <div v-show="articleEditTab === 'content'" class="card" data-page-node-id="fpSeT53Q1GvknOXRaFIOck">
+          <div class="card" data-page-node-id="fpSeT53Q1GvknOXRaFIOck">
             <div class="card-header" data-page-node-id="XDr7ig3VjRdx04G9o4gj71"><h3 data-page-node-id="xp8vjrtfYsYGq2ynBenWk1">正文内容</h3></div>
             <div class="card-body" data-page-node-id="YaJqNYGtNElMAJdFCAvTdf">
               <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
@@ -4070,7 +4064,6 @@ createApp({
       articleContentMode: 'visual',
       articleContentLocked: false,
       editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] },
-      articleEditTab: 'basic',
       articleTagInput: '',
       articleTagList: [],
       authorList: [],
@@ -6764,7 +6757,8 @@ createApp({
       this.articleContentLocked = false;
       this.loadArticleTags();
       this.loadAuthorList();
-      this.articleEditTab = 'basic';
+      // 一页式布局：新增文章进入页面即初始化可视化编辑器
+      this.$nextTick(() => { if (this.articleContentMode === 'visual') this.initArticleQuill(); });
     },
     // 原站导入内容含 .paragraph 等自定义区块标记，Quill 可视化会剥掉标记 → 锁定为源码模式
     isImportedArticleHtml(html) {
@@ -6828,7 +6822,8 @@ createApp({
       this.loadArticleTags();
       this.loadAuthorList();
       this.currentPage = 'article-edit';
-      this.articleEditTab = 'basic';
+      // 一页式布局：进入页面即初始化可视化编辑器（源码锁定模式除外）
+      this.$nextTick(() => { if (this.articleContentMode === 'visual') this.initArticleQuill(); });
     },
     async saveArticle() {
       if (!this.editingArticle.title) { this.showAlert('标题不能为空'); return; }
