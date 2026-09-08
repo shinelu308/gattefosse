@@ -1,11 +1,12 @@
 /**
  * 嘉法狮前端 API 服务层（ES5 兼容版）
  * 统一封装所有后端 API 调用，替代旧的 Drupal API 路径
- * 后端地址: http://localhost:3000
+ * 后端与前台同源部署（Nginx 反代 → 3000），故 baseURL 留空走相对路径；
+ * 本地开发用 http://localhost:3000 访问同样成立，禁止写死主机名/IP
  */
 
 (function (global) {
-  var BASE_URL = 'http://localhost:3000';
+  var BASE_URL = '';
 
   // 创建 axios 实例
   var http = axios.create({
