@@ -116,10 +116,14 @@ function absoluteUrl(src: string): string {
  * 抓取 gattefosse.com 文章页 → 解析 Drupal paragraphs → 图片本地化 → 存为草稿
  */
 export async function importArticleFromSite(req: Request, res: Response) {
-  const { url } = req.body || {};
+  const { url, type: rawType, category: rawCategory } = req.body || {};
   if (!url || !/^https:\/\/([a-z0-9-]+\.)*gattefosse\.com\//i.test(url)) {
     return res.status(400).json(fail('请提供 gattefosse.com 站点的文章链接'));
   }
+  const allowedTypes = ['article', 'news', 'event'];
+  const allowedCategories = ['corporate', 'pc', 'pharma'];
+  const importType = allowedTypes.includes(String(rawType)) ? String(rawType) : 'article';
+  const importCategory = allowedCategories.includes(String(rawCategory)) ? String(rawCategory) : 'pharma';
 
   // 1. 抓取页面
   let html: string;
@@ -295,8 +299,8 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const slugBase = url.split('/').filter(Boolean).pop() || null;
   const created = await prisma.newsEvent.create({
     data: {
-      type: 'article',
-      category: 'pharma',
+      type: importType,
+      category: importCategory,
       title,
       slug: slugBase,
       summary: summary || null,
