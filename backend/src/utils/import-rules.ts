@@ -260,6 +260,26 @@ export function structureSignature(html: string): string {
  * 因此以 img 自身的 card__image class 为锚，遵循 R2 整标签匹配）
  * 2026-09-09 用户指认缩略图抓取位置后固化
  */
+/**
+ * 规则 R8：渲染样式一致性清单（导入 + AI 翻译后，页面必须与原站逐项一致）
+ * 出处：2026-09-09 连环事故（h2 字体/h1 字重/内链颜色/按钮文字/下划线），全部为
+ * 「原站各页 CSS 聚合不同、本地包缺失对应规则」导致，修复值均为原站 getComputedStyle 实测。
+ * 校验工具：scripts/compare-article.js（双页截图 + 计算样式逐元素对比，含按钮/链接颜色维度）。
+ * 以后发现新的样式偏差，先实测原站值 → 补进详情页 <style> → 同步更新本清单。
+ *
+ * 1. h1 标题：Din Next Slab Pro Bold 48px / weight 400（Slab Pro 族本身是 Bold，weight 必须 400，
+ *    浏览器默认 700 会加粗过度）
+ * 2. 正文 h2（.s-article .adp-content h2）：40px / weight 400 / 品红 #C4004D，行高 48px
+ *    ⚠️ 选择器必须用容器级 .adp-content h2——s-zone 布局的 h2 直接挂在 s-zone 下，无 titre-h2 包装
+ * 3. h3（.paragraph--type--titre-h3 h3）：33px / 39.6px / #232426
+ * 4. 导语 .block-accroche：20px / 30px；且正文首段与导语重复时隐藏导语（summary 前 50 字命中正文）
+ * 5. 正文内联链接（.text-formatted 内 p a / li a）：绛红 #910039 + 下划线，hover #6e002b；
+ *    ⚠️ 链接文字常包在 <strong>/<span> 里，站内 strong 有显式深色会盖掉继承，必须
+ *    对链接内 strong/b/em/span 强制 color:inherit
+ * 6. CTA 按钮（.paragraph--type--bouton-cta a）：白字 / 无下划线 / 品红底 #C4004D；
+ *    ⚠️ 按钮链接不在 .text-formatted/p/li 容器内，会继承全站 a 的绿色+下划线，必须显式压回
+ * 7. 详情页 <style> 里的规则一律带实测值注释；对比工具的 SELECTORS 覆盖面必须与清单同步扩充
+ */
 export function findCardThumbBySlug(listingHtml: string, articlePath: string): string | null {
   if (!articlePath) return null;
   const pathRe = new RegExp('href="([^"]*' + articlePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([?#][^"]*)?)"');
