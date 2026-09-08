@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
-import { getAiConfig, translateText, translateHtml, chunkHtml, mapPool } from '../utils/ai-translate';
+import { getAiConfig, translateText, translateHtml, mapPool } from '../utils/ai-translate';
 
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -521,12 +521,10 @@ async function runTranslateJob(job: TranslateJob, itemId: number): Promise<void>
       item.summary ? translateText(item.summary, cfg) : Promise.resolve(''),
     ]);
 
-    // 2. 正文 HTML（长文分块并行，进度实时回写）
+    // 2. 正文 HTML（DOM 级文本节点翻译：结构零改动，按批并行 + 进度实时回写）
     let contentZh = '';
     let chunks = 0;
     if (item.contentHtml) {
-      chunks = chunkHtml(item.contentHtml).length;
-      job.total = chunks;
       job.stage = '翻译正文';
       contentZh = await translateHtml(item.contentHtml, cfg, (done, total) => {
         job.done = done;
