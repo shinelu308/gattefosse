@@ -105,6 +105,19 @@
         .s-article .adp-content p a,
         .s-article .adp-content li a { color: #910039 !important; text-decoration: underline; }
         .s-article .adp-content .text-formatted a:hover { color: #6e002b; }
+        /* 链接文字常包在 <strong>/<b>/<span> 里，站内 strong 有显式深色会盖掉继承，强制回归链接色 */
+        .s-article .adp-content .text-formatted a strong,
+        .s-article .adp-content .text-formatted a b,
+        .s-article .adp-content .text-formatted a em,
+        .s-article .adp-content .text-formatted a span,
+        .s-article .adp-content p a strong,
+        .s-article .adp-content p a b,
+        .s-article .adp-content p a em,
+        .s-article .adp-content p a span,
+        .s-article .adp-content li a strong,
+        .s-article .adp-content li a b,
+        .s-article .adp-content li a em,
+        .s-article .adp-content li a span { color: inherit !important; }
 
         /* ===== Author info ===== */
         .s-article__author-name { font-size: 14px !important; font-weight: 700; color: #232426; }
