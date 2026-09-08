@@ -146,43 +146,20 @@ export async function translateText(text: string, cfg?: AiConfig): Promise<strin
 // 背景：整段 HTML 交给大模型翻译时，LLM 会丢失闭合标签、合并/重排 div、篡改链接 URL，
 // 导致译文样式与原站不一致。此方案保证除文本内容外 HTML 结构 100% 不变。
 
-const TEXT_BATCH_MAX_NODES = 10;   // 单批最多文本节点数（过大易致模型输出截断/漏条）
-const TEXT_BATCH_MAX_CHARS = 1200; // 单批最大字符数
 const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'CODE', 'PRE', 'TEXTAREA']);
 
-/** 批量翻译编号文本行：输入 [i|||text]，输出按编号回填；解析失败重试一次，仍失败回退原文 */
-async function translateNumberedTexts(texts: string[], cfg: AiConfig): Promise<string[]> {
-  const numbered = texts.map((t, i) => `${i + 1}|||${t.replace(/\s+/g, ' ').trim()}`).join('\n');
-  const userPrompt = `将下列编号文本逐条翻译为简体中文（官网内容）。
-规则：品牌名与注册商标保留英文原文（Gattefossé、Silkaress®、EnergiNius® 等，含 ® ™ 符号）；INCI 原料英文名保留原文；术语用专业译法（emollient=润肤剂、excipient=药用辅料、active ingredient=活性成分）。
-输入格式为「编号|||文本」。输出必须严格保持相同的行数与编号，格式「编号|||译文」，除编号行外不要输出任何其他内容：
-
-${numbered}`;
-
-  const best = new Map<number, string>();
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const res = await chatCallRetry(cfg, [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: userPrompt },
-    ], 8000);
-    for (const line of res.split('\n')) {
-      const m = /^\s*(\d+)\s*\|\|\|\s*(.+)$/.exec(line);
-      if (m) best.set(parseInt(m[1], 10), m[2].trim());
-    }
-    if (texts.every((_, i) => best.has(i + 1))) {
-      return texts.map((_, i) => best.get(i + 1) as string);
-    }
-  }
-  // 两次尝试后仍不完整：按条合并（已解析的用译文，缺失的保留原文），绝不整批丢弃
-  if (best.size < texts.length) {
-    console.warn(`[ai-translate] 批量翻译解析不完整（${best.size}/${texts.length}），缺失项回退原文`);
-  }
-  return texts.map((t, i) => best.get(i + 1) || t);
+/** 翻译单条文本节点（glm-4-flash 对编号清单格式遵循差、易漏条，逐条翻译最稳） */
+async function translateSingleNode(text: string, cfg: AiConfig): Promise<string> {
+  const res = await chatCallRetry(cfg, [
+    { role: 'system', content: SYSTEM_PROMPT },
+    { role: 'user', content: `翻译为简体中文，只输出译文（品牌名®™与 INCI 保留英文）：\n\n${text.replace(/\s+/g, ' ').trim()}` },
+  ], 2000);
+  return res.replace(/^```(?:html)?\s*\n?/, '').replace(/\n?```\s*$/, '').trim();
 }
 
 /**
- * 翻译 HTML：DOM 解析后仅翻译文本节点并原位回填，标签/属性/结构零改动。
- * onProgress(done, total) 按批次回报进度。
+ * 翻译 HTML：DOM 解析后仅翻译文本节点并原位回填（逐节点单条翻译），标签/属性/结构零改动。
+ * onProgress(done, total) 按节点回报进度。
  */
 export async function translateHtml(html: string, cfg?: AiConfig, onProgress?: (done: number, total: number) => void): Promise<string> {
   const c = cfg || (await getAiConfig());
@@ -192,12 +169,15 @@ export async function translateHtml(html: string, cfg?: AiConfig, onProgress?: (
   const doc = dom.window.document;
   const { NodeFilter } = dom.window;
 
-  // 1. 收集全部可翻译文本节点
+  // 1. 收集全部可翻译文本节点（跳过脚本/样式；纯数字/符号不送翻；已含中文的视为已译跳过）
   const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, {
     acceptNode(node: any) {
       const parent = node.parentElement;
       if (!parent || SKIP_TAGS.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
-      if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const v = node.nodeValue || '';
+      if (!v.trim()) return NodeFilter.FILTER_REJECT;
+      if (!/[\u4e00-\u9fffA-Za-z]/.test(v)) return NodeFilter.FILTER_REJECT;
+      if (/[\u4e00-\u9fff]/.test(v)) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     },
   });
@@ -206,42 +186,26 @@ export async function translateHtml(html: string, cfg?: AiConfig, onProgress?: (
   while ((n = walker.nextNode())) nodes.push(n);
   if (!nodes.length) return html;
 
-  // 2. 按节点数/字符数上限分组
-  const batches: any[][] = [];
-  let cur: any[] = [];
-  let curLen = 0;
-  for (const node of nodes) {
-    const len = node.nodeValue!.length;
-    if (cur.length && (cur.length >= TEXT_BATCH_MAX_NODES || curLen + len > TEXT_BATCH_MAX_CHARS)) {
-      batches.push(cur);
-      cur = [];
-      curLen = 0;
-    }
-    cur.push(node);
-    curLen += len;
-  }
-  if (cur.length) batches.push(cur);
-
-  // 3. 并发 2 路逐批翻译（进度按批回报）
+  // 2. 并发 2 路逐节点翻译；单节点失败保留原文，绝不影响其他节点
   let done = 0;
-  await mapPool(batches, 2, async (batch) => {
-    const originals = batch.map(nd => nd.nodeValue!);
-    let translated: string[];
+  let failed = 0;
+  await mapPool(nodes, 2, async (node) => {
+    const raw = node.nodeValue as string;
     try {
-      translated = await translateNumberedTexts(originals, c);
+      const t = await translateSingleNode(raw, c);
+      if (t) {
+        const lead = /^\s*/.exec(raw)![0];
+        const trail = /\s*$/.exec(raw)![0];
+        node.nodeValue = lead + t + trail; // 保留首尾空白，原位回填
+      }
     } catch (e) {
-      console.warn('[ai-translate] 批次翻译失败，本批回退原文：', (e as Error).message);
-      translated = originals;
+      failed++;
+      console.warn('[ai-translate] 节点翻译失败，保留原文：', (e as Error).message);
     }
-    batch.forEach((nd, i) => {
-      const raw = originals[i];
-      const lead = /^\s*/.exec(raw)![0];
-      const trail = /\s*$/.exec(raw)![0];
-      nd.nodeValue = lead + translated[i] + trail; // 保留首尾空白，原位回填
-    });
     done++;
-    if (onProgress) onProgress(done, batches.length);
+    if (onProgress) onProgress(done, nodes.length);
   });
+  if (failed) console.warn(`[ai-translate] 完成，${failed}/${nodes.length} 个节点回退原文`);
 
   return doc.body.innerHTML;
 }
