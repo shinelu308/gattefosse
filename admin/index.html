@@ -2452,6 +2452,19 @@ const QUILL_TOOLBAR = [
                     </div>
                   </div>
                   <div class="form-row">
+                    <div class="form-group" style="flex:1;">
+                      <label>详情页大图 <span class="hint">（用于详情页头部横幅，建议高清宽图，未设置时使用封面图）</span></label>
+                      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <input type="text" class="form-control" v-model="editingNews.topBackground" placeholder="https://... 或上传" style="flex:1;min-width:220px;">
+                        <input type="file" accept="image/*" @change="uploadNewsImage($event, 'topBackground')" style="font-size:13px;">
+                        <span v-if="uploadingNewsImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
+                      </div>
+                      <div v-if="editingNews.topBackground" style="margin-top:6px;">
+                        <img :src="editingNews.topBackground" style="max-width:300px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;width:100%;">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
                     <div class="form-group">
                       <label>阅读时长（分钟）</label>
                       <input type="number" class="form-control" v-model="editingNews.readingTime" placeholder="5" style="max-width:140px;">
@@ -3985,7 +3998,7 @@ createApp({
       newsImportMsg: '',
       newsImport: { url: '', category: 'corporate' },
       newsPagination: { total: 0, totalPages: 0 },
-      editingNews: { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: '', eventEndDate: '', location: '', booth: '', isPublished: false },
+      editingNews: { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', readingTime: null, publishedDate: '', eventEndDate: '', location: '', booth: '', isPublished: false },
       // 获取灵感 — 文章
       articleList: [],
       selectedArticleIds: [],
@@ -4057,6 +4070,7 @@ createApp({
       alertDialog: { show: false, title: '', message: '', type: 'info' },
       uploadingImage: false,
       uploadingNewsCover: false,
+      uploadingNewsImage: false,
       uploadingDetailImage: false,
       uploadingBlockImage: false,
       uploadingBlockImageRight: false,
@@ -4660,6 +4674,27 @@ createApp({
         }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingNewsCover = false; event.target.value = ''; }
+    },
+    async uploadNewsImage(event, field) {
+      const file = event.target.files[0];
+      if (!file) return;
+      this.uploadingNewsImage = true;
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(API + '/upload/image', {
+          method: 'POST',
+          headers: this.token ? { 'Authorization': 'Bearer ' + this.token } : {},
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.code === 0 && data.data && data.data.url) {
+          this.editingNews[field] = data.data.url;
+        } else {
+          this.showAlert('上传失败：' + (data.message || '未知错误'));
+        }
+      } catch (e) { this.showAlert('上传失败：' + e.message); }
+      finally { this.uploadingNewsImage = false; event.target.value = ''; }
     },
     async uploadHeroBackgroundImage(event, bi) {
       const file = event.target.files[0];
@@ -6306,7 +6341,7 @@ createApp({
       });
     },
     resetNewsEdit() {
-      this.editingNews = { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), eventEndDate: '', location: '', booth: '', isPublished: false, tags: null, tagInput: '' };
+      this.editingNews = { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), eventEndDate: '', location: '', booth: '', isPublished: false, tags: null, tagInput: '' };
       this.newsShowAdvanced = false;
     },
     // 活动日期区间预览（对齐原站「23 - 24 Sep 2026」格式）
