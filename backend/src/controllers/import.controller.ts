@@ -9,6 +9,7 @@ import { success, fail } from '../utils/response';
 import { config } from '../config';
 
 const SITE_ORIGIN = 'https://www.gattefosse.com';
+const CN_ORIGIN = 'https://www.gattefossechina.cn';
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
 /** 下载远程文件到本地（带 UA，跟随跳转） */
@@ -111,19 +112,156 @@ function absoluteUrl(src: string): string {
   return SITE_ORIGIN + (src.startsWith('/') ? '' : '/') + src;
 }
 
+/** 从中文站 URL 提取新闻 ID（...detail.html?id=293，兼容 ?ID=） */
+function extractChinaNewsId(u: string): number | null {
+  const m = /[?&]id=(\d+)/i.exec(u);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+/** GET JSON（中文站接口） */
+function fetchJson(target: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const req = https.get(target, { headers: { 'User-Agent': UA, Accept: 'application/json' }, timeout: 30000 }, (r) => {
+      if (r.statusCode !== 200) { r.resume(); return reject(new Error(`中文站接口 HTTP ${r.statusCode}`)); }
+      let data = '';
+      r.setEncoding('utf8');
+      r.on('data', (c) => { data += c; });
+      r.on('end', () => { try { resolve(JSON.parse(data)); } catch (e) { reject(new Error('中文站接口返回非 JSON')); } });
+      r.on('error', reject);
+    });
+    req.on('timeout', () => req.destroy(new Error('请求超时')));
+    req.on('error', reject);
+  });
+}
+
+/**
+ * 中文站（gattefossechina.cn）导入
+ * 中文站为 Vue+API 架构：详情页 id → findWebNewsEvents（记录）→ findWebContents（正文 HTML）
+ * 自动识别类型（1=新闻 2=活动）与分类（goodsCategoryId 1=个人护理 117=药用辅料）
+ */
+async function importFromChinaSite(url: string, fallbackCategory: string) {
+  const newsId = extractChinaNewsId(url);
+  if (!newsId) throw new Error('未能在链接中找到文章 ID，请粘贴详情页地址（如 https://www.gattefossechina.cn/personal-care-news-detail.html?id=293）');
+
+  const itemRes = await fetchJson(`${CN_ORIGIN}/api/webNewsEvents/findWebNewsEvents?ID=${newsId}`);
+  const item = itemRes && itemRes.data && itemRes.data.reWebNewsEvents;
+  if (!item) throw new Error('中文站接口未返回新闻数据（ID=' + newsId + '）');
+
+  let contentHtml = '';
+  if (item.contentId) {
+    try {
+      const cRes = await fetchJson(`${CN_ORIGIN}/api/webContents/findWebContents?ID=${item.contentId}`);
+      const c = cRes && cRes.data && cRes.data.reWebContents;
+      if (c && c.content) contentHtml = String(c.content);
+    } catch { /* 正文接口失败按空处理，走下方校验 */ }
+  }
+
+  const autoType = Number(item.type) === 2 ? 'event' : 'news';
+  const catMap: Record<string, string> = { '1': 'pc', '117': 'pharma' };
+  const autoCategory = catMap[String(item.goodsCategoryId)] || fallbackCategory;
+
+  // 新闻必须有正文；活动允许正文为空（以时间/地点为主，后台可补）
+  if (!contentHtml && autoType === 'news') throw new Error('中文站正文内容为空，无法导入');
+
+  // 图片本地化（正文 img + 列表封面 thumb）
+  const uploadDir = path.resolve(__dirname, '../../uploads/articles');
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+  const imgMap = new Map<string, string>();
+  const downloadErrors: string[] = [];
+  let seq = 0;
+
+  const localize = async (rawSrc: string): Promise<string | null> => {
+    const abs = /^https?:\/\//i.test(rawSrc) ? rawSrc : CN_ORIGIN + (rawSrc.startsWith('/') ? '' : '/') + rawSrc;
+    if (!/^https?:\/\/./.test(abs)) return null;
+    seq++;
+    let base = '';
+    try { base = decodeURIComponent(new URL(abs).pathname.split('/').pop() || ''); } catch { base = ''; }
+    base = base.replace(/\.webp$/i, '').replace(/[^\w.\-]+/g, '_');
+    if (!base || base.length > 80) base = `img_${Date.now()}_${seq}`;
+    if (!/\.(jpe?g|png|gif|webp|svg)$/i.test(base)) base += '.webp';
+    const fname = `${Date.now()}_${seq}_${base}`;
+    try {
+      await downloadFile(abs, path.join(uploadDir, fname));
+      imgMap.set(rawSrc, `/uploads/articles/${fname}`);
+      return `/uploads/articles/${fname}`;
+    } catch (e: any) {
+      downloadErrors.push(`${rawSrc}（${e.message}）`);
+      return null;
+    }
+  };
+
+  const allSrcs = [...new Set([...contentHtml.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map(m => m[1]))];
+  for (const src of allSrcs) await localize(src);
+  contentHtml = contentHtml.replace(/(<img[^>]*\ssrc=")([^"]+)(")/g, (full, p1, src: string, p3) => {
+    const local = imgMap.get(src);
+    return local ? p1 + local + p3 : full;
+  });
+
+  // 封面：中文站 thumb 优先，失败用正文第一张
+  let imageUrl: string | null = null;
+  if (item.thumb) imageUrl = await localize(String(item.thumb));
+  if (!imageUrl) imageUrl = [...imgMap.values()][0] || null;
+
+  // 日期：活动用活动开始时间，其余用记录创建时间
+  const publishedDate = (autoType === 'event' && item.eventTime) ? new Date(item.eventTime) : (item.CreatedAt ? new Date(item.CreatedAt) : new Date());
+
+  const created = await prisma.newsEvent.create({
+    data: {
+      type: autoType,
+      category: autoCategory,
+      title: String(item.title || ''),
+      slug: 'cn-' + newsId,
+      summary: item.summary ? String(item.summary) : null,
+      contentHtml,
+      imageUrl,
+      publishedDate,
+      isPublished: false,
+      ...(autoType === 'event' ? {
+        eventEndDate: item.eventEndTime ? new Date(item.eventEndTime) : null,
+        location: item.eventAddress ? String(item.eventAddress) : null,
+      } : {}),
+    },
+  });
+
+  return {
+    created,
+    imagesDownloaded: imgMap.size,
+    imagesTotal: allSrcs.length + (item.thumb ? 1 : 0),
+    downloadErrors,
+    autoType,
+    autoCategory,
+  };
+}
+
 /**
  * 原站文章导入器
- * 抓取 gattefosse.com 文章页 → 解析 Drupal paragraphs → 图片本地化 → 存为草稿
+ * 英文站 gattefosse.com：抓取文章页 → 解析 Drupal paragraphs → 图片本地化 → 存为草稿
+ * 中文站 gattefossechina.cn：调详情接口取结构化中文数据 → 图片本地化 → 存为草稿
  */
 export async function importArticleFromSite(req: Request, res: Response) {
   const { url, type: rawType, category: rawCategory } = req.body || {};
-  if (!url || !/^https:\/\/([a-z0-9-]+\.)*gattefosse\.com\//i.test(url)) {
-    return res.status(400).json(fail('请提供 gattefosse.com 站点的文章链接'));
+  if (!url || !/^https:\/\/([a-z0-9-]+\.)*(gattefosse\.com|gattefossechina\.cn)\//i.test(url)) {
+    return res.status(400).json(fail('请提供 gattefosse.com 或 gattefossechina.cn 站点的文章链接'));
   }
   const allowedTypes = ['article', 'news', 'event'];
   const allowedCategories = ['corporate', 'pc', 'pharma'];
   const importType = allowedTypes.includes(String(rawType)) ? String(rawType) : 'article';
   const importCategory = allowedCategories.includes(String(rawCategory)) ? String(rawCategory) : 'pharma';
+
+  // 中文站分支：结构化接口导入（类型/分类自动识别）
+  if (/gattefossechina\.cn/i.test(url)) {
+    try {
+      const r = await importFromChinaSite(url, importCategory);
+      return res.json(success({
+        item: r.created,
+        imagesDownloaded: r.imagesDownloaded,
+        imagesTotal: r.imagesTotal,
+        downloadErrors: r.downloadErrors,
+      }, `导入成功（中文站，识别为${r.autoType === 'event' ? '活动' : '新闻'}·${{ corporate: '企业', pc: '个护', pharma: '药用' }[r.autoCategory] || r.autoCategory}），已保存为草稿`));
+    } catch (e: any) {
+      return res.status(400).json(fail('中文站导入失败：' + e.message));
+    }
+  }
 
   // 1. 抓取页面
   let html: string;

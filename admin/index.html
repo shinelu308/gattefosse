@@ -2338,8 +2338,8 @@ const QUILL_TOOLBAR = [
               <div v-if="newsImportOpen" style="border-top:1px dashed var(--border);margin-top:10px;padding-top:10px;">
                 <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
                   <div class="form-group" style="flex:2;min-width:260px;margin:0;">
-                    <label>原站文章链接 <span class="hint">（gattefosse.com 新闻页地址）</span></label>
-                    <input type="text" class="form-control" v-model="newsImport.url" placeholder="https://www.gattefosse.com/news/xxx" @keyup.enter="importNewsFromSite()">
+                    <label>原站文章链接 <span class="hint">（gattefosse.com / gattefossechina.cn 文章详情页地址）</span></label>
+                    <input type="text" class="form-control" v-model="newsImport.url" placeholder="英文站 .../news/xxx 或中文站 ...-news-detail.html?id=293" @keyup.enter="importNewsFromSite()">
                   </div>
                   <div class="form-group" style="margin:0;">
                     <label>保存分类</label>
@@ -2352,7 +2352,8 @@ const QUILL_TOOLBAR = [
                   <button class="btn btn-primary" :disabled="newsImporting || !newsImport.url" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : '开始导入' }}</button>
                 </div>
                 <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">
-                  导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。
+                  导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
+                  英文站（gattefosse.com）导入后为英文稿；中文站（gattefossechina.cn）直接取中文内容，并自动识别新闻/活动类型与分类（面板所选分类仅作兜底）。
                 </div>
                 <div v-if="newsImportMsg" style="font-size:12px;margin-top:4px;" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ newsImportMsg }}</div>
               </div>
@@ -6337,7 +6338,7 @@ createApp({
       this.newsImportMsg = '⏳ 正在抓取并解析原站页面，约需 10~30 秒...';
       try {
         await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.newsImport.url, type: 'news', category: this.newsImport.category }) });
-        this.newsImportMsg = '✅ 导入成功，已存为草稿（列表中筛选「草稿」可见），请核对内容与译文后发布';
+        this.newsImportMsg = '✅ 导入成功，已存为草稿（列表中筛选「草稿」可见），请核对内容后手动发布';
         this.newsImport.url = '';
         this.loadNewsList();
       } catch (e) {
