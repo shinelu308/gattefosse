@@ -1,67 +1,20 @@
 import { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
-import https from 'https';
-import http from 'http';
 import AdmZip from 'adm-zip';
 import { prisma } from '../utils/prisma';
 import { success, fail } from '../utils/response';
 import { config } from '../config';
+import {
+  ORIGIN_BASE, downloadFile, fetchText, absoluteUrl, cleanBingLinks, translateTag,
+  findTagByClass, attrOfTag, stripImgParams, stripTags,
+  extractBalancedDiv, extractDivByClass,
+} from '../utils/import-rules';
+import { verifyImportedArticle, reverifyArticle } from '../utils/import-verify';
 
-const SITE_ORIGIN = 'https://www.gattefosse.com';
+const SITE_ORIGIN = ORIGIN_BASE;
 const CN_ORIGIN = 'https://www.gattefossechina.cn';
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
-
-/** 下载远程文件到本地（带 UA，跟随跳转） */
-function downloadFile(url: string, dest: string, redirects = 0): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (redirects > 5) return reject(new Error('重定向次数过多'));
-    const mod = url.startsWith('https') ? https : http;
-    const req = mod.get(url, { headers: { 'User-Agent': UA, Accept: '*/*' }, timeout: 30000 }, (res) => {
-      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        res.resume();
-        const next = new URL(res.headers.location, url).toString();
-        return resolve(downloadFile(next, dest, redirects + 1));
-      }
-      if (res.statusCode !== 200) {
-        res.resume();
-        return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
-      }
-      const ws = fs.createWriteStream(dest);
-      res.pipe(ws);
-      ws.on('finish', () => resolve());
-      ws.on('error', reject);
-    });
-    req.on('timeout', () => req.destroy(new Error('下载超时')));
-    req.on('error', reject);
-  });
-}
-
-/** 从 HTML 中截取一段平衡 div（从 start 处的 <div 到与之配对的 </div>），返回完整片段 */
-function extractBalancedDiv(html: string, start: number): string | null {
-  const openM = /^<div[\s>]/.exec(html.slice(start, start + 6));
-  if (!openM) return null;
-  let depth = 0;
-  const re = /<div[\s>]|<\/div>/g;
-  re.lastIndex = start;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(html)) !== null) {
-    if (m[0] === '</div>') depth--;
-    else depth++;
-    if (depth === 0) return html.slice(start, m.index + m[0].length);
-  }
-  return null;
-}
-
-/** 找到某 class 首次出现的元素所在的平衡 div 片段 */
-function extractDivByClass(html: string, className: string): string | null {
-  const idx = html.indexOf(className);
-  if (idx < 0) return null;
-  // 从 class 位置向前找最近的 <div
-  const divStart = html.lastIndexOf('<div', idx);
-  if (divStart < 0) return null;
-  return extractBalancedDiv(html, divStart);
-}
 
 /** 平衡 div 内部：拆出顶层子 div 片段数组 */
 function splitChildDivs(divHtml: string): string[] {
@@ -80,10 +33,6 @@ function splitChildDivs(divHtml: string): string[] {
     i = nextDiv + frag.length;
   }
   return children;
-}
-
-function stripTags(html: string): string {
-  return html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function getAttr(fragment: string, attr: string): string | null {
@@ -106,12 +55,6 @@ function parseSiteDate(text: string): Date | null {
   return new Date(Date.UTC(parseInt(m[3], 10), mon - 1, parseInt(m[1], 10)));
 }
 
-/** 绝对化原站 URL */
-function absoluteUrl(src: string): string {
-  if (/^https?:\/\//.test(src)) return src;
-  return SITE_ORIGIN + (src.startsWith('/') ? '' : '/') + src;
-}
-
 /** 从中文站 URL 提取新闻 ID（...detail.html?id=293，兼容 ?ID=） */
 function extractChinaNewsId(u: string): number | null {
   const m = /[?&]id=(\d+)/i.exec(u);
@@ -120,17 +63,8 @@ function extractChinaNewsId(u: string): number | null {
 
 /** GET JSON（中文站接口） */
 function fetchJson(target: string): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const req = https.get(target, { headers: { 'User-Agent': UA, Accept: 'application/json' }, timeout: 30000 }, (r) => {
-      if (r.statusCode !== 200) { r.resume(); return reject(new Error(`中文站接口 HTTP ${r.statusCode}`)); }
-      let data = '';
-      r.setEncoding('utf8');
-      r.on('data', (c) => { data += c; });
-      r.on('end', () => { try { resolve(JSON.parse(data)); } catch (e) { reject(new Error('中文站接口返回非 JSON')); } });
-      r.on('error', reject);
-    });
-    req.on('timeout', () => req.destroy(new Error('请求超时')));
-    req.on('error', reject);
+  return fetchText(target).then((data) => {
+    try { return JSON.parse(data); } catch { throw new Error('中文站接口返回非 JSON'); }
   });
 }
 
@@ -276,22 +210,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
   // 1. 抓取页面
   let html: string;
   try {
-    html = await new Promise<string>((resolve, reject) => {
-      const mod = url.startsWith('https') ? https : http;
-      const req2 = mod.get(url, {
-        headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Language': 'en-US,en;q=0.9' },
-        timeout: 30000,
-      }, (r) => {
-        if (r.statusCode !== 200) { r.resume(); return reject(new Error(`原站返回 HTTP ${r.statusCode}`)); }
-        let data = '';
-        r.setEncoding('utf8');
-        r.on('data', (c) => { data += c; });
-        r.on('end', () => resolve(data));
-        r.on('error', reject);
-      });
-      req2.on('timeout', () => req2.destroy(new Error('抓取超时')));
-      req2.on('error', reject);
-    });
+    html = await fetchText(url);
   } catch (e: any) {
     return res.status(400).json(fail('抓取原站页面失败：' + e.message));
   }
@@ -337,14 +256,13 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const authorName = authorNameM ? stripTags(authorNameM[1]) : null;
   const authorPosteM = /s-article__author-poste[^>]*>([\s\S]*?)</.exec(articleDiv);
   const authorPoste = authorPosteM ? stripTags(authorPosteM[1]) : null;
-  // 作者头像（s-article__author-img）：定位含该 class 的整个 img 标签再取 src（class 与 src 属性顺序不限，
-  // 原站两种写法都出现过：<img class="...author-img" src="..."> 和 <img src="..." class="...author-img">）
-  const authorImgTagM = /<img[^>]+s-article__author-img[^>]*>/i.exec(articleDiv);
-  const authorImgSrcM = authorImgTagM ? /src="([^"]+)"/.exec(authorImgTagM[0]) : null;
-  let authorImgRaw = authorImgSrcM ? authorImgSrcM[1].split('?')[0].trim() : null;
-  if (authorImgRaw && !/^https?:\/\//i.test(authorImgRaw)) {
-    authorImgRaw = 'https://www.gattefosse.com' + (authorImgRaw.startsWith('/') ? '' : '/') + authorImgRaw; // 原站相对路径补全域名
-  }
+  // 作者头像（s-article__author-img）：规则库「整标签匹配」定位——class 与 src 属性顺序不限
+  //（原站两种写法都出现过：<img class="...author-img" src="..."> 和 <img src="..." class="...author-img">），
+  // 相对路径按 R1 规则补全域名，并剥离 ?w= 等裁剪参数取原图
+  const authorImgTag = findTagByClass(articleDiv, 'img', 's-article__author-img');
+  const authorImgRawSrc = authorImgTag ? attrOfTag(authorImgTag, 'src') : null;
+  let authorImgRaw = authorImgRawSrc ? stripImgParams(authorImgRawSrc) : '';
+  if (authorImgRaw) authorImgRaw = absoluteUrl(authorImgRaw);
   // 主题标签（头部 s-article__data 内第一个 o-tag-list）
   const articleTags: string[] = [];
   const tagListM = /o-tag-list[^>]*>([\s\S]*?)<\/ul>/.exec(articleDiv);
@@ -368,17 +286,9 @@ export async function importArticleFromSite(req: Request, res: Response) {
     else articleTypeZh = '其他';
   }
 
-  // 原站主题标签 EN→CN 映射（未命中保留英文）
-  const TAG_ZH: Record<string, string> = {
-    'actives': '活性成分', 'aging': '抗老化', 'skin biology': '皮肤生物学', 'inspiration': '灵感',
-    'formulation': '配方', 'efficacy': '功效', 'sensory': '感官', 'texture': '质地', 'textures': '质地',
-    'sustainability': '可持续', 'microbiome': '微生态', 'wellness': '健康', 'sun care': '防晒',
-    'hair care': '洗护发', 'color cosmetics': '彩妆', 'emulsifiers': '乳化剂', 'soft focus': '柔焦',
-    'repair': '修护', 'soothing': '舒缓', 'moisturizing': '保湿', 'anti-pollution': '抗污染',
-    'biotech': '生物科技', 'clean beauty': '纯净美妆', 'blue beauty': '蓝色美妆', 'slower beauty': '慢美妆',
-    'skin longevity': '皮肤长寿', 'longevity': '长寿', 'resilience': '韧性', 'beauty': '美妆',
-  };
-  const tagsZh = articleTags.map(t => TAG_ZH[t.toLowerCase()] || t);
+  // 原站主题标签 EN→CN（规则库映射；未命中保留英文并记录，便于后续补充映射）
+  const unknownTags: string[] = [];
+  const tagsZh = articleTags.map(t => translateTag(t, unknownTags));
 
   // 导语（block-accroche）：位于 s-article__top-part、node__content 之外，需单独提取
   let accrocheText = '';
@@ -535,8 +445,12 @@ export async function importArticleFromSite(req: Request, res: Response) {
     if (stripTags(child) || /<img/i.test(child)) blocks.push(rewrite(child));
   }
 
-  const contentHtml = blocks.join('\n');
+  let contentHtml = blocks.join('\n');
   if (!contentHtml) return res.status(400).json(fail('正文解析结果为空，请检查链接是否为文章详情页'));
+
+  // 规则 R4：清洗原站自带的 bing 跳转脏链（解码还原真实地址）
+  const cleaned = cleanBingLinks(contentHtml);
+  contentHtml = cleaned.html;
 
   // 6. 摘要：优先使用原站导语（block-accroche）；无导语时退回第一段有效文本
   let summary = accrocheText.slice(0, 500);
@@ -561,6 +475,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
   // 8. 作者关联：按姓名匹配 authors 表，无则自动创建；头像从原站下载补齐
   let authorId: number | null = null;
+  let authorBioPrefilled = false; // 库内已有职务/简介（后台编辑维护过），导入器不覆盖
   if (authorName) {
     // 去掉学位后缀（如 "Nick DiFranco, MEM" → "Nick DiFranco"）
     const coreName = authorName.split(',')[0].trim();
@@ -584,6 +499,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
         data: { name: coreName, title: authorPoste || null, bio: authorPoste || null, avatar: authorAvatar, sortOrder: 99 },
       });
     } else {
+      if (author.bio || author.title) authorBioPrefilled = true;
       const patch: any = {};
       if (authorPoste && !author.title) patch.title = authorPoste;
       if (authorPoste && !author.bio) patch.bio = authorPoste; // 详情页职务行显示 bio 字段
@@ -653,6 +569,21 @@ export async function importArticleFromSite(req: Request, res: Response) {
     }
   }
 
+  // 11. 第 2 层：导入后自动一致性校验（对照原站 HTML 逐项核对 + 自动修复）
+  let verification: Awaited<ReturnType<typeof verifyImportedArticle>> = [];
+  try {
+    verification = await verifyImportedArticle(html, {
+      id: created.id,
+      title: created.title,
+      summary: created.summary,
+      contentHtml: created.contentHtml || '',
+      imageUrl: created.imageUrl,
+      authorId: created.authorId,
+    }, { bioPrefilled: authorBioPrefilled });
+  } catch (e: any) {
+    console.error('导入校验异常:', e.message);
+  }
+
   return res.json(success({
     item: created,
     imagesDownloaded: imgMap.size,
@@ -662,10 +593,28 @@ export async function importArticleFromSite(req: Request, res: Response) {
     relatedCards: relatedCount,
     coverSource: coverLocal ? 'banner' : 'first-image',
     typeAutoDetected,
+    cleanedLinks: cleaned.cleaned,
+    unknownTags,
+    verification,
   }, '导入成功，已保存为草稿'
     + (typeAutoDetected ? `（识别为${{ news: '新闻', event: '活动', article: '专栏文章' }[finalType]}）` : '')
     + (relatedCount ? `，相关内容 ${relatedCount} 张卡片已转独立区块` : '')
-    + (coverLocal ? '，封面取自原站banner' : '')));
+    + (coverLocal ? '，封面取自原站banner' : '')
+    + (verification.length ? `，校验 ${verification.filter(v => v.ok).length}/${verification.length} 项通过` : '')));
+}
+
+/** 重新校验已导入文章：POST /news/:id/reverify */
+export async function reverifyImportedArticle(req: Request, res: Response) {
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).json(fail('缺少文章 ID'));
+  try {
+    const verification = await reverifyArticle(id);
+    const pass = verification.filter(v => v.ok).length;
+    return res.json(success({ verification, pass, total: verification.length },
+      `校验完成：${pass}/${verification.length} 项通过`));
+  } catch (e: any) {
+    return res.status(400).json(fail('校验失败：' + e.message));
+  }
 }
 
 // ==================== 翻译 Word 回填 ====================

@@ -3895,10 +3895,11 @@ const QUILL_TOOLBAR = [
             导入后保存为<strong>草稿</strong>（分类固定为个人护理 / 获取灵感），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
             支持英文站（gattefosse.com）与中文站链接；导入内容含原站版式标记，会自动以 HTML 源码模式打开编辑。
           </div>
-          <div v-if="articleImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: articleImportMsg.indexOf('✅')===0 ? 'var(--green)' : 'var(--red)'}">{{ articleImportMsg }}</div>
+          <div v-if="articleImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: articleImportMsg.indexOf('✅')===0 ? 'var(--green)' : (articleImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ articleImportMsg }}</div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" @click="articleImportOpen=false">取消</button>
+          <button v-if="articleImportLastId && articleImportMsg && articleImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="articleImporting" @click="reverifyArticleImport()">{{ articleImporting ? '校验中...' : '重新校验' }}</button>
           <button class="btn btn-primary" :disabled="articleImporting || !articleImport.url" @click="importArticleFromSite()">{{ articleImporting ? '导入中...' : '开始导入' }}</button>
         </div>
       </div>
@@ -4060,6 +4061,7 @@ createApp({
       articleImportOpen: false,
       articleImporting: false,
       articleImportMsg: '',
+      articleImportLastId: null,
       articleImport: { url: '' },
       articleContentMode: 'visual',
       articleContentLocked: false,
@@ -6605,19 +6607,51 @@ createApp({
     async importArticleFromSite() {
       if (!this.articleImport.url) return;
       this.articleImporting = true;
+      this.articleImportLastId = null;
       this.articleImportMsg = '⏳ 正在抓取并解析原站页面，下载图片中...';
       try {
         const d = await this.api('/news/import-from-site', { method: 'POST', body: JSON.stringify({ url: this.articleImport.url.trim(), category: 'pc', type: 'article' }) });
-        this.articleImportMsg = '✅ 导入成功，已保存为草稿';
-        this.articleImport.url = '';
         this.loadArticleList();
         const id = d && d.item && d.item.id;
+        if (id) this.articleImportLastId = id;
+        // 第 2 层校验清单：全部通过则照常打开编辑器；有失败项则留在对话框展示清单
+        const v = d && d.verification;
+        if (v && v.length) {
+          const lines = v.map(x => (x.ok ? '✅ ' : '❌ ') + x.name + (x.fixed ? '（已自动修复）' : '') + (x.detail && !x.ok ? '：' + x.detail : ''));
+          const pass = v.filter(x => x.ok).length;
+          if (pass === v.length) {
+            this.articleImportMsg = '✅ 导入成功，已保存为草稿\n一致性校验 ' + pass + '/' + v.length + ' 项全部通过';
+          } else {
+            this.articleImportMsg = '⚠️ 导入成功（草稿），一致性校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n') + '\n\n处理失败项后可点「重新校验」。';
+            this.articleImporting = false;
+            return; // 有失败项：留在对话框，不自动打开编辑器
+          }
+        } else {
+          this.articleImportMsg = '✅ 导入成功，已保存为草稿';
+        }
+        this.articleImport.url = '';
         this.articleImportOpen = false;
         if (id) {
           try { const fresh = await this.api('/news/' + id); this.editArticle(fresh); } catch (e) {}
         }
       } catch (e) {
         this.articleImportMsg = '❌ 导入失败：' + e.message;
+      } finally { this.articleImporting = false; }
+    },
+    // 重新校验刚导入的文章与原站一致性（第 2 层）
+    async reverifyArticleImport() {
+      if (!this.articleImportLastId) return;
+      this.articleImporting = true;
+      try {
+        const d = await this.api('/news/' + this.articleImportLastId + '/reverify', { method: 'POST' });
+        const v = d && d.verification;
+        if (v && v.length) {
+          const lines = v.map(x => (x.ok ? '✅ ' : '❌ ') + x.name + (x.fixed ? '（已自动修复）' : '') + (x.detail && !x.ok ? '：' + x.detail : ''));
+          const pass = v.filter(x => x.ok).length;
+          this.articleImportMsg = (pass === v.length ? '✅ ' : '⚠️ ') + '校验 ' + pass + '/' + v.length + ' 项通过：\n' + lines.join('\n');
+        }
+      } catch (e) {
+        this.articleImportMsg = '❌ 校验失败：' + e.message;
       } finally { this.articleImporting = false; }
     },
     // 文章 AI 自动翻译（复用新闻翻译后台任务，完成后打开编辑核对）

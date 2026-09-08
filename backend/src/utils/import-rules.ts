@@ -1,0 +1,227 @@
+/**
+ * 原站抓取经验规则库（第 1 层：规则资产）
+ * 目的：把历史踩过的坑固化为可维护、可复用的规则，确保抓取内容与原站一致。
+ * 每条规则来自真实事故，注释标明出处，后续遇到新坑继续在此沉淀。
+ */
+import fs from 'fs';
+import https from 'https';
+import http from 'http';
+
+
+/** 英文原站域名 */
+export const ORIGIN_BASE = 'https://www.gattefosse.com';
+/** 中文站域名 */
+export const CN_BASE = 'https://www.gattefossechina.cn';
+
+/** 抓取 UA（原站对无 UA 请求可能返回 403） */
+export const SCRAPER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+
+/** 下载远程文件到本地（带 UA，跟随跳转，最多 5 次重定向） */
+export function downloadFile(url: string, dest: string, redirects = 0): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (redirects > 5) return reject(new Error('重定向次数过多'));
+    const mod: typeof http = url.startsWith('https') ? (https as unknown as typeof http) : http;
+    const req = mod.get(url, { headers: { 'User-Agent': SCRAPER_UA, Accept: '*/*' }, timeout: 30000 }, (res) => {
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        res.resume();
+        const next = new URL(res.headers.location, url).toString();
+        return resolve(downloadFile(next, dest, redirects + 1));
+      }
+      if (res.statusCode !== 200) {
+        res.resume();
+        return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
+      }
+      const ws = fs.createWriteStream(dest);
+      res.pipe(ws);
+      ws.on('finish', () => resolve());
+      ws.on('error', reject);
+    });
+    req.on('timeout', () => req.destroy(new Error('下载超时')));
+    req.on('error', reject);
+  });
+}
+
+/** 获取远程文本（HTML 抓取复用） */
+export function fetchText(target: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const mod: typeof http = target.startsWith('https') ? (https as unknown as typeof http) : http;
+    const req = mod.get(target, {
+      headers: { 'User-Agent': SCRAPER_UA, Accept: 'text/html,*/*', 'Accept-Language': 'en-US,en;q=0.9' },
+      timeout: 30000,
+    }, (r) => {
+      if (r.statusCode !== 200) { r.resume(); return reject(new Error(`HTTP ${r.statusCode}: ${target}`)); }
+      let data = '';
+      r.setEncoding('utf8');
+      r.on('data', (c: string) => { data += c; });
+      r.on('end', () => resolve(data));
+      r.on('error', reject);
+    });
+    req.on('timeout', () => req.destroy(new Error('请求超时')));
+    req.on('error', reject);
+  });
+}
+
+// ==================== 原站 HTML 解析工具集 ====================
+
+/** 去标签取纯文本 */
+export function stripTags(html: string): string {
+  return html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/** 文本归一化（去空白/标点/大小写差异），用于原站与导入内容一致性比对 */
+export function normalizeForCompare(t: string): string {
+  return t.toLowerCase().replace(/[\u2018\u2019\u201c\u201d\u00b4`]/g, "'").replace(/[\u2013\u2014\u2015]/g, '-').replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
+}
+
+/** 从 HTML 中截取一段平衡 div（从 start 处的 <div 到与之配对的 </div>） */
+export function extractBalancedDiv(html: string, start: number): string | null {
+  const openM = /^<div[\s>]/.exec(html.slice(start, start + 6));
+  if (!openM) return null;
+  let depth = 0;
+  const re = /<div[\s>]|<\/div>/g;
+  re.lastIndex = start;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) {
+    if (m[0] === '</div>') depth--;
+    else depth++;
+    if (depth === 0) return html.slice(start, m.index + m[0].length);
+  }
+  return null;
+}
+
+/** 找到某 class 首次出现的元素所在的平衡 div 片段 */
+export function extractDivByClass(html: string, className: string): string | null {
+  const idx = html.indexOf(className);
+  if (idx < 0) return null;
+  const divStart = html.lastIndexOf('<div', idx);
+  if (divStart < 0) return null;
+  return extractBalancedDiv(html, divStart);
+}
+
+/**
+ * 规则 R1：相对 URL 自动补全域名
+ * 出处：作者头像 src="/sites/default/files/..." 是相对路径，直接下载 404（2026-09-09）
+ */
+export function absoluteUrl(raw: string, base: string = ORIGIN_BASE): string {
+  if (!raw) return '';
+  const s = raw.trim();
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^(data|blob|javascript|mailto):/i.test(s)) return '';
+  return base + (s.startsWith('/') ? '' : '/') + s;
+}
+
+/**
+ * 规则 R2：元素定位一律「整标签匹配」，class 与 src/属性顺序无关
+ * 出处：原站 img 标签存在两种写法 <img class=".." src=".."> 和 <img src=".." class="..">，
+ * 用 "class...src" 固定顺序的正则会漏抓（2026-09-09 作者头像丢失）
+ * 返回匹配的完整 <img> 标签字符串（可能含换行）
+ */
+export function findTagByClass(html: string, tag: string, className: string): string | null {
+  const re = new RegExp('<' + tag + '[^>]*\\b' + className.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b[^>]*>', 'i');
+  const m = re.exec(html);
+  return m ? m[0] : null;
+}
+
+/** 从整标签字符串中提取某属性值 */
+export function attrOfTag(tagHtml: string, attr: string): string | null {
+  const m = new RegExp('\\b' + attr + '="([^"]*)"').exec(tagHtml);
+  return m ? m[1] : null;
+}
+
+/**
+ * 规则 R3：图片地址清洗——剥离 ?w= / ?h= / ?itok= 等裁剪参数（ Drupal image style 参数）
+ * 注意：仅用于取「原图」时；列表缩略图反而要保留 ?w= 参数以拿小图。
+ */
+export function stripImgParams(src: string): string {
+  return src.split('?')[0].trim();
+}
+
+/**
+ * 规则 R4：脏链清洗——原站正文中存在 bing.com/ck/a 跳转链接（原站自己的 SEO 行为），
+ * 形如 https://www.bing.com/ck/a?!&&p=...&u=a1AHR0cHM6Ly...&ntb=1
+ * u 参数 = 'a1' + 真实 URL 的 base64（URL-safe：-→+ _→/，去尾部 padding）
+ * 出处：Noxifense 文章外链（2026-09-09 排查确认是原站自身 HTML 所带，非导入问题）
+ */
+export function decodeBingRedirect(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (!/(^|\.)bing\.com$/i.test(u.hostname) || !/^\/ck\/a$/i.test(u.pathname)) return null;
+    const raw = u.searchParams.get('u') || '';
+    if (!raw.startsWith('a1')) return null;
+    let b64 = raw.slice(2).replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    const decoded = Buffer.from(b64, 'base64').toString('utf8');
+    if (/^https?:\/\//i.test(decoded)) return decoded;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export interface CleanLinksResult {
+  html: string;
+  cleaned: Array<{ from: string; to: string }>;
+}
+
+/**
+ * 规则 R4 应用：把正文里所有 bing 跳转链接替换为解码后的真实地址
+ * 覆盖 href="..."（a 标签）；清洗失败的链接原样保留
+ */
+export function cleanBingLinks(html: string): CleanLinksResult {
+  const cleaned: CleanLinksResult['cleaned'] = [];
+  const out = html.replace(/href="(https?:\/\/[^"]*bing\.com\/ck\/a[^"]*)"/gi, (full, href: string) => {
+    const real = decodeBingRedirect(href);
+    if (real && real !== href) {
+      cleaned.push({ from: href.slice(0, 120), to: real });
+      return 'href="' + real.replace(/&/g, '&amp;') + '"';
+    }
+    return full;
+  });
+  return { html: out, cleaned };
+}
+
+/**
+ * 规则 R5：原站主题标签 EN→CN 映射（未命中保留英文）
+ * 出处：导入文章标签需中文化，与前台标签词表一致（2026-09 起）
+ */
+export const TAG_ZH: Record<string, string> = {
+  'actives': '活性成分', 'aging': '抗老化', 'skin biology': '皮肤生物学', 'inspiration': '灵感',
+  'formulation': '配方', 'efficacy': '功效', 'sensory': '感官', 'texture': '质地', 'textures': '质地',
+  'sustainability': '可持续', 'microbiome': '微生态', 'wellness': '健康', 'sun care': '防晒',
+  'hair care': '洗护发', 'color cosmetics': '彩妆', 'emulsifiers': '乳化剂', 'soft focus': '柔焦',
+  'repair': '修护', 'soothing': '舒缓', 'moisturizing': '保湿', 'anti-pollution': '抗污染',
+  'biotech': '生物科技', 'clean beauty': '纯净美妆', 'blue beauty': '蓝色美妆', 'slower beauty': '慢美妆',
+  'skin longevity': '皮肤长寿', 'longevity': '长寿', 'resilience': '韧性', 'beauty': '美妆',
+  'self-care': '自我护理', 'circular economy': '循环经济', 'upcycling': '升级回收',
+  'natural origin': '天然来源', 'naturality': '自然性', 'preservation': '防腐',
+};
+
+/**
+ * 规则 R5 应用：标签翻译 + 未命中词自动记录（沉淀到未知标签清单，便于人工补充映射）
+ */
+export function translateTag(tag: string, unknownSink?: string[]): string {
+  const hit = TAG_ZH[tag.toLowerCase().trim()];
+  if (hit) return hit;
+  if (unknownSink && /[\u4e00-\u9fff]/.test(tag) === false && unknownSink.indexOf(tag) < 0) unknownSink.push(tag);
+  return tag;
+}
+
+/**
+ * 规则 R6：结构签名——提取正文区块类型序列，用于导入前后一致性校验（第 2 层使用）
+ * 签名格式如 "titre-h2>texte>image>titre-h3>zone-size>texte"
+ * 忽略空白差异，只看 Drupal paragraph 类型 + 图片顺序
+ */
+export function structureSignature(html: string): string {
+  const parts: string[] = [];
+  const re = /class="paragraph\s+paragraph--type--([a-z0-9_-]+)|<img[^>]*\ssrc="/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) {
+    if (m[0].toLowerCase().startsWith('<img')) {
+      // 连续图片折叠为单个 image 标记
+      if (parts[parts.length - 1] !== 'img') parts.push('img');
+    } else {
+      parts.push(m[1]);
+    }
+  }
+  return parts.join('>');
+}

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
 import { listNews, getNewsItem, createNewsItem, updateNewsItem, deleteNewsItem, listNewsTags, incrementNewsViews, batchDeleteNews, aiTranslateNews, aiTranslateStatus } from '../controllers/news.controller';
-import { importArticleFromSite, applyDocxTranslation } from '../controllers/import.controller';
+import { importArticleFromSite, applyDocxTranslation, reverifyImportedArticle } from '../controllers/import.controller';
 import { uploadTranslationDoc } from '../middleware/upload';
 
 const router = Router();
@@ -19,6 +19,8 @@ router.post('/import-from-site', authMiddleware, requireRole('editor', 'super_ad
 // AI 翻译：启动任务 / 查询进度（必须在 /:id 之前注册）
 router.get('/ai-translate/status/:jobId', authMiddleware, requireRole('editor', 'super_admin'), aiTranslateStatus);
 router.post('/:id/ai-translate', authMiddleware, requireRole('editor', 'super_admin'), aiTranslateNews);
+// 重新校验已导入文章与原站的一致性
+router.post('/:id/reverify', authMiddleware, requireRole('editor', 'super_admin'), reverifyImportedArticle);
 router.post('/:id/apply-docx', authMiddleware, requireRole('editor', 'super_admin'), uploadTranslationDoc.single('file'), applyDocxTranslation);
 router.post('/', authMiddleware, requireRole('editor', 'super_admin'), createNewsItem);
 router.put('/:id', authMiddleware, requireRole('editor', 'super_admin'), updateNewsItem);
