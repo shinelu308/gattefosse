@@ -62,6 +62,23 @@ async function chatCall(cfg: AiConfig, messages: Array<{ role: string; content: 
   }
 }
 
+/** 带重试的调用：瞬时错误（限流/5xx/网络）自动重试最多 3 次，指数退避 */
+async function chatCallRetry(cfg: AiConfig, messages: Array<{ role: string; content: string }>, maxTokens = 4000): Promise<string> {
+  let lastErr: any;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      return await chatCall(cfg, messages, maxTokens);
+    } catch (e: any) {
+      lastErr = e;
+      const msg = String(e?.message || '');
+      const nonRetriable = /HTTP 40[013]\b/.test(msg); // 鉴权/参数类错误不重试
+      if (nonRetriable || attempt === 3) throw lastErr;
+      await new Promise(r => setTimeout(r, attempt * 5000));
+    }
+  }
+  throw lastErr;
+}
+
 /** 简单并发池：按 n 个并发对数组逐项执行异步任务 */
 export async function mapPool<T, R>(arr: T[], n: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
   const results: R[] = new Array(arr.length);
@@ -117,7 +134,7 @@ export function chunkHtml(html: string, maxLen = 3500): string[] {
 export async function translateText(text: string, cfg?: AiConfig): Promise<string> {
   const c = cfg || (await getAiConfig());
   if (!c) throw new Error('AI_NOT_CONFIGURED');
-  const out = await chatCall(c, [
+  const out = await chatCallRetry(c, [
     { role: 'system', content: SYSTEM_PROMPT },
     { role: 'user', content: `翻译为简体中文：\n\n${text}` },
   ], 2000);
@@ -130,9 +147,9 @@ export async function translateHtml(html: string, cfg?: AiConfig, onProgress?: (
   if (!c) throw new Error('AI_NOT_CONFIGURED');
   const chunks = chunkHtml(html);
   let done = 0;
-  // 并发 3 路翻译分块（过大易触发限流，3 为稳妥值）
-  const out = await mapPool(chunks, 3, async (chunk) => {
-    const res = await chatCall(c, [
+  // 并发 2 路翻译分块（免费档大模型有并发/限流约束，2 路稳妥 + 失败自动重试）
+  const out = await mapPool(chunks, 2, async (chunk) => {
+    const res = await chatCallRetry(c, [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: `以下是需要翻译的 HTML 片段，保留所有标签结构，只翻译文本：\n\n${chunk}` },
     ]);
