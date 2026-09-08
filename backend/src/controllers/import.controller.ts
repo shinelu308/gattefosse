@@ -346,6 +346,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
   // 5. 逐区块转换
   const blocks: string[] = [];
   const skippedTypes = new Set<string>();
+  let linkedContentHtml = ''; // 原站 Related content 区块（不进正文，单独转卡片区块）
 
   // 本文自身的路径（用于把自引用链接改写为页内锚点）
   let selfPath = '';
@@ -394,9 +395,17 @@ export async function importArticleFromSite(req: Request, res: Response) {
       continue;
     }
 
+    // 原站 Related content（linked-content）：解析为卡片区块，不进正文
+    if (cls.includes('paragraph--type--linked-content')) {
+      linkedContentHtml = child;
+      skippedTypes.add('相关内容(转独立卡片区块)');
+      continue;
+    }
+
     // 其余区块一律原样保留原站标记（.paragraph 包装层承载原站全部样式，
     // 拍平会导致 .paragraph h2 / .text-formatted 等选择器失配），仅重写图片与链接
-    if (stripTags(child)) blocks.push(rewrite(child));
+    // 注意：纯图片区块（无文字）也要保留——stripTags 为空但含 <img>
+    if (stripTags(child) || /<img/i.test(child)) blocks.push(rewrite(child));
   }
 
   const contentHtml = blocks.join('\n');
@@ -452,13 +461,49 @@ export async function importArticleFromSite(req: Request, res: Response) {
     },
   });
 
+  // 10. 相关内容卡片 → 独立区块（解析原站 linked-content，映射本站产品/配方）
+  let relatedCount = 0;
+  if (linkedContentHtml) {
+    try {
+      const relatedCards = extractRelatedCards(linkedContentHtml, imgMap);
+      if (relatedCards.length > 0) {
+        await resolveRelatedCards(relatedCards);
+        await prisma.articleBlock.create({
+          data: {
+            articleId: created.id,
+            blockType: 'product_cards',
+            title: '相关内容',
+            content: JSON.stringify({
+              products: relatedCards.map(c => ({
+                kind: c.kind,
+                id: c.id || null,
+                name: c.name,
+                inciName: c.inciName || '',
+                imageUrl: c.imageUrl || '',
+                description: c.description || '',
+                typeLabel: c.typeLabel,
+                code: c.code || '',
+                tags: c.tags || [],
+              })),
+            }),
+            sortOrder: 0,
+          },
+        });
+        relatedCount = relatedCards.length;
+      }
+    } catch (e: any) {
+      console.error('解析 Related content 失败:', e.message);
+    }
+  }
+
   return res.json(success({
     item: created,
     imagesDownloaded: imgMap.size,
     imagesTotal: new Set(allSrcs).size,
     downloadErrors,
     skippedBlocks: [...skippedTypes],
-  }, '导入成功，已保存为草稿'));
+    relatedCards: relatedCount,
+  }, '导入成功，已保存为草稿' + (relatedCount ? `，相关内容 ${relatedCount} 张卡片已转独立区块` : '')));
 }
 
 // ==================== 翻译 Word 回填 ====================
@@ -528,7 +573,7 @@ function buildTranslationMap(paras: DocxParagraph[]): Map<string, string> {
 }
 
 /** 在映射中查找翻译：先全文匹配，再前 40 字符前缀匹配 */
-function lookupTranslation(map: Map<string, string>, text: string): string | null {
+function lookupTranslation(map: Map<string, string>, text: string): null | string {
   const key = normalizeForMatch(text);
   if (!key) return null;
   if (map.has(key)) return map.get(key) || null;
@@ -540,6 +585,104 @@ function lookupTranslation(map: Map<string, string>, text: string): string | nul
     }
   }
   return null;
+}
+
+// ==================== 原站 Related content（linked-content）解析与映射 ====================
+
+interface RelatedCard {
+  kind: 'pc' | 'formulation' | 'external';
+  id?: number;
+  name: string;
+  inciName?: string;
+  imageUrl: string;
+  description: string;
+  typeLabel: string;
+  code?: string;
+  applicationTag?: string;
+  tags: string[];
+  href?: string;
+}
+
+/** 从 linked-content 区块 HTML 中解析原站相关内容卡片 */
+function extractRelatedCards(linkedHtml: string, imgMap: Map<string, string>): RelatedCard[] {
+  const cards: RelatedCard[] = [];
+  const cardRe = /<div class="c-card c-card--bordered[^"]*"/g;
+  const starts: number[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = cardRe.exec(linkedHtml)) !== null) starts.push(m.index);
+  for (const start of starts) {
+    const frag = extractBalancedDiv(linkedHtml, start);
+    if (!frag) continue;
+    const hrefM = /c-card__title-link"\s+href="([^"]+)"/.exec(frag);
+    const titleM = /c-card__title-link[^>]*>([\s\S]*?)<\/a>/.exec(frag);
+    const typeM = /c-card__breadcrumb[^>]*>\s*<li[^>]*>([\s\S]*?)<\/li>/.exec(frag);
+    const codeM = /c-card__code[^>]*>([\s\S]*?)</.exec(frag);
+    const sumM = /c-card__summary[^>]*>([\s\S]*?)<\/p>/.exec(frag);
+    const tagArr = [...frag.matchAll(/c-card__tag-item[^>]*>([\s\S]*?)<\/li>/g)].map(x => stripTags(x[1]));
+    const imgM = /<img[^>]*\ssrc="([^"]+)"/.exec(frag);
+    const name = titleM ? stripTags(titleM[1]) : '';
+    if (!name) continue;
+    // 卡片图片：导入时已随正文统一下载，imgMap 里有本地路径
+    const imgLocal = imgM ? (imgMap.get(imgM[1]) || imgMap.get(absoluteUrl(imgM[1])) || '') : '';
+    cards.push({
+      kind: 'external',
+      name,
+      imageUrl: imgLocal,
+      description: sumM ? stripTags(sumM[1]) : '',
+      typeLabel: typeM ? stripTags(typeM[1]) : 'Related',
+      code: codeM ? stripTags(codeM[1]) : undefined,
+      tags: tagArr,
+      href: hrefM ? hrefM[1] : '',
+    });
+  }
+  return cards;
+}
+
+/** 卡片映射本站数据：产品按 intlUrl 精确匹配，配方按 code / 归一化名称匹配；命中则替换为本站中文数据 */
+async function resolveRelatedCards(cards: RelatedCard[]): Promise<void> {
+  for (const c of cards) {
+    const href = c.href || '';
+    try {
+      if (/product-finder/.test(href)) {
+        const abs = href.startsWith('http') ? href : SITE_ORIGIN + href;
+        const prod = await prisma.pcIngredient.findFirst({ where: { intlUrl: abs } });
+        if (prod) {
+          c.kind = 'pc';
+          c.id = prod.id;
+          c.name = prod.name;
+          c.inciName = prod.inciName;
+          if (prod.imageUrl) c.imageUrl = prod.imageUrl;
+          if (prod.description) c.description = prod.description;
+          c.applicationTag = prod.functionalityTag || '';
+          continue;
+        }
+      }
+      if (/formulation-finder/.test(href)) {
+        let f: { id: number; name: string; code: string | null; imageUrl: string | null; description: string | null; applicationTag: string } | null = null;
+        if (c.code) {
+          f = await prisma.formulation.findFirst({ where: { code: c.code } });
+        }
+        if (!f) {
+          const key = normalizeForMatch(c.name);
+          if (key) {
+            const all = await prisma.formulation.findMany({ take: 500 });
+            f = all.find((x: any) => normalizeForMatch(x.name) === key) || null;
+          }
+        }
+        if (f) {
+          c.kind = 'formulation';
+          c.id = f.id;
+          c.name = f.name;
+          if (f.imageUrl) c.imageUrl = f.imageUrl;
+          if (f.description) c.description = f.description;
+          c.applicationTag = f.applicationTag || '';
+          continue;
+        }
+      }
+    } catch {
+      // 匹配异常时保留原站数据（external）
+    }
+  }
 }
 
 /** 单个元素内部 HTML 的纯文本 */

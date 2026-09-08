@@ -2477,6 +2477,29 @@ const QUILL_TOOLBAR = [
                     </div>
                   </div>
                 </div>
+                <div style="border-top:1px dashed var(--border);margin-top:10px;"></div>
+                <div style="margin-top:14px;">
+                  <label>相关内容卡片 <span class="hint">（导入时自动映射本站产品/配方；也可手工搜索添加）</span></label>
+                  <div v-for="(card, ci) in newsRelatedCards" :key="ci" style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;background:#fafbfc;">
+                    <img v-if="card.imageUrl" :src="card.imageUrl" style="width:64px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0;">
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-size:13px;font-weight:500;">{{ card.name }} <span class="tag tag-blue" style="font-size:11px;">{{ card.typeLabel || (card.kind === 'formulation' ? 'Formulation' : 'Ingredient') }}</span></div>
+                      <div style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ (card.code ? card.code + ' · ' : '') + (card.description || '').slice(0, 60) }}</div>
+                    </div>
+                    <button class="btn btn-sm btn-danger" @click="removeNewsCard(ci)">移除</button>
+                  </div>
+                  <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+                    <input type="text" class="form-control" style="max-width:260px;" placeholder="搜索产品/配方名称或代码..." v-model="newsCardSearch.kw" @keyup.enter="searchNewsCards()">
+                    <button class="btn btn-outline btn-sm" @click="searchNewsCards()">搜索</button>
+                  </div>
+                  <div v-if="newsCardSearch.results.length" style="border:1px solid var(--border);border-radius:6px;margin-top:6px;max-height:220px;overflow-y:auto;">
+                    <div v-for="r in newsCardSearch.results" :key="r.kind + '-' + r.id" style="display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--border-light);" @click="addNewsCard(r)">
+                      <img v-if="r.imageUrl" :src="r.imageUrl" style="width:44px;height:28px;object-fit:cover;border-radius:3px;flex-shrink:0;">
+                      <span style="flex:1;font-size:13px;">{{ r.name }} <span style="color:var(--text-muted);font-size:12px;">{{ r.code || '' }}</span></span>
+                      <span style="font-size:12px;color:var(--text-muted);">{{ r.kindLabel }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
                 <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;user-select:none;">
@@ -3998,7 +4021,9 @@ createApp({
       newsImportMsg: '',
       newsImport: { url: '', category: 'corporate' },
       newsPagination: { total: 0, totalPages: 0 },
-      editingNews: { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', readingTime: null, publishedDate: '', eventEndDate: '', location: '', booth: '', isPublished: false },
+      editingNews: { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', readingTime: null, publishedDate: '', eventEndDate: '', location: '', booth: '', isPublished: false, blocks: [] },
+      newsRelatedCards: [],
+      newsCardSearch: { kw: '', results: [] },
       // 获取灵感 — 文章
       articleList: [],
       selectedArticleIds: [],
@@ -4695,6 +4720,37 @@ createApp({
         }
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingNewsImage = false; event.target.value = ''; }
+    },
+    // ============ 相关内容卡片 ============
+    async searchNewsCards() {
+      var kw = (this.newsCardSearch.kw || '').trim();
+      if (!kw) { this.newsCardSearch.results = []; return; }
+      var results = [];
+      try {
+        const d1 = await this.api('/pc-ingredients?keyword=' + encodeURIComponent(kw) + '&limit=8');
+        (d1.list || []).forEach(function(it) {
+          results.push({ kind: 'pc', id: it.id, name: it.name, imageUrl: it.imageUrl || '', code: it.inciName || '', description: it.description || '', kindLabel: '产品' });
+        });
+      } catch (e) { console.error(e); }
+      try {
+        const d2 = await this.api('/formulations?keyword=' + encodeURIComponent(kw) + '&limit=8');
+        (d2.list || []).forEach(function(it) {
+          results.push({ kind: 'formulation', id: it.id, name: it.name, imageUrl: it.imageUrl || '', code: it.code || '', description: it.description || '', kindLabel: '配方' });
+        });
+      } catch (e) { console.error(e); }
+      this.newsCardSearch.results = results.slice(0, 12);
+    },
+    addNewsCard(r) {
+      if (this.newsRelatedCards.some(function(c) { return c.kind === r.kind && c.id === r.id; })) return;
+      this.newsRelatedCards.push({
+        kind: r.kind, id: r.id, name: r.name, inciName: r.kind === 'pc' ? (r.code || '') : '',
+        imageUrl: r.imageUrl, description: r.description, typeLabel: r.kind === 'formulation' ? 'Formulation' : 'Ingredient',
+        code: r.kind === 'formulation' ? (r.code || '') : '', applicationTag: '', tags: []
+      });
+      this.newsCardSearch = { kw: '', results: [] };
+    },
+    removeNewsCard(ci) {
+      this.newsRelatedCards.splice(ci, 1);
     },
     async uploadHeroBackgroundImage(event, bi) {
       const file = event.target.files[0];
@@ -6342,6 +6398,8 @@ createApp({
     },
     resetNewsEdit() {
       this.editingNews = { id: null, type: 'news', category: 'corporate', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), eventEndDate: '', location: '', booth: '', isPublished: false, tags: null, tagInput: '' };
+      this.newsRelatedCards = [];
+      this.newsCardSearch = { kw: '', results: [] };
       this.newsShowAdvanced = false;
     },
     // 活动日期区间预览（对齐原站「23 - 24 Sep 2026」格式）
@@ -6377,6 +6435,21 @@ createApp({
         eventEndDate: item.eventEndDate ? new Date(item.eventEndDate).toISOString().slice(0,10) : '',
         tagInput: tagArr.join(', ')
       };
+      // 相关内容卡片快照（product_cards 区块）
+      this.newsRelatedCards = [];
+      var self2 = this;
+      (item.blocks || []).forEach(function(b) {
+        if (b.blockType !== 'product_cards') return;
+        var parsed = {};
+        try { parsed = typeof b.content === 'string' ? JSON.parse(b.content) : (b.content || {}); } catch(e) { parsed = {}; }
+        (parsed.products || []).forEach(function(pr) {
+          self2.newsRelatedCards.push({
+            kind: pr.kind || 'pc', id: pr.id || null, name: pr.name || '', inciName: pr.inciName || '',
+            imageUrl: pr.imageUrl || '', description: pr.description || '', typeLabel: pr.typeLabel || '',
+            code: pr.code || '', applicationTag: pr.applicationTag || '', tags: pr.tags || []
+          });
+        });
+      });
       this.newsShowAdvanced = true;
       this.currentPage = 'news-edit';
     },
@@ -6387,6 +6460,15 @@ createApp({
       try {
         // 序列化标签
         var payload = { ...this.editingNews };
+        // 相关内容卡片区块（无卡片时传空数组以清空）
+        payload.blocks = [{
+          blockType: 'product_cards',
+          title: '相关内容',
+          content: JSON.stringify({ products: this.newsRelatedCards.map(function(c) {
+            return { kind: c.kind, id: c.id, name: c.name, inciName: c.inciName || '', imageUrl: c.imageUrl || '', description: c.description || '', typeLabel: c.typeLabel || '', code: c.code || '', tags: c.tags || [] };
+          }) }),
+          sortOrder: 0
+        }];
         if (payload.tagInput) {
           payload.tags = JSON.stringify(payload.tagInput.split(',').map(function(t) { return t.trim(); }).filter(Boolean));
         } else {
