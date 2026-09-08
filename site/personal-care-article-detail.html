@@ -50,11 +50,11 @@
             text-align: left !important;
         }
 
-        /* 摘要正文：大号灰色字体 + 金色底边线 */
+        /* 摘要正文：大号灰色字体 + 金色底边线（原站实测 20px/30px Light 灰） */
         .block-accroche {
             font-family: "Din Next Lt Pro Light", "Microsoft YaHei", sans-serif !important;
-            font-size: 18px !important;
-            line-height: 1.35 !important;
+            font-size: 20px !important;
+            line-height: 30px !important;
             color: #74797D !important;
             border-bottom: 1px solid #E1D9C3 !important;
             padding-bottom: 12px !important;
@@ -65,6 +65,24 @@
             font-size: inherit !important;
             color: inherit !important;
             margin: 0 !important;
+        }
+
+        /* ===== 正文区块标题（原站 theme-cosm 文章排版实测值）===== */
+        /* h2 章节题：Slab 粗体 40px 品红（theme accent） */
+        .s-article .paragraph--type--titre-h2 h2 {
+            font-family: "Din Next Slab Pro Bold", "Din Next Lt Pro Bold", "Microsoft YaHei", sans-serif !important;
+            font-size: 40px !important;
+            font-weight: 400 !important;
+            line-height: 48px !important;
+            color: #C4004D !important;
+        }
+        /* h3 小节题：Lt 粗体 33px 深灰 */
+        .s-article .paragraph--type--titre-h3 h3 {
+            font-family: "Din Next Lt Pro Bold", "Microsoft YaHei", sans-serif !important;
+            font-size: 33px !important;
+            font-weight: 400 !important;
+            line-height: 39.6px !important;
+            color: #232426 !important;
         }
 
         /* ===== node__content 网格兜底：手写内容（无 .paragraph 包装）占满整行 ===== */
@@ -365,7 +383,7 @@
 
                                     <!-- Summary -->
                                     <!-- Summary section (matching original Drupal .s-article__subtitle + .block-accroche) -->
-                                    <div v-if="article.summary" class="adp-summary-wrap" data-page-node-id="s6gHma35OvjDMCgCwVKiEs">
+                                    <div v-if="article.summary && article.showSummary !== false" class="adp-summary-wrap" data-page-node-id="s6gHma35OvjDMCgCwVKiEs">
                                         <div data-page-node-id="SNqFIYRw2jpkHAcATcvAZu">
                                             <div class="s-article__subtitle" data-page-node-id="F0RVLMtTbHRqfzs2UG5ghA"><span data-page-node-id="AFrsarOtINCi8OGz1BmL7K">{{ article.summaryLabel || '' }}</span></div>
                                         </div>
@@ -581,6 +599,14 @@
                                 } else if (summaryText) {
                                     summaryLabel = '聚焦' + summaryText;
                                 }
+                                // 导语去重：原站仅在摘要与正文不重复时显示 accroche 块
+                                // （部分文章如 bioactive 的导语就是正文首段，原站不渲染该块；若重复显示会与原站不一致）
+                                var showSummary = true;
+                                if (summaryText && summaryText.length > 20) {
+                                    var norm = function (s) { return (s || '').replace(/\s+/g, '').toLowerCase(); };
+                                    var sample = norm(summaryText).substring(0, 50);
+                                    if (sample && norm(item.contentHtml).indexOf(sample) !== -1) showSummary = false;
+                                }
 
                                 // Process content HTML for image galleries (wrap consecutive images into <table>)
                                 var rawContent = item.contentHtml || '';
@@ -606,6 +632,7 @@
                                     tagsList: tagsList,
                                     displayDate: displayDate,
                                     summaryLabel: summaryLabel,
+                                    showSummary: showSummary,
                                     contentHtml: rawContent,
                                     processedContentHtml: processedContent,
                                     blocks: blocks,
