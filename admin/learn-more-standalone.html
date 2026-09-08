@@ -88,6 +88,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 </head>
 <body>
 <div id="app">
+  <!-- 列表视图 -->
+  <div v-if="!showEdit">
   <h1 class="page-title">了解更多 <span class="page-lock">category = pharma</span></h1>
   <p class="page-subtitle">{{ activeMeta.subtitle }}</p>
 
@@ -170,52 +172,63 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       </div>
     </div>
   </div>
+  </div>
 
-  <!-- ============ 编辑弹框 ============ -->
-  <div v-if="showEdit" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'edit' : ''" @click="onOverlayClick($event, 'edit')">
-    <div class="card modal-card">
-      <div class="card-header">
-        <h3 style="font-size:16px;font-weight:600;">{{ editing.id ? '编辑' : '新增' }} {{ activeMeta.label }}
-          <span style="font-weight:400;font-size:12px;color:#999;margin-left:8px;">type = {{ activeMeta.type }} · category = pharma</span>
-        </h3>
-        <span style="flex:1;"></span>
-        <button class="btn btn-sm" @click="showEdit=false">✕</button>
-      </div>
+  <!-- ============ 编辑视图（与「获取灵感-文章」编辑页同一布局） ============ -->
+  <div v-else>
+    <h1 class="page-title">{{ editing.id ? '编辑文章 — ' + editing.title : '新增' + activeMeta.addLabel }}</h1>
+    <p class="page-subtitle">{{ activeMeta.subtitle }} <span v-if="editing.id" style="color:#999;font-size:12px;margin-left:16px;">type = {{ activeMeta.type }} · category = pharma</span></p>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <button class="btn btn-sm btn-outline" @click="showEdit=false">← 返回列表</button>
+    </div>
+
+    <!-- 基本信息 -->
+    <div class="card">
+      <div class="card-header"><h3 style="font-size:15px;font-weight:600;margin:0;">基本信息</h3></div>
       <div class="card-body">
-        <!-- 基本信息 -->
-        <div class="form-row">
-          <div class="form-group" style="grid-column:1 / -1;">
-            <label>标题 <span class="required">*</span></label>
-            <input class="form-control" v-model="editing.title" placeholder="内容标题">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>发布日期 <span class="required">*</span></label>
-            <input type="date" class="form-control" v-model="editing.publishedDate">
-          </div>
-          <div class="form-group">
-            <label>子类型 / 分类</label>
-            <select class="form-control" v-model="editing.articleType">
-              <option value="">（未分类）</option>
-              <option v-for="o in typeOptions" :key="o" :value="o">{{ o }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row" v-if="activeTab==='hot-topics'">
-          <div class="form-group">
-            <label>作者 <span class="form-hint">详情页头部展示（头像/姓名/职位），名单在「作者管理」维护</span></label>
-            <select class="form-control" v-model="editing.authorId">
-              <option value="">（未指定）</option>
-              <option v-for="a in authors" :key="a.id" :value="a.id">{{ a.name }}{{ a.title ? ' · ' + a.title : '' }}</option>
-            </select>
-          </div>
-          <div class="form-group"></div>
-        </div>
-
-        <!-- 封面图 -->
         <div class="form-group">
-          <label>封面图 <span class="form-hint">列表页展示</span></label>
+          <label>文章标题 <span class="required">*</span></label>
+          <input class="form-control" v-model="editing.title" placeholder="文章标题">
+        </div>
+        <div class="form-group">
+          <label>Slug/URL</label>
+          <input class="form-control" v-model="editing.slug" placeholder="自动生成或手动输入">
+        </div>
+        <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='publications'">
+          <label>文章子类型</label>
+          <select class="form-control" style="max-width:300px;" v-model="editing.articleType">
+            <option value="">请选择</option>
+            <option v-for="o in typeOptions" :key="o" :value="o">{{ o }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>发布日期 <span class="required">*</span></label>
+          <input type="date" class="form-control" v-model="editing.publishedDate" style="max-width:200px;">
+        </div>
+        <div class="form-group" v-if="activeTab==='hot-topics'">
+          <label>阅读时长 <span class="form-hint">（留空自动计算）</span></label>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <input type="number" class="form-control" v-model="editing.readingTime" style="max-width:120px;" placeholder="分钟">
+            <span style="font-size:12px;color:#999;">分钟</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>发布状态</label>
+          <label class="checkline" style="cursor:pointer;"><input type="checkbox" v-model="editing.isPublished"> 已发布</label>
+        </div>
+        <div class="form-group">
+          <label>文章摘要</label>
+          <textarea class="form-control" rows="3" v-model="editing.summary" placeholder="文章摘要..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图片 / 作者 -->
+    <div class="card">
+      <div class="card-header"><h3 style="font-size:15px;font-weight:600;margin:0;">图片</h3></div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>缩略图 <span class="form-hint">（列表页展示）</span></label>
           <div class="upload-row">
             <input class="form-control" v-model="editing.imageUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:200px;">
             <input type="file" accept="image/*" @change="uploadImage($event)">
@@ -223,61 +236,70 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           </div>
           <img v-if="editing.imageUrl" :src="editing.imageUrl" class="preview-img" @error="$event.target.style.display='none'">
         </div>
-
-        <!-- 详情页大图（热点话题） -->
         <div class="form-group" v-if="activeTab==='hot-topics'">
-          <label>详情页大图 topBackground <span class="form-hint">详情页顶部横幅；导入时自动取原站 banner，可在此替换</span></label>
+          <label>头图/Hero <span class="form-hint">（文章详情页顶部全幅背景图；导入时自动取原站 banner，可在此替换）</span></label>
           <div class="upload-row">
-            <input class="form-control" v-model="editing.topBackground" placeholder="图片 URL 或上传" style="flex:1;min-width:200px;">
+            <input class="form-control" v-model="editing.topBackground" placeholder="头图 URL 或上传" style="flex:1;min-width:200px;">
             <input type="file" accept="image/*" @change="uploadTopImage($event)">
             <span v-if="uploadingTop" style="font-size:12px;color:#999;">上传中...</span>
           </div>
-          <img v-if="editing.topBackground" :src="editing.topBackground" class="preview-img" @error="$event.target.style.display='none'">
+          <img v-if="editing.topBackground" :src="editing.topBackground" style="max-width:300px;max-height:80px;border-radius:4px;border:1px solid #eee;object-fit:cover;width:100%;display:block;margin-top:6px;" @error="$event.target.style.display='none'">
         </div>
-
-        <!-- 简介 -->
-        <div class="form-group">
-          <label>简介 Summary</label>
-          <textarea class="form-control" v-model="editing.summary" rows="2" placeholder="列表卡片展示的摘要文字"></textarea>
-        </div>
-
-        <!-- 文章正文（热点话题 + Journées Galéniques 专题页） -->
-        <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='journees'">
-          <label>正文内容
-            <select class="form-control" v-model="editMode" @change="switchEditMode()" :disabled="contentLocked" style="width:170px;display:inline-block;margin-left:8px;padding:4px 8px;">
-              <option value="html">HTML 源码</option>
-              <option value="visual" v-if="!contentLocked">可视化编辑</option>
+      </div>
+      <template v-if="activeTab==='hot-topics'">
+        <div class="card-header" style="border-top:1px solid #eee;"><h3 style="font-size:15px;font-weight:600;margin:0;">作者</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>选择作者 <span class="form-hint">详情页头部展示（头像/姓名/职位），名单在「作者管理」维护</span></label>
+            <select class="form-control" style="max-width:300px;" v-model="editing.authorId">
+              <option value="">不指定</option>
+              <option v-for="a in authors" :key="a.id" :value="a.id">{{ a.name }}{{ a.title ? ' · ' + a.title : '' }}</option>
             </select>
-            <span class="form-hint" v-if="contentLocked">🔒 原站导入内容锁定为源码模式（可视化会破坏图片横排/重点框/表格样式）</span>
-            <span class="form-hint" v-else>手动撰写的内容可用可视化编辑</span>
-          </label>
-          <div class="quill-wrap" v-show="editMode==='visual'">
-            <div id="lm-quill-editor" class="quill-editor"></div>
           </div>
-          <textarea v-show="editMode==='html'" class="form-control" style="min-height:280px;font-family:Consolas,monospace;font-size:12px;line-height:1.6;" v-model="editing.contentHtml" placeholder="直接编辑 HTML 源码，保存时原样入库"></textarea>
         </div>
+      </template>
+    </div>
 
-        <!-- 研讨会专用 -->
+    <!-- 标签与附加设置 -->
+    <div class="card">
+      <div class="card-header" v-if="activeTab==='hot-topics' || activeTab==='webinar'"><h3 style="font-size:15px;font-weight:600;margin:0;">标签</h3></div>
+      <div class="card-body" v-if="activeTab==='hot-topics' || activeTab==='webinar'">
+        <div class="form-group">
+          <label>已有标签 <span class="form-hint">（点击快速添加）</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;">
+            <span class="type-tag" style="cursor:pointer;" v-for="(tag, ti) in hotTagPool" :key="'p'+ti" @click="addTag(tag)">{{ tag }}</span>
+            <span v-if="!hotTagPool.length" style="font-size:12px;color:#999;">暂无已存在的标签</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>新标签</label>
+          <div style="display:flex;gap:4px;">
+            <input class="form-control" v-model="tagInput" placeholder="输入标签回车添加" @keyup.enter="addTag(tagInput); tagInput='';" style="flex:1;max-width:300px;">
+            <button class="btn btn-sm btn-outline" @click="addTag(tagInput); tagInput='';" :disabled="!tagInput || !tagInput.trim()">添加</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>当前标签</label>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;">
+            <span class="type-tag" style="background:#EAF3DE;color:#3B6D11;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in tagsArray" :key="'c'+ti">
+              {{ tag }}
+              <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removeTag(ti)">×</span>
+            </span>
+            <span v-if="!tagsArray.length" style="font-size:12px;color:#999;">暂无标签</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-header" style="border-top:1px solid #eee;"><h3 style="font-size:15px;font-weight:600;margin:0;">附加设置</h3></div>
+      <div class="card-body">
         <div v-if="activeTab==='webinar'">
           <div class="form-group">
             <label>研讨会视频 URL <span class="required">*</span><span class="form-hint">点击卡片跳转该链接</span></label>
             <input class="form-control" v-model="editing.videoUrl" placeholder="https://...（支持 gotowebinar 等外部链接）">
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>标签 Tags</label>
-              <input class="form-control" v-model="editing.tagsText" placeholder="多个标签用逗号分隔，如：口服制剂, 缓释">
-            </div>
-            <div class="form-group">
-              <label>权限</label>
-              <label class="checkline" style="margin-top:6px;cursor:pointer;">
-                <input type="checkbox" v-model="editing.lock"> 🔒 仅登录用户可查看
-              </label>
-            </div>
-          </div>
+          <label class="checkline" style="cursor:pointer;">
+            <input type="checkbox" v-model="editing.lock"> 🔒 仅登录用户可查看
+          </label>
         </div>
-
-        <!-- 出版物专用（Publications 排除资料手册） -->
         <div v-if="activeTab==='publications'">
           <div class="form-row">
             <div class="form-group">
@@ -291,41 +313,41 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           </div>
           <div class="form-group">
             <label>PDF 下载链接</label>
-            <div class="upload-row">
-              <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf" style="flex:1;min-width:200px;">
-            </div>
+            <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf">
           </div>
         </div>
-
-        <!-- 资料手册专用 -->
         <div v-if="activeTab==='brochures'">
           <div class="form-group">
             <label>PDF 下载链接</label>
             <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf">
           </div>
-          <label class="checkline" style="cursor:pointer;margin-bottom:14px;">
+          <label class="checkline" style="cursor:pointer;">
             <input type="checkbox" v-model="editing.lock"> 🔒 仅登录用户可下载（资料手册常需留资）
           </label>
         </div>
-
-        <!-- 标签（热点话题文章用） -->
-        <div class="form-group" v-if="activeTab==='hot-topics'">
-          <label>标签 Tags <span class="form-hint">逗号分隔，前台侧栏主题筛选</span></label>
-          <input class="form-control" v-model="editing.tagsText" placeholder="如：热熔挤出, 口服多肽">
-        </div>
-
-        <!-- 发布状态 -->
-        <div class="form-group" style="border-top:1px solid #eee;padding-top:14px;">
-          <label class="checkline" style="cursor:pointer;">
-            <input type="checkbox" v-model="editing.isPublished" style="width:16px;height:16px;"> 立即发布（取消勾选则存为草稿）
-          </label>
-        </div>
-
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px;">
-          <button class="btn" @click="showEdit=false">取消</button>
-          <button class="btn btn-primary" @click="saveItem()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
-        </div>
+        <div v-if="!activeTab || !['webinar','publications','brochures'].includes(activeTab)" class="muted" style="font-size:12px;">该类型暂无附加设置</div>
       </div>
+    </div>
+
+    <!-- 正文内容 -->
+    <div class="card" v-if="activeTab==='hot-topics' || activeTab==='journees'">
+      <div class="card-header"><h3 style="font-size:15px;font-weight:600;margin:0;">正文内容</h3></div>
+      <div class="card-body">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+          <button class="btn btn-sm" :class="editMode==='visual' ? 'btn-primary' : 'btn-outline'" @click="setEditMode('visual')">可视化编辑</button>
+          <button class="btn btn-sm" :class="editMode==='html' ? 'btn-primary' : 'btn-outline'" @click="setEditMode('html')">HTML 源码</button>
+          <span v-if="contentLocked" style="font-size:12px;color:#B45309;">🔒 原站导入内容，已锁定源码模式（可视化编辑会破坏原站版式）</span>
+        </div>
+        <div class="quill-wrap" v-show="editMode==='visual'">
+          <div id="lm-quill-editor" class="quill-editor"></div>
+        </div>
+        <textarea v-show="editMode==='html'" class="form-control" style="min-height:400px;font-family:Consolas,monospace;font-size:13px;line-height:1.6;white-space:pre;" v-model="editing.contentHtml" spellcheck="false" placeholder="直接编辑 HTML 源码，保存时原样入库"></textarea>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin:16px 0 8px;">
+      <button class="btn btn-outline" @click="showEdit=false">取消</button>
+      <button class="btn btn-primary" @click="saveItem()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
     </div>
   </div>
 
@@ -411,6 +433,7 @@ createApp({
       importMsg: '',
       importLastId: null,
       importDoneUrl: null,
+      tagInput: '',
       overlayDown: '',
       importing: false,
       editMode: 'visual',
@@ -438,6 +461,20 @@ createApp({
       if (this.activeTab === 'publications') c++;
       if (this.activeTab === 'webinar' || this.activeTab === 'brochures') c++;
       return c;
+    },
+    // 当前标签（tagsText 逗号串 ↔ 数组）
+    tagsArray() {
+      return (this.editing.tagsText || '').split(/[,，]/).map(s => s.trim()).filter(Boolean);
+    },
+    // 已有标签池：从当前列表文章的 tags 收集（与基准「已有标签」一致）
+    hotTagPool() {
+      const set = [];
+      for (const it of this.list) {
+        let arr = [];
+        try { arr = JSON.parse(it.tags || 'null') || []; } catch (e) { arr = String(it.tags || '').split(',').map(s => s.trim()).filter(Boolean); }
+        for (const t of arr) if (t && !set.includes(t) && !this.tagsArray.includes(t)) set.push(t);
+      }
+      return set;
     },
   },
   mounted() {
@@ -547,10 +584,10 @@ createApp({
     // ---------- 编辑 ----------
     defaultEditing() {
       return {
-        id: null, title: '', publishedDate: todayStr(), imageUrl: '', topBackground: '', summary: '',
+        id: null, title: '', slug: '', publishedDate: todayStr(), imageUrl: '', topBackground: '', summary: '',
         articleType: this.activeTab === 'brochures' ? '资料手册' : '',
         contentHtml: '', videoUrl: '', pdfUrl: '', publicationName: '', authorName: '', authorId: '',
-        lock: false, isPublished: false, tagsText: '', tags: null,
+        lock: false, isPublished: false, tagsText: '', tags: null, readingTime: null,
       };
     },
     openNew() {
@@ -717,6 +754,7 @@ createApp({
       Object.assign(e, {
         id: item.id,
         title: item.title || '',
+        slug: item.slug || '',
         publishedDate: item.publishedDate ? String(item.publishedDate).slice(0,10) : todayStr(),
         imageUrl: item.imageUrl || '',
         topBackground: item.topBackground || '',
@@ -727,6 +765,7 @@ createApp({
         pdfUrl: item.pdfUrl || '',
         publicationName: item.publicationName || '',
         authorName: item.authorName || '',
+        readingTime: item.readingTime || null,
         lock: !!(item.lock === true || item.lock === 1),
         isPublished: !!(item.isPublished === true || item.isPublished === 1),
         tagsText: tags.join(', '),
@@ -747,6 +786,24 @@ createApp({
       } else {
         this.$nextTick(() => this.initQuill(this.editing.contentHtml || ''));
       }
+    },
+    // 基准风格按钮组切换（可视化/源码）
+    setEditMode(mode) {
+      if (this.contentLocked && mode === 'visual') return;
+      if (this.editMode === mode) return;
+      this.editMode = mode;
+      this.switchEditMode();
+    },
+    addTag(t) {
+      const v = (t || '').trim();
+      if (!v) return;
+      const arr = this.tagsArray;
+      if (!arr.includes(v)) this.editing.tagsText = arr.concat(v).join(', ');
+    },
+    removeTag(i) {
+      const arr = this.tagsArray.slice();
+      arr.splice(i, 1);
+      this.editing.tagsText = arr.join(', ');
     },
     async saveItem() {
       if (!this.editing.title) return AdminDialog.alert('标题不能为空', { type: 'warn' });
@@ -773,6 +830,8 @@ createApp({
         publicationName: this.activeTab === 'publications' ? (this.editing.publicationName || null) : undefined,
         authorName: this.activeTab === 'publications' ? (this.editing.authorName || null) : undefined,
         authorId: this.activeTab === 'hot-topics' ? (this.editing.authorId ? Number(this.editing.authorId) : null) : undefined,
+        slug: this.editing.slug || undefined,
+        readingTime: this.activeTab === 'hot-topics' ? (this.editing.readingTime ? Number(this.editing.readingTime) : null) : undefined,
         tags: this.editing.tagsText ? JSON.stringify(this.editing.tagsText.split(/[,，]/).map(s=>s.trim()).filter(Boolean)) : null,
       };
       // 研讨会校验 videoUrl
