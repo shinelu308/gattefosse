@@ -124,7 +124,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       <button class="btn btn-primary" @click="reloadList()">搜索</button>
       <button class="btn btn-outline" @click="keyword=''; filterArticleType=''; filterPublished=''; page=1; loadList();">重置</button>
       <button class="btn btn-primary" @click="openNew()">+ 新增{{ activeMeta.addLabel }}</button>
-      <button class="btn btn-slate" v-if="activeTab==='hot-topics'" @click="openImport()">⬇ 从原站导入</button>
+      <button class="btn btn-slate" v-if="activeTab==='hot-topics' || activeTab==='publications'" @click="openImport()">⬇ 从原站导入</button>
       <button class="btn btn-sm btn-danger" @click="batchDelete" :disabled="selectedIds.length === 0">批量删除 ({{ selectedIds.length }})</button>
     </div>
     <table>
@@ -320,14 +320,30 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             </div>
           </div>
           <div class="form-group">
-            <label>PDF 下载链接</label>
-            <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf">
+            <label>PDF 文件 <span class="form-hint" v-if="editing.pdfSize">（{{ formatBytes(Number(editing.pdfSize)) }}）</span></label>
+            <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf 或从文档资源选择">
+            <div style="display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap;">
+              <select class="form-control" style="max-width:320px;font-size:12px;" v-model="pubDocSelected" @change="applyPubDoc()">
+                <option value="">📚 从文档资源选择（Publication）</option>
+                <option v-for="doc in pubDocs" :key="doc.id" :value="doc.filePath">{{ doc.title.slice(0, 40) }}（{{ formatBytes(Number(doc.fileSize)) }}）</option>
+              </select>
+              <button type="button" class="btn btn-sm btn-outline" @click="$refs.pubPdfFile.click()" :disabled="pubUploading">{{ pubUploading ? '上传中...' : '⬆ 上传新 PDF' }}</button>
+              <input type="file" ref="pubPdfFile" accept=".pdf" style="display:none" @change="uploadPubPdf($event)">
+            </div>
           </div>
         </div>
         <div v-if="activeTab==='brochures'">
           <div class="form-group">
-            <label>PDF 下载链接</label>
-            <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf">
+            <label>PDF 文件 <span class="form-hint" v-if="editing.pdfSize">（{{ formatBytes(Number(editing.pdfSize)) }}）</span></label>
+            <input class="form-control" v-model="editing.pdfUrl" placeholder="https://... 或 /uploads/xxx.pdf 或从文档资源选择">
+            <div style="display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap;">
+              <select class="form-control" style="max-width:320px;font-size:12px;" v-model="pubDocSelected" @change="applyPubDoc()">
+                <option value="">📚 从文档资源选择（Publication）</option>
+                <option v-for="doc in pubDocs" :key="doc.id" :value="doc.filePath">{{ doc.title.slice(0, 40) }}（{{ formatBytes(Number(doc.fileSize)) }}）</option>
+              </select>
+              <button type="button" class="btn btn-sm btn-outline" @click="$refs.pubPdfFile.click()" :disabled="pubUploading">{{ pubUploading ? '上传中...' : '⬆ 上传新 PDF' }}</button>
+              <input type="file" ref="pubPdfFile" accept=".pdf" style="display:none" @change="uploadPubPdf($event)">
+            </div>
           </div>
           <label class="checkline" style="cursor:pointer;">
             <input type="checkbox" v-model="editing.lock"> 🔒 仅登录用户可下载（资料手册常需留资）
@@ -370,22 +386,54 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         <button class="btn btn-sm" @click="showImport=false">✕</button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label>原站文章链接 <span class="hint">（热点话题 / 了解更多文章详情页地址）</span></label>
-          <input type="text" class="form-control" v-model="importUrl" placeholder="https://www.gattefosse.com/pharmaceuticals/learn-more/xxx" @keyup.enter="doImport()">
-        </div>
-        <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
-          导入后保存为<strong>草稿</strong>（分类固定为热点话题），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
-          支持英文站（gattefosse.com）与中文站链接；导入内容含原站脱版标记，会自动以 HTML 源码模式打开编辑。
-        </div>
-        <div v-if="importMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
+        <!-- 出版物批量导入模式 -->
+        <template v-if="activeTab==='publications'">
+          <div class="form-group">
+            <label>原站出版物列表页链接 <span class="hint">（支持带类型/主题筛选参数的列表页地址）</span></label>
+            <input type="text" class="form-control" v-model="importUrl" placeholder="https://www.gattefosse.com/pharmaceuticals/learn-more/publications" @keyup.enter="doImport()">
+          </div>
+          <div class="form-group">
+            <label>抓取页数 <span class="hint">（每页约 9 条，首导建议 1 页试跑）</span></label>
+            <input type="number" class="form-control" v-model="importMaxPages" min="1" max="30" style="max-width:120px;">
+          </div>
+          <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
+            从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
+          </div>
+          <div v-if="importMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
+          <div v-if="importItems.length" style="margin-top:8px;border:1px solid #e0e0e0;border-radius:6px;max-height:260px;overflow-y:auto;">
+            <div v-for="(it, i) in importItems" :key="i" style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.7;">
+              <div style="font-weight:500;">{{ it.status === 'ok' ? '✅' : (it.status === 'skipped' ? '⏭️' : (it.status === 'partial' ? '⚠️' : '❌')) }} {{ it.title }}</div>
+              <div style="color:#949494;">{{ it.message }}</div>
+            </div>
+          </div>
+        </template>
+        <!-- 文章单篇导入模式（热点话题） -->
+        <template v-else>
+          <div class="form-group">
+            <label>原站文章链接 <span class="hint">（热点话题 / 了解更多文章详情页地址）</span></label>
+            <input type="text" class="form-control" v-model="importUrl" placeholder="https://www.gattefosse.com/pharmaceuticals/learn-more/xxx" @keyup.enter="doImport()">
+          </div>
+          <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
+            导入后保存为<strong>草稿</strong>（分类固定为热点话题），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
+            支持英文站（gattefosse.com）与中文站链接；导入内容含原站脱版标记，会自动以 HTML 源码模式打开编辑。
+          </div>
+          <div v-if="importMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
+        </template>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline" @click="showImport=false">{{ importMsg && importMsg.indexOf('✅')===0 ? '关闭' : '取消' }}</button>
-        <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="openImportEditor()">打开编辑</button>
-        <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="reverifyImport()">{{ importing ? '校验中...' : '重新校验' }}</button>
-        <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
-        <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()">{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
+        <!-- 文章单篇导入（热点话题）：保留校验失败时的处理按钮 -->
+        <template v-if="activeTab!=='publications'">
+          <button class="btn btn-outline" @click="showImport=false">{{ importMsg && importMsg.indexOf('✅')===0 ? '关闭' : '取消' }}</button>
+          <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="openImportEditor()">打开编辑</button>
+          <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="reverifyImport()">{{ importing ? '校验中...' : '重新校验' }}</button>
+          <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
+          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()">{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
+        </template>
+        <!-- 出版物批量导入 -->
+        <template v-else>
+          <button class="btn btn-outline" @click="showImport=false">关闭</button>
+          <button class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl">{{ importing ? '正在抓取与下载 PDF...' : '开始导入' }}</button>
+        </template>
       </div>
     </div>
   </div>
@@ -412,7 +460,7 @@ createApp({
         { key: 'webinar', label: '在线研讨会', addLabel: '研讨会', type: 'webinar', count: 0,
           subtitle: '管理「了解更多 — 在线研讨会」内容（type=webinar, category=pharma）', typeOptions: [] },
         { key: 'publications', label: '出版物', addLabel: '出版物', type: 'publication', count: 0,
-          subtitle: '管理「了解更多 — 出版物」内容（type=publication, category=pharma，排除「资料手册」）', typeOptions: ['海报','会议交流','科技出版物'] },
+          subtitle: '管理「了解更多 — 出版物」内容（type=publication, category=pharma，排除「资料手册」）', typeOptions: ['海报','口头交流','科技出版物','白皮书','电子书'] },
         { key: 'brochures', label: '资料手册', addLabel: '资料手册', type: 'publication', count: 0,
           subtitle: '管理「了解更多 — 资料手册」内容（type=publication, articleType=资料手册, category=pharma）', typeOptions: ['资料手册'] },
         { key: 'journees', label: 'Journées Galéniques', addLabel: '专题页', type: 'page', count: 0,
@@ -440,6 +488,11 @@ createApp({
       importMsg: '',
       importLastId: null,
       importDoneUrl: null,
+      importMaxPages: 1,
+      importItems: [],
+      pubDocs: [],
+      pubDocSelected: '',
+      pubUploading: false,
       tagInput: '',
       overlayDown: '',
       importing: false,
@@ -602,11 +655,15 @@ createApp({
       this.editMode = 'visual';
       this.editing = this.defaultEditing();
       this.showEdit = true;
+      this.pubDocSelected = '';
+      if (this.activeTab === 'publications' || this.activeTab === 'brochures') this.loadPubDocs();
       this.$nextTick(() => this.initQuill(''));
     },
     openImport() {
       this.importUrl = '';
       this.importMsg = '';
+      this.importItems = [];
+      this.importMaxPages = 1;
       this.showImport = true;
     },
     // 遮罩点击关闭：仅当按下与松开都在遮罩上时才关闭，
@@ -689,7 +746,8 @@ createApp({
       return /adp-img-table|paragraph--type--|c-highlighted-text/.test(html || '');
     },
     async doImport() {
-      if (!this.importUrl) return AdminDialog.alert('请粘贴原站文章链接', { type: 'warn' });
+      if (!this.importUrl) return AdminDialog.alert('请粘贴原站链接', { type: 'warn' });
+      if (this.activeTab === 'publications') return this.doPubImport();
       this.importing = true;
       this.importLastId = null;
       this.importDoneUrl = null;
@@ -722,6 +780,56 @@ createApp({
         }
         msg += '\n请在列表中打开编辑，完成中文翻译后发布';
         this.importMsg = msg;
+        this.importUrl = '';
+        this.loadList(); this.countAll();
+      } catch (e) {
+        this.importMsg = '❌ 导入失败：' + e.message;
+      } finally { this.importing = false; }
+    },
+    // ===== 出版物 PDF：文档资源选择 / 上传 =====
+    formatBytes(bytes) {
+      if (!bytes || bytes <= 0) return '';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    },
+    async loadPubDocs() {
+      try { const d = await this.api('/documents?type=Publication&limit=100'); this.pubDocs = (d && d.list) || []; }
+      catch (e) { this.pubDocs = []; }
+    },
+    applyPubDoc() {
+      if (this.pubDocSelected) this.editing.pdfUrl = this.pubDocSelected;
+    },
+    async uploadPubPdf(ev) {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      this.pubUploading = true;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('type', 'Publication');
+        fd.append('title', file.name.replace(/\.pdf$/i, ''));
+        fd.append('isPublic', 'true');
+        const token = getToken();
+        const res = await fetch(API + '/documents/upload', { method: 'POST', headers: { Authorization: token ? 'Bearer ' + token : '' }, body: fd });
+        const r = await res.json();
+        if (r.code !== 0) throw new Error(r.message || '上传失败');
+        this.editing.pdfUrl = r.data.filePath;
+        this.editing.pdfSize = Number(r.data.fileSize) || null;
+        AdminDialog.alert('✅ PDF 已上传并入文档资源', { type: 'success' });
+        this.loadPubDocs();
+      } catch (e) {
+        AdminDialog.alert('上传失败：' + e.message, { type: 'error' });
+      } finally { this.pubUploading = false; ev.target.value = ''; }
+    },
+    // 出版物批量导入：列表页 URL + 页数 → /news/import-publications，清单逐条展示
+    async doPubImport() {
+      this.importing = true;
+      this.importMsg = '⏳ 正在抓取列表页与下载 PDF，约需 10~60 秒（取决于页数与 PDF 大小）...';
+      this.importItems = [];
+      try {
+        const d = await this.api('/news/import-publications', { method: 'POST', body: JSON.stringify({ listUrl: this.importUrl.trim(), maxPages: parseInt(this.importMaxPages) || 1 }) });
+        this.importItems = d.items || [];
+        this.importMsg = '✅ ' + d.message;
         this.importUrl = '';
         this.loadList(); this.countAll();
       } catch (e) {
@@ -770,6 +878,7 @@ createApp({
         contentHtml: item.contentHtml || '',
         videoUrl: item.videoUrl || '',
         pdfUrl: item.pdfUrl || '',
+        pdfSize: item.pdfSize != null ? Number(item.pdfSize) : null,
         publicationName: item.publicationName || '',
         authorName: item.authorName || '',
         readingTime: item.readingTime || null,
@@ -779,6 +888,8 @@ createApp({
         authorId: item.authorId || '',
       });
       this.editing = e;
+      this.pubDocSelected = '';
+      if (this.activeTab === 'publications' || this.activeTab === 'brochures') this.loadPubDocs();
       // 原站导入内容含 .paragraph 等自定义区块，锁定为源码模式（Quill 可视化会剥掉标记）
       this.contentLocked = this.isImportedHtml(e.contentHtml);
       this.editMode = this.contentLocked ? 'html' : 'visual';
@@ -834,6 +945,7 @@ createApp({
         contentHtml: (this.activeTab === 'hot-topics' || this.activeTab === 'journees') ? (this.editing.contentHtml || null) : undefined,
         videoUrl: this.activeTab === 'webinar' ? (this.editing.videoUrl || null) : undefined,
         pdfUrl: (this.activeTab === 'publications' || this.activeTab === 'brochures') ? (this.editing.pdfUrl || null) : undefined,
+        pdfSize: (this.activeTab === 'publications' || this.activeTab === 'brochures') ? (this.editing.pdfSize != null ? Number(this.editing.pdfSize) : null) : undefined,
         publicationName: this.activeTab === 'publications' ? (this.editing.publicationName || null) : undefined,
         authorName: this.activeTab === 'publications' ? (this.editing.authorName || null) : undefined,
         authorId: this.activeTab === 'hot-topics' ? (this.editing.authorId ? Number(this.editing.authorId) : null) : undefined,

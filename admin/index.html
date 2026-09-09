@@ -2935,6 +2935,7 @@ const QUILL_TOOLBAR = [
                 </select>
                 <button class="btn btn-primary" @click="loadPublicationList()" data-page-node-id="rJmN0WvdRFCBNIGtJDTcXV">搜索</button>
                 <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadPublicationList();" data-page-node-id="OPCCGcAcJcsxc4oT2wtUw4">重置</button>
+                <button class="btn btn-outline" @click="openPublicationImport()" data-page-node-id="kwJ2waSLVqNokLANdNxTUS2">⬇ 从原站导入</button>
                 <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()" style="margin-left:auto;" data-page-node-id="kwJ2waSLVqNokLANdNxTUS">+ 新增出版物</button>
               </div>
             </div>
@@ -2991,11 +2992,20 @@ const QUILL_TOOLBAR = [
               <div class="form-group" data-page-node-id="auv3BhjgCFKsHLHTxDDiIN">
                 <label data-page-node-id="r5hc7PcqFi6JzIE6RSmF3S">类型</label>
                 <select class="form-control" v-model="editingPublication.articleType" data-page-node-id="wgKBqKgp5xnPMO8D4QMMyr">
-                  <option value="" data-page-node-id="b3Ahrg1Htui0xeheFIcf65">请选择</option><option data-page-node-id="GgpRKbnB4EMSGvRvrfzUw5">会议交流</option><option data-page-node-id="Rykkmq1hFwFX3GFHAny04v">海报</option><option data-page-node-id="4gPBxdY3o7RwcDHL9V2SWo">科技出版物</option>
+                  <option value="" data-page-node-id="b3Ahrg1Htui0xeheFIcf65">请选择</option><option data-page-node-id="GgpRKbnB4EMSGvRvrfzUw5">口头交流</option><option data-page-node-id="Rykkmq1hFwFX3GFHAny04v">海报</option><option data-page-node-id="4gPBxdY3o7RwcDHL9V2SWo">科技出版物</option><option>白皮书</option><option>电子书</option>
                 </select>
               </div>
               <div class="form-group" data-page-node-id="biWUuK4jKWmcfSCqAEMMXL"><label data-page-node-id="XXA4BGCPzZ7G1KaZecv9CY">封面图 URL</label><input class="form-control" v-model="editingPublication.imageUrl" placeholder="https://..." data-page-node-id="rcHshPtfDd2guIjvy9MLpF"></div>
-              <div class="form-group" data-page-node-id="o5YCs6Fn8JjVY6Y0K9m9ER"><label data-page-node-id="BtO5RyvOOljXMNbHTkNTpd">PDF 下载链接</label><input class="form-control" v-model="editingPublication.pdfUrl" placeholder="https://... 或 /uploads/..." data-page-node-id="IuU91jFCIbVN3hUdE6AezV"></div>
+              <div class="form-group" data-page-node-id="o5YCs6Fn8JjVY6Y0K9m9ER"><label data-page-node-id="BtO5RyvOOljXMNbHTkNTpd">PDF 文件 <span class="hint" v-if="editingPublication.pdfSize">（{{ formatBytes(editingPublication.pdfSize) }}）</span></label><input class="form-control" v-model="editingPublication.pdfUrl" placeholder="https://... 或 /uploads/... 或从文档资源选择" data-page-node-id="IuU91jFCIbVN3hUdE6AezV">
+                <div style="display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap;">
+                  <select class="form-control" style="max-width:320px;font-size:12px;" v-model="pubDocSelected" @change="applyPubDoc()">
+                    <option value="">📚 从文档资源选择（Publication）</option>
+                    <option v-for="doc in pubDocs" :key="doc.id" :value="doc.filePath">{{ doc.title.slice(0, 40) }}（{{ formatBytes(Number(doc.fileSize)) }}）</option>
+                  </select>
+                  <button class="btn btn-sm btn-outline" @click="$refs.pubPdfFile.click()" :disabled="pubUploading">{{ pubUploading ? '上传中...' : '⬆ 上传新 PDF' }}</button>
+                  <input type="file" ref="pubPdfFile" accept=".pdf" style="display:none" @change="uploadPubPdf($event)">
+                </div>
+              </div>
               <div class="form-group" data-page-node-id="VoPcMmclO5rQqGfHKqWVnJ"><label data-page-node-id="COPWFeSIViMJOSNtflgdpe">发布日期 *</label><input type="date" class="form-control" v-model="editingPublication.publishedDate" data-page-node-id="wwyuds1W0YI49joLqMDcU2"></div>
               <div class="form-group" data-page-node-id="eTxWERSJawByrRuH6kuqGB"><label data-page-node-id="OGAkIL6MwDaLhJ2aM7N3kZ">会议/出版物名称</label><input class="form-control" v-model="editingPublication.publicationName" placeholder="如 53rd Annual ESDR Meeting" data-page-node-id="in4yHrCWWpmXgGsAZwZHt7"></div>
               <div class="form-group" data-page-node-id="lWdrDSxdF9IPsavMraHLNq"><label data-page-node-id="cGAydJPPIRsy9IfxHETa2p">阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingPublication.readingTime" style="max-width:120px;" data-page-node-id="6sJWM3bEBaFTWBNigCRfEr"></div>
@@ -3031,9 +3041,44 @@ const QUILL_TOOLBAR = [
             </div>
             <div class="form-group" data-page-node-id="nf1dJHNY6kFeUZARxKaEBL"><label data-page-node-id="63OhUCy43yhFS87jOLwpvE">摘要</label><textarea class="form-control" rows="4" v-model="editingPublication.summary" placeholder="出版物简介..."></textarea></div>
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;" data-page-node-id="EjHJsPJm8HJa7mDSj8nO7H">
+              <button class="btn btn-outline" v-if="editingPublication.id && isUntranslated(editingPublication)" :disabled="editingPublication._translating" @click="aiTranslatePublication()" title="AI 翻译标题与摘要（英文→中文）">{{ editingPublication._translating ? '翻译中...' : 'AI 翻译' }}</button>
               <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;" data-page-node-id="vjxDgqOcnYmBNM7pcs953R"><input type="checkbox" v-model="editingPublication.isPublished" data-page-node-id="GlYKhKOsCA4er6dOWY2dUM"> 保存并发布</label>
               <button class="btn btn-outline" @click="goPage('publication-list')" data-page-node-id="k9sDZfNrGWkMEtEvPG29M7">取消</button>
               <button class="btn btn-primary" @click="savePublication()" :disabled="saving" data-page-node-id="Ed1WuReHiDx2dxvjCXwWFZ">{{ saving ? '保存中...' : '保存' }}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 出版物批量导入弹框（原站列表页 → 卡片解析 + PDF 入文档资源） -->
+        <div v-if="publicationImport.open" class="modal-overlay" @mousedown.self="publicationImport.open = false">
+          <div class="modal" style="width:640px;max-height:86vh;overflow-y:auto;">
+            <div class="modal-header">
+              <h3>从原站导入出版物</h3>
+              <button class="btn btn-sm" @click="publicationImport.open = false">✕</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>原站出版物列表页链接 <span class="hint">（支持带类型/主题筛选参数的列表页地址）</span></label>
+                <input type="text" class="form-control" v-model="publicationImport.url" placeholder="https://www.gattefosse.com/personal-care/get-inspired/publications" @keyup.enter="doPublicationImport()">
+              </div>
+              <div class="form-group">
+                <label>抓取页数 <span class="hint">（每页约 9 条，首导建议 1 页试跑）</span></label>
+                <input type="number" class="form-control" v-model="publicationImport.maxPages" min="1" max="30" style="width:120px;">
+              </div>
+              <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
+                从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
+              </div>
+              <div v-if="publicationImport.msg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: publicationImport.msg.indexOf('✅')===0 ? 'var(--green)' : (publicationImport.msg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ publicationImport.msg }}</div>
+              <div v-if="publicationImport.items.length" style="margin-top:8px;border:1px solid #e0e0e0;border-radius:6px;max-height:260px;overflow-y:auto;">
+                <div v-for="(it, i) in publicationImport.items" :key="i" style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.7;">
+                  <div style="font-weight:500;">{{ it.status === 'ok' ? '✅' : (it.status === 'skipped' ? '⏭️' : (it.status === 'partial' ? '⚠️' : '❌')) }} {{ it.title }}</div>
+                  <div style="color:#949494;">{{ it.message }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline" @click="publicationImport.open = false">关闭</button>
+              <button class="btn btn-primary" @click="doPublicationImport()" :disabled="publicationImport.importing || !publicationImport.url">{{ publicationImport.importing ? '正在抓取与下载 PDF...' : '开始导入' }}</button>
             </div>
           </div>
         </div>
@@ -4093,9 +4138,13 @@ createApp({
       publicationList: [],
       publicationFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
       publicationPagination: { total: 0, totalPages: 0 },
-      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: '', lock: false, isPublished: false, tagsList: [] },
+      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', pdfSize: null, readingTime: null, publishedDate: '', lock: false, isPublished: false, tagsList: [] },
       publicationTagInput: '',
       publicationTagList: [],
+      pubDocs: [],
+      pubDocSelected: '',
+      pubUploading: false,
+      publicationImport: { open: false, url: '', maxPages: 1, importing: false, msg: '', items: [] },
       // 获取灵感 — 杂志
       magazineList: [],
       magazineFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
@@ -7166,13 +7215,18 @@ createApp({
       catch (e) { console.error(e); }
     },
     resetPublicationEdit() {
-      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
+      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', pdfSize: null, readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
       this.publicationTagInput = '';
+      this.pubDocSelected = '';
+      this.loadPubDocs();
       this.currentPage = 'publication-edit';
       this.loadPublicationTags();
     },
     editPublication(item) {
       this.editingPublication = { ...item, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '' };
+      if (item.pdfSize != null) this.editingPublication.pdfSize = Number(item.pdfSize) || null;
+      this.pubDocSelected = '';
+      this.loadPubDocs();
       // 解析 tags JSON → tagsList
       this.editingPublication.tagsList = [];
       if (item.tags) {
@@ -7215,6 +7269,74 @@ createApp({
     },
     async deletePublication(id) {
       this.showConfirm('确认删除', '确定删除该出版物？', async () => { try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadPublicationList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });
+    },
+    // ===== 出版物：文档资源选择 / 上传 / 批量导入 / AI 翻译 =====
+    formatBytes(bytes) {
+      if (!bytes || bytes <= 0) return '';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    },
+    async loadPubDocs() {
+      try { const d = await this.api('/documents?type=Publication&limit=100'); this.pubDocs = (d && d.list) || []; }
+      catch (e) { this.pubDocs = []; }
+    },
+    applyPubDoc() {
+      if (this.pubDocSelected) this.editingPublication.pdfUrl = this.pubDocSelected;
+    },
+    async uploadPubPdf(ev) {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      this.pubUploading = true;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('type', 'Publication');
+        fd.append('title', file.name.replace(/\.pdf$/i, ''));
+        fd.append('isPublic', 'true');
+        const r = await fetch('/api/documents/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + (localStorage.getItem('admin_token') || '') }, body: fd });
+        const res = await r.json();
+        if (res.code !== 0) throw new Error(res.message || '上传失败');
+        this.editingPublication.pdfUrl = res.data.filePath;
+        this.editingPublication.pdfSize = Number(res.data.fileSize) || null;
+        this.showAlert('✅ PDF 已上传并入文档资源', 'success');
+        this.loadPubDocs();
+      } catch (e) {
+        this.showAlert('上传失败：' + e.message);
+      } finally { this.pubUploading = false; ev.target.value = ''; }
+    },
+    openPublicationImport() {
+      this.publicationImport.open = true;
+      this.publicationImport.msg = '';
+      this.publicationImport.items = [];
+    },
+    async doPublicationImport() {
+      if (!this.publicationImport.url) return;
+      this.publicationImport.importing = true;
+      this.publicationImport.msg = '⏳ 正在抓取列表页与下载 PDF，约需 10~60 秒（取决于页数与 PDF 大小）...';
+      this.publicationImport.items = [];
+      try {
+        const d = await this.api('/news/import-publications', { method: 'POST', body: JSON.stringify({ listUrl: this.publicationImport.url.trim(), maxPages: parseInt(this.publicationImport.maxPages) || 1 }) });
+        this.publicationImport.items = d.items || [];
+        this.publicationImport.msg = '✅ ' + d.message;
+        this.loadPublicationList();
+      } catch (e) {
+        this.publicationImport.msg = '❌ 导入失败：' + e.message;
+      } finally { this.publicationImport.importing = false; }
+    },
+    async aiTranslatePublication() {
+      const item = this.editingPublication;
+      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》的标题与摘要 AI 翻译为中文？\n\n出版物无正文，仅翻译标题/摘要字段', { confirmText: '开始翻译', danger: false }, async () => {
+        item._translating = true;
+        try {
+          await this.runAiTranslateJob(item.id);
+          this.showAlert('✅ 翻译完成，请核对译文', 'success');
+          const fresh = await this.api('/news/' + item.id);
+          this.editPublication(fresh);
+          this.currentPage = 'publication-edit';
+        } catch (e) {
+          this.showAlert('AI 翻译失败：' + e.message);
+        } finally { item._translating = false; }
+      });
     },
     // 获取灵感 — 杂志 CRUD
     async loadMagazineList() {

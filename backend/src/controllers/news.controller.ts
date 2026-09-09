@@ -202,6 +202,7 @@ export async function createNewsItem(req: Request, res: Response) {
       publicationName,
       authorName,
       pdfUrl,
+      pdfSize,
       videoUrl,
       lock,
       topBackground,
@@ -245,6 +246,7 @@ export async function createNewsItem(req: Request, res: Response) {
         publicationName: publicationName || null,
         authorName: authorName || null,
         pdfUrl: pdfUrl || null,
+        pdfSize: pdfSize !== undefined && pdfSize !== null && !isNaN(parseInt(pdfSize)) ? parseInt(pdfSize) : null,
         videoUrl: videoUrl || null,
         lock: lock !== undefined ? lock : false,
         topBackground: topBackground || null,
@@ -305,6 +307,7 @@ export async function updateNewsItem(req: Request, res: Response) {
       publicationName,
       authorName,
       pdfUrl,
+      pdfSize,
       videoUrl,
       lock,
       topBackground,
@@ -334,6 +337,7 @@ export async function updateNewsItem(req: Request, res: Response) {
     if (publicationName !== undefined) updateData.publicationName = publicationName || null;
     if (authorName !== undefined) updateData.authorName = authorName || null;
     if (pdfUrl !== undefined) updateData.pdfUrl = pdfUrl || null;
+    if (pdfSize !== undefined) updateData.pdfSize = pdfSize === null || pdfSize === '' || isNaN(parseInt(pdfSize)) ? null : parseInt(pdfSize);
     if (videoUrl !== undefined) updateData.videoUrl = videoUrl || null;
     if (lock !== undefined) updateData.lock = lock;
     if (topBackground !== undefined) updateData.topBackground = topBackground || null;
