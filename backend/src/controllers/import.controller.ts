@@ -1083,6 +1083,9 @@ export async function importPublicationsFromSite(req: Request, res: Response) {
           items.push({ title: card.title || card.pdfBasename, status: 'skipped', pdf: '', docId: null, message: '已导入过，跳过' });
           continue;
         }
+        // 新导入的标题/PDF 也加入去重集合，防止同一轮翻页重复出现导致轮内自重复
+        if (cardTitleKey) existTitleKeys.add(cardTitleKey);
+        if (cardCore) existCores.push(cardCore);
         if (issues.some((i) => i.startsWith('❌'))) failed++;
 
         // PDF 下载 → uploads/documents/，入文档资源（文件/文档资源已存在则复用，避免重复下载与重复入库）
