@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
-import { getTagDictionary, listTags, createTag, updateTag, deleteTag } from '../controllers/tag.controller';
+import { getTagDictionary, listTags, createTag, updateTag, deleteTag, applyTagToArticles } from '../controllers/tag.controller';
 
 const router = Router();
 
@@ -16,5 +16,7 @@ router.get('/list', authMiddleware, listTags);
 router.post('/', authMiddleware, requireRole('editor', 'super_admin'), createTag);
 router.put('/:id', authMiddleware, requireRole('editor', 'super_admin'), updateTag);
 router.delete('/:id', authMiddleware, requireRole('editor', 'super_admin'), deleteTag);
+// 文章主题标签：字典译文一键同步到全部存量文章
+router.post('/:id/apply', authMiddleware, requireRole('editor', 'super_admin'), applyTagToArticles);
 
 export default router;

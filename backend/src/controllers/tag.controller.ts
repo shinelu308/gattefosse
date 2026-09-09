@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail } from '../utils/response';
+import { ensureArticleThemeSeed, applyThemeTagToArticles } from '../utils/article-theme';
 
 /**
  * 获取标签字典 - 按产品线和分类分组返回，供前端筛选器使用
@@ -38,6 +39,7 @@ export async function getTagDictionary(req: Request, res: Response) {
 export async function listTags(req: Request, res: Response) {
   try {
     const { productLine } = req.query;
+    if (productLine === 'article_theme') await ensureArticleThemeSeed();
     const where: any = {};
     if (productLine) where.productLine = String(productLine);
 
@@ -112,5 +114,21 @@ export async function deleteTag(req: Request, res: Response) {
   } catch (error) {
     console.error('删除标签失败:', error);
     return res.status(500).json(fail('删除标签失败'));
+  }
+}
+
+/**
+ * 文章主题标签：把字典译文同步到全部存量文章（POST /api/tags/:id/apply）
+ * body.from 可选——编辑前旧译文列表（如改译前的 value），一并替换
+ */
+export async function applyTagToArticles(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    const extraFrom: string[] = Array.isArray(req.body?.from) ? req.body.from.map(String) : [];
+    const { updated } = await applyThemeTagToArticles(id, extraFrom);
+    return res.json(success({ updated }, `已同步 ${updated} 篇文章`));
+  } catch (error: any) {
+    console.error('同步文章标签失败:', error);
+    return res.status(400).json(fail(error.message || '同步失败'));
   }
 }

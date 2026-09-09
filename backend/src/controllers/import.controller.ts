@@ -10,6 +10,7 @@ import {
   findTagByClass, attrOfTag, stripImgParams, stripTags, findCardThumbBySlug, findCardCategoryBySlug,
   extractBalancedDiv, extractDivByClass,
 } from '../utils/import-rules';
+import { translateArticleTheme, translateArticleThemes } from '../utils/article-theme';
 import { verifyImportedArticle, reverifyArticle } from '../utils/import-verify';
 
 const SITE_ORIGIN = ORIGIN_BASE;
@@ -307,7 +308,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
   // 原站主题标签 EN→CN（规则库映射；未命中保留英文并记录，便于后续补充映射）
   const unknownTags: string[] = [];
-  const tagsZh = articleTags.map(t => translateTag(t, unknownTags));
+  const tagsZh = await translateArticleThemes(articleTags, unknownTags); // 字典优先，TAG_ZH 兜底
 
   // 导语（block-accroche）：位于 s-article__top-part、node__content 之外，需单独提取
   let accrocheText = '';
@@ -382,7 +383,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
     }
     // 卡片分类（如 "Lipids and polymers"）→ 中文主题标签；详情页无标签区时这是主题唯一来源
     if (cardCategory) {
-      const catZh = translateTag(cardCategory, unknownTags);
+      const catZh = await translateArticleTheme(cardCategory, unknownTags); // 字典优先
       if (!tagsZh.includes(catZh)) tagsZh.push(catZh);
     }
     if (cardThumbRaw) {

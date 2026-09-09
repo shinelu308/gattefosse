@@ -11,6 +11,7 @@ import {
   extractBalancedDiv, extractDivByClass, stripTags, normalizeForCompare, structureSignature,
   removeParagraphBlocks, findCardThumbBySlug, findCardCategoryBySlug, translateTag,
 } from './import-rules';
+import { translateArticleTheme } from './article-theme';
 
 export interface VerifyItem {
   name: string;
@@ -263,7 +264,7 @@ export async function reverifyArticle(id: number): Promise<VerifyItem[]> {
       }
       const catRaw = findCardCategoryBySlug(listingHtml, originPath);
       if (catRaw && !existingTags.length) {
-        const catZh = translateTag(catRaw);
+        const catZh = await translateArticleTheme(catRaw);
         await prisma.newsEvent.update({ where: { id: item.id }, data: { tags: JSON.stringify([catZh]) } });
         items.push({ name: '主题标签', ok: true, fixed: true, detail: `已从列表卡片补齐主题（${catRaw}${catZh !== catRaw ? ' → ' + catZh : ''}）` });
       }
