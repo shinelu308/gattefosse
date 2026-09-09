@@ -76,7 +76,26 @@
     .block-accroche .field--name-field-chapeau :last-child { margin-bottom: 0; }
     .block-accroche a { color: var(--accent-color-dark); text-decoration: underline; }
     .block-accroche a:hover, .block-accroche a:focus { text-decoration: none; }
-    .block-accroche p { margin: 0 0 1em; }
+    .block-accroche p { margin: 0 0 1rem; }
+</style>
+<!-- 正文分栏布局：原站 .node__content 为 12 列 grid，段落按 paragraph--zone-* 占列；
+     本地未加载含这些规则的聚合包，按原站规则内联（移动端回退单栏） -->
+<style>
+    .node__content { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 3.2rem; row-gap: 0; }
+    .paragraph--zone-25.paragraph--zone-right { grid-column: 10/13; }
+    .paragraph--zone-33 { grid-column: 1/5; }
+    .paragraph--zone-33.paragraph--zone-center { grid-column: 5/9; }
+    .paragraph--zone-33.paragraph--zone-right { grid-column: 9/13; }
+    .paragraph--zone-50 { grid-column: 1/7; }
+    .paragraph--zone-50.paragraph--zone-right { grid-column: 7/13; }
+    .paragraph--zone-66 { grid-column: 1/9; }
+    .paragraph--zone-66.paragraph--zone-right { grid-column: 5/13; }
+    .paragraph--zone-75.paragraph--zone-right { grid-column: 4/13; }
+    .node__content .paragraph--type--full-width-content { margin-left: calc(var(--bs-gutter-x, 0px) / -2); width: calc(100% + var(--bs-gutter-x, 0px)); }
+    @media (max-width: 756px) {
+        .node__content { column-gap: 2rem; }
+        .node__content .paragraph { grid-column: 1/13 !important; }
+    }
 </style>
 </head>
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
@@ -149,8 +168,8 @@
                                         <div class="clearfix text-formatted field field--name-field-chapeau field--type-text-long field--label-hidden field__item" v-html="data.formData.summaryHtml"></div>
                                      </div>
 
-                                     <span v-html="data.formData.content">
-                                     </span>
+                                     <div class="node__content" v-html="data.formData.content">
+                                     </div>
                                    </div>
                             </div>
                         </div>
