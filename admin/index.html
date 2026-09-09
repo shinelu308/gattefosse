@@ -2922,81 +2922,173 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
-        <!-- ==================== 出版物列表 ==================== -->
-        <div v-if="currentPage === 'publication-list'" data-page-node-id="5RYH6ejgBXLrdfVuIy6nMO">
-          <h1 class="page-title" data-page-node-id="GACol4AQHA0xJCFfKBCiYu">出版物管理</h1>
-          <p class="page-subtitle" data-page-node-id="WBYe9lfspKNU2M9vySWAoj">管理获取灵感模块下的科技出版物</p>
-          <div class="card" data-page-node-id="w5d6cwAxRUy0wn5v6QOJr1">
-            <div class="card-header" data-page-node-id="m1P7bLAt0TPGAJt8mk7p30">
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="DDC2ub5Gfk7AlznYJMDTC4">
-                <input class="form-control" style="width:200px;" placeholder="搜索标题..." v-model="publicationFilter.keyword" @keyup.enter="loadPublicationList()" data-page-node-id="V4xBqammjd5AM2pwSQHkwN">
-                <select class="form-control" style="width:100px;" v-model="publicationFilter.isPublished" data-page-node-id="NB6GTPaeVAgAueoDT2saeT">
-                  <option value="" data-page-node-id="AggMby5TF9E8Cs4FzQFtul">全部状态</option><option value="true" data-page-node-id="Jy6IOPtHYXWHorU10T45DB">已发布</option><option value="false" data-page-node-id="0nfAGYq8BXjXguXjbvnstS">草稿</option>
-                </select>
-                <button class="btn btn-primary" @click="loadPublicationList()" data-page-node-id="rJmN0WvdRFCBNIGtJDTcXV">搜索</button>
-                <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadPublicationList();" data-page-node-id="OPCCGcAcJcsxc4oT2wtUw4">重置</button>
-                <button class="btn btn-outline" @click="openPublicationImport()" data-page-node-id="kwJ2waSLVqNokLANdNxTUS2">⬇ 从原站导入</button>
-                <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()" style="margin-left:auto;" data-page-node-id="kwJ2waSLVqNokLANdNxTUS">+ 新增出版物</button>
-              </div>
+        <!-- ==================== 出版物列表（样式对齐文章管理基准） ==================== -->
+        <div v-if="currentPage === 'publication-list'">
+          <h1 class="page-title">出版物管理</h1>
+          <p class="page-subtitle">管理获取灵感模块下的科技出版物（type = publication · category = pc）</p>
+          <div class="card">
+            <div class="card-header">
+              <input class="form-control" style="width:200px;" placeholder="搜索标题、摘要..." v-model="publicationFilter.keyword" @keyup.enter="loadPublicationList()">
+              <select class="form-control" style="width:140px;" v-model="publicationFilter.articleType">
+                <option value="">全部子类型</option>
+                <option v-for="t in publicationTypeOptions" :key="t" :value="t">{{ t }}</option>
+              </select>
+              <select class="form-control" style="width:100px;" v-model="publicationFilter.isPublished">
+                <option value="">全部状态</option><option value="true">已发布</option><option value="false">草稿</option>
+              </select>
+              <button class="btn btn-primary" @click="loadPublicationList()">搜索</button>
+              <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'', articleType:'' }; loadPublicationList();">重置</button>
+              <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()">+ 新增出版物</button>
+              <button class="btn btn-slate" @click="openPublicationImport()">⬇ 从原站导入</button>
+              <button class="btn btn-sm btn-danger" @click="batchDeletePublications" :disabled="publicationSelectedIds.length === 0">批量删除 ({{ publicationSelectedIds.length }})</button>
             </div>
-            <table class="table" data-page-node-id="rb4f9BNT32FgEzgdmyGENu">
-              <thead data-page-node-id="SFXGSgiLgaI5vUSO1GHsmG"><tr data-page-node-id="HCrBCvlimasXk0jMADXzJI">
-                <th style="width:40px;" data-page-node-id="uUA0eXFBPVHapgMFHstsqz"><input type="checkbox" data-page-node-id="VgMxVrlRaZ7fbSLkccmmhC"></th>
-                <th data-page-node-id="r2Cd6GzFXckk5Ln39kPF4D">标题</th>
-                <th style="width:80px;" data-page-node-id="k9g9OAAmQybpDin6FY3qac">PDF</th>
-                <th style="width:60px;" data-page-node-id="rFfodRJiqE66VuPlKcGpQq">需登录</th>
-                <th style="width:80px;" data-page-node-id="oRmfs68I4AbIG3C1j7eOJd">状态</th>
-                <th style="width:100px;" data-page-node-id="mfoOg6rWViOsZE1TiwNxuY">更新时间</th>
-                <th style="width:150px;" data-page-node-id="aMxRhKzSwF5Awn91lTSiqR">操作</th>
+            <table class="table">
+              <thead><tr>
+                <th style="width:40px;"><input type="checkbox" :checked="publicationList.length > 0 && publicationSelectedIds.length === publicationList.length" @change="togglePublicationSelectAll"></th>
+                <th style="width:200px;">标题</th>
+                <th style="width:110px;">子类型</th>
+                <th style="width:160px;">出版物 / 作者</th>
+                <th style="width:110px;">发布日期</th>
+                <th style="width:90px;">状态</th>
+                <th style="width:220px;">操作</th>
               </tr></thead>
-              <tbody data-page-node-id="U15RFv7Ie7pM9snwlyUnyf">
-                <tr v-for="item in publicationList" :key="item.id" data-page-node-id="lFhivyKh8AOdNHqlamXwvD">
-                  <td data-page-node-id="E8yjipwfxS3d6s2sKHXksR"><input type="checkbox" data-page-node-id="1qZ4EI0dpmuH0fnkIRwSGH"></td>
-                  <td class="td-title" data-page-node-id="gVFgVnT1qPBvCZLbA5nnqr">
-                    {{ item.title }}
-                    <div v-if="item.articleType || item.authorName" style="margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;" data-page-node-id="6RZbIAg4GxEpQClbG01fdg">
-                      <span class="check-tag" v-if="item.articleType" style="background:#EEEDFE;color:#3C3489;font-size:11px;" data-page-node-id="elsvcvKFyAT5H4dxKvzKN2">{{ item.articleType }}</span>
-                      <span v-if="item.authorName" style="font-size:11px;color:var(--text-tertiary);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" data-page-node-id="Qe5DGdiQvDFOQh5RSvUCDP">{{ item.authorName }}</span>
-                    </div>
+              <tbody>
+                <tr v-for="item in publicationList" :key="item.id">
+                  <td><input type="checkbox" :value="item.id" v-model="publicationSelectedIds"></td>
+                  <td class="td-title">{{ item.title || '-' }}</td>
+                  <td><span class="check-tag" v-if="item.articleType" style="background:#EEEDFE;color:#3C3489;font-size:11px;">{{ item.articleType }}</span><span v-else style="color:var(--text-tertiary);font-size:12px;">-</span></td>
+                  <td style="font-size:12px;">
+                    <div v-if="item.publicationName" style="font-weight:500;color:#555;">{{ item.publicationName }}</div>
+                    <div v-if="item.authorName" style="color:var(--text-tertiary);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px;">{{ item.authorName }}</div>
+                    <span v-if="!item.publicationName && !item.authorName" style="color:var(--text-tertiary);">-</span>
                   </td>
-                  <td data-page-node-id="EPIhXddqYCOYrJvetVdxWu"><a :href="item.pdfUrl" target="_blank" v-if="item.pdfUrl" style="font-size:12px;" data-page-node-id="zQZaHG3QFVGuuSu2cce9NE">查看</a><span v-else style="color:var(--text-tertiary);font-size:12px;" data-page-node-id="aYfCmAiQhwxCk3Ji9mrElQ">无</span></td>
-                  <td style="text-align:center;" data-page-node-id="Zip14aK6lVmv78t2HsuBF1">{{ item.lock ? '🔒' : '公开' }}</td>
-                  <td data-page-node-id="RMgsvpTnGRWSSyyLcf92eS"><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'" data-page-node-id="k47b8QSnxiricc36WSATv7">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
-                  <td style="color:var(--text-tertiary);font-size:12px;" data-page-node-id="eFdmX0pXvywKOCNSnGIcgb">{{ item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-' }}</td>
-                  <td class="table-actions" data-page-node-id="1hOyWCutOyQ0Y102J63Bll">
-                    <button class="btn btn-outline btn-sm" @click="editPublication(item)" data-page-node-id="0hDuiK73QJwRyq2mVPLwG2">编辑</button>
-                    <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublicationPublish(item)" data-page-node-id="1bvD2ACm7yfUHr4pPeY2VT">{{ item.isPublished ? '下架' : '发布' }}</button>
-                    <button class="btn btn-sm btn-danger" @click="deletePublication(item.id)" data-page-node-id="uzFcpbGhsRDhcIIUsgci3i">删除</button>
+                  <td style="font-size:12px;color:var(--text-tertiary);">{{ item.publishedDate ? new Date(item.publishedDate).toLocaleDateString('zh-CN') : '-' }}</td>
+                  <td><span :class="item.isPublished ? 'tag tag-green' : 'tag tag-slate'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
+                  <td class="table-actions">
+                    <button class="btn btn-outline btn-sm" v-if="isUntranslated(item)" :disabled="item._translating" @click="aiTranslatePublicationItem(item)" title="AI 翻译标题与摘要（英文→中文）">{{ item._translating ? '翻译中…' : 'AI翻译' }}</button>
+                    <button class="btn btn-outline btn-sm" @click="editPublication(item)">编辑</button>
+                    <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublicationPublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
+                    <button class="btn btn-sm btn-danger" @click="deletePublication(item.id)">删除</button>
                   </td>
                 </tr>
-                <tr v-if="publicationList.length === 0" data-page-node-id="2X5sjIaCCaiakxGFH6DEuo"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;" data-page-node-id="E2s1YZiGuR9b8M5yUuQaD5">暂无数据</td></tr>
+                <tr v-if="publicationList.length === 0"><td colspan="7" style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</td></tr>
               </tbody>
             </table>
-            <div class="pagination" v-if="publicationPagination.totalPages > 1">
-              <button class="btn btn-sm btn-outline" :disabled="publicationFilter.page <= 1" @click="publicationFilter.page--; loadPublicationList()" data-page-node-id="M5g5WppESlwQihLI0nWKva">‹</button>
-              <span style="font-size:12px;color:var(--text-tertiary);" data-page-node-id="m2kkwQOe0SAd8aOPO0ViLp">{{ publicationFilter.page }} / {{ publicationPagination.totalPages }}</span>
-              <button class="btn btn-sm btn-outline" :disabled="publicationFilter.page >= publicationPagination.totalPages" @click="publicationFilter.page++; loadPublicationList()">›</button>
-              <span style="font-size:12px;color:var(--text-tertiary);margin-left:8px;" data-page-node-id="EGapyPNXhOaUOEm3bWzFEL">共 {{ publicationPagination.total }} 条</span>
+            <div class="pagination" style="padding:12px 20px;">
+              <div class="pagination-info">共 {{ publicationPagination.total }} 条，第 {{ publicationFilter.page }} / {{ Math.max(1, publicationPagination.totalPages) }} 页</div>
+              <div class="pagination-btns">
+                <button :disabled="publicationFilter.page <= 1" @click="publicationFilter.page--; loadPublicationList()">‹</button>
+                <button :class="{ active: publicationFilter.page === p }" v-for="p in pageRange(publicationPagination.totalPages)" :key="p" @click="publicationFilter.page = p; loadPublicationList()">{{ p }}</button>
+                <button :disabled="publicationFilter.page >= publicationPagination.totalPages" @click="publicationFilter.page++; loadPublicationList()">›</button>
+              </div>
             </div>
           </div>
         </div>
         <!-- 出版物编辑 -->
-        <div v-if="currentPage === 'publication-edit'" data-page-node-id="FDmxildDePMcA3Gi1NotAw">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;" data-page-node-id="3QrtTfBrGYMHWSN7zzgnqJ">
-            <button class="btn btn-sm btn-outline" @click="goPage('publication-list')" data-page-node-id="PEY59xq2oQlXwmsL4swibi">← 返回列表</button>
-            <h1 style="font-size:18px;margin:0;" data-page-node-id="hsXlmeTN9WCaeg75JQamQD">{{ editingPublication.id ? '编辑出版物' : '新增出版物' }}</h1>
+        <!-- 出版物编辑（一页式布局，样式对齐文章编辑基准：基本信息 / 图片 / 作者与标签 / 附加设置） -->
+        <div v-if="currentPage === 'publication-edit'">
+          <h1 class="page-title">{{ editingPublication.id ? '编辑出版物 — ' + editingPublication.title : '新增出版物' }}</h1>
+          <p class="page-subtitle">管理获取灵感模块下的科技出版物 <span v-if="editingPublication.id" style="color:var(--text-tertiary);font-size:12px;margin-left:16px;">type = publication · category = pc</span></p>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <button class="btn btn-sm btn-outline" @click="goPage('publication-list')">← 返回列表</button>
           </div>
-          <div class="card" data-page-node-id="1Pi4ZtWoraIzXmrwiy0FeC">
-            <div class="form-grid" data-page-node-id="gDWvMnplzSPZ4bmqPkSJf4">
-              <div class="form-group" data-page-node-id="CTZ3NTMv84qbDLTSEwVJY7"><label data-page-node-id="sLaZw3bv0nQlGEtSdqc2ei">标题 *</label><input class="form-control" v-model="editingPublication.title" placeholder="出版物标题" data-page-node-id="XNNeOo98QEFaHTz37NP6dd"></div>
-              <div class="form-group" data-page-node-id="auv3BhjgCFKsHLHTxDDiIN">
-                <label data-page-node-id="r5hc7PcqFi6JzIE6RSmF3S">类型</label>
-                <select class="form-control" v-model="editingPublication.articleType" data-page-node-id="wgKBqKgp5xnPMO8D4QMMyr">
-                  <option value="" data-page-node-id="b3Ahrg1Htui0xeheFIcf65">请选择</option><option data-page-node-id="GgpRKbnB4EMSGvRvrfzUw5">口头交流</option><option data-page-node-id="Rykkmq1hFwFX3GFHAny04v">海报</option><option data-page-node-id="4gPBxdY3o7RwcDHL9V2SWo">科技出版物</option><option>白皮书</option><option>电子书</option>
+          <!-- 基本信息 -->
+          <div class="card">
+            <div class="card-header"><h3>基本信息</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>出版物标题 <span class="hint">（必填）</span></label>
+                <input class="form-control" v-model="editingPublication.title" placeholder="出版物标题">
+              </div>
+              <div class="form-group">
+                <label>Slug/URL</label>
+                <input class="form-control" v-model="editingPublication.slug" placeholder="自动生成或手动输入">
+              </div>
+              <div class="form-group">
+                <label>出版物类型</label>
+                <select class="form-control" v-model="editingPublication.articleType">
+                  <option value="">请选择</option><option>口头交流</option><option>海报</option><option>科技出版物</option><option>白皮书</option><option>电子书</option>
                 </select>
               </div>
-              <div class="form-group" data-page-node-id="biWUuK4jKWmcfSCqAEMMXL"><label data-page-node-id="XXA4BGCPzZ7G1KaZecv9CY">封面图 URL</label><input class="form-control" v-model="editingPublication.imageUrl" placeholder="https://..." data-page-node-id="rcHshPtfDd2guIjvy9MLpF"></div>
-              <div class="form-group" data-page-node-id="o5YCs6Fn8JjVY6Y0K9m9ER"><label data-page-node-id="BtO5RyvOOljXMNbHTkNTpd">PDF 文件 <span class="hint" v-if="editingPublication.pdfSize">（{{ formatBytes(editingPublication.pdfSize) }}）</span></label><input class="form-control" v-model="editingPublication.pdfUrl" placeholder="https://... 或 /uploads/... 或从文档资源选择" data-page-node-id="IuU91jFCIbVN3hUdE6AezV">
+              <div class="form-group">
+                <label>发布日期 <span class="hint">（必填）</span></label>
+                <input type="date" class="form-control" v-model="editingPublication.publishedDate" style="max-width:200px;">
+              </div>
+              <div class="form-group">
+                <label>阅读时长 <span class="hint">（分钟，选填）</span></label>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <input type="number" class="form-control" v-model="editingPublication.readingTime" style="max-width:120px;" placeholder="分钟">
+                  <span style="font-size:12px;color:var(--text-tertiary);">分钟</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>发布状态</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;margin-top:2px;"><input type="checkbox" v-model="editingPublication.isPublished"> 已发布</label>
+              </div>
+              <div class="form-group">
+                <label>出版物摘要</label>
+                <textarea class="form-control" rows="3" v-model="editingPublication.summary" placeholder="出版物简介..."></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- 图片 -->
+          <div class="card">
+            <div class="card-header"><h3>图片</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>封面图 <span class="hint">（选填）</span></label>
+                <input class="form-control" v-model="editingPublication.imageUrl" placeholder="https://... 或 /uploads/...">
+                <div v-if="editingPublication.imageUrl" style="margin-top:6px;">
+                  <img :src="editingPublication.imageUrl" style="max-width:150px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;" @error="$event.target.style.display='none'">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 作者与标签 -->
+          <div class="card">
+            <div class="card-header"><h3>作者与标签</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>作者</label>
+                <input class="form-control" v-model="editingPublication.authorName" placeholder="如 Paula LENNON, Wanping ZHANG...">
+              </div>
+              <div class="form-group">
+                <label>已有标签 <span class="hint">（点击快速添加，含年份与成分标签）</span></label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;cursor:pointer;" v-for="(tag, ti) in publicationTagList" :key="ti" @click="addPublicationTag(tag)">{{ tag }}</span>
+                  <span v-if="publicationTagList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无已存在的标签</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>新标签</label>
+                <div style="display:flex;gap:4px;">
+                  <input class="form-control" v-model="publicationTagInput" placeholder="输入标签回车添加" @keyup.enter="addPublicationTag(publicationTagInput)" style="flex:1;max-width:300px;">
+                  <button class="btn btn-sm btn-outline" @click="addPublicationTag(publicationTagInput)" :disabled="!publicationTagInput.trim()">添加</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>当前标签</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="check-tag" style="background:#EAF3DE;color:#3B6D11;font-size:11px;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in editingPublication.tagsList" :key="ti">
+                    {{ tag }}
+                    <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removePublicationTag(ti)">×</span>
+                  </span>
+                  <span v-if="!editingPublication.tagsList || editingPublication.tagsList.length === 0" style="font-size:12px;color:var(--text-tertiary);">暂无标签</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 附加设置 -->
+          <div class="card">
+            <div class="card-header"><h3>附加设置</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>会议/出版物名称</label>
+                <input class="form-control" v-model="editingPublication.publicationName" placeholder="如 53rd Annual ESDR Meeting">
+              </div>
+              <div class="form-group">
+                <label>PDF 文件 <span class="hint" v-if="editingPublication.pdfSize">（{{ formatBytes(editingPublication.pdfSize) }}）</span></label>
+                <input class="form-control" v-model="editingPublication.pdfUrl" placeholder="https://... 或 /uploads/... 或从文档资源选择">
                 <div style="display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap;">
                   <select class="form-control" style="max-width:320px;font-size:12px;" v-model="pubDocSelected" @change="applyPubDoc()">
                     <option value="">📚 从文档资源选择（Publication）</option>
@@ -3006,51 +3098,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" ref="pubPdfFile" accept=".pdf" style="display:none" @change="uploadPubPdf($event)">
                 </div>
               </div>
-              <div class="form-group" data-page-node-id="VoPcMmclO5rQqGfHKqWVnJ"><label data-page-node-id="COPWFeSIViMJOSNtflgdpe">发布日期 *</label><input type="date" class="form-control" v-model="editingPublication.publishedDate" data-page-node-id="wwyuds1W0YI49joLqMDcU2"></div>
-              <div class="form-group" data-page-node-id="eTxWERSJawByrRuH6kuqGB"><label data-page-node-id="OGAkIL6MwDaLhJ2aM7N3kZ">会议/出版物名称</label><input class="form-control" v-model="editingPublication.publicationName" placeholder="如 53rd Annual ESDR Meeting" data-page-node-id="in4yHrCWWpmXgGsAZwZHt7"></div>
-              <div class="form-group" data-page-node-id="lWdrDSxdF9IPsavMraHLNq"><label data-page-node-id="cGAydJPPIRsy9IfxHETa2p">阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingPublication.readingTime" style="max-width:120px;" data-page-node-id="6sJWM3bEBaFTWBNigCRfEr"></div>
-              <div class="form-group" data-page-node-id="PwFBEGg9lkH6XcUUAmHF4U"><label style="display:flex;align-items:center;gap:4px;" data-page-node-id="cRfA2Yxm5mxyCd5H9GrD3A"><input type="checkbox" v-model="editingPublication.lock" data-page-node-id="H0IIasziVuaAigjQIe7x2i"> 需要登录才能查看</label></div>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;"><input type="checkbox" v-model="editingPublication.lock"> 🔒 需要登录才能查看</label>
             </div>
-            <div class="card-header" style="border-top:1px solid var(--border);margin-top:16px;" data-page-node-id="9bgIJg5AYJsUF4FEBA4bcu"><h3 data-page-node-id="ZS3bbKr63THaRR8A79bQxq">作者与标签</h3></div>
-            <div class="card-body" data-page-node-id="S5Zrhb1UWa4cfdWxFa41a3">
-              <div class="form-group" data-page-node-id="bXPj1lAQVw4L4irgz1rzuD"><label data-page-node-id="2CrqsRd7gkqYhfX6e9VtMW">作者</label><input class="form-control" v-model="editingPublication.authorName" placeholder="如 Paula LENNON, Wanping ZHANG..." data-page-node-id="kHhMjAB4fUod2HiVDweAxb"></div>
-              <div class="form-group" data-page-node-id="Z7iJvYFSfHAwmoieKEBUhT">
-                <label data-page-node-id="Jcz5filcFHIORuEy3Fsqlq">已有标签 <span class="hint" data-page-node-id="4mq5UKk8VG5HPUVnmgqnVO">（点击快速添加，含年份与成分标签）</span></label>
-                <div style="display:flex;flex-wrap:wrap;gap:4px;" data-page-node-id="VcrjR8HnUDEGyIbzbGl87B">
-                  <span class="check-tag" style="background:#EEEDFE;color:#3C3489;font-size:11px;cursor:pointer;" v-for="(tag, ti) in publicationTagList" :key="ti" @click="addPublicationTag(tag)" data-page-node-id="vAMAsqbIg3bNsYURVaMk3H">{{ tag }}</span>
-                  <span v-if="publicationTagList.length === 0" style="font-size:12px;color:var(--text-tertiary);" data-page-node-id="N6DN6viJ37IJl1Uip3CJ3Y">暂无已存在的标签</span>
-                </div>
-              </div>
-              <div class="form-group" data-page-node-id="kDtVGz6uHPAVgiUR1lN9VN">
-                <label data-page-node-id="PDAbA6dwrafhzNc8kmYtI6">新标签</label>
-                <div style="display:flex;gap:4px;" data-page-node-id="sVzuxcF0FyCeEZndqCa42C">
-                  <input class="form-control" v-model="publicationTagInput" placeholder="输入标签回车添加" @keyup.enter="addPublicationTag(publicationTagInput)" style="flex:1;max-width:300px;" data-page-node-id="ArMB5LRIPGRsS6T6hmwFrm">
-                  <button class="btn btn-sm btn-outline" @click="addPublicationTag(publicationTagInput)" :disabled="!publicationTagInput.trim()" data-page-node-id="rGuZkMKpskDpFyjRca6mk0">添加</button>
-                </div>
-              </div>
-              <div class="form-group" data-page-node-id="zd02h0HSmtTYjoDm7lu7je">
-                <label data-page-node-id="Z0iPwCdqFoXET341EqlBlF">当前标签</label>
-                <div style="display:flex;flex-wrap:wrap;gap:4px;" data-page-node-id="foYQV5RShGoOoFdMkfWwPF">
-                  <span class="check-tag" style="background:#EAF3DE;color:#3B6D11;font-size:11px;display:inline-flex;align-items:center;gap:2px;" v-for="(tag, ti) in editingPublication.tagsList" :key="ti" data-page-node-id="6qTy4BmOzRjXleF8GVofhe">
-                    {{ tag }}
-                    <span style="cursor:pointer;font-weight:bold;margin-left:4px;font-size:14px;line-height:1;" @click="removePublicationTag(ti)" data-page-node-id="XZi0HmJ7Unov1GRxXA9cjF">×</span>
-                  </span>
-                  <span v-if="!editingPublication.tagsList || editingPublication.tagsList.length === 0" style="font-size:12px;color:var(--text-tertiary);" data-page-node-id="7SIBnXHEKKNXNPfTjcGOsa">暂无标签</span>
-                </div>
-              </div>
-            </div>
-            <div class="form-group" data-page-node-id="nf1dJHNY6kFeUZARxKaEBL"><label data-page-node-id="63OhUCy43yhFS87jOLwpvE">摘要</label><textarea class="form-control" rows="4" v-model="editingPublication.summary" placeholder="出版物简介..."></textarea></div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;" data-page-node-id="EjHJsPJm8HJa7mDSj8nO7H">
-              <button class="btn btn-outline" v-if="editingPublication.id && isUntranslated(editingPublication)" :disabled="editingPublication._translating" @click="aiTranslatePublication()" title="AI 翻译标题与摘要（英文→中文）">{{ editingPublication._translating ? '翻译中...' : 'AI 翻译' }}</button>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;" data-page-node-id="vjxDgqOcnYmBNM7pcs953R"><input type="checkbox" v-model="editingPublication.isPublished" data-page-node-id="GlYKhKOsCA4er6dOWY2dUM"> 保存并发布</label>
-              <button class="btn btn-outline" @click="goPage('publication-list')" data-page-node-id="k9sDZfNrGWkMEtEvPG29M7">取消</button>
-              <button class="btn btn-primary" @click="savePublication()" :disabled="saving" data-page-node-id="Ed1WuReHiDx2dxvjCXwWFZ">{{ saving ? '保存中...' : '保存' }}</button>
-            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin:16px 0 8px;">
+            <button class="btn btn-outline" v-if="editingPublication.id && isUntranslated(editingPublication)" :disabled="editingPublication._translating" @click="aiTranslatePublication()" title="AI 翻译标题与摘要（英文→中文）">{{ editingPublication._translating ? '翻译中...' : 'AI 翻译' }}</button>
+            <button class="btn btn-outline" @click="goPage('publication-list')">取消</button>
+            <button class="btn btn-primary" @click="savePublication()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
           </div>
         </div>
 
         <!-- 出版物批量导入弹框（原站列表页 → 卡片解析 + PDF 入文档资源） -->
-        <div v-if="publicationImport.open" class="modal-overlay" @mousedown.self="publicationImport.open = false">
+        <div v-if="publicationImport.open" class="modal-overlay is-open" @mousedown.self="publicationImport.open = false">
           <div class="modal" style="width:640px;max-height:86vh;overflow-y:auto;">
             <div class="modal-header">
               <h3>从原站导入出版物</h3>
@@ -4136,9 +4195,11 @@ createApp({
       webinarTagList: [],
       // 获取灵感 — 出版物
       publicationList: [],
-      publicationFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
+      publicationFilter: { page: 1, limit: 20, keyword: '', isPublished: '', articleType: '' },
       publicationPagination: { total: 0, totalPages: 0 },
-      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', pdfSize: null, readingTime: null, publishedDate: '', lock: false, isPublished: false, tagsList: [] },
+      publicationSelectedIds: [],
+      publicationTypeOptions: ['口头交流', '海报', '科技出版物', '白皮书', '电子书'],
+      editingPublication: { id: null, type: 'publication', category: 'pc', title: '', slug: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', pdfSize: null, readingTime: null, publishedDate: '', lock: false, isPublished: false, tagsList: [] },
       publicationTagInput: '',
       publicationTagList: [],
       pubDocs: [],
@@ -7211,11 +7272,12 @@ createApp({
       const params = new URLSearchParams({ page: this.publicationFilter.page, limit: this.publicationFilter.limit, type: 'publication', category: 'pc' });
       if (this.publicationFilter.keyword) params.set('keyword', this.publicationFilter.keyword);
       if (this.publicationFilter.isPublished) params.set('isPublished', this.publicationFilter.isPublished);
+      if (this.publicationFilter.articleType) params.set('articleType', this.publicationFilter.articleType);
       try { const d = await this.api('/news?' + params.toString()); this.publicationList = d.list; this.publicationPagination = d.pagination; }
       catch (e) { console.error(e); }
     },
     resetPublicationEdit() {
-      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', pdfSize: null, readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
+      this.editingPublication = { id: null, type: 'publication', category: 'pc', title: '', slug: '', articleType: '', summary: '', publicationName: '', authorName: '', imageUrl: '', pdfUrl: '', pdfSize: null, readingTime: null, publishedDate: new Date().toISOString().slice(0,10), lock: false, isPublished: false, tagsList: [] };
       this.publicationTagInput = '';
       this.pubDocSelected = '';
       this.loadPubDocs();
@@ -7266,6 +7328,36 @@ createApp({
     async togglePublicationPublish(item) {
       try { await this.api('/news/' + item.id, { method: 'PUT', body: JSON.stringify({ isPublished: !item.isPublished }) }); this.loadPublicationList(); }
       catch (e) { this.showAlert('操作失败：' + e.message); }
+    },
+    togglePublicationSelectAll() {
+      if (this.publicationSelectedIds.length === this.publicationList.length && this.publicationList.length > 0) this.publicationSelectedIds = [];
+      else this.publicationSelectedIds = this.publicationList.map(i => i.id);
+    },
+    async batchDeletePublications() {
+      if (this.publicationSelectedIds.length === 0) return;
+      const ids = [...this.publicationSelectedIds];
+      this.showConfirm('批量删除', '确定删除选中的 ' + ids.length + ' 条出版物？此操作不可恢复。', async () => {
+        try {
+          await this.api('/news/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) });
+          this.publicationSelectedIds = [];
+          this.loadPublicationList();
+          this.showAlert('成功删除 ' + ids.length + ' 条出版物');
+        } catch (e) {
+          console.error('批量删除异常:', e);
+          this.showAlert('批量删除失败：' + e.message);
+        }
+      });
+    },
+    async aiTranslatePublicationItem(item) {
+      this.showConfirm('AI 翻译确认', '确定将《' + item.title + '》的标题与摘要 AI 翻译为中文？\n\n出版物无正文，仅翻译标题/摘要字段', { confirmText: '开始翻译', danger: false }, async () => {
+        item._translating = true;
+        try {
+          await this.runAiTranslateJob(item.id);
+          this.showAlert('✅ 翻译完成', 'success');
+        } catch (e) {
+          this.showAlert('AI 翻译失败：' + e.message);
+        } finally { item._translating = false; this.loadPublicationList(); }
+      });
     },
     async deletePublication(id) {
       this.showConfirm('确认删除', '确定删除该出版物？', async () => { try { await this.api('/news/' + id, { method: 'DELETE' }); this.loadPublicationList(); } catch (e) { this.showAlert('删除失败：' + e.message); } });

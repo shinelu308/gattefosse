@@ -213,8 +213,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <label>发布日期 <span class="required">*</span></label>
           <input type="date" class="form-control" v-model="editing.publishedDate" style="max-width:200px;">
         </div>
-        <div class="form-group" v-if="activeTab==='hot-topics'">
-          <label>阅读时长 <span class="form-hint">（留空自动计算）</span></label>
+        <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='publications'">
+          <label>阅读时长 <span class="form-hint" v-if="activeTab==='hot-topics'">（留空自动计算）</span><span class="form-hint" v-else>（分钟，选填）</span></label>
           <div style="display:flex;gap:4px;align-items:center;">
             <input type="number" class="form-control" v-model="editing.readingTime" style="max-width:120px;" placeholder="分钟">
             <span style="font-size:12px;color:#999;">分钟</span>
@@ -270,8 +270,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 
     <!-- 标签与附加设置 -->
     <div class="card">
-      <div class="card-header" v-if="activeTab==='hot-topics' || activeTab==='webinar'"><h3 style="font-size:15px;font-weight:600;margin:0;">标签</h3></div>
-      <div class="card-body" v-if="activeTab==='hot-topics' || activeTab==='webinar'">
+      <div class="card-header" v-if="activeTab==='hot-topics' || activeTab==='webinar' || activeTab==='publications'"><h3 style="font-size:15px;font-weight:600;margin:0;">标签</h3></div>
+      <div class="card-body" v-if="activeTab==='hot-topics' || activeTab==='webinar' || activeTab==='publications'">
         <div class="form-group">
           <label>已有标签 <span class="form-hint">（点击快速添加）</span></label>
           <div style="display:flex;flex-wrap:wrap;gap:4px;">
@@ -331,6 +331,9 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
               <input type="file" ref="pubPdfFile" accept=".pdf" style="display:none" @change="uploadPubPdf($event)">
             </div>
           </div>
+          <label class="checkline" style="cursor:pointer;">
+            <input type="checkbox" v-model="editing.lock"> 🔒 需要登录才能查看
+          </label>
         </div>
         <div v-if="activeTab==='brochures'">
           <div class="form-group">
@@ -370,6 +373,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
     </div>
 
     <div style="display:flex;gap:8px;justify-content:flex-end;margin:16px 0 8px;">
+      <button class="btn btn-outline" v-if="activeTab==='publications' && editing.id && isUntranslated(editing)" :disabled="editing._translating" @click="aiTranslateItem(editing)" title="AI 翻译标题与摘要（英文→中文）">{{ editing._translating ? '翻译中...' : 'AI 翻译' }}</button>
       <button class="btn btn-outline" @click="showEdit=false">取消</button>
       <button class="btn btn-primary" @click="saveItem()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
     </div>
@@ -579,7 +583,7 @@ createApp({
       q.set('limit', this.pageSize);
       if (this.activeTab === 'publications') q.set('excludeArticleType', '资料手册');
       if (this.activeTab === 'brochures') q.set('articleType', '资料手册');
-      if (this.activeTab === 'hot-topics' && this.filterArticleType) q.set('articleType', this.filterArticleType);
+      if ((this.activeTab === 'hot-topics' || this.activeTab === 'publications') && this.filterArticleType) q.set('articleType', this.filterArticleType);
       if (this.filterPublished) q.set('isPublished', this.filterPublished);
       if (this.keyword) q.set('keyword', this.keyword);
       return '/news?' + q.toString();
@@ -950,7 +954,7 @@ createApp({
         authorName: this.activeTab === 'publications' ? (this.editing.authorName || null) : undefined,
         authorId: this.activeTab === 'hot-topics' ? (this.editing.authorId ? Number(this.editing.authorId) : null) : undefined,
         slug: this.editing.slug || undefined,
-        readingTime: this.activeTab === 'hot-topics' ? (this.editing.readingTime ? Number(this.editing.readingTime) : null) : undefined,
+        readingTime: (this.activeTab === 'hot-topics' || this.activeTab === 'publications') ? (this.editing.readingTime ? Number(this.editing.readingTime) : null) : undefined,
         tags: this.editing.tagsText ? JSON.stringify(this.editing.tagsText.split(/[,，]/).map(s=>s.trim()).filter(Boolean)) : null,
       };
       // 研讨会校验 videoUrl
