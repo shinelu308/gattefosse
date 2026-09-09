@@ -706,6 +706,35 @@ function normalizeForMatch(t: string): string {
     .replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
 }
 
+/**
+ * PDF 文件名匹配键：取 basename、去扩展名、去本地化时加的 {fileId}_ 前缀、全小写。
+ * 注意：历史回填的文件名可能被文件系统 255 字节上限截断（尾部 hash 丢失），
+ * 因此匹配须用「前缀包含」而非全等——见 pdfCoreMatch。
+ */
+function pdfCore(p: string | null | undefined): string {
+  if (!p) return '';
+  let b = String(p).replace(/\\/g, '/').split('?')[0].split('#')[0];
+  try { b = decodeURIComponent(b); } catch { /* 保留原样 */ }
+  b = b.split('/').pop() || '';
+  b = b.replace(/\.pdf$/i, '').replace(/^\d+_/, '');
+  return b.toLowerCase();
+}
+
+/** PDF 核心名匹配：处理长文件名被截断的历史数据（一方是另一方的前缀即命中，短名要求全等避免误伤） */
+function pdfCoreMatch(a: string, b: string): boolean {
+  if (!a || !b) return false;
+  if (a.length < 20 || b.length < 20) return a === b;
+  return a === b || a.startsWith(b) || b.startsWith(a);
+}
+
+/** 限制落盘文件名长度（ext4 单文件名上限 255 字节，超长会被静默截断导致文件名对不上） */
+function safePdfName(fname: string): string {
+  if (fname.length <= 200) return fname;
+  const m = fname.match(/(\.pdf)$/i);
+  const cut = fname.slice(0, 200);
+  return m ? cut.replace(/\.pdf$/i, '') + '.pdf' : cut;
+}
+
 interface DocxParagraph { text: string; }
 
 /** 从 docx 二进制中按顺序提取全部段落文本（含表格单元格，保持文档顺序） */
@@ -986,6 +1015,25 @@ export async function importPublicationsFromSite(req: Request, res: Response) {
   let imported = 0, skipped = 0, pages = 0, failed = 0;
   let pageUrl: string | null = listUrl;
 
+  // 预载既有出版物做内存去重（跨语言：title / source_title 归一化 + PDF 核心名前缀 + 类型+出版物名+作者指纹）
+  const existing = await prisma.newsEvent.findMany({
+    where: { type: 'publication', category },
+    select: { id: true, title: true, sourceTitle: true, pdfUrl: true, articleType: true, publicationName: true, authorName: true, isPublished: true },
+  });
+  const existTitleKeys = new Set<string>();
+  const existCores: string[] = [];
+  const existFp = new Set<string>();
+  for (const r of existing) {
+    for (const t of [r.title, r.sourceTitle]) {
+      const k = t ? normalizeForMatch(t) : '';
+      if (k) existTitleKeys.add(k);
+    }
+    const c = pdfCore(r.pdfUrl);
+    if (c) existCores.push(c);
+    const at = r.articleType || '', pn = r.publicationName || '', an = r.authorName || '';
+    if (at || pn || an) existFp.add(normalizeForMatch(at) + '|' + normalizeForMatch(pn) + '|' + normalizeForMatch(an));
+  }
+
   try {
     while (pageUrl && pages < maxPages) {
       let html: string;
@@ -1015,52 +1063,57 @@ export async function importPublicationsFromSite(req: Request, res: Response) {
         if (!card.author) issues.push('⚠️ 无作者');
         if (!card.publishedDate) issues.push('⚠️ 日期解析失败');
 
-        // 防重：标题精确匹配 / PDF 文件名 / 指纹（类型+出版物名+作者+发布日期，字段不随 AI 翻译变化，跨语言稳定）
-        const dup = await prisma.newsEvent.findFirst({
-          where: {
-            type: 'publication',
-            OR: [
-              ...(card.title ? [{ title: card.title }] : []),
-              ...(card.pdfBasename ? [{ pdfUrl: { contains: card.pdfBasename } }] : []),
-              ...(card.publishedDate && (card.articleTypeZh || card.publicationName || card.author) ? [{
-                category,
-                articleType: card.articleTypeZh || null,
-                publicationName: card.publicationName || null,
-                authorName: card.author || null,
-                publishedDate: card.publishedDate,
-              }] : []),
-            ],
-          },
-          select: { id: true, title: true, isPublished: true },
-        });
-        if (dup) {
+        // 防重（内存匹配，跨语言稳定）：
+        // ① 标题/source_title 归一化全等（source_title 存导入时英文原标题，AI 翻译不改）
+        // ② PDF 核心名前缀匹配（历史本地化文件名可能被 255 字节截断）
+        // ③ 类型+出版物名+作者指纹（忽略日期：新旧批次日期口径不同）
+        const cardCore = pdfCore(card.pdfUrl);
+        let dupRow: { id: number; isPublished: boolean } | null = null;
+        const cardTitleKey = card.title ? normalizeForMatch(card.title) : '';
+        if (cardTitleKey && existTitleKeys.has(cardTitleKey)) {
+          dupRow = { id: -1, isPublished: true };
+        } else if (cardCore && existCores.some((c) => pdfCoreMatch(c, cardCore))) {
+          dupRow = { id: -1, isPublished: true };
+        } else {
+          const fpKey = normalizeForMatch(card.articleTypeZh || '') + '|' + normalizeForMatch(card.publicationName || '') + '|' + normalizeForMatch(card.author || '');
+          if (fpKey !== '||' && existFp.has(fpKey)) dupRow = { id: -1, isPublished: true };
+        }
+        if (dupRow) {
           skipped++;
-          items.push({ title: card.title || card.pdfBasename, status: 'skipped', pdf: '', docId: null, message: '已导入过（ID=' + dup.id + '，' + (dup.isPublished ? '已发布' : '草稿') + '），跳过' });
+          items.push({ title: card.title || card.pdfBasename, status: 'skipped', pdf: '', docId: null, message: '已导入过，跳过' });
           continue;
         }
         if (issues.some((i) => i.startsWith('❌'))) failed++;
 
-        // PDF 下载 → uploads/documents/，入文档资源
+        // PDF 下载 → uploads/documents/，入文档资源（文件/文档资源已存在则复用，避免重复下载与重复入库）
         let pdfLocal = '', pdfSize: number | null = null, docId: number | null = null;
         if (card.pdfUrl) {
-          const fname = (card.pdfFileId ? card.pdfFileId + '_' : '') + (card.pdfBasename || ('publication_' + Date.now() + '.pdf'));
+          const fname = safePdfName((card.pdfFileId ? card.pdfFileId + '_' : '') + (card.pdfBasename || ('publication_' + Date.now() + '.pdf')));
+          const target = path.join(uploadDir, fname);
+          pdfLocal = '/uploads/documents/' + fname;
           try {
-            await downloadFile(card.pdfUrl, path.join(uploadDir, fname));
-            const st = fs.statSync(path.join(uploadDir, fname));
+            if (!fs.existsSync(target)) {
+              await downloadFile(card.pdfUrl, target);
+            }
+            const st = fs.statSync(target);
             pdfSize = st.size;
-            pdfLocal = '/uploads/documents/' + fname;
-            const doc = await prisma.document.create({
-              data: {
-                title: card.title || card.pdfBasename,
-                type: 'Publication',
-                filePath: pdfLocal,
-                fileSize: BigInt(st.size),
-                language: 'en',
-                isPublic: true,
-                createdById: (req as any).userId || null,
-              },
-            });
-            docId = doc.id;
+            const existedDoc = await prisma.document.findFirst({ where: { filePath: pdfLocal }, select: { id: true } });
+            if (existedDoc) {
+              docId = existedDoc.id;
+            } else {
+              const doc = await prisma.document.create({
+                data: {
+                  title: card.title || card.pdfBasename,
+                  type: 'Publication',
+                  filePath: pdfLocal,
+                  fileSize: BigInt(st.size),
+                  language: 'en',
+                  isPublic: true,
+                  createdById: (req as any).userId || null,
+                },
+              });
+              docId = doc.id;
+            }
           } catch (e: any) {
             issues.push('⚠️ PDF 下载/入库失败：' + e.message);
           }
@@ -1077,6 +1130,7 @@ export async function importPublicationsFromSite(req: Request, res: Response) {
             authorName: card.author || null,
             pdfUrl: pdfLocal || null,
             pdfSize,
+            sourceTitle: card.title || null,
             publishedDate: card.publishedDate || new Date(),
             isPublished: false,
             createdById: (req as any).userId || null,
@@ -1128,7 +1182,7 @@ export async function backfillPublicationPdfs(req: Request, res: Response) {
       if (fi >= 0 && segs[fi + 1]) fileId = segs[fi + 1];
     } catch { /* basename 保持空，走兜底名 */ }
     if (!/\.pdf$/i.test(basename)) basename = (basename || 'publication_' + row.id) + '.pdf';
-    const fname = (fileId ? fileId + '_' : '') + basename;
+    const fname = safePdfName((fileId ? fileId + '_' : '') + basename);
     const target = path.join(uploadDir, fname);
     const pdfLocal = '/uploads/documents/' + fname;
 

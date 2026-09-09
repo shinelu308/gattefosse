@@ -46,6 +46,9 @@ tbody tr:last-child td { border-bottom: 0; }
 .btn-danger { background: #fff; color: #d9534f; border-color: #d9534f; }
 .btn-danger:hover { background: #fdf2f2; border-color: #d9534f; }
 .btn-sm { padding: 4px 9px; font-size: 12px; }
+.table-actions { white-space: nowrap; }
+.table-actions .btn { margin-right: 8px; }
+.table-actions .btn:last-child { margin-right: 0; }
 .btn-outline { background: #fff; color: #666; border-color: #e0e0e0; }
 .btn-outline:hover { background: #f5f6f7; color: #232426; }
 .btn-slate { background: #fff; color: #54616C; border-color: #54616C; }
@@ -137,7 +140,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         <th style="width:110px;">发布日期</th>
         <th style="width:90px;">状态</th>
         <th v-if="activeTab==='hot-topics'" style="width:250px;">操作</th>
-        <th v-else style="width:200px;">操作</th>
+        <th v-else style="width:250px;">操作</th>
       </tr></thead>
       <tbody>
         <tr v-for="item in list" :key="item.id">
@@ -158,8 +161,8 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           </td>
           <td style="font-size:12px;color:#666;">{{ fmtDate(item.publishedDate) }}</td>
           <td><span class="status-tag" :class="item.isPublished ? 'status-true' : 'status-false'">{{ item.isPublished ? '已发布' : '草稿' }}</span></td>
-          <td>
-            <button class="btn btn-outline btn-sm" v-if="hasContentTab && isUntranslated(item.title)" :disabled="item._translating" @click="aiTranslateItem(item)" title="AI 自动翻译英文为中文（保留版式与图片）">{{ item._translating ? '翻译中…' : 'AI翻译' }}</button>
+          <td class="table-actions">
+            <button class="btn btn-outline btn-sm" v-if="(hasContentTab || activeTab==='publications') && isUntranslated(item.title)" :disabled="item._translating" @click="aiTranslateItem(item)" title="AI 自动翻译英文为中文（保留版式与图片）">{{ item._translating ? '翻译中…' : 'AI翻译' }}</button>
             <button class="btn btn-outline btn-sm" @click="openEdit(item)">编辑</button>
             <button class="btn btn-sm" :class="item.isPublished ? 'btn-slate' : 'btn-outline'" @click="togglePublish(item)">{{ item.isPublished ? '下架' : '发布' }}</button>
             <button class="btn btn-sm btn-danger" @click="removeItem(item.id)">删除</button>
