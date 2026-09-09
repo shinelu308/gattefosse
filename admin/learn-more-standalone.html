@@ -383,10 +383,10 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   <input type="file" ref="transFile" accept=".docx" style="display:none" @change="uploadTranslation($event)">
 
   <!-- ============ 原站导入弹框（样式对齐 admin/index.html 基准） ============ -->
-  <div v-if="showImport" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'import' : ''" @click="onOverlayClick($event, 'import')">
-    <div class="modal" style="width:600px;">
+  <div v-if="showImport" ref="importOverlay" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'import' : ''" @click="onOverlayClick($event, 'import')">
+    <div class="modal" ref="importModal" style="width:600px;">
       <div class="modal-header">
-        <h3>从原站导入文章</h3>
+        <h3>{{ activeTab==='publications' ? '从原站导入出版物' : '从原站导入文章' }}</h3>
         <button class="btn btn-sm" @click="showImport=false">✕</button>
       </div>
       <div class="modal-body">
@@ -669,6 +669,24 @@ createApp({
       this.importItems = [];
       this.importMaxPages = 1;
       this.showImport = true;
+      this.alignImportOverlayToWindow();
+    },
+    // 本页经 iframe 嵌入后台时，把弹框平移到整个浏览器窗口的视觉中心（同源可读父窗口尺寸）
+    alignImportOverlayToWindow() {
+      this.$nextTick(() => {
+        const modal = this.$refs.importModal;
+        if (!modal) return;
+        modal.style.transform = '';
+        try {
+          if (window.parent === window || !window.parent.innerWidth) return;
+          const fe = window.frameElement;
+          if (!fe) return;
+          const r = fe.getBoundingClientRect();
+          const dx = (window.parent.innerWidth / 2) - (r.left + r.width / 2);
+          const dy = (window.parent.innerHeight / 2) - (r.top + r.height / 2);
+          modal.style.transform = 'translate(' + Math.round(dx) + 'px,' + Math.round(dy) + 'px)';
+        } catch (e) { /* 跨域或父窗口不可达时保持 iframe 内居中 */ }
+      });
     },
     // 遮罩点击关闭：仅当按下与松开都在遮罩上时才关闭，
     // 避免在弹框内拖选文字、松开在遮罩上时被误判为点击遮罩而关闭弹框
