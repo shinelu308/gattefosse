@@ -193,7 +193,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
   if (!url || !/^https:\/\/([a-z0-9-]+\.)*(gattefosse\.com|gattefossechina\.cn)\//i.test(url)) {
     return res.status(400).json(fail('请提供 gattefosse.com 或 gattefossechina.cn 站点的文章链接'));
   }
-  const allowedTypes = ['article', 'news', 'event'];
+  const allowedTypes = ['article', 'news', 'event', 'page'];
   const allowedCategories = ['corporate', 'pc', 'pharma'];
   const userType = String(rawType || '');
   const userSpecifiedType = allowedTypes.includes(userType);
@@ -247,7 +247,10 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const themeM = /<main[^>]*class="[^"]*\b(theme-cosm|theme-pharma)\b/.exec(html);
   const pageThemeClass = themeM ? themeM[1] : null;
 
-  const titleM = /<h1[^>]*s-article__title[^>]*>([\s\S]*?)<\/h1>/.exec(articleDiv);
+  // 标题：文章页 s-article__title；专题页（node--type-page，如 Journées Galéniques）为 h1.page-title；兜底取第一个 h1
+  const titleM = /<h1[^>]*s-article__title[^>]*>([\s\S]*?)<\/h1>/.exec(articleDiv)
+    || /<h1[^>]*page-title[^>]*>([\s\S]*?)<\/h1>/.exec(articleDiv)
+    || /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(articleDiv);
   const title = titleM ? stripTags(titleM[1]) : '';
   if (!title) return res.status(400).json(fail('未找到文章标题'));
 
