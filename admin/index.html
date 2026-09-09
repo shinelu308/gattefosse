@@ -4732,7 +4732,8 @@ createApp({
         },
         series: [{
           type: 'map', map: isChina ? 'china-standard' : 'world-standard',
-          roam: false, layoutCenter: ['50%', '52%'], layoutSize: '100%',
+          // 世界地图宽扁（约 2:1）且数据四周留白大，放大到 135% 裁掉多余留白；中国地图近方形保持 100%
+          roam: false, layoutCenter: ['50%', '52%'], layoutSize: isChina ? '100%' : '135%',
           emphasis: { label: { show: false }, itemStyle: { areaColor: '#7aa030' } },
           select: { disabled: true },
           data,
