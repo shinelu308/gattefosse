@@ -9,7 +9,7 @@ import { prisma } from './prisma';
 import {
   ORIGIN_BASE, downloadFile, fetchText, absoluteUrl, findTagByClass, attrOfTag, stripImgParams,
   extractBalancedDiv, extractDivByClass, stripTags, normalizeForCompare, structureSignature,
-  removeParagraphBlocks, findCardThumbBySlug,
+  removeParagraphBlocks, findCardThumbBySlug, findCardCategoryBySlug, translateTag,
 } from './import-rules';
 
 export interface VerifyItem {
@@ -256,6 +256,17 @@ export async function reverifyArticle(id: number): Promise<VerifyItem[]> {
     if (segs.length > 1) {
       const listingHtml = await fetchText(`${ORIGIN_BASE}/${segs.slice(0, -1).join('/')}`);
       const thumbRaw = findCardThumbBySlug(listingHtml, originPath);
+      // 主题补齐：热点话题详情页无标签区，分类只在列表卡片——tags 为空时从卡片补
+      let existingTags: string[] = [];
+      if (item.tags) {
+        try { existingTags = JSON.parse(item.tags); } catch { existingTags = item.tags.split(',').map(s => s.trim()).filter(Boolean); }
+      }
+      const catRaw = findCardCategoryBySlug(listingHtml, originPath);
+      if (catRaw && !existingTags.length) {
+        const catZh = translateTag(catRaw);
+        await prisma.newsEvent.update({ where: { id: item.id }, data: { tags: JSON.stringify([catZh]) } });
+        items.push({ name: '主题标签', ok: true, fixed: true, detail: `已从列表卡片补齐主题（${catRaw}${catZh !== catRaw ? ' → ' + catZh : ''}）` });
+      }
       if (thumbRaw) {
         const remoteBaseRaw = decodeURIComponent(new URL(thumbRaw).pathname.split('/').pop() || '').replace(/\.webp$/i, '');
         const remoteKey = remoteBaseRaw.replace(/[^\w.\-]+/g, '_').slice(0, 40);

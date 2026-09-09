@@ -151,7 +151,7 @@
                         <h2 class="c-filter__main-title">过滤条件</h2>
                         <button type="reset" target="/pharmaceuticals/learn-more/hot-topics.html"
                           @click.prevent="clearFilters"
-                          class="c-filter__reset-btn btn btn-outline-secondary">取消过滤
+                          class="c-filter__reset-btn btn btn-outline-secondary">重置过滤
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
@@ -251,7 +251,7 @@
                         </a>
                         <div class="c-card__content">
                           <ul class="c-card__breadcrumb">
-                            <li v-if="item.articleType" class="category">{{ item.articleType }}</li>
+                            <li v-if="item.articleType || (item.tagList && item.tagList.length)" class="category">{{ item.articleType || item.tagList[0] }}</li>
                           </ul>
                           <p class="c-card__info">
                             <span class="c-card__date" v-if="item.dateText">{{ item.dateText }}</span>

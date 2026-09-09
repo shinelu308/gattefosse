@@ -7,7 +7,7 @@ import { success, fail } from '../utils/response';
 import { config } from '../config';
 import {
   ORIGIN_BASE, downloadFile, fetchText, absoluteUrl, cleanBingLinks, translateTag,
-  findTagByClass, attrOfTag, stripImgParams, stripTags, findCardThumbBySlug,
+  findTagByClass, attrOfTag, stripImgParams, stripTags, findCardThumbBySlug, findCardCategoryBySlug,
   extractBalancedDiv, extractDivByClass,
 } from '../utils/import-rules';
 import { verifyImportedArticle, reverifyArticle } from '../utils/import-verify';
@@ -372,11 +372,18 @@ export async function importArticleFromSite(req: Request, res: Response) {
     if (segs.length > 1) listingCandidates.push('/' + segs.slice(0, -1).join('/'));
     listingCandidates.push('/personal-care/get-inspired'); // 兼容：个护获取灵感历史入口
     let cardThumbRaw: string | null = null;
+    let cardCategory: string | null = null;
     for (const cand of [...new Set(listingCandidates)]) {
       let listingHtml = '';
       try { listingHtml = await fetchText(SITE_ORIGIN + cand); } catch { continue; }
       cardThumbRaw = findCardThumbBySlug(listingHtml, selfPathTmp);
-      if (cardThumbRaw) break;
+      cardCategory = findCardCategoryBySlug(listingHtml, selfPathTmp);
+      if (cardThumbRaw || cardCategory) break;
+    }
+    // 卡片分类（如 "Lipids and polymers"）→ 中文主题标签；详情页无标签区时这是主题唯一来源
+    if (cardCategory) {
+      const catZh = translateTag(cardCategory, unknownTags);
+      if (!tagsZh.includes(catZh)) tagsZh.push(catZh);
     }
     if (cardThumbRaw) {
       seq++;

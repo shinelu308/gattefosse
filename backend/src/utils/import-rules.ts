@@ -220,6 +220,11 @@ export const TAG_ZH: Record<string, string> = {
   'skin longevity': '皮肤长寿', 'longevity': '长寿', 'resilience': '韧性', 'beauty': '美妆',
   'self-care': '自我护理', 'circular economy': '循环经济', 'upcycling': '升级回收',
   'natural origin': '天然来源', 'naturality': '自然性', 'preservation': '防腐',
+  // 药用板块（pharma）主题词：来自列表页卡片分类与 Themes facet（2026-09-09 补）
+  'lipids and polymers': '脂质与聚合物', 'lipid-based formulations': '脂质制剂',
+  'liquid-based formulations': '液体制剂', 'animal health': '动物健康', 'cannabinoids': '大麻素',
+  'hot melt extrusion': '热熔挤出', 'intestinal permeation enhancers': '肠道渗透促进剂',
+  'oral drug delivery': '口服给药', 'lipid-based drug delivery': '脂质给药',
 };
 
 /**
@@ -300,6 +305,28 @@ export function structureSignature(html: string): string {
  *    按主题选预期值——拿品红预期去比对药用文章会误报，拿品红样式渲染药用文章即事故。
  */
 export function findCardThumbBySlug(listingHtml: string, articlePath: string): string | null {
+  const card = findCardBlockBySlug(listingHtml, articlePath);
+  if (!card) return null;
+  const imgTag = findTagByClass(card, 'img', 'card__image');
+  if (!imgTag) return null;
+  const src = attrOfTag(imgTag, 'src') || attrOfTag(imgTag, 'data-src');
+  if (!src) return null;
+  return absoluteUrl(stripImgParams(src));
+}
+
+/** R7 配套：取列表卡片内的分类文字（li.category，如 "Lipids and polymers"）。
+ *  热点话题（pharma）详情页无主题标签区，分类只存在于列表卡片——2026-09-09 补 */
+export function findCardCategoryBySlug(listingHtml: string, articlePath: string): string | null {
+  const card = findCardBlockBySlug(listingHtml, articlePath);
+  if (!card) return null;
+  const m = /<li[^>]*class="[^"]*category[^"]*"[^>]*>([\s\S]*?)<\/li>/.exec(card);
+  if (!m) return null;
+  const t = stripTags(m[1]).trim();
+  return t || null;
+}
+
+/** 共用：按文章路径定位列表页卡片平衡 div（回溯到包含 card__image 的 c-card 容器） */
+function findCardBlockBySlug(listingHtml: string, articlePath: string): string | null {
   if (!articlePath) return null;
   const pathRe = new RegExp('href="([^"]*' + articlePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([?#][^"]*)?)"');
   const linkM = pathRe.exec(listingHtml);
@@ -311,13 +338,7 @@ export function findCardThumbBySlug(listingHtml: string, articlePath: string): s
     const cardStart = listingHtml.lastIndexOf('<div class="c-card', searchFrom);
     if (cardStart < 0) return null;
     const card = extractBalancedDiv(listingHtml, cardStart);
-    if (card && card.indexOf('card__image') >= 0) {
-      const imgTag = findTagByClass(card, 'img', 'card__image');
-      if (!imgTag) return null;
-      const src = attrOfTag(imgTag, 'src') || attrOfTag(imgTag, 'data-src');
-      if (!src) return null;
-      return absoluteUrl(stripImgParams(src));
-    }
+    if (card && card.indexOf('card__image') >= 0) return card;
     searchFrom = cardStart - 1;
     if (searchFrom < 0) return null;
   }
