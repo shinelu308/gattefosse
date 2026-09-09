@@ -7412,6 +7412,8 @@ createApp({
         const d = await this.api('/news/import-publications', { method: 'POST', body: JSON.stringify({ listUrl: this.publicationImport.url.trim(), maxPages: parseInt(this.publicationImport.maxPages) || 1 }) });
         this.publicationImport.items = d.items || [];
         this.publicationImport.msg = '✅ 导入完成：新增 ' + (d.imported || 0) + ' 条、跳过 ' + (d.skipped || 0) + ' 条（已导入过），共处理 ' + (d.pages || 0) + ' 页' + (d.failed ? '，' + d.failed + ' 条存在缺项请查看清单' : '');
+        // 通知 iframe 子页面（了解更多-出版物）刷新列表
+        try { document.querySelectorAll('iframe').forEach(f => f.contentWindow.postMessage({ type: 'lm-pub-imported' }, window.location.origin)); } catch (e) {}
         this.loadPublicationList();
       } catch (e) {
         this.publicationImport.msg = '❌ 导入失败：' + e.message;
@@ -7893,6 +7895,11 @@ createApp({
     }
   },
   async mounted() {
+    // 监听 iframe 子页面消息：复用本页出版物导入弹框（了解更多-出版物 经 iframe 嵌入，自身弹框无法全窗口居中）
+    window.addEventListener('message', (ev) => {
+      if (ev.origin !== window.location.origin) return;
+      if (ev.data && ev.data.type === 'lm-open-pub-import') this.openPublicationImport();
+    });
     // 强制关闭所有 modal（防止刷新时弹框残留）
     this.alertDialog.show = false;
     this.confirmDialog.show = false;

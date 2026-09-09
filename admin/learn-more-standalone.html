@@ -546,6 +546,7 @@ createApp({
     const q = new URLSearchParams(location.search);
     const t = q.get('tab');
     if (t && this.tabs.find(x => x.key === t)) this.activeTab = t;
+    window.addEventListener('message', this.onParentMessage);
     this.loadList();
     this.countAll();
     this.loadAuthors();
@@ -664,12 +665,21 @@ createApp({
       this.$nextTick(() => this.initQuill(''));
     },
     openImport() {
+      // 出版物 tab 且嵌在后台 iframe 中：直接复用父页面（获取灵感-出版物）的原生导入弹框——样式/全窗口居中完全一致
+      if (this.activeTab === 'publications' && window.parent !== window) {
+        try { window.parent.postMessage({ type: 'lm-open-pub-import' }, window.location.origin); return; } catch (e) {}
+      }
       this.importUrl = '';
       this.importMsg = '';
       this.importItems = [];
       this.importMaxPages = 1;
       this.showImport = true;
       this.alignImportOverlayToWindow();
+    },
+    // 导入完成（父页面弹框导入成功后广播）：刷新本页列表
+    onParentMessage(ev) {
+      if (ev.origin !== window.location.origin) return;
+      if (ev.data && ev.data.type === 'lm-pub-imported') { this.loadList(); this.countAll(); }
     },
     // 本页经 iframe 嵌入后台时，把弹框平移到整个浏览器窗口的视觉中心（同源可读父窗口尺寸）
     alignImportOverlayToWindow() {
