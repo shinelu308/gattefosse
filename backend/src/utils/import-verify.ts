@@ -127,17 +127,19 @@ export async function verifyImportedArticle(
   }
 
   // 2. 摘要（导语）一致性：库内摘要应为原站导语的前缀或兜底首段；已翻译视为通过
+  // 摘要可能存原始 HTML（专题页导入器存导语 HTML），比对前先剥标签与纯文本对齐
+  const itemSummaryText = stripTags(item.summary || '').trim();
   const oAcc = originAccroche(originHtml);
   if (oAcc) {
-    if (item.summary && normalizeForCompare(oAcc).startsWith(normalizeForCompare(item.summary).slice(0, 50))) {
+    if (itemSummaryText && normalizeForCompare(oAcc).startsWith(normalizeForCompare(itemSummaryText).slice(0, 50))) {
       out.push({ name: '摘要与原站导语一致', ok: true });
-    } else if (item.summary && hasCJK(item.summary)) {
+    } else if (itemSummaryText && hasCJK(itemSummaryText)) {
       out.push({ name: '摘要与原站导语一致', ok: true, detail: '已翻译为中文' });
     } else {
       out.push({ name: '摘要与原站导语一致', ok: false, detail: '库内摘要与原站导语不匹配' });
     }
   } else {
-    out.push({ name: '摘要（原站无导语，取首段兜底）', ok: !!item.summary, detail: item.summary ? undefined : '原站无导语且未生成兜底摘要' });
+    out.push({ name: '摘要（原站无导语，取首段兜底）', ok: !!itemSummaryText, detail: itemSummaryText ? undefined : '原站无导语且未生成兜底摘要' });
   }
 
   // 3. 作者姓名 / 职务
