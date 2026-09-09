@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
 import { listNews, getNewsItem, createNewsItem, updateNewsItem, deleteNewsItem, listNewsTags, incrementNewsViews, batchDeleteNews, aiTranslateNews, aiTranslateStatus } from '../controllers/news.controller';
-import { importArticleFromSite, applyDocxTranslation, reverifyImportedArticle } from '../controllers/import.controller';
+import { importArticleFromSite, importPublicationsFromSite, applyDocxTranslation, reverifyImportedArticle } from '../controllers/import.controller';
 import { uploadTranslationDoc } from '../middleware/upload';
 
 const router = Router();
@@ -16,6 +16,8 @@ router.get('/:id', getNewsItem);
 // 管理接口（batch-delete 必须在 /:id 之前注册）
 router.post('/batch-delete', authMiddleware, requireRole('super_admin'), batchDeleteNews);
 router.post('/import-from-site', authMiddleware, requireRole('editor', 'super_admin'), importArticleFromSite);
+// 出版物批量导入（从原站出版物列表页抓卡片，PDF 入文档资源）
+router.post('/import-publications', authMiddleware, requireRole('editor', 'super_admin'), importPublicationsFromSite);
 // AI 翻译：启动任务 / 查询进度（必须在 /:id 之前注册）
 router.get('/ai-translate/status/:jobId', authMiddleware, requireRole('editor', 'super_admin'), aiTranslateStatus);
 router.post('/:id/ai-translate', authMiddleware, requireRole('editor', 'super_admin'), aiTranslateNews);

@@ -12,6 +12,9 @@ import {
 } from '../utils/import-rules';
 import { translateArticleTheme, translateArticleThemes } from '../utils/article-theme';
 import { verifyImportedArticle, reverifyArticle } from '../utils/import-verify';
+import {
+  normalizeListUrl, inferCategoryFromUrl, parsePublicationCards, extractNextPageUrl,
+} from '../utils/import-publications';
 
 const SITE_ORIGIN = ORIGIN_BASE;
 const CN_ORIGIN = 'https://www.gattefossechina.cn';
@@ -962,4 +965,130 @@ export async function applyDocxTranslation(req: Request, res: Response) {
     titleUpdated: !!(zhTitle && isChineseText(zhTitle)),
     mapSize: map.size,
   }, `回填完成：替换 ${replaced} 段` + (untranslated.length ? `，${untranslated.length} 处未匹配（保留英文）` : '')));
+}
+
+// ==================================================================
+// 出版物批量导入（原站出版物无详情页，从列表页逐卡抓取）
+// POST /news/import-publications  body: { listUrl, maxPages }
+// ==================================================================
+export async function importPublicationsFromSite(req: Request, res: Response) {
+  const rawUrl = String(req.body.listUrl || '');
+  const maxPages = Math.min(30, Math.max(1, parseInt(req.body.maxPages) || 1));
+  const listUrl = normalizeListUrl(rawUrl);
+  if (!listUrl) {
+    return res.status(400).json(fail('请提供原站出版物列表页链接（如 https://www.gattefosse.com/personal-care/get-inspired/publications）'));
+  }
+  const category = inferCategoryFromUrl(listUrl);
+  const uploadDir = path.resolve(__dirname, '../../uploads/documents');
+  fs.mkdirSync(uploadDir, { recursive: true });
+
+  const items: { title: string; status: string; pdf: string; docId: number | null; message: string }[] = [];
+  let imported = 0, skipped = 0, pages = 0, failed = 0;
+  let pageUrl: string | null = listUrl;
+
+  try {
+    while (pageUrl && pages < maxPages) {
+      let html: string;
+      try {
+        html = await fetchText(pageUrl);
+      } catch (e: any) {
+        items.push({ title: '第 ' + (pages + 1) + ' 页抓取失败', status: 'error', pdf: '', docId: null, message: e.message });
+        failed++;
+        break;
+      }
+      pages++;
+      const cards = parsePublicationCards(html);
+      if (!cards.length && pages === 1) {
+        return res.status(400).json(fail('未在页面中解析到出版物卡片，请确认链接为原站出版物列表页'));
+      }
+
+      for (const card of cards) {
+        // 字段完整性清单（原站无详情页可比对，校验=抓取完整性）
+        const issues: string[] = [];
+        if (!card.title) issues.push('❌ 未抓到标题');
+        if (!card.pdfUrl) {
+          // 原站部分出版物（多为 Scientific publication）无 PDF 下载入口，属正常，不算失败
+          issues.push(card.pdfHasCta ? '❌ 有下载按钮但未抓到 PDF 链接' : '⚠️ 该出版物无 PDF（原站仅有摘要）');
+        }
+        else if (!/\.pdf(\?|$)/i.test(card.pdfUrl)) issues.push('⚠️ 下载链接不是 .pdf');
+        if (!card.summary) issues.push('⚠️ 无摘要');
+        if (!card.author) issues.push('⚠️ 无作者');
+        if (!card.publishedDate) issues.push('⚠️ 日期解析失败');
+
+        // 防重：标题精确匹配 或 PDF 文件名已导入（放在缺项计数前：已存在的不计入失败）
+        const dup = await prisma.newsEvent.findFirst({
+          where: {
+            type: 'publication',
+            OR: [
+              ...(card.title ? [{ title: card.title }] : []),
+              ...(card.pdfBasename ? [{ pdfUrl: { contains: card.pdfBasename } }] : []),
+            ],
+          },
+          select: { id: true, title: true, isPublished: true },
+        });
+        if (dup) {
+          skipped++;
+          items.push({ title: card.title || card.pdfBasename, status: 'skipped', pdf: '', docId: null, message: '已导入过（ID=' + dup.id + '，' + (dup.isPublished ? '已发布' : '草稿') + '），跳过' });
+          continue;
+        }
+        if (issues.some((i) => i.startsWith('❌'))) failed++;
+
+        // PDF 下载 → uploads/documents/，入文档资源
+        let pdfLocal = '', pdfSize: number | null = null, docId: number | null = null;
+        if (card.pdfUrl) {
+          const fname = (card.pdfFileId ? card.pdfFileId + '_' : '') + (card.pdfBasename || ('publication_' + Date.now() + '.pdf'));
+          try {
+            await downloadFile(card.pdfUrl, path.join(uploadDir, fname));
+            const st = fs.statSync(path.join(uploadDir, fname));
+            pdfSize = st.size;
+            pdfLocal = '/uploads/documents/' + fname;
+            const doc = await prisma.document.create({
+              data: {
+                title: card.title || card.pdfBasename,
+                type: 'Publication',
+                filePath: pdfLocal,
+                fileSize: BigInt(st.size),
+                language: 'en',
+                isPublic: true,
+                createdById: (req as any).userId || null,
+              },
+            });
+            docId = doc.id;
+          } catch (e: any) {
+            issues.push('⚠️ PDF 下载/入库失败：' + e.message);
+          }
+        }
+
+        const created = await prisma.newsEvent.create({
+          data: {
+            type: 'publication',
+            category,
+            title: card.title || (card.pdfBasename || '').replace(/\.pdf$/i, ''),
+            summary: card.summary || null,
+            articleType: card.articleTypeZh || null,
+            publicationName: card.publicationName || null,
+            authorName: card.author || null,
+            pdfUrl: pdfLocal || null,
+            pdfSize,
+            publishedDate: card.publishedDate || new Date(),
+            isPublished: false,
+            createdById: (req as any).userId || null,
+          },
+          select: { id: true },
+        });
+        imported++;
+        items.push({ title: card.title || card.pdfBasename, status: issues.some((i) => i.startsWith('❌')) ? 'partial' : 'ok', pdf: pdfLocal, docId, message: issues.length ? issues.join('；') : '字段齐全，PDF 已入文档资源' });
+      }
+
+      pageUrl = extractNextPageUrl(html, pageUrl);
+    }
+
+    const errCount = items.filter((i) => i.status === 'error' || i.status === 'partial').length;
+    return res.json(success({
+      imported, skipped, failed, pages, items,
+      category,
+    }, '导入完成：新增 ' + imported + ' 条、跳过 ' + skipped + ' 条（已导入过），共处理 ' + pages + ' 页' + (errCount ? '，' + errCount + ' 条存在缺项请查看清单' : '')));
+  } catch (e: any) {
+    return res.status(500).json(fail('出版物导入失败：' + e.message));
+  }
 }
