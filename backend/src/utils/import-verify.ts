@@ -20,9 +20,11 @@ export interface VerifyItem {
   fixed?: boolean;
 }
 
-/** 提取原站文章标题（h1.s-article__title） */
+/** 提取原站文章标题（文章页 h1.s-article__title；专题页 h1.page-title；兜底第一个 h1，与导入器 fallback 一致） */
 function originTitle(html: string): string {
-  const m = /<h1[^>]*s-article__title[^>]*>([\s\S]*?)<\/h1>/.exec(html);
+  const m = /<h1[^>]*s-article__title[^>]*>([\s\S]*?)<\/h1>/.exec(html)
+    || /<h1[^>]*page-title[^>]*>([\s\S]*?)<\/h1>/.exec(html)
+    || /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(html);
   return m ? stripTags(m[1]) : '';
 }
 
