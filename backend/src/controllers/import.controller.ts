@@ -1015,13 +1015,20 @@ export async function importPublicationsFromSite(req: Request, res: Response) {
         if (!card.author) issues.push('⚠️ 无作者');
         if (!card.publishedDate) issues.push('⚠️ 日期解析失败');
 
-        // 防重：标题精确匹配 或 PDF 文件名已导入（放在缺项计数前：已存在的不计入失败）
+        // 防重：标题精确匹配 / PDF 文件名 / 指纹（类型+出版物名+作者+发布日期，字段不随 AI 翻译变化，跨语言稳定）
         const dup = await prisma.newsEvent.findFirst({
           where: {
             type: 'publication',
             OR: [
               ...(card.title ? [{ title: card.title }] : []),
               ...(card.pdfBasename ? [{ pdfUrl: { contains: card.pdfBasename } }] : []),
+              ...(card.publishedDate && (card.articleTypeZh || card.publicationName || card.author) ? [{
+                category,
+                articleType: card.articleTypeZh || null,
+                publicationName: card.publicationName || null,
+                authorName: card.author || null,
+                publishedDate: card.publishedDate,
+              }] : []),
             ],
           },
           select: { id: true, title: true, isPublished: true },

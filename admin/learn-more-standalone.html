@@ -676,10 +676,17 @@ createApp({
       this.showImport = true;
       this.alignImportOverlayToWindow();
     },
-    // 导入完成（父页面弹框导入成功后广播）：刷新本页列表
+    // 导入完成（父页面弹框导入成功后广播）：刷新本页列表并提示完成
     onParentMessage(ev) {
       if (ev.origin !== window.location.origin) return;
-      if (ev.data && ev.data.type === 'lm-pub-imported') { this.loadList(); this.countAll(); }
+      if (ev.data && ev.data.type === 'lm-pub-imported') {
+        this.loadList(); this.countAll();
+        if (ev.data.fromIframe) {
+          const summary = '新增 ' + (ev.data.imported || 0) + ' 条、跳过 ' + (ev.data.skipped || 0) + ' 条（已导入过）'
+            + (ev.data.failed ? '，' + ev.data.failed + ' 条存在缺项' : '');
+          AdminDialog.alert('✅ 后台导入完成：' + summary, { type: 'success', title: '导入完成' });
+        }
+      }
     },
     // 本页经 iframe 嵌入后台时，把弹框平移到整个浏览器窗口的视觉中心（同源可读父窗口尺寸）
     alignImportOverlayToWindow() {
