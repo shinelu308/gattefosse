@@ -63,7 +63,7 @@
     <div class="region region-highlight">
       <div data-drupal-messages-fallback class="hidden"></div>
     </div>
-    <main role="main" class="main theme-cosm" data-bs-spy="scroll">
+    <main role="main" class="main theme-cosm">
       <nav role="navigation" class="quick-access">
         <button class="quick-access__button quick-access__button--open js-open">
           <i class="o-icon --list" aria-hidden="true"></i>
@@ -241,8 +241,7 @@
                           </ul>
                           <p class="c-card__info">
                             <span class="c-card__date">
-                              <i class="u-text-defaultcase">{{item.publicationName}}</i>&nbsp;-
-                              {{item.eventTimeYear}}
+                              <template v-if="item.publicationName"><i class="u-text-defaultcase">{{item.publicationName}}</i>&nbsp;-&nbsp;</template>{{item.eventTimeYear}}
                             </span>
                           </p>
                           <p class="c-card__author">{{item.author}}</p>
