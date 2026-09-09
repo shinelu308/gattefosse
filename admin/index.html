@@ -2928,19 +2928,21 @@ const QUILL_TOOLBAR = [
           <p class="page-subtitle">管理获取灵感模块下的科技出版物（type = publication · category = pc）</p>
           <div class="card">
             <div class="card-header">
-              <input class="form-control" style="width:200px;" placeholder="搜索标题、摘要..." v-model="publicationFilter.keyword" @keyup.enter="loadPublicationList()">
-              <select class="form-control" style="width:140px;" v-model="publicationFilter.articleType">
-                <option value="">全部子类型</option>
-                <option v-for="t in publicationTypeOptions" :key="t" :value="t">{{ t }}</option>
-              </select>
-              <select class="form-control" style="width:100px;" v-model="publicationFilter.isPublished">
-                <option value="">全部状态</option><option value="true">已发布</option><option value="false">草稿</option>
-              </select>
-              <button class="btn btn-primary" @click="loadPublicationList()">搜索</button>
-              <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'', articleType:'' }; loadPublicationList();">重置</button>
-              <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()">+ 新增出版物</button>
-              <button class="btn btn-slate" @click="openPublicationImport()">⬇ 从原站导入</button>
-              <button class="btn btn-sm btn-danger" @click="batchDeletePublications" :disabled="publicationSelectedIds.length === 0">批量删除 ({{ publicationSelectedIds.length }})</button>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <input class="form-control" style="width:200px;" placeholder="搜索标题、摘要..." v-model="publicationFilter.keyword" @keyup.enter="loadPublicationList()">
+                <select class="form-control" style="width:140px;" v-model="publicationFilter.articleType">
+                  <option value="">全部子类型</option>
+                  <option v-for="t in publicationTypeOptions" :key="t" :value="t">{{ t }}</option>
+                </select>
+                <select class="form-control" style="width:100px;" v-model="publicationFilter.isPublished">
+                  <option value="">全部状态</option><option value="true">已发布</option><option value="false">草稿</option>
+                </select>
+                <button class="btn btn-primary" @click="loadPublicationList()">搜索</button>
+                <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'', articleType:'' }; loadPublicationList();">重置</button>
+                <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()">+ 新增出版物</button>
+                <button class="btn btn-slate" @click="openPublicationImport()">⬇ 从原站导入</button>
+                <button class="btn btn-sm btn-danger" @click="batchDeletePublications" :disabled="publicationSelectedIds.length === 0">批量删除 ({{ publicationSelectedIds.length }})</button>
+              </div>
             </div>
             <table class="table">
               <thead><tr>
