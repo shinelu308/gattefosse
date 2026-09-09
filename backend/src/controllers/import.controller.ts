@@ -360,13 +360,24 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
   // 3.7 列表缩略图（规则 R7）：优先取原站列表页卡片裁剪图（c-card__image > img.card__image），
   // 与详情页 banner 不是同一张图；banner 只做详情页头图（topBackground）。取不到时回退 banner。
+  // ⚠️ 列表页地址必须从文章路径推导父目录（/pharmaceuticals/learn-more/xxx → /pharmaceuticals/learn-more），
+  // 禁止写死 /personal-care/get-inspired——热点话题文章曾因写死列表页而全部回退正文首图（2026-09-09）
   let thumbLocal = '';
   let thumbSource: 'listing-card' | 'banner' | 'first-image' = 'first-image';
   try {
     let selfPathTmp = '';
     try { selfPathTmp = new URL(url).pathname; } catch { selfPathTmp = ''; }
-    const listingHtml = await fetchText(SITE_ORIGIN + '/personal-care/get-inspired');
-    const cardThumbRaw = findCardThumbBySlug(listingHtml, selfPathTmp);
+    const listingCandidates: string[] = [];
+    const segs = selfPathTmp.split('/').filter(Boolean);
+    if (segs.length > 1) listingCandidates.push('/' + segs.slice(0, -1).join('/'));
+    listingCandidates.push('/personal-care/get-inspired'); // 兼容：个护获取灵感历史入口
+    let cardThumbRaw: string | null = null;
+    for (const cand of [...new Set(listingCandidates)]) {
+      let listingHtml = '';
+      try { listingHtml = await fetchText(SITE_ORIGIN + cand); } catch { continue; }
+      cardThumbRaw = findCardThumbBySlug(listingHtml, selfPathTmp);
+      if (cardThumbRaw) break;
+    }
     if (cardThumbRaw) {
       seq++;
       let base = '';

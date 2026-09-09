@@ -9,7 +9,7 @@ import { prisma } from './prisma';
 import {
   ORIGIN_BASE, downloadFile, fetchText, absoluteUrl, findTagByClass, attrOfTag, stripImgParams,
   extractBalancedDiv, extractDivByClass, stripTags, normalizeForCompare, structureSignature,
-  removeParagraphBlocks,
+  removeParagraphBlocks, findCardThumbBySlug,
 } from './import-rules';
 
 export interface VerifyItem {
@@ -221,11 +221,26 @@ export async function reverifyArticle(id: number): Promise<VerifyItem[]> {
   if (!item) throw new Error('文章不存在');
   if (!item.slug) throw new Error('该记录无原站 slug，无法定位原站页面');
   // slug 兼容两种历史格式：末段（新导入）或完整路径（旧导入，含 /）
-  const originUrl = item.slug.includes('/')
-    ? `${ORIGIN_BASE}/${item.slug.replace(/^\/+/, '')}`
-    : `${ORIGIN_BASE}/personal-care/get-inspired/${item.slug}`;
+  // 末段格式先用 sitemap 定位完整路径（热点话题等非个护板块文章不能拼 get-inspired，2026-09-09），
+  // sitemap 找不到再回退 get-inspired 拼接
+  let originPath = '';
+  if (item.slug.includes('/')) {
+    originPath = item.slug.replace(/^\/+/, '');
+  } else {
+    try {
+      const sm = await fetchText(`${ORIGIN_BASE}/sitemap.xml`);
+      const locM = new RegExp('<loc>[^<]*' + item.slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^<]*</loc>').exec(sm);
+      if (locM) {
+        const u = new URL(locM[0].replace(/<\/?loc>/g, ''));
+        originPath = u.pathname;
+      }
+    } catch { /* sitemap 拉取失败走回退 */ }
+    if (!originPath) originPath = `personal-care/get-inspired/${item.slug}`;
+  }
+  const originUrl = `${ORIGIN_BASE}/${originPath.replace(/^\/+/, '')}`;
   const originHtml = await fetchText(originUrl);
-  return verifyImportedArticle(originHtml, {
+
+  const items = await verifyImportedArticle(originHtml, {
     id: item.id,
     title: item.title || '',
     summary: item.summary,
@@ -233,4 +248,38 @@ export async function reverifyArticle(id: number): Promise<VerifyItem[]> {
     imageUrl: item.imageUrl,
     authorId: item.authorId,
   });
+
+  // 缩略图修复（R7）：列表卡片图与本站 imageUrl 不一致时自动下载替换。
+  // 存量导入（列表页写死 get-inspired 时期）的记录 imageUrl 是正文首图，靠此修复。
+  try {
+    const segs = originPath.split('/').filter(Boolean);
+    if (segs.length > 1) {
+      const listingHtml = await fetchText(`${ORIGIN_BASE}/${segs.slice(0, -1).join('/')}`);
+      const thumbRaw = findCardThumbBySlug(listingHtml, originPath);
+      if (thumbRaw) {
+        const remoteBaseRaw = decodeURIComponent(new URL(thumbRaw).pathname.split('/').pop() || '').replace(/\.webp$/i, '');
+        const remoteKey = remoteBaseRaw.replace(/[^\w.\-]+/g, '_').slice(0, 40);
+        const localBase = (item.imageUrl || '').split('/').pop() || '';
+        // 本地文件名 = 时间戳_序号_原文件名；去掉前两段后应包含远端原始文件名
+        const localKey = localBase.split('_').slice(2).join('_');
+        if (!remoteKey || !localKey || !localKey.includes(remoteKey)) {
+          const uploadDir = path.join(process.cwd(), 'uploads', 'articles');
+          if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+          const base = `${Date.now()}_99_${remoteKey || `thumb_${Date.now()}`}`;
+          const target = /\.(jpe?g|png|gif|webp|svg)$/i.test(base) ? base : base + '.webp';
+          try {
+            await downloadFile(thumbRaw, path.join(uploadDir, target));
+            await prisma.newsEvent.update({ where: { id: item.id }, data: { imageUrl: `/uploads/articles/${target}` } });
+            items.push({ name: '列表缩略图', ok: true, fixed: true, detail: `已从原站列表卡片修复缩略图（${remoteBaseRaw}）` });
+          } catch (e: any) {
+            items.push({ name: '列表缩略图', ok: false, detail: `下载失败：${e.message}` });
+          }
+        } else {
+          items.push({ name: '列表缩略图', ok: true, detail: '与本站缩略图一致' });
+        }
+      }
+    }
+  } catch { /* 缩略图修复失败不阻塞校验结论 */ }
+
+  return items;
 }

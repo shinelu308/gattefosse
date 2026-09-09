@@ -259,6 +259,9 @@ export function structureSignature(html: string): string {
  * 位于卡片 c-card__image > img.card__image（部分列表页外层包装类名不同，如 prov__image，
  * 因此以 img 自身的 card__image class 为锚，遵循 R2 整标签匹配）
  * 2026-09-09 用户指认缩略图抓取位置后固化
+ * ⚠️ 2026-09-09 二次事故：列表页 URL 禁止写死 /personal-care/get-inspired——热点话题
+ * （/pharmaceuticals/learn-more/xxx）文章全部回退正文首图。必须从文章路径推导父目录
+ * （候选：父目录 → get-inspired 兜底）；reverify 时末段 slug 用 sitemap.xml 定位完整路径
  */
 /**
  * 规则 R8：渲染样式一致性清单（导入 + AI 翻译后，页面必须与原站逐项一致）
