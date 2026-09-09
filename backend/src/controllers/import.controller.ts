@@ -1092,3 +1092,80 @@ export async function importPublicationsFromSite(req: Request, res: Response) {
     return res.status(500).json(fail('出版物导入失败：' + e.message));
   }
 }
+
+// ==================================================================
+// 存量出版物 PDF 本地化补抓（旧批次 pdfUrl 为原站绝对地址且无 pdfSize）
+// POST /news/import-publications-backfill-pdfs
+// ==================================================================
+export async function backfillPublicationPdfs(req: Request, res: Response) {
+  const uploadDir = path.resolve(__dirname, '../../uploads/documents');
+  fs.mkdirSync(uploadDir, { recursive: true });
+
+  const rows = await prisma.newsEvent.findMany({
+    where: { type: 'publication', pdfUrl: { startsWith: 'http' } },
+    select: { id: true, title: true, pdfUrl: true, pdfSize: true },
+    orderBy: { id: 'asc' },
+  });
+
+  const items: { id: number; title: string; status: string; pdf: string; docId: number | null; message: string }[] = [];
+  let downloaded = 0, reused = 0, failed = 0;
+
+  for (const row of rows) {
+    // 从原站 URL 取 fileId/basename：https://www.gattefosse.com/files/{fileId}/{basename}.pdf
+    let fileId = '', basename = '';
+    try {
+      const u = new URL(row.pdfUrl!);
+      const segs = u.pathname.split('/').filter(Boolean);
+      basename = decodeURIComponent(segs[segs.length - 1] || '');
+      const fi = segs.indexOf('files');
+      if (fi >= 0 && segs[fi + 1]) fileId = segs[fi + 1];
+    } catch { /* basename 保持空，走兜底名 */ }
+    if (!/\.pdf$/i.test(basename)) basename = (basename || 'publication_' + row.id) + '.pdf';
+    const fname = (fileId ? fileId + '_' : '') + basename;
+    const target = path.join(uploadDir, fname);
+    const pdfLocal = '/uploads/documents/' + fname;
+
+    try {
+      let pdfSize: number;
+      let docId: number | null = null;
+      const existedDoc = await prisma.document.findFirst({ where: { filePath: pdfLocal }, select: { id: true } });
+      let justDownloaded = false;
+      if (fs.existsSync(target)) {
+        // 文件已存在（本轮或此前已下载）：复用文件，不重复下载
+        pdfSize = fs.statSync(target).size;
+        reused++;
+        if (existedDoc) docId = existedDoc.id;
+      } else {
+        await downloadFile(row.pdfUrl!, target);
+        pdfSize = fs.statSync(target).size;
+        downloaded++;
+        justDownloaded = true;
+      }
+      if (!existedDoc) {
+        const doc = await prisma.document.create({
+          data: {
+            title: row.title || basename,
+            type: 'Publication',
+            filePath: pdfLocal,
+            fileSize: BigInt(pdfSize),
+            language: 'en',
+            isPublic: true,
+            createdById: (req as any).userId || null,
+          },
+          select: { id: true },
+        });
+        docId = doc.id;
+      }
+      await prisma.newsEvent.update({ where: { id: row.id }, data: { pdfUrl: pdfLocal, pdfSize } });
+      items.push({ id: row.id, title: (row.title || '').slice(0, 80), status: 'ok', pdf: pdfLocal, docId, message: justDownloaded ? '已下载并本地化' : '文件已存在，复用' });
+    } catch (e: any) {
+      failed++;
+      items.push({ id: row.id, title: (row.title || '').slice(0, 80), status: 'error', pdf: '', docId: null, message: '❌ 下载失败（保留原链接）：' + e.message });
+    }
+  }
+
+  return res.json(success(
+    { total: rows.length, downloaded, reused, failed, items },
+    '补抓完成：共 ' + rows.length + ' 条，新下载 ' + downloaded + '、复用 ' + reused + '、失败 ' + failed
+  ));
+}

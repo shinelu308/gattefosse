@@ -289,7 +289,7 @@
                           <p class="c-card__author">{{item.author}}</p>
                           <p class="c-card__summary">{{item.summary}}<br />
                           </p>
-                          <div class="c-card__cta">
+                          <div class="c-card__cta" v-if="item.pdfUrl">
                             <a class="btn btn-primary" :href="item.url" :title="item.title" target="_blank">
                               下载 (.pdf{{ item.pdfSizeText ? ' - ' + item.pdfSizeText : '' }})
                             </a>
@@ -485,6 +485,7 @@
           }
           return {
             url: it.pdfUrl || '/account.html',
+            pdfUrl: it.pdfUrl || '',
             title: it.title,
             typeName: it.articleType || '出版物',
             publicationName: it.publicationName || '',
