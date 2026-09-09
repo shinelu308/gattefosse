@@ -448,7 +448,22 @@
       }
     }
 
-    // ===== 加载标签侧栏（主题分组）=====
+    // ===== 加载标签侧栏（给药途径 / 主题 双分组，对齐原站侧栏结构）=====
+    var ROUTE_TAGS = ['口服给药', '外用/透皮给药', '皮肤给药', '直肠给药', '阴道给药', '肠外给药（兽医）'];
+    function makeTagGroup(key, title) {
+      return {
+        tagName: title,
+        nameId: 'collapse-filtre-accordion-' + key,
+        sharpeNameId: '#collapse-filtre-accordion-' + key,
+        headerNameId: 'heading-filtre-accordion-' + key,
+        accordionNameId: 'accordion-filtre-accordion-' + key,
+        dataBlockPluginId: 'facet_block:' + key,
+        panelDivId1: key,
+        class: 'facet-inactive block-facet--checkbox block block-facets ',
+        expanded: false,
+        children: []
+      };
+    }
     async function loadTags() {
       try {
         var resp = await fetch('/api/news/tags/list?type=publication&category=pharma');
@@ -456,34 +471,30 @@
         if (res.code !== 0) return;
         var tags = res.data || [];
         if (!tags.length) { data.tagList = []; return; }
-        var group = {
-          tagName: '主题',
-          nameId: 'collapse-filtre-accordion-主题_brochures',
-          sharpeNameId: '#collapse-filtre-accordion-主题_brochures',
-          headerNameId: 'heading-filtre-accordion-pharma_主题',
-          accordionNameId: 'accordion-filtre-accordion-pharma_主题',
-          dataBlockPluginId: 'facet_block:pharma_主题',
-          panelDivId1: '主题_brochures',
-          class: 'facet-inactive block-facet--checkbox block block-facets ',
-          expanded: false,
-          children: []
-        };
+        var routeGroup = makeTagGroup('pharma_route_brochures', '给药途径');
+        var themeGroup = makeTagGroup('pharma_theme_brochures', '主题');
+        var counter = 0;
         for (var ci = 0; ci < tags.length; ci++) {
           var tagName = tags[ci];
+          var isRoute = ROUTE_TAGS.indexOf(tagName) !== -1;
+          var g = isRoute ? routeGroup : themeGroup;
           var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(tagName);
           if (w) u += '&keyword=' + encodeURIComponent(w);
           if (tagId && decodeURIComponent(tagId) === tagName) {
             data.curFilterTagName = tagName;
             data.activeFilterClass = 'showDiv';
           }
-          group.children.push({
+          g.children.push({
             ID: tagName,
             tagName: tagName,
             tagUrl: u,
-            dataDrupalFacetItemId: 'tag-' + ci
+            dataDrupalFacetItemId: (isRoute ? 'route-tag-' : 'theme-tag-') + (counter++)
           });
         }
-        data.tagList = [group];
+        var groups = [];
+        if (routeGroup.children.length) groups.push(routeGroup);
+        if (themeGroup.children.length) groups.push(themeGroup);
+        data.tagList = groups;
       } catch (e) {
         console.error('加载标签失败:', e);
         data.tagList = [];
