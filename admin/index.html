@@ -7411,7 +7411,7 @@ createApp({
       try {
         const d = await this.api('/news/import-publications', { method: 'POST', body: JSON.stringify({ listUrl: this.publicationImport.url.trim(), maxPages: parseInt(this.publicationImport.maxPages) || 1 }) });
         this.publicationImport.items = d.items || [];
-        this.publicationImport.msg = '✅ ' + d.message;
+        this.publicationImport.msg = '✅ 导入完成：新增 ' + (d.imported || 0) + ' 条、跳过 ' + (d.skipped || 0) + ' 条（已导入过），共处理 ' + (d.pages || 0) + ' 页' + (d.failed ? '，' + d.failed + ' 条存在缺项请查看清单' : '');
         this.loadPublicationList();
       } catch (e) {
         this.publicationImport.msg = '❌ 导入失败：' + e.message;

@@ -833,7 +833,7 @@ createApp({
       try {
         const d = await this.api('/news/import-publications', { method: 'POST', body: JSON.stringify({ listUrl: this.importUrl.trim(), maxPages: parseInt(this.importMaxPages) || 1 }) });
         this.importItems = d.items || [];
-        this.importMsg = '✅ ' + d.message;
+        this.importMsg = '✅ 导入完成：新增 ' + (d.imported || 0) + ' 条、跳过 ' + (d.skipped || 0) + ' 条（已导入过），共处理 ' + (d.pages || 0) + ' 页' + (d.failed ? '，' + d.failed + ' 条存在缺项请查看清单' : '');
         this.importUrl = '';
         this.loadList(); this.countAll();
       } catch (e) {
