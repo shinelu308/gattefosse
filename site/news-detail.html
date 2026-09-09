@@ -306,6 +306,12 @@
         try {
           var res = await GatteAPI.News.detail(id);
           var item = res.data || {};
+          // 原站页面主题 class（theme-cosm 红 / theme-pharma 蓝，空为默认绿）：
+          // 挂到 <main> 上切换 --accent-color 变量组（按钮/高亮块/标题圆点颜色与原站一致）
+          if (item.themeClass) {
+            var mainEl = document.querySelector('main.s-page--inner');
+            if (mainEl) mainEl.classList.add(item.themeClass);
+          }
           data.formData = {
             title: item.title || '',
             summary: item.summary || '',

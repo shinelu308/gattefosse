@@ -242,6 +242,11 @@ export async function importArticleFromSite(req: Request, res: Response) {
   const articleDiv = extractDivByClass(html, 'node--view-mode-full');
   if (!articleDiv) return res.status(400).json(fail('未在页面中找到文章主体（node--view-mode-full）'));
 
+  // 页面主题 class：原站 <main class="s-page--inner main theme-cosm">（theme-cosm 红 / theme-pharma 蓝，
+  // 空为默认绿）——控制该详情页 --accent-color 变量组（按钮/高亮块/圆点颜色），导入时必须随内容一起带走
+  const themeM = /<main[^>]*class="[^"]*\b(theme-cosm|theme-pharma)\b/.exec(html);
+  const pageThemeClass = themeM ? themeM[1] : null;
+
   const titleM = /<h1[^>]*s-article__title[^>]*>([\s\S]*?)<\/h1>/.exec(articleDiv);
   const title = titleM ? stripTags(titleM[1]) : '';
   if (!title) return res.status(400).json(fail('未找到文章标题'));
@@ -597,6 +602,8 @@ export async function importArticleFromSite(req: Request, res: Response) {
       isPublished: false,
       authorId,
       authorName: authorName ? (authorPoste ? `${authorName}（${authorPoste}）` : authorName) : null,
+      themeClass: pageThemeClass,
+      sourceUrl: url,
       // 文章：自动补子类型与主题标签（保持与原站详情页一致）
       ...(finalType === 'article' && articleTypeZh ? { articleType: articleTypeZh } : {}),
       ...(finalType === 'article' && tagsZh.length ? { tags: JSON.stringify(tagsZh) } : {}),

@@ -212,6 +212,8 @@ model NewsEvent {
   pdfUrl         String?   @map("pdf_url")       // 出版物/杂志 PDF 下载链接
   pdfSize        Int?      @map("pdf_size")      // 出版物 PDF 文件大小（字节），用于前台「下载 (.pdf - 714.33 KB)」显示
   sourceTitle    String?   @map("source_title")  // publication：导入时的原始标题（通常为英文），AI 翻译不改此字段，用作跨语言去重键
+  themeClass     String?   @map("theme_class")   // news/article：原站页面主题 class（theme-cosm 红 / theme-pharma 蓝），空为默认绿；控制详情页 --accent-color 变量组
+  sourceUrl      String?   @map("source_url")    // 原站来源页 URL（导入时记录，便于回溯/回填）
   videoUrl       String?   @map("video_url")     // 研讨会回放视频链接
   lock           Boolean   @default(false)       // 是否需要登录查看
   // SEO 字段
