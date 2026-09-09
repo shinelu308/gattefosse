@@ -70,6 +70,14 @@
     <link rel="stylesheet" media="all"
         href="/sites/default/files/css/css_LOEta1EWPP03WWB9W1oc6XQDrBhzvU3zh_QtcpORiwI.css" />
 <style>[v-cloak]{display:none!important}</style>
+<!-- 导语样式：本地未加载原站含 .block-accroche 的聚合包，按原站规则内联（paragraph-m-b 兜底 2.4rem） -->
+<style>
+    .block-accroche { font-family: "Din Next Lt Pro Light", sans-serif; font-size: 2rem; line-height: 1.5; color: #74797D; border-bottom: 1px solid #E1D9C3; padding-bottom: var(--paragraph-m-b, 2.4rem); margin-bottom: var(--paragraph-m-b, 2.4rem); }
+    .block-accroche .field--name-field-chapeau :last-child { margin-bottom: 0; }
+    .block-accroche a { color: var(--accent-color-dark); text-decoration: underline; }
+    .block-accroche a:hover, .block-accroche a:focus { text-decoration: none; }
+    .block-accroche p { margin: 0 0 1em; }
+</style>
 </head>
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
     <nav role="navigation" aria-label="Accès rapide au contenu">
@@ -136,7 +144,11 @@
                                     <div class="block-title" v-if="data.formData">
                                        <h1 class="page-title u-title-styled">{{data.formData.title}}</h1>
                                      </div>
-                   
+                                     <!-- 导语（原站 block-accroche：大字号浅灰 + 米色分隔线），导入时存于 summary 字段 -->
+                                     <div class="block-accroche" v-if="data.formData.summaryHtml">
+                                        <div class="clearfix text-formatted field field--name-field-chapeau field--type-text-long field--label-hidden field__item" v-html="data.formData.summaryHtml"></div>
+                                     </div>
+
                                      <span v-html="data.formData.content">
                                      </span>
                                    </div>
@@ -216,12 +228,24 @@
     return '/' + url;
   }
 
+  // 导语 → HTML：已是 HTML（新导入存原始标签）直接用；
+  // 纯文本（存量记录，stripTags 后段落连接处无空格）按「句号后跟大写字母」还原段落
+  function summaryToHtml(s) {
+    if (!s) return '';
+    if (/<[a-z][^>]*>/i.test(s)) return s;
+    var parts = s.split(/\.(?=[A-Z])/).map(function (x) { return x.trim(); }).filter(Boolean);
+    return parts.map(function (x, i) {
+      return '<p>' + x + (i < parts.length - 1 ? '.' : '') + '</p>';
+    }).join('');
+  }
+
   const app = createApp({
     setup() {
       const data = reactive({
         formData: {
           title: '普罗旺斯圣雷米的盖伦时代 ⋅ Gattefossé',
           summary: '',
+          summaryHtml: '',
           content: '<p>加载中…</p>',
           topBackground: '/sites/default/files/styles/page_banner_desktop_full/public/2024-01/cover-journees-galeniques-1140x405_0.jpg.webp',
         },
@@ -232,6 +256,7 @@
         if (!rec) return;
         data.formData.title = rec.title || data.formData.title;
         data.formData.summary = rec.summary || '';
+        data.formData.summaryHtml = summaryToHtml(rec.summary || '');
         data.formData.content = rec.contentHtml || '';
         const bg = normalizePageTopBg(rec.topBackground || rec.imageUrl || '');
         if (bg) data.formData.topBackground = bg;

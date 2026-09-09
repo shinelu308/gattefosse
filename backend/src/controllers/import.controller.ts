@@ -323,12 +323,20 @@ export async function importArticleFromSite(req: Request, res: Response) {
 
   // 导语（block-accroche）：位于 s-article__top-part、node__content 之外，需单独提取
   let accrocheText = '';
+  let accrocheHtml = ''; // chapeau 字段原始 HTML（专题页 summary 存此，保留段落/加粗/链接）
   const accrocheStart = articleDiv.indexOf('block-accroche');
   if (accrocheStart >= 0) {
     // 回退到该 class 所在 div 的开标签
     const divOpen = articleDiv.lastIndexOf('<div', accrocheStart);
     const accrocheDiv = divOpen >= 0 ? extractBalancedDiv(articleDiv, divOpen) : null;
-    if (accrocheDiv) accrocheText = stripTags(accrocheDiv).trim();
+    if (accrocheDiv) {
+      accrocheText = stripTags(accrocheDiv).trim();
+      const fieldM = /<div[^>]*field--name-field-chapeau[^>]*>/.exec(accrocheDiv);
+      if (fieldM && fieldM.index !== undefined) {
+        const fieldDiv = extractBalancedDiv(accrocheDiv, fieldM.index);
+        if (fieldDiv) accrocheHtml = fieldDiv.replace(/^<div[^>]*>/, '').replace(/<\/div>\s*$/, '').trim();
+      }
+    }
   }
 
   // 3. 正文容器
@@ -530,7 +538,9 @@ export async function importArticleFromSite(req: Request, res: Response) {
   contentHtml = cleaned.html;
 
   // 6. 摘要：优先使用原站导语（block-accroche）；无导语时退回第一段有效文本
-  let summary = accrocheText.slice(0, 500);
+  // 专题页（type=page）：summary 存导语原始 HTML（前台 .block-accroche 渲染需要段落/加粗/链接；
+  // page 不进列表卡片，不会出现标签显示问题），文章/新闻仍存纯文本
+  let summary = (finalType === 'page' && accrocheHtml) ? accrocheHtml : accrocheText.slice(0, 500);
   if (!summary) {
     for (const b of blocks) {
       const t = stripTags(b);
