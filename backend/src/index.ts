@@ -48,8 +48,9 @@ app.use(compression({
     return /text|json|javascript|xml/i.test(String(ct));
   },
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// 10MB：原站整页导入的 contentHtml 可达数百 KB（Journées 专题页 128KB 曾撞默认 100KB 上限致保存失败）
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // 静态文件服务（上传的文件）

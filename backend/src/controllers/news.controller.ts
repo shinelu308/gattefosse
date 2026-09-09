@@ -217,7 +217,7 @@ export async function createNewsItem(req: Request, res: Response) {
       return res.status(400).json(fail('标题不能为空'));
     }
 
-    const validTypes = ['news', 'event', 'article', 'webinar', 'publication', 'magazine'];
+    const validTypes = ['news', 'event', 'article', 'webinar', 'publication', 'magazine', 'page'];
     if (!validTypes.includes(type)) {
       return res.status(400).json(fail('type 必须是 news/event/article/webinar/publication/magazine'));
     }
