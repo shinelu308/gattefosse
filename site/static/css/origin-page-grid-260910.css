@@ -1,0 +1,55 @@
+/**
+ * 原站页面布局补丁（origin-page-grid）
+ * 背景：原站 Drupal 页面的布局骨架（.node__content 12 列 grid + .paragraph--zone-* 分栏 +
+ *       .block-accroche 导语）在主题聚合包 delta=1 中，部分复刻页加载的聚合包不含这些规则，
+ *       导致导入内容分栏塌陷（图片独占一行）、导语无样式。
+ * 用法：凡是 v-html 渲染原站导入正文、且其聚合包缺这些规则的页面，引用本文件，
+ *       并保证正文容器带 .node__content class。
+ * 维护：规则提取自原站聚合 CSS（2026-09-10 校准）；原站改版时需重新核对。
+ */
+
+/* ===== 正文 12 列网格骨架 ===== */
+.node__content {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 3.2rem;
+    row-gap: 0;
+}
+
+/* ===== 分栏占列（paragraph--zone-*）===== */
+.paragraph--zone-25.paragraph--zone-right { grid-column: 10/13; }
+.paragraph--zone-33 { grid-column: 1/5; }
+.paragraph--zone-33.paragraph--zone-center { grid-column: 5/9; }
+.paragraph--zone-33.paragraph--zone-right { grid-column: 9/13; }
+.paragraph--zone-50 { grid-column: 1/7; }
+.paragraph--zone-50.paragraph--zone-right { grid-column: 7/13; }
+.paragraph--zone-66 { grid-column: 1/9; }
+.paragraph--zone-66.paragraph--zone-right { grid-column: 5/13; }
+.paragraph--zone-75.paragraph--zone-right { grid-column: 4/13; }
+
+/* 全宽区块越出网格（原站 .node__content 内全宽段落） */
+.node__content .paragraph--type--full-width-content {
+    margin-left: calc(var(--bs-gutter-x, 0px) / -2);
+    width: calc(100% + var(--bs-gutter-x, 0px));
+}
+
+/* ===== 导语块（block-accroche）===== */
+.block-accroche {
+    font-family: "Din Next Lt Pro Light", sans-serif;
+    font-size: 2rem;
+    line-height: 1.5;
+    color: #74797D;
+    border-bottom: 1px solid #E1D9C3;
+    padding-bottom: var(--paragraph-m-b, 2.4rem);
+    margin-bottom: var(--paragraph-m-b, 2.4rem);
+}
+.block-accroche .field--name-field-chapeau :last-child { margin-bottom: 0; }
+.block-accroche a { color: var(--accent-color-dark); text-decoration: underline; }
+.block-accroche a:hover, .block-accroche a:focus { text-decoration: none; }
+.block-accroche p { margin: 0 0 1rem; }
+
+/* ===== 移动端：分栏回退单栏 ===== */
+@media (max-width: 756px) {
+    .node__content { column-gap: 2rem; }
+    .node__content .paragraph { grid-column: 1 / 13 !important; }
+}

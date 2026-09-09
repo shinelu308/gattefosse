@@ -70,33 +70,8 @@
     <link rel="stylesheet" media="all"
         href="/sites/default/files/css/css_LOEta1EWPP03WWB9W1oc6XQDrBhzvU3zh_QtcpORiwI.css" />
 <style>[v-cloak]{display:none!important}</style>
-<!-- 导语样式：本地未加载原站含 .block-accroche 的聚合包，按原站规则内联（paragraph-m-b 兜底 2.4rem） -->
-<style>
-    .block-accroche { font-family: "Din Next Lt Pro Light", sans-serif; font-size: 2rem; line-height: 1.5; color: #74797D; border-bottom: 1px solid #E1D9C3; padding-bottom: var(--paragraph-m-b, 2.4rem); margin-bottom: var(--paragraph-m-b, 2.4rem); }
-    .block-accroche .field--name-field-chapeau :last-child { margin-bottom: 0; }
-    .block-accroche a { color: var(--accent-color-dark); text-decoration: underline; }
-    .block-accroche a:hover, .block-accroche a:focus { text-decoration: none; }
-    .block-accroche p { margin: 0 0 1rem; }
-</style>
-<!-- 正文分栏布局：原站 .node__content 为 12 列 grid，段落按 paragraph--zone-* 占列；
-     本地未加载含这些规则的聚合包，按原站规则内联（移动端回退单栏） -->
-<style>
-    .node__content { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 3.2rem; row-gap: 0; }
-    .paragraph--zone-25.paragraph--zone-right { grid-column: 10/13; }
-    .paragraph--zone-33 { grid-column: 1/5; }
-    .paragraph--zone-33.paragraph--zone-center { grid-column: 5/9; }
-    .paragraph--zone-33.paragraph--zone-right { grid-column: 9/13; }
-    .paragraph--zone-50 { grid-column: 1/7; }
-    .paragraph--zone-50.paragraph--zone-right { grid-column: 7/13; }
-    .paragraph--zone-66 { grid-column: 1/9; }
-    .paragraph--zone-66.paragraph--zone-right { grid-column: 5/13; }
-    .paragraph--zone-75.paragraph--zone-right { grid-column: 4/13; }
-    .node__content .paragraph--type--full-width-content { margin-left: calc(var(--bs-gutter-x, 0px) / -2); width: calc(100% + var(--bs-gutter-x, 0px)); }
-    @media (max-width: 756px) {
-        .node__content { column-gap: 2rem; }
-        .node__content .paragraph { grid-column: 1/13 !important; }
-    }
-</style>
+<!-- 原站布局补丁（正文 12 列 grid / zone 分栏 / 导语 block-accroche）：本页聚合包不含这些规则，引用共享补丁 -->
+<link rel="stylesheet" href="/static/css/origin-page-grid-260910.css" />
 </head>
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
     <nav role="navigation" aria-label="Accès rapide au contenu">
@@ -277,7 +252,8 @@
         data.formData.summary = rec.summary || '';
         data.formData.summaryHtml = summaryToHtml(rec.summary || '');
         data.formData.content = rec.contentHtml || '';
-        const bg = normalizePageTopBg(rec.topBackground || rec.imageUrl || '');
+        // 只认 top_background（原站 page-top banner）；imageUrl 是正文/列表缩略图，回退会张冠李戴（bt-2018 教训）
+        const bg = normalizePageTopBg(rec.topBackground || '');
         if (bg) data.formData.topBackground = bg;
         if (rec.metaTitle) data.docTitle = rec.metaTitle;
         document.title = data.docTitle;
