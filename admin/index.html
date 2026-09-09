@@ -3262,19 +3262,49 @@ const QUILL_TOOLBAR = [
         </div>
         <!-- 杂志编辑 -->
         <div v-if="currentPage === 'magazine-edit'" data-page-node-id="gNIk49feUE9WBJleQDZy4c">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;" data-page-node-id="DSjylAbdQKLmBBzGTbucH3">
+          <h1 class="page-title" data-page-node-id="mjAyhXuW6W686mdDY9LvGp">{{ editingMagazine.id ? '编辑杂志 — ' + editingMagazine.title : '新增杂志' }}</h1>
+          <p class="page-subtitle" data-page-node-id="MgSubTitle01">管理获取灵感模块下的杂志 <span v-if="editingMagazine.id" style="color:var(--text-tertiary);font-size:12px;margin-left:16px;" data-page-node-id="MgSubType01">type = magazine · category = pc</span></p>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;" data-page-node-id="DSjylAbdQKLmBBzGTbucH3">
             <button class="btn btn-sm btn-outline" @click="goPage('magazine-list')" data-page-node-id="QueYQpxJ4IYyZyVcfCMNSj">← 返回列表</button>
-            <h1 style="font-size:18px;margin:0;" data-page-node-id="mjAyhXuW6W686mdDY9LvGp">{{ editingMagazine.id ? '编辑杂志' : '新增杂志' }}</h1>
           </div>
+          <!-- 基本信息 -->
           <div class="card" data-page-node-id="66dovUObTmNsTEg1JOX71F">
-            <div class="form-grid" data-page-node-id="LylPt6UzCGRtw2ZcHObR3v">
-              <div class="form-group" data-page-node-id="AJc4E3mBwvLgDBau69gfvW"><label data-page-node-id="3WTzbQrf84WFxKBDtMg42b">标题 *</label><input class="form-control" v-model="editingMagazine.title" placeholder="如：addiactive #126" data-page-node-id="glbgS5TVhn2HH8db30mVXx"></div>
-              <div class="form-group" data-page-node-id="f8li79JFOfGlSieDLKgh4p"><label data-page-node-id="STmS8qbvfYJ2MZ8kptmr5e">封面图 URL</label><input class="form-control" v-model="editingMagazine.imageUrl" placeholder="https://..." data-page-node-id="YVFjEh7HTzAsk6pGmHXVr9"></div>
-              <div class="form-group" data-page-node-id="rLrbLWYp4ts8fGJ8GNS4X3"><label data-page-node-id="TQSHBXFByR4M2zDsiRkG8H">PDF 下载链接</label><input class="form-control" v-model="editingMagazine.pdfUrl" placeholder="https://... 或 /uploads/..." data-page-node-id="u2BQFBp0UITtGhRVlc5TJJ"></div>
-              <div class="form-group" data-page-node-id="bzDUOqbeyqYi9636WGHWQA"><label data-page-node-id="K80JJ05QSEZfzOJ3VGFZYx">发布日期 *</label><input type="date" class="form-control" v-model="editingMagazine.publishedDate" data-page-node-id="5VRkDx7iV5MZFH9udPQaJT"></div>
-              <div class="form-group" data-page-node-id="A7PwB24xN9FMhrzKsHFpTl"><label style="display:flex;align-items:center;gap:4px;" data-page-node-id="sGCGKLB4T1lnShUVoHhk3K"><input type="checkbox" v-model="editingMagazine.lock" data-page-node-id="xebm9c6ohBvHqDyqAzUAOG"> 需要登录才能查看</label></div>
+            <div class="card-header" data-page-node-id="MgCardHdBase01"><h3 data-page-node-id="MgCardHdBase02">基本信息</h3></div>
+            <div class="card-body" data-page-node-id="LylPt6UzCGRtw2ZcHObR3v">
+              <div class="form-group" data-page-node-id="AJc4E3mBwvLgDBau69gfvW">
+                <label data-page-node-id="3WTzbQrf84WFxKBDtMg42b">标题 <span class="hint" data-page-node-id="MgHintTitle01">（必填）</span></label>
+                <input class="form-control" v-model="editingMagazine.title" placeholder="如：addiactive #126" data-page-node-id="glbgS5TVhn2HH8db30mVXx">
+              </div>
+              <div class="form-group" data-page-node-id="bzDUOqbeyqYi9636WGHWQA">
+                <label data-page-node-id="K80JJ05QSEZfzOJ3VGFZYx">发布日期 <span class="hint" data-page-node-id="MgHintDate01">（必填）</span></label>
+                <input type="date" class="form-control" v-model="editingMagazine.publishedDate" style="max-width:200px;" data-page-node-id="5VRkDx7iV5MZFH9udPQaJT">
+              </div>
+              <div class="form-group" data-page-node-id="MgPubGroup01">
+                <label data-page-node-id="MgPubLabel01">发布状态</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;margin-top:2px;" data-page-node-id="MgPubChkWrap01"><input type="checkbox" v-model="editingMagazine.isPublished" data-page-node-id="jS8twz6MfryJAfGgv5UgHT"> 已发布</label>
+              </div>
+              <div class="form-group" data-page-node-id="MgSumGroup01">
+                <label data-page-node-id="RamBs1bfWjm9Z0pQ9Upukx">摘要</label>
+                <textarea class="form-control" rows="4" v-model="editingMagazine.summary" placeholder="杂志简介..."></textarea>
+              </div>
             </div>
-            <div class="card-header" style="border-top:1px solid var(--border);margin-top:16px;" data-page-node-id="Pg1ooKr79SmF73pZMwPkjQ"><h3 data-page-node-id="3u3z5bjI27EBR809OT7D8U">年份标签</h3></div>
+          </div>
+          <!-- 图片 -->
+          <div class="card" data-page-node-id="MgCardImg01">
+            <div class="card-header" data-page-node-id="MgCardHdImg01"><h3 data-page-node-id="MgCardHdImg02">图片</h3></div>
+            <div class="card-body" data-page-node-id="MgCardBodyImg01">
+              <div class="form-group" data-page-node-id="f8li79JFOfGlSieDLKgh4p">
+                <label data-page-node-id="STmS8qbvfYJ2MZ8kptmr5e">封面图 <span class="hint" data-page-node-id="MgHintImg01">（选填）</span></label>
+                <input class="form-control" v-model="editingMagazine.imageUrl" placeholder="https://... 或 /uploads/..." data-page-node-id="YVFjEh7HTzAsk6pGmHXVr9">
+                <div v-if="editingMagazine.imageUrl" style="margin-top:6px;" data-page-node-id="MgImgPrevWrap01">
+                  <img :src="editingMagazine.imageUrl" style="max-width:150px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;" @error="$event.target.style.display='none'" data-page-node-id="MgImgPrev01">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 年份标签 -->
+          <div class="card" data-page-node-id="MgCardTag01">
+            <div class="card-header" data-page-node-id="Pg1ooKr79SmF73pZMwPkjQ"><h3 data-page-node-id="3u3z5bjI27EBR809OT7D8U">年份标签</h3></div>
             <div class="card-body" data-page-node-id="flZHnPGdknEIFCScHrYCAa">
               <div class="form-group" data-page-node-id="DrwdULYLA3XEwQQ8cVXFKl">
                 <label data-page-node-id="Hw0u0DJHrWMGCnvfw6dOaN">已有年份标签 <span class="hint" data-page-node-id="kl6nDgHIy3JMCaLOwkesvo">（点击快速添加）</span></label>
@@ -3301,12 +3331,21 @@ const QUILL_TOOLBAR = [
                 </div>
               </div>
             </div>
-            <div class="form-group" data-page-node-id="viQnV1Lpu0E9lDZPr8r1Dd"><label data-page-node-id="RamBs1bfWjm9Z0pQ9Upukx">摘要</label><textarea class="form-control" rows="4" v-model="editingMagazine.summary" placeholder="杂志简介..."></textarea></div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;" data-page-node-id="eOBA83ZSSHCGO5DtpCShrW">
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;" data-page-node-id="1VP8LWMQ8Qj2wA4XWs7QbC"><input type="checkbox" v-model="editingMagazine.isPublished" data-page-node-id="jS8twz6MfryJAfGgv5UgHT"> 保存并发布</label>
-              <button class="btn btn-outline" @click="goPage('magazine-list')" data-page-node-id="AAJhURqUixaOEZ0CMdn7ga">取消</button>
-              <button class="btn btn-primary" @click="saveMagazine()" :disabled="saving" data-page-node-id="b0yE8mJL22MGODPJZMDqCo">{{ saving ? '保存中...' : '保存' }}</button>
+          </div>
+          <!-- 附加设置 -->
+          <div class="card" data-page-node-id="MgCardExtra01">
+            <div class="card-header" data-page-node-id="MgCardHdExtra01"><h3 data-page-node-id="MgCardHdExtra02">附加设置</h3></div>
+            <div class="card-body" data-page-node-id="MgCardBodyExtra01">
+              <div class="form-group" data-page-node-id="rLrbLWYp4ts8fGJ8GNS4X3">
+                <label data-page-node-id="TQSHBXFByR4M2zDsiRkG8H">PDF 下载链接 <span class="hint" data-page-node-id="MgHintPdf01">（会员登录后可下载）</span></label>
+                <input class="form-control" v-model="editingMagazine.pdfUrl" placeholder="https://... 或 /uploads/..." data-page-node-id="u2BQFBp0UITtGhRVlc5TJJ">
+              </div>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;" data-page-node-id="MgLockWrap01"><input type="checkbox" v-model="editingMagazine.lock" data-page-node-id="xebm9c6ohBvHqDyqAzUAOG"> 🔒 需要登录才能查看</label>
             </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin:16px 0 8px;" data-page-node-id="eOBA83ZSSHCGO5DtpCShrW">
+            <button class="btn btn-outline" @click="goPage('magazine-list')" data-page-node-id="AAJhURqUixaOEZ0CMdn7ga">取消</button>
+            <button class="btn btn-primary" @click="saveMagazine()" :disabled="saving" data-page-node-id="b0yE8mJL22MGODPJZMDqCo">{{ saving ? '保存中...' : '保存' }}</button>
           </div>
         </div>
 
