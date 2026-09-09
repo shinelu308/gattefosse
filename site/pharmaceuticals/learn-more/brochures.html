@@ -209,21 +209,20 @@
                               <div class="panel-body accordion-body">
                                 <ul :data-drupal-facet-id="item.panelDivId1" :data-drupal-facet-alias="item.tagName"
                                   class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
-                                  <li v-for="item2 in item.children" :class="item2.facetItemClass">
-                                    <input type="checkbox" v-if="data.tagId == item2.ID" checked="checked"
-                                      class="facets-checkbox" :id="item2.dataDrupalFacetItemId">
-                                    <input type="checkbox" v-else class="facets-checkbox" @click="goToUrl(item2.tagUrl)"
-                                      :id="item2.dataDrupalFacetItemId"><a :href="item2.tagUrl" rel="nofollow"
-                                      :data-drupal-facet-item1-id="item2.dataDrupalFacetItemId"
-                                      :data-drupal-facet-item1-value="item2.ID" data-drupal-facet-item1-count="17"><span
-                                        class="facet-item__value">{{item2.tagName}}</span>
-                                    </a>
+                                  <li v-for="item2 in item.children"
+                                    :class="['facet-item', item.expanded ? 'show' : '']">
+                                    <input type="checkbox" class="form-checkbox form-check-input facets-checkbox"
+                                      :id="item2.dataDrupalFacetItemId"
+                                      :checked="data.tagId == item2.ID"
+                                      @click="data.tagId == item2.ID ? delParamAndGotoUrl('tagId') : goToUrl(item2.tagUrl)">
+                                    <label :for="item2.dataDrupalFacetItemId" class="form-check-label"
+                                      style="margin:0;cursor:pointer;">
+                                      <span class="facet-item__value">{{item2.tagName}}</span>
+                                    </label>
                                   </li>
                                 </ul>
-                                <button class="link-more js-see-all" data-show="查看所有" @click="seeAll($event)"
-                                  data-hide="收起" data-aria-expanded="false">查看所有</button>
-                                <button class="link-more js-see-all" data-show="查看所有" data-hide="收起"
-                                  aria-expanded="false">查看所有</button>
+                                <button v-if="item.children.length > 6" class="link-more js-see-all"
+                                  @click="toggleSeeAll(item)">{{ item.expanded ? '收起' : '查看所有' }}</button>
                               </div>
                             </div>
                           </div>
@@ -249,7 +248,7 @@
                                 <ul data-drupal-facet-id="brochures_pharmaceuticals_product"
                                   data-drupal-facet-alias="product"
                                   class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
-                                  <li class="facet-item1" v-for="item in data.productList">
+                                  <li class="facet-item" v-for="item in data.productList">
                                     <input type="checkbox" v-if="data.goodsId == item.ID" checked="checked"
                                       class="facets-checkbox" :id="item.inputID">
                                     <input type="checkbox" v-else class="facets-checkbox"
@@ -260,8 +259,8 @@
                                     </a>
                                   </li>
                                 </ul>
-                                <button class="link-more js-see-all" data-show="查看所有" data-hide="收起"
-                                  aria-expanded="false">查看所有</button>
+                                <button v-if="data.productList.length > 6" class="link-more js-see-all"
+                                  data-show="查看所有" data-hide="收起" aria-expanded="false">查看所有</button>
                               </div>
                             </div>
                           </div>
@@ -443,7 +442,6 @@
         if (w) kw = '&keyword=' + encodeURIComponent(w);
         if (data.cur_page > 1) data.prev_url = baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw;
         if (data.cur_page < data.total_page) data.next_url = baseUrl + '?page=' + (data.cur_page + 1) + tp + tg + kw;
-        setTimeout(function () { setTagStyle(); }, 100);
       } catch (e) {
         console.error('加载资料手册失败:', e);
         data.formData = [];
@@ -467,6 +465,7 @@
           dataBlockPluginId: 'facet_block:pharma_主题',
           panelDivId1: '主题_brochures',
           class: 'facet-inactive block-facet--checkbox block block-facets ',
+          expanded: false,
           children: []
         };
         for (var ci = 0; ci < tags.length; ci++) {
@@ -481,8 +480,7 @@
             ID: tagName,
             tagName: tagName,
             tagUrl: u,
-            dataDrupalFacetItemId: 'tag-' + ci,
-            facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
+            dataDrupalFacetItemId: 'tag-' + ci
           });
         }
         data.tagList = [group];
@@ -492,29 +490,8 @@
       }
     }
 
-    // ===== 侧栏展开/收起辅助 =====
-    function setTagStyle() {
-      var blocks = document.querySelectorAll('.facets-widget-checkbox');
-      blocks.forEach(function (element) {
-        var childs = element.querySelectorAll('.facet-item1');
-        if (childs.length > 6) {
-          var bt = element.querySelector('.js-see-all');
-          if (bt) bt.className = 'moreBt showDiv';
-        }
-      });
-    }
-    const seeAll = (event) => {
-      const parentElement = event.currentTarget.parentElement;
-      if (event.target.getAttribute('data-aria-expanded') == 'false') {
-        parentElement.querySelectorAll('.hidden').forEach((element) => { element.className = 'facet-item1 aad'; });
-        event.target.innerHTML = '收起';
-        event.target.setAttribute('data-aria-expanded', 'true');
-      } else {
-        parentElement.querySelectorAll('.aad').forEach((element) => { element.className = 'facet-item1 hidden'; });
-        event.target.innerHTML = '查看所有';
-        event.target.setAttribute('data-aria-expanded', 'false');
-      }
-    }
+    // ===== 侧栏「查看所有」展开/收起（与前 6 项折叠规则配合：.facet-item:nth-child(n+7) 默认隐藏，.show 展开） =====
+    const toggleSeeAll = (item) => { item.expanded = !item.expanded; }
     const goToUrl = (url) => { window.location.href = url; }
     const delParamAndGotoUrl = (paramName) => {
       if ((tagId == 0) || (tagId == null)) data.activeFilterClass = 'hidden';
@@ -532,7 +509,7 @@
 
     const app = createApp({
       setup() {
-        return { data, seeAll, goToUrl, delParamAndGotoUrl, clearFilters };
+        return { data, toggleSeeAll, goToUrl, delParamAndGotoUrl, clearFilters };
       }
     });
     app.mount('#app');
@@ -604,30 +581,12 @@
       }
   
   
-      .moreBt {
-        display: none;
-        margin: 0.8rem 0 0 2.4rem;
-        font-size: 1.4rem;
-        color: var(--accent-color);
-        text-decoration: underline;
-        line-height: 1.2;
-        border: 0;
-        background: none;
-        padding: 0;
-      }
-  
       .showDiv {
         display: block
       }
   
       .hidden {
         display: none
-      }
-  
-      .facet-item1 {
-        font-family: "Din Next Lt Pro Regular", sans-serif;
-        font-size: 1.6rem;
-        color: #58616B;
       }
     </style>
 </body>
