@@ -9,6 +9,7 @@ import { ensureArticleThemeSeed, applyThemeTagToArticles } from '../utils/articl
 export async function getTagDictionary(req: Request, res: Response) {
   try {
     const { productLine } = req.query; // pc / pharma
+    if (productLine === 'article_theme') await ensureArticleThemeSeed();
 
     const where = productLine
       ? { productLine: String(productLine) }
