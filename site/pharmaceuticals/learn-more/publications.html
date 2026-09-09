@@ -151,7 +151,7 @@
                         <h2 class="c-filter__main-title">过滤器</h2>
                         <button type="reset" target="/pharmaceuticals/learn-more/publications.html"
                           @click.prevent="clearFilters"
-                          class="c-filter__reset-btn btn btn-outline-secondary">取消过滤
+                          class="c-filter__reset-btn btn btn-outline-secondary">重置过滤器
                           <i class="o-icon --reset" aria-hidden="true"></i>
                         </button>
                       </div>
@@ -186,9 +186,9 @@
                             class="facet-inactive js-facets-links facet-list item-list__links">
                             <li class="facet-item1 facets-reset">
                               <a class="btn btn-outline-secondary is-active" v-if="data.publicationType == null"
-                                :href="data.allTypeUrl">所有类型{{data.publicationType}}</a>
-                              <a class="btn btn-outline-secondary" v-if="data.publicationType > 0 "
-                                :href="data.allTypeUrl">所有类型</a>
+                                :href="data.allTypeUrl">所有类型 ({{data.totalTypes}})</a>
+                              <a class="btn btn-outline-secondary" v-if="data.publicationType != null"
+                                :href="data.allTypeUrl">所有类型 ({{data.totalTypes}})</a>
                             </li>
                             <li v-for="item in data.publicationTypeList">
                               <a class="btn btn-outline-secondary is-active" v-if="item.ID == data.publicationType"
@@ -273,12 +273,12 @@
                     </div>
                   </aside>
                   <div class="s-page__content">
-                    <div class="c-cards c-cards--vertical">
+                    <div class="c-cards c-cards--vertical" v-if="data.formData.length > 0">
                       <div class="c-card c-card--bordered c-card--pub c-card--horizontal theme-pharma"
                         v-for="item in data.formData">
                         <div class="c-card__content">
                           <h3 class="c-card__title">{{item.title}}</h3>
-                          <ul class="c-card__breadcrumb">                            
+                          <ul class="c-card__breadcrumb">
                             <li class="category">{{item.typeName}}</li>
                           </ul>
                           <p class="c-card__info">
@@ -292,13 +292,16 @@
                           </p>
                           <div class="c-card__cta">
                             <a class="btn btn-primary" :href="item.url" :title="item.title" target="_blank">
-                              下载 (.pdf)
+                              下载 (.pdf{{ item.pdfSizeText ? ' - ' + item.pdfSizeText : '' }})
                             </a>
                           </div>
                         </div>
                         <div class="c-card__image">
                         </div>
                       </div>
+                    </div>
+                    <div class="view-empty" v-else>
+                      <p>没有找到匹配的出版物，请调整筛选条件后重试。</p>
                     </div>
                     <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
                       v-if="data.total_page > 1">
@@ -391,6 +394,14 @@
     const w = params.get('keyword') || '';                    // 搜索关键词
     const pageParam = params.get('page');
     var tagId = params.get('tagId') || null;                  // 标签（中文名）
+    var publicationType = params.get('publicationType') || null; // 出版物类型（中文名，对应 articleType）
+
+    // ===== PDF 大小格式化（字节 → "714.33 KB" / "1.25 MB"，与原站格式一致） =====
+    function formatPdfSize(bytes) {
+      if (!bytes || bytes <= 0) return '';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
 
     const data = reactive({
       formData: [],              // 出版物列表
@@ -403,16 +414,50 @@
       tagId: tagId,
       activeFilterClass: 'hidden',
       curFilterTagName: '',
-      curFilterTypeName: '',
-      publicationTypeList: [],   // 类型维度暂空（未来可按 articleType 渲染）
-      publicationTypeId: null,
-      publicationType: null,
+      curFilterTypeName: publicationType || '',
+      publicationTypeList: [],   // 类型 facet（数据驱动：/api/news/tags/list format=grouped）
+      totalTypes: 0,
+      publicationTypeId: publicationType,
+      publicationType: publicationType,
       tagList: [],
-      productList: [],           // 无产品维度数据 → 侧栏产品块隐藏
+      productList: [],           // 产品维度（导入器写入 tags 后自动出现）
       goodsId: null,
       allTypeUrl: baseUrl,
       userEnabled: (localStorage.getItem('userEnabled') || 0),
     });
+    if (publicationType) data.activeFilterClass = 'showDiv';
+
+    // ===== 通用：构建侧栏标签手风琴组 =====
+    function mkGroup(label, idx, items) {
+      var nameId = 'collapse-filtre-accordion-' + label + '_' + idx;
+      var children = items.map(function (c, ci) {
+        var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(c);
+        if (publicationType) u += '&publicationType=' + encodeURIComponent(publicationType);
+        if (w) u += '&keyword=' + encodeURIComponent(w);
+        if (tagId && decodeURIComponent(tagId) === c) {
+          data.curFilterTagName = c;
+          data.activeFilterClass = 'showDiv';
+        }
+        return {
+          ID: c,
+          tagName: c,
+          tagUrl: u,
+          dataDrupalFacetItemId: label + '-' + ci,
+          facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
+        };
+      });
+      return {
+        tagName: label, ID: idx,
+        nameId: nameId,
+        sharpeNameId: '#' + nameId,
+        headerNameId: 'heading-filtre-accordion-pharma_' + label,
+        accordionNameId: 'accordion-filtre-accordion-pharma_' + label,
+        dataBlockPluginId: 'facet_block:pharma_' + label,
+        panelDivId1: label + '_' + idx,
+        class: 'facet-inactive block-facet--checkbox block block-facets ',
+        children: children
+      };
+    }
 
     // ===== 从 API 加载出版物列表（排除“资料手册”类型，资料手册在 brochures 页）=====
     async function loadPublications() {
@@ -425,6 +470,7 @@
         q.set('limit', data.page_size);
         q.set('isPublished', 'true');
         if (w) q.set('keyword', w);
+        if (publicationType) q.set('articleType', publicationType);
         if (tagId && tagId != '0') q.set('tags', decodeURIComponent(tagId));
         var resp = await fetch('/api/news?' + q.toString());
         var res = await resp.json();
@@ -447,11 +493,13 @@
             summary: it.summary || '',
             eventTimeYear: dateY,
             eventTimeMonth: dateM,
+            pdfSizeText: formatPdfSize(it.pdfSize),
             lock: (it.lock === true || it.lock === 1)
           };
         });
         // 分页链接
-        var tp = '', tg = '', kw = '';
+        var tp = publicationType ? '&publicationType=' + encodeURIComponent(publicationType) : '';
+        var tg = '', kw = '';
         if (tagId && tagId != '0') tg = '&tagId=' + encodeURIComponent(tagId);
         if (w) kw = '&keyword=' + encodeURIComponent(w);
         if (data.cur_page > 1) data.prev_url = baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw;
@@ -463,42 +511,25 @@
       }
     }
 
-    // ===== 加载标签侧栏（主题分组）=====
+    // ===== 加载侧栏（分组标签 + 类型聚合，数据驱动）=====
     async function loadTags() {
       try {
-        var resp = await fetch('/api/news/tags/list?type=publication&category=pharma');
+        var resp = await fetch('/api/news/tags/list?type=publication&category=pharma&format=grouped');
         var res = await resp.json();
         if (res.code !== 0) return;
-        var tags = res.data || [];
-        if (!tags.length) { data.tagList = []; return; }
-        var group = {
-          tagName: '主题',
-          nameId: 'collapse-filtre-accordion-主题_publication',
-          sharpeNameId: '#collapse-filtre-accordion-主题_publication',
-          headerNameId: 'heading-filtre-accordion-pharma_主题',
-          accordionNameId: 'accordion-filtre-accordion-pharma_主题',
-          dataBlockPluginId: 'facet_block:pharma_主题',
-          panelDivId1: '主题_publication',
-          class: 'facet-inactive block-facet--checkbox block block-facets ',
-          children: []
-        };
-        for (var ci = 0; ci < tags.length; ci++) {
-          var tagName = tags[ci];
-          var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(tagName);
+        var d = res.data || {};
+        // 类型 facet 链接组（所有类型 + 各类型，按数量排序）
+        var tsum = 0;
+        data.publicationTypeList = (d.types || []).map(function (t) {
+          tsum += t.count;
+          var u = baseUrl + '?page=1&publicationType=' + encodeURIComponent(t.name);
           if (w) u += '&keyword=' + encodeURIComponent(w);
-          if (tagId && decodeURIComponent(tagId) === tagName) {
-            data.curFilterTagName = tagName;
-            data.activeFilterClass = 'showDiv';
-          }
-          group.children.push({
-            ID: tagName,
-            tagName: tagName,
-            tagUrl: u,
-            dataDrupalFacetItemId: 'tag-' + ci,
-            facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
-          });
-        }
-        data.tagList = [group];
+          if (tagId) u += '&tagId=' + encodeURIComponent(tagId);
+          return { ID: t.name, typeName: t.name, count: t.count, url: u };
+        });
+        data.totalTypes = tsum;
+        // 标签分组手风琴（主题 / 科目 / 产品 / 年份 / 语言）
+        data.tagList = (d.groups || []).map(function (g, gi) { return mkGroup(g.label, gi, g.items); });
       } catch (e) {
         console.error('加载标签失败:', e);
         data.tagList = [];
@@ -638,6 +669,13 @@
 
     .facet-item1 {
       font-family: "Din Next Lt Pro Regular", sans-serif;
+      font-size: 1.6rem;
+      color: #58616B;
+    }
+
+    .view-empty {
+      padding: 4rem 2rem;
+      text-align: center;
       font-size: 1.6rem;
       color: #58616B;
     }

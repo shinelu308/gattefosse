@@ -210,6 +210,7 @@ model NewsEvent {
   publicationName String?  @map("publication_name") // publication：会议/出版物名称（如 53rd Annual ESDR Meeting）
   authorName     String?   @map("author_name")   // publication/magazine：作者长文本（如 Paula LENNON, Wanping ZHANG...）
   pdfUrl         String?   @map("pdf_url")       // 出版物/杂志 PDF 下载链接
+  pdfSize        Int?      @map("pdf_size")      // 出版物 PDF 文件大小（字节），用于前台「下载 (.pdf - 714.33 KB)」显示
   videoUrl       String?   @map("video_url")     // 研讨会回放视频链接
   lock           Boolean   @default(false)       // 是否需要登录查看
   // SEO 字段

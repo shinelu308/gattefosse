@@ -182,9 +182,9 @@
                             class="facet-inactive js-facets-links facet-list item-list__links">
                             <li class="facet-item1 facets-reset">
                               <a class="btn btn-outline-secondary is-active" v-if="data.publicationType == null"
-                                :href="data.allTypeUrl">所有类型{{data.publicationType}}</a>
-                              <a class="btn btn-outline-secondary" v-if="data.publicationType > 0 "
-                                :href="data.allTypeUrl">所有类型</a>
+                                :href="data.allTypeUrl">所有类型 ({{data.totalTypes}})</a>
+                              <a class="btn btn-outline-secondary" v-if="data.publicationType != null"
+                                :href="data.allTypeUrl">所有类型 ({{data.totalTypes}})</a>
                             </li>
                             <li v-for="item in data.publicationTypeList">
                               <a class="btn btn-outline-secondary is-active" v-if="item.ID == data.publicationType"
@@ -231,7 +231,7 @@
                     </div>
                   </aside>
                   <div class="s-page__content">
-                    <div class="c-cards c-cards--vertical">
+                    <div class="c-cards c-cards--vertical" v-if="data.formData.length > 0">
                       <div class="c-card c-card--bordered c-card--pub c-card--horizontal theme-cosm"
                         v-for="item in data.formData">
                         <div class="c-card__content">
@@ -250,13 +250,16 @@
                           </p>
                           <div class="c-card__cta">
                             <a class="btn btn-primary" :href="item.url" :title="item.title" target="_blank">
-                              下载 (.pdf)
+                              下载 (.pdf{{ item.pdfSizeText ? ' - ' + item.pdfSizeText : '' }})
                             </a>
                           </div>
                         </div>
                         <div class="c-card__image">
                         </div>
                       </div>
+                    </div>
+                    <div class="view-empty" v-else>
+                      <p>没有找到匹配的出版物，请调整筛选条件后重试。</p>
                     </div>
 
                     <nav class="pager" role="navigation" aria-labelledby="pagination-heading"
@@ -370,9 +373,14 @@ var publicationType = params.get('publicationType');
 var w = params.get('keyword');
 var baseUrl = window.location.pathname;
 
-// ===== 类型 ID → 中文名（原站 facet taxonomy 映射） =====
-var PUB_TYPE_MAP = {5: '会议交流', 6: '海报', 7: '科技出版物'};
 var apiBase = '/api';
+
+// ===== PDF 大小格式化（字节 → "714.33 KB" / "1.25 MB"，与原站格式一致） =====
+function formatPdfSize(bytes) {
+  if (!bytes || bytes <= 0) return '';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
 
 // ===== Vue应用 =====
 var app = createApp({
@@ -386,9 +394,10 @@ var app = createApp({
       tagId: tagId,
       tagList: [],
       curFilterTagName: '',
-      publicationType: publicationType && PUB_TYPE_MAP[publicationType] ? publicationType : null,
-      publicationTypeId: publicationType && PUB_TYPE_MAP[publicationType] ? publicationType : null,
+      publicationType: publicationType || null,
+      publicationTypeId: publicationType || null,
       publicationTypeList: [],
+      totalTypes: 0,
       curFilterTypeName: '',
       allTypeUrl: baseUrl,
       activeFilterClass: 'hidden',
@@ -396,17 +405,10 @@ var app = createApp({
       next_url: '',
       keyword: w
     });
-    // 类型按钮列表（所有类型 + 3 类）
+    // 当前类型过滤项（publicationType 参数即中文类型名，由 /api/news articleType 精确过滤）
     if (data.publicationType) {
-      data.curFilterTypeName = PUB_TYPE_MAP[data.publicationType];
+      data.curFilterTypeName = data.publicationType;
       data.activeFilterClass = 'showDiv';
-    }
-    data.publicationTypeList = [];
-    for (var id in PUB_TYPE_MAP) {
-      var u = baseUrl + '?page=1&publicationType=' + id;
-      if (w) u += '&keyword=' + encodeURIComponent(w);
-      if (tagId) u += '&tagId=' + encodeURIComponent(tagId);
-      data.publicationTypeList.push({ ID: id, typeName: PUB_TYPE_MAP[id], url: u });
     }
     // ===== 工具方法 =====
     const seeAll = (event) => {
@@ -450,48 +452,36 @@ var app = createApp({
       data.curFilterTypeName = '';
       window.location.href = baseUrl;
     }
-    // ===== 构建侧栏标签组（年份 + 成分） =====
-    function buildGroups(tags, curTagId) {
-      var yearGroup = [], ingGroup = [];
-      tags.forEach(function (t) {
-        var obj = { tagName: t };
-        if (/^\d{4}$/.test(t)) yearGroup.push(obj); else ingGroup.push(obj);
-      });
-      yearGroup.sort(function (a, b) { return b.tagName.localeCompare(a.tagName); });
-      ingGroup.sort(function (a, b) { return a.tagName.localeCompare(b.tagName); });
-      function mkGroup(tagName, id, children) {
-        var nameId = 'collapse-filtre-accordion-' + tagName + '_' + id;
+    // ===== 构建侧栏标签组（数据驱动：年份 / 成分 / 语言，来自 API groups） =====
+    function mkGroup(label, idx, items) {
+      var nameId = 'collapse-filtre-accordion-' + label + '_' + idx;
+      var children = items.map(function (c, ci) {
+        var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(c);
+        if (data.publicationType) u += '&publicationType=' + encodeURIComponent(data.publicationType);
+        if (w) u += '&keyword=' + encodeURIComponent(w);
+        if (tagId && decodeURIComponent(tagId) === c) {
+          data.curFilterTagName = c;
+          data.activeFilterClass = 'showDiv';
+        }
         return {
-          tagName: tagName, ID: id,
-          nameId: nameId,
-          sharpeNameId: '#' + nameId,
-          headerNameId: 'heading-filtre-accordion-publications_' + tagName,
-          accordionNameId: 'accordion-filtre-accordion-publications_' + tagName,
-          dataBlockPluginId: 'facet_block:publications_' + tagName,
-          panelDivId1: tagName + '_' + id,
-          class: 'facet-inactive block-facet--checkbox block block-facets ',
-          children: children.map(function (c, ci) {
-            var u = baseUrl + '?page=1&tagId=' + encodeURIComponent(c.tagName);
-            if (data.publicationType) u += '&publicationType=' + data.publicationType;
-            if (w) u += '&keyword=' + encodeURIComponent(w);
-            if (tagId && decodeURIComponent(tagId) === c.tagName) {
-              data.curFilterTagName = c.tagName;
-              data.activeFilterClass = 'showDiv';
-            }
-            return {
-              ID: c.tagName,
-              tagName: c.tagName,
-              tagUrl: u,
-              dataDrupalFacetItemId: tagName + '-' + ci,
-              facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
-            };
-          })
+          ID: c,
+          tagName: c,
+          tagUrl: u,
+          dataDrupalFacetItemId: label + '-' + ci,
+          facetItemClass: ci < 6 ? 'facet-item1' : 'facet-item1 hidden'
         };
-      }
-      var groups = [];
-      if (yearGroup.length) groups.push(mkGroup('年份', 55, yearGroup));
-      if (ingGroup.length) groups.push(mkGroup('成分', 54, ingGroup));
-      return groups;
+      });
+      return {
+        tagName: label, ID: idx,
+        nameId: nameId,
+        sharpeNameId: '#' + nameId,
+        headerNameId: 'heading-filtre-accordion-publications_' + label,
+        accordionNameId: 'accordion-filtre-accordion-publications_' + label,
+        dataBlockPluginId: 'facet_block:publications_' + label,
+        panelDivId1: label + '_' + idx,
+        class: 'facet-inactive block-facet--checkbox block block-facets ',
+        children: children
+      };
     }
     // ===== API 动态加载出版物数据 =====
     function buildApiUrl() {
@@ -502,7 +492,7 @@ var app = createApp({
       p.set('limit', '9');
       p.set('isPublished', 'true');
       if (w) p.set('keyword', w);
-      if (data.publicationType && PUB_TYPE_MAP[data.publicationType]) p.set('articleType', PUB_TYPE_MAP[data.publicationType]);
+      if (data.publicationType) p.set('articleType', data.publicationType);
       if (tagId && tagId != '0') p.set('tags', decodeURIComponent(tagId));
       return apiBase + '/news?' + p.toString();
     }
@@ -526,10 +516,11 @@ var app = createApp({
             eventTimeYear: eventTimeYear,
             author: item.authorName || '',
             summary: item.summary || '',
-            url: item.pdfUrl || ''
+            url: item.pdfUrl || '',
+            pdfSizeText: formatPdfSize(item.pdfSize)
           };
         });
-        var tp = data.publicationType ? '&publicationType=' + data.publicationType : '';
+        var tp = data.publicationType ? '&publicationType=' + encodeURIComponent(data.publicationType) : '';
         var tg = tagId && tagId != '0' ? '&tagId=' + encodeURIComponent(tagId) : '';
         var kw = w ? '&keyword=' + encodeURIComponent(w) : '';
         data.prev_url = data.cur_page > 1 ? baseUrl + '?page=' + (data.cur_page - 1) + tp + tg + kw : null;
@@ -541,13 +532,26 @@ var app = createApp({
       }
       setTimeout(function () { setTagStyle(); }, 100);
     }
-    // 加载标签分组（年份 / 成分）
+    // 加载侧栏（分组标签 + 类型聚合，数据驱动）
     async function loadTags() {
       try {
-        var resp = await fetch(apiBase + '/news/tags/list?type=publication&category=pc');
+        var resp = await fetch(apiBase + '/news/tags/list?type=publication&category=pc&format=grouped');
         var result = await resp.json();
         if (result.code !== 0) return;
-        data.tagList = buildGroups(result.data || [], tagId);
+        var d = result.data || {};
+        var groups = d.groups || [];
+        // 类型 facet 链接组（所有类型 + 各类型，按数量排序）
+        var tsum = 0;
+        data.publicationTypeList = (d.types || []).map(function (t) {
+          tsum += t.count;
+          var u = baseUrl + '?page=1&publicationType=' + encodeURIComponent(t.name);
+          if (w) u += '&keyword=' + encodeURIComponent(w);
+          if (tagId) u += '&tagId=' + encodeURIComponent(tagId);
+          return { ID: t.name, typeName: t.name, count: t.count, url: u };
+        });
+        data.totalTypes = tsum;
+        // 标签分组手风琴（成分 / 年份 / 语言）
+        data.tagList = groups.map(function (g, gi) { return mkGroup(g.label, gi, g.items); });
       } catch (e) {
         console.error('加载标签列表失败:', e);
       }
@@ -621,6 +625,13 @@ if (w) { document.getElementById('edit-keyword').value = w; }
 
     .facet-item1 {
       font-family: "Din Next Lt Pro Regular", sans-serif;
+      font-size: 1.6rem;
+      color: #58616B;
+    }
+
+    .view-empty {
+      padding: 4rem 2rem;
+      text-align: center;
       font-size: 1.6rem;
       color: #58616B;
     }

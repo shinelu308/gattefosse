@@ -413,12 +413,36 @@ export async function batchDeleteNews(req: Request, res: Response) {
 }
 
 /**
- * 获取所有文章标签（去重）
- * GET /api/news/tags/list?type=article
+ * 获取文章标签（侧栏 facet 数据源）
+ * GET /api/news/tags/list?type=article|publication&category=pc|pharma
+ *
+ * 默认返回字符串数组（向后兼容：hot-topics / brochures / webinars / admin 编辑器等均在用）；
+ * 加 format=grouped 时返回 { groups, types }（出版物页专用）：
+ * - groups: 标签分组 [{ key:'year', label:'年份', items:['2026',...] }, ...]（数据驱动，空组不返回）
+ *   - tags 存 JSON 对象数组 [{"name":"...","group":"theme"}] 时按 group 精确分组
+ *   - tags 存字符串数组时按启发式分组（4位数字→年份，®/™→产品，语言词→语言，其余→主题/成分）
+ * - types: publication 类型聚合 [{ name:'海报', count:11 }, ...]（中文，供类型 facet 链接组）
  */
+const PUB_TYPE_ZH: Record<string, string> = {
+  'ebook': '电子书',
+  'Poster': '海报',
+  'Scientific publication': '科技出版物',
+  'Whitepaper': '白皮书',
+  'Oral communication': '口头交流',
+};
+// type=publication 的 grouped 模式下资料手册归属 brochures 页，出版物页 facet 需排除
+const BROCHURE_TYPE = '资料手册';
+
+function classifyPubTag(tag: string, fallback: string): string {
+  if (/^\d{4}$/.test(tag)) return 'year';
+  if (/^(英文|中文|法文|德文|日文|English|French|German|Japanese|Chinese)$/i.test(tag)) return 'language';
+  return fallback; // pharma→theme，pc→ingredient（成分名常含®/™，PC 原站无「产品」组；产品名建议导入时用对象数组精确分组）
+}
+
 export async function listNewsTags(req: Request, res: Response) {
   try {
-    const { type = 'article', category } = req.query;
+    const { type = 'article', category, format } = req.query;
+    const grouped = String(format) === 'grouped';
     const where: Record<string, unknown> = {};
     if (type && type !== 'all') {
       where.type = String(type);
@@ -428,30 +452,101 @@ export async function listNewsTags(req: Request, res: Response) {
       if (cats.length) where.category = { in: cats };
     }
     where.isPublished = true;
+    if (grouped && String(type) === 'publication') {
+      // 资料手册归属 brochures 页，出版物页 facet 不统计
+      where.NOT = { articleType: BROCHURE_TYPE };
+    }
 
     const items = await prisma.newsEvent.findMany({
       where,
-      select: { tags: true },
+      select: { tags: true, articleType: true },
     });
 
-    // 提取所有标签并去重
-    const tagSet = new Set<string>();
-    for (const item of items) {
-      if (item.tags) {
-        try {
-          const parsed = JSON.parse(item.tags);
-          if (Array.isArray(parsed)) {
-            parsed.forEach((t: string) => { if (t) tagSet.add(t); });
+    if (!grouped) {
+      // 兼容模式：返回去重后的标签字符串数组（原行为）
+      const tagSet = new Set<string>();
+      for (const item of items) {
+        if (item.tags) {
+          try {
+            const parsed = JSON.parse(item.tags);
+            if (Array.isArray(parsed)) {
+              parsed.forEach((t: unknown) => {
+                if (typeof t === 'object' && t !== null && (t as Record<string, unknown>).name) tagSet.add(String((t as Record<string, unknown>).name));
+                else if (t) tagSet.add(String(t));
+              });
+            }
+          } catch {
+            item.tags.split(',').map(t => t.trim()).filter(Boolean).forEach(t => tagSet.add(t));
           }
-        } catch {
-          // 不是合法JSON时尝试按逗号分割
-          item.tags.split(',').map(t => t.trim()).filter(Boolean).forEach(t => tagSet.add(t));
         }
+      }
+      return res.json(success(Array.from(tagSet).sort(), '获取成功'));
+    }
+
+    const GROUP_LABEL: Record<string, string> = {
+      year: '年份', theme: '主题', subject: '科目',
+      product: '产品', language: '语言', ingredient: '成分',
+    };
+    const fallbackGroup = String(category) === 'pc' ? 'ingredient' : 'theme';
+    // key -> Set<tagName>（对象数组精确分组用精确 key；字符串启发式归入 theme/ingredient 等）
+    const groupItems: Record<string, Set<string>> = {};
+    for (const item of items) {
+      if (!item.tags) continue;
+      try {
+        const parsed = JSON.parse(item.tags);
+        if (Array.isArray(parsed)) {
+          for (const raw of parsed) {
+            if (!raw) continue;
+            if (typeof raw === 'object' && (raw as Record<string, unknown>).name) {
+              const t = String((raw as Record<string, unknown>).name);
+              const g = String((raw as Record<string, unknown>).group || classifyPubTag(t, fallbackGroup));
+              if (!groupItems[g]) groupItems[g] = new Set();
+              groupItems[g].add(t);
+            } else {
+              const t = String(raw);
+              const g = classifyPubTag(t, fallbackGroup);
+              if (!groupItems[g]) groupItems[g] = new Set();
+              groupItems[g].add(t);
+            }
+          }
+        }
+      } catch {
+        // 不是合法JSON时按逗号分割
+        item.tags.split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
+          const g = classifyPubTag(t, fallbackGroup);
+          if (!groupItems[g]) groupItems[g] = new Set();
+          groupItems[g].add(t);
+        });
       }
     }
 
-    const sorted = Array.from(tagSet).sort();
-    return res.json(success(sorted, '获取成功'));
+    // 侧栏组顺序：原站为 主题/成分 → 科目 → 产品 → 年份 → 语言
+    const GROUP_ORDER = ['theme', 'ingredient', 'subject', 'product', 'year', 'language'];
+    const groups = GROUP_ORDER
+      .filter(g => groupItems[g] && groupItems[g]!.size > 0)
+      .map(g => ({
+        key: g,
+        label: GROUP_LABEL[g] || g,
+        items: Array.from(groupItems[g]!).sort((a, b) => b.localeCompare(a, undefined, { numeric: true })),
+      }));
+
+    // publication 类型聚合（articleType trim 归一 + 中文映射后合并同名词，输出中文）
+    const types: { name: string; count: number }[] = [];
+    if (String(type) === 'publication') {
+      const typeCounts = new Map<string, number>();
+      for (const it of items) {
+        const at = (it.articleType || '').trim();
+        if (!at) continue;
+        const zh = PUB_TYPE_ZH[at] || at;
+        typeCounts.set(zh, (typeCounts.get(zh) || 0) + 1);
+      }
+      for (const [zh, count] of typeCounts) {
+        types.push({ name: zh, count });
+      }
+      types.sort((a, b) => b.count - a.count);
+    }
+
+    return res.json(success({ groups, types }, '获取成功'));
   } catch (error) {
     console.error('获取标签列表失败:', error);
     return res.status(500).json(fail('获取标签列表失败'));
