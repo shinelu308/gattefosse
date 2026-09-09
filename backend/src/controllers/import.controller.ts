@@ -1233,3 +1233,260 @@ export async function backfillPublicationPdfs(req: Request, res: Response) {
     '补抓完成：共 ' + rows.length + ' 条，新下载 ' + downloaded + '、复用 ' + reused + '、失败 ' + failed
   ));
 }
+
+// ==================================================================
+// addiactive 杂志导入（原站列表页 → 封面图卡片解析）
+// POST /news/import-magazines  { listUrl?, maxPages? }
+// ==================================================================
+const ADDIACTIVE_DEFAULT_URL = 'https://www.gattefosse.com/personal-care/get-inspired/addiactive';
+
+/** 从 alt/文件名中提取 addiactive 期号，找不到返回 null */
+function parseIssueNumber(...texts: (string | undefined | null)[]): number | null {
+  for (const t of texts) {
+    if (!t) continue;
+    const s = String(t);
+    // 独立三数字（addiactive #130 / n°126 / addiactive 131）
+    let m = s.match(/\b(1[0-9]{2})\b/);
+    if (m) { const n = parseInt(m[1], 10); if (n >= 100 && n <= 199) return n; }
+    // 紧贴形态：addiactive122 / addiactive-113-itwasbettertomorrow
+    m = s.match(/addiactive[\s\-_ #:°o]*(\d{3})\b/i);
+    if (m) { const n = parseInt(m[1], 10); if (n >= 100 && n <= 199) return n; }
+    // 原站 2019 年那期的文件名截断为 addiactive1-bodylanguage（实为 #112，见年份 facet 归组）
+    if (/^addiactive1[\s\-_]/i.test(s.trim())) return 112;
+  }
+  return null;
+}
+
+// 期号 → 年份（依据原站年份 facet 归组，2026-09 校准；新期号回退封面路径年份）
+const ADDIACTIVE_ISSUE_YEAR: Record<number, number> = {
+  131: 2026, 130: 2025, 129: 2025, 127: 2024, 126: 2024, 125: 2024,
+  124: 2023, 123: 2023, 122: 2023, 121: 2022, 120: 2022,
+  116: 2021, 115: 2020, 114: 2020, 113: 2020, 112: 2019,
+};
+
+/** 期号 → 规范标题：addiactive #124: Euphoria */
+function prettyIssueTitle(alt: string, issue: number | null): string {
+  if (!issue) return (alt || '').replace(/[-_]+/g, ' ').replace(/\s*resize\s*$/i, '').trim() || 'addiactive';
+  // 去掉 alt 中的 addiactive 前缀 / 期号 / 分隔符，剩余部分作副标题
+  let rest = String(alt || '')
+    .replace(/addiactive/gi, ' ')
+    .replace(/n\s?[°o]\s?\d+/gi, ' ')
+    .replace(new RegExp('\\b' + issue + '\\b'), ' ')
+    .replace(/[-_:]+/g, ' ')
+    .replace(/\b(en|resize|webp|jpg|png)\b/gi, ' ')
+    .replace(/^\s*#\s*/, '')
+    .replace(/^\s*\d{1,2}\s+/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (rest) rest = rest.charAt(0).toUpperCase() + rest.slice(1);
+  return rest ? ('addiactive #' + issue + ': ' + rest) : ('addiactive #' + issue);
+}
+
+export async function importMagazinesFromSite(req: Request, res: Response) {
+  const rawUrl = String(req.body.listUrl || '').trim();
+  const maxPages = Math.min(20, Math.max(1, parseInt(req.body.maxPages) || 5));
+  // addiactive 列表页校验：须为原站域名且路径含 addiactive，否则用默认地址
+  let listUrl = ADDIACTIVE_DEFAULT_URL;
+  if (rawUrl) {
+    try {
+      const u = new URL(rawUrl);
+      if (u.hostname === 'www.gattefosse.com' && /addiactive/i.test(u.pathname)) listUrl = rawUrl;
+    } catch { /* 用默认地址 */ }
+  }
+  const uploadDir = path.resolve(__dirname, '../../uploads/magazines');
+  fs.mkdirSync(uploadDir, { recursive: true });
+
+  const items: { title: string; status: string; cover: string; message: string }[] = [];
+  let imported = 0, skipped = 0, pages = 0, failed = 0;
+
+  try {
+    // 预载既有杂志做内存去重：期号(slug) / 归一化标题与 source_title / 封面核心名
+    const existing = await prisma.newsEvent.findMany({
+      where: { type: 'magazine' },
+      select: { id: true, title: true, sourceTitle: true, slug: true, imageUrl: true },
+    });
+    const existTitleKeys = new Set<string>();
+    const existSlugs = new Set<string>();
+    const existCoverCores = new Set<string>();
+    for (const r of existing) {
+      existSlugs.add((r.slug || '').toLowerCase());
+      for (const t of [r.title, r.sourceTitle]) { const k = t ? normalizeForMatch(t) : ''; if (k) existTitleKeys.add(k); }
+      const c = pdfCore(r.imageUrl);
+      if (c) existCoverCores.add(c);
+    }
+
+    for (let page = 0; page < maxPages; page++) {
+      // 原站分页从 ?page=1 开始（0-indexed），首页无参数
+      const pageUrl = page === 0 ? listUrl : listUrl + (listUrl.indexOf('?') >= 0 ? '&' : '?') + 'page=' + page;
+      let html: string;
+      try {
+        html = await fetchText(pageUrl);
+      } catch (e: any) {
+        items.push({ title: '第 ' + (page + 1) + ' 页抓取失败', status: 'error', cover: '', message: e.message });
+        failed++;
+        break;
+      }
+      // 页内无卡片即结束（超出总页数）
+      const cardMatches: { img: string; alt: string }[] = [];
+      const cardRe = /<div class="c-card c-card--addiactive-img[^"]*">([\s\S]*?)<\/div>\s*<\/div>/g;
+      let cm: RegExpExecArray | null;
+      while ((cm = cardRe.exec(html)) !== null) {
+        const seg = cm[1];
+        const im = seg.match(/<img[^>]+src="([^"]+)"[^>]*alt="([^"]*)"/) || seg.match(/<img[^>]+alt="([^"]*)"[^>]+src="([^"]+)"/);
+        if (im) cardMatches.push(im[2] && im[1] ? { img: im[1], alt: im[2] } : { img: im[2], alt: im[1] });
+      }
+      if (!cardMatches.length && page > 0) break;
+      if (!cardMatches.length && page === 0) {
+        return res.status(400).json(fail('未在页面中解析到 addiactive 封面卡片，请确认链接为原站 addiactive 列表页'));
+      }
+      pages++;
+
+      for (const card of cardMatches) {
+        const alt = (card.alt || '').trim();
+        const imgPath = card.img || '';
+        const issue = parseIssueNumber(alt, imgPath.split('/').pop());
+        // 年份：期号映射表（原站 facet 校准）优先，回退封面路径 /public/YYYY-MM/
+        const ym = imgPath.match(/\/public\/(\d{4})-(\d{2})\//);
+        const year = (issue && ADDIACTIVE_ISSUE_YEAR[issue]) || (ym ? parseInt(ym[1], 10) : null);
+        const slug = issue ? ('addiactive-' + issue) : '';
+        const title = prettyIssueTitle(alt, issue);
+
+        // 去重：期号 slug 优先（同期的不同裁剪图视为同一条），其次标题/封面核心名
+        const titleKey = normalizeForMatch(title);
+        const altKey = normalizeForMatch(alt);
+        const coverCore = pdfCore(imgPath.split('?')[0]);
+        let dup = false;
+        if (slug && existSlugs.has(slug)) dup = true;
+        else if (titleKey && existTitleKeys.has(titleKey)) dup = true;
+        else if (altKey && existTitleKeys.has(altKey)) dup = true;
+        else if (coverCore && existCoverCores.has(coverCore)) dup = true;
+        if (dup) {
+          skipped++;
+          items.push({ title: title || alt, status: 'skipped', cover: '', message: '已导入过，跳过' });
+          continue;
+        }
+        // 轮内登记，防同一期在同一轮不同页重复出现
+        if (slug) existSlugs.add(slug);
+        if (titleKey) existTitleKeys.add(titleKey);
+        if (altKey) existTitleKeys.add(altKey);
+        if (coverCore) existCoverCores.add(coverCore);
+
+        // 封面图本地化：优先取原图（styles/addiactive_list/public/REST → files/REST 去掉 .webp），失败退回列表缩略 URL
+        const absImg = absoluteUrl(imgPath);
+        let imageUrl = absImg;
+        let coverLocal = '';
+        try {
+          let origPath: string | null = null;
+          const sm = imgPath.match(/\/sites\/default\/files\/styles\/[\w-]+\/public\/(.+?)(?:\?|$)/);
+          if (sm) {
+            let rest = decodeURIComponent(sm[1]).replace(/\.webp$/i, '');
+            origPath = '/sites/default/files/' + rest;
+          }
+          const candidates = origPath ? [origPath, imgPath.split('?')[0]] : [imgPath.split('?')[0]];
+          for (const cand of candidates) {
+            try {
+              const abs = absoluteUrl(cand);
+              const fname = safePdfName('addiactive-cover-' + (slug || normalizeForMatch(alt).slice(0, 40)) + path.extname(abs.split('?')[0]) );
+              const target = path.join(uploadDir, fname);
+              if (!fs.existsSync(target)) await downloadFile(abs, target);
+              const st = fs.statSync(target);
+              if (st.size > 3000) { // 太小视为 404 页面误存
+                coverLocal = '/uploads/magazines/' + fname;
+                break;
+              }
+            } catch { /* 尝试下一个候选 */ }
+          }
+          if (coverLocal) imageUrl = coverLocal;
+        } catch { /* 保底用远端 URL */ }
+
+        const created = await prisma.newsEvent.create({
+          data: {
+            type: 'magazine',
+            category: 'pc',
+            title,
+            slug: slug || null,
+            sourceTitle: alt || null,
+            imageUrl,
+            tags: year ? JSON.stringify([String(year)]) : null,
+            publishedDate: year ? new Date(year + '-01-01T00:00:00Z') : new Date(),
+            lock: true, // 原站 addiactive 为会员专享内容
+            isPublished: false,
+            createdById: (req as any).userId || null,
+          },
+          select: { id: true },
+        });
+        imported++;
+        items.push({ title: title || alt, status: 'ok', cover: imageUrl, message: '期号 ' + (issue || '?') + '，年份 ' + (year || '?') + '，封面' + (coverLocal ? '已本地化' : '保留远端地址') + '（ID=' + created.id + '）' });
+      }
+    }
+
+    const errCount = items.filter((i) => i.status === 'error').length;
+    return res.json(success({
+      imported, skipped, failed, pages, items,
+    }, '导入完成：新增 ' + imported + ' 期、跳过 ' + skipped + ' 条（已导入过），共处理 ' + pages + ' 页' + (errCount ? '，' + errCount + ' 条失败请查看清单' : '')));
+  } catch (e: any) {
+    return res.status(500).json(fail('addiactive 导入失败：' + e.message));
+  }
+}
+
+// ==================================================================
+// 杂志 PDF 归档补抓（把手动填写了 pdf_url 的杂志 PDF 统一入文档资源，类型 Magazine）
+// POST /news/import-magazines-backfill-pdfs
+// ==================================================================
+export async function backfillMagazinePdfs(req: Request, res: Response) {
+  const uploadDir = path.resolve(__dirname, '../../uploads/documents');
+  fs.mkdirSync(uploadDir, { recursive: true });
+
+  const rows = await prisma.newsEvent.findMany({
+    where: { type: 'magazine', pdfUrl: { not: null } },
+    select: { id: true, title: true, pdfUrl: true, pdfSize: true },
+    orderBy: { id: 'asc' },
+  });
+
+  const items: { id: number; title: string; status: string; pdf: string; docId: number | null; message: string }[] = [];
+  let downloaded = 0, reused = 0, linked = 0, failed = 0;
+
+  for (const row of rows) {
+    try {
+      let doc = await prisma.document.findFirst({ where: { filePath: row.pdfUrl!, type: 'Magazine' }, select: { id: true } });
+      if (doc) { linked++; items.push({ id: row.id, title: (row.title || '').slice(0, 80), status: 'ok', pdf: row.pdfUrl!, docId: doc.id, message: '已存在于文档资源，复用' }); continue; }
+      // 远端 PDF 才下载；已是 /uploads 本地路径只补建 Document 记录
+      if (/^https?:/i.test(row.pdfUrl!)) {
+        let basename = '';
+        try { basename = decodeURIComponent(new URL(row.pdfUrl!).pathname.split('/').pop() || ''); } catch { /* 兜底名 */ }
+        const fname = safePdfName(basename || ('magazine_' + row.id + '.pdf'));
+        const target = path.join(uploadDir, fname);
+        const pdfLocal = '/uploads/documents/' + fname;
+        if (fs.existsSync(target)) {
+          reused++;
+        } else {
+          await downloadFile(row.pdfUrl!, target);
+          downloaded++;
+        }
+        const st = fs.statSync(target);
+        doc = await prisma.document.create({
+          data: { title: row.title || fname, type: 'Magazine', filePath: pdfLocal, fileSize: BigInt(st.size), language: 'en', isPublic: false, createdById: (req as any).userId || null },
+          select: { id: true },
+        });
+        await prisma.newsEvent.update({ where: { id: row.id }, data: { pdfUrl: pdfLocal, pdfSize: st.size } });
+        items.push({ id: row.id, title: (row.title || '').slice(0, 80), status: 'ok', pdf: pdfLocal, docId: doc.id, message: 'PDF 已下载并归档文档资源（Magazine）' });
+      } else {
+        const st = fs.existsSync(path.resolve(__dirname, '../../', row.pdfUrl!.replace(/^\//, ''))) ? require('fs').statSync(path.resolve(__dirname, '../../', row.pdfUrl!.replace(/^\//, ''))) : null;
+        doc = await prisma.document.create({
+          data: { title: row.title || 'magazine', type: 'Magazine', filePath: row.pdfUrl!, fileSize: BigInt(st ? st.size : 0), language: 'zh', isPublic: false, createdById: (req as any).userId || null },
+          select: { id: true },
+        });
+        linked++;
+        items.push({ id: row.id, title: (row.title || '').slice(0, 80), status: 'ok', pdf: row.pdfUrl!, docId: doc.id, message: '本地文件已补建文档资源记录（Magazine）' });
+      }
+    } catch (e: any) {
+      failed++;
+      items.push({ id: row.id, title: (row.title || '').slice(0, 80), status: 'error', pdf: '', docId: null, message: '❌ ' + e.message });
+    }
+  }
+
+  return res.json(success(
+    { total: rows.length, downloaded, reused, linked, failed, items },
+    '杂志 PDF 归档完成：共 ' + rows.length + ' 条，新下载 ' + downloaded + '、复用文件 ' + reused + '、补建记录 ' + linked + '、失败 ' + failed
+  ));
+}

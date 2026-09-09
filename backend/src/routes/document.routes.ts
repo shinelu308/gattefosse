@@ -30,6 +30,7 @@ const documentUpload = multer({
 import {
   listDocuments,
   getDocument,
+  getDocumentStats,
   createDocument,
   uploadDocument,
   updateDocument,
@@ -43,6 +44,7 @@ import {
 
 // 公开接口
 router.get('/', listDocuments);
+router.get('/stats', getDocumentStats);
 router.get('/:id', getDocument);
 router.get('/:id/download', downloadDocument);
 

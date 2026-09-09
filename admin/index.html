@@ -2190,7 +2190,28 @@ const QUILL_TOOLBAR = [
             <div class="card-header" data-page-node-id="iXJDYmmAOpKRSTkjIbVvC0">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="BaddETrspbeehStKuKwKs0">
                 <input type="text" class="form-control" style="max-width:240px;" placeholder="搜索文档标题..." v-model="docFilter.keyword" @keyup.enter="loadDocList()" data-page-node-id="YSIbxWGsEOCGNnKF3RCnqG">
-                <button class="btn btn-primary" @click="addDocRow" data-page-node-id="7vtFas2T0rjerCOgPp7tf8">+ 新建文档</button>
+                <select class="form-control" style="width:150px;" v-model="docFilter.type" @change="docFilter.page=1; loadDocList()" data-page-node-id="YSIbxWGsEOCGNnKF3RCnqH">
+                  <option value="">全部类型</option>
+                  <option value="TDS">技术数据表（TDS）</option>
+                  <option value="SDS">安全数据表（SDS）</option>
+                  <option value="Brochure">产品手册</option>
+                  <option value="Formula">配方资料</option>
+                  <option value="Publication">出版物</option>
+                  <option value="Magazine">杂志</option>
+                  <option value="Other">其他</option>
+                </select>
+                <select class="form-control" style="width:110px;" v-model="docFilter.isPublic" @change="docFilter.page=1; loadDocList()" data-page-node-id="YSIbxWGsEOCGNnKF3RCnqI">
+                  <option value="">全部权限</option>
+                  <option value="true">公开</option>
+                  <option value="false">需登录</option>
+                </select>
+                <button class="btn btn-primary" @click="loadDocList()" data-page-node-id="7vtFas2T0rjerCOgPp7tf8">搜索</button>
+                <button class="btn btn-outline" @click="docFilter = { page:1, limit:20, keyword:'', type:'', isPublic:'' }; loadDocList();" data-page-node-id="7vtFas2T0rjerCOgPp7tf9">重置</button>
+                <button class="btn btn-primary" @click="addDocRow" style="margin-left:auto;" data-page-node-id="7vtFas2T0rjerCOgPp7tfA">+ 新建文档</button>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;" data-page-node-id="BaddETrspbeehStKuKwKs1">
+                <button class="btn btn-sm" :class="!docFilter.type ? 'btn-primary' : 'btn-outline'" @click="docFilter.type=''; docFilter.page=1; loadDocList()">全部（{{ docTotal }}）</button>
+                <button v-for="s in docStats" :key="s.type" class="btn btn-sm" :class="docFilter.type === s.type ? 'btn-primary' : 'btn-outline'" @click="docFilter.type = s.type; docFilter.page=1; loadDocList()">{{ docLabel(s.type) }}（{{ s.count }}）</button>
               </div>
             </div>
             <div class="card-body" style="padding:0;" data-page-node-id="3hpHNFg95W2GdgCh0apkrj">
@@ -2207,6 +2228,8 @@ const QUILL_TOOLBAR = [
                         <option value="SDS" data-page-node-id="3I8Mj3boE4zmDx3wFj0E12">安全数据表（SDS）</option>
                         <option value="Brochure" data-page-node-id="8JTmDoaBybRYHwBaKFVP81">产品手册</option>
                         <option value="Formula" data-page-node-id="NoFUzb6SH5xqHBPCiy5A8s">配方资料</option>
+                        <option value="Publication" data-page-node-id="NoFUzb6SH5xqHBPCiy5A8t">出版物</option>
+                        <option value="Magazine" data-page-node-id="NoFUzb6SH5xqHBPCiy5A8u">杂志</option>
                         <option value="Other" data-page-node-id="ZPbAwqQTQyN0ZTYl3mJVrd">其他</option>
                       </select>
                     </td>
@@ -2247,10 +2270,12 @@ const QUILL_TOOLBAR = [
                           <option value="SDS" data-page-node-id="ve5trfzQWrwkHoKWyC8IHT">安全数据表（SDS）</option>
                           <option value="Brochure" data-page-node-id="vVnnCf853bq9dkjDTJD0ps">产品手册</option>
                           <option value="Formula" data-page-node-id="5naNlnM6h0LiP4KjO0j8Ge">配方资料</option>
+                          <option value="Publication" data-page-node-id="5naNlnM6h0LiP4KjO0j8Gf">出版物</option>
+                          <option value="Magazine" data-page-node-id="5naNlnM6h0LiP4KjO0j8Gg">杂志</option>
                           <option value="Other" data-page-node-id="SSt8U4LI8DD6JNxW2GF2AH">其他</option>
                         </select>
                       </template>
-                      <template v-else data-page-node-id="j3FgckOBZhFZZZVNvfm2S4"><span class="tag" :class="item.type==='TDS'||item.type==='SDS'?'tag-blue':'tag-slate'" data-page-node-id="RZwhJFjc0sapm5nsAi4E8o">{{ docLabel(item.type) }}</span></template>
+                      <template v-else data-page-node-id="j3FgckOBZhFZZZVNvfm2S4"><span class="tag" :class="item.type==='TDS'||item.type==='SDS'?'tag-blue':(item.type==='Publication'?'tag-amber':(item.type==='Magazine'?'tag-green':'tag-slate'))" data-page-node-id="RZwhJFjc0sapm5nsAi4E8o">{{ docLabel(item.type) }}</span></template>
                     </td>
                     <td data-page-node-id="3tMtaZEqtRLcriDGq45Fgi">
                       <template v-if="docEditing === item.id" data-page-node-id="UyyiqFdmmccOD2HhAoOi3l">
@@ -3144,6 +3169,41 @@ const QUILL_TOOLBAR = [
           </div>
         </div>
 
+        <!-- 杂志批量导入弹框（原站 addiactive 列表页 → 封面卡片解析） -->
+        <div v-if="magazineImport.open" class="modal-overlay is-open" @mousedown.self="!magazineImport.importing && (magazineImport.open = false)">
+          <div class="modal" style="width:640px;max-height:86vh;overflow-y:auto;">
+            <div class="modal-header">
+              <h3>从原站导入 addiactive 杂志</h3>
+              <button class="btn btn-sm" @click="magazineImport.open = false">✕</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>原站 addiactive 列表页链接 <span class="hint">（留空使用默认地址）</span></label>
+                <input type="text" class="form-control" v-model="magazineImport.url" placeholder="https://www.gattefosse.com/personal-care/get-inspired/addiactive" @keyup.enter="doMagazineImport()">
+              </div>
+              <div class="form-group">
+                <label>抓取页数 <span class="hint">（每页约 6 期，全部抓完建议 5 页）</span></label>
+                <input type="number" class="form-control" v-model="magazineImport.maxPages" min="1" max="20" style="width:120px;">
+              </div>
+              <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
+                逐页抓取封面卡片：期号 / 标题 / 年份 / 封面图（自动本地化到 /uploads/magazines）。按<strong>期号去重</strong>（同期不同裁剪图视为同一条），保存为<strong>草稿</strong>。原站 addiactive 为会员专享，PDF 需登录后在各期详情页获取，可后续在编辑页填写 PDF 后用「杂志 PDF 归档」入文档资源。
+              </div>
+              <div v-if="magazineImport.msg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: magazineImport.msg.indexOf('✅')===0 ? 'var(--green)' : (magazineImport.msg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ magazineImport.msg }}</div>
+              <div v-if="magazineImport.items.length" style="margin-top:8px;border:1px solid #e0e0e0;border-radius:6px;max-height:260px;overflow-y:auto;">
+                <div v-for="(it, i) in magazineImport.items" :key="i" style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.7;">
+                  <div style="font-weight:500;">{{ it.status === 'ok' ? '✅' : (it.status === 'skipped' ? '⏭️' : '❌') }} {{ it.title }}</div>
+                  <div style="color:#949494;">{{ it.message }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline" @click="magazineImport.open = false">关闭</button>
+              <button class="btn btn-outline" @click="doMagazineBackfill()" :disabled="magazineImport.importing">杂志 PDF 归档</button>
+              <button class="btn btn-primary" @click="doMagazineImport()" :disabled="magazineImport.importing">{{ magazineImport.importing ? '正在抓取封面...' : '开始导入' }}</button>
+            </div>
+          </div>
+        </div>
+
         <!-- ==================== 杂志列表 ==================== -->
         <div v-if="currentPage === 'magazine-list'" data-page-node-id="cRqqyJDLrK0MW72nTJ8Gkn">
           <h1 class="page-title" data-page-node-id="Uc4bBNYZTPjDUDoWGWF2G8">杂志管理</h1>
@@ -3158,6 +3218,7 @@ const QUILL_TOOLBAR = [
                 <button class="btn btn-primary" @click="loadMagazineList()" data-page-node-id="GHZdLbQCbBOIJcXA4ORv6h">搜索</button>
                 <button class="btn btn-outline" @click="magazineFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadMagazineList();" data-page-node-id="1sNsrYK3bnC4n0Q6EieOFk">重置</button>
                 <button class="btn btn-primary" @click="currentPage='magazine-edit'; resetMagazineEdit()" style="margin-left:auto;" data-page-node-id="FUO0QfRHLnIDkeZZXx97Az">+ 新增杂志</button>
+                <button class="btn btn-primary" @click="openMagazineImport()" style="background:#54616C;border-color:#54616C;" data-page-node-id="FUO0QfRHLnIDkeZZXx97Bz">从原站导入</button>
               </div>
             </div>
             <table class="table" data-page-node-id="Q2KM3DF5725a4n7v7ejrFu">
@@ -4145,6 +4206,7 @@ createApp({
       // Doc
       docList: [],
       docFilter: { page: 1, limit: 20, keyword: '', type: '', isPublic: '' },
+      docStats: [], docTotal: 0,
       docPagination: { total: 0, totalPages: 0 },
       docEditing: null,
       docSaving: false,
@@ -4208,6 +4270,7 @@ createApp({
       pubDocSelected: '',
       pubUploading: false,
       publicationImport: { open: false, url: '', maxPages: 1, importing: false, msg: '', items: [], fromIframe: false },
+      magazineImport: { open: false, url: '', maxPages: 5, importing: false, msg: '', items: [] },
       // 获取灵感 — 杂志
       magazineList: [],
       magazineFilter: { page: 1, limit: 20, keyword: '', isPublished: '' },
@@ -4531,7 +4594,7 @@ createApp({
       if (page === 'pc-list') this.loadPcList();
       if (page === 'pharma-list') this.loadPharmaList();
       if (page === 'formula-list') this.loadFormulaList();
-      if (page === 'doc-list') this.loadDocList();
+      if (page === 'doc-list') { this.loadDocList(); this.loadDocStats(); }
       if (page === 'news-list') this.loadNewsList();
       if (page === 'article-list') this.loadArticleList();
       if (page === 'webinar-list') this.loadWebinarList();
@@ -6425,8 +6488,11 @@ createApp({
       } catch (e) { console.error(e); }
     },
     docLabel(type) {
-      var map = { 'TDS': '技术数据表', 'SDS': '安全数据表', 'Brochure': '产品手册', 'Formula': '配方资料', 'Other': '其他' };
+      var map = { 'TDS': '技术数据表', 'SDS': '安全数据表', 'Brochure': '产品手册', 'Formula': '配方资料', 'Publication': '出版物', 'Magazine': '杂志', 'Other': '其他' };
       return map[type] || type;
+    },
+    async loadDocStats() {
+      try { const d = await this.api('/documents/stats'); this.docStats = d.stats || []; this.docTotal = d.total || 0; } catch (e) { console.error(e); }
     },
     fileUrl(path) {
       if (!path) return '';
@@ -7404,6 +7470,37 @@ createApp({
       this.publicationImport.items = [];
       this.publicationImport.fromIframe = false;
     },
+    // ===== 杂志：addiactive 原站导入 / PDF 归档 =====
+    openMagazineImport() {
+      this.magazineImport.open = true;
+      this.magazineImport.msg = '';
+      this.magazineImport.items = [];
+    },
+    async doMagazineImport() {
+      this.magazineImport.importing = true;
+      this.magazineImport.msg = '⏳ 正在抓取 addiactive 列表页与下载封面图，约需 10~60 秒...';
+      this.magazineImport.items = [];
+      try {
+        const d = await this.api('/news/import-magazines', { method: 'POST', body: JSON.stringify({ listUrl: (this.magazineImport.url || '').trim(), maxPages: parseInt(this.magazineImport.maxPages) || 5 }) });
+        this.magazineImport.items = d.items || [];
+        this.magazineImport.msg = '✅ 导入完成：新增 ' + (d.imported || 0) + ' 期、跳过 ' + (d.skipped || 0) + ' 条（已导入过），共处理 ' + (d.pages || 0) + ' 页';
+        this.loadMagazineList();
+      } catch (e) {
+        this.magazineImport.msg = '❌ 导入失败：' + e.message;
+      } finally { this.magazineImport.importing = false; }
+    },
+    async doMagazineBackfill() {
+      this.magazineImport.importing = true;
+      this.magazineImport.msg = '⏳ 正在把杂志 PDF 归档到文档资源（类型 Magazine）...';
+      try {
+        const d = await this.api('/news/import-magazines-backfill-pdfs', { method: 'POST' });
+        this.magazineImport.items = (d.items || []).map(x => ({ status: x.status, title: x.title, message: x.message }));
+        this.magazineImport.msg = '✅ 归档完成：共 ' + (d.total || 0) + ' 条，新下载 ' + (d.downloaded || 0) + '、复用 ' + (d.reused || 0) + '、补建 ' + (d.linked || 0) + '、失败 ' + (d.failed || 0);
+      } catch (e) {
+        this.magazineImport.msg = '❌ 归档失败：' + e.message;
+      } finally { this.magazineImport.importing = false; }
+    },
+
     async doPublicationImport() {
       if (!this.publicationImport.url) return;
       this.publicationImport.importing = true;

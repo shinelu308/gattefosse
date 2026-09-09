@@ -364,3 +364,17 @@ export async function unlinkDocFromFormulation(req: Request, res: Response) {
     return res.status(500).json(fail('取消关联失败'));
   }
 }
+
+/**
+ * 文档类型统计（后台文档资源分类导航用）
+ */
+export async function getDocumentStats(req: Request, res: Response) {
+  try {
+    const groups = await prisma.document.groupBy({ by: ['type'], _count: { _all: true } });
+    const stats = groups.map((g) => ({ type: g.type, count: Number(g._count._all) }));
+    const total = stats.reduce((s, x) => s + x.count, 0);
+    return res.json(success({ total, stats }));
+  } catch (e: any) {
+    return res.status(500).json(fail('获取文档统计失败：' + e.message));
+  }
+}
