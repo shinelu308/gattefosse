@@ -2192,7 +2192,13 @@ const QUILL_TOOLBAR = [
           <p class="page-subtitle" data-page-node-id="jEzPO2b3BF35ivqNxmTkC7">全局文件库，产品可在详情页通过「文件下载」区块引用</p>
           <div class="card" data-page-node-id="fjwUqlhV800ZQDY4eVccXI">
             <div class="card-header" data-page-node-id="iXJDYmmAOpKRSTkjIbVvC0">
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="BaddETrspbeehStKuKwKs0">
+              <div style="width:100%;" data-page-node-id="MgDocHdrWrap01">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;" data-page-node-id="BaddETrspbeehStKuKwKs1">
+                <button class="btn btn-sm" style="border-radius:16px;" :class="!docFilter.type ? 'btn-primary' : 'btn-outline'" @click="docFilter.type=''; docFilter.page=1; loadDocList()">全部（{{ docTotal }}）</button>
+                <button v-for="s in docStats" :key="s.type" class="btn btn-sm" style="border-radius:16px;" :class="docFilter.type === s.type ? 'btn-primary' : 'btn-outline'" @click="docFilter.type = s.type; docFilter.page=1; loadDocList()">{{ docLabel(s.type) }}（{{ s.count }}）</button>
+                <button class="btn btn-primary btn-sm" @click="addDocRow" style="margin-left:auto;border-radius:16px;" data-page-node-id="7vtFas2T0rjerCOgPp7tfA">+ 新建文档</button>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light, #eef0f2);" data-page-node-id="BaddETrspbeehStKuKwKs0">
                 <input type="text" class="form-control" style="max-width:240px;" placeholder="搜索文档标题..." v-model="docFilter.keyword" @keyup.enter="loadDocList()" data-page-node-id="YSIbxWGsEOCGNnKF3RCnqG">
                 <select class="form-control" style="width:150px;" v-model="docFilter.type" @change="docFilter.page=1; loadDocList()" data-page-node-id="YSIbxWGsEOCGNnKF3RCnqH">
                   <option value="">全部类型</option>
@@ -2211,11 +2217,7 @@ const QUILL_TOOLBAR = [
                 </select>
                 <button class="btn btn-primary" @click="loadDocList()" data-page-node-id="7vtFas2T0rjerCOgPp7tf8">搜索</button>
                 <button class="btn btn-outline" @click="docFilter = { page:1, limit:20, keyword:'', type:'', isPublic:'' }; loadDocList();" data-page-node-id="7vtFas2T0rjerCOgPp7tf9">重置</button>
-                <button class="btn btn-primary" @click="addDocRow" style="margin-left:auto;" data-page-node-id="7vtFas2T0rjerCOgPp7tfA">+ 新建文档</button>
               </div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;" data-page-node-id="BaddETrspbeehStKuKwKs1">
-                <button class="btn btn-sm" :class="!docFilter.type ? 'btn-primary' : 'btn-outline'" @click="docFilter.type=''; docFilter.page=1; loadDocList()">全部（{{ docTotal }}）</button>
-                <button v-for="s in docStats" :key="s.type" class="btn btn-sm" :class="docFilter.type === s.type ? 'btn-primary' : 'btn-outline'" @click="docFilter.type = s.type; docFilter.page=1; loadDocList()">{{ docLabel(s.type) }}（{{ s.count }}）</button>
               </div>
             </div>
             <div class="card-body" style="padding:0;" data-page-node-id="3hpHNFg95W2GdgCh0apkrj">
