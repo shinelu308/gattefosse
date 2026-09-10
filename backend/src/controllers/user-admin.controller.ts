@@ -115,6 +115,10 @@ export async function updateUser(req: Request, res: Response) {
     if (!existing) {
       return res.status(404).json(fail('用户不存在'));
     }
+    // 超级管理员为系统内置账号，不可在此修改（重置密码走专用接口）
+    if (existing.role === 'super_admin') {
+      return res.status(403).json(fail('超级管理员为系统内置账号，不可修改'));
+    }
 
     const {
       fullName,
@@ -166,6 +170,10 @@ export async function updateUserStatus(req: Request, res: Response) {
     if (!existing) {
       return res.status(404).json(fail('用户不存在'));
     }
+    // 超级管理员不可被禁用
+    if (existing.role === 'super_admin') {
+      return res.status(403).json(fail('超级管理员为系统内置账号，不可禁用'));
+    }
 
     const user = await prisma.user.update({
       where: { id },
@@ -194,6 +202,11 @@ export async function deleteUser(req: Request, res: Response) {
     // 不允许删除自己
     if (id === req.user?.userId) {
       return res.status(400).json(fail('不能删除自己'));
+    }
+
+    // 超级管理员不可删除
+    if (existing.role === 'super_admin') {
+      return res.status(403).json(fail('超级管理员为系统内置账号，不可删除'));
     }
 
     await prisma.user.delete({ where: { id } });
@@ -236,8 +249,8 @@ export async function createStaff(req: Request, res: Response) {
     if (String(password).length < 6) {
       return res.status(400).json(fail('密码至少 6 位'));
     }
-    if (!['super_admin', 'editor'].includes(role)) {
-      return res.status(400).json(fail('员工角色只能为超级管理员或编辑员'));
+    if (role !== 'editor') {
+      return res.status(400).json(fail('员工角色只能为编辑员（超级管理员为系统内置账号，不可创建）'));
     }
 
     const exists = await prisma.user.findUnique({ where: { email: String(email).toLowerCase().trim() } });
