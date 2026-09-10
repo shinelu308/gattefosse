@@ -521,65 +521,58 @@
                         </figure>
                       </div>
                     </div>
-                    <!-- 文件下载区块 — 相关资料样式 -->
+                    <!-- 文件下载区块 — 1:1 复刻原站 s-product-document / c-link--document 结构（样式来自复刻的 Drupal 聚合 CSS） -->
                     <div v-if="block.blockType === 'files' && block.content && block.content.files" class="block-files" id="product-document">
-                      <!-- 三列布局 -->
-                      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+                      <div class="s-product-document">
                         <!-- 技术文件列 -->
-                        <div>
-                          <h3 style="font-size:1.8rem;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">技术文件</h3>
-                          <ul style="list-style:none;padding:0;margin:0;">
+                        <div class="s-product-document__type">
+                          <h3 class="s-product-document__title">技术文件</h3>
+                          <ul class="s-product-document__list">
                             <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
-                              <li v-if="isTdsDoc(file)" style="margin-bottom:10px;">
-                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
-                                  <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
-                                  <span>{{ file.title || file.url }}</span>
+                              <li v-if="isTdsDoc(file)" class="c-link c-link--document" :class="{ 'c-link--locked': file.isPublic === false }">
+                                <a v-if="file.isPublic !== false" class="c-link__link" :href="file.url" target="_blank">
+                                  <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </a>
-                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;line-height:1.5;cursor:not-allowed;">
-                                  <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
-                                  <span>{{ file.title || file.url }}</span>
+                                <span v-else class="c-link__link">
+                                  <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </span>
                               </li>
                             </template>
-                            <li v-if="!hasTdsDocs(block.content.files)" style="color:#999;font-size:20px;">暂无技术文件</li>
+                            <li v-if="!hasTdsDocs(block.content.files)" style="color:#999;font-size:1.4rem;">暂无技术文件</li>
                           </ul>
                         </div>
                         <!-- 产品手册列 -->
-                        <div>
-                          <h3 style="font-size:1.8rem;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">产品手册</h3>
-                          <ul style="list-style:none;padding:0;margin:0;">
+                        <div class="s-product-document__type">
+                          <h3 class="s-product-document__title">产品手册</h3>
+                          <ul class="s-product-document__list">
                             <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
-                              <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;">
-                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
-                                  <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
-                                  <span>{{ file.title || file.url }}</span>
+                              <li v-if="isBrochureDoc(file)" class="c-link c-link--document" :class="{ 'c-link--locked': file.isPublic === false }">
+                                <a v-if="file.isPublic !== false" class="c-link__link" :href="file.url" target="_blank">
+                                  <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </a>
-                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;line-height:1.5;cursor:not-allowed;">
-                                  <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
-                                  <span>{{ file.title || file.url }}</span>
+                                <span v-else class="c-link__link">
+                                  <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </span>
                               </li>
                             </template>
-                            <li v-if="!hasBrochureDocs(block.content.files)" style="color:#999;font-size:20px;">暂无产品手册</li>
+                            <li v-if="!hasBrochureDocs(block.content.files)" style="color:#999;font-size:1.4rem;">暂无产品手册</li>
                           </ul>
                         </div>
                         <!-- 配方资料列 -->
-                        <div>
-                          <h3 style="font-size:1.8rem;color:#000;margin:0 0 16px 0;padding:0 0 8px 0;border-bottom:1px solid #e0d5d5;">配方资料</h3>
-                          <ul style="list-style:none;padding:0;margin:0;">
+                        <div class="s-product-document__type">
+                          <h3 class="s-product-document__title">配方资料</h3>
+                          <ul class="s-product-document__list">
                             <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
-                              <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;">
-                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
-                                  <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
-                                  <span>{{ file.title || file.url }}</span>
+                              <li v-if="isFormulaDoc(file)" class="c-link c-link--document" :class="{ 'c-link--locked': file.isPublic === false }">
+                                <a v-if="file.isPublic !== false" class="c-link__link" :href="file.url" target="_blank">
+                                  <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </a>
-                                <span v-else style="display:flex;align-items:center;gap:12px;color:#bbb;font-size:20px;line-height:1.5;cursor:not-allowed;">
-                                  <img src="/static/images/document/lock-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
-                                  <span>{{ file.title || file.url }}</span>
+                                <span v-else class="c-link__link">
+                                  <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </span>
                               </li>
                             </template>
-                            <li v-if="!hasFormulaDocs(block.content.files)" style="color:#999;font-size:20px;">暂无配方资料</li>
+                            <li v-if="!hasFormulaDocs(block.content.files)" style="color:#999;font-size:1.4rem;">暂无配方资料</li>
                           </ul>
                         </div>
                       </div>
