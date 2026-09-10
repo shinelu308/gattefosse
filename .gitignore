@@ -36,3 +36,7 @@ uploads/
 
 # 脚本中间产物（点前缀临时文件）
 backend/scripts/.*
+
+# PPT 项目缓存与 Office 锁文件
+docs/**/.cache/
+docs/**/~$*
