@@ -421,7 +421,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             <input type="text" class="form-control" v-model="importUrl" :placeholder="activeTab==='journees' ? 'https://www.gattefosse.com/journees-galeniques-xxx' : 'https://www.gattefosse.com/pharmaceuticals/learn-more/xxx'" @keyup.enter="doImport()">
           </div>
           <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
-            <template v-if="activeTab==='journees'">导入后保存为<strong>专题页草稿</strong>（type=page · Journées Galéniques），正文图片自动下载到本站，页面主题色（如蓝色）一并带入，核对后发布。</template>
+            <template v-if="activeTab==='journees'">导入后保存为<strong>专题页草稿</strong>（Journées Galéniques 专题页），正文图片自动下载到本站，页面主题色（如蓝色）一并带入，核对后发布。</template>
             <template v-else>导入后保存为<strong>草稿</strong>（分类固定为热点话题），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
             支持英文站（gattefosse.com）与中文站链接；导入内容含原站脱版标记，会自动以 HTML 源码模式打开编辑。</template>
           </div>
