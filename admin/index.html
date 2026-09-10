@@ -904,8 +904,8 @@ const QUILL_TOOLBAR = [
               <div class="card-header" data-page-node-id="Tx3RF4T4qp7pIDeWB0FIqm">
                 <h3 data-page-node-id="6JH3S2a1uCpL7q7aYzvwgx">访问地区 <span class="hint" data-page-node-id="QdGFsapEdqYAuOnZiAxmwa">（近 7 天）</span></h3>
                 <div class="region-tabs" data-page-node-id="BSC3Mm8UTTItCaFHagPWge">
-                  <button :class="{ active: regionTab === 'china' }" @click="regionTab = 'china'; renderRegionChart()" data-page-node-id="qsYX8SuAjxLy5ELDwZTFLg">中国</button>
-                  <button :class="{ active: regionTab === 'world' }" @click="regionTab = 'world'; renderRegionChart()" data-page-node-id="bxgBtLzVpZIaloEWbf39y1">世界</button>
+                  <button :class="{ active: regionTab === 'china' }" @click="regionTab = 'china'; showAllRegions = false; renderRegionChart()" data-page-node-id="qsYX8SuAjxLy5ELDwZTFLg">中国</button>
+                  <button :class="{ active: regionTab === 'world' }" @click="regionTab = 'world'; showAllRegions = false; renderRegionChart()" data-page-node-id="bxgBtLzVpZIaloEWbf39y1">世界</button>
                 </div>
               </div>
               <div class="card-body" data-page-node-id="bCUXlk9gweWYO5MtHSM5nl">
@@ -915,8 +915,8 @@ const QUILL_TOOLBAR = [
             <div class="card" data-page-node-id="e3CqTbkuEmEctlSXHv512l">
               <div class="card-header" data-page-node-id="GaH2L8Tpt1Le47ryUnTHdb"><h3 data-page-node-id="kV3Ab9CT5sD1GpcMJqcO4w">地区排行</h3></div>
               <div class="card-body" data-page-node-id="KwUEVrJgzXfn6LG8fRtIYv">
-                <div class="top-list" v-if="regionList.length" data-page-node-id="hnKUDJFQHv5HQJq5HkFDle">
-                  <div class="top-item" v-for="r in regionList" :key="r.name" data-page-node-id="Gb0sa8wDz9F3THDqU8hFkI">
+                <div class="top-list" v-if="displayRegionList.length" data-page-node-id="hnKUDJFQHv5HQJq5HkFDle">
+                  <div class="top-item" v-for="r in displayRegionList" :key="r.name" data-page-node-id="Gb0sa8wDz9F3THDqU8hFkI">
                     <div class="t-row" data-page-node-id="GaktGPXUEoNtItS02VgiIa">
                       <span class="t-path" data-page-node-id="4W72oM44crrdijrv7PpSCw">{{ r.name }}</span>
                       <span class="t-pv" data-page-node-id="o6VJi86idv9HtAM8QvE0pv">{{ r.pv }}</span>
@@ -924,7 +924,13 @@ const QUILL_TOOLBAR = [
                     <div class="t-bar" data-page-node-id="m8Cm1cCEtli3gAMn71YlPB"><i :style="{ width: Math.max(6, Math.round(r.pv / regionMaxPv * 100)) + '%' }" data-page-node-id="QHMkj4yewCHlZ1s50sZOEE"></i></div>
                   </div>
                 </div>
-                <div v-else style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;" data-page-node-id="cHz4J7UDIwjv23C9kCUW1w">暂无地区数据</div>
+                <div v-if="regionList.length > regionTopN && !showAllRegions" style="text-align:center;margin-top:14px;">
+                  <button class="btn-outline btn-sm" @click="showAllRegions = true">展开全部（共 {{ regionList.length }} 个）</button>
+                </div>
+                <div v-if="showAllRegions && regionList.length > regionTopN" style="text-align:center;margin-top:14px;">
+                  <button class="btn-outline btn-sm" @click="showAllRegions = false">收起，只看 Top {{ regionTopN }}</button>
+                </div>
+                <div v-if="!regionList.length" style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;" data-page-node-id="cHz4J7UDIwjv23C9kCUW1w">暂无地区数据</div>
               </div>
             </div>
           </div>
@@ -4283,6 +4289,7 @@ createApp({
       stats: { pcCount: 0, pcPublished: 0, pharmaCount: 0, pharmaPublished: 0, formulaCount: 0, formulaPublished: 0, userCount: 0, pendingUsers: 0 },
       visit: null,
       regionTab: 'china',
+      showAllRegions: false,
       mapsReady: false,
       // Tag dict
       tagDict: { pc: {}, pharma: {} },
@@ -4482,6 +4489,15 @@ createApp({
     /* ===== 页面中文名 + 地区图 ===== */
     regionList() {
       return this.visit ? (this.regionTab === 'china' ? this.visit.regions.china : this.visit.regions.overseas) : [];
+    },
+    /* 地区排行默认只显示 Top N，与地图卡片等高；点击「展开全部」看完整列表 */
+    regionTopN() {
+      return 10;
+    },
+    displayRegionList() {
+      const l = this.regionList || [];
+      if (this.showAllRegions || l.length <= this.regionTopN) return l;
+      return l.slice(0, this.regionTopN);
     },
     regionMaxPv() {
       return this.regionList.length ? this.regionList[0].pv : 1;
