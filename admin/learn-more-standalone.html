@@ -101,7 +101,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 <div id="app">
   <!-- 列表视图 -->
   <div v-if="!showEdit">
-  <h1 class="page-title">了解更多 <span class="page-lock">category = pharma</span></h1>
+  <h1 class="page-title">了解更多</h1>
   <p class="page-subtitle">{{ activeMeta.subtitle }}</p>
 
   <!-- Tabs -->
@@ -188,7 +188,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   <!-- ============ 编辑视图（与「获取灵感-文章」编辑页同一布局） ============ -->
   <div v-else>
     <h1 class="page-title">{{ editing.id ? '编辑文章 — ' + editing.title : '新增' + activeMeta.addLabel }}</h1>
-    <p class="page-subtitle">{{ activeMeta.subtitle }} <span v-if="editing.id" style="color:#999;font-size:12px;margin-left:16px;">type = {{ activeMeta.type }} · category = pharma</span></p>
+    <p class="page-subtitle">{{ activeMeta.subtitle }}</p>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
       <button class="btn btn-sm btn-outline" @click="showEdit=false">← 返回列表</button>
     </div>

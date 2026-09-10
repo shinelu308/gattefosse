@@ -2956,7 +2956,7 @@ const QUILL_TOOLBAR = [
         <!-- ==================== 出版物列表（样式对齐文章管理基准） ==================== -->
         <div v-if="currentPage === 'publication-list'">
           <h1 class="page-title">出版物管理</h1>
-          <p class="page-subtitle">管理获取灵感模块下的科技出版物（type = publication · category = pc）</p>
+          <p class="page-subtitle">管理获取灵感模块下的科技出版物</p>
           <div class="card">
             <div class="card-header">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
@@ -3021,7 +3021,7 @@ const QUILL_TOOLBAR = [
         <!-- 出版物编辑（一页式布局，样式对齐文章编辑基准：基本信息 / 图片 / 作者与标签 / 附加设置） -->
         <div v-if="currentPage === 'publication-edit'">
           <h1 class="page-title">{{ editingPublication.id ? '编辑出版物 — ' + editingPublication.title : '新增出版物' }}</h1>
-          <p class="page-subtitle">管理获取灵感模块下的科技出版物 <span v-if="editingPublication.id" style="color:var(--text-tertiary);font-size:12px;margin-left:16px;">type = publication · category = pc</span></p>
+          <p class="page-subtitle">管理获取灵感模块下的科技出版物</p>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
             <button class="btn btn-sm btn-outline" @click="goPage('publication-list')">← 返回列表</button>
           </div>
@@ -3265,7 +3265,7 @@ const QUILL_TOOLBAR = [
         <!-- 杂志编辑 -->
         <div v-if="currentPage === 'magazine-edit'" data-page-node-id="gNIk49feUE9WBJleQDZy4c">
           <h1 class="page-title" data-page-node-id="mjAyhXuW6W686mdDY9LvGp">{{ editingMagazine.id ? '编辑杂志 — ' + editingMagazine.title : '新增杂志' }}</h1>
-          <p class="page-subtitle" data-page-node-id="MgSubTitle01">管理获取灵感模块下的杂志 <span v-if="editingMagazine.id" style="color:var(--text-tertiary);font-size:12px;margin-left:16px;" data-page-node-id="MgSubType01">type = magazine · category = pc</span></p>
+          <p class="page-subtitle" data-page-node-id="MgSubTitle01">管理获取灵感模块下的杂志</p>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;" data-page-node-id="DSjylAbdQKLmBBzGTbucH3">
             <button class="btn btn-sm btn-outline" @click="goPage('magazine-list')" data-page-node-id="QueYQpxJ4IYyZyVcfCMNSj">← 返回列表</button>
           </div>
