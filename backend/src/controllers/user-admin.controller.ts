@@ -7,6 +7,7 @@ const USER_SELECT = {
   id: true,
   email: true,
   fullName: true,
+  avatar: true,
   company: true,
   industry: true,
   jobFunction: true,
@@ -277,6 +278,35 @@ export async function createStaff(req: Request, res: Response) {
   } catch (error) {
     console.error('创建员工失败:', error);
     return res.status(500).json(fail('创建员工失败'));
+  }
+}
+
+/**
+ * 设置员工头像（预设 3D 卡通头像：av1~av9，空字符串恢复默认首字母）
+ */
+export async function setStaffAvatar(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    const { avatar } = req.body;
+    if (avatar !== '' && !/^av([1-9])$/.test(String(avatar))) {
+      return res.status(400).json(fail('无效的头像标识'));
+    }
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json(fail('用户不存在'));
+    }
+    if (!['super_admin', 'editor'].includes(existing.role)) {
+      return res.status(400).json(fail('仅后台员工可设置头像'));
+    }
+    const user = await prisma.user.update({
+      where: { id },
+      data: { avatar: avatar === '' ? null : String(avatar) },
+      select: USER_SELECT,
+    });
+    return res.json(success(user, '头像已更新'));
+  } catch (error) {
+    console.error('设置头像失败:', error);
+    return res.status(500).json(fail('设置头像失败'));
   }
 }
 

@@ -68,6 +68,15 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
 .staff-table th, .staff-table td { border-bottom: 1px solid #f0f0f0; padding: 10px 12px; text-align: left; vertical-align: middle; }
 .staff-table thead th { background: #fafbfa; font-size: 12px; color: #666; white-space: nowrap; }
 .staff-table td .avatar { width: 32px; height: 32px; border-radius: 50%; background: #8EB73C; color: #fff; font-size: 13px; line-height: 32px; text-align: center; display: inline-block; margin-right: 8px; vertical-align: middle; }
+.avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+.avatar-editable { cursor: pointer; position: relative; flex: none; }
+.avatar-editable::after { content: '✎'; position: absolute; right: -3px; bottom: -1px; width: 15px; height: 15px; background: #8EB73C; color: #fff; border-radius: 50%; font-size: 9px; line-height: 15px; text-align: center; border: 1.5px solid #fff; box-sizing: border-box; }
+.avatar-picker-mask { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 1000; align-items: center; justify-content: center; }
+.avatar-picker { background: #fff; border-radius: 12px; padding: 24px; width: 400px; }
+.avatar-picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 14px; }
+.avatar-picker-grid .ap-item { width: 56px; height: 56px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; box-shadow: 0 0 0 1px #e0e6d8; transition: transform .15s; }
+.avatar-picker-grid .ap-item:hover { transform: scale(1.08); }
+.avatar-picker-grid .ap-item.active { border-color: #8EB73C; }
 .staff-table select { width: auto; min-width: 120px; padding: 5px 8px; font-size: 12px; }
 .staff-table .actions { white-space: nowrap; }
 .status-tag { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; white-space: nowrap; }
@@ -187,7 +196,7 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
 
   <!-- 超级管理员锁定卡片 -->
   <div id="superCard" style="display:none;align-items:center;gap:14px;background:#F7F8FA;border:1px dashed #C9CFD6;border-radius:8px;padding:14px 18px;margin:14px 0 22px;">
-    <span class="avatar" id="sc_avatar" style="background:#8A8F99;">?</span>
+    <span class="avatar avatar-editable" id="sc_avatar" title="点击更换头像" onclick="openAvatarPicker()" style="width:42px;height:42px;background:#8A8F99;color:#fff;font-size:17px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;">?</span>
     <div style="flex:1;min-width:0;">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <strong id="sc_name" style="font-size:14px;">—</strong>
@@ -197,6 +206,16 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
       <div id="sc_email" style="font-size:12px;color:#8A8F99;margin-top:3px;">—</div>
     </div>
     <button class="btn-outline btn-sm" onclick="resetStaffPwd()">重置密码</button>
+  </div>
+
+  <!-- 头像选择弹窗（预设 3D 卡通头像） -->
+  <div class="avatar-picker-mask" id="avatarPicker" onclick="if(event.target===this)closeAvatarPicker()">
+    <div class="avatar-picker">
+      <div style="font-size:15px;font-weight:600;">选择头像</div>
+      <div style="font-size:12px;color:#999;margin-top:3px;">内置 3D 卡通头像，点击即应用；「默认」恢复显示姓名首字母</div>
+      <div class="avatar-picker-grid" id="avatarGrid"></div>
+      <div style="text-align:right;margin-top:16px;"><button class="btn-outline btn-sm" onclick="closeAvatarPicker()">取消</button></div>
+    </div>
   </div>
 
   <!-- 新增/编辑员工表单 -->
@@ -502,7 +521,7 @@ function renderOrg() {
     const chips = members.length
       ? members.map(s => `
           <span class="member-chip">
-            <span class="avatar">${esc((s.fullName || '?').charAt(0))}</span>
+            <span class="avatar" style="overflow:hidden;padding:0;">${s.avatar ? '<img class="avatar-img" src="' + avatarSrc(s.avatar) + '" alt="">' : esc((s.fullName || '?').charAt(0))}</span>
             ${esc(s.fullName)}
             <span class="r ${s.role === 'super_admin' ? 'r-super' : 'r-editor'}">${s.role === 'super_admin' ? '超管' : '编辑'}</span>
           </span>`).join('')
@@ -536,6 +555,37 @@ function removeOrgRow(i) {
 }
 
 /* ===== Tab2 组织架构：员工账号 ===== */
+var AVATAR_KEYS = ['av1','av2','av3','av4','av5','av6','av7','av8','av9'];
+var avatarTargetId = null;
+function avatarSrc(a) { return a ? '/admin/avatars/' + a + '.png' : ''; }
+function avatarInner(s) {
+  if (s.avatar) return '<img class="avatar-img" src="' + avatarSrc(s.avatar) + '" alt="">';
+  return esc((s.fullName || '?').charAt(0));
+}
+function openAvatarPicker(userId) {
+  var sup = staffList.find(s => s.role === 'super_admin');
+  var targetId = userId || (sup ? sup.id : null);
+  if (!targetId) return;
+  avatarTargetId = targetId;
+  var cur = (staffList.find(x => x.id === targetId) || {}).avatar || '';
+  var g = document.getElementById('avatarGrid');
+  var html = '';
+  AVATAR_KEYS.forEach(function(a) {
+    html += '<img class="ap-item' + (cur === a ? ' active' : '') + '" src="' + avatarSrc(a) + '" onclick="pickAvatar(\'' + a + '\')">';
+  });
+  html += '<div class="ap-item' + (cur === '' ? ' active' : '') + '" style="background:#8A8F99;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;" title="默认（姓名首字母）" onclick="pickAvatar(\'\')">A</div>';
+  g.innerHTML = html;
+  document.getElementById('avatarPicker').style.display = 'flex';
+}
+function closeAvatarPicker() { document.getElementById('avatarPicker').style.display = 'none'; avatarTargetId = null; }
+async function pickAvatar(a) {
+  if (!avatarTargetId) return;
+  try {
+    await api('/admin/users/' + avatarTargetId + '/avatar', { method: 'PUT', body: JSON.stringify({ avatar: a }) });
+    closeAvatarPicker();
+    await refreshStaff();
+  } catch (e) { AdminDialog.alert('头像设置失败: ' + e.message, { type: 'error' }); }
+}
 function deptOptions(selected) {
   return '<option value="">未分配</option>' + orgData.filter(o => o.name && o.name.trim())
     .map(o => `<option value="${esc(o.name)}" ${o.name === selected ? 'selected' : ''}>${esc(o.name)}</option>`).join('');
@@ -558,7 +608,8 @@ function renderStaff() {
   const card = document.getElementById('superCard');
   if (sup) {
     card.style.display = 'flex';
-    document.getElementById('sc_avatar').textContent = (sup.fullName || '?').charAt(0);
+    var scAvatar = document.getElementById('sc_avatar');
+    scAvatar.innerHTML = sup.avatar ? '<img class="avatar-img" src="' + avatarSrc(sup.avatar) + '" alt="">' : esc((sup.fullName || '?').charAt(0));
     document.getElementById('sc_name').textContent = sup.fullName || '—';
     document.getElementById('sc_email').textContent = sup.email || '';
   } else {
@@ -571,7 +622,7 @@ function renderStaff() {
   }
   body.innerHTML = editors.map(s => `
     <tr>
-      <td><span class="avatar">${esc((s.fullName || '?').charAt(0))}</span><strong>${esc(s.fullName)}</strong>${s.jobFunction ? '<div style="font-size:11px;color:#999;margin-left:40px;">' + esc(s.jobFunction) + '</div>' : ''}</td>
+      <td><span class="avatar avatar-editable" title="点击更换头像" onclick="openAvatarPicker(${s.id})" style="overflow:hidden;">${avatarInner(s)}</span><strong>${esc(s.fullName)}</strong>${s.jobFunction ? '<div style="font-size:11px;color:#999;margin-left:40px;">' + esc(s.jobFunction) + '</div>' : ''}</td>
       <td>${esc(s.email)}${s.phone ? '<div style="font-size:11px;color:#999;">' + esc(s.phone) + '</div>' : ''}</td>
       <td><span class="role-badge ${s.role === 'super_admin' ? 'role-super' : 'role-editor'}">${s.role === 'super_admin' ? '超级管理员' : '编辑员'}</span></td>
       <td><select onchange="assignDept(${s.id}, this.value)">${deptOptions(s.department)}</select></td>

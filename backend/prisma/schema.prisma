@@ -21,6 +21,7 @@ model User {
   jobFunction   String?   @map("job_function")
   department    String?   // 员工所属部门（企业组织架构内管理，会员为空）
   phone         String?
+  avatar        String?   // 后台员工头像（预设 3D 卡通头像 key：av1~av9，空=默认首字母）
   role          String    @default("user")
   status        String    @default("pending")
   samlEnabled   Boolean   @default(false) @map("saml_enabled")

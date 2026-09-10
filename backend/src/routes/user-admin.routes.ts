@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
-import { listUsers, getUserById, updateUser, updateUserStatus, deleteUser, getUserStats, createStaff, resetStaffPassword } from '../controllers/user-admin.controller';
+import { listUsers, getUserById, updateUser, updateUserStatus, deleteUser, getUserStats, createStaff, resetStaffPassword, setStaffAvatar } from '../controllers/user-admin.controller';
 
 const router = Router();
 
 router.get('/stats', authMiddleware, requireRole('super_admin'), getUserStats);
 router.post('/', authMiddleware, requireRole('super_admin'), createStaff);
 router.put('/:id/password', authMiddleware, requireRole('super_admin'), resetStaffPassword);
+router.put('/:id/avatar', authMiddleware, requireRole('super_admin'), setStaffAvatar);
 router.get('/', authMiddleware, requireRole('super_admin'), listUsers);
 router.get('/:id', authMiddleware, requireRole('super_admin'), getUserById);
 router.put('/:id', authMiddleware, requireRole('super_admin'), updateUser);

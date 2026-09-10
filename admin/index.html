@@ -833,7 +833,7 @@ const QUILL_TOOLBAR = [
         </a>
       </nav>
       <div class="sidebar-footer" data-page-node-id="jDhtE4xwIYs6147pR3XisH">
-        <div class="avatar" data-page-node-id="Qe9SHBwkiBI7nK30FLNsrA">{{ userInfo?.fullName ? userInfo.fullName.charAt(0).toUpperCase() : 'U' }}</div>
+        <div class="avatar" data-page-node-id="Qe9SHBwkiBI7nK30FLNsrA" :style="userInfo && userInfo.avatar ? 'padding:0;overflow:hidden;' : ''"><img v-if="userInfo && userInfo.avatar" :src="'/admin/avatars/' + userInfo.avatar + '.png'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""><template v-else>{{ userInfo?.fullName ? userInfo.fullName.charAt(0).toUpperCase() : 'U' }}</template></div>
         <div class="user-info" data-page-node-id="kl6ne7gxPq77PKWPDeKlqs">
           <div class="user-name" data-page-node-id="BpBXYCadiYVllQ2qiEsOWm">{{ userInfo?.fullName || userInfo?.email }}</div>
           <div class="user-role" data-page-node-id="Ij9S73RK5Jnbzm41qSstIL">{{ userInfo?.role === 'super_admin' ? '超级管理员' : userInfo?.role === 'editor' ? '编辑员' : '普通用户' }}</div>
