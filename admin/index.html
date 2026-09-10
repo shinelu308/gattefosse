@@ -495,6 +495,13 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .top-list::-webkit-scrollbar-thumb { background: #d9dee3; border-radius: 3px; }
 .top-list::-webkit-scrollbar-thumb:hover { background: #c2c9d0; }
 .top-list::-webkit-scrollbar-track { background: transparent; }
+/* 地区排行展开/收起：淡绿药丸按钮，贴合品牌色 */
+.region-toggle { display: flex; justify-content: center; margin-top: 14px; }
+.region-toggle button { display: inline-flex; align-items: center; gap: 6px; background: #f4f9ea; color: #6f9a24; border: 1px solid #e3eecb; border-radius: 999px; padding: 5px 16px; font-size: 12px; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; }
+.region-toggle button:hover { background: #e9f3d4; border-color: #cfe3a8; }
+.region-toggle button:active { transform: scale(.97); }
+.region-toggle .chev { font-size: 10px; line-height: 1; transition: transform .25s; }
+.region-toggle .chev.open { transform: rotate(180deg); }
 .top-item .t-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .top-item .t-path { font-size: 12px; color: var(--text); max-width: 78%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .top-item .t-path .t-subpath { font-size: 11px; color: var(--text-tertiary); margin-left: 6px; }
@@ -924,11 +931,11 @@ const QUILL_TOOLBAR = [
                     <div class="t-bar" data-page-node-id="m8Cm1cCEtli3gAMn71YlPB"><i :style="{ width: Math.max(6, Math.round(r.pv / regionMaxPv * 100)) + '%' }" data-page-node-id="QHMkj4yewCHlZ1s50sZOEE"></i></div>
                   </div>
                 </div>
-                <div v-if="regionList.length > regionTopN && !showAllRegions" style="text-align:center;margin-top:14px;">
-                  <button class="btn-outline btn-sm" @click="showAllRegions = true">展开全部（共 {{ regionList.length }} 个）</button>
-                </div>
-                <div v-if="showAllRegions && regionList.length > regionTopN" style="text-align:center;margin-top:14px;">
-                  <button class="btn-outline btn-sm" @click="showAllRegions = false">收起，只看 Top {{ regionTopN }}</button>
+                <div class="region-toggle" v-if="regionList.length > regionTopN">
+                  <button @click="showAllRegions = !showAllRegions">
+                    <span>{{ showAllRegions ? '收起榜单' : '展开全部' }}</span>
+                    <span class="chev" :class="{ open: showAllRegions }">▾</span>
+                  </button>
                 </div>
                 <div v-if="!regionList.length" style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;" data-page-node-id="cHz4J7UDIwjv23C9kCUW1w">暂无地区数据</div>
               </div>
