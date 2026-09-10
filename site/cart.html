@@ -19,6 +19,7 @@
   <script src="/static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api-260908.js"></script>
   <script src="/static/js/auth-260908.js"></script>
+  <script src="/static/js/site-dialog-260910.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -246,8 +247,9 @@
       $("#header").load("/header.html", function () {
         let tmp = checkLoginStatus();
         if (!tmp) {
-          alert("请先登录");
-          window.location.href = "/account.html";
+          SiteDialog.alert('请先登录后查看购物车', { type: 'warn' }).then(function () {
+            window.location.href = '/account.html';
+          });
           return;
           // $("#collapseAccMenu").load("/account-menu.html");
         } else {
@@ -366,7 +368,7 @@
         const handleClick = (val) => {
           var api = 'api/mallSampleOrder/createMallSampleOrder';
           if (data.personalCare.list.length <= 0 && data.pharmaceuticals.list.length <= 0) {
-            alert("请先选择样品");
+            SiteDialog.alert('请先选择样品', { type: 'warn' });
             return null;
           }
           var simpleList = "";
@@ -383,13 +385,13 @@
           const email = formData.value.email || '';
           const forbiddenDomains = ['163.com', '126.com', 'qq.com', '139.com', '189.cn'];
           if (forbiddenDomains.some(domain => email.endsWith('@' + domain))) {
-            alert("请使用公司邮箱");
+            SiteDialog.alert('请使用公司邮箱', { type: 'warn' });
             return;
           }
           formData.value.sampleList = simpleList
           setComment() // 置空
           if(formData.value.comment == '') {
-            alert("请描述拟申请样品的具体应用");
+            SiteDialog.alert('请描述拟申请样品的具体应用', { type: 'warn' });
             return;
           }
           // 使用新的 Order API 提交订单
@@ -405,85 +407,83 @@
             // 拦截器保证 code:0 才会进 then；res.data 为订单对象
             if (res.data && res.data.id) {
               clearCart()
-              alert("您的预定信息已经提交，我们的工作人员会与您联系确认！");
-              window.location.href = '/account-my-order.html';
+              SiteDialog.alert('您的预定信息已经提交，我们的工作人员会与您联系确认！', { title: '提交成功', type: 'success' }).then(function () {
+                window.location.href = '/account-my-order.html';
+              });
             } else {
-              alert("预定失败！");
+              SiteDialog.alert('预定失败，请稍后重试', { type: 'error' });
             }
           }).catch(err => {
             console.error('提交订单失败:', err);
-            alert("预定失败，请重试！");
+            SiteDialog.alert('预定失败，请稍后重试', { type: 'error' });
           });
         };
-        const removeFromCart = (item) => {
-          let tmp = checkLoginStatus();
-          if (!tmp) {
-            alert("请先登录");
-            return
+        // 从本地列表移除一条购物车项（删除成功、或条目已不存在时共用）
+        const dropCartItemLocally = (item) => {
+          const bucket = item.goodsCategoryId == 117 ? data.pharmaceuticals : data.personalCare;
+          const index = bucket.list.findIndex(i => i.ID === item.ID);
+          if (index > -1) {
+            bucket.list.splice(index, 1);
+            bucket.count -= 1;
           }
-          // 使用新的 Cart API 删除商品
-          GatteAPI.Cart.remove(item.ID).then((res) => {
-            console.log(res);
-            if (res.data) {
-              item.show = "display:none";
-              if (item.goodsCategoryId == 117) {
-                const index = data.pharmaceuticals.list.findIndex(i => i.ID === item.ID);
-                if (index > -1) {
-                  data.pharmaceuticals.list.splice(index, 1);
-                  data.pharmaceuticals.count -= 1;
-                }
-              } else {
-                const index = data.personalCare.list.findIndex(i => i.ID === item.ID);
-                if (index > -1) {
-                  data.personalCare.list.splice(index, 1);
-                  data.personalCare.count -= 1;
-                }
-              }
-              data.total = data.personalCare.count + data.pharmaceuticals.count;
-              if (data.total == 0) {
-                data.show = "display:none";
-              }
-              getCartNum();
-            }
+          item.show = 'display:none';
+          data.total = data.personalCare.count + data.pharmaceuticals.count;
+          if (data.total == 0) {
+            data.show = 'display:none';
+          }
+          getCartNum();
+        };
+        // 重置购物车视图（清空后调用）
+        const resetCartView = () => {
+          data.show = 'display:none';
+          data.pharmaceuticals.list = [];
+          data.pharmaceuticals.count = 0;
+          data.personalCare.list = [];
+          data.personalCare.count = 0;
+          data.total = 0;
+          const numEl = document.getElementById('cartNum');
+          if (numEl) numEl.innerHTML = 0;
+        };
+        const removeFromCart = (item) => {
+          if (!checkLoginStatus()) {
+            SiteDialog.alert('请先登录', { type: 'warn' });
+            return;
+          }
+          // ⚠️ 后端成功时返回 data:null（拦截器已解包），不能再用 res.data 判断成功，
+          //    否则卡片不会消失、用户会重复点击 → 第二次 404 → 误报「删除失败」
+          GatteAPI.Cart.remove(item.ID).then(() => {
+            dropCartItemLocally(item);
           }).catch(err => {
-            console.error('删除失败:', err);
-            alert('删除失败，请重试');
+            // 404 = 该条目已不存在（重复点击 / 他处已删），按成功处理，不再报错
+            if (err && err.response && err.response.status === 404) {
+              dropCartItemLocally(item);
+              return;
+            }
+            console.error('移除购物车项失败:', err);
+            SiteDialog.alert('移除失败，请稍后重试', { type: 'error' });
           });
         }
         const clearCart = () => {
-          let tmp = checkLoginStatus();
-          if (!tmp) {
-            alert("请先登录");
-            return
+          if (!checkLoginStatus()) {
+            SiteDialog.alert('请先登录', { type: 'warn' });
+            return;
           }
           // 使用新的 Cart API 逐个删除商品
           const allItems = [...data.personalCare.list, ...data.pharmaceuticals.list];
           if (allItems.length === 0) {
-            data.show = "display:none";
-            data.pharmaceuticals.count = 0;
-            data.personalCare.count = 0;
-            data.total = 0;
-            document.getElementById("cartNum").innerHTML = 0;
+            resetCartView();
             return;
           }
-          
-          let deletedCount = 0;
-          allItems.forEach((item) => {
-            GatteAPI.Cart.remove(item.ID).then((res) => {
-              deletedCount++;
-              if (deletedCount === allItems.length) {
-                // 所有商品都已删除
-                data.show = "display:none";
-                data.pharmaceuticals.list = [];
-                data.pharmaceuticals.count = 0;
-                data.personalCare.list = [];
-                data.personalCare.count = 0;
-                data.total = 0;
-                document.getElementById("cartNum").innerHTML = 0;
+          Promise.all(allItems.map((item) => {
+            return GatteAPI.Cart.remove(item.ID).catch(err => {
+              // 已不存在（含下单后后端已清空购物车）不视为失败
+              if (!(err && err.response && err.response.status === 404)) {
+                console.error('清空购物车失败:', err);
               }
-            }).catch(err => {
-              console.error('删除商品失败:', err);
+              return null;
             });
+          })).then(() => {
+            resetCartView();
           });
         }
         // 查询

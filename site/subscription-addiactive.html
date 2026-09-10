@@ -38,6 +38,7 @@
   <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/site-dialog-260910.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -306,8 +307,9 @@
           var api = "/api/webFeedback/createWebFeedback";
           //2.使用axios 进行post请求
           console.log("API call disabled");
-              alert("信息登记成功，我们的工作人员会电话或者email与您确认，请注意接收接听，感谢您的支持！");
-              window.location.href = "/";
+              SiteDialog.alert('信息登记成功，我们的工作人员会电话或者email与您确认，请注意接收接听，感谢您的支持！', { title: '提交成功', type: 'success' }).then(function () {
+                window.location.href = '/';
+              });
             }).catch((err, res) => {
               console.log(err)
             })

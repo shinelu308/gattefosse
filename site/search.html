@@ -22,6 +22,7 @@
   <script src="/static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api-260908.js"></script>
   <script src="/static/js/auth-260908.js"></script>
+  <script src="/static/js/site-dialog-260910.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -673,7 +674,7 @@
         const addProductFav = (item) => {
           let tmp = checkLoginStatus();
           if (!tmp) {
-            alert("请先登录");
+            SiteDialog.alert('请先登录', { type: 'warn' });
             return
           }
           var api = "/api/mallUserFavorite/createMallUserFavorite";
@@ -682,7 +683,7 @@
         const addCart = (item, index) => {
           let tmp = checkLoginStatus();
           if (!tmp) {
-            alert("您可以注册会员，或者点击页面最下方的留言板进行申请样品！");
+            SiteDialog.alert('您可以注册会员，或者点击页面最下方的留言板进行申请样品！', { type: 'warn' });
             return
           }
           var api = "/api/mallShoppingCartItem/createMallShoppingCartItem";
