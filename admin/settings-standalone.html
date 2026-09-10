@@ -282,7 +282,6 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
         <th>功能模块</th>
         <th class="center"><span class="role-badge role-super">超级管理员</span></th>
         <th class="center"><span class="role-badge role-editor">编辑员</span></th>
-        <th class="center"><span class="role-badge role-user">普通用户</span></th>
       </tr>
     </thead>
     <tbody id="permBody"></tbody>
@@ -430,7 +429,7 @@ const MODULES = [
   { key: 'tags',      label: '标签管理' },
   { key: 'settings',  label: '系统设置' },
 ];
-const PERM_ROLES = ['editor', 'user'];
+const PERM_ROLES = ['editor'];   // 后台仅超管+企业员工两种角色，C 端会员不使用后台
 let permData = {};    // { editor: [module...], user: [...] }
 let orgData = [];     // [{ name, leader, desc, sort }]
 let staffList = [];   // 后台员工（super_admin / editor）
@@ -452,6 +451,7 @@ async function loadAll() {
     renderOrg();
     // Tab3 权限矩阵
     try { permData = JSON.parse(map.role_permissions || 'null') || {}; } catch (e) { permData = {}; }
+    delete permData.user;   // 后台已无普通用户角色，清理历史配置残留
     renderPerm();
     // Tab4 AI 翻译配置
     document.getElementById('ai_provider').value = map.aiTranslateProvider || 'zhipu';

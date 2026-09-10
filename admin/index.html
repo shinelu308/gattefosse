@@ -843,7 +843,7 @@ const QUILL_TOOLBAR = [
         <div class="avatar" data-page-node-id="Qe9SHBwkiBI7nK30FLNsrA" :style="userInfo && userInfo.avatar ? 'padding:0;overflow:hidden;' : ''"><img v-if="userInfo && userInfo.avatar" :src="'/admin/avatars/' + userInfo.avatar + '.png'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""><template v-else>{{ userInfo?.fullName ? userInfo.fullName.charAt(0).toUpperCase() : 'U' }}</template></div>
         <div class="user-info" data-page-node-id="kl6ne7gxPq77PKWPDeKlqs">
           <div class="user-name" data-page-node-id="BpBXYCadiYVllQ2qiEsOWm">{{ userInfo?.fullName || userInfo?.email }}</div>
-          <div class="user-role" data-page-node-id="Ij9S73RK5Jnbzm41qSstIL">{{ userInfo?.role === 'super_admin' ? '超级管理员' : userInfo?.role === 'editor' ? '编辑员' : '普通用户' }}</div>
+          <div class="user-role" data-page-node-id="Ij9S73RK5Jnbzm41qSstIL">{{ !userInfo ? '' : userInfo.role === 'super_admin' ? '超级管理员' : '编辑员' }}</div>
         </div>
       </div>
     </aside>
@@ -4736,6 +4736,12 @@ createApp({
       this.loginError = ''; this.loggingIn = true;
       try {
         const data = await this.api('/auth/login', { method: 'POST', body: JSON.stringify(this.loginForm) });
+        // 后台仅企业员工可用：C 端会员（role=user）请从前台网站登录
+        if (!data.user || !['super_admin', 'editor'].includes(data.user.role)) {
+          this.loginError = '该账号为网站会员账号，请从前台网站登录；后台请使用企业员工账号';
+          this.loggingIn = false;
+          return;
+        }
         this.token = data.token; this.userInfo = data.user;
         safeStorage.setItem('admin_token', this.token);
         await this.initData();
@@ -8333,6 +8339,12 @@ createApp({
         if (meResp.status === 200) {
           const meData = await meResp.json();
           if (meData.code === 0) {
+            // 后台仅企业员工可用：C 端会员 token 直接清除回登录页
+            if (!['super_admin', 'editor'].includes(meData.data.role)) {
+              this.doLogout();
+              console.warn('检测到会员账号 token，已退出后台');
+              return;
+            }
             this.userInfo = meData.data;
           } else {
             throw new Error('token 无效');
