@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>招聘管理</title>
+<script src="/admin/static/js/vue.global.prod.js"></script>
+<script src="/admin/static/js/admin-dialog.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f6f7; min-height: 100vh; color: #232426; }
+.page-title { font-size: 22px; font-weight: 600; color: #232426; margin: 0 0 4px; }
+.page-subtitle { font-size: 13px; color: #888; margin: 0 0 20px; }
+.card { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin: 0 0 20px; overflow: hidden; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card-body { padding: 20px; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 12px 16px; text-align: left; background: #fafbfc; font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #eee; }
+td { padding: 14px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: middle; }
+tbody tr:hover { background: #fafbfc; }
+tbody tr:last-child td { border-bottom: 0; }
+.btn { padding: 7px 14px; border-radius: 5px; border: 1px solid #ddd; background: #fff; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+.btn:hover { border-color: #999; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: #8EB73C; color: #fff; border-color: #8EB73C; }
+.btn-primary:hover { background: #7aa030; border-color: #7aa030; }
+.btn-danger { background: #e74c3c; color: #fff; border-color: #e74c3c; }
+.btn-danger:hover { background: #c0392b; border-color: #c0392b; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.form-control { padding: 7px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none; transition: border-color 0.15s; background: #fff; }
+.form-control:focus { border-color: #8EB73C; box-shadow: 0 0 0 2px rgba(142, 183, 60, 0.1); }
+.search-box { position: relative; }
+.search-box input { padding-left: 32px; width: 260px; }
+.search-box::before { content: "🔍"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; opacity: 0.5; }
+
+/* 状态筛选 pill */
+.status-tabs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.status-pill { padding: 6px 14px; border-radius: 16px; border: 1px solid #e3e5e8; background: #fff; font-size: 13px; color: #555; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.status-pill:hover { border-color: #8EB73C; color: #5a8030; }
+.status-pill.active { background: #8EB73C; border-color: #8EB73C; color: #fff; font-weight: 500; }
+.status-pill .cnt { opacity: .75; margin-left: 2px; font-size: 12px; }
+
+/* 状态徽标 */
+.st { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.st-new { background: #e8f5e0; color: #5a8030; }
+.st-contacting { background: #e6f2fb; color: #2270a8; }
+.st-interview { background: #fff4e0; color: #b3761a; }
+.st-hired { background: #d9f2e6; color: #1e7a52; }
+.st-rejected { background: #fbe6e4; color: #b03b30; }
+.st-archived { background: #eceef1; color: #6b7280; }
+
+.name-cell { font-weight: 600; color: #232426; }
+.sub-cell { font-size: 11px; color: #999; margin-top: 2px; }
+.file-link { color: #003CC5; font-size: 12px; cursor: pointer; text-decoration: none; }
+.file-link:hover { text-decoration: underline; }
+.empty { text-align: center; padding: 60px; color: #999; }
+
+/* 分页 */
+.pager { display: flex; align-items: center; gap: 6px; padding: 14px 20px; border-top: 1px solid #eee; font-size: 13px; color: #666; }
+.pager button { min-width: 32px; height: 32px; border-radius: 5px; border: 1px solid #ddd; background: #fff; cursor: pointer; font-size: 13px; }
+.pager button.active { background: #8EB73C; border-color: #8EB73C; color: #fff; }
+.pager button:disabled { opacity: .4; cursor: not-allowed; }
+
+/* 弹框 */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+.modal-card { width: 760px; max-width: 100%; max-height: 90vh; overflow-y: auto; margin: 0; }
+.modal-card .card-header { background: #fafbfc; }
+.modal-card .card-body { padding: 24px; }
+.detail-grid { display: grid; grid-template-columns: 120px 1fr; gap: 10px 16px; font-size: 13px; }
+.detail-grid dt { color: #888; }
+.detail-grid dd { color: #232426; word-break: break-all; }
+.msg-box { margin-top: 16px; padding: 12px 14px; background: #fafbfc; border-left: 3px solid #8EB73C; border-radius: 4px; font-size: 13px; color: #333; white-space: pre-wrap; line-height: 1.7; }
+.required { color: #e74c3c; }
+.hint { color: #999; font-size: 12px; font-weight: normal; margin-left: 4px; }
+.empty-tip { color: #ccc; }
+</style>
+</head>
+<body>
+<div id="app">
+  <h1 class="page-title">招聘管理</h1>
+  <p class="page-subtitle">「加入我们」前台提交的求职申请，可下载简历、流转状态并记录内部备注</p>
+
+  <!-- 状态统计 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="status-tabs" style="width:100%;">
+        <button class="status-pill" :class="{ active: filter.status === '' }" @click="setStatus('')">
+          全部 <span class="cnt">{{ total }}</span>
+        </button>
+        <button v-for="s in statusList" :key="s.value" class="status-pill"
+          :class="{ active: filter.status === s.value }" @click="setStatus(s.value)">
+          {{ s.label }} <span class="cnt">{{ counts[s.value] || 0 }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-header" style="border-top:1px solid #f0f0f0;">
+      <div style="width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="search-box">
+          <input class="form-control" placeholder="搜索姓名、邮箱、电话、应聘岗位..." v-model="filter.keyword" @keyup.enter="load(1)">
+        </div>
+        <input type="date" class="form-control" v-model="filter.startDate" style="width:150px;" title="提交起始日期">
+        <span style="color:#bbb;">~</span>
+        <input type="date" class="form-control" v-model="filter.endDate" style="width:150px;" title="提交结束日期">
+        <button class="btn btn-primary" @click="load(1)">搜索</button>
+        <button class="btn" @click="resetFilter()">重置</button>
+        <span style="flex:1;"></span>
+        <span style="font-size:13px;color:#888;">共 {{ total }} 条</span>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr>
+        <th style="width:150px;">姓名</th>
+        <th style="width:180px;">联系方式</th>
+        <th style="width:170px;">应聘岗位</th>
+        <th style="width:110px;">简历</th>
+        <th style="width:150px;">提交时间</th>
+        <th style="width:100px;">状态</th>
+        <th style="width:150px;">操作</th>
+      </tr></thead>
+      <tbody>
+        <tr v-for="item in list" :key="item.id">
+          <td>
+            <div class="name-cell">{{ item.fullName }}</div>
+            <div class="sub-cell" v-if="item.country">{{ item.country }}</div>
+          </td>
+          <td>
+            <div>{{ item.email }}</div>
+            <div class="sub-cell">{{ item.phone || '未填写电话' }}</div>
+          </td>
+          <td>
+            <div>{{ item.position || '-' }}</div>
+            <div class="sub-cell" v-if="item.jobFunction">{{ item.jobFunction }}</div>
+          </td>
+          <td>
+            <a v-if="item.resumePath" class="file-link" @click.prevent="downloadFile(item, 'resume')">下载简历 ↓</a>
+            <span v-else class="empty-tip">无附件</span>
+          </td>
+          <td style="color:#666;">{{ fmt(item.createdAt) }}</td>
+          <td><span class="st" :class="'st-' + item.status">{{ statusLabel(item.status) }}</span></td>
+          <td>
+            <button class="btn btn-sm" @click="openDetail(item)">详情</button>
+            <button class="btn btn-sm btn-danger" @click="removeItem(item)" style="margin-left:4px;">删除</button>
+          </td>
+        </tr>
+        <tr v-if="list.length === 0"><td colspan="7" class="empty">暂无求职申请</td></tr>
+      </tbody>
+    </table>
+
+    <div class="pager" v-if="totalPages > 1">
+      <button :disabled="filter.page <= 1" @click="load(filter.page - 1)">‹</button>
+      <button v-for="p in pageRange()" :key="p" :class="{ active: p === filter.page }" @click="load(p)">{{ p }}</button>
+      <button :disabled="filter.page >= totalPages" @click="load(filter.page + 1)">›</button>
+      <span style="margin-left:8px;">第 {{ filter.page }} / {{ totalPages }} 页</span>
+    </div>
+  </div>
+
+  <!-- 详情弹框 -->
+  <div v-if="detail" class="modal-overlay" @click.self="detail = null">
+    <div class="card modal-card">
+      <div class="card-header">
+        <h3 style="font-size:16px;font-weight:600;">{{ detail.fullName }} 的求职申请</h3>
+        <span style="flex:1;"></span>
+        <span class="st" :class="'st-' + detail.status">{{ statusLabel(detail.status) }}</span>
+        <button class="btn btn-sm" @click="detail = null">✕</button>
+      </div>
+      <div class="card-body">
+        <dl class="detail-grid">
+          <dt>申请编号</dt><dd>#{{ detail.id }}</dd>
+          <dt>姓名</dt><dd>{{ detail.fullName }}<span v-if="detail.firstName || detail.lastName" style="color:#999;">（{{ detail.lastName || '' }}{{ detail.firstName || '' }}）</span></dd>
+          <dt>邮箱</dt><dd><a :href="'mailto:' + detail.email" style="color:#003CC5;">{{ detail.email }}</a></dd>
+          <dt>电话</dt><dd>{{ detail.phone || '-' }}</dd>
+          <dt>国家/地区</dt><dd>{{ detail.country || '-' }}</dd>
+          <dt>应聘岗位</dt><dd>{{ detail.position || '-' }}</dd>
+          <dt>职能领域</dt><dd>{{ detail.jobFunction || '-' }}</dd>
+          <dt>简历附件</dt>
+          <dd>
+            <a v-if="detail.resumePath" class="file-link" @click.prevent="downloadFile(detail, 'resume')">
+              {{ detail.resumeName || '简历' }} ↓
+            </a>
+            <span v-else class="empty-tip">未上传</span>
+          </dd>
+          <dt>提交时间</dt><dd>{{ fmt(detail.createdAt) }}</dd>
+          <dt>首次处理</dt><dd>{{ detail.reviewedAt ? fmt(detail.reviewedAt) : '尚未处理' }}</dd>
+        </dl>
+
+        <div v-if="detail.message" class="msg-box">{{ detail.message }}</div>
+
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid #eee;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#333;">状态流转</label>
+              <select class="form-control" v-model="editForm.status" style="width:100%;">
+                <option v-for="s in statusList" :key="s.value" :value="s.value">{{ s.label }}</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#333;">快捷操作</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button v-for="s in statusList" :key="s.value" class="btn btn-sm"
+                  :disabled="editForm.status === s.value" @click="editForm.status = s.value">
+                  {{ s.short }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#333;">内部备注 <span class="hint">（仅后台可见，候选人不可见）</span></label>
+            <textarea class="form-control" v-model="editForm.notes" rows="4" style="width:100%;resize:vertical;font-family:inherit;"
+              placeholder="如：简历匹配度高，已电话沟通，安排在 X 月 X 日面试…"></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid #eee;">
+          <button class="btn" @click="detail = null">取消</button>
+          <button class="btn btn-primary" @click="saveDetail()" :disabled="saving">{{ saving ? '保存中...' : '保存' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const { createApp } = Vue;
+const API = location.protocol + '//' + location.host + '/api';
+
+const STATUS_LIST = [
+  { value: 'new',       label: '新申请', short: '新申请' },
+  { value: 'contacting',label: '沟通中', short: '沟通中' },
+  { value: 'interview', label: '面试',   short: '面试' },
+  { value: 'hired',     label: '录用',   short: '录用' },
+  { value: 'rejected',  label: '不合适', short: '不合适' },
+  { value: 'archived',  label: '归档',   short: '归档' },
+];
+
+function getToken() {
+  try { const t = parent.localStorage.getItem('admin_token'); if (t) return t; } catch (e) {}
+  return localStorage.getItem('admin_token') || '';
+}
+
+createApp({
+  data() {
+    return {
+      list: [],
+      total: 0,
+      totalPages: 1,
+      counts: {},
+      statusList: STATUS_LIST,
+      filter: { page: 1, limit: 20, status: '', keyword: '', startDate: '', endDate: '' },
+      detail: null,
+      editForm: { status: 'new', notes: '' },
+      saving: false,
+    };
+  },
+  mounted() { this.load(1); },
+  methods: {
+    async api(path, opts) {
+      const token = getToken();
+      const res = await fetch(API + path, {
+        headers: { 'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : '' },
+        ...(opts || {}),
+      });
+      const data = await res.json();
+      if (data.code !== 0) throw new Error(data.message || '请求失败');
+      return data.data;
+    },
+    async load(page) {
+      if (page) this.filter.page = page;
+      const q = new URLSearchParams({
+        page: this.filter.page, limit: this.filter.limit,
+        status: this.filter.status, keyword: this.filter.keyword,
+        startDate: this.filter.startDate, endDate: this.filter.endDate,
+      });
+      try {
+        const d = await this.api('/careers?' + q.toString());
+        this.list = d.list || [];
+        this.total = d.pagination?.total || 0;
+        this.totalPages = d.pagination?.totalPages || 1;
+        this.counts = d.counts || {};
+      } catch (e) { AdminDialog.alert('加载失败: ' + e.message, { type: 'error' }); }
+    },
+    setStatus(s) { this.filter.status = s; this.load(1); },
+    resetFilter() {
+      this.filter = { page: 1, limit: 20, status: '', keyword: '', startDate: '', endDate: '' };
+      this.load(1);
+    },
+    statusLabel(v) { const s = STATUS_LIST.find(x => x.value === v); return s ? s.label : v; },
+    fmt(iso) {
+      if (!iso) return '-';
+      const d = new Date(iso);
+      const p = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    },
+    pageRange() {
+      const n = Math.max(1, this.totalPages);
+      const out = [];
+      for (let i = 1; i <= Math.min(n, 7); i++) out.push(i);
+      if (n > 7) out.push(n);
+      return out;
+    },
+    openDetail(item) {
+      this.detail = item;
+      this.editForm = { status: item.status, notes: item.notes || '' };
+    },
+    async saveDetail() {
+      this.saving = true;
+      try {
+        const d = await this.api('/careers/' + this.detail.id, {
+          method: 'PUT',
+          body: JSON.stringify({ status: this.editForm.status, notes: this.editForm.notes }),
+        });
+        this.detail = d;
+        this.load();
+      } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
+      finally { this.saving = false; }
+    },
+    async downloadFile(item, kind) {
+      const token = getToken();
+      try {
+        const res = await fetch(`${API}/careers/${item.id}/file/${kind}`, {
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        });
+        if (!res.ok) {
+          let msg = '下载失败';
+          try { const j = await res.json(); msg = j.message || msg; } catch (e) {}
+          throw new Error(msg);
+        }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = item.resumeName || (kind + '.pdf');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      } catch (e) { AdminDialog.alert('下载失败: ' + e.message, { type: 'error' }); }
+    },
+    async removeItem(item) {
+      if (!(await AdminDialog.confirm(`确定删除「${item.fullName}」的求职申请？简历附件会一并删除，操作不可恢复。`, { title: '删除确认', danger: true, confirmText: '删除' }))) return;
+      try {
+        await this.api('/careers/' + item.id, { method: 'DELETE' });
+        if (this.detail && this.detail.id === item.id) this.detail = null;
+        this.load();
+      } catch (e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
+    },
+  },
+}).mount('#app');
+</script>
+</body>
+</html>

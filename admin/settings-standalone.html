@@ -99,6 +99,7 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   <button class="tab" data-tab="org" onclick="switchTab('org')"><span class="tab-no">2</span>企业组织架构</button>
   <button class="tab" data-tab="perm" onclick="switchTab('perm')"><span class="tab-no">3</span>系统功能权限</button>
   <button class="tab" data-tab="ai" onclick="switchTab('ai')"><span class="tab-no">4</span>AI 翻译配置</button>
+  <button class="tab" data-tab="smtp" onclick="switchTab('smtp')"><span class="tab-no">5</span>邮件通知</button>
 </div>
 
 <!-- ======== Tab 1：企业基本信息 ======== -->
@@ -293,11 +294,73 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   <div class="perm-note">填写并保存后，到「新闻与活动」或「了解更多」列表点击「AI翻译」按钮即可自动翻译。长文翻译约需 1-3 分钟，请耐心等待完成提示。</div>
 </div>
 
+<!-- ======== Tab 5：邮件通知（SMTP） ======== -->
+<div class="card" id="tab-smtp">
+  <div class="card-title">邮件通知（SMTP）</div>
+  <div class="card-desc">配置后，前台「加入我们」收到求职申请时会自动发信：一封提醒 HR，一封回执给候选人</div>
+  <div class="sync-tip">✦ 未配置时不影响申请入库，仅跳过发信。推荐使用企业邮箱 SMTP（腾讯企业邮 smtp.exmail.qq.com:465 / 阿里云 smtp.qiye.aliyun.com:465）。密码为邮箱的「客户端专用密码」，非登录密码</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>SMTP 服务器</label>
+      <input id="smtp_host" placeholder="smtp.exmail.qq.com">
+    </div>
+    <div class="form-group">
+      <label>端口</label>
+      <input id="smtp_port" placeholder="465">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>加密方式</label>
+      <select id="smtp_secure">
+        <option value="">自动（465 走 SSL，587 走 STARTTLS）</option>
+        <option value="true">SSL（推荐，465）</option>
+        <option value="false">STARTTLS / 明文（587 / 25）</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>发件人显示名</label>
+      <input id="smtp_from_name" placeholder="Gattefossé China">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>SMTP 账号</label>
+      <input id="smtp_user" placeholder="hr@yourcompany.com" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>SMTP 密码 / 授权码</label>
+      <input id="smtp_pass" type="password" placeholder="客户端专用密码" autocomplete="new-password">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>发件邮箱 <span class="hint">（留空取 SMTP 账号）</span></label>
+      <input id="smtp_from" placeholder="hr@yourcompany.com">
+    </div>
+    <div class="form-group">
+      <label>HR 收件邮箱 <span class="hint">（可多个，逗号分隔）</span></label>
+      <input id="hr_notify_email" placeholder="hr@yourcompany.com">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>启用状态</label>
+    <select id="smtp_enabled">
+      <option value="true">启用（求职申请即时发信）</option>
+      <option value="false">停用（保留配置不发信）</option>
+    </select>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <button class="btn-sm" id="smtpTestBtn" onclick="testSmtp()">测试连接</button>
+    <span id="smtpTestMsg" style="font-size:13px;"></span>
+  </div>
+  <div class="perm-note">测试连接使用「已保存」的配置，请先点下方「保存全部设置」再测试。</div>
+</div>
+
 <div class="save-bar">
   <button onclick="saveAll()" id="saveBtn">保存全部设置</button>
   <span class="save-msg" id="saveMsg">✓ 已保存</span>
 </div>
-
 <script src="/admin/static/js/admin-dialog.js"></script>
 <script>
 const API = parent.location.protocol + '//' + parent.location.host + '/api';
@@ -331,6 +394,7 @@ const MODULES = [
   { key: 'authors',   label: '作者管理' },
   { key: 'orders',    label: '样品订单' },
   { key: 'users',     label: '用户管理' },
+  { key: 'careers',   label: '招聘管理' },
   { key: 'tags',      label: '标签管理' },
   { key: 'settings',  label: '系统设置' },
 ];
@@ -361,7 +425,30 @@ async function loadAll() {
     document.getElementById('ai_provider').value = map.aiTranslateProvider || 'zhipu';
     document.getElementById('ai_model').value = map.aiTranslateModel || '';
     document.getElementById('ai_api_key').value = map.aiTranslateApiKey || '';  // 已配置时为脱敏占位 ******
+    // Tab5 邮件通知
+    const SMTP_KEYS = ['smtp_host', 'smtp_port', 'smtp_secure', 'smtp_from_name', 'smtp_user', 'smtp_pass', 'smtp_from', 'hr_notify_email', 'smtp_enabled'];
+    SMTP_KEYS.forEach(k => {
+      const el = document.getElementById(k);
+      if (el) el.value = map[k] || '';
+    });
   } catch (e) { console.error('Load failed:', e); }
+}
+
+/* ===== Tab5 邮件通知（SMTP） ===== */
+async function testSmtp() {
+  const btn = document.getElementById('smtpTestBtn');
+  const msg = document.getElementById('smtpTestMsg');
+  btn.disabled = true; msg.style.color = '#999'; msg.textContent = '⏳ 正在连接…';
+  try {
+    const res = await fetch(API + '/settings/smtp-test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+    });
+    const d = await res.json();
+    if (d.code === 0) { msg.style.color = '#6f9a24'; msg.textContent = '✓ ' + (d.message || 'SMTP 连接成功'); }
+    else { msg.style.color = '#D9534F'; msg.textContent = '✗ ' + (d.message || '连接失败'); }
+  } catch (e) { msg.style.color = '#D9534F'; msg.textContent = '✗ ' + e.message; }
+  finally { btn.disabled = false; }
 }
 
 /* ===== Tab4 AI 翻译配置 ===== */
@@ -600,6 +687,11 @@ async function saveAll() {
     settings.aiTranslateProvider = document.getElementById('ai_provider').value;
     settings.aiTranslateModel = document.getElementById('ai_model').value.trim();
     settings.aiTranslateApiKey = document.getElementById('ai_api_key').value.trim();  // '******' 占位后端自动跳过
+    // Tab5 邮件通知
+    ['smtp_host', 'smtp_port', 'smtp_secure', 'smtp_from_name', 'smtp_user', 'smtp_pass', 'smtp_from', 'hr_notify_email', 'smtp_enabled'].forEach(k => {
+      const el = document.getElementById(k);
+      if (el) settings[k] = el.value.trim();
+    });
     await api('/settings/batch', { method: 'POST', body: JSON.stringify(settings) });
     msg.style.display = 'inline';
     setTimeout(() => { msg.style.display = 'none'; }, 2500);

@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail } from '../utils/response';
 import { getAiConfig, AI_PROVIDERS, testAiConnection } from '../utils/ai-translate';
+import { verifySmtp } from '../utils/mailer';
 
 /** 需要脱敏的设置项（公开接口不可泄露） */
-const SECRET_KEYS = ['aiTranslateApiKey'];
+const SECRET_KEYS = ['aiTranslateApiKey', 'smtp_pass', 'smtpPass'];
 const maskValue = (key: string, value: string | null) =>
   SECRET_KEYS.includes(key) ? (value ? '******' : '') : value;
 
@@ -102,4 +103,17 @@ export async function testAiSetting(req: Request, res: Response) {
  */
 export async function getAiProviders(_req: Request, res: Response) {
   res.json(success(AI_PROVIDERS));
+}
+
+/**
+ * SMTP 连接测试（求职申请邮件通知用）
+ * POST /api/settings/smtp-test
+ */
+export async function testSmtpSetting(_req: Request, res: Response) {
+  try {
+    const result = await verifySmtp();
+    res.json(result.ok ? success(null, result.message) : fail(result.message));
+  } catch (err: any) {
+    res.status(500).json(fail('测试失败：' + (err?.message || '未知错误')));
+  }
 }

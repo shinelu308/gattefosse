@@ -26,6 +26,8 @@ import_pharma.py
 backend/data/
 backend/dist/
 backend/uploads/
+# 求职简历私有存储（用户隐私数据，仅存线上，绝不入库/入 git）
+backend/storage/
 node_modules/
 site/.localize_tmp_backup_*.html
 site/www/

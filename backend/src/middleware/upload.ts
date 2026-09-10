@@ -106,3 +106,40 @@ export const uploadTranslationDoc = multer({
   },
   limits: { fileSize: 20 * 1024 * 1024 },
 });
+
+/**
+ * 求职简历/求职信上传（前台匿名）
+ * - 落到私有目录 storage/resumes（不挂在 /uploads 静态下，匿名无法直接访问）
+ * - 文件名用随机 token，避免路径猜测；扩展名白名单 pdf/doc/docx
+ * - 单文件 2MB
+ */
+const RESUME_EXT = ['.pdf', '.doc', '.docx'];
+const RESUME_MIME = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/octet-stream', // 部分浏览器对 doc/docx 会给出该值，仍以扩展名兜底
+];
+
+export const uploadResumeDoc = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      if (!fs.existsSync(config.resume.dir)) fs.mkdirSync(config.resume.dir, { recursive: true });
+      cb(null, config.resume.dir);
+    },
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      const token = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
+      cb(null, `${token}${RESUME_EXT.includes(ext) ? ext : '.pdf'}`);
+    },
+  }),
+  fileFilter: (_req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (RESUME_EXT.includes(ext) && RESUME_MIME.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('简历只支持 pdf / doc / docx 文件'));
+    }
+  },
+  limits: { fileSize: config.resume.maxFileSize },
+});

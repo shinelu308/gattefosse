@@ -61,7 +61,15 @@
     href="sites/default/files/css/css_ZcQL3CAyj8uaaIvc7jGqTRfQTR5hOofxPJqY2At4yLc.css" />
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_XQOLFLmYzMzlu3nYCHQl7uGHSi6fapA1QBjX02T35NU.css" />
-<style>[v-cloak]{display:none!important}</style>
+<style>[v-cloak]{display:none!important}
+/* 求职申请表：上传控件与提交状态提示（补充主题未覆盖的部分） */
+.webform-submission-form .js-webform-document-file { margin-top: 6px; }
+.webform-managed-file__name { margin-top: 6px; font-size: 13px; color: #6b7a5a; }
+.webform-submit-status { margin-top: 12px; font-size: 14px; line-height: 1.6; }
+.webform-submit-status.is-pending { color: #6b7280; }
+.webform-submit-status.is-success { color: #5a8030; font-weight: 600; }
+.webform-submit-status.is-error { color: #C4004D; font-weight: 500; }
+</style>
 </head>
 
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
@@ -196,17 +204,15 @@
                                   class="js-form-required form-required">上传您的简历和求职信</label>
                                 <div id="edit-upload-your-resume-and-cover-letter--2"
                                   class="js-webform-document-file webform-document-file required js-form-managed-file form-managed-file">
-
+                                  <input type="file" id="edit-upload-your-resume-and-cover-letter-upload--2"
+                                    name="files[upload_your_resume_and_cover_letter]"
+                                    class="form-file form-control js-form-file" accept=".pdf,.doc,.docx" />
+                                  <div class="webform-managed-file__name" id="resumeFileName"></div>
                                 </div>
                                 <div class="description">
                                   <div id="edit-upload-your-resume-and-cover-letter--2--description"
                                     class="webform-element-description">只能一个文件.<br />2 MB以内.<br />文件类型: pdf, doc, docx.
                                   </div>
-                                </div>
-                                <!--上传简历-->
-                                <div id="app" v-cloak>
-                                  <input type="file" @change="handleFileChange">
-                                  <button @click="uploadFile" type="button">上传</button>
                                 </div>
                               </div>
                             </div>
@@ -238,6 +244,7 @@
                                 class="webform-button--submit button button--primary js-form-submit form-submit btn btn-primary"
                                 data-drupal-selector="edit-submit" data-disable-refocus="true" id="edit-submit--2"
                                 name="op" value="提交" />
+                              <div class="webform-submit-status" id="submitStatus" role="status" aria-live="polite"></div>
                             </div>
                             <div class="url-textfield js-form-wrapper form-wrapper" style="display: none !important;">
                               <div
@@ -258,17 +265,6 @@
           </article>
         </div>
       </div>
-      <!--div id="container" class="container">
-        <div id="line-numbers" class="container__lines"></div>
-        <textarea id="textarea" class="container__textarea">Was, spirit great moved spirit deep itself image, from have behold bearing doesn't wherein she'd very, day.
-    Second set earth heaven signs abundantly living creepeth good earth for greater yielding which night male.
-    Bring midst whales blessed, is.
-    From subdue.
-    Yielding.
-    Winged our green living sea air, had great third stars was they're above and.
-    Morning light make first and kind sixth they're fowl, there.
-    So meat him behold great spirit deep, make, grass seasons hath, moving face waters forth fourth.</textarea>
-    </div-->
       <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
         class="c-back-to-top smoothHide d-none"></a>
     </main>
@@ -325,161 +321,135 @@
       $("#worldList").load("/world.html");
     });
   </script>
-  <script setup>
-    const params = new URLSearchParams(window.location.search);
-    const tokenStr = params.get('_token');
-    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
-    const app = createApp({
-      data() {
-        return { formData: null, name: "dddd", email: "hhhhhh@fffff.com" }
-      },
-      setup() {
-        const data = reactive({
-          formData: [],
-        });
-        getInformation();
-        //方法1
-        function getInformation() {
-          //方法的实现
-        }
-        const selectedFile = ref(null);
+  <script>
+    /* ===== 求职申请表：提交逻辑 =====
+       1) 校验必填项与文件（原站规则：单个文件 / 2MB 以内 / pdf|doc|docx）
+       2) 先上传简历到私有目录拿 token，再创建申请
+       3) 成功后展示成功提示并重置表单
+    */
+    (function () {
+      var MAX_SIZE = 2 * 1024 * 1024;
+      var ALLOWED_EXT = ['.pdf', '.doc', '.docx'];
 
-        const handleFileChange = (event) => {
-          selectedFile.value = event.target.files[0];
-        };
+      function $(sel) { return document.querySelector(sel); }
 
-        const uploadFile = async () => {
-          if (!selectedFile.value) {
-            alert('请选择一个文件');
+      function setStatus(msg, type) {
+        var el = $('#submitStatus');
+        if (!el) return;
+        el.textContent = msg || '';
+        el.className = 'webform-submit-status' + (type ? ' is-' + type : '');
+      }
+
+      function extOf(name) {
+        var i = String(name || '').lastIndexOf('.');
+        return i < 0 ? '' : String(name).slice(i).toLowerCase();
+      }
+
+      /* 选中文件后回显文件名，并即时校验 */
+      var fileInput = $('#edit-upload-your-resume-and-cover-letter-upload--2');
+      if (fileInput) {
+        fileInput.addEventListener('change', function () {
+          var f = this.files && this.files[0];
+          var nameEl = $('#resumeFileName');
+          if (!f) { if (nameEl) nameEl.textContent = ''; return; }
+          if (ALLOWED_EXT.indexOf(extOf(f.name)) < 0) {
+            setStatus('简历只支持 pdf / doc / docx 格式', 'error');
+            this.value = ''; if (nameEl) nameEl.textContent = '';
             return;
           }
-
-          const formData = new FormData();
-          formData.append('file', selectedFile.value);
-
-          try {
-            const response = await fetch(GatteAPI.BASE_URL + '/api/careers/upload', {
-              method: 'POST',
-              body: formData,
-            })
-            if (response.ok) {
-              alert('上传成功');
-              const data = await response.json();
-              filesUrl = (data.data && (data.data.url || data.data.file && data.data.file.url)) || data.url || '';
-            } else {
-
-            }
-            nextTick(() => {
-              console.log('上传OK');
-            })
-          } catch (error) {
-            console.log(error);
+          if (f.size > MAX_SIZE) {
+            setStatus('简历文件过大，请控制在 2MB 以内', 'error');
+            this.value = ''; if (nameEl) nameEl.textContent = '';
+            return;
           }
-        };
-        return {
-          data,
-          uploadFile, handleFileChange
-        };
-      },
-    });
-    let result = app.mount("#app");
-  </script>
+          if (nameEl) nameEl.textContent = '已选择：' + f.name;
+          setStatus('');
+        });
+      }
 
-  <script>
-    let filesUrl = '';
-    $("#edit-submit--2").click(function () {
-      GatteAPI.Career.create({
-        fullName: $("#edit-first-name--2").val(),
-        email: $('#edit-e-mail--2').val(),
-        phone: '',
-        position: '',
-        message: $('#edit-your-text--2').val(),
-        resumePath: filesUrl
-      }).then(function () {
-        alert("您的申请已经提交");
-      }).catch(function (err) {
-        console.error('Career submit failed:', err);
-        alert("提交失败：" + (err.message || '未知错误'));
+      var submitting = false;
+
+      function submitForm() {
+        if (submitting) return;
+
+        var fullName = (($('#edit-first-name--2') || {}).value || '').trim();
+        var email = (($('#edit-e-mail--2') || {}).value || '').trim();
+        var countryEl = $('#edit-pays-country--2');
+        var country = countryEl ? countryEl.value : '';
+        var message = (($('#edit-your-text--2') || {}).value || '').trim();
+        var agreedEl = $('#edit-terms-of-service--2');
+        var honeypot = (($('#edit-url--2') || {}).value || '');
+        var file = fileInput && fileInput.files ? fileInput.files[0] : null;
+
+        if (!fullName) { setStatus('请填写姓名', 'error'); return; }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus('请填写正确的邮箱地址', 'error'); return; }
+        if (!country) { setStatus('请选择国家', 'error'); return; }
+        if (!message) { setStatus('请填写内容', 'error'); return; }
+        if (!file) { setStatus('请上传您的简历和求职信', 'error'); return; }
+        if (agreedEl && !agreedEl.checked) { setStatus('请先阅读并同意隐私政策', 'error'); return; }
+
+        submitting = true;
+        var btn = $('#edit-submit--2');
+        var oldVal = btn ? btn.value : '';
+        if (btn) { btn.value = '提交中...'; btn.disabled = true; }
+        setStatus('正在上传简历…', 'pending');
+
+        var token = '';
+        var originalName = '';
+
+        var uploadStep = file
+          ? (function () {
+              var fd = new FormData();
+              fd.append('file', file, file.name);
+              return fetch(GatteAPI.BASE_URL + '/api/careers/resume', { method: 'POST', body: fd })
+                .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+                .then(function (res) {
+                  if (!res.ok || res.body.code !== 0) throw new Error(res.body.message || '简历上传失败');
+                  token = res.body.data.token;
+                  originalName = res.body.data.name || file.name;
+                });
+            })()
+          : Promise.resolve();
+
+        uploadStep
+          .then(function () {
+            setStatus('正在提交申请…', 'pending');
+            return GatteAPI.Career.create({
+              fullName: fullName,
+              email: email,
+              country: country,
+              message: message,
+              resumeToken: token,
+              resumeName: originalName,
+              agreed: true,
+              url: honeypot
+            });
+          })
+          .then(function () {
+            setStatus('您的申请已经提交，感谢您对 Gattefossé 的关注！', 'success');
+            var form = document.querySelector('.webform-submission-form');
+            if (form) form.reset();
+            var nameEl = $('#resumeFileName');
+            if (nameEl) nameEl.textContent = '';
+            if (countryEl) countryEl.value = 'China';
+            var agreedReset = $('#edit-terms-of-service--2');
+            if (agreedReset) agreedReset.checked = true;
+          })
+          .catch(function (err) {
+            setStatus('提交失败：' + ((err && err.message) || '未知错误') + '，请稍后重试或发送邮件联系我们。', 'error');
+          })
+          .then(function () {
+            submitting = false;
+            if (btn) { btn.value = oldVal; btn.disabled = false; }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var btn = $('#edit-submit--2');
+        if (btn) btn.addEventListener('click', submitForm);
       });
-    });
-    /* $.ajax({
-       url: "/api/fileUploadAndDownload/upload",
-       type: "POST",  //默认值: "GET"请求方式 ("POST" 或 "GET")
-       data: JSON.stringify(body),
-       dataType: "json",   //服务器返回的类型json,xml,text,html等
-       success: function (result, status, xhr) {      // 回调结果，如果成功
-         alert("您的申请已经提交");
-         //window.location.href = "/working-gattefosse.html";
-       },
-       error: function (xhr, status, error) {
-         alert("接口返回状态：" + status)
-       }
-     });
-     $('#upload-form').submit(function (e) {
-       e.preventDefault();
-       var formData = new FormData($(this)[0]);
-       $.ajax({
-         url: "/api/fileUploadAndDownload/upload",
-         type: 'POST',
-         data: formData,
-         contentType: false,
-         processData: false,
-         success: function (response) {
-           console.log(response);
-         },
-         error: function (error) {
-           console.error(error);
-         }
-       });
-     });
-     */
+    })();
   </script>
-  <!--Style>
-  body {
-    color: rgb(51 65 85);
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 10rem;
-}
-* {
-    box-sizing: border-box;
-}
-.container {
-    display: flex;
-    border: 1px solid rgb(203 213 225);
-    border-radius: 0.5rem;
-    overflow: hidden;
-}
-.container__textarea {
-    border: none;
-    outline: none;
-    padding: 0.5rem;
-    resize: none;
-    width: 100%;
-}
-.container__lines {
-    border-right: 1px solid rgb(203 213 225);
-    padding: 0.5rem;
-    text-align: right;
-}
-</Style>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('textarea');
-    const lineNumbersEle = document.getElementById('line-numbers');
-    const displayLineNumbers = () => {
-        const lines = textarea.value.split('\n');
-        lineNumbersEle.innerHTML = Array.from({
-            length: lines.length,
-        }, (_, i) => `<div>${i + 1}</div>`).join('');
-    };
-    displayLineNumbers();
-});
-  </script -->
   <script defer src="https://umami.onlystyle.com.cn/script.js"
     data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
 

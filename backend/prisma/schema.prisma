@@ -365,16 +365,31 @@ model CartItem {
 
 // ===== 求职申请表 =====
 model CareerApplication {
-  id          Int       @id @default(autoincrement())
-  fullName    String    @map("full_name")
-  email       String
-  phone       String?
-  position    String?
-  message     String?
-  resumePath  String?   @map("resume_path")
-  status      String    @default("new") // new / reviewed / contacted / archived
-  createdAt   DateTime  @default(now()) @map("created_at")
+  id              Int       @id @default(autoincrement())
+  fullName        String    @map("full_name")
+  firstName       String?   @map("first_name")
+  lastName        String?   @map("last_name")
+  email           String
+  phone           String?
+  country         String?
+  position        String?   // 期望职位（应聘岗位）
+  jobFunction     String?   @map("job_function")  // 职能领域（研发/市场/销售…）
+  message         String?   // 求职信正文
+  resumePath      String?   @map("resume_path")        // 私有存储相对路径 resumes/xxx.pdf
+  resumeName      String?   @map("resume_name")         // 简历原始文件名（下载时还原）
+  coverLetterPath String?   @map("cover_letter_path")   // 求职信附件（可选）
+  coverLetterName String?   @map("cover_letter_name")
+  // new 新申请 / contacting 沟通中 / interview 面试 / hired 录用 / rejected 不合适 / archived 归档
+  status          String    @default("new")
+  notes           String?   // HR 内部备注
+  reviewedAt      DateTime? @map("reviewed_at")
+  ip              String?
+  userAgent       String?   @map("user_agent")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
 
+  @@index([status])
+  @@index([createdAt])
   @@map("career_applications")
 }
 

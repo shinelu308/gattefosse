@@ -819,6 +819,10 @@ const QUILL_TOOLBAR = [
           <span class="nav-icon" data-page-node-id="3oU3Eo6srhTBbTtnkahd5r"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="444GgTQXQ7BjkVH1WD9XoC"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" data-page-node-id="vQG5QXKsLDzYXQqiEVnMMm"/><circle cx="9" cy="7" r="4" data-page-node-id="G7BJQDhWRyK0E7GXh5sS45"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" data-page-node-id="QS9wi3vJfOAyh4iVwMk73f"/><path d="M16 3.13a4 4 0 0 1 0 7.75" data-page-node-id="HWC06XxfpYS2Mfn2nnEX6G"/></svg></span>
           用户管理
         </a>
+        <a class="nav-item" v-if="canModule('careers')" :class="{ active: currentPage === 'career-list' }" @click="goPage('career-list')" data-page-node-id="CrMgrNavItem0001">
+          <span class="nav-icon" data-page-node-id="CrMgrNavIcon0001"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" data-page-node-id="CrMgrNavSvg00001"><rect x="2" y="7" width="20" height="14" rx="2" data-page-node-id="CrMgrNavRect0001"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" data-page-node-id="CrMgrNavPath0001"/></svg></span>
+          招聘管理
+        </a>
         <a class="nav-item" v-if="canModule('settings')" :class="{ active: currentPage === 'settings' }" @click="currentPage = 'settings'" data-page-node-id="RwWjgWlS7EnhMPsR1LlglU">
           <span class="nav-icon" data-page-node-id="EBCXpNBnaQCI9y3XYrQBZh"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="10RWL6qf11BnVxWiFoEeSx"><circle cx="12" cy="12" r="3" data-page-node-id="AbjCjnxocjxc6tGc8yjISU"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" data-page-node-id="0xdkYx3kxjjUFp8FNzIg8O"/></svg></span>
           系统设置
@@ -862,7 +866,7 @@ const QUILL_TOOLBAR = [
       <div class="content" data-page-node-id="wjtBdC1wtCmRiRy5jo3nIS">
 
         <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
-        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
           <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe>
         </div>
 
@@ -4474,6 +4478,7 @@ createApp({
         'author-edit': '/admin/authors-standalone.html',
         settings: '/admin/settings-standalone.html',
         'tag-manage': '/admin/tag-manage-standalone.html',
+        'career-list': '/admin/careers-standalone.html',
         'lm-hot-topics': '/admin/learn-more-standalone.html?tab=hot-topics',
         'lm-webinar': '/admin/learn-more-standalone.html?tab=webinar',
         'lm-publications': '/admin/learn-more-standalone.html?tab=publications',
@@ -4504,6 +4509,7 @@ createApp({
         'content-edit': '内容管理 / 站点内容 / 编辑',
         'subsidiary-edit': '内容管理 / 站点内容 / 编辑分公司',
         'tag-manage': '运营 / 标签管理',
+        'career-list': '运营 / 招聘管理',
         'article-list': '内容管理 / 获取灵感 / 文章',
         'article-edit': '内容管理 / 获取灵感 / 文章 / ' + (this.editingArticle.id ? '编辑' : '新增'),
         'webinar-list': '内容管理 / 获取灵感 / 在线研讨会',
@@ -8018,6 +8024,7 @@ createApp({
         authors: ['author-list', 'author-edit'],
         orders: ['order-list', 'order-detail'],
         users: ['user-list', 'user-edit'],
+        careers: ['career-list'],
         settings: ['settings'],
         tags: ['tag-manage'],
       };

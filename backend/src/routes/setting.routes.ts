@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware as auth } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
-import { getAllSettings, getSetting, saveSetting, batchSaveSettings, testAiSetting, getAiProviders } from '../controllers/setting.controller';
+import { getAllSettings, getSetting, saveSetting, batchSaveSettings, testAiSetting, getAiProviders, testSmtpSetting } from '../controllers/setting.controller';
 
 const router = Router();
 
@@ -9,6 +9,8 @@ const router = Router();
 router.get('/ai-providers', auth, getAiProviders);
 // AI 翻译：连接测试（用传入的 key 或已保存配置）
 router.post('/ai-test', auth, requireRole('super_admin'), testAiSetting);
+// 邮件通知：SMTP 连接测试（须注册在 /:key 之前）
+router.post('/smtp-test', auth, requireRole('super_admin'), testSmtpSetting);
 
 // 公开：获取所有设置（API Key 等敏感项已脱敏）
 router.get('/', getAllSettings);

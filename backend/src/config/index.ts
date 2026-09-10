@@ -18,6 +18,13 @@ export const config = {
       : path.resolve(__dirname, '../../uploads'),
     maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '10485760', 10),
   },
+  // 求职简历：私有存储，不挂静态目录，只能经后台鉴权接口下载
+  resume: {
+    dir: process.env.RESUME_DIR
+      ? (path.isAbsolute(process.env.RESUME_DIR) ? process.env.RESUME_DIR : path.resolve(__dirname, '../..', process.env.RESUME_DIR))
+      : path.resolve(__dirname, '../../storage/resumes'),
+    maxFileSize: parseInt(process.env.RESUME_MAX_FILE_SIZE || String(2 * 1024 * 1024), 10),
+  },
   cors: {
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:8000',
   },
