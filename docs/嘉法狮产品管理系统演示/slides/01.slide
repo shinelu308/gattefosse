@@ -1,0 +1,15 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', width: '100%', height: '100%' }}>
+        <Box style={{ width: 560, height: '100%', background: 'linear-gradient(160deg, #A5CE55 0%, #6F9A24 100%)', padding: 64, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 18, color: '#FFFFFF', opacity: 0.85, letterSpacing: 4, marginBottom: 28 }}>GATTEFOSSE · CHINA</Text>
+            <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.2 }}>嘉法狮<br />产品管理系统</Text>
+            <Text style={{ fontSize: 26, color: '#FFFFFF', opacity: 0.92, marginTop: 28 }}>功能演示 · v2.0</Text>
+            <Box style={{ height: 4, width: 72, background: 'rgba(255,255,255,0.5)', borderRadius: 2, marginTop: 36 }} />
+            <Text style={{ fontSize: 16, color: '#FFFFFF', opacity: 0.8, marginTop: 36 }}>上海唯风信息技术有限公司 · 2026 年 9 月</Text>
+        </Box>
+        <Box style={{ flex: 1, height: '100%', background: '#F4F9EA', justifyContent: 'center', alignItems: 'center', padding: 48 }}>
+            <Image src="assets/cover.png" style={{ width: 620, height: 380, borderRadius: 16, boxShadow: '0 8px 32px rgba(63,125,20,0.18)' }} />
+            <Text style={{ fontSize: 16, color: '#5B6B4F', marginTop: 24 }}>产品 · 内容 · 运营 一站式管理</Text>
+        </Box>
+    </Box>
+</Slide>

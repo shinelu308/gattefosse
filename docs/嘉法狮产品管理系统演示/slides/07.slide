@@ -1,0 +1,42 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>核心功能 · 产品管理</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', flex: 1, gap: 40, paddingTop: 20, paddingBottom: 16 }}>
+        <Box style={{ flex: 1, justifyContent: 'center', gap: 22 }}>
+            {[
+                { t: '三大产品线集中维护', d: '个人护理 57 个产品、药用辅料 54 条、配方 99 个，统一列表、搜索、筛选' },
+                { t: '详情页区块化编辑', d: '富文本、图文、视频、附件资料像搭积木一样自由组合，拖拽即可排序' },
+                { t: '标签体系精准归类', d: '功能、应用领域、概念、声明等七大类标签，中文标签一键勾选' },
+                { t: '数据一键导出', d: '三大产品线支持导出 Excel/CSV，随时用于线下汇报与盘点' },
+            ].map((item, idx) => (
+                <Box key={idx} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 14 }}>
+                    <Box style={{ width: 12, height: 12, borderRadius: 6, background: '#8EB73C', marginTop: 8 }} />
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F3D0F' }}>{item.t}</Text>
+                        <Text style={{ fontSize: 15, color: '#5B6B4F', lineHeight: 1.6, marginTop: 4 }}>{item.d}</Text>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+        <Box style={{ width: 480, gap: 20, justifyContent: 'center' }}>
+            <Box style={{ background: '#F4F9EA', borderRadius: 16, padding: 28 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#3F7D14' }}>演示要点</Text>
+                <Text style={{ fontSize: 16, color: '#5B6B4F', lineHeight: 1.8, marginTop: 12 }}>
+                    现场演示「编辑一个产品」全流程：打开产品列表 → 搜索目标产品 → 修改详情区块 → 保存发布 → 刷新前台看到效果，全程约 1 分钟。
+                </Text>
+            </Box>
+            <Box style={{ background: '#FFFFFF', border: '2px solid #E3EED0', borderRadius: 16, padding: 28 }}>
+                <Box style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                    <Text style={{ fontSize: 52, fontWeight: 'bold', color: '#3F7D14', lineHeight: 1.0 }}>210</Text>
+                    <Text style={{ fontSize: 16, color: '#5B6B4F' }}>个内容区块</Text>
+                </Box>
+                <Text style={{ fontSize: 15, color: '#8A9B7A', marginTop: 10 }}>已从原站批量导入 54 个产品的详情内容，无需重复录入</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>07 / 10</Text>
+    </Box>
+</Slide>

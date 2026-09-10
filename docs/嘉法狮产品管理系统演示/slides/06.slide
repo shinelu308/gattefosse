@@ -1,0 +1,32 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>三步上手，人人会用</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', alignItems: 'center', flex: 1, gap: 12, paddingTop: 20, paddingBottom: 16 }}>
+        {[
+            { n: '01', t: '打开系统登录', d: '浏览器输入后台地址，输入管理员分配的账号密码即可进入；账号由超级管理员统一创建，忘记密码可一键重置。' },
+            { n: '02', t: '认领功能模块', d: '超管按分工授权对应模块后，左侧菜单只显示你的功能，界面干净不迷路，新人当天即可独立操作。' },
+            { n: '03', t: '日常内容维护', d: '新增、编辑、发布三步完成；内容保存后网站前台立即更新，无需技术人员介入，也不需要碰代码。' },
+        ].map((step, idx) => (
+            <Box key={idx} style={{ flexDirection: 'row', alignItems: 'center', flex: 1, gap: 12 }}>
+                <Box style={{ flex: 1, background: idx === 1 ? '#F4F9EA' : '#FFFFFF', border: '2px solid #E3EED0', borderRadius: 16, padding: 28 }}>
+                    <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#8EB73C', lineHeight: 1.0 }}>{step.n}</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F3D0F', marginTop: 16 }}>{step.t}</Text>
+                    <Text style={{ fontSize: 16, color: '#5B6B4F', lineHeight: 1.7, marginTop: 12 }}>{step.d}</Text>
+                </Box>
+                {idx < 2 && (
+                    <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#8EB73C' }}>→</Text>
+                )}
+            </Box>
+        ))}
+    </Box>
+    <Box style={{ background: '#F4F9EA', borderRadius: 12, padding: '14px 24px', marginBottom: 8 }}>
+        <Text style={{ fontSize: 16, color: '#3F7D14', textAlign: 'center' }}>
+            小贴士：所有操作实时生效、可随时修改；系统自动记录操作痕迹，改错了找回原来的内容也很容易
+        </Text>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>06 / 10</Text>
+    </Box>
+</Slide>

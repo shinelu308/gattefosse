@@ -1,0 +1,29 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>谁在使用：三类角色各司其职</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', gap: 24, flex: 1, paddingTop: 20, paddingBottom: 16 }}>
+        {[
+            { tag: '后台 · 最高权限', t: '超级管理员', d: '系统的所有者与总管家，拥有全部功能权限。负责员工账号的创建与停用、各模块授权分配、系统设置与数据安全策略。公司内部通常只设一名，避免权限分散带来的管理风险。', foot: '全模块权限 · 账号管理 · 系统设置' },
+            { tag: '后台 · 按模块授权', t: '编辑员', d: '日常内容维护的主力。由超管按需授权具体模块，例如只负责产品资料更新，或只负责新闻活动发布。界面上只显示被授权的功能，看不到的模块自动隐藏，职责清晰、操作简单。', foot: '授权范围内维护内容 · 界面按需呈现' },
+            { tag: '前台 · 仅使用网站', t: '网站会员', d: '嘉法狮官网的注册用户，只在网站前台活动：浏览产品与配方、收藏感兴趣的内容、加入购物车申请样品、下载技术文档。会员不进入管理后台，后台登录口也会自动拦截会员账号。', foot: '浏览 · 收藏 · 样品申请 · 文档下载' },
+        ].map((card, idx) => (
+            <Box key={idx} style={{ flex: 1, background: '#FFFFFF', border: '2px solid #E3EED0', borderRadius: 16, overflow: 'hidden' }}>
+                <Box style={{ height: 76, background: idx === 0 ? 'linear-gradient(135deg, #A5CE55 0%, #6F9A24 100%)' : '#F4F9EA', justifyContent: 'center', paddingHorizontal: 24 }}>
+                    <Text style={{ fontSize: 15, color: idx === 0 ? '#FFFFFF' : '#6F9A24', opacity: idx === 0 ? 0.9 : 1 }}>{card.tag}</Text>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: idx === 0 ? '#FFFFFF' : '#1F3D0F', marginTop: 2 }}>{card.t}</Text>
+                </Box>
+                <Box style={{ flex: 1, padding: 24, justifyContent: 'space-between' }}>
+                    <Text style={{ fontSize: 16, color: '#5B6B4F', lineHeight: 1.7 }}>{card.d}</Text>
+                    <Box style={{ background: '#F4F9EA', borderRadius: 8, padding: '10px 14px', marginTop: 16 }}>
+                        <Text style={{ fontSize: 14, color: '#3F7D14', textAlign: 'center' }}>{card.foot}</Text>
+                    </Box>
+                </Box>
+            </Box>
+        ))}
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>05 / 10</Text>
+    </Box>
+</Slide>

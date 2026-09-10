@@ -1,0 +1,36 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>目录</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', flex: 1, gap: 40, paddingTop: 8 }}>
+        <Box style={{ width: 340, justifyContent: 'center' }}>
+            <Box style={{ background: '#F4F9EA', borderRadius: 16, padding: 32 }}>
+                <Text style={{ fontSize: 20, color: '#3F7D14', lineHeight: 1.7 }}>
+                    五个章节，<span style={{ fontWeight: 'bold' }}>从认识系统到上手操作</span>
+                    ，完整走一遍嘉法狮产品管理系统的核心能力
+                </Text>
+            </Box>
+        </Box>
+        <Box style={{ flex: 1, justifyContent: 'center', gap: 18 }}>
+            {[
+                { n: '01', t: '系统定位', d: '一句话看懂系统价值，数据规模一览' },
+                { n: '02', t: '功能架构', d: '六大功能域全景图，一张图看懂全貌' },
+                { n: '03', t: '角色与上手', d: '三类角色各司其职，三步开始使用' },
+                { n: '04', t: '核心功能演示', d: '产品管理、内容运营、数据看板逐一过' },
+                { n: '05', t: '安全与部署', d: '数据如何保护，版本如何上线' },
+            ].map((item, idx) => (
+                <Box key={idx} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, background: idx === 1 ? '#F4F9EA' : '#FFFFFF', borderRadius: 12, padding: '14px 24px' }}>
+                    <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#8EB73C', width: 56 }}>{item.n}</Text>
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F3D0F' }}>{item.t}</Text>
+                        <Text style={{ fontSize: 16, color: '#5B6B4F', marginTop: 2 }}>{item.d}</Text>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>02 / 10</Text>
+    </Box>
+</Slide>

@@ -1,0 +1,25 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>核心功能 · 内容与运营</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, flex: 1, paddingTop: 20, paddingBottom: 16 }}>
+        {[
+            { t: '新闻活动管理', d: '新闻、活动、杂志统一发布管理，支持草稿与定时上线； banners、导语、正文分块编辑，同步官网三种主题配色。' },
+            { t: '人才招聘', d: '职位发布与在线申请简历统一收纳，简历文件后台安全下载，投递即邮件通知负责人，招聘流程不漏一份简历。' },
+            { t: '会员与商机', d: '会员注册登录、产品收藏、样品购物车、样品申请全流程留痕；每一条申请都是潜在商机，后台随时跟进处理。' },
+            { t: '数据看板', d: '访问统计、世界与中国地区排行、文档下载排行一屏呈现；排行支持 Top 10 聚焦与一键展开，汇报数据随取随用。' },
+        ].map((card, idx) => (
+            <Box key={idx} style={{ width: 556, height: 224, background: idx % 3 === 0 ? '#F4F9EA' : '#FFFFFF', border: '2px solid #E3EED0', borderRadius: 16, padding: 26 }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                    <Box style={{ width: 10, height: 26, borderRadius: 5, background: '#8EB73C' }} />
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F3D0F' }}>{card.t}</Text>
+                </Box>
+                <Text style={{ fontSize: 16, color: '#5B6B4F', lineHeight: 1.7, marginTop: 14 }}>{card.d}</Text>
+            </Box>
+        ))}
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>08 / 10</Text>
+    </Box>
+</Slide>

@@ -1,0 +1,32 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>安全与部署：四重保障</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', flex: 1, alignItems: 'center', gap: 48, paddingTop: 10, paddingBottom: 10 }}>
+        <Box style={{ width: 400, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 160, fontWeight: 'bold', color: '#8EB73C', lineHeight: 1.0 }}>4<span style={{ fontSize: 56, color: '#3F7D14' }}> 重</span></Text>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#1F3D0F', marginTop: 20 }}>数据安全保障</Text>
+            <Text style={{ fontSize: 16, color: '#5B6B4F', lineHeight: 1.7, marginTop: 12 }}>从权限、数据、版本到发布流程，系统在设计上就把「不出事」放在第一位。</Text>
+        </Box>
+        <Box style={{ flex: 1, gap: 16, justifyContent: 'center' }}>
+            {[
+                { t: '数据与代码分离', d: '产品、内容等业务数据独立存放，系统升级不会覆盖线上数据' },
+                { t: '权限层层收口', d: '超级管理员受保护不可删改，编辑员按模块授权，会员无法进入后台' },
+                { t: '版本随时回滚', d: '每次更新独立存档，发现异常可秒级回退到上一个正常版本' },
+                { t: '发布自动化', d: '代码推送后自动构建、自动上线，减少人为操作失误' },
+            ].map((item, idx) => (
+                <Box key={idx} style={{ flexDirection: 'row', alignItems: 'center', gap: 16, background: idx % 2 === 0 ? '#F4F9EA' : '#FFFFFF', border: '2px solid #E3EED0', borderRadius: 12, padding: '14px 20px' }}>
+                    <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#8EB73C', width: 36 }}>{idx + 1}</Text>
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F3D0F' }}>{item.t}</Text>
+                        <Text style={{ fontSize: 14, color: '#5B6B4F', marginTop: 2 }}>{item.d}</Text>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>09 / 10</Text>
+    </Box>
+</Slide>

@@ -1,0 +1,33 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>功能架构：一张图看懂全貌</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', flex: 1, gap: 36, paddingTop: 8, alignItems: 'center' }}>
+        <Box style={{ width: 600, height: 500, background: '#F4F9EA', borderRadius: 16, padding: 16, justifyContent: 'center', alignItems: 'center' }}>
+            <Image src="assets/architecture.png" style={{ width: 568, height: 468, borderRadius: 8, objectFit: 'contain' }} />
+        </Box>
+        <Box style={{ flex: 1, gap: 20, justifyContent: 'center' }}>
+            {[
+                { n: '1', t: '数据总览', d: '访问统计、地区排行、下载排行一屏掌握' },
+                { n: '2', t: '产品管理', d: 'PC / 药用辅料 / 配方三大产品线集中维护' },
+                { n: '3', t: '内容管理', d: '新闻活动、页面内容、人才招聘随时发布' },
+                { n: '4', t: '运营与交易', d: '会员、收藏、购物车、样品申请全流程' },
+                { n: '5', t: '基础配置', d: '员工账号、标签体系、系统设置灵活配置' },
+            ].map((item, idx) => (
+                <Box key={idx} style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+                    <Box style={{ width: 44, height: 44, borderRadius: 22, background: '#8EB73C', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#FFFFFF' }}>{item.n}</Text>
+                    </Box>
+                    <Box style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F3D0F' }}>{item.t}</Text>
+                        <Text style={{ fontSize: 15, color: '#5B6B4F', marginTop: 2, lineHeight: 1.4 }}>{item.d}</Text>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>04 / 10</Text>
+    </Box>
+</Slide>

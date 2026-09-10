@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+  body { width: 1680px; background: #f4f7ef; }
+  .canvas { width: 1680px; padding: 0 0 46px; background: linear-gradient(160deg, #f6f9f0 0%, #eef4e2 100%); }
+
+  /* ===== 顶部横幅 ===== */
+  .hero { background: linear-gradient(135deg, #5a7d1e 0%, #8EB73C 78%, #a4c95c 100%); padding: 46px 70px 40px; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; right: -60px; top: -80px; width: 380px; height: 380px; border-radius: 50%; background: rgba(255,255,255,.08); }
+  .hero::before { content: ''; position: absolute; right: 120px; bottom: -140px; width: 260px; height: 260px; border-radius: 50%; background: rgba(255,255,255,.06); }
+  .hero .eyebrow { display: inline-block; background: rgba(255,255,255,.18); color: #eaf4d4; font-size: 15px; letter-spacing: 4px; padding: 5px 18px; border-radius: 999px; margin-bottom: 16px; }
+  .hero h1 { color: #fff; font-size: 44px; letter-spacing: 2px; font-weight: 700; }
+  .hero h1 .en { font-size: 20px; font-weight: 400; color: #dcecbc; margin-left: 14px; letter-spacing: 1px; }
+  .hero .sub { margin-top: 12px; color: #e4f1cd; font-size: 17px; letter-spacing: 1px; }
+  .hero .meta { position: absolute; right: 70px; bottom: 34px; text-align: right; color: #dcecbc; font-size: 13.5px; line-height: 1.9; }
+
+  /* ===== 三步上手 ===== */
+  .steps { display: flex; align-items: center; justify-content: center; gap: 0; margin: 40px 70px 8px; }
+  .step { display: flex; align-items: center; gap: 16px; background: #fff; border: 1.5px solid #e0ead0; border-radius: 16px; padding: 18px 30px; box-shadow: 0 4px 14px rgba(102,142,40,.08); }
+  .step .num { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #8EB73C, #a4c95c); color: #fff; font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+  .step .txt b { display: block; font-size: 19px; color: #2f3b1c; margin-bottom: 3px; }
+  .step .txt span { font-size: 13.5px; color: #7a8567; }
+  .arrow { color: #9db86e; font-size: 26px; padding: 0 18px; font-weight: 700; }
+  .steps-tip { text-align: center; color: #8a9478; font-size: 14px; margin: 12px 0 34px; letter-spacing: 1px; }
+
+  /* ===== 角色条 ===== */
+  .roles { display: flex; gap: 22px; margin: 0 70px 30px; }
+  .role { flex: 1; background: #fff; border-radius: 14px; padding: 18px 26px; display: flex; align-items: center; gap: 18px; border: 1.5px solid #e0ead0; box-shadow: 0 4px 14px rgba(102,142,40,.08); }
+  .role .ico { width: 54px; height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 27px; flex: none; }
+  .role.r1 .ico { background: #eef5dd; }
+  .role.r2 .ico { background: #e8f1fb; }
+  .role.r3 .ico { background: #f3eee4; }
+  .role b { font-size: 18px; color: #2f3b1c; display: block; margin-bottom: 3px; }
+  .role span { font-size: 13.5px; color: #7a8567; line-height: 1.5; }
+  .role .tag { margin-left: auto; background: #f0f5e4; color: #6f9a24; font-size: 12.5px; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+
+  /* ===== 分区标题 ===== */
+  .sec-head { display: flex; align-items: center; gap: 14px; margin: 0 70px 20px; }
+  .sec-head .bar { width: 6px; height: 26px; border-radius: 3px; background: linear-gradient(#8EB73C, #a4c95c); }
+  .sec-head h2 { font-size: 23px; color: #2f3b1c; letter-spacing: 2px; }
+  .sec-head span { color: #97a284; font-size: 14px; }
+
+  /* ===== 功能域网格 ===== */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 0 70px; }
+  .domain { background: #fff; border-radius: 18px; border: 1.5px solid #e0ead0; box-shadow: 0 6px 18px rgba(102,142,40,.09); overflow: hidden; }
+  .domain .head { padding: 16px 24px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #eef3e3; }
+  .domain .head .dico { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 21px; flex: none; }
+  .domain .head b { font-size: 18.5px; color: #2f3b1c; }
+  .domain .head em { font-style: normal; font-size: 12px; color: #9aa58a; margin-left: auto; letter-spacing: 1px; }
+  .domain ul { list-style: none; padding: 12px 24px 16px; }
+  .domain li { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 14.5px; color: #4a5540; }
+  .domain li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #b5d178; flex: none; }
+  .domain li .cnt { margin-left: auto; color: #9aa58a; font-size: 12.5px; background: #f6f8f0; border-radius: 999px; padding: 1px 10px; }
+  .d1 .dico { background: #eef5dd; } .d2 .dico { background: #e8f1fb; } .d3 .dico { background: #fdeef2; }
+  .d4 .dico { background: #fff3e2; } .d5 .dico { background: #f0ecfa; } .d6 .dico { background: #e4f4f0; }
+
+  /* ===== 底部 ===== */
+  .foot { margin: 34px 70px 0; background: linear-gradient(135deg, #3e5417, #5a7d1e); border-radius: 16px; padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .foot .l { color: #dcecbc; font-size: 14px; line-height: 1.8; }
+  .foot .l b { color: #fff; font-size: 16.5px; letter-spacing: 1px; }
+  .foot .r { color: #fff; font-size: 15px; text-align: right; line-height: 1.9; }
+  .foot .r .url { font-size: 17px; font-weight: 700; letter-spacing: .5px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="hero">
+    <div class="eyebrow">GATTEFOSSÉ 后台管理系统</div>
+    <h1>嘉法狮产品管理系统 <span class="en">Admin Console · v2.0</span></h1>
+    <div class="sub">一张图看懂系统：两类角色 · 六大功能域 · 三步上手</div>
+    <div class="meta">开发主体：上海唯风信息技术有限公司<br>访问地址：gattefosse.loudaren.com/admin</div>
+  </div>
+
+  <div class="sec-head" style="margin-top:34px;"><div class="bar"></div><h2>谁在使用</h2><span>—— 后台仅限企业内部人员，网站会员只在官网前台登录</span></div>
+  <div class="roles">
+    <div class="role r1"><div class="ico">👑</div><div><b>超级管理员</b><span>系统负责人（你）· 拥有全部模块权限<br>负责账号创建、权限分配与系统设置</span></div><div class="tag">全部权限</div></div>
+    <div class="role r2"><div class="ico">✍️</div><div><b>企业编辑员</b><span>内容同事 · 按分配的模块工作<br>日常负责产品、新闻、文档的编辑与发布</span></div><div class="tag">按模块授权</div></div>
+    <div class="role r3"><div class="ico">🌐</div><div><b>网站会员（C 端）</b><span>客户仅在官网前台注册登录<br>收藏产品、提交样品订单，不进入后台</span></div><div class="tag">仅前台</div></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:30px;"><div class="bar"></div><h2>三步上手</h2><span>—— 会用微信就会用这套系统</span></div>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div class="txt"><b>打开后台并登录</b><span>浏览器访问 /admin，输入企业员工账号密码</span></div></div>
+    <div class="arrow">➜</div>
+    <div class="step"><div class="num">2</div><div class="txt"><b>点左侧菜单选模块</b><span>想改什么点什么：产品、新闻、订单…</span></div></div>
+    <div class="arrow">➜</div>
+    <div class="step"><div class="num">3</div><div class="txt"><b>编辑并点「发布」</b><span>随时存草稿，官网前台即时同步更新</span></div></div>
+  </div>
+  <div class="steps-tip">所有修改实时保存草稿 · 点「发布」后前台网站立即生效 · 无需任何技术背景</div>
+
+  <div class="sec-head"><div class="bar"></div><h2>六大功能域</h2><span>—— 左侧菜单的完整地图</span></div>
+  <div class="grid">
+    <div class="domain d1">
+      <div class="head"><div class="dico">📊</div><b>数据总览</b><em>DASHBOARD</em></div>
+      <ul>
+        <li>访问统计 <span class="cnt">今日 PV / UV</span></li>
+        <li>近 7 天访问趋势 <span class="cnt">PV / UV 曲线</span></li>
+        <li>地区分布与排行 <span class="cnt">中国地图 / 世界</span></li>
+        <li>热门页面榜 <span class="cnt">Top 榜单</span></li>
+      </ul>
+    </div>
+    <div class="domain d2">
+      <div class="head"><div class="dico">🧪</div><b>产品管理</b><em>PRODUCTS</em></div>
+      <ul>
+        <li>个人护理 · 成分 <span class="cnt">57 个</span></li>
+        <li>个人护理 · 配方 <span class="cnt">99 个</span></li>
+        <li>药用辅料 <span class="cnt">54 个</span></li>
+        <li>区块化详情页 · 相关资料挂接 <span class="cnt">可视化编辑</span></li>
+      </ul>
+    </div>
+    <div class="domain d3">
+      <div class="head"><div class="dico">📰</div><b>内容管理</b><em>CONTENT</em></div>
+      <ul>
+        <li>新闻与活动 <span class="cnt">文章/研讨会/展会/杂志</span></li>
+        <li>了解更多 <span class="cnt">5 个子频道</span></li>
+        <li>文档资源 <span class="cnt">TDS/SDS/手册/配方</span></li>
+        <li>站点内容 · 作者管理 <span class="cnt">复刻页面维护</span></li>
+      </ul>
+    </div>
+    <div class="domain d4">
+      <div class="head"><div class="dico">🛒</div><b>运营与交易</b><em>OPERATIONS</em></div>
+      <ul>
+        <li>样品订单 <span class="cnt">状态流转</span></li>
+        <li>用户管理 <span class="cnt">前台会员审核</span></li>
+        <li>招聘管理 <span class="cnt">简历查收</span></li>
+      </ul>
+    </div>
+    <div class="domain d5">
+      <div class="head"><div class="dico">🏷️</div><b>基础配置</b><em>SETTINGS</em></div>
+      <ul>
+        <li>标签管理 <span class="cnt">产品标签字典</span></li>
+        <li>企业组织架构 <span class="cnt">部门 / 员工账号</span></li>
+        <li>系统功能权限 <span class="cnt">按角色分配</span></li>
+        <li>邮件通知 <span class="cnt">SMTP 配置</span></li>
+      </ul>
+    </div>
+    <div class="domain d6">
+      <div class="head"><div class="dico">✨</div><b>智能助手</b><em>AI POWERED</em></div>
+      <ul>
+        <li>AI 一键翻译 <span class="cnt">中英内容互译</span></li>
+        <li>保留原版式与图片 <span class="cnt">智能排版</span></li>
+        <li>邮件自动通知 <span class="cnt">简历/订单提醒</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="l"><b>数据安全</b><br>角色权限隔离 · 草稿/发布双状态 · 操作即保存，无丢失风险</div>
+    <div class="r"><span class="url">gattefosse.loudaren.com/admin</span><br>嘉法狮产品管理系统 v2.0 · SQLite · 上海唯风信息技术有限公司</div>
+  </div>
+
+</div>
+</body>
+</html>

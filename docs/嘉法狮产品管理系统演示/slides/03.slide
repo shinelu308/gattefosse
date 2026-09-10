@@ -1,0 +1,40 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '20px 64px' }}>
+    <Box style={{ height: 100, justifyContent: 'flex-end', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F3D0F' }}>系统定位：一句话看懂</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', flex: 1, alignItems: 'center', gap: 48 }}>
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 24, color: '#5B6B4F', lineHeight: 1.7 }}>
+                前台 <span style={{ fontWeight: 'bold', color: '#3F7D14' }}>1:1 复刻嘉法狮官网</span>
+                ，后台把产品、配方、内容、订单、会员
+                <span style={{ fontWeight: 'bold', color: '#3F7D14' }}>集中在一个系统管理</span>
+                ，不懂代码也能日常维护。
+            </Text>
+            <Box style={{ flexDirection: 'row', gap: 12, marginTop: 32 }}>
+                <Box style={{ background: '#F4F9EA', borderRadius: 8, padding: '8px 18px' }}>
+                    <Text style={{ fontSize: 16, color: '#3F7D14' }}>网站前台 + 管理后台 一体化</Text>
+                </Box>
+                <Box style={{ background: '#F4F9EA', borderRadius: 8, padding: '8px 18px' }}>
+                    <Text style={{ fontSize: 16, color: '#3F7D14' }}>浏览器打开即用</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ width: 560, flexDirection: 'row', gap: 20 }}>
+            {[
+                { n: '57', t: '个护理产品', d: 'PC 产品中文站' },
+                { n: '54', t: '条药用辅料', d: 'Pharma 产品线' },
+                { n: '99', t: '个配方方案', d: 'Formulation 库' },
+            ].map((item, idx) => (
+                <Box key={idx} style={{ flex: 1, background: idx === 0 ? '#F4F9EA' : '#FFFFFF', border: '2px solid #E3EED0', borderRadius: 16, padding: '28px 20px', alignItems: 'center', boxShadow: idx === 0 ? '0 6px 24px rgba(142,183,60,0.15)' : 'none' }}>
+                    <Text style={{ fontSize: 88, fontWeight: 'bold', color: '#3F7D14', lineHeight: 1.0, textAlign: 'center' }}>{item.n}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F3D0F', marginTop: 12, textAlign: 'center' }}>{item.t}</Text>
+                    <Text style={{ fontSize: 15, color: '#8A9B7A', marginTop: 6, textAlign: 'center' }}>{item.d}</Text>
+                </Box>
+            ))}
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>嘉法狮产品管理系统</Text>
+        <Text style={{ fontSize: 14, color: '#8A9B7A' }}>03 / 10</Text>
+    </Box>
+</Slide>
