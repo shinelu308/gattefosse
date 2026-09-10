@@ -15,7 +15,7 @@ async function main() {
   // 1. 匿名上传简历
   const fd = new FormData();
   fd.append('file', new Blob([fs.readFileSync(tmpPdf)], { type: 'application/pdf' }), '张三-简历.pdf');
-  const up = await fetch(`${BASE}/api/careers/resume`, { method: 'POST', body: fd });
+  const up = await fetch(`${BASE}/api/careers/upload?kind=resume`, { method: 'POST', body: fd });
   const upJson = await up.json();
   log('1. 上传简历', upJson);
 
@@ -28,9 +28,9 @@ async function main() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      fullName: '张三', firstName: '三', lastName: '张',
-      email, phone: '13800000000', country: '中国',
-      position: '应用研发工程师', jobFunction: '研发',
+      firstName: '三', lastName: '张',
+      email, phone: '13800000000', country: 'China',
+      position: '应用研发工程师', jobFunction: 'Personal care',
       message: '我对贵公司的个人护理原料研发岗位非常感兴趣。',
       resumeToken: token, resumeName: '张三-简历.pdf',
       agreed: true,
@@ -45,21 +45,21 @@ async function main() {
   // 3. 重复提交应被拦截
   const dup = await fetch(`${BASE}/api/careers`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fullName: '张三', email, agreed: true }),
+    body: JSON.stringify({ firstName: '三', lastName: '张', email, country: 'China', position: '工程师', jobFunction: 'Support', message: '重复提交测试', agreed: true }),
   });
   log('3. 重复提交（应 429）', { status: dup.status, body: await dup.json() });
 
   // 4. 蜜罐字段
   const honey = await fetch(`${BASE}/api/careers`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fullName: 'Bot', email: 'bot@spam.test', agreed: true, url: 'http://spam' }),
+    body: JSON.stringify({ firstName: 'B', lastName: 'T', email: 'bot@spam.test', country: 'China', position: 'x', jobFunction: 'Support', message: 'spam', agreed: true, url: 'http://spam' }),
   });
   log('4. 蜜罐提交（应伪装成功且不入库）', await honey.json());
 
   // 5. 未同意隐私政策
   const noAgree = await fetch(`${BASE}/api/careers`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fullName: '李四', email: 'lisi@local.test', agreed: false }),
+    body: JSON.stringify({ firstName: '四', lastName: '李', email: 'lisi@local.test', country: 'China', position: '工程师', jobFunction: 'Support', message: '未同意隐私', agreed: false }),
   });
   log('5. 未同意隐私（应 400）', { status: noAgree.status, body: await noAgree.json() });
 

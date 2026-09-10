@@ -9,8 +9,23 @@ import { sendCareerNotifications } from '../utils/mailer';
 /** 状态白名单：与后台下拉一致 */
 const CAREER_STATUS = ['new', 'contacting', 'interview', 'hired', 'rejected', 'archived'] as const;
 
+/** 职能领域白名单：与原站 gattefosse.com/job-form 的 Function 下拉一致 */
+const JOB_FUNCTIONS = ['Pharmaceuticals', 'Personal care', 'Support'] as const;
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/**
+ * 姓名拼装：名字里含中日韩字符时按「姓+名」排列，否则按「名 姓」
+ * 三 + 张 → 张三；John + Smith → John Smith
+ */
+function composeFullName(firstName: string, lastName: string): string {
+  if (firstName && lastName) {
+    const hasCjk = /[\u3400-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/.test(firstName + lastName);
+    return hasCjk ? `${lastName}${firstName}` : `${firstName} ${lastName}`;
+  }
+  return firstName || lastName || '';
 }
 
 /**
@@ -45,16 +60,20 @@ function decodeOriginalName(name: string): string {
 
 /**
  * 上传简历/求职信（前台匿名，multipart）
+ * kind=resume（默认）| cover，均由 ?kind= 指定
  * 返回 token（文件名），提交申请时回传，不暴露可直接访问的 URL
  */
 export async function uploadResume(req: Request, res: Response) {
+  const kind = String(req.query.kind || 'resume') === 'cover' ? 'cover' : 'resume';
+  const label = kind === 'cover' ? '求职信' : '简历';
   try {
     if (!req.file) {
-      return res.status(400).json(fail('请选择要上传的简历文件'));
+      return res.status(400).json(fail(`请选择要上传的${label}文件`));
     }
     return res.json(
       success(
         {
+          kind,
           token: req.file.filename,
           name: decodeOriginalName(req.file.originalname),
           size: req.file.size,
@@ -63,9 +82,22 @@ export async function uploadResume(req: Request, res: Response) {
       )
     );
   } catch (error) {
-    console.error('简历上传失败:', error);
-    return res.status(500).json(fail('简历上传失败'));
+    console.error(`${label}上传失败:`, error);
+    return res.status(500).json(fail(`${label}上传失败`));
   }
+}
+
+/**
+ * 解析上传 token → { stored: 'resumes/xxx.pdf', name } | null
+ * token 不合法或文件不存在时返回 null（视为未上传，不阻断提交）
+ */
+function resolveUploaded(token: unknown, name: unknown): { stored: string; name: string } | null {
+  const t = String(token || '').trim();
+  if (!t || !isSafeToken(t)) return null;
+  const base = path.basename(t);
+  if (!fs.existsSync(resolveResumeFile(base))) return null;
+  const finalName = name ? decodeOriginalName(String(name)).slice(0, 200) : base;
+  return { stored: `resumes/${base}`, name: finalName };
 }
 
 /**
@@ -85,13 +117,33 @@ export async function createCareer(req: Request, res: Response) {
       return res.json(success({ id: null }, '申请提交成功'));
     }
 
-    const fullName = String(body.fullName || '').trim();
-    const email = String(body.email || '').trim().toLowerCase();
+    // ===== 姓名：原站为 First name / Last name 两栏，兼容旧客户端的 fullName =====
+    const firstName = String(body.firstName || '').trim();
+    const lastName = String(body.lastName || '').trim();
+    const fullName = String(body.fullName || '').trim() || composeFullName(firstName, lastName);
 
     if (!fullName) return res.status(400).json(fail('请填写姓名'));
+    if (fullName.length > 100) return res.status(400).json(fail('姓名过长'));
+    if (firstName.length > 50 || lastName.length > 50) return res.status(400).json(fail('姓名过长'));
+
+    const email = String(body.email || '').trim().toLowerCase();
     if (!email) return res.status(400).json(fail('请填写邮箱'));
     if (!isValidEmail(email)) return res.status(400).json(fail('邮箱格式不正确'));
-    if (fullName.length > 100) return res.status(400).json(fail('姓名过长'));
+
+    // ===== 岗位相关：与原站 job-form 必填项一一对应 =====
+    const position = String(body.position || '').trim();          // Desired job 期望岗位
+    const jobFunction = String(body.jobFunction || '').trim();    // Function 职能领域
+    const country = String(body.country || '').trim();            // Desired country 期望国家
+    const message = String(body.message || '').trim();            // Explain your motivation 申请说明
+
+    if (!position) return res.status(400).json(fail('请填写期望岗位'));
+    if (position.length > 150) return res.status(400).json(fail('期望岗位过长'));
+    if (!jobFunction) return res.status(400).json(fail('请选择职能领域'));
+    if (!(JOB_FUNCTIONS as readonly string[]).includes(jobFunction)) {
+      return res.status(400).json(fail('职能领域取值无效'));
+    }
+    if (!country) return res.status(400).json(fail('请选择期望国家'));
+    if (!message) return res.status(400).json(fail('请填写申请说明'));
 
     // 隐私政策同意（原站复选框默认勾选，未勾选不允许提交）
     if (body.agreed === false || body.agreed === 'false') {
@@ -107,36 +159,25 @@ export async function createCareer(req: Request, res: Response) {
       return res.status(429).json(fail('您刚刚已提交过申请，请稍后再试'));
     }
 
-    // 简历 token → 落库相对路径（文件不存在则视为未上传）
-    let resumePath: string | null = null;
-    let resumeName: string | null = null;
-    const resumeToken = String(body.resumeToken || '').trim();
-    if (resumeToken && isSafeToken(resumeToken)) {
-      const abs = resolveResumeFile(resumeToken);
-      if (fs.existsSync(abs)) {
-        resumePath = `resumes/${path.basename(resumeToken)}`;
-        resumeName = body.resumeName
-          ? decodeOriginalName(String(body.resumeName)).slice(0, 200)
-          : path.basename(resumeToken);
-      }
-    }
-
-    const firstName = String(body.firstName || '').trim() || null;
-    const lastName = String(body.lastName || '').trim() || null;
+    // 简历（必填）/ 求职信（选填）：token → 落库相对路径，文件不存在则视为未上传
+    const resume = resolveUploaded(body.resumeToken, body.resumeName);
+    const cover = resolveUploaded(body.coverLetterToken, body.coverLetterName);
 
     const application = await prisma.careerApplication.create({
       data: {
         fullName,
-        firstName,
-        lastName,
+        firstName: firstName || null,
+        lastName: lastName || null,
         email,
         phone: String(body.phone || '').trim() || null,
-        country: String(body.country || '').trim() || null,
-        position: String(body.position || '').trim() || null,
-        jobFunction: String(body.jobFunction || '').trim() || null,
-        message: String(body.message || '').trim() || null,
-        resumePath,
-        resumeName,
+        country,
+        position,
+        jobFunction,
+        message,
+        resumePath: resume?.stored || null,
+        resumeName: resume?.name || null,
+        coverLetterPath: cover?.stored || null,
+        coverLetterName: cover?.name || null,
         status: 'new',
         ip: (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || req.ip || null,
         userAgent: String(req.headers['user-agent'] || '').slice(0, 500) || null,
@@ -154,6 +195,7 @@ export async function createCareer(req: Request, res: Response) {
       jobFunction: application.jobFunction,
       message: application.message,
       resumeName: application.resumeName,
+      coverLetterName: application.coverLetterName,
       createdAt: application.createdAt,
     }).catch((err) => console.error('[career] 邮件通知异常:', err));
 

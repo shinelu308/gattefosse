@@ -133,6 +133,7 @@ export interface CareerMailPayload {
   jobFunction?: string | null;
   message?: string | null;
   resumeName?: string | null;
+  coverLetterName?: string | null;
   createdAt: Date;
 }
 
@@ -175,6 +176,7 @@ export async function sendCareerNotifications(app: CareerMailPayload): Promise<v
       ${row('应聘岗位', app.position)}
       ${row('职能领域', app.jobFunction)}
       ${row('简历文件', app.resumeName)}
+      ${row('求职信文件', app.coverLetterName)}
     </table>
     ${app.message ? `<div style="margin-top:16px;padding:12px 14px;background:#f9fafb;border-left:3px solid #8EB73C;font-size:14px;color:#111827;white-space:pre-wrap;">${esc(app.message)}</div>` : ''}
     <p style="margin-top:20px;font-size:13px;color:#6b7280;">请登录后台「招聘管理」查看完整信息并下载简历附件。</p>

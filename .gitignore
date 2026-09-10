@@ -33,3 +33,6 @@ site/.localize_tmp_backup_*.html
 site/www/
 uploads/
 .tools/
+
+# 脚本中间产物（点前缀临时文件）
+backend/scripts/.*

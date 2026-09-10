@@ -113,8 +113,8 @@ tbody tr:last-child td { border-bottom: 0; }
       <thead><tr>
         <th style="width:150px;">姓名</th>
         <th style="width:180px;">联系方式</th>
-        <th style="width:170px;">应聘岗位</th>
-        <th style="width:110px;">简历</th>
+        <th style="width:170px;">期望岗位</th>
+        <th style="width:120px;">附件</th>
         <th style="width:150px;">提交时间</th>
         <th style="width:100px;">状态</th>
         <th style="width:150px;">操作</th>
@@ -131,11 +131,12 @@ tbody tr:last-child td { border-bottom: 0; }
           </td>
           <td>
             <div>{{ item.position || '-' }}</div>
-            <div class="sub-cell" v-if="item.jobFunction">{{ item.jobFunction }}</div>
+            <div class="sub-cell" v-if="item.jobFunction">{{ fnLabel(item.jobFunction) }}</div>
           </td>
           <td>
-            <a v-if="item.resumePath" class="file-link" @click.prevent="downloadFile(item, 'resume')">下载简历 ↓</a>
-            <span v-else class="empty-tip">无附件</span>
+            <div v-if="item.resumePath"><a class="file-link" @click.prevent="downloadFile(item, 'resume')">简历 ↓</a></div>
+            <div v-if="item.coverLetterPath"><a class="file-link" @click.prevent="downloadFile(item, 'cover')">求职信 ↓</a></div>
+            <span v-if="!item.resumePath && !item.coverLetterPath" class="empty-tip">无附件</span>
           </td>
           <td style="color:#666;">{{ fmt(item.createdAt) }}</td>
           <td><span class="st" :class="'st-' + item.status">{{ statusLabel(item.status) }}</span></td>
@@ -168,16 +169,25 @@ tbody tr:last-child td { border-bottom: 0; }
       <div class="card-body">
         <dl class="detail-grid">
           <dt>申请编号</dt><dd>#{{ detail.id }}</dd>
-          <dt>姓名</dt><dd>{{ detail.fullName }}<span v-if="detail.firstName || detail.lastName" style="color:#999;">（{{ detail.lastName || '' }}{{ detail.firstName || '' }}）</span></dd>
+          <dt>姓名</dt><dd>{{ detail.fullName }}</dd>
+          <dt v-if="detail.firstName || detail.lastName">名 / 姓</dt>
+          <dd v-if="detail.firstName || detail.lastName">{{ detail.firstName || '-' }} / {{ detail.lastName || '-' }}</dd>
           <dt>邮箱</dt><dd><a :href="'mailto:' + detail.email" style="color:#003CC5;">{{ detail.email }}</a></dd>
           <dt>电话</dt><dd>{{ detail.phone || '-' }}</dd>
-          <dt>国家/地区</dt><dd>{{ detail.country || '-' }}</dd>
-          <dt>应聘岗位</dt><dd>{{ detail.position || '-' }}</dd>
-          <dt>职能领域</dt><dd>{{ detail.jobFunction || '-' }}</dd>
+          <dt>期望国家</dt><dd>{{ detail.country || '-' }}</dd>
+          <dt>期望岗位</dt><dd>{{ detail.position || '-' }}</dd>
+          <dt>职能领域</dt><dd>{{ detail.jobFunction ? fnLabel(detail.jobFunction) : '-' }}</dd>
           <dt>简历附件</dt>
           <dd>
             <a v-if="detail.resumePath" class="file-link" @click.prevent="downloadFile(detail, 'resume')">
               {{ detail.resumeName || '简历' }} ↓
+            </a>
+            <span v-else class="empty-tip">未上传</span>
+          </dd>
+          <dt>求职信附件</dt>
+          <dd>
+            <a v-if="detail.coverLetterPath" class="file-link" @click.prevent="downloadFile(detail, 'cover')">
+              {{ detail.coverLetterName || '求职信' }} ↓
             </a>
             <span v-else class="empty-tip">未上传</span>
           </dd>
@@ -234,6 +244,13 @@ const STATUS_LIST = [
   { value: 'archived',  label: '归档',   short: '归档' },
 ];
 
+/* 职能领域：存原站英文值，后台显示中文 + 原值 */
+const JOB_FUNCTIONS = {
+  'Pharmaceuticals': '药用',
+  'Personal care': '个人护理',
+  'Support': '支持职能',
+};
+
 function getToken() {
   try { const t = parent.localStorage.getItem('admin_token'); if (t) return t; } catch (e) {}
   return localStorage.getItem('admin_token') || '';
@@ -286,6 +303,10 @@ createApp({
       this.load(1);
     },
     statusLabel(v) { const s = STATUS_LIST.find(x => x.value === v); return s ? s.label : v; },
+    fnLabel(v) {
+      if (!v) return '';
+      return JOB_FUNCTIONS[v] ? JOB_FUNCTIONS[v] + ' ' + v : v;
+    },
     fmt(iso) {
       if (!iso) return '-';
       const d = new Date(iso);

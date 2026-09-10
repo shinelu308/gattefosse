@@ -16,7 +16,7 @@ const SECRET = 'Gattefosse_JWT_Secret_Key_2026_Change_In_Production';
   const email = `e2e-save-${Date.now()}@local.test`;
   const created = await fetch(BASE + '/api/careers', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fullName: '保存测试', email, country: '中国', position: '测试岗位', message: '验证保存后弹框关闭', agreed: true }),
+    body: JSON.stringify({ firstName: '测试', lastName: '保存', email, country: 'China', position: '测试岗位', jobFunction: 'Support', message: '验证保存后弹框关闭', agreed: true }),
   }).then(r => r.json());
   const id = created.data.id;
 

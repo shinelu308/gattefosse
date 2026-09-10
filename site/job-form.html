@@ -150,18 +150,18 @@
                             accept-charset="UTF-8">
                             <div
                               class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-first-name form-item-first-name">
-                              <label for="edit-first-name--2" class="js-form-required form-required">姓名</label>
+                              <label for="edit-first-name--2" class="js-form-required form-required">名</label>
                               <input data-drupal-selector="edit-first-name" type="text" id="edit-first-name--2"
-                                v-model="data.name" name="name" value="" size="60" maxlength="255"
+                                name="first_name" value="" size="60" maxlength="255"
                                 class="form-text required form-control" required="required" aria-required="true" />
                             </div>
-                            <!--div
+                            <div
                               class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-last-name form-item-last-name">
-                              <label for="edit-last-name--2" class="js-form-required form-required">Last name</label>
+                              <label for="edit-last-name--2" class="js-form-required form-required">姓</label>
                               <input data-drupal-selector="edit-last-name" type="text" id="edit-last-name--2"
                                 name="last_name" value="" size="60" maxlength="255"
                                 class="form-text required form-control" required="required" aria-required="true" />
-                            </div-->
+                            </div>
                             <div
                               class="js-form-item form-item js-form-type-email form-type-email js-form-item-e-mail form-item-e-mail">
                               <label for="edit-e-mail--2" class="js-form-required form-required">E-mail</label>
@@ -169,20 +169,37 @@
                                 value="" size="60" maxlength="254" class="form-email required form-control"
                                 required="required" aria-required="true" />
                             </div>
+                            <div
+                              class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-desired-job form-item-desired-job">
+                              <label for="edit-desired-job--2" class="js-form-required form-required">期望岗位</label>
+                              <input data-drupal-selector="edit-desired-job" type="text" id="edit-desired-job--2"
+                                name="desired_job" value="" size="60" maxlength="255"
+                                class="form-text required form-control" required="required" aria-required="true" />
+                            </div>
+                            <div
+                              class="js-form-item form-item js-form-type-select form-type-select js-form-item-function form-item-function">
+                              <label for="edit-function--2" class="js-form-required form-required">职能领域</label>
+                              <select data-drupal-selector="edit-function" id="edit-function--2" name="function"
+                                class="form-select required form-control" required="required" aria-required="true">
+                                <option value="">- 请选择 -</option>
+                                <option value="Pharmaceuticals">药用</option>
+                                <option value="Personal care">个人护理</option>
+                                <option value="Support">支持职能</option>
+                              </select>
+                            </div>
                             <fieldset data-drupal-selector="edit-pays" id="edit-pays--2--wrapper"
                               class="webform-address--wrapper fieldgroup form-composite webform-composite-hidden-title required js-webform-type-webform-address webform-type-webform-address js-form-item form-item js-form-wrapper form-wrapper">
                               <legend>
-                                <span class="visually-hidden fieldset-legend js-form-required form-required">pays</span>
+                                <span class="visually-hidden fieldset-legend js-form-required form-required">期望国家</span>
                               </legend>
                               <div class="fieldset-wrapper">
                                 <div
                                   class="js-form-item form-item js-form-type-select form-type-select js-form-item-pays-country form-item-pays-country">
-                                  <label for="edit-pays-country--2" class="js-form-required form-required">国家</label>
+                                  <label for="edit-pays-country--2" class="js-form-required form-required">期望国家</label>
                                   <select data-drupal-selector="edit-pays-country" id="edit-pays-country--2"
                                     name="pays[country]" class="form-select required form-control" required="required"
                                     aria-required="true">
                                     <option value="">- 请选择 -</option>
-                                    <option value="China" selected="selected">中国</option>
                                   </select>
                                 </div>
                               </div>
@@ -196,21 +213,40 @@
                                   required="required" aria-required="true"></textarea>
                               </div>
                             </div>
-                            <div id="ajax-wrapper--2">
+                            <div id="ajax-wrapper--3">
                               <div
-                                class="js-form-item form-item js-form-type-webform-document-file form-type-webform-document-file js-form-item-upload-your-resume-and-cover-letter form-item-upload-your-resume-and-cover-letter">
-                                <label for="edit-upload-your-resume-and-cover-letter-upload--2"
-                                  id="edit-upload-your-resume-and-cover-letter--2--label"
-                                  class="js-form-required form-required">上传您的简历和求职信</label>
-                                <div id="edit-upload-your-resume-and-cover-letter--2"
+                                class="js-form-item form-item js-form-type-webform-document-file form-type-webform-document-file js-form-item-upload-your-resume form-item-upload-your-resume">
+                                <label for="edit-upload-your-resume-upload--2" id="edit-upload-your-resume--2--label"
+                                  class="js-form-required form-required">上传您的简历</label>
+                                <div id="edit-upload-your-resume--2"
                                   class="js-webform-document-file webform-document-file required js-form-managed-file form-managed-file">
-                                  <input type="file" id="edit-upload-your-resume-and-cover-letter-upload--2"
-                                    name="files[upload_your_resume_and_cover_letter]"
-                                    class="form-file form-control js-form-file" accept=".pdf,.doc,.docx" />
+                                  <input type="file" id="edit-upload-your-resume-upload--2"
+                                    name="files[upload_your_resume]" class="form-file form-control js-form-file"
+                                    accept=".pdf,.doc,.docx" />
                                   <div class="webform-managed-file__name" id="resumeFileName"></div>
                                 </div>
                                 <div class="description">
-                                  <div id="edit-upload-your-resume-and-cover-letter--2--description"
+                                  <div id="edit-upload-your-resume--2--description" class="webform-element-description">
+                                    只能一个文件.<br />2 MB以内.<br />文件类型: pdf, doc, docx.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div id="ajax-wrapper--4">
+                              <div
+                                class="js-form-item form-item js-form-type-webform-document-file form-type-webform-document-file js-form-item-upload-your-cover-letter form-item-upload-your-cover-letter">
+                                <label for="edit-upload-your-cover-letter-upload--2"
+                                  id="edit-upload-your-cover-letter--2--label">上传您的求职信
+                                  <span style="font-weight:400;">（选填）</span></label>
+                                <div id="edit-upload-your-cover-letter--2"
+                                  class="js-webform-document-file webform-document-file js-form-managed-file form-managed-file">
+                                  <input type="file" id="edit-upload-your-cover-letter-upload--2"
+                                    name="files[upload_your_cover_letter]" class="form-file form-control js-form-file"
+                                    accept=".pdf,.doc,.docx" />
+                                  <div class="webform-managed-file__name" id="coverLetterFileName"></div>
+                                </div>
+                                <div class="description">
+                                  <div id="edit-upload-your-cover-letter--2--description"
                                     class="webform-element-description">只能一个文件.<br />2 MB以内.<br />文件类型: pdf, doc, docx.
                                   </div>
                                 </div>
@@ -322,16 +358,84 @@
     });
   </script>
   <script>
-    /* ===== 求职申请表：提交逻辑 =====
-       1) 校验必填项与文件（原站规则：单个文件 / 2MB 以内 / pdf|doc|docx）
-       2) 先上传简历到私有目录拿 token，再创建申请
-       3) 成功后展示成功提示并重置表单
+    /* ===== 求职申请表（字段对齐 gattefosse.com/job-form）=====
+       - 期望国家下拉：与原站一致共 259 项，value 存英文名（与原站同构），显示中文
+       - 提交链路：前端校验 → 上传简历（必填）/ 求职信（选填）拿 token → 创建申请
     */
     (function () {
       var MAX_SIZE = 2 * 1024 * 1024;
       var ALLOWED_EXT = ['.pdf', '.doc', '.docx'];
+      /* 原站下拉顺序，[value, 显示文本]；港澳台按中国规范命名 */
+      var COUNTRIES = [
+        ["Afghanistan", "阿富汗"], ["Albania", "阿尔巴尼亚"], ["Algeria", "阿尔及利亚"], ["American Samoa", "美属萨摩亚"],
+        ["Andorra", "安道尔"], ["Angola", "安哥拉"], ["Anguilla", "安圭拉"], ["Antarctica", "南极洲"],
+        ["Antigua & Barbuda", "安提瓜和巴布达"], ["Argentina", "阿根廷"], ["Armenia", "亚美尼亚"], ["Aruba", "阿鲁巴"],
+        ["Ascension Island", "阿森松岛"], ["Australia", "澳大利亚"], ["Austria", "奥地利"], ["Azerbaijan", "阿塞拜疆"],
+        ["Bahamas", "巴哈马"], ["Bahrain", "巴林"], ["Bangladesh", "孟加拉国"], ["Barbados", "巴巴多斯"],
+        ["Belarus", "白俄罗斯"], ["Belgium", "比利时"], ["Belize", "伯利兹"], ["Benin", "贝宁"],
+        ["Bermuda", "百慕大"], ["Bhutan", "不丹"], ["Bolivia", "玻利维亚"], ["Bosnia & Herzegovina", "波斯尼亚和黑塞哥维那"],
+        ["Botswana", "博茨瓦纳"], ["Bouvet Island", "布韦岛"], ["Brazil", "巴西"], ["British Indian Ocean Territory", "英属印度洋领地"],
+        ["British Virgin Islands", "英属维尔京群岛"], ["Brunei", "文莱"], ["Bulgaria", "保加利亚"], ["Burkina Faso", "布基纳法索"],
+        ["Burundi", "布隆迪"], ["Cambodia", "柬埔寨"], ["Cameroon", "喀麦隆"], ["Canada", "加拿大"],
+        ["Canary Islands", "加纳利群岛"], ["Cape Verde", "佛得角"], ["Caribbean Netherlands", "荷属加勒比区"], ["Cayman Islands", "开曼群岛"],
+        ["Central African Republic", "中非共和国"], ["Ceuta & Melilla", "休达及梅利利亚"], ["Chad", "乍得"], ["Chile", "智利"],
+        ["China", "中国"], ["Christmas Island", "圣诞岛"], ["Clipperton Island", "克利珀顿岛"], ["Cocos (Keeling) Islands", "科科斯（基林）群岛"],
+        ["Colombia", "哥伦比亚"], ["Comoros", "科摩罗"], ["Congo - Brazzaville", "刚果（布）"], ["Congo - Kinshasa", "刚果（金）"],
+        ["Cook Islands", "库克群岛"], ["Costa Rica", "哥斯达黎加"], ["Croatia", "克罗地亚"], ["Cuba", "古巴"],
+        ["Curaçao", "库拉索"], ["Cyprus", "塞浦路斯"], ["Czechia", "捷克"], ["Côte d’Ivoire", "科特迪瓦"],
+        ["Denmark", "丹麦"], ["Diego Garcia", "迪戈加西亚岛"], ["Djibouti", "吉布提"], ["Dominica", "多米尼克"],
+        ["Dominican Republic", "多米尼加共和国"], ["Ecuador", "厄瓜多尔"], ["Egypt", "埃及"], ["El Salvador", "萨尔瓦多"],
+        ["Equatorial Guinea", "赤道几内亚"], ["Eritrea", "厄立特里亚"], ["Estonia", "爱沙尼亚"], ["Eswatini", "斯威士兰"],
+        ["Ethiopia", "埃塞俄比亚"], ["Falkland Islands", "福克兰群岛"], ["Faroe Islands", "法罗群岛"], ["Fiji", "斐济"],
+        ["Finland", "芬兰"], ["France", "法国"], ["French Guiana", "法属圭亚那"], ["French Polynesia", "法属波利尼西亚"],
+        ["French Southern Territories", "法属南部领地"], ["Gabon", "加蓬"], ["Gambia", "冈比亚"], ["Georgia", "格鲁吉亚"],
+        ["Germany", "德国"], ["Ghana", "加纳"], ["Gibraltar", "直布罗陀"], ["Greece", "希腊"],
+        ["Greenland", "格陵兰"], ["Grenada", "格林纳达"], ["Guadeloupe", "瓜德罗普"], ["Guam", "关岛"],
+        ["Guatemala", "危地马拉"], ["Guernsey", "根西岛"], ["Guinea", "几内亚"], ["Guinea-Bissau", "几内亚比绍"],
+        ["Guyana", "圭亚那"], ["Haiti", "海地"], ["Heard & McDonald Islands", "赫德岛和麦克唐纳群岛"], ["Honduras", "洪都拉斯"],
+        ["Hong Kong SAR China", "中国香港"], ["Hungary", "匈牙利"], ["Iceland", "冰岛"], ["India", "印度"],
+        ["Indonesia", "印度尼西亚"], ["Iran", "伊朗"], ["Iraq", "伊拉克"], ["Ireland", "爱尔兰"],
+        ["Isle of Man", "马恩岛"], ["Israel", "以色列"], ["Italy", "意大利"], ["Jamaica", "牙买加"],
+        ["Japan", "日本"], ["Jersey", "泽西岛"], ["Jordan", "约旦"], ["Kazakhstan", "哈萨克斯坦"],
+        ["Kenya", "肯尼亚"], ["Kiribati", "基里巴斯"], ["Kosovo", "Kosovo"], ["Kuwait", "科威特"],
+        ["Kyrgyzstan", "吉尔吉斯斯坦"], ["Laos", "老挝"], ["Latvia", "拉脱维亚"], ["Lebanon", "黎巴嫩"],
+        ["Lesotho", "莱索托"], ["Liberia", "利比里亚"], ["Libya", "利比亚"], ["Liechtenstein", "列支敦士登"],
+        ["Lithuania", "立陶宛"], ["Luxembourg", "卢森堡"], ["Macao SAR China", "中国澳门"], ["Madagascar", "马达加斯加"],
+        ["Malawi", "马拉维"], ["Malaysia", "马来西亚"], ["Maldives", "马尔代夫"], ["Mali", "马里"],
+        ["Malta", "马耳他"], ["Marshall Islands", "马绍尔群岛"], ["Martinique", "马提尼克"], ["Mauritania", "毛里塔尼亚"],
+        ["Mauritius", "毛里求斯"], ["Mayotte", "马约特"], ["Mexico", "墨西哥"], ["Micronesia", "密克罗尼西亚"],
+        ["Moldova", "摩尔多瓦"], ["Monaco", "摩纳哥"], ["Mongolia", "蒙古"], ["Montenegro", "黑山"],
+        ["Montserrat", "蒙特塞拉特"], ["Morocco", "摩洛哥"], ["Mozambique", "莫桑比克"], ["Myanmar (Burma)", "缅甸"],
+        ["Namibia", "纳米比亚"], ["Nauru", "瑙鲁"], ["Nepal", "尼泊尔"], ["Netherlands", "荷兰"],
+        ["Netherlands Antilles", "Netherlands Antilles"], ["New Caledonia", "新喀里多尼亚"], ["New Zealand", "新西兰"], ["Nicaragua", "尼加拉瓜"],
+        ["Niger", "尼日尔"], ["Nigeria", "尼日利亚"], ["Niue", "纽埃"], ["Norfolk Island", "诺福克岛"],
+        ["Northern Mariana Islands", "北马里亚纳群岛"], ["North Korea", "朝鲜"], ["North Macedonia", "北马其顿"], ["Norway", "挪威"],
+        ["Oman", "阿曼"], ["Outlying Oceania", "Outlying Oceania"], ["Pakistan", "巴基斯坦"], ["Palau", "帕劳"],
+        ["Palestinian Territories", "巴勒斯坦领土"], ["Panama", "巴拿马"], ["Papua New Guinea", "巴布亚新几内亚"], ["Paraguay", "巴拉圭"],
+        ["Peru", "秘鲁"], ["Philippines", "菲律宾"], ["Pitcairn Islands", "皮特凯恩群岛"], ["Poland", "波兰"],
+        ["Portugal", "葡萄牙"], ["Puerto Rico", "波多黎各"], ["Qatar", "卡塔尔"], ["Romania", "罗马尼亚"],
+        ["Russia", "俄罗斯"], ["Rwanda", "卢旺达"], ["Réunion", "留尼汪"], ["Samoa", "萨摩亚"],
+        ["San Marino", "圣马力诺"], ["Sark", "Sark"], ["Saudi Arabia", "沙特阿拉伯"], ["Senegal", "塞内加尔"],
+        ["Serbia", "塞尔维亚"], ["Seychelles", "塞舌尔"], ["Sierra Leone", "塞拉利昂"], ["Singapore", "新加坡"],
+        ["Sint Maarten", "荷属圣马丁"], ["Slovakia", "斯洛伐克"], ["Slovenia", "斯洛文尼亚"], ["Solomon Islands", "所罗门群岛"],
+        ["Somalia", "索马里"], ["South Africa", "南非"], ["South Georgia & South Sandwich Islands", "南乔治亚和南桑威奇群岛"], ["South Korea", "韩国"],
+        ["South Sudan", "南苏丹"], ["Spain", "西班牙"], ["Sri Lanka", "斯里兰卡"], ["St. Barthélemy", "圣巴泰勒米"],
+        ["St. Helena", "圣赫勒拿"], ["St. Kitts & Nevis", "圣基茨和尼维斯"], ["St. Lucia", "圣卢西亚"], ["St. Martin", "法属圣马丁"],
+        ["St. Pierre & Miquelon", "圣皮埃尔和密克隆群岛"], ["St. Vincent & Grenadines", "圣文森特和格林纳丁斯"], ["Sudan", "苏丹"], ["Suriname", "苏里南"],
+        ["Svalbard & Jan Mayen", "斯瓦尔巴和扬马延"], ["Sweden", "瑞典"], ["Switzerland", "瑞士"], ["Syria", "叙利亚"],
+        ["São Tomé & Príncipe", "圣多美和普林西比"], ["Taiwan", "中国台湾"], ["Tajikistan", "塔吉克斯坦"], ["Tanzania", "坦桑尼亚"],
+        ["Thailand", "泰国"], ["Timor-Leste", "东帝汶"], ["Togo", "多哥"], ["Tokelau", "托克劳"],
+        ["Tonga", "汤加"], ["Trinidad & Tobago", "特立尼达和多巴哥"], ["Tristan da Cunha", "Tristan da Cunha"], ["Tunisia", "突尼斯"],
+        ["Turkmenistan", "土库曼斯坦"], ["Turks & Caicos Islands", "特克斯和凯科斯群岛"], ["Tuvalu", "图瓦卢"], ["Türkiye", "土耳其"],
+        ["U.S. Outlying Islands", "美国本土外小岛屿"], ["U.S. Virgin Islands", "美属维尔京群岛"], ["Uganda", "乌干达"], ["Ukraine", "乌克兰"],
+        ["United Arab Emirates", "阿拉伯联合酋长国"], ["United Kingdom", "英国"], ["United States", "美国"], ["Uruguay", "乌拉圭"],
+        ["Uzbekistan", "乌兹别克斯坦"], ["Vanuatu", "瓦努阿图"], ["Vatican City", "梵蒂冈"], ["Venezuela", "委内瑞拉"],
+        ["Vietnam", "越南"], ["Wallis & Futuna", "瓦利斯和富图纳"], ["Western Sahara", "西撒哈拉"], ["Yemen", "也门"],
+        ["Zambia", "赞比亚"], ["Zimbabwe", "津巴布韦"], ["Åland Islands", "奥兰群岛"],
+      ];
 
       function $(sel) { return document.querySelector(sel); }
+      function val(sel) { var el = $(sel); return el ? String(el.value || '') : ''; }
 
       function setStatus(msg, type) {
         var el = $('#submitStatus');
@@ -345,26 +449,56 @@
         return i < 0 ? '' : String(name).slice(i).toLowerCase();
       }
 
-      /* 选中文件后回显文件名，并即时校验 */
-      var fileInput = $('#edit-upload-your-resume-and-cover-letter-upload--2');
-      if (fileInput) {
-        fileInput.addEventListener('change', function () {
+      /* 文件选中即回显 + 即时校验 */
+      function bindFile(inputId, nameId, required, label) {
+        var input = document.getElementById(inputId);
+        var nameEl = document.getElementById(nameId);
+        if (!input) return;
+        input.addEventListener('change', function () {
           var f = this.files && this.files[0];
-          var nameEl = $('#resumeFileName');
-          if (!f) { if (nameEl) nameEl.textContent = ''; return; }
+          if (nameEl) nameEl.textContent = '';
+          if (!f) return;
           if (ALLOWED_EXT.indexOf(extOf(f.name)) < 0) {
-            setStatus('简历只支持 pdf / doc / docx 格式', 'error');
-            this.value = ''; if (nameEl) nameEl.textContent = '';
+            setStatus(label + '只支持 pdf / doc / docx 格式', 'error');
+            this.value = '';
             return;
           }
           if (f.size > MAX_SIZE) {
-            setStatus('简历文件过大，请控制在 2MB 以内', 'error');
-            this.value = ''; if (nameEl) nameEl.textContent = '';
+            setStatus(label + '文件过大，请控制在 2MB 以内', 'error');
+            this.value = '';
             return;
           }
           if (nameEl) nameEl.textContent = '已选择：' + f.name;
           setStatus('');
         });
+        input.dataset.required = required ? '1' : '';
+      }
+
+      /* 填充期望国家（HTML 里只保留「中国」占位，其余由 JS 注入） */
+      function fillCountries() {
+        var sel = $('#edit-pays-country--2');
+        if (!sel || sel.dataset.filled) return;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < COUNTRIES.length; i++) {
+          var o = document.createElement('option');
+          o.value = COUNTRIES[i][0];
+          o.textContent = COUNTRIES[i][1];
+          frag.appendChild(o);
+        }
+        sel.appendChild(frag);
+        sel.value = 'China'; /* 中国站点默认选中，与原中文站一致 */
+        sel.dataset.filled = '1';
+      }
+
+      function uploadOne(file, kind) {
+        var fd = new FormData();
+        fd.append('file', file, file.name);
+        return fetch(GatteAPI.BASE_URL + '/api/careers/upload?kind=' + kind, { method: 'POST', body: fd })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+          .then(function (res) {
+            if (!res.ok || res.body.code !== 0) throw new Error(res.body.message || '附件上传失败');
+            return res.body.data;
+          });
       }
 
       var submitting = false;
@@ -372,20 +506,30 @@
       function submitForm() {
         if (submitting) return;
 
-        var fullName = (($('#edit-first-name--2') || {}).value || '').trim();
-        var email = (($('#edit-e-mail--2') || {}).value || '').trim();
-        var countryEl = $('#edit-pays-country--2');
-        var country = countryEl ? countryEl.value : '';
-        var message = (($('#edit-your-text--2') || {}).value || '').trim();
+        var firstName = val('#edit-first-name--2').trim();
+        var lastName = val('#edit-last-name--2').trim();
+        var email = val('#edit-e-mail--2').trim();
+        var position = val('#edit-desired-job--2').trim();
+        var jobFunction = val('#edit-function--2');
+        var country = val('#edit-pays-country--2');
+        var message = val('#edit-your-text--2').trim();
         var agreedEl = $('#edit-terms-of-service--2');
-        var honeypot = (($('#edit-url--2') || {}).value || '');
-        var file = fileInput && fileInput.files ? fileInput.files[0] : null;
+        var honeypot = val('#edit-url--2');
 
-        if (!fullName) { setStatus('请填写姓名', 'error'); return; }
+        var resumeInput = document.getElementById('edit-upload-your-resume-upload--2');
+        var coverInput = document.getElementById('edit-upload-your-cover-letter-upload--2');
+        var resumeFile = resumeInput && resumeInput.files ? resumeInput.files[0] : null;
+        var coverFile = coverInput && coverInput.files ? coverInput.files[0] : null;
+
+        /* 校验顺序与页面字段顺序一致 */
+        if (!firstName) { setStatus('请填写名', 'error'); return; }
+        if (!lastName) { setStatus('请填写姓', 'error'); return; }
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus('请填写正确的邮箱地址', 'error'); return; }
-        if (!country) { setStatus('请选择国家', 'error'); return; }
+        if (!position) { setStatus('请填写期望岗位', 'error'); return; }
+        if (!jobFunction) { setStatus('请选择职能领域', 'error'); return; }
+        if (!country) { setStatus('请选择期望国家', 'error'); return; }
         if (!message) { setStatus('请填写内容', 'error'); return; }
-        if (!file) { setStatus('请上传您的简历和求职信', 'error'); return; }
+        if (!resumeFile) { setStatus('请上传您的简历', 'error'); return; }
         if (agreedEl && !agreedEl.checked) { setStatus('请先阅读并同意隐私政策', 'error'); return; }
 
         submitting = true;
@@ -394,33 +538,30 @@
         if (btn) { btn.value = '提交中...'; btn.disabled = true; }
         setStatus('正在上传简历…', 'pending');
 
-        var token = '';
-        var originalName = '';
+        var resume = null;
+        var cover = null;
 
-        var uploadStep = file
-          ? (function () {
-              var fd = new FormData();
-              fd.append('file', file, file.name);
-              return fetch(GatteAPI.BASE_URL + '/api/careers/resume', { method: 'POST', body: fd })
-                .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
-                .then(function (res) {
-                  if (!res.ok || res.body.code !== 0) throw new Error(res.body.message || '简历上传失败');
-                  token = res.body.data.token;
-                  originalName = res.body.data.name || file.name;
-                });
-            })()
-          : Promise.resolve();
-
-        uploadStep
+        uploadOne(resumeFile, 'resume')
+          .then(function (d) {
+            resume = d;
+            if (!coverFile) return null;
+            setStatus('正在上传求职信…', 'pending');
+            return uploadOne(coverFile, 'cover').then(function (c) { cover = c; return null; });
+          })
           .then(function () {
             setStatus('正在提交申请…', 'pending');
             return GatteAPI.Career.create({
-              fullName: fullName,
+              firstName: firstName,
+              lastName: lastName,
               email: email,
+              position: position,
+              jobFunction: jobFunction,
               country: country,
               message: message,
-              resumeToken: token,
-              resumeName: originalName,
+              resumeToken: resume ? resume.token : '',
+              resumeName: resume ? resume.name : '',
+              coverLetterToken: cover ? cover.token : '',
+              coverLetterName: cover ? cover.name : '',
               agreed: true,
               url: honeypot
             });
@@ -429,11 +570,14 @@
             setStatus('您的申请已经提交，感谢您对 Gattefossé 的关注！', 'success');
             var form = document.querySelector('.webform-submission-form');
             if (form) form.reset();
-            var nameEl = $('#resumeFileName');
-            if (nameEl) nameEl.textContent = '';
-            if (countryEl) countryEl.value = 'China';
-            var agreedReset = $('#edit-terms-of-service--2');
-            if (agreedReset) agreedReset.checked = true;
+            var rn = document.getElementById('resumeFileName');
+            var cn = document.getElementById('coverLetterFileName');
+            if (rn) rn.textContent = '';
+            if (cn) cn.textContent = '';
+            var cs = $('#edit-pays-country--2');
+            if (cs) cs.value = 'China';
+            var ag = $('#edit-terms-of-service--2');
+            if (ag) ag.checked = true;
           })
           .catch(function (err) {
             setStatus('提交失败：' + ((err && err.message) || '未知错误') + '，请稍后重试或发送邮件联系我们。', 'error');
@@ -445,6 +589,9 @@
       }
 
       document.addEventListener('DOMContentLoaded', function () {
+        fillCountries();
+        bindFile('edit-upload-your-resume-upload--2', 'resumeFileName', true, '简历');
+        bindFile('edit-upload-your-cover-letter-upload--2', 'coverLetterFileName', false, '求职信');
         var btn = $('#edit-submit--2');
         if (btn) btn.addEventListener('click', submitForm);
       });

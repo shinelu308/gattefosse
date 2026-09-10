@@ -20,19 +20,20 @@ const router = Router();
 const adminOnly = [authMiddleware, requireRole('editor', 'super_admin')];
 
 // ===== 前台公开接口 =====
-// 简历上传（匿名）— 落私有目录，返回 token
+// 附件上传（匿名）：?kind=resume（默认，简历）| cover（求职信）
+// 落私有目录，返回 token，提交申请时回传
 router.post(
-  '/resume',
+  '/upload',
   (req, res, next) => {
     uploadResumeDoc.single('file')(req, res, (err: unknown) => {
       if (!err) return next();
       if (err instanceof multer.MulterError) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-          return res.status(400).json(fail(`简历文件过大，请控制在 ${Math.round(config.resume.maxFileSize / 1024 / 1024)}MB 以内`));
+          return res.status(400).json(fail(`文件过大，请控制在 ${Math.round(config.resume.maxFileSize / 1024 / 1024)}MB 以内`));
         }
-        return res.status(400).json(fail('简历上传失败：' + err.message));
+        return res.status(400).json(fail('上传失败：' + err.message));
       }
-      return res.status(400).json(fail((err as Error).message || '简历上传失败'));
+      return res.status(400).json(fail((err as Error).message || '上传失败'));
     });
   },
   uploadResume
