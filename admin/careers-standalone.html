@@ -306,11 +306,11 @@ createApp({
     async saveDetail() {
       this.saving = true;
       try {
-        const d = await this.api('/careers/' + this.detail.id, {
+        await this.api('/careers/' + this.detail.id, {
           method: 'PUT',
           body: JSON.stringify({ status: this.editForm.status, notes: this.editForm.notes }),
         });
-        this.detail = d;
+        this.detail = null;   // 保存成功后关闭弹框（v-if="detail"）
         this.load();
       } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
       finally { this.saving = false; }
