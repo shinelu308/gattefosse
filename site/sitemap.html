@@ -32,7 +32,7 @@
       "Connexion": "Non"
     });
   </script>
-  <title>网站地图 | 嘉法狮</title>
+  <title>全站导航 ⋅ 嘉法狮</title>
   <link rel="apple-touch-icon" sizes="180x180" href="themes/custom/gattefosse/images/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="themes/custom/gattefosse/images/favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="themes/custom/gattefosse/images/favicons/favicon-16x16.png">
@@ -45,8 +45,6 @@
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_q87ucVt3rnFopj3ZmA--fl7PQC4tROomRfVer8ewsiI.css" />
   <link rel="stylesheet" media="all" href="sites/default/files/css/menu_icons_1701865611.css" />
-  <link rel="stylesheet" media="all"
-    href="sites/default/files/css/css_MobM6AC9AYzwqPX6FjgprjrEWdqBmeVtLAAIyog1ybk.css" />
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_CfAqE8UjmFObeJ-EWQr7CuI8o5xv3bQTdu0Ee6hJ1P0.css" />
   <link rel="stylesheet" media="all"
@@ -164,11 +162,30 @@
   
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
+  const { createApp, reactive, onMounted } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
-        formData: { title: '网站地图 | 嘉法狮', summary: '网站地图 | 嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>网站地图 | 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
+        formData: { title: '全站导航', summary: '', content: '' }
+      });
+      onMounted(async () => {
+        try {
+          const res = await axios.get('/api/content/pages/sitemap');
+          if (res.data && res.data.data) {
+            const p = res.data.data;
+            data.formData = {
+              title: p.title || '全站导航',
+              summary: p.metaDescription || '',
+              content: p.contentHtml || '',
+            };
+            document.title = p.metaTitle || (p.title + ' ⋅ 嘉法狮');
+          } else {
+            data.formData = { title: '全站导航', summary: '', content: '<p>页面数据加载失败，请稍后重试。</p>' };
+          }
+        } catch (e) {
+          console.error('[sitemap] fetch pageContent failed', e);
+          data.formData = { title: '全站导航', summary: '', content: '<p>页面数据加载失败，请稍后重试。</p>' };
+        }
       });
       return { data };
     }
