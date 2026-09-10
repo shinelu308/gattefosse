@@ -1052,7 +1052,7 @@ const QUILL_TOOLBAR = [
               <div style="display:flex;gap:8px;align-items:center;" data-page-node-id="aRBAvZccfty32lwt3sILCq">
                 <span v-if="selectedPcIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedPcIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeletePc" :disabled="selectedPcIds.length === 0" data-page-node-id="ivQEggk3TSUl6B1R7M86t2">批量删除 ({{ selectedPcIds.length }})</button>
-                <button class="btn btn-outline btn-sm" data-page-node-id="J2C5uivVXDYpLnYBsOR4Ri">导出 Excel</button>
+                <button class="btn btn-outline btn-sm" @click="exportPcCsv" data-page-node-id="J2C5uivVXDYpLnYBsOR4Ri">导出 Excel</button>
                 <button class="btn btn-primary btn-sm" @click="resetPcEdit();goPage('pc-edit')" data-page-node-id="fCHW6woAcGTO4XrWoRh8TM">+ 新增产品</button>
               </div>
             </div>
@@ -1526,7 +1526,7 @@ const QUILL_TOOLBAR = [
               <div style="display:flex;gap:8px;align-items:center;" data-page-node-id="ltEteRv8N5EMv5L9RACeRu">
                 <span v-if="selectedPharmaIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedPharmaIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeletePharma" :disabled="selectedPharmaIds.length === 0" data-page-node-id="Qc3HBeHirOnhLvfOJpFB8P">批量删除 ({{ selectedPharmaIds.length }})</button>
-                <button class="btn btn-outline btn-sm" data-page-node-id="l0usLubD2i7FFQS9R5UciR">导出 Excel</button>
+                <button class="btn btn-outline btn-sm" @click="exportPharmaCsv" data-page-node-id="l0usLubD2i7FFQS9R5UciR">导出 Excel</button>
                 <button class="btn btn-primary btn-sm" @click="goPage('pharma-edit')" data-page-node-id="bo20VZ0IaZqT9rmaSOkTLq">+ 新增产品</button>
               </div>
             </div>
@@ -1831,7 +1831,7 @@ const QUILL_TOOLBAR = [
               <div style="display:flex;gap:8px;align-items:center;" data-page-node-id="KFK3Vc7hEpDhevQkBGKrWD">
                 <span v-if="selectedFormulaIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedFormulaIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeleteFormula" :disabled="selectedFormulaIds.length===0" data-page-node-id="aDyjoxVFMowR4YM6cBppmN">批量删除 ({{ selectedFormulaIds.length }})</button>
-                <button class="btn btn-outline btn-sm" data-page-node-id="Y3oi2KxLb93nEgovNqZX0o">导出 Excel</button>
+                <button class="btn btn-outline btn-sm" @click="exportFormulaCsv" data-page-node-id="Y3oi2KxLb93nEgovNqZX0o">导出 Excel</button>
                 <button class="btn btn-primary btn-sm" @click="resetFormulaEdit(); goPage('formula-edit')" data-page-node-id="IySlaTzBT3ZxrR7crN2k2b">+ 新增配方</button>
               </div>
             </div>
@@ -4927,6 +4927,71 @@ createApp({
         this.stats.pcCount = data.pagination ? data.pagination.total : list.length;
         this.stats.pcPublished = list.filter(function(i) { return i.isPublished; }).length;
       } catch (e) { console.error(e); }
+    },
+    /* ===== 导出 Excel（CSV 带 BOM，Excel 直接打开） ===== */
+    _downloadCsv(filename, headers, rows) {
+      const esc = function(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+      const lines = [headers.map(esc).join(',')].concat(rows.map(function(r) { return r.map(esc).join(','); }));
+      const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    },
+    _fmtDate(d) { return d ? new Date(d).toISOString().slice(0, 10) : '-'; },
+    _tagLabels(productLine, category, arr) {
+      const self = this;
+      return (arr || []).map(function(t) { return self.getTagLabel(productLine, category, t); }).join('、');
+    },
+    async exportPcCsv() {
+      try {
+        const params = new URLSearchParams({ limit: 1000 });
+        if (this.pcFilter.keyword) params.set('keyword', this.pcFilter.keyword);
+        if (this.pcFilter.functionality) params.set('functionality', this.pcFilter.functionality);
+        if (this.pcFilter.isPublished) params.set('isPublished', this.pcFilter.isPublished);
+        const data = await this.api('/pc-ingredients?' + params.toString());
+        const list = data.list || [];
+        const self = this;
+        const rows = list.map(function(i) {
+          return [i.name, i.inciName || '', self._tagLabels('pc', 'functionality', i.functionalityTag), self._tagLabels('pc', 'application', i.applicationTag), self._tagLabels('pc', 'naturality', i.naturalityLabel), i.isPublished ? '已发布' : '草稿', self._fmtDate(i.updatedAt), i.id];
+        });
+        this._downloadCsv('成分清单_' + new Date().toISOString().slice(0, 10) + '.csv', ['产品名称', 'INCI 名称', '功能分类', '应用领域', '天然认证', '状态', '更新时间', 'ID'], rows);
+      } catch (e) { console.error(e); alert('导出失败：' + e.message); }
+    },
+    async exportPharmaCsv() {
+      try {
+        const params = new URLSearchParams({ limit: 1000 });
+        if (this.pharmaFilter.keyword) params.set('keyword', this.pharmaFilter.keyword);
+        if (this.pharmaFilter.route) params.set('route', this.pharmaFilter.route);
+        if (this.pharmaFilter.dosageForm) params.set('dosageForm', this.pharmaFilter.dosageForm);
+        if (this.pharmaFilter.isPublished) params.set('isPublished', this.pharmaFilter.isPublished);
+        const data = await this.api('/pharma-products?' + params.toString());
+        const list = data.list || [];
+        const self = this;
+        const rows = list.map(function(i) {
+          return [i.name, self._tagLabels('pharma', 'route', i.routeTag), self._tagLabels('pharma', 'dosage_form', i.dosageFormTag), self._tagLabels('pharma', 'functionality', i.functionalityTag), i.isPublished ? '已发布' : '草稿', self._fmtDate(i.updatedAt), i.id];
+        });
+        this._downloadCsv('药用辅料清单_' + new Date().toISOString().slice(0, 10) + '.csv', ['产品名称', '给药途径', '剂型', '功能分类', '状态', '更新时间', 'ID'], rows);
+      } catch (e) { console.error(e); alert('导出失败：' + e.message); }
+    },
+    async exportFormulaCsv() {
+      try {
+        const params = new URLSearchParams({ limit: 1000 });
+        if (this.formulaFilter.keyword) params.set('keyword', this.formulaFilter.keyword);
+        if (this.formulaFilter.application) params.set('application', this.formulaFilter.application);
+        if (this.formulaFilter.form) params.set('form', this.formulaFilter.form);
+        if (this.formulaFilter.isPublished) params.set('isPublished', this.formulaFilter.isPublished);
+        const data = await this.api('/formulations?' + params.toString());
+        const list = data.list || [];
+        const self = this;
+        const rows = list.map(function(i) {
+          return [i.name, i.code || '', self._tagLabels('formula', 'application', i.applicationTag), self._tagLabels('formula', 'form', i.formTag), i.naturalityIndex || '', i.isPublished ? '已发布' : '草稿', self._fmtDate(i.updatedAt), i.id];
+        });
+        this._downloadCsv('配方清单_' + new Date().toISOString().slice(0, 10) + '.csv', ['配方名称', '编码', '应用领域', '剂型', '天然指数', '状态', '更新时间', 'ID'], rows);
+      } catch (e) { console.error(e); alert('导出失败：' + e.message); }
     },
     resetPcEdit() {
       this.editingPc = { name: '', inciName: '', description: '', dosage: '', tagline: '', imageUrl: '', detailImageUrl: '', videoUrl: '', videoSectionTitle: '', intlUrl: '', functionalityTag: [], applicationTag: [], conceptTag: [], claimTag: [], characteristicTag: [], naturalityLabel: [], isPublished: false, isShowRelated: true, id: null, blocks: [], _blockIdCounter: 0 };
