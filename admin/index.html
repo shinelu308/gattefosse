@@ -241,9 +241,6 @@ body {
 }
 .topbar-breadcrumb .sep { color: var(--border); }
 .topbar-breadcrumb .current { color: var(--text); font-weight: 500; }
-/* 面包屑可点击层级：hover 高亮为品牌绿，点击 goPage 跳转对应列表 */
-.topbar-breadcrumb .crumb-link { color: var(--text-muted); cursor: pointer; transition: color .15s; }
-.topbar-breadcrumb .crumb-link:hover { color: #8EB73C; text-decoration: underline; text-underline-offset: 3px; }
 .topbar-search {
   margin-left: auto; position: relative;
   display: flex; align-items: center;
@@ -604,7 +601,7 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
   /* 顶栏防挤压 */
   .topbar { padding: 0 12px; gap: 10px; }
   .topbar-breadcrumb { min-width: 0; flex-shrink: 1; white-space: nowrap; overflow: hidden; }
-  .topbar-breadcrumb .crumb-link, .topbar-breadcrumb .sep { display: none; }
+  .topbar-breadcrumb .crumb-root, .topbar-breadcrumb .sep { display: none; }
   .topbar-breadcrumb .current { overflow: hidden; text-overflow: ellipsis; }
   .topbar-search { flex: 1; min-width: 0; margin-left: 0; }
   .topbar-search input { width: 100%; max-width: 220px; }
@@ -851,11 +848,9 @@ const QUILL_TOOLBAR = [
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" data-page-node-id="5rqvoQZtM0eK3uDrWGBHjp"><line x1="3" y1="6" x2="21" y2="6" data-page-node-id="jH8guj33UZMp1OPCE3HNxB"/><line x1="3" y1="12" x2="21" y2="12" data-page-node-id="mzoGUtFFYI3fRpLzCaOh27"/><line x1="3" y1="18" x2="21" y2="18" data-page-node-id="7BgpdFAQlBHciC1OLSFtH5"/></svg>
         </button>
         <div class="topbar-breadcrumb" data-page-node-id="eXWb4CLzakgvpnV8ZPIBzv">
-          <template v-for="(crumb, i) in breadcrumbs" :key="'bc' + i">
-            <span v-if="i > 0" class="sep" data-page-node-id="t8WmDALWH060CAGvmAI9mn">/</span>
-            <span v-if="crumb.page" class="crumb-link" :title="'返回' + crumb.label" @click="goPage(crumb.page)">{{ crumb.label }}</span>
-            <span v-else class="current" data-page-node-id="F1zB8mOOlrSaEXM9CDce4x">{{ crumb.label }}</span>
-          </template>
+          <span class="crumb-root" data-page-node-id="vPFKeCKm6Av0LAFyb3KYTy">后台管理</span>
+          <span class="sep" data-page-node-id="t8WmDALWH060CAGvmAI9mn">/</span>
+          <span class="current" data-page-node-id="F1zB8mOOlrSaEXM9CDce4x">{{ breadcrumbText }}</span>
         </div>
         <div class="topbar-search" data-page-node-id="W02Df5m5gJi7WOhfdHwN3r">
           <span class="search-icon" data-page-node-id="aWXCkOcZtF6GrsbHt5PaLQ">
@@ -4492,48 +4487,46 @@ createApp({
       };
       return map[this.currentPage] || '';
     },
-    breadcrumbs() {
-      // 每级 { label, page }：page 存在即可点击（goPage 自带权限校验与列表加载），最后一级为当前页不可点
-      // 分组标题指向该分组的第一个列表页
+    breadcrumbText() {
       const m = {
-        dashboard: [{ label: '总览' }],
-        'pc-list': [{ label: '产品管理', page: 'pc-list' }, { label: '个人护理', page: 'pc-list' }, { label: '成分' }],
-        'pc-edit': [{ label: '产品管理', page: 'pc-list' }, { label: '个人护理', page: 'pc-list' }, { label: '成分', page: 'pc-list' }, { label: this.editingPc.id ? '编辑产品' : '新增产品' }],
-        'formula-list': [{ label: '产品管理', page: 'pc-list' }, { label: '个人护理', page: 'pc-list' }, { label: '配方' }],
-        'formula-edit': [{ label: '产品管理', page: 'pc-list' }, { label: '个人护理', page: 'pc-list' }, { label: '配方', page: 'formula-list' }, { label: this.editingFormula.id ? '编辑配方' : '新增配方' }],
-        'pharma-list': [{ label: '产品管理', page: 'pc-list' }, { label: '药用辅料' }],
-        'pharma-edit': [{ label: '产品管理', page: 'pc-list' }, { label: '药用辅料', page: 'pharma-list' }, { label: this.editingPharma.id ? '编辑产品' : '新增产品' }],
-        'news-list': [{ label: '内容管理', page: 'news-list' }, { label: '新闻与活动' }],
-        'news-edit': [{ label: '内容管理', page: 'news-list' }, { label: '新闻与活动', page: 'news-list' }, { label: this.editingNews.id ? '编辑' : '新增' }],
-        'doc-list': [{ label: '内容管理', page: 'news-list' }, { label: '文档资源' }],
-        'doc-edit': [{ label: '内容管理', page: 'news-list' }, { label: '文档资源', page: 'doc-list' }, { label: '编辑' }],
-        'order-list': [{ label: '运营', page: 'order-list' }, { label: '样品订单' }],
-        'order-detail': [{ label: '运营', page: 'order-list' }, { label: '样品订单', page: 'order-list' }, { label: '详情' }],
-        'user-list': [{ label: '运营', page: 'order-list' }, { label: '用户管理' }],
-        'user-edit': [{ label: '运营', page: 'order-list' }, { label: '用户管理', page: 'user-list' }, { label: '编辑' }],
-        'settings': [{ label: '运营', page: 'order-list' }, { label: '系统设置' }],
-        'content-list': [{ label: '内容管理', page: 'news-list' }, { label: '站点内容' }],
-        'content-edit': [{ label: '内容管理', page: 'news-list' }, { label: '站点内容', page: 'content-list' }, { label: '编辑' }],
-        'subsidiary-edit': [{ label: '内容管理', page: 'news-list' }, { label: '站点内容', page: 'content-list' }, { label: '编辑分公司' }],
-        'tag-manage': [{ label: '运营', page: 'order-list' }, { label: '标签管理' }],
-        'career-list': [{ label: '运营', page: 'order-list' }, { label: '招聘管理' }],
-        'article-list': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '文章' }],
-        'article-edit': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '文章', page: 'article-list' }, { label: this.editingArticle.id ? '编辑' : '新增' }],
-        'webinar-list': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '在线研讨会' }],
-        'webinar-edit': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '在线研讨会', page: 'webinar-list' }, { label: this.editingWebinar.id ? '编辑' : '新增' }],
-        'publication-list': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '出版物' }],
-        'publication-edit': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '出版物', page: 'publication-list' }, { label: this.editingPublication.id ? '编辑' : '新增' }],
-        'magazine-list': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '杂志' }],
-        'magazine-edit': [{ label: '内容管理', page: 'news-list' }, { label: '获取灵感', page: 'article-list' }, { label: '杂志', page: 'magazine-list' }, { label: this.editingMagazine.id ? '编辑' : '新增' }],
-        'author-list': [{ label: '系统', page: 'author-list' }, { label: '作者管理' }],
-        'author-edit': [{ label: '系统', page: 'author-list' }, { label: '作者管理', page: 'author-list' }, { label: this.editingAuthor.id ? '编辑' : '新增' }],
-        'lm-hot-topics': [{ label: '内容管理', page: 'news-list' }, { label: '了解更多', page: 'lm-hot-topics' }, { label: '热点话题' }],
-        'lm-webinar': [{ label: '内容管理', page: 'news-list' }, { label: '了解更多', page: 'lm-hot-topics' }, { label: '在线研讨会' }],
-        'lm-publications': [{ label: '内容管理', page: 'news-list' }, { label: '了解更多', page: 'lm-hot-topics' }, { label: '出版物' }],
-        'lm-brochures': [{ label: '内容管理', page: 'news-list' }, { label: '了解更多', page: 'lm-hot-topics' }, { label: '资料手册' }],
-        'lm-journees': [{ label: '内容管理', page: 'news-list' }, { label: '了解更多', page: 'lm-hot-topics' }, { label: 'Journées Galéniques' }],
+        dashboard: '总览',
+        'pc-list': '个人护理 / 成分',
+        'pc-edit': '个人护理 / 成分 / ' + (this.editingPc.id ? '编辑产品' : '新增产品'),
+        'pharma-list': '产品管理 / 药用辅料',
+        'pharma-edit': '产品管理 / 药用辅料 / ' + (this.editingPharma.id ? '编辑产品' : '新增产品'),
+        'formula-list': '个人护理 / 配方',
+        'formula-edit': '个人护理 / 配方 / ' + (this.editingFormula.id ? '编辑配方' : '新增配方'),
+        'news-list': '内容管理 / 新闻与活动',
+        'news-edit': '内容管理 / 新闻与活动 / ' + (this.editingNews.id ? '编辑' : '新增'),
+        'doc-list': '内容管理 / 文档资源',
+        'doc-edit': '内容管理 / 文档资源 / 编辑',
+        'order-list': '运营 / 样品订单',
+        'order-detail': '运营 / 样品订单 / 详情',
+        'user-list': '运营 / 用户管理',
+        'user-edit': '运营 / 用户管理 / 编辑',
+        'settings': '运营 / 系统设置',
+        'content-list': '内容管理 / 站点内容',
+        'content-edit': '内容管理 / 站点内容 / 编辑',
+        'subsidiary-edit': '内容管理 / 站点内容 / 编辑分公司',
+        'tag-manage': '运营 / 标签管理',
+        'career-list': '运营 / 招聘管理',
+        'article-list': '内容管理 / 获取灵感 / 文章',
+        'article-edit': '内容管理 / 获取灵感 / 文章 / ' + (this.editingArticle.id ? '编辑' : '新增'),
+        'webinar-list': '内容管理 / 获取灵感 / 在线研讨会',
+        'webinar-edit': '内容管理 / 获取灵感 / 在线研讨会 / ' + (this.editingWebinar.id ? '编辑' : '新增'),
+        'publication-list': '内容管理 / 获取灵感 / 出版物',
+        'publication-edit': '内容管理 / 获取灵感 / 出版物 / ' + (this.editingPublication.id ? '编辑' : '新增'),
+        'magazine-list': '内容管理 / 获取灵感 / 杂志',
+        'magazine-edit': '内容管理 / 获取灵感 / 杂志 / ' + (this.editingMagazine.id ? '编辑' : '新增'),
+        'author-list': '系统 / 作者管理',
+        'author-edit': '系统 / 作者管理 / ' + (this.editingAuthor.id ? '编辑' : '新增'),
+        'lm-hot-topics': '内容管理 / 了解更多 / 热点话题',
+        'lm-webinar': '内容管理 / 了解更多 / 在线研讨会',
+        'lm-publications': '内容管理 / 了解更多 / 出版物',
+        'lm-brochures': '内容管理 / 了解更多 / 资料手册',
+        'lm-journees': '内容管理 / 了解更多 / Journées Galéniques',
       };
-      return m[this.currentPage] || [{ label: '管理后台' }];
+      return m[this.currentPage] || '管理后台';
     },
     tagCategories() {
       const map = {
