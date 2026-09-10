@@ -527,45 +527,20 @@
           selectedOptions: []
         });
         const getMallUserFunc = async () => {
-            let token = localStorage.getItem("_token");
-            let userId = localStorage.getItem("userId");
-            var api = "/api/mallUser/getMallUser";
-            showDialog("您的申请已提交");
-                if (res.data.code == 0) {
-                    data.formData = res.data.data.remallUser
-                    console.log(data.formData)
-                } else {
-                }
-            });
+            // 旧商城接口（/api/mallUser/getMallUser）已下线，静态模式下不再请求
+            console.log("API call disabled - static mode");
         }
         if (localStorage.getItem('isLoggedIn') == 'true') {
           getMallUserFunc(); // 此处调回的功能只是作为预备，并未正式生效 2024-11-04
         }
         // 查询
         const getProductList = () => {
-          var api = "/api/mallGoodsInfo/getMallGoodsInfoList";
-          api += "?pageSize=10000";
-          api += "&page=1";
-          if (data.selectedValue == "药用辅料" ) {
-            api += "&goodsCategoryId=117";
-          }
-          if (data.selectedValue == "化妆品原料" ) {
-            api += "&goodsCategoryId=121";
-          }
           if (data.selectedValue == "" ) {
             data.productList = []
             return
           }
+          // 旧商城接口（/api/mallGoodsInfo/getMallGoodsInfoList）已下线，静态模式下不再请求
           console.log("API call disabled");
-            for (var i = 0; i < data.productList.length; i++) {
-              data.productList[i].inputID = "inputID_" + data.productList[i].ID;
-            }
-            nextTick(() => {
-              console.log("ok");
-            });
-          }).catch((err, res) => {
-            console.log(err)
-          })
         }
         return {
           data,

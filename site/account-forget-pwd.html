@@ -166,21 +166,12 @@
             });
             // 獲取用戶
             const sendResetPasswordEmail = async () => {
-                var api = "/api/mallUser/sendResetPasswordEmail";
                 if (data.email == '' || data.email == undefined || data.email == null ) {
                     showDialog("请输入邮件！");
                     return
                 }
+                // 旧商城接口（/api/mallUser/sendResetPasswordEmail）已下线，静态模式下不再请求
                 console.log("API call disabled - static mode");
-                    if (res.data.code == 0) {
-                        showDialog("邮件已经发送，请注意查收！");
-                        //setCountdownClass("block");
-                        delayURL(url, 3000);
-                        //const intervalId = setInterval(updateCountdown, 1000);
-                    } else {
-                        showDialog(res.data.msg);
-                    }
-                });
             }
             return {
                 data,

@@ -304,15 +304,11 @@
         });
         // 提交
         const submitInfo = () => {
-          var api = "/api/webFeedback/createWebFeedback";
-          //2.使用axios 进行post请求
+          // 旧反馈接口（/api/webFeedback/*）已下线，静态模式下直接提示成功
           console.log("API call disabled");
-              SiteDialog.alert('信息登记成功，我们的工作人员会电话或者email与您确认，请注意接收接听，感谢您的支持！', { title: '提交成功', type: 'success' }).then(function () {
-                window.location.href = '/';
-              });
-            }).catch((err, res) => {
-              console.log(err)
-            })
+          SiteDialog.alert('信息登记成功，我们的工作人员会电话或者email与您确认，请注意接收接听，感谢您的支持！', { title: '提交成功', type: 'success' }).then(function () {
+            window.location.href = '/';
+          });
         }
         return {
           data,

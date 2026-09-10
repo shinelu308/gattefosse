@@ -323,22 +323,8 @@
                 ],
             })
             const submitForm = () => {
-                var api = "/api/mallUser/login";
+                // 旧商城登录接口（/api/mallUser/login）已下线；会员登录请走 account.html
                 SiteDialog.alert('演示模式：登录功能已禁用', { type: 'warn' });
-                        localStorage.setItem('username', loginFormData.username);
-                        localStorage.setItem('userId', res.data.data.user.id);
-                        localStorage.setItem('nickname', res.data.data.user.nickname);
-                        localStorage.setItem('userEnabled', res.data.data.user.enable);
-                        localStorage.setItem('_token', res.data.data.token);
-                        showDialog("登录中,请稍候......");
-                        // setCountdownClass("block");
-                        delayURL(url, 3000);
-                        // const intervalId = setInterval(updateCountdown, 1000);
-                    } else {
-                        showDialog(res.data.msg);
-                    }
-                    data.session = res.data.data.token
-                })
             }
             return {
                 loginFormData,
