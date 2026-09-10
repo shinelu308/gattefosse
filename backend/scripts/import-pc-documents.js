@@ -29,6 +29,18 @@ function get(url, binary) {
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/** 带重试的抓取（网络抖动容错） */
+async function getRetry(url, binary, tries = 4) {
+  for (let i = 1; i <= tries; i++) {
+    try {
+      const r = await get(url, binary);
+      if (r !== null && r !== undefined) return r;
+    } catch (e) { /* 网络抖动继续重试 */ }
+    if (i < tries) await sleep(1500 * i);
+  }
+  return null;
+}
+
 /** 解析详情页 Resources 三类文档（含锁定标记与 node id） */
 function parseResources(html) {
   const nidM = html.match(/url=\/node\/(\d+)/);
@@ -70,7 +82,7 @@ function fileNameFor(url, nid) {
 }
 
 async function download(url, file) {
-  const buf = await get(url, true);
+  const buf = await getRetry(url, true);
   if (!buf || buf.length < 1000 || buf.slice(0, 5).toString() !== '%PDF-') return null; // 锁定空文件/非PDF
   fs.writeFileSync(path.join(DOC_DIR, file), buf);
   return buf.length;
@@ -90,7 +102,7 @@ async function download(url, file) {
   for (const l of locals) {
     const slug = l.intl_url.replace(/\/+$/, '').split('/').pop();
     if (onlyArg && !slug.includes(onlyArg)) continue;
-    const html = await get(l.intl_url);
+    const html = await getRetry(l.intl_url);
     await sleep(250);
     if (!html) { console.log('✗ [' + l.id + '] ' + l.name + ' 详情页不可达: ' + slug); continue; }
     const { nid, docs } = parseResources(html);
@@ -118,7 +130,7 @@ async function download(url, file) {
         lockTally[type === 'SDS' ? 'sds' : type === 'Brochure' ? 'brochure' : 'tds']++;
         if (!APPLY) continue;
         const guess = EN + '/files/' + nid + '/' + encodeURIComponent(d.name);
-        const buf = await get(guess, true);
+        const buf = await getRetry(guess, true);
         if (buf && buf.length > 1000 && buf.slice(0, 5).toString() === '%PDF-') {
           const file = fileNameFor(decodeEntities(d.name.startsWith('http') ? d.name : guess), nid);
           fs.writeFileSync(path.join(DOC_DIR, file), buf);

@@ -1310,9 +1310,11 @@ const QUILL_TOOLBAR = [
                         <div v-for="(file, fi) in block._fileList" :key="fi" class="block-entry-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px;" data-page-node-id="ALLEmhi5VsVPtFfCZmD0kr">
                           <input type="text" class="form-control" v-model="file.title" placeholder="文件标题" style="flex:1;min-width:120px;" data-page-node-id="OoyvrnWoMvTtKCIjUeAldD">
                           <input type="text" class="form-control" v-model="file.url" placeholder="文件 URL 或从文档库选择" style="flex:2;min-width:160px;" data-page-node-id="jd1Xk3X8Rc1q3Y1uEM1f1I">
-                          <select class="form-control" style="width:auto;max-width:160px;font-size:13px;" @change="onDocSelect(bi, fi, $event)" data-page-node-id="NgWUQxPUptT9uayQGBJxyT">
+                          <select class="form-control" style="width:auto;max-width:200px;font-size:13px;" @change="onDocSelect(bi, fi, $event)" data-page-node-id="NgWUQxPUptT9uayQGBJxyT">
                             <option value="" data-page-node-id="xAKweIqf1ZmwlDQIhR3aRF">从文档库选择...</option>
-                            <option v-for="d in docList" :key="d.id" :value="d.id" data-page-node-id="Q8WQQHB30kyNr74stSeDYX">{{ d.title }}</option>
+                            <optgroup v-for="g in pickerDocGroups" :key="g.type" :label="docTypeLabel(g.type) + '（' + g.items.length + '）'">
+                              <option v-for="d in g.items" :key="d.id" :value="d.id" data-page-node-id="Q8WQQHB30kyNr74stSeDYX">{{ (g.recommended && g.recommended.includes(d.id) ? '★ ' : '') + d.title }}</option>
+                            </optgroup>
                           </select>
                           <button class="btn btn-sm btn-danger" @click="removeFile(bi, fi)" data-page-node-id="ZNYcN6y67COUGwtFejYpSS">×</button>
                         </div>
@@ -2071,9 +2073,11 @@ const QUILL_TOOLBAR = [
                         <div v-for="(file, fi) in block._fileList" :key="fi" class="block-entry-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px;" data-page-node-id="IEBnrNg0NMDq3d8HfImiRv">
                           <input type="text" class="form-control" v-model="file.title" placeholder="文件标题" style="flex:1;min-width:120px;" data-page-node-id="IVQF1LCZDizQrUQLAr3nBQ">
                           <input type="text" class="form-control" v-model="file.url" placeholder="文件 URL 或从文档库选择" style="flex:2;min-width:160px;" data-page-node-id="gGW4hlDwH483B5MKHhssb0">
-                          <select class="form-control" style="width:auto;max-width:160px;font-size:13px;" @change="onFormulaDocSelect(bi, fi, $event)" data-page-node-id="Sc5PYNy5GkTWs4dJxxZ1Vw">
+                          <select class="form-control" style="width:auto;max-width:200px;font-size:13px;" @change="onFormulaDocSelect(bi, fi, $event)" data-page-node-id="Sc5PYNy5GkTWs4dJxxZ1Vw">
                             <option value="" data-page-node-id="cJOITEEchK2Ps5alHnep76">从文档库选择...</option>
-                            <option v-for="d in docList" :key="d.id" :value="d.id" data-page-node-id="E3efR2H831pvPJMTsveRpg">{{ d.title }}</option>
+                            <optgroup v-for="g in pickerDocGroups" :key="'f-'+g.type" :label="docTypeLabel(g.type) + '（' + g.items.length + '）'">
+                              <option v-for="d in g.items" :key="d.id" :value="d.id" data-page-node-id="E3efR2H831pvPJMTsveRpg">{{ (g.recommended && g.recommended.includes(d.id) ? '★ ' : '') + d.title }}</option>
+                            </optgroup>
                           </select>
                           <button class="btn btn-sm btn-danger" @click="removeFormulaFile(bi, fi)" data-page-node-id="82z8S8vhKFFOCo4zxJEq3D">×</button>
                         </div>
@@ -2822,8 +2826,24 @@ const QUILL_TOOLBAR = [
 
                   <!-- files block -->
                   <div v-if="block.blockType === 'files'" data-page-node-id="rT8bDTMoK06BxdD8ks04v8">
-                    <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:8px;" data-page-node-id="sxmyIe3XDiIYeNx4MBrdX4">每个文件一行：文件名 | URL</div>
-                    <textarea class="form-control" v-model="block._filesText" rows="4" placeholder="产品手册.pdf | /uploads/manual.pdf&#10;技术资料.docx | /uploads/tech.docx" style="font-size:13px;font-family:monospace;"></textarea>
+                    <!-- 已添加文件列表 -->
+                    <div v-if="block.files && block.files.length" style="border:1px solid var(--border-color);border-radius:8px;overflow:hidden;margin-bottom:10px;">
+                      <div v-for="(f, fi) in block.files" :key="f.fileId || fi" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border-color);background:var(--bg-secondary, #fafafa);">
+                        <span style="font-size:11px;padding:2px 8px;border-radius:10px;flex-shrink:0;" :style="{background: f.docType==='TDS'||f.docType==='SDS' ? '#e8f0fe' : f.docType==='Brochure' ? '#fef3e8' : '#e8f8ec', color: f.docType==='TDS'||f.docType==='SDS' ? '#1a56db' : f.docType==='Brochure' ? '#b45309' : '#15803d'}">{{ docTypeLabel(f.docType) }}</span>
+                        <span style="font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" :title="f.title">{{ f.title }}</span>
+                        <span v-if="f.isPublic === false" style="font-size:11px;color:var(--text-tertiary);flex-shrink:0;" title="需要会员登录">🔒</span>
+                        <span style="cursor:pointer;color:var(--text-tertiary);font-size:16px;line-height:1;flex-shrink:0;" @click="removeFileItem(bi, fi)" title="移除">×</span>
+                      </div>
+                    </div>
+                    <div v-else style="font-size:12px;color:var(--text-tertiary);margin-bottom:10px;">暂无文件，请从文档库添加</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                      <button class="btn btn-sm btn-primary" @click="openDocPicker(bi)">📚 从文档库添加</button>
+                      <button class="btn btn-sm btn-outline" @click="block._manualMode = !block._manualMode">{{ block._manualMode ? '退出手动模式' : '手动填写' }}</button>
+                    </div>
+                    <div v-if="block._manualMode" style="margin-top:8px;">
+                      <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:8px;" data-page-node-id="sxmyIe3XDiIYeNx4MBrdX4">每个文件一行：文件名 | URL</div>
+                      <textarea class="form-control" v-model="block._filesText" rows="4" placeholder="产品手册.pdf | /uploads/manual.pdf&#10;技术资料.docx | /uploads/tech.docx" style="font-size:13px;font-family:monospace;"></textarea>
+                    </div>
                   </div>
                 </div>
 
@@ -2831,6 +2851,38 @@ const QUILL_TOOLBAR = [
                   <button class="btn btn-sm btn-outline" @click="addBlock('product_cards')" data-page-node-id="Qh8bkSsbDxEyA2ZCsvYPZO">+ 关联产品</button>
                   <button class="btn btn-sm btn-outline" @click="addBlock('video')" data-page-node-id="mv3X0aQHUF4XgZIkqJDCW0">+ 视频</button>
                   <button class="btn btn-sm btn-outline" @click="addBlock('files')" data-page-node-id="PTxyMfZy6QNHZwUwsDJgqX">+ 文件下载</button>
+                </div>
+
+                <!-- 文档库选择弹窗 -->
+                <div v-if="docPicker.blockIndex > -1" style="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:flex;align-items:center;justify-content:center;" @click.self="docPicker.blockIndex = -1">
+                  <div style="background:#fff;border-radius:12px;width:640px;max-width:92vw;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
+                    <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
+                      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                        <strong style="font-size:15px;">从文档库选择文件</strong>
+                        <span style="cursor:pointer;font-size:18px;color:var(--text-tertiary);" @click="docPicker.blockIndex = -1">×</span>
+                      </div>
+                      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button v-for="t in ['', 'TDS', 'SDS', 'Brochure', 'Formula']" :key="t || 'all'" class="btn btn-sm" style="border-radius:14px;" :class="docPicker.tab === t ? 'btn-primary' : 'btn-outline'" @click="docPicker.tab = t; loadDocPickerList()">{{ t ? docTypeLabel(t) : '全部' }}</button>
+                        <input class="form-control" style="width:200px;margin-left:auto;" placeholder="搜索文档标题..." v-model="docPicker.keyword" @keyup.enter="loadDocPickerList()" @input="docSearchDebounce()">
+                      </div>
+                    </div>
+                    <div style="flex:1;overflow-y:auto;padding:8px 18px;">
+                      <div v-if="docPicker.list.length === 0" style="text-align:center;color:var(--text-tertiary);padding:30px 0;font-size:13px;">暂无匹配文档</div>
+                      <label v-for="d in docPicker.list" :key="d.id" style="display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:1px solid var(--border-color);cursor:pointer;">
+                        <input type="checkbox" :value="d.id" v-model="docPicker.checkedIds">
+                        <span style="font-size:11px;padding:2px 8px;border-radius:10px;flex-shrink:0;" :style="{background: d.type==='TDS'||d.type==='SDS' ? '#e8f0fe' : d.type==='Brochure' ? '#fef3e8' : '#e8f8ec', color: d.type==='TDS'||d.type==='SDS' ? '#1a56db' : d.type==='Brochure' ? '#b45309' : '#15803d'}">{{ docTypeLabel(d.type) }}</span>
+                        <span style="font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ d.title }}</span>
+                        <span v-if="!d.isPublic" style="font-size:11px;color:var(--text-tertiary);flex-shrink:0;" title="需要会员登录">🔒</span>
+                      </label>
+                    </div>
+                    <div style="padding:12px 18px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font-size:12px;color:var(--text-tertiary);">已选 {{ docPicker.checkedIds.length }} 个</span>
+                      <div style="display:flex;gap:8px;">
+                        <button class="btn btn-outline" @click="docPicker.blockIndex = -1">取消</button>
+                        <button class="btn btn-primary" @click="confirmDocPicker()">添加所选</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4257,6 +4309,8 @@ createApp({
       docFilter: { page: 1, limit: 20, keyword: '', type: '', isPublic: '' },
       docStats: [], docTotal: 0,
       docPagination: { total: 0, totalPages: 0 },
+      docPicker: { blockIndex: -1, tab: '', keyword: '', list: [], checkedIds: [] },
+      pickerDocs: [], pickerDocsLoaded: false,
       docEditing: null,
       docSaving: false,
       docEditForm: { title: '', type: 'TDS', language: 'zh', isPublic: false, filePath: '', fileUrl: '' },
@@ -4377,6 +4431,40 @@ createApp({
     };
   },
   computed: {
+    /* ===== 相关资料区块：文档库按分类分组（下拉 optgroup），★推荐=与当前产品/配方名匹配 ===== */
+    pickerDocGroups() {
+      if (!this.pickerDocs.length) return [];
+      var name = (this.editingPc && this.editingPc.name) || (this.editingFormula && this.editingFormula.name) || '';
+      var kw = String(name).toLowerCase().replace(/[®™]/g, '').split(/\s+/).filter(function(w){ return w.length > 2; });
+      // 评分制：命中词数 ≥ max(2, ceil(关键词数/2)) 才算推荐，避免仅命中一个泛化词就全标★
+      var threshold = Math.max(2, Math.ceil(kw.length / 2));
+      var scoreOf = function(d) {
+        if (!kw.length) return 0;
+        var title = String(d.title || '').toLowerCase();
+        var hits = 0;
+        kw.forEach(function(w) { if (title.indexOf(w) > -1) hits++; });
+        return hits;
+      };
+      var types = ['TDS', 'SDS', 'Brochure', 'Formula', 'Publication', 'Magazine', 'Other'];
+      var groups = [];
+      types.forEach(function(t) {
+        var items = this.pickerDocs.filter(function(d) { return d.type === t; });
+        if (!items.length) return;
+        var recommended = [];
+        items.forEach(function(d) {
+          var s = scoreOf(d);
+          if (s >= threshold) recommended.push({ id: d.id, score: s });
+        });
+        recommended.sort(function(a, b) { return b.score - a.score; });
+        var recommendedIds = recommended.map(function(r){ return r.id; });
+        items.sort(function(a, b) {
+          var ra = recommendedIds.includes(a.id) ? 0 : 1, rb = recommendedIds.includes(b.id) ? 0 : 1;
+          return ra - rb || String(a.title).localeCompare(String(b.title));
+        });
+        groups.push({ type: t, items: items, recommended: recommendedIds });
+      }, this);
+      return groups;
+    },
     /* ===== 订单状态流转（按业务顺序给出下一步动作） ===== */
     nextOrderActions() {
       const s = this.viewingOrder && this.viewingOrder.status;
@@ -4848,8 +4936,8 @@ createApp({
     editPc(item) {
       this.pcEditTab = 'basic';
       this.destroyAllQuills();
-      // 加载文档列表供文件区块选择
-      this.loadDocList();
+      // 加载全量文档（智能推荐排序）供「相关资料」区块选择
+      this.loadPickerDocs(item.name);
       const spec = item.specInfo ? (typeof item.specInfo === 'string' ? JSON.parse(item.specInfo) : item.specInfo) : {};
       this.editingPc = {
         id: item.id, name: item.name, inciName: item.inciName, description: item.description || '', dosage: item.dosage || '',
@@ -5564,12 +5652,13 @@ createApp({
     onDocSelect(bi, fi, event) {
       var docId = parseInt(event.target.value);
       if (!docId) return;
-      var doc = this.docList.find(function(d) { return d.id === docId; });
+      var doc = this.pickerDocs.find(function(d) { return d.id === docId; });
       if (doc) {
         var entry = this.editingPc.blocks[bi]._fileList[fi];
         entry.title = doc.title;
         entry.fileId = doc.id;
         entry.isPublic = doc.isPublic;
+        entry.docType = doc.type || ''; // 精确分类标记（前台三列分类用）
         // 非公开文件使用带权限验证的下载接口
         if (doc.isPublic) {
           entry.url = this.fileUrl(doc.filePath);
@@ -5579,6 +5668,30 @@ createApp({
       }
       // 重置下拉框
       event.target.value = '';
+    },
+    async loadPickerDocs(productName) {
+      try {
+        // 后端单页上限 100，循环拉全量（当前文档总量约 450）
+        var list = [];
+        for (var page = 1; page <= 10; page++) {
+          const data = await this.api('/documents?limit=100&page=' + page);
+          var items = data.list || [];
+          list = list.concat(items);
+          var totalPages = (data.pagination && data.pagination.totalPages) || 1;
+          if (page >= totalPages || items.length === 0) break;
+        }
+        // 智能推荐：与当前产品名匹配的文档在其分组内排前面
+        var kw = String(productName || '').toLowerCase().replace(/[®™]/g, '').split(/\s+/).filter(function(w){ return w.length > 2; });
+        if (kw.length) {
+          list.sort(function(a, b) {
+            var sa = kw.some(function(w){ return (a.title || '').toLowerCase().indexOf(w) > -1; }) ? 0 : 1;
+            var sb = kw.some(function(w){ return (b.title || '').toLowerCase().indexOf(w) > -1; }) ? 0 : 1;
+            return sa - sb;
+          });
+        }
+        this.pickerDocs = list;
+        this.pickerDocsLoaded = true;
+      } catch (e) { console.error('加载文档库失败:', e); }
     },
     onPcBlockTypeChange(bi) {
       const block = this.editingPc.blocks[bi];
@@ -6035,6 +6148,8 @@ createApp({
     },
     editFormula(item) {
       this._formulaBlocksLoaded = false;
+      // 加载全量文档（分组下拉用）
+      if (!this.pickerDocsLoaded) this.loadPickerDocs(item ? item.name : '');
       this.destroyFormulaQuills();
       this.editingFormula = {
         id: item.id, name: item.name, code: item.code || '', description: item.description || '',
@@ -6374,7 +6489,7 @@ createApp({
       var docId = parseInt(event.target.value);
       if (!docId) return;
       var self = this;
-      var doc = this.docList.find(function(d) { return d.id === docId; });
+      var doc = this.pickerDocs.find(function(d) { return d.id === docId; }) || this.docList.find(function(d) { return d.id === docId; });
       if (doc) {
         var block = self.editingFormula.blocks[bi];
         if (!block._fileList) block._fileList = [];
@@ -6542,6 +6657,55 @@ createApp({
     docLabel(type) {
       var map = { 'TDS': '技术数据表', 'SDS': '安全数据表', 'Brochure': '产品手册', 'Formula': '配方资料', 'Publication': '出版物', 'Magazine': '杂志', 'Other': '其他' };
       return map[type] || type;
+    },
+    // ---- 相关资料区块：从文档库选择 ----
+    docTypeLabel(t) { return this.docLabel(t); },
+    openDocPicker(blockIndex) {
+      this.docPicker.blockIndex = blockIndex;
+      this.docPicker.tab = '';
+      this.docPicker.keyword = '';
+      this.docPicker.checkedIds = [];
+      this.loadDocPickerList();
+    },
+    async loadDocPickerList() {
+      var params = new URLSearchParams({ limit: '100' });
+      if (this.docPicker.tab) params.set('type', this.docPicker.tab);
+      if (this.docPicker.keyword) params.set('keyword', this.docPicker.keyword);
+      try {
+        const data = await this.api('/documents?' + params.toString());
+        var list = data.list || [];
+        // 智能推荐：与当前产品名匹配的排前面
+        var block = this.editingArticle.blocks[this.docPicker.blockIndex];
+        var prodName = this.editingArticle.title || '';
+        if (block && block.title) prodName = block.title + ' ' + prodName;
+        var kw = prodName.toLowerCase().replace(/[®™]/g, '').split(/\s+/).filter(function(w){ return w.length > 2; });
+        list.sort(function(a, b) {
+          var sa = kw.some(function(w){ return (a.title || '').toLowerCase().indexOf(w) > -1; }) ? 0 : 1;
+          var sb = kw.some(function(w){ return (b.title || '').toLowerCase().indexOf(w) > -1; }) ? 0 : 1;
+          return sa - sb;
+        });
+        this.docPicker.list = list;
+      } catch (e) { console.error(e); }
+    },
+    docSearchDebounce() {
+      if (this._docSearchTimer) clearTimeout(this._docSearchTimer);
+      this._docSearchTimer = setTimeout(() => this.loadDocPickerList(), 400);
+    },
+    confirmDocPicker() {
+      var block = this.editingArticle.blocks[this.docPicker.blockIndex];
+      if (!block) return;
+      if (!block.files) block.files = [];
+      var picked = this.docPicker.list.filter((d) => this.docPicker.checkedIds.includes(d.id));
+      picked.forEach((d) => {
+        if (block.files.some((f) => f.fileId === d.id)) return; // 去重
+        block.files.push({ title: d.title, url: '/api/documents/' + d.id + '/download', fileId: d.id, isPublic: d.isPublic !== false, docType: d.type || '' });
+      });
+      block._manualMode = false;
+      this.docPicker.blockIndex = -1;
+    },
+    removeFileItem(blockIndex, fileIndex) {
+      var block = this.editingArticle.blocks[blockIndex];
+      if (block && block.files) block.files.splice(fileIndex, 1);
     },
     async loadDocStats() {
       try { const d = await this.api('/documents/stats'); this.docStats = d.stats || []; this.docTotal = d.total || 0; } catch (e) { console.error(e); }
@@ -7138,7 +7302,10 @@ createApp({
             block._title = parsed.title || '';
             block._url = parsed.url || '';
           } else if (b.blockType === 'files') {
-            block._filesText = (parsed.files || []).map(function(f) { return (f.name || '') + ' | ' + (f.url || ''); }).join('\n');
+            // 结构化文件列表（文档库挂接）；兼容旧 name 字段
+            block.files = (parsed.files || []).map(function(f) { return { title: f.title || f.name || '', url: f.url || '', fileId: f.fileId || null, isPublic: f.isPublic !== false, docType: f.docType || '' }; });
+            block._filesText = '';
+            block._manualMode = false;
           }
           return block;
         });
@@ -7170,10 +7337,16 @@ createApp({
           content.title = b._title || '';
           content.url = b._url || '';
         } else if (b.blockType === 'files') {
-          content.files = (b._filesText || '').split('\n').filter(function(l) { return l.trim(); }).map(function(line) {
-            var parts = line.split('|').map(function(s) { return s.trim(); });
-            return { name: parts[0] || '', url: parts[1] || '' };
-          });
+          if (b.files && b.files.length) {
+            // 文档库挂接的结构化列表
+            content.files = b.files.map(function(f) { return { title: f.title || '', url: f.url || '', fileId: f.fileId || null, isPublic: f.isPublic !== false, docType: f.docType || '' }; });
+          } else {
+            // 兼容旧手动模式
+            content.files = (b._filesText || '').split('\n').filter(function(l) { return l.trim(); }).map(function(line) {
+              var parts = line.split('|').map(function(s) { return s.trim(); });
+              return { title: parts[0] || '', name: parts[0] || '', url: parts[1] || '' };
+            });
+          }
         }
         return { blockType: b.blockType, title: b.title || '', content: content, sortOrder: i };
       });
@@ -7197,7 +7370,9 @@ createApp({
         block._title = '';
         block._url = '';
       } else if (type === 'files') {
+        block.files = [];
         block._filesText = '';
+        block._manualMode = false;
       }
       if (!this.editingArticle.blocks) this.editingArticle.blocks = [];
       this.editingArticle.blocks.push(block);
@@ -7225,7 +7400,9 @@ createApp({
         b._title = '';
         b._url = '';
       } else if (b.blockType === 'files') {
+        b.files = [];
         b._filesText = '';
+        b._manualMode = false;
       }
       b.content = {};
     },

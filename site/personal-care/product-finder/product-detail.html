@@ -1095,8 +1095,9 @@
           return url;
         }
 
-        var _isTdsDoc = function(f) { return f.title && (f.title.indexOf('TDS') !== -1 || f.title.indexOf('技术') !== -1 || f.title.indexOf('数据') !== -1); };
-        var _isBrochureDoc = function(f) { return f.title && (f.title.indexOf('手册') !== -1 || f.title.indexOf('Brochure') !== -1 || f.title.indexOf('介绍') !== -1); };
+        // 分类优先用文档库精确标记 docType（TDS/SDS/Brochure/Formula），无标记再按文件名关键词兜底
+        var _isTdsDoc = function(f) { if (f.docType) return f.docType === 'TDS' || f.docType === 'SDS'; return f.title && (f.title.indexOf('TDS') !== -1 || f.title.indexOf('技术') !== -1 || f.title.indexOf('数据') !== -1); };
+        var _isBrochureDoc = function(f) { if (f.docType) return f.docType === 'Brochure'; return f.title && (f.title.indexOf('手册') !== -1 || f.title.indexOf('Brochure') !== -1 || f.title.indexOf('介绍') !== -1); };
         var _hasDocs = function(files, fn) { if (!files) return false; for (var i = 0; i < files.length; i++) { if (fn(files[i])) return true; } return false; };
         return {
           data, addProductFav, addCart, getBlockContent, formatSpecText, convertVideoUrl,

@@ -23,9 +23,14 @@ function get(url, binary, tries = 4) {
     const req = https.get(url, { headers: { 'User-Agent': UA, 'x-token': TOKEN } }, (res) => {
       if ([301, 302, 303, 307, 308].includes(res.statusCode)) return resolve(get(new URL(res.headers.location, url).toString(), binary, tries));
       if (res.statusCode !== 200) { res.resume(); return resolve(null); }
-      if (binary) { const c = []; res.on('data', (d) => c.push(d)); res.on('end', () => resolve(Buffer.concat(c))); }
-      else { let b = ''; res.on('data', (d) => (b += d)); res.on('end', () => resolve(b)); }
+      if (binary) {
+        const c = [];
+        res.on('data', (d) => c.push(d));
+        res.on('end', () => resolve(Buffer.concat(c)));
+      } else { let b = ''; res.on('data', (d) => (b += d)); res.on('end', () => resolve(b)); }
     });
+    // 60s 无响应视为连接黑洞，中断触发重试
+    req.setTimeout(60000, () => { req.destroy(new Error('timeout 60s')); });
     req.on('error', () => { if (tries > 1) setTimeout(() => resolve(get(url, binary, tries - 1)), 1500); else resolve(null); });
   });
 }
