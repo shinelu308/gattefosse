@@ -280,6 +280,14 @@ body {
 }
 .page-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
 
+/* 获取灵感内容数量统计条（与「了解更多」的 tab 条同一视觉与口径） */
+.insp-tab-bar { display: flex; gap: 4px; background: #fff; border-radius: 10px; padding: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 16px; flex-wrap: wrap; }
+.insp-tab { padding: 9px 18px; border: 0; background: transparent; border-radius: 8px; font-size: 14px; font-weight: 500; color: #555; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .15s; font-family: inherit; }
+.insp-tab:hover { background: #f0f1f2; }
+.insp-tab.active { background: #8EB73C; color: #fff; }
+.insp-tab .cnt { font-size: 11px; background: rgba(0,0,0,.08); border-radius: 9px; padding: 1px 7px; }
+.insp-tab.active .cnt { background: rgba(255,255,255,.25); }
+
 /* 统计卡片 */
 .stats-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
@@ -2691,6 +2699,8 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'article-list'" data-page-node-id="1NE8D93YPCd9PDwJx2NGAZ">
           <h1 class="page-title" data-page-node-id="pU3UjCvWKDHe0IOPlL8VvW">文章管理</h1>
           <p class="page-subtitle" data-page-node-id="pu19ZFF4VQxSbe1fX7epux">管理获取灵感模块下的技术文章，展示在个人护理 - 获取灵感 - 文章页面</p>
+          <!-- 内容数量统计条（点击切换到对应管理页） -->
+          <div class="insp-tab-bar"><button v-for="t in inspTabs" :key="t.key" class="insp-tab" :class="{ active: currentPage === t.page }" @click="switchInspTab(t)">{{ t.label }} <span class="cnt">{{ t.count }}</span></button></div>
           <div class="card" data-page-node-id="QvqMD8ahxnGckD9egJJq4R">
             <div class="card-header" data-page-node-id="cASbq5TONAD0D2uBafYHGm">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="WHiL9cgE2YYLHyhTXb4AEa">
@@ -3050,6 +3060,7 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'webinar-list'" data-page-node-id="IkumrPAGYIxDjK5lsHcuwR">
           <h1 class="page-title" data-page-node-id="tBjI7VkBojig1GEXBOTx6i">在线研讨会管理</h1>
           <p class="page-subtitle" data-page-node-id="NpyffHCJJx0GVG6jq8Dpk0">管理获取灵感模块下的在线研讨会</p>
+          <div class="insp-tab-bar"><button v-for="t in inspTabs" :key="t.key" class="insp-tab" :class="{ active: currentPage === t.page }" @click="switchInspTab(t)">{{ t.label }} <span class="cnt">{{ t.count }}</span></button></div>
           <div class="card" data-page-node-id="w1FwsJt9hxSNQQVTDm4GL9">
             <div class="card-header" data-page-node-id="Ov8GfB2bTXV4HybUfDDe1R">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="1MLwEbiceEhYSorHGciC7q">
@@ -3165,6 +3176,7 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'publication-list'">
           <h1 class="page-title">出版物管理</h1>
           <p class="page-subtitle">管理获取灵感模块下的科技出版物</p>
+          <div class="insp-tab-bar"><button v-for="t in inspTabs" :key="t.key" class="insp-tab" :class="{ active: currentPage === t.page }" @click="switchInspTab(t)">{{ t.label }} <span class="cnt">{{ t.count }}</span></button></div>
           <div class="card">
             <div class="card-header">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
@@ -3446,6 +3458,7 @@ const QUILL_TOOLBAR = [
         <div v-if="currentPage === 'magazine-list'" data-page-node-id="cRqqyJDLrK0MW72nTJ8Gkn">
           <h1 class="page-title" data-page-node-id="Uc4bBNYZTPjDUDoWGWF2G8">杂志管理</h1>
           <p class="page-subtitle" data-page-node-id="mNfukksbw6Dz9F9BXF7aZH">管理获取灵感模块下的 addiactive 杂志</p>
+          <div class="insp-tab-bar"><button v-for="t in inspTabs" :key="t.key" class="insp-tab" :class="{ active: currentPage === t.page }" @click="switchInspTab(t)">{{ t.label }} <span class="cnt">{{ t.count }}</span></button></div>
           <div class="card" data-page-node-id="lFAeiKCBEBZhmiMjEsnTU9">
             <div class="card-header" data-page-node-id="uFVjB0DwRuKV5R4fdj0cC5">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" data-page-node-id="qryrqqQS93QdOZ0Rnl9Wln">
@@ -4531,6 +4544,13 @@ createApp({
       newsRelatedCards: [],
       newsCardSearch: { kw: '', results: [] },
       // 获取灵感 — 文章
+      // 获取灵感内容数量统计（文章 / 在线研讨会 / 出版物 / 杂志），口径与「了解更多」的 tab 计数一致
+      inspTabs: [
+        { key: 'article', label: '文章', type: 'article', page: 'article-list', count: 0 },
+        { key: 'webinar', label: '在线研讨会', type: 'webinar', page: 'webinar-list', count: 0 },
+        { key: 'publication', label: '出版物', type: 'publication', page: 'publication-list', count: 0 },
+        { key: 'magazine', label: '杂志', type: 'magazine', page: 'magazine-list', count: 0 },
+      ],
       articleList: [],
       selectedArticleIds: [],
       articleFilter: { page: 1, limit: 20, keyword: '', articleType: '', isPublished: '' },
@@ -7410,12 +7430,33 @@ createApp({
       });
     },
     // 获取灵感 — 文章 CRUD
+    // 获取灵感内容数量统计：只读分页 total（limit=1），4 个类型各一次轻量请求
+    async loadInspCounts() {
+      if (this._inspCountsBusy) return;
+      this._inspCountsBusy = true;
+      try {
+        for (const t of this.inspTabs) {
+          try {
+            const d = await this.api('/news?type=' + t.type + '&category=pc&page=1&limit=1');
+            t.count = (d && d.pagination && d.pagination.total) || 0;
+          } catch (e) { console.error(e); }
+        }
+      } finally { this._inspCountsBusy = false; }
+    },
+    switchInspTab(t) {
+      if (this.currentPage === t.page) return;
+      this.currentPage = t.page;
+      if (t.key === 'article') this.loadArticleList();
+      else if (t.key === 'webinar') this.loadWebinarList();
+      else if (t.key === 'publication') this.loadPublicationList();
+      else if (t.key === 'magazine') this.loadMagazineList();
+    },
     async loadArticleList() {
       const params = new URLSearchParams({ page: this.articleFilter.page, limit: this.articleFilter.limit, type: 'article', category: 'pc' });
       if (this.articleFilter.keyword) params.set('keyword', this.articleFilter.keyword);
       if (this.articleFilter.articleType) params.set('articleType', this.articleFilter.articleType);
       if (this.articleFilter.isPublished) params.set('isPublished', this.articleFilter.isPublished);
-      try { const d = await this.api('/news?' + params.toString()); this.articleList = d.list; this.articlePagination = d.pagination; this.selectedArticleIds = []; }
+      try { const d = await this.api('/news?' + params.toString()); this.articleList = d.list; this.articlePagination = d.pagination; this.selectedArticleIds = []; this.loadInspCounts(); }
       catch (e) { console.error(e); }
     },
     // ============ 全选 & 批量删除 - 文章 ============
@@ -7907,7 +7948,7 @@ createApp({
       const params = new URLSearchParams({ page: this.webinarFilter.page, limit: this.webinarFilter.limit, type: 'webinar', category: 'pc' });
       if (this.webinarFilter.keyword) params.set('keyword', this.webinarFilter.keyword);
       if (this.webinarFilter.isPublished) params.set('isPublished', this.webinarFilter.isPublished);
-      try { const d = await this.api('/news?' + params.toString()); this.webinarList = d.list; this.webinarPagination = d.pagination; }
+      try { const d = await this.api('/news?' + params.toString()); this.webinarList = d.list; this.webinarPagination = d.pagination; this.loadInspCounts(); }
       catch (e) { console.error(e); }
     },
     resetWebinarEdit() {
@@ -7966,7 +8007,7 @@ createApp({
       if (this.publicationFilter.keyword) params.set('keyword', this.publicationFilter.keyword);
       if (this.publicationFilter.isPublished) params.set('isPublished', this.publicationFilter.isPublished);
       if (this.publicationFilter.articleType) params.set('articleType', this.publicationFilter.articleType);
-      try { const d = await this.api('/news?' + params.toString()); this.publicationList = d.list; this.publicationPagination = d.pagination; }
+      try { const d = await this.api('/news?' + params.toString()); this.publicationList = d.list; this.publicationPagination = d.pagination; this.loadInspCounts(); }
       catch (e) { console.error(e); }
     },
     resetPublicationEdit() {
@@ -8162,7 +8203,7 @@ createApp({
       const params = new URLSearchParams({ page: this.magazineFilter.page, limit: this.magazineFilter.limit, type: 'magazine', category: 'pc' });
       if (this.magazineFilter.keyword) params.set('keyword', this.magazineFilter.keyword);
       if (this.magazineFilter.isPublished) params.set('isPublished', this.magazineFilter.isPublished);
-      try { const d = await this.api('/news?' + params.toString()); this.magazineList = d.list; this.magazinePagination = d.pagination; }
+      try { const d = await this.api('/news?' + params.toString()); this.magazineList = d.list; this.magazinePagination = d.pagination; this.loadInspCounts(); }
       catch (e) { console.error(e); }
     },
     resetMagazineEdit() {
