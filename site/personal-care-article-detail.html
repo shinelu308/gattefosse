@@ -556,7 +556,7 @@
                                 if (summaryText && summaryText.length > 20) {
                                     // ⚠️ 归一化去所有非文字字符：摘要与正文可能标点不同（。vs ，）、被截断带省略号（2026-09-11 CO2 案例）
                                     var norm = function (s) { return (s || '').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, ''); };
-                                    var sample = norm(summaryText).substring(0, 50);
+                                    var sample = norm(summaryText).substring(0, 20); // 20 字窗口：summary 与正文可能有一字之差（AI 翻译措辞波动）
                                     if (sample && norm(item.contentHtml).indexOf(sample) !== -1) showSummary = false;
                                 }
 
