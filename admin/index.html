@@ -8653,6 +8653,12 @@ createApp({
       }
       return null; // dashboard 等始终可见
     },
+    async refreshRolePermissions() {
+      try {
+        const s = await this.api('/settings');
+        this.rolePermissions = s && s.role_permissions ? JSON.parse(s.role_permissions) : null;
+      } catch (e) { console.warn('权限配置刷新失败（保持原值）:', e.message); }
+    },
     canModule(mod) {
       if (!mod) return true;                       // 总览等公共页
       if (this.userInfo && this.userInfo.role === 'super_admin') return true;
@@ -8674,6 +8680,10 @@ createApp({
         this.publicationImport.fromIframe = true;
       }
       // 预览式原位编辑：预览 iframe 发来的内容补丁意图（2026-09-11）
+      // 系统设置-功能权限保存后即时刷新主框架菜单权限（免重新登录，2026-09-12）
+      if (ev.data && ev.data.type === 'perm-updated') {
+        this.refreshRolePermissions();
+      }
       if (ev.data && ev.data.source === 'cp-preview') {
         this.handlePreviewMessage(ev.data);
       }
@@ -8715,12 +8725,7 @@ createApp({
         return;
       }
       // token 有效，加载权限配置（系统设置 → 功能权限）
-      try {
-        const s = await this.api('/settings');
-        if (s && s.role_permissions) {
-          try { this.rolePermissions = JSON.parse(s.role_permissions); } catch (e) { this.rolePermissions = null; }
-        }
-      } catch (e) { console.warn('权限配置加载失败（默认全部可见）:', e.message); }
+      await this.refreshRolePermissions();
       // token 有效，加载数据
       try {
         await this.initData();
