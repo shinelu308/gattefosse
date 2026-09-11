@@ -431,13 +431,21 @@ model ArticleBlock {
 // ===== 标签字典表 =====
 model TagDictionary {
   id          Int       @id @default(autoincrement())
-  category    String    // 分类: functionality / application / concept / claim / characteristic / naturality (PC) 或 market / route / functionality / dosage_form (Pharma)
-  productLine String    @map("product_line") // pc / pharma
-  label       String    // 显示文本
-  value       String    // 选项值
+  category    String    // 分类: functionality / application / concept / claim / characteristic / naturality (PC)、market / route / functionality / dosage_form (Pharma)、application / form / claim / ingredient / naturalityIndex (Formulation)、theme (article_theme)
+  productLine String    @map("product_line") // pc / pharma / formulation / article_theme
+  label       String    // 显示文本（article_theme 下=英文原词，其余=与 value 相同）
+  value       String    // 选项值（产品表里存的就是它）
   sortOrder   Int       @default(0) @map("sort_order")
   createdAt   DateTime  @default(now()) @map("created_at")
 
+  // 同一产品线同一分类下 label 唯一（库里已由 uq_tag_dict_label 落地）。
+  // 另有**部分**唯一索引 uq_tag_dict_value (product_line, category, value)
+  //   WHERE product_line <> 'article_theme'
+  // —— Prisma schema 无法表达部分索引，只能由 scripts/add-tag-dict-indexes.js 创建。
+  //
+  // ⚠️ 不要退化成 @@unique([productLine, category, value])：article_theme 的
+  //    texture 与 textures 都译作「质地」，属合法同译，按 value 唯一会误杀（实测 id 524/525）。
+  @@unique([productLine, category, label])
   @@map("tag_dictionary")
 }
 

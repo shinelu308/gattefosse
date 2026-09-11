@@ -237,7 +237,8 @@
                               </li>
                               <!-- 各选项：过滤掉以"全部"开头的标签（与上方重置按钮重复）；Route 项有 More information 链接 -->
                               <template v-for="item2 in item.children">
-                                <li v-if="item2.tagName.indexOf('全部') !== 0" class="facet-item">
+                                <li v-if="item2.tagName.indexOf('全部') !== 0" class="facet-item"
+                                  :class="item2.facetItemClass">
                                   <a class="btn btn-outline-secondary"
                                     :class="item2.active ? 'is-active' : ''"
                                     href="javascript:;" @click.prevent="goToUrl(item2.tagUrl)">{{item2.tagName}}</a>
@@ -264,7 +265,8 @@
                                 <div class="panel-body accordion-body">
                                   <ul :data-drupal-facet-id="item.dataDrupalFacetId"
                                     class="facet-inactive js-facets-checkbox-links facet-list item-list__checkbox">
-                                    <li class="facet-item" v-for="item2 in item.children">
+                                    <li class="facet-item" v-for="item2 in item.children"
+                                      :class="item2.facetItemClass">
                                       <div class="form-check">
                                         <input type="checkbox" class="form-check-input facets-checkbox"
                                           :id="item2.dataDrupalFacetItemId"
@@ -431,7 +433,9 @@
       }
 
       function loadTags() {
-        return GatteAPI.Tag.list({ productLine: 'pharma', limit: 100 }).then(function (res) {
+        // withCount=1 → 字典接口附带每个标签的命中产品数；
+        // 命中 0 的项在模板上绑定 is-empty 置灰不可点（对应后台「一致性检查」里的死标签）
+        return GatteAPI.Tag.list({ productLine: 'pharma', limit: 100, withCount: 1 }).then(function (res) {
           // API 返回 (经 axios 拦截器解包后): { dosage_form: [{label, value}], functionality: [...], ... }
           var tagData = res.data || res || {};
           var groups = {};
@@ -468,9 +472,14 @@
                 tagName: tag.label,
                 value: tag.value,
                 active: false,
+                // 命中产品数（接口 withCount=1 才有；没有时给 null，不置灰）
+                count: typeof tag.count === 'number' ? tag.count : null,
                 dataDrupalFacetItemId: cat + '-' + tag.value,
                 tagUrl: '/pharmaceuticals/product-finder.html?tagId=' + tag.value + '&page=1',
-                facetItemClass: 'facet-item1',
+                // count=0 → is-empty：置灰 + pointer-events:none（CSS 里定义）
+                // ⚠️ 基名必须是模板上的 .facet-item；历史上的 .facet-item1 从未绑到 DOM，
+                //    若此时启用会连带套上它的 font-family/字号，造成样式回归
+                facetItemClass: 'facet-item' + (tag.count === 0 ? ' is-empty' : ''),
                 articleUrl: (cat === 'route' && ARTICLE_URLS[tag.label]) ? ARTICLE_URLS[tag.label] : ''
               });
             }
@@ -575,6 +584,14 @@
         loadProducts(1);
       }
 
+      // 标签 li 的 class：基名 + 0 命中置灰 + 选中态。
+      // ⚠️ is-empty 只在这里拼。任何重置 active 的地方都必须走本函数，
+      //    否则重置会把它丢掉，死标签又变回可点（历史上三处各写一遍 'facet-item1'）。
+      function facetClass(c) {
+        var base = 'facet-item' + (c && c.count === 0 ? ' is-empty' : '');
+        return (c && c.active) ? base + ' selected' : base;
+      }
+
       // 统一更新所有标签的 active 状态和高亮
       function updateTagActiveStates() {
         data.tagList.forEach(function(g) {
@@ -583,8 +600,7 @@
             if (cat) {
               var selVals = data.selectedTags[cat] || [];
               c.active = selVals.indexOf(c.value) !== -1;
-              if (c.active) c.facetItemClass = 'facet-item1 selected';
-              else c.facetItemClass = 'facet-item1';
+              c.facetItemClass = facetClass(c);
             }
           });
         });
@@ -650,7 +666,7 @@
         data.activeFilterClass = 'hidden';
         data.tagList.forEach(function(g) {
           g._showAll = false;
-          g.children.forEach(function(c) { c.active = false; c.facetItemClass = 'facet-item1'; });
+          g.children.forEach(function(c) { c.active = false; c.facetItemClass = facetClass(c); });
           // 收起展开状态：恢复隐藏超出6项的标签
           if (g._hasMore) {
             var ul = document.querySelector('[data-drupal-facet-id="' + g.dataDrupalFacetId + '"]');
@@ -749,7 +765,7 @@
                   if (cat) {
                     data.selectedTags[cat] = [initTagId];
                     g.children[ci].active = true;
-                    g.children[ci].facetItemClass = 'facet-item1 selected';
+                    g.children[ci].facetItemClass = facetClass(g.children[ci]);
                   }
                   break;
                 }
@@ -978,6 +994,15 @@
       font-family: "Din Next Lt Pro Regular", sans-serif;
       font-size: 1.6rem;
       color: #58616B;
+    }
+
+    /* 命中 0 个药用辅料的标签：置灰且不可点（后台「一致性检查」里显示为「死标签」）。
+       用 pointer-events:none 一次拦掉 checkbox / 链接 / More information 的点击，
+       不必去改 goToUrl、toggleTag、change 等各处 handler。 */
+    .c-filter .facet-item.is-empty {
+      opacity: 0.4 !important;
+      pointer-events: none !important;
+      cursor: not-allowed !important;
     }
   </style>
 <script src="/static/js/api-260908.js"></script>

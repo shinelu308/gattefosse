@@ -479,6 +479,14 @@
       display: block !important;
       visibility: visible !important;
     }
+    /* 命中 0 个产品的标签：置灰且不可点（后台「一致性检查」里显示为「死标签」）。
+       用 pointer-events:none 统一拦掉 label / checkbox / 链接的点击，不必改各处 handler。 */
+    .c-filter .facet-item.is-empty {
+      opacity: 0.4 !important;
+      pointer-events: none !important;
+    }
+    .c-filter .facet-item.is-empty .gatte-facet-label,
+    .c-filter .facet-item.is-empty a { cursor: not-allowed !important; }
     /* 被收起隐藏的子标签 */
     .c-filter .facet-inactive li.tag-collapsed {
       display: none !important;
@@ -620,7 +628,9 @@
       // 加载标签列表
       // 后端返回格式: { data: { functionality:[], application:[], claim:[], ... } }
       function loadTags() {
-        GatteAPI.Tag.list({ productLine: 'pc', limit: 100 }).then(function (res) {
+        // withCount=1 → 字典接口附带每个标签的命中产品数；
+        // 命中 0 的项前台置灰不可点，避免用户点出一个空列表（对应后台「一致性检查」里的死标签）
+        GatteAPI.Tag.list({ productLine: 'pc', limit: 100, withCount: 1 }).then(function (res) {
           var body = res.data || res;
           console.log('[Tags] 原始返回数据 keys:', Object.keys(body), '各分类数量:', Object.keys(body).map(function(k) { return k + ':' + (body[k] ? body[k].length : 0); }).join(', '));
           // body 可能是 { functionality:[...], application:[...], ... } 格式
@@ -644,7 +654,10 @@
                     tagName: t.label || t.name || t.value,
                     value: t.value,
                     active: false,
-                    facetItemClass: 'facet-item',
+                    // 命中产品数（接口 withCount=1 才有；没有时给 null，不置灰）
+                    count: typeof t.count === 'number' ? t.count : null,
+                    // count=0 → 加 is-empty：置灰 + pointer-events:none（CSS 里定义）
+                    facetItemClass: 'facet-item' + (t.count === 0 ? ' is-empty' : ''),
                     dataDrupalFacetItemId: 'facet-' + cat + '-' + idx,
                     tagUrl: '?tag=' + encodeURIComponent(t.value)
                   };

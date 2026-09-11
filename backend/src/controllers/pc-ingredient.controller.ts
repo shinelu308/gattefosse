@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
-import { tagGroup, mergeWhere } from '../utils/tag-filter';
+import { buildTagFilters, mergeWhere } from '../utils/tag-filter';
+import { attachTagWarnings } from '../utils/tag-health';
 
 const PC_LIST_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -16,13 +17,6 @@ export async function listPcIngredients(req: Request, res: Response) {
       page = '1',
       limit = '20',
       keyword,
-      // 6 个筛选维度 (逗号分隔多选)
-      functionality,
-      application,
-      concept,
-      claim,
-      characteristic,
-      naturality,
       isPublished,
     } = req.query;
 
@@ -44,17 +38,9 @@ export async function listPcIngredients(req: Request, res: Response) {
       });
     }
 
-    // 标签筛选：同分类多选取并集(OR)、跨分类之间才是交集(AND)，并按逗号项精确匹配
-    // （早前这里把同分类每个值都 push 进 where.AND → 多选变交集，选 2 个以上几乎必然 0 结果）
-    const tagFilters: [string, string | undefined][] = [
-      ['functionalityTag', functionality as string],
-      ['applicationTag', application as string],
-      ['conceptTag', concept as string],
-      ['claimTag', claim as string],
-      ['characteristicTag', characteristic as string],
-      ['naturalityLabel', naturality as string],
-    ];
-    for (const [field, value] of tagFilters) andParts.push(tagGroup(field, value));
+    // 标签筛选：同分类多选取并集(OR)、跨分类之间才是交集(AND)，按逗号项精确匹配。
+    // 6 个维度的「字段名 ← 前台参数名」映射统一来自 utils/tag-map.ts，这里不再硬编码。
+    andParts.push(...buildTagFilters('pc', req.query as Record<string, unknown>));
 
     // 合并（统一走 AND 数组，避免覆盖关键词搜索的 where.OR）
     mergeWhere(where, andParts);
@@ -172,7 +158,8 @@ export async function createPcIngredient(req: Request, res: Response) {
       include: PC_LIST_INCLUDE,
     });
 
-    return res.json(success(parsePcIngredient(item), '创建成功'));
+    // 保存后立刻比对字典：带出字典没有的标签时在响应里给清单（不写库，需人工确认后补齐）
+    return res.json(success(await attachTagWarnings('pc', parsePcIngredient(item), item), '创建成功'));
   } catch (error) {
     console.error('创建原料失败:', error);
     return res.status(500).json(fail('创建原料失败'));
@@ -229,7 +216,8 @@ export async function updatePcIngredient(req: Request, res: Response) {
       include: PC_LIST_INCLUDE,
     });
 
-    return res.json(success(parsePcIngredient(item), '更新成功'));
+    // 保存后立刻比对字典：带出字典没有的标签时在响应里给清单（不写库，需人工确认后补齐）
+    return res.json(success(await attachTagWarnings('pc', parsePcIngredient(item), item), '更新成功'));
   } catch (error) {
     console.error('更新原料失败:', error);
     return res.status(500).json(fail('更新原料失败'));

@@ -21,6 +21,22 @@ th, td { padding: 10px 16px; text-align: left; border-bottom: 1px solid #eee; fo
 th { background: #f9f9f9; font-weight: 600; }
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 .modal { background: white; padding: 24px; border-radius: 8px; min-width: 400px; max-width: 90vw; }
+/* ===== 一致性检查面板 ===== */
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { padding: 4px 12px; border-radius: 14px; font-size: 12px; background: #f1f1f1; color: #666; }
+.chip.ok { background: #eef7e2; color: #5a7d1f; }
+.chip.warn { background: #fdf3e3; color: #b5761a; }
+.chip.bad { background: #fdecea; color: #c0392b; }
+.hsec { border-top: 1px solid #eee; margin-top: 14px; padding-top: 12px; }
+.hsec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.hsec-title { font-size: 13px; font-weight: 600; color: #232426; }
+.hsec-note { font-size: 12px; color: #999; }
+.hitem { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px dashed #f2f2f2; font-size: 13px; }
+.hitem:last-child { border-bottom: none; }
+.hval { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; background: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
+.hmeta { color: #999; font-size: 12px; margin-left: auto; white-space: nowrap; }
+.hempty { color: #7a7a7a; font-size: 13px; }
+.hact { display: flex; gap: 8px; align-items: center; margin-left: 12px; }
 </style>
 </head>
 <body>
@@ -53,6 +69,22 @@ th { background: #f9f9f9; font-weight: 600; }
       <tr><td colspan="5" style="text-align:center;padding:20px;">加载中...</td></tr>
     </tbody>
   </table>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <strong style="font-size:14px;">一致性检查</strong>
+    <span style="font-size:12px;color:#999;">产品实际用值 ↔ 字典 的差异比对。只报告，不自动写入字典。</span>
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+      <label style="font-size:12px;color:#666;display:flex;align-items:center;gap:4px;cursor:pointer;">
+        <input type="checkbox" id="withCount" style="padding:0;" onchange="loadTags()"> 显示每个标签的命中产品数
+      </label>
+      <button id="healthBtn" class="primary" onclick="runHealthCheck()">开始检查</button>
+    </div>
+  </div>
+  <div class="card-body" id="healthBody">
+    <div class="hempty">点「开始检查」比对当前产品线的产品标签与字典 —— 会列出缺口（产品在用但字典没有）、死标签（字典有但没人用）、同值冲突与结构性脏值。</div>
+  </div>
 </div>
 
 <div id="modal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeModal()">
@@ -93,19 +125,34 @@ th { background: #f9f9f9; font-weight: 600; }
 <script src="/admin/static/js/admin-dialog-260911.js"></script>
 <script>
 const API = parent.location.protocol + '//' + parent.location.host + '/api';
-const CATEGORY_MAP = {
-  pc: ['functionality', 'application', 'concept', 'claim', 'characteristic', 'naturality'],
-  pharma: ['market', 'route', 'functionality', 'dosage_form'],
-  formulation: ['application', 'form', 'claim', 'naturalityIndex', 'ingredient'],
-  article_theme: ['theme'],
-};
-const CATEGORY_LABELS = {
-  functionality: '功能', application: '应用领域', concept: '概念', claim: '声明',
-  characteristic: '特征', naturality: '自然性', label: '标签',
-  market: '应用市场', route: '给药途径', dosage_form: '剂型',
-  form: '性状', naturalityIndex: '天然指数', ingredient: '成分/概念',
-  theme: '主题',
-};
+// ===== 产品线 / 分类清单由后端下发（GET /api/tags/lines）=====
+// ⚠️ 刻意不再在这里硬编码 CATEGORY_MAP。
+//    历史上后台写死过两处错配：`formula`（应为 formulation）导致「配方」页永远显示「暂无标签」；
+//    pharma 分类表写成 [functionality, application, dosageForm, claim]，
+//    导致 market / route / dosage_form 共 29 条标签在后台完全不可见。
+//    现在分类 = 后端 DB 实际存在的 category ∪ 维度声明，这类「后台看不到」不可能再发生。
+let LINE_SCHEMA = [];
+// 接口不可达时的兜底（只影响下拉文案，分类一律以后端为准）
+const LINE_FALLBACK = [
+  { line: 'pc', label: '个人护理成分', shortLabel: '成分' },
+  { line: 'pharma', label: '药用辅料', shortLabel: '药用辅料' },
+  { line: 'formulation', label: '个人护理配方', shortLabel: '配方' },
+  { line: 'article_theme', label: '文章主题', shortLabel: '文章主题' },
+];
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function categoriesOf(line) {
+  const hit = LINE_SCHEMA.find((l) => l.line === line);
+  return hit ? hit.categories || [] : [];
+}
+
+function categoryLabel(line, category) {
+  const hit = categoriesOf(line).find((c) => c.category === category);
+  return hit ? hit.label : category;
+}
 
 function getToken() { return localStorage.getItem('admin_token') || ''; }
 async function api(path, opts = {}) {
@@ -121,22 +168,46 @@ async function api(path, opts = {}) {
 let editingId = null;
 let editOld = null; // 编辑前 {id,label,value}，改译文时可一键同步存量文章
 
+async function loadLineSchema() {
+  try {
+    const data = await api('/tags/lines');
+    if (Array.isArray(data) && data.length) LINE_SCHEMA = data;
+  } catch (e) {
+    console.warn('维度清单加载失败，回退到内置产品线列表', e);
+  }
+  buildLineOptions();
+}
+
+function buildLineOptions() {
+  const lines = LINE_SCHEMA.length ? LINE_SCHEMA : LINE_FALLBACK;
+  ['productLine', 'formProductLine'].forEach((id) => {
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = lines.map((l) => '<option value="' + esc(l.line) + '">' + esc(l.shortLabel || l.label) + '</option>').join('');
+    if (cur && lines.some((l) => l.line === cur)) sel.value = cur;
+  });
+  buildCategoryOptions(document.getElementById('productLine').value, 'category');
+  buildCategoryOptions(document.getElementById('formProductLine').value, 'formCategory');
+}
+
 function buildCategoryOptions(line, selId) {
   const sel = document.getElementById(selId || 'formCategory');
-  sel.innerHTML = '';
-  (CATEGORY_MAP[line] || []).forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = CATEGORY_LABELS[c] || c;
-    sel.appendChild(opt);
-  });
+  const cats = categoriesOf(line);
+  if (!cats.length) {
+    sel.innerHTML = '<option value="">（无分类）</option>';
+    return;
+  }
+  sel.innerHTML = cats
+    .map((c) => '<option value="' + esc(c.category) + '">' + esc(c.label) + (c.dictCount != null ? ' (' + c.dictCount + ')' : '') + '</option>')
+    .join('');
 }
 
 async function loadTags() {
   const line = document.getElementById('productLine').value;
   const cat = document.getElementById('category').value;
+  const wantCount = document.getElementById('withCount').checked;
   try {
-    const data = await api('/tags?productLine=' + line);
+    const data = await api('/tags?productLine=' + encodeURIComponent(line) + (wantCount ? '&withCount=1' : ''));
     // API 返回按分类分组的字典: { functionality: [...], application: [...] }
     const list = (data && data[cat]) || (Array.isArray(data) ? data : []);
     const tbody = document.getElementById('tagTableBody');
@@ -146,9 +217,9 @@ async function loadTags() {
     }
     tbody.innerHTML = list.map(t => `
       <tr>
-        <td><span style="background:#8EB73C;color:white;padding:2px 8px;border-radius:4px;font-size:12px;">${CATEGORY_LABELS[t.category] || t.category || cat}</span></td>
-        <td>${t.label || t.name || t.value}</td>
-        <td><code style="background:#f5f5f5;padding:2px 6px;border-radius:3px;">${t.value || t.label}</code></td>
+        <td><span style="background:#8EB73C;color:white;padding:2px 8px;border-radius:4px;font-size:12px;">${esc(categoryLabel(line, t.category) || cat)}</span></td>
+        <td>${esc(t.label || t.name || t.value)}</td>
+        <td><code style="background:#f5f5f5;padding:2px 6px;border-radius:3px;">${esc(t.value || t.label)}</code>${t.count != null ? (t.count === 0 ? '<span style="color:#c0392b;font-size:12px;"> · 0 个产品（前台会点出空列表）</span>' : '<span style="color:#999;font-size:12px;"> · ' + t.count + ' 个产品</span>') : ''}</td>
         <td>${t.sortOrder || 0}</td>
         <td>
           ${line === 'article_theme' ? `<button onclick="applyThemeTag('${t.id}','${(t.label || '').replace(/'/g, "\\'")}','${(t.value || '').replace(/'/g, "\\'")}')" title="把存量文章中的旧标签替换为当前译文">同步到文章</button> ` : ''}
@@ -158,7 +229,7 @@ async function loadTags() {
       </tr>
     `).join('');
   } catch(e) {
-    document.getElementById('tagTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:red;">加载失败: ' + e.message + '</td></tr>';
+    document.getElementById('tagTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:red;">加载失败: ' + esc(e.message) + '</td></tr>';
   }
 }
 
@@ -233,18 +304,140 @@ async function deleteTag(id, label) {
   catch(e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
 }
 
+// ===================== 一致性检查（P2 机制） =====================
+// 只报告、不自动写库。补齐必须由人勾选后显式提交（POST /api/tags/health/fill）。
+let lastHealth = null;
+let healthLine = null;
+
+function resetHealth() {
+  lastHealth = null;
+  healthLine = null;
+  document.getElementById('healthBody').innerHTML =
+    '<div class="hempty">产品线已切换，点「开始检查」重新比对。</div>';
+}
+
+async function runHealthCheck() {
+  const line = document.getElementById('productLine').value;
+  const body = document.getElementById('healthBody');
+  const btn = document.getElementById('healthBtn');
+  btn.disabled = true;
+  body.innerHTML = '<div class="hempty">检查中…</div>';
+  try {
+    const r = await api('/tags/health?productLine=' + encodeURIComponent(line));
+    if (!r || typeof r !== 'object' || Array.isArray(r)) {
+      body.innerHTML = '<div class="hempty">该产品线没有产品字段承载标签，无法巡检（只能管分类字典）。</div>';
+      lastHealth = null;
+      return;
+    }
+    lastHealth = r;
+    healthLine = line;
+    renderHealth(r);
+  } catch (e) {
+    body.innerHTML = '<div class="hempty" style="color:#c0392b;">检查失败: ' + esc(e.message) + '</div>';
+    lastHealth = null;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function chip(cls, text) {
+  return '<span class="chip' + (cls ? ' ' + cls : '') + '">' + esc(text) + '</span>';
+}
+
+function renderHealth(r) {
+  const s = r.summary || {};
+  let html = '';
+  html += '<div class="chips">';
+  html += s.healthy ? chip('ok', '✓ 数据与字典一致') : chip('bad', '✗ 存在待处理项');
+  html += chip(s.missing ? 'warn' : '', '缺口 ' + (s.missing || 0));
+  html += chip(s.dead ? 'warn' : '', '死标签 ' + (s.dead || 0));
+  html += chip(s.collisions ? 'bad' : '', '同值冲突 ' + (s.collisions || 0));
+  html += chip(s.suspects ? 'warn' : '', '结构性脏值 ' + (s.suspects || 0));
+  html += chip('', '产品 ' + r.productCount + ' · 字典 ' + r.dictCount);
+  html += '</div>';
+  html += '<div style="font-size:12px;color:#999;margin-top:8px;">检查时间 ' + esc(new Date(r.checkedAt).toLocaleString()) + '</div>';
+
+  // ① 缺口 —— 唯一可执行的操作区
+  html += '<div class="hsec"><div class="hsec-head">';
+  html += '<span class="hsec-title">缺口（产品在用、字典没有）</span>';
+  html += '<span class="hsec-note">前台筛不出这些值。漏登记的标签就勾选补齐；产品页文案碎片应去产品里清掉，别往字典里塞。</span>';
+  if (r.missing && r.missing.length) {
+    html += '<div class="hact"><button onclick="toggleAllMissing(true)">全选</button>'
+         +  '<button onclick="toggleAllMissing(false)">全不选</button>'
+         +  '<button class="primary" onclick="fillMissing()">补进字典</button></div>';
+  }
+  html += '</div>';
+  html += (!r.missing || !r.missing.length)
+    ? '<div class="hempty">无 —— 产品在用的每个标签字典里都有。</div>'
+    : r.missing.map((m, i) =>
+        '<div class="hitem">'
+        + '<input type="checkbox" class="fill-pick" checked style="padding:0;"'
+        + ' data-category="' + esc(m.category) + '" data-value="' + esc(m.value) + '">'
+        + '<span class="hval">' + esc(m.value) + '</span>'
+        + '<span style="color:#666;font-size:12px;">' + esc(m.categoryLabel) + '</span>'
+        + '<span class="hmeta">' + m.count + ' 个产品 · 例 ' + esc((m.samples || []).join('、')) + '</span>'
+        + '</div>'
+      ).join('');
+
+  // ② 死标签
+  html += '<div class="hsec"><div class="hsec-head"><span class="hsec-title">死标签（字典有、零产品使用）</span>'
+       + '<span class="hsec-note">前台点了会出空列表。确认没用就删掉，或给产品补上。</span></div>';
+  html += (!r.dead || !r.dead.length) ? '<div class="hempty">无。</div>'
+    : r.dead.map(d => '<div class="hitem"><span class="hval">' + esc(d.value) + '</span>'
+        + '<span style="color:#666;font-size:12px;">' + esc(d.categoryLabel) + '</span>'
+        + '<span class="hmeta">id=' + d.id + ' · sort=' + d.sortOrder + '</span></div>').join('');
+
+  // ③ 同值冲突
+  html += '<div class="hsec"><div class="hsec-head"><span class="hsec-title">同值冲突（同分类下多个条目撞同一个选项值）</span>'
+       + '<span class="hsec-note">前台会出现两个一模一样的筛选项。</span></div>';
+  html += (!r.collisions || !r.collisions.length) ? '<div class="hempty">无。</div>'
+    : r.collisions.map(c => '<div class="hitem"><span class="hval">' + esc(c.value) + '</span>'
+        + '<span style="color:#666;font-size:12px;">' + esc(c.categoryLabel) + '</span>'
+        + '<span class="hmeta">' + esc((c.labels || []).join(' / ')) + ' · ids=' + (c.ids || []).join(',') + '</span></div>').join('');
+
+  // ④ 结构性脏值
+  html += '<div class="hsec"><div class="hsec-head"><span class="hsec-title">结构性脏值</span>'
+       + '<span class="hsec-note">HTML 实体残留 / 首尾分隔符 / 括号不成对 —— 这类值要修，不要补。</span></div>';
+  html += (!r.suspects || !r.suspects.length) ? '<div class="hempty">无。</div>'
+    : r.suspects.map(x => '<div class="hitem"><span class="hval">' + esc(x.value) + '</span>'
+        + '<span style="color:#666;font-size:12px;">' + esc(x.categoryLabel) + ' · ' + esc(x.reason) + '</span>'
+        + '<span class="hmeta">' + (x.source === 'dict' ? '字典 id=' + x.dictId : x.count + ' 个产品') + '</span></div>').join('');
+
+  document.getElementById('healthBody').innerHTML = html;
+}
+
+function toggleAllMissing(on) {
+  document.querySelectorAll('#healthBody input.fill-pick').forEach(function (b) { b.checked = on; });
+}
+
+async function fillMissing() {
+  const boxes = Array.prototype.slice.call(document.querySelectorAll('#healthBody input.fill-pick:checked'));
+  if (!boxes.length) return AdminDialog.alert('请先勾选要补齐的标签', { type: 'warn' });
+  const items = boxes.map(function (b) { return { category: b.dataset.category, value: b.dataset.value }; });
+  const names = items.map(function (i) { return '· ' + i.value; }).join('；');
+  if (!(await AdminDialog.confirm('将以下 ' + items.length + ' 个标签补进字典？' + names, { title: '补齐标签', confirmText: '补齐' }))) return;
+  try {
+    const r = await api('/tags/health/fill', { method: 'POST', body: JSON.stringify({ productLine: healthLine, items: items }) });
+    AdminDialog.alert('已补齐 ' + ((r && r.created && r.created.length) || 0) + ' 条'
+      + (r && r.skipped && r.skipped.length ? '，跳过 ' + r.skipped.length + ' 条（已存在）' : '')
+      + (r && r.rejected && r.rejected.length ? '，拒绝 ' + r.rejected.length + ' 条' : ''), { type: 'success' });
+    await runHealthCheck();
+    await loadTags();
+  } catch (e) { AdminDialog.alert('补齐失败: ' + e.message, { type: 'error' }); }
+}
+
 document.getElementById('productLine').addEventListener('change', function() {
   buildCategoryOptions(this.value, 'category'); // 顶部分类随产品线联动，默认第一项
   loadTags();
+  resetHealth();
 });
 document.getElementById('category').addEventListener('change', loadTags);
 document.getElementById('formProductLine').addEventListener('change', function() {
   buildCategoryOptions(this.value);
 });
-// 首次进入：按当前产品线渲染分类下拉（否则用的是 HTML 里的静态 pc 选项，
-// 切到药用辅料/配方前分类列表是错的）
-buildCategoryOptions(document.getElementById('productLine').value, 'category');
-loadTags();
+// 首次进入：先拉后端下发的「产品线 → 分类」清单，再渲染表格。
+// （早前这里直接用 HTML 里的静态 pc 分类，切到药用辅料/配方前分类列表是错的）
+loadLineSchema().then(loadTags);
 </script>
 </body>
 </html>

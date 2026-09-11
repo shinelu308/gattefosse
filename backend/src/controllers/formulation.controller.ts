@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
-import { tagGroup, mergeWhere } from '../utils/tag-filter';
+import { buildTagFilters, mergeWhere } from '../utils/tag-filter';
+import { attachTagWarnings } from '../utils/tag-health';
 
 const FORMULATION_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -16,11 +17,6 @@ export async function listFormulations(req: Request, res: Response) {
       page = '1',
       limit = '20',
       keyword,
-      application,
-      form,
-      claim,
-      naturalityIndex,
-      ingredient,
       isPublished,
     } = req.query;
 
@@ -41,21 +37,11 @@ export async function listFormulations(req: Request, res: Response) {
       });
     }
 
-    const tagFilters: [string, string | undefined][] = [
-      ['applicationTag', application as string],
-      ['formTag', form as string],
-      ['claimTag', claim as string],
-      ['conceptTag', ingredient as string],
-    ];
     // 同分类多选取并集(OR)。早前写的是 `where[field] = { contains: vals[0] }`，
     // 多选时除第一个以外的选中项被静默丢弃（实测「保湿,清爽」只按「保湿」筛）。
-    for (const [field, val] of tagFilters) andParts.push(tagGroup(field, val));
-
-    mergeWhere(where, andParts);
-
-    if (naturalityIndex) {
-      where.naturalityIndex = String(naturalityIndex);
-    }
+    // 5 个维度的映射（含 ingredient→conceptTag 这个历史命名）统一来自 utils/tag-map.ts，
+    // 天然指数是单值字段，也在映射里用 multi:false 声明，不再单独赋值。
+    mergeWhere(where, [...andParts, ...buildTagFilters('formulation', req.query as Record<string, unknown>)]);
 
     if (isPublished !== undefined && isPublished !== '') {
       where.isPublished = String(isPublished) === 'true';
@@ -169,7 +155,7 @@ export async function createFormulation(req: Request, res: Response) {
       include: FORMULATION_INCLUDE,
     });
 
-    return res.json(success(formatFormulation(item), '创建成功'));
+    return res.json(success(await attachTagWarnings('formulation', formatFormulation(item), item), '创建成功'));
   } catch (error) {
     console.error('创建配方失败:', error);
     return res.status(500).json(fail('创建配方失败'));
@@ -232,7 +218,7 @@ export async function updateFormulation(req: Request, res: Response) {
       include: FORMULATION_INCLUDE,
     });
 
-    return res.json(success(formatFormulation(item), '更新成功'));
+    return res.json(success(await attachTagWarnings('formulation', formatFormulation(item), item), '更新成功'));
   } catch (error) {
     console.error('更新配方失败:', error);
     return res.status(500).json(fail('更新配方失败'));

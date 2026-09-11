@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
-import { tagGroup, mergeWhere } from '../utils/tag-filter';
+import { buildTagFilters, mergeWhere } from '../utils/tag-filter';
+import { attachTagWarnings } from '../utils/tag-health';
 
 const PHARMA_LIST_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -16,10 +17,6 @@ export async function listPharmaProducts(req: Request, res: Response) {
       page = '1',
       limit = '20',
       keyword,
-      market,
-      route,
-      functionality,
-      dosageForm,
       isPublished,
     } = req.query;
 
@@ -41,15 +38,10 @@ export async function listPharmaProducts(req: Request, res: Response) {
       });
     }
 
-    const tagFilters: [string, string | undefined][] = [
-      ['marketTag', market as string],
-      ['routeTag', route as string],
-      ['functionalityTag', functionality as string],
-      ['dosageFormTag', dosageForm as string],
-    ];
-
-    // 同分类多选取并集(OR)，跨分类才是交集(AND)；并按逗号项精确匹配（避免「乳化剂」命中「外用乳化剂」）
-    for (const [field, value] of tagFilters) andParts.push(tagGroup(field, value));
+    // 4 个维度（应用市场/给药途径/功能/剂型）同分类取并集(OR)、跨分类取交集(AND)，
+    // 按逗号项精确匹配（避免「乳化剂」命中「外用乳化剂」）。
+    // 维度映射统一来自 utils/tag-map.ts，这里不再硬编码。
+    andParts.push(...buildTagFilters('pharma', req.query as Record<string, unknown>));
 
     // 合并（统一走 AND 数组，避免覆盖关键词搜索的 where.OR）
     mergeWhere(where, andParts);
@@ -135,7 +127,7 @@ export async function createPharmaProduct(req: Request, res: Response) {
       include: PHARMA_LIST_INCLUDE,
     });
 
-    return res.json(success(parsePharma(item), '创建成功'));
+    return res.json(success(await attachTagWarnings('pharma', parsePharma(item), item), '创建成功'));
   } catch (error) {
     console.error('创建辅料失败:', error);
     return res.status(500).json(fail('创建辅料失败'));
@@ -177,7 +169,7 @@ export async function updatePharmaProduct(req: Request, res: Response) {
       include: PHARMA_LIST_INCLUDE,
     });
 
-    return res.json(success(parsePharma(item), '更新成功'));
+    return res.json(success(await attachTagWarnings('pharma', parsePharma(item), item), '更新成功'));
   } catch (error) {
     console.error('更新辅料失败:', error);
     return res.status(500).json(fail('更新辅料失败'));

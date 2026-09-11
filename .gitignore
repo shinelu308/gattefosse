@@ -10,6 +10,8 @@ backend/prisma/dev.db
 backend/prisma/gattefosse.db
 backend/prisma/gattefosse.db-journal
 backend/prisma/gattefosse.db-wal
+# 整库备份（部署/对齐前的快照，勿入库）
+backend/prisma/gattefosse.db.bak-*
 
 # 临时文件
 *.log

@@ -366,6 +366,13 @@
       font-size: 1.6rem;
       color: #58616B;
     }
+    /* 命中 0 个配方的标签：置灰且不可点（后台「一致性检查」里显示为「死标签」）。
+       pointer-events:none 一次拦掉 checkbox 与链接的点击，不必改 filterByTag。 */
+    .facet-item1.is-empty {
+      opacity: 0.4 !important;
+      pointer-events: none !important;
+      cursor: not-allowed !important;
+    }
   </style>
   <script>
     // 获取对话框元素和关闭按钮
@@ -453,7 +460,9 @@
 
       // 加载标签字典
       function loadTagDictionary() {
-        GatteAPI.Tag.list({ productLine: 'formulation' }).then(function(res) {
+        // withCount=1 → 字典接口附带每个标签的命中产品数；
+        // 命中 0 的项前台置灰不可点，避免用户点出一个空列表（对应后台「一致性检查」里的死标签）
+        GatteAPI.Tag.list({ productLine: 'formulation', withCount: 1 }).then(function(res) {
           var body = res.data || res;
           // API返回格式: { application: [{label,value},...], form: [...], claim: [...], naturalityIndex: [...], ingredient: [...] }
           var tagMap = body.data || body;
@@ -474,9 +483,12 @@
                 tagName: items[i].label,
                 tagValue: val,
                 tagCategory: cat,
+                // 命中产品数（接口 withCount=1 才有；没有时给 null，不置灰）
+                count: typeof items[i].count === 'number' ? items[i].count : null,
                 dataDrupalFacetItemId: cat + '-' + val,
                 tagUrl: '/personal-care/formulation-finder.html?' + catApiMap[cat] + '=' + encodeURIComponent(val) + '&page=1',
-                facetItemClass: 'facet-item1'
+                // count=0 → is-empty：置灰 + pointer-events:none（CSS 里定义）
+                facetItemClass: 'facet-item1' + (items[i].count === 0 ? ' is-empty' : '')
               });
             }
             groups.push({

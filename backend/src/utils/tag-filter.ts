@@ -9,6 +9,8 @@
  *     配方更直接只取 `vals[0]`，其余选中项被静默丢弃。
  */
 
+import { getTagLine } from './tag-map';
+
 export type TagWhere = Record<string, unknown>;
 
 /** 单个标签值的「整项」匹配：等于 a ｜ 以 a, 开头 ｜ 以 ,a 结尾 ｜ 含 ,a, */
@@ -47,4 +49,26 @@ export function mergeWhere(where: TagWhere, parts: (TagWhere | null | undefined)
   if (list.length === 1) Object.assign(where, list[0]);
   else if (list.length > 1) where.AND = list;
   return where;
+}
+
+/** 单值字段的精确匹配（如配方「天然指数」存的是 "> 95%" 这类整串，不能按逗号切） */
+export function tagScalar(field: string, value: string): TagWhere {
+  return { [field]: value };
+}
+
+/**
+ * 按 `utils/tag-map.ts` 的维度定义，从 query 自动构造各分类的标签条件。
+ *
+ * 这是「单一真相源」的落点：以后新增/改名标签维度只改 tag-map.ts，
+ * 三条 controller 不用动 —— 历史上后台把 formulation 写成 formula、
+ * pharma 分类表列错导致 29 条标签不可见，都是因为映射散落多处。
+ */
+export function buildTagFilters(line: string, query: Record<string, unknown>): (TagWhere | null)[] {
+  const def = getTagLine(line);
+  if (!def) return [];
+  return def.dimensions.map((d) => {
+    const raw = query[d.param];
+    if (raw === undefined || raw === null || raw === '') return null;
+    return d.multi ? tagGroup(d.field, String(raw)) : tagScalar(d.field, String(raw));
+  });
 }
