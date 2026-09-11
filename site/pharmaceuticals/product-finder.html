@@ -404,6 +404,7 @@
     setup: function () {
       var params = new URLSearchParams(window.location.search);
       var curPage = parseInt(params.get('page')) || 1;
+      var urlKeyword = params.get('keyword') || '';
 
       var data = reactive({
         tagList: [],
@@ -412,7 +413,7 @@
         total_page: 1,
         cur_page: curPage,
         page_size: 9,
-        keyword: '',
+        keyword: urlKeyword,
         loading: false,
         mallGoodsInfoTypeList: [],
         filterItems: [],
@@ -1008,6 +1009,14 @@
 <script src="/static/js/api-260912.js"></script>
 <script src="/static/js/auth-260908.js"></script>
   <script src="/static/js/quick-access-260911.js"></script>
+<script>
+    /* 搜索关键词回显（2026-09-12）：GET 表单提交后 URL 带 keyword，把它填回输入框 */
+    (function () {
+      var kw = new URLSearchParams(window.location.search).get('keyword') || '';
+      var el = document.getElementById('edit-keyword');
+      if (kw && el && !el.value) el.value = kw;
+    })();
+  </script>
 </body>
 
 </html>
