@@ -65,7 +65,12 @@ export function fetchText(target: string): Promise<string> {
 
 /** 去标签取纯文本 */
 export function stripTags(html: string): string {
-  return html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+  return html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')
+    // HTML 实体解码（2026-09-11）：原站分类/标题等文本常含 &amp; 等，不解码会原样入库并在前台显示
+    // 顺序：先解其它实体最后解 &amp;，避免 &amp;lt; 被双重解码
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&#0?39;|&apos;/g, "'").replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ').trim();
 }
 
 /** 文本归一化（去空白/标点/大小写差异），用于原站与导入内容一致性比对 */
