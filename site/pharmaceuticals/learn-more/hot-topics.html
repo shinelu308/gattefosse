@@ -609,6 +609,16 @@
     font-size: 1.6rem;
     color: #58616B;
   }
+/* 列表卡片缩略图兜底（2026-09-11）
+     原站 CSS 对 .c-card__image img 本身没有 object-fit（原站图都是预裁好的 369×208）。
+     导入器取不到列表卡片图时会回退详情页 banner（1440×405 / 1584×563 等超宽横幅），
+     无 object-fit 时会被直接拉伸 → 大片留白 + 横向挤扁，表现为「空占位」。
+     cover 保证任意比例封面都铺满卡片；原生 369×208 卡片图比例一致，裁切无感。 */
+  .c-card__image img {
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
+
 </style>
   <script src="/static/js/quick-access-260911.js"></script>
 </body>
