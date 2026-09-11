@@ -326,18 +326,13 @@
                                         </div>
                                         <div v-if="article.title" data-page-node-id="0mFgAehQGtnEoWDyqMo3zD">
                                             <h1 class="s-article__title page-title u-title-styled" data-page-node-id="o4v8lunPoa0Ei99VTXpQxR">{{ article.title }}</h1>
+                                          <div v-if="article.subtitle" class="s-article__subtitle">{{ article.subtitle }}</div>
                                         </div>
                                     </div>
-
-                                    <!-- Subtitle（原站 s-article__subtitle，标题正下方灰色大写小字，2026-09-11） -->
-                                    <div v-if="article.subtitle" class="s-article__subtitle" style="margin-bottom:1.6rem;">{{ article.subtitle }}</div>
 
                                     <!-- Summary -->
                                     <!-- Summary section (matching original Drupal .s-article__subtitle + .block-accroche) -->
                                     <div v-if="article.summary && article.showSummary !== false" class="adp-summary-wrap" data-page-node-id="s6gHma35OvjDMCgCwVKiEs">
-                                        <div data-page-node-id="SNqFIYRw2jpkHAcATcvAZu">
-                                            <div class="s-article__subtitle" data-page-node-id="F0RVLMtTbHRqfzs2UG5ghA"><span data-page-node-id="AFrsarOtINCi8OGz1BmL7K">{{ article.summaryLabel || '' }}</span></div>
-                                        </div>
                                         <div class="block-accroche" data-page-node-id="ZNvEWYvJPXyNAHj3L5fQdm">
                                             <p data-page-node-id="KmotjfyhRZw5mJmaKINLtr">{{ article.summary }}</p>
                                         </div>

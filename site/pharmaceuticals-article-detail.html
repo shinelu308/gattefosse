@@ -274,18 +274,13 @@
                                         </div>
                                         <div v-if="article.title">
                                             <h1 class="s-article__title page-title u-title-styled">{{ article.title }}</h1>
+                                          <div v-if="article.subtitle" class="s-article__subtitle">{{ article.subtitle }}</div>
                                         </div>
                                     </div>
-
-                                    <!-- Subtitle（原站 s-article__subtitle，标题正下方灰色大写小字，2026-09-11） -->
-                                    <div v-if="article.subtitle" class="s-article__subtitle" style="margin-bottom:1.6rem;">{{ article.subtitle }}</div>
 
                                     <!-- Summary -->
                                     <!-- Summary section (matching original Drupal .s-article__subtitle + .block-accroche) -->
                                     <div v-if="article.summary && article.showSummary !== false" class="adp-summary-wrap">
-                                        <div>
-                                            <div class="s-article__subtitle"><span>{{ article.summaryLabel || '' }}</span></div>
-                                        </div>
                                         <div class="block-accroche">
                                             <p>{{ article.summary }}</p>
                                         </div>
