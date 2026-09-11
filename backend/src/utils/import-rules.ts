@@ -131,13 +131,15 @@ export function attrOfTag(tagHtml: string, attr: string): string | null {
 /**
  * 剔除指定类型的 Drupal paragraph 区块（整个平衡 div，含内部嵌套内容）
  * 用于结构比对前剥离 widget / linked-content 等导入时不进正文的区块
+ * ⚠️ 2026-09-11 稳健化：从 type 字样反查所在 div 开标签（class 里含该 type 才算命中），
+ * 不再要求块 class 以 "paragraph" 开头（c-video--remote paragraph paragraph--type--xxx 也能正确整块剔除）
  */
 export function removeParagraphBlocks(html: string, types: string[]): string {
   for (const t of types) {
     let idx: number;
     let guard = 0;
     while ((idx = html.indexOf('paragraph--type--' + t)) >= 0 && guard++ < 50) {
-      const start = html.lastIndexOf('<div class="paragraph', idx);
+      const start = findOwningDivOpen(html, idx, 'paragraph--type--' + t);
       if (start < 0) break;
       const frag = extractBalancedDiv(html, start);
       if (!frag) break;
@@ -145,6 +147,24 @@ export function removeParagraphBlocks(html: string, types: string[]): string {
     }
   }
   return html;
+}
+
+/** 从 pos 位置反查「开标签 class 中含 token」的最近 <div 开标签；找不到返回 -1 */
+function findOwningDivOpen(html: string, pos: number, token: string): number {
+  let from = pos;
+  while (from >= 0) {
+    const open = html.lastIndexOf('<div', from);
+    if (open < 0) return -1;
+    const tagEnd = html.indexOf('>', open);
+    if (tagEnd >= pos) {
+      // pos 落在该开标签内部 → 它就是承载 token 的开标签
+      if (html.slice(open, tagEnd + 1).includes(token)) return open;
+      return -1;
+    }
+    if (html.slice(open, tagEnd + 1).includes(token)) return open;
+    from = open - 1;
+  }
+  return -1;
 }
 
 /**
@@ -241,17 +261,21 @@ export function translateTag(tag: string, unknownSink?: string[]): string {
  * 规则 R6：结构签名——提取正文区块类型序列，用于导入前后一致性校验（第 2 层使用）
  * 签名格式如 "titre-h2>texte>image>titre-h3>zone-size>texte"
  * 忽略空白差异，只看 Drupal paragraph 类型 + 图片顺序
+ * ⚠️ 2026-09-11（haute-couture 事故）：正则不要求 class 属性以 paragraph 开头——
+ * video-remote 等区块输出 class="c-video c-video--remote paragraph paragraph--type--video-remote"，
+ * 旧正则 class="paragraph\s+ 抓不到，导致视频区块从签名中隐身，导入器把它丢了校验器也发现不了
  */
 export function structureSignature(html: string): string {
   const parts: string[] = [];
-  const re = /class="paragraph\s+paragraph--type--([a-z0-9_-]+)|<img[^>]*\ssrc="/gi;
+  const re = /paragraph--type--([a-z0-9_-]+)|<img[^>]*\ssrc="/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(html)) !== null) {
     if (m[0].toLowerCase().startsWith('<img')) {
       // 连续图片折叠为单个 image 标记
       if (parts[parts.length - 1] !== 'img') parts.push('img');
     } else {
-      parts.push(m[1]);
+      // 同一块 class 双写类型名（如 linked-content paragraph--type--linked-content ... 重复两次）折叠为一个
+      if (parts[parts.length - 1] !== m[1]) parts.push(m[1]);
     }
   }
   return parts.join('>');

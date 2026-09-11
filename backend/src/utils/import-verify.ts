@@ -195,15 +195,23 @@ export async function verifyImportedArticle(
   });
 
   // 7. 结构签名一致
+  // 仅对英文站原文正文比对；中文站导入（正文为空，内容存结构化区块）或已翻译/人工改写的
+  // 中文正文跳过——与标题/摘要「已翻译为中文视为通过」同一豁免原则（2026-09-11 强化）
   const oContent = originContent(originHtml);
   if (oContent) {
-    const s1 = sig(oContent);
-    const s2 = sig(item.contentHtml);
-    out.push({
-      name: '正文结构与原站一致',
-      ok: s1 === s2,
-      detail: s1 === s2 ? undefined : `原站 [${s1.slice(0, 120)}] / 导入 [${s2.slice(0, 120)}]`,
-    });
+    if (!item.contentHtml) {
+      out.push({ name: '正文结构与原站一致', ok: true, detail: '库内正文为空（中文站导入或内容存于结构化区块），跳过比对' });
+    } else if (hasCJK(stripTags(item.contentHtml).slice(0, 2000))) {
+      out.push({ name: '正文结构与原站一致', ok: true, detail: '正文已翻译/人工改写为中文，跳过比对' });
+    } else {
+      const s1 = sig(oContent);
+      const s2 = sig(item.contentHtml);
+      out.push({
+        name: '正文结构与原站一致',
+        ok: s1 === s2,
+        detail: s1 === s2 ? undefined : `原站 [${s1.slice(0, 120)}] / 导入 [${s2.slice(0, 120)}]`,
+      });
+    }
   }
 
   // 8. 无脏链（bing 跳转等）

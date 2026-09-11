@@ -525,9 +525,13 @@ export async function importArticleFromSite(req: Request, res: Response) {
     }
 
     // 其余区块一律原样保留原站标记（.paragraph 包装层承载原站全部样式，
-    // 拍平会导致 .paragraph h2 / .text-formatted 等选择器失配），仅重写图片与链接
-    // 注意：纯图片区块（无文字）也要保留——stripTags 为空但含 <img>
-    if (stripTags(child) || /<img/i.test(child)) blocks.push(rewrite(child));
+    // 拍平会导致 .paragraph h2 / .text-formatted 等选择器失配），仅重写图片与链接。
+    // ⚠️ 2026-09-11（haute-couture 事故）：旧版丢弃「无文字无图」区块导致两类问题——
+    //   ① 空白 texte 段落（内容只有空格，原站用于撑间距）被丢 → 结构签名与原站不一致（校验第 7 项失败）；
+    //   ② video-remote 区块（YouTube 视频，无文字无 img）被丢 → 正文视频真实丢失，且签名正则
+    //      抓不到它（class="c-video..." 开头），校验器也发现不了。
+    // 修复：除 widget/salesforce/linked-content 外一律保留，与校验器 1:1 原则对齐。
+    blocks.push(rewrite(child));
   }
 
   let contentHtml = blocks.join('\n');
@@ -536,6 +540,19 @@ export async function importArticleFromSite(req: Request, res: Response) {
   // 规则 R4：清洗原站自带的 bing 跳转脏链（解码还原真实地址）
   const cleaned = cleanBingLinks(contentHtml);
   contentHtml = cleaned.html;
+
+  // 视频区块本地化（2026-09-11 haute-couture 事故）：原站 video-remote 区块输出
+  // <div class="youtube_player js-video-wrapper" videoID="xxx"></div>，靠原站 Drupal JS 初始化 iframe；
+  // 本地详情页聚合 JS 无此逻辑，直接转成标准 YouTube embed iframe（.video__container iframe
+  // 有 16:9 aspect-ratio 样式，直出即可正常渲染）
+  contentHtml = contentHtml.replace(
+    /<div([^>]*class="[^"]*youtube_player[^"]*"[^>]*)><\/div>/gi,
+    (full, attrs: string) => {
+      const vidM = /\bvideoID="([^"]+)"/i.exec(attrs);
+      if (!vidM || !/^[A-Za-z0-9_-]{6,20}$/.test(vidM[1])) return full;
+      return `<iframe class="youtube_player" src="https://www.youtube.com/embed/${vidM[1]}" title="Video player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    },
+  );
 
   // 6. 摘要：优先使用原站导语（block-accroche）；无导语时退回第一段有效文本
   // 专题页（type=page）：summary 存导语原始 HTML（前台 .block-accroche 渲染需要段落/加粗/链接；
