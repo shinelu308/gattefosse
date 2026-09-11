@@ -8,7 +8,7 @@ import { ensureArticleThemeSeed, applyThemeTagToArticles } from '../utils/articl
  */
 export async function getTagDictionary(req: Request, res: Response) {
   try {
-    const { productLine } = req.query; // pc / pharma
+    const { productLine } = req.query; // pc / pharma / formulation / article_theme
     if (productLine === 'article_theme') await ensureArticleThemeSeed();
 
     const where = productLine
@@ -20,11 +20,19 @@ export async function getTagDictionary(req: Request, res: Response) {
       orderBy: [{ category: 'asc' }, { sortOrder: 'asc' }],
     });
 
-    // 按 category 分组
-    const grouped: Record<string, { label: string; value: string }[]> = {};
+    // 按 category 分组。除 label/value 外额外返回 id / category / sortOrder：
+    // 后台标签管理页依赖它们做「排序」列显示与编辑/删除定位（只返 label/value 时 t.id 为 undefined，
+    // editTag 会退化成传 t.value，后端 parseInt('活性物')=NaN → Prisma 抛错 → 编辑删除必然失败）。
+    const grouped: Record<string, { id: number; label: string; value: string; category: string; sortOrder: number }[]> = {};
     for (const t of tags) {
       if (!grouped[t.category]) grouped[t.category] = [];
-      grouped[t.category].push({ label: t.label, value: t.value });
+      grouped[t.category].push({
+        id: t.id,
+        label: t.label,
+        value: t.value,
+        category: t.category,
+        sortOrder: t.sortOrder,
+      });
     }
 
     return res.json(success(grouped, '获取成功'));

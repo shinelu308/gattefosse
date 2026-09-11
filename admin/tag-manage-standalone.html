@@ -32,7 +32,7 @@ th { background: #f9f9f9; font-weight: 600; }
     <select id="productLine">
       <option value="pc">成分</option>
       <option value="pharma">药用辅料</option>
-      <option value="formula">配方</option>
+      <option value="formulation">配方</option>
       <option value="article_theme">文章主题</option>
     </select>
     <select id="category">
@@ -42,7 +42,6 @@ th { background: #f9f9f9; font-weight: 600; }
       <option value="claim">声明</option>
       <option value="characteristic">特征</option>
       <option value="naturality">自然性</option>
-      <option value="label">标签</option>
     </select>
     <button class="primary" onclick="showAddForm()">+ 新增标签</button>
   </div>
@@ -64,7 +63,7 @@ th { background: #f9f9f9; font-weight: 600; }
       <select id="formProductLine" style="width:100%;">
         <option value="pc">成分</option>
         <option value="pharma">药用辅料</option>
-        <option value="formula">配方</option>
+        <option value="formulation">配方</option>
         <option value="article_theme">文章主题</option>
       </select>
     </div>
@@ -95,15 +94,16 @@ th { background: #f9f9f9; font-weight: 600; }
 <script>
 const API = parent.location.protocol + '//' + parent.location.host + '/api';
 const CATEGORY_MAP = {
-  pc: ['functionality', 'application', 'concept', 'claim', 'characteristic', 'naturality', 'label'],
-  pharma: ['functionality', 'application', 'dosageForm', 'claim'],
-  formula: ['application', 'form', 'claim', 'naturalityIndex', 'ingredient'],
+  pc: ['functionality', 'application', 'concept', 'claim', 'characteristic', 'naturality'],
+  pharma: ['market', 'route', 'functionality', 'dosage_form'],
+  formulation: ['application', 'form', 'claim', 'naturalityIndex', 'ingredient'],
   article_theme: ['theme'],
 };
 const CATEGORY_LABELS = {
   functionality: '功能', application: '应用领域', concept: '概念', claim: '声明',
   characteristic: '特征', naturality: '自然性', label: '标签',
-  dosageForm: '剂型', form: '性状', naturalityIndex: '天然指数', ingredient: '成分/概念',
+  market: '应用市场', route: '给药途径', dosage_form: '剂型',
+  form: '性状', naturalityIndex: '天然指数', ingredient: '成分/概念',
   theme: '主题',
 };
 
@@ -241,6 +241,9 @@ document.getElementById('category').addEventListener('change', loadTags);
 document.getElementById('formProductLine').addEventListener('change', function() {
   buildCategoryOptions(this.value);
 });
+// 首次进入：按当前产品线渲染分类下拉（否则用的是 HTML 里的静态 pc 选项，
+// 切到药用辅料/配方前分类列表是错的）
+buildCategoryOptions(document.getElementById('productLine').value, 'category');
 loadTags();
 </script>
 </body>
