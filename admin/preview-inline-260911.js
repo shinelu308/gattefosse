@@ -76,10 +76,11 @@
   }
 
   // ---------- 目标识别 ----------
-  /** 返回 {kind:'text', node} | {kind:'img'|'video', el} 或 null */
+  /** 返回 {kind:'text', node} | {kind:'img'|'video', el} 或 null；视频封面覆盖层由其自身 handler 处理 */
   function hitTarget(el) {
     var r = root();
     if (!r || !el || el === document.body || el === document.documentElement) return null;
+    if (el.closest && el.closest('.cp-video-cover')) return null; // 封面层有自己的 handler
     if (el.tagName === 'IMG' && r.contains(el)) return { kind: 'img', el: el };
     if (el.tagName === 'IFRAME' && r.contains(el)) return { kind: 'video', el: el };
     if (r.contains(el) || (el.nodeType === 3 && r.contains(el.parentNode))) return { kind: 'text', el: el };
@@ -231,6 +232,7 @@
       var path = buildPath(iframeEl);
       if (!path) { alert('无法定位该视频，请刷新预览重试'); return false; }
       iframeEl.setAttribute('src', embed);
+      refreshVideoCover(iframeEl, id);
       send({ type: 'patch', patch: { kind: 'video', path: path, old: original, next: embed } });
     });
   }
@@ -241,6 +243,56 @@
     if (/^[A-Za-z0-9_-]{6,20}$/.test(s)) return s;
     var m = /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/i.exec(s);
     return m ? m[1] : null;
+  }
+
+  // ---------- 视频封面覆盖层（2026-09-11 二次修复） ----------
+  // 两个问题一起解决：①真实鼠标点击落在 YouTube iframe 内部文档里，事件不冒泡到预览文档，
+  // 编辑浮层永远弹不出；②YouTube 播放器在 blob 预览文档中报「错误 153」。
+  // 方案：iframe 上面盖一层封面卡（视频缩略图 + 播放按钮 + 「点击修改视频链接」提示），
+  // 点击封面弹出编辑浮层。⚠️ 只 append 兄弟节点、不改 DOM 结构，保证补丁路径与后端解析一致。
+  function videoIdFromSrc(src) {
+    var m = /\/embed\/([A-Za-z0-9_-]{6,20})/.exec(src || '');
+    return m ? m[1] : null;
+  }
+  function buildCoverHtml(id) {
+    var img = id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95;">' : '';
+    return img
+      + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:44px;background:rgba(196,0,77,.92);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35);">'
+      + '<div style="width:0;height:0;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px;"></div></div>'
+      + '<div style="position:absolute;left:0;right:0;bottom:0;padding:5px 10px;background:rgba(0,0,0,.62);color:#fff;font-size:12px;text-align:center;font-family:inherit;">🎬 点击修改视频链接</div>';
+  }
+  function refreshVideoCover(iframeEl, newId) {
+    var cover = iframeEl.__cpCover;
+    if (cover) {
+      var img = cover.querySelector('img');
+      if (img && newId) img.src = 'https://i.ytimg.com/vi/' + newId + '/hqdefault.jpg';
+    }
+  }
+  function enhanceVideoCovers() {
+    var r = root();
+    if (!r) return;
+    var iframes = r.querySelectorAll('iframe');
+    Array.prototype.forEach.call(iframes, function (ifr) {
+      if (ifr.__cpCover) return;
+      var parent = ifr.parentNode;
+      if (!parent || parent.nodeType !== 1) return;
+      try {
+        if (window.getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+      } catch (e) { /* ignore */ }
+      var cover = document.createElement('div');
+      cover.className = 'cp-video-cover';
+      cover.setAttribute('style', 'position:absolute;inset:0;z-index:10;cursor:pointer;overflow:hidden;background:#111;');
+      cover.innerHTML = buildCoverHtml(videoIdFromSrc(ifr.getAttribute('src')));
+      parent.appendChild(cover);
+      ifr.__cpCover = cover;
+      cover.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        closePop();
+        editVideo(ifr);
+      });
+      cover.addEventListener('mouseover', function () { markHover(cover, 'video'); });
+      cover.addEventListener('mouseout', clearHover);
+    });
   }
 
   // ---------- 事件接管 ----------
@@ -298,4 +350,6 @@
   });
 
   send({ type: 'ready' });
+  // 视频封面覆盖层：DOM 就绪后挂载（脚本在 body 尾部，DOM 已齐）
+  enhanceVideoCovers();
 })();

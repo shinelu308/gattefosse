@@ -144,13 +144,19 @@ async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
       }
     }
 
-    // 7. 点击视频 → 浮层 → 改链接 → 确定
-    const videoFrame = await frame.evaluateHandle(() => document.querySelector('#cp-root iframe.youtube_player'));
-    const videoEl = videoFrame.asElement();
+    // 7. 点击视频封面层（真实点击不再被 YouTube iframe 吞事件）→ 浮层 → 改链接
+    const coverInfo = await frame.evaluate(() => {
+      const cover = document.querySelector('.cp-video-cover');
+      return { exists: !!cover, hasImg: !!(cover && cover.querySelector('img')) };
+    });
+    check('视频封面覆盖层已挂载', coverInfo.exists && coverInfo.hasImg);
+    const videoEl2 = await frame.evaluateHandle(() => document.querySelector('#cp-root iframe.youtube_player'));
+    const videoEl = videoEl2.asElement();
     check('找到视频块', !!videoEl);
     if (videoEl) {
+      // 模拟真实用户点击封面层（blob frame 内合成事件，含坐标）
       await frame.evaluate(() => {
-        const el = document.querySelector('#cp-root iframe.youtube_player');
+        const el = document.querySelector('.cp-video-cover');
         const r = el.getBoundingClientRect();
         el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, clientX: r.x + r.width / 2, clientY: r.y + r.height / 2, view: window }));
       });
