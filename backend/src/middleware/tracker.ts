@@ -3,9 +3,8 @@ import crypto from 'crypto';
 import path from 'path';
 import { prisma } from '../utils/prisma';
 import { newWithFileOnly, defaultDbFile } from 'ip2region-ts';
+import { isSourceNoise } from '../utils/visit-filter';
 
-// 不统计的前缀（管理后台 / 上传文件 / API）
-const EXCLUDED_PREFIXES = ['/api', '/admin', '/uploads'];
 // 不统计的静态资源扩展名
 const EXCLUDED_EXTS = new Set([
   'css', 'js', 'mjs', 'map', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'svg', 'ico',
@@ -25,11 +24,18 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
   try {
     if (req.method !== 'GET') return next();
     const pathname = (req.path || '/').split('?')[0];
-    if (EXCLUDED_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'))) return next();
 
     const ext = pathname.includes('.') ? pathname.split('.').pop()?.toLowerCase() || '' : '';
     const isPage = pathname === '/' || ext === 'html' || (!pathname.includes('.') && pathname !== '/');
     if (!isPage || EXCLUDED_EXTS.has(ext)) return next();
+
+    // ⚠️ 口径过滤（2026-09-11）：HTML 片段 / 非页面 / 扫描路径 / 爬虫脚本 UA / 内网 IP
+    // 一律不入库。此前 header/footer/quickLinks/world/account-menu 等片段被当成页面，
+    // 每次浏览多记 5~6 条，使 PV 虚高 6 倍。规则集中在 utils/visit-filter.ts，
+    // 与统计聚合共用同一套判断，勿在此另写一份。
+    const clientIp = req.ip || '';
+    const clientUa = req.headers['user-agent'] || '';
+    if (isSourceNoise({ path: pathname, ip: clientIp, ua: clientUa })) return next();
 
     // 访客标识：优先 cookie
     let visitorId = (req.cookies as Record<string, string> | undefined)?.__gv || '';
@@ -39,7 +45,7 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
     const path = pathname === '/' ? '/(首页)' : pathname;
 
     // 异步链：解析 IP 归属地（国家|省份）后一并落库，失败不影响业务
-    const ip = req.ip || '';
+    const ip = clientIp;
     Promise.resolve()
       .then(async () => {
         let region: string | null = null;
@@ -59,7 +65,7 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
             path,
             visitorId,
             ip: ip || null,
-            ua: (req.headers['user-agent'] || '').slice(0, 250) || null,
+            ua: clientUa.slice(0, 250) || null,
             referer: (req.headers.referer || '').slice(0, 250) || null,
             region,
           },

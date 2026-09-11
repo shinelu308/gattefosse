@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success } from '../utils/response';
+import { isCountableVisit } from '../utils/visit-filter';
+
 function dayStart(d: Date): Date {
   const x = new Date(d);
   x.setHours(0, 0, 0, 0);
@@ -13,7 +15,15 @@ function localKey(d: Date): string {
 
 /**
  * 访问统计总览（总览页用）
- * 返回：今日/昨日/累计 PV・UV、近 7 日趋势、近 7 日热门页面 TOP
+ * 返回：今日/昨日/累计 PV・UV、近 7 日趋势、近 7 日热门页面 TOP、地区聚合
+ *
+ * ⚠️ 口径（2026-09-11 起）：所有指标统一走 utils/visit-filter 的 isCountableVisit。
+ * 先全量取出再在内存中过滤，保证「今日 / 昨日 / 累计 / 趋势 / 地域 / 热门页」同一口径，
+ * 历史噪声记录（HTML 片段、爬虫、扫描、内网与自测 IP）一并被剔除 —— 这正是 B 方案
+ * 「历史数据回溯清洗」的实现方式：不删库，只在展示口径上过滤，改规则即刻生效。
+ *
+ * 数据量级：单表当前约 1 万行，内存过滤无压力。若增长到 10 万行以上，应改为在
+ * page_view 表物化一个 is_valid 列（埋点写入时算好）后走 SQL 聚合。
  */
 export async function getVisitOverview(_req: Request, res: Response) {
   const now = new Date();
@@ -21,32 +31,29 @@ export async function getVisitOverview(_req: Request, res: Response) {
   const yest0 = new Date(today0.getTime() - 24 * 3600 * 1000);
   const days7_0 = new Date(today0.getTime() - 6 * 24 * 3600 * 1000);
 
-  const [todayPv, todayUv, yestPv, yestUv, totalPv, totalUv] = await Promise.all([
-    prisma.pageView.count({ where: { createdAt: { gte: today0 } } }),
-    prisma.pageView.groupBy({ by: ['visitorId'], where: { createdAt: { gte: today0 } } }).then((r) => r.length),
-    prisma.pageView.count({ where: { createdAt: { gte: yest0, lt: today0 } } }),
-    prisma.pageView.groupBy({ by: ['visitorId'], where: { createdAt: { gte: yest0, lt: today0 } } }).then((r) => r.length),
-    prisma.pageView.count(),
-    prisma.pageView.groupBy({ by: ['visitorId'] }).then((r) => r.length),
-  ]);
+  const rawRows = await prisma.pageView.findMany({
+    select: { path: true, ua: true, ip: true, visitorId: true, region: true, createdAt: true },
+  });
+  const rows = rawRows.filter((r) => isCountableVisit({ path: r.path, ip: r.ip, ua: r.ua }));
+
+  const since = (from: Date, to?: Date) =>
+    rows.filter((r) => r.createdAt >= from && (!to || r.createdAt < to));
+  const uvOf = (list: { visitorId: string }[]) => new Set(list.map((r) => r.visitorId)).size;
+
+  const todayRows = since(today0);
+  const yestRows = since(yest0, today0);
+  const sinceRows = since(days7_0);
 
   // 近 7 天趋势（含今天，共 7 天）+ 地区聚合（同一批数据）
-  const sinceRows = await prisma.pageView.findMany({
-    where: { createdAt: { gte: days7_0 } },
-    select: { createdAt: true, visitorId: true, region: true },
-  });
   const trend: { date: string; pv: number; uv: number }[] = [];
   const dayMap = new Map<string, { pv: Set<string> }>();
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(days7_0.getTime() + i * 24 * 3600 * 1000);
-    const key = localKey(d);
-    dayMap.set(key, { pv: new Set() });
-    trend.push({ date: `${d.getMonth() + 1}/${d.getDate()}`, pv: 0, uv: 0 });
-  }
   const keyOrder: string[] = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date(days7_0.getTime() + i * 24 * 3600 * 1000);
-    keyOrder.push(localKey(d));
+    const key = localKey(d);
+    keyOrder.push(key);
+    dayMap.set(key, { pv: new Set() });
+    trend.push({ date: `${d.getMonth() + 1}/${d.getDate()}`, pv: 0, uv: 0 });
   }
   // 地区计数：中国按省份（省图名称），海外按国家（世界图名称）
   const chinaMap = new Map<string, number>();
@@ -76,20 +83,18 @@ export async function getVisitOverview(_req: Request, res: Response) {
     [...m.entries()].map(([name, pv]) => ({ name, pv })).sort((a, b) => b.pv - a.pv).slice(0, 30);
   const regions = { china: toList(chinaMap), overseas: toList(overseasMap) };
 
-  // 近 7 天热门页面 TOP 8
-  const topRows = await prisma.pageView.groupBy({
-    by: ['path'],
-    where: { createdAt: { gte: days7_0 } },
-    _count: { _all: true },
-    orderBy: { _count: { path: 'desc' } },
-    take: 8,
-  });
-  const topPages = topRows.map((r) => ({ path: r.path, pv: r._count._all }));
+  // 近 7 天热门页面 TOP 8（同口径）
+  const pathCount = new Map<string, number>();
+  for (const r of sinceRows) pathCount.set(r.path, (pathCount.get(r.path) || 0) + 1);
+  const topPages = [...pathCount.entries()]
+    .map(([path, pv]) => ({ path, pv }))
+    .sort((a, b) => b.pv - a.pv)
+    .slice(0, 8);
 
   res.json(success({
-    today: { pv: todayPv, uv: todayUv },
-    yesterday: { pv: yestPv, uv: yestUv },
-    total: { pv: totalPv, uv: totalUv },
+    today: { pv: todayRows.length, uv: uvOf(todayRows) },
+    yesterday: { pv: yestRows.length, uv: uvOf(yestRows) },
+    total: { pv: rows.length, uv: uvOf(rows) },
     trend,
     topPages,
     regions,
