@@ -1,0 +1,1208 @@
+{
+ "clean": [
+  {
+   "table": "pc_ingredients",
+   "id": 65,
+   "col": "claim_tag",
+   "before": ",主要针对含粉类配方设计,不需要助乳化剂,可冷加工,与多种化妆品成分兼容,专利申请中,",
+   "after": "主要针对含粉类配方设计,不需要助乳化剂,可冷加工,与多种化妆品成分兼容,专利申请中",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 73,
+   "col": "claim_tag",
+   "before": ",提高配方稳定性,支持创新配方,增强感官性能,提供持久的保湿和舒适,",
+   "after": "提高配方稳定性,支持创新配方,增强感官性能,提供持久的保湿和舒适",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 75,
+   "col": "claim_tag",
+   "before": "源自天然蜡的无PEG乳化剂,活性质地&mdash;保湿,软垫感",
+   "after": "源自天然蜡的无PEG乳化剂,活性质地—保湿,软垫感",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 79,
+   "col": "claim_tag",
+   "before": ",植物黄油膏,完美的热稳定性,支撑乳状液骨架,提高铺展性和舒适度,",
+   "after": "植物黄油膏,完美的热稳定性,支撑乳状液骨架,提高铺展性和舒适度",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 81,
+   "col": "claim_tag",
+   "before": ",密实剂,油相增稠剂,粉质触感,乳化稳定剂,",
+   "after": "密实剂,油相增稠剂,粉质触感,乳化稳定剂",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 83,
+   "col": "claim_tag",
+   "before": ",优异的乳化和稳定性能,困难配方的解决者,天鹅绒般的触感,",
+   "after": "优异的乳化和稳定性能,困难配方的解决者,天鹅绒般的触感",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 84,
+   "col": "claim_tag",
+   "before": ",减少促炎介质的分泌,减轻炎症的临床症状,提高敏感和高反应性皮肤的舒适度,",
+   "after": "减少促炎介质的分泌,减轻炎症的临床症状,提高敏感和高反应性皮肤的舒适度",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 85,
+   "col": "claim_tag",
+   "before": ",出色的稳定性,优雅的触感,细腻的乳化体系,",
+   "after": "出色的稳定性,优雅的触感,细腻的乳化体系",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 87,
+   "col": "claim_tag",
+   "before": ",100%天然,不含PEG的乳化剂,",
+   "after": "100%天然,不含PEG的乳化剂",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 89,
+   "col": "claim_tag",
+   "before": ",形成保护膜,保持皮肤的屏障功能,改善肤感和铺展性,晶透级别,",
+   "after": "形成保护膜,保持皮肤的屏障功能,改善肤感和铺展性,晶透级别",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 91,
+   "col": "claim_tag",
+   "before": ",形成保护膜,保持皮肤的屏障功能,改善配方的铺展性,柔软的肤感,",
+   "after": "形成保护膜,保持皮肤的屏障功能,改善配方的铺展性,柔软的肤感",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 93,
+   "col": "claim_tag",
+   "before": ",形成保护膜,保持皮肤的屏障功能,改善配方的铺展性,干爽的肤感,抗氧化,",
+   "after": "形成保护膜,保持皮肤的屏障功能,改善配方的铺展性,干爽的肤感,抗氧化",
+   "dropped": []
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 95,
+   "col": "claim_tag",
+   "before": ",形成保护膜,保持皮肤的屏障功能,改善肤感和铺展性,矿物油替代品,抗氧化,不含棕榈成分,",
+   "after": "形成保护膜,保持皮肤的屏障功能,改善肤感和铺展性,矿物油替代品,抗氧化,不含棕榈成分",
+   "dropped": []
+  },
+  {
+   "table": "formulations",
+   "id": 103,
+   "col": "claim_tag",
+   "before": "眼部,+,面部,+,身体,闪耀效果,弹性粉末",
+   "after": "闪耀效果,弹性粉末",
+   "dropped": [
+    "眼部(非筛选面)",
+    "+",
+    "面部(非筛选面)",
+    "+",
+    "身体(非筛选面)"
+   ]
+  },
+  {
+   "table": "formulations",
+   "id": 151,
+   "col": "claim_tag",
+   "before": "失误质地,含有,AHA&nbsp;,焕然一新的肌肤",
+   "after": "",
+   "dropped": [
+    "失误质地(非筛选面)",
+    "含有(非筛选面)",
+    "AHA(非筛选面)",
+    "焕然一新的肌肤(非筛选面)"
+   ]
+  }
+ ],
+ "pcRemoved": [
+  {
+   "table": "pc_ingredients",
+   "id": 65,
+   "col": "claim_tag",
+   "removed": [
+    "主要针对含粉类配方设计",
+    "不需要助乳化剂",
+    "可冷加工",
+    "与多种化妆品成分兼容",
+    "专利申请中"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 73,
+   "col": "claim_tag",
+   "removed": [
+    "提高配方稳定性",
+    "支持创新配方",
+    "增强感官性能",
+    "提供持久的保湿和舒适"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 75,
+   "col": "claim_tag",
+   "removed": [
+    "源自天然蜡的无PEG乳化剂",
+    "活性质地—保湿",
+    "软垫感"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 79,
+   "col": "claim_tag",
+   "removed": [
+    "植物黄油膏",
+    "完美的热稳定性",
+    "支撑乳状液骨架",
+    "提高铺展性和舒适度"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 81,
+   "col": "claim_tag",
+   "removed": [
+    "密实剂",
+    "油相增稠剂",
+    "粉质触感",
+    "乳化稳定剂"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 83,
+   "col": "claim_tag",
+   "removed": [
+    "优异的乳化和稳定性能",
+    "困难配方的解决者",
+    "天鹅绒般的触感"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 84,
+   "col": "claim_tag",
+   "removed": [
+    "减少促炎介质的分泌",
+    "减轻炎症的临床症状",
+    "提高敏感和高反应性皮肤的舒适度"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 85,
+   "col": "claim_tag",
+   "removed": [
+    "出色的稳定性",
+    "优雅的触感",
+    "细腻的乳化体系"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 87,
+   "col": "claim_tag",
+   "removed": [
+    "100%天然",
+    "不含PEG的乳化剂"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 89,
+   "col": "claim_tag",
+   "removed": [
+    "形成保护膜",
+    "保持皮肤的屏障功能",
+    "改善肤感和铺展性",
+    "晶透级别"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 91,
+   "col": "claim_tag",
+   "removed": [
+    "形成保护膜",
+    "保持皮肤的屏障功能",
+    "改善配方的铺展性",
+    "柔软的肤感"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 93,
+   "col": "claim_tag",
+   "removed": [
+    "形成保护膜",
+    "保持皮肤的屏障功能",
+    "改善配方的铺展性",
+    "干爽的肤感"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 95,
+   "col": "claim_tag",
+   "removed": [
+    "形成保护膜",
+    "保持皮肤的屏障功能",
+    "改善肤感和铺展性",
+    "矿物油替代品",
+    "不含棕榈成分"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 96,
+   "col": "claim_tag",
+   "removed": [
+    "光老化"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 97,
+   "col": "claim_tag",
+   "removed": [
+    "极简主义者"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 98,
+   "col": "claim_tag",
+   "removed": [
+    "光老化"
+   ]
+  },
+  {
+   "table": "pc_ingredients",
+   "id": 99,
+   "col": "claim_tag",
+   "removed": [
+    "保湿"
+   ]
+  }
+ ],
+ "rename": [
+  {
+   "id": 448,
+   "dim": "formulation/claim",
+   "from": "净化",
+   "to": "净化排毒",
+   "how": "prefix"
+  },
+  {
+   "id": 463,
+   "dim": "formulation/ingredient",
+   "from": "Solastemis",
+   "to": "Solastemis™",
+   "how": "normalized"
+  },
+  {
+   "id": 464,
+   "dim": "formulation/ingredient",
+   "from": "Acticire MB",
+   "to": "Acticire® MB",
+   "how": "normalized"
+  },
+  {
+   "id": 467,
+   "dim": "formulation/ingredient",
+   "from": "Definicire",
+   "to": "Definicire®",
+   "how": "normalized"
+  },
+  {
+   "id": 470,
+   "dim": "formulation/ingredient",
+   "from": "Emulfree CBG MB",
+   "to": "Emulfree® CBG MB",
+   "how": "normalized"
+  },
+  {
+   "id": 473,
+   "dim": "formulation/ingredient",
+   "from": "Emulium Dermolea MB",
+   "to": "Emulium® Dermolea MB",
+   "how": "normalized"
+  },
+  {
+   "id": 475,
+   "dim": "formulation/ingredient",
+   "from": "Emulium Illustro",
+   "to": "Emulium® Illustro",
+   "how": "normalized"
+  },
+  {
+   "id": 476,
+   "dim": "formulation/ingredient",
+   "from": "Emulium Kappa MB",
+   "to": "Emulium® Kappa MB",
+   "how": "normalized"
+  },
+  {
+   "id": 477,
+   "dim": "formulation/ingredient",
+   "from": "Emulium Mellifera MB",
+   "to": "Emulium® Mellifera MB",
+   "how": "normalized"
+  },
+  {
+   "id": 478,
+   "dim": "formulation/ingredient",
+   "from": "EnergiNius",
+   "to": "EnergiNius®",
+   "how": "normalized"
+  },
+  {
+   "id": 479,
+   "dim": "formulation/ingredient",
+   "from": "Gatuline Age Defense NP",
+   "to": "Gatuline® Age Defense NP",
+   "how": "normalized"
+  },
+  {
+   "id": 483,
+   "dim": "formulation/ingredient",
+   "from": "Gatuline Radiance",
+   "to": "Gatuline® Radiance",
+   "how": "normalized"
+  },
+  {
+   "id": 488,
+   "dim": "formulation/ingredient",
+   "from": "Labrafac CC MB",
+   "to": "Labrafac™ CC MB",
+   "how": "normalized"
+  },
+  {
+   "id": 490,
+   "dim": "formulation/ingredient",
+   "from": "Lipocire A SG",
+   "to": "Lipocire™ A SG",
+   "how": "normalized"
+  },
+  {
+   "id": 500,
+   "dim": "formulation/ingredient",
+   "from": "Original extract Orange Bio",
+   "to": "Original Extract™ Orange Bio",
+   "how": "normalized"
+  },
+  {
+   "id": 264,
+   "dim": "pharma/dosage_form",
+   "from": "乳膏",
+   "to": "乳膏剂",
+   "how": "prefix"
+  },
+  {
+   "id": 266,
+   "dim": "pharma/dosage_form",
+   "from": "泡沫",
+   "to": "泡沫剂",
+   "how": "prefix"
+  },
+  {
+   "id": 267,
+   "dim": "pharma/dosage_form",
+   "from": "凝胶",
+   "to": "凝胶剂",
+   "how": "prefix"
+  },
+  {
+   "id": 268,
+   "dim": "pharma/dosage_form",
+   "from": "颗粒",
+   "to": "颗粒剂",
+   "how": "prefix"
+  },
+  {
+   "id": 272,
+   "dim": "pharma/dosage_form",
+   "from": "软膏",
+   "to": "软膏剂",
+   "how": "prefix"
+  },
+  {
+   "id": 249,
+   "dim": "pharma/functionality",
+   "from": "硬脂",
+   "to": "硬脂（栓剂基质）",
+   "how": "prefix"
+  },
+  {
+   "id": 260,
+   "dim": "pharma/functionality",
+   "from": "缓释",
+   "to": "缓释制剂",
+   "how": "prefix"
+  }
+ ],
+ "add": [
+  {
+   "dim": "formulation/claim",
+   "value": "DIY自制"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "固态转乳霜"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "柔润触感"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "清爽"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "均匀肤色"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "闪耀效果"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "弹性粉末"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "快速水化"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "无表面活性剂"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "提神焕发活力"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "彩妆持久"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "头发护理"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "防晒保护"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "美白提亮"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "滋养"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "修护"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "淡化黑眼圈"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "有趣的质感"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "美食调"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "柔软肌肤"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "抗光老化"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "焕肤"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "防水"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "固体形式"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "单剂量"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "DIY"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "抗污染"
+  },
+  {
+   "dim": "formulation/claim",
+   "value": "去角质"
+  },
+  {
+   "dim": "formulation/form",
+   "value": "乳剂/啫哩"
+  },
+  {
+   "dim": "formulation/ingredient",
+   "value": "Compritol® 888 CG"
+  },
+  {
+   "dim": "formulation/ingredient",
+   "value": "Eyeglorius™"
+  },
+  {
+   "dim": "formulation/ingredient",
+   "value": "Phylderm® Vegetal"
+  },
+  {
+   "dim": "pharma/dosage_form",
+   "value": "浇泼剂/滴剂"
+  },
+  {
+   "dim": "pharma/dosage_form",
+   "value": "乳胶剂"
+  },
+  {
+   "dim": "pharma/dosage_form",
+   "value": "乳液"
+  },
+  {
+   "dim": "pharma/dosage_form",
+   "value": "膏棒剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "皮肤渗透促进剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "溶媒"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "外用乳化剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "口服生物利用度增强剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "片剂润滑剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "外用助乳化剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "口服吸收促进剂"
+  },
+  {
+   "dim": "pharma/functionality",
+   "value": "自乳化辅料"
+  }
+ ],
+ "del": [
+  {
+   "id": 405,
+   "dim": "formulation/application",
+   "value": "婴儿/儿童护理",
+   "label": "婴儿/儿童护理"
+  },
+  {
+   "id": 412,
+   "dim": "formulation/application",
+   "value": "男士护理",
+   "label": "男士护理"
+  },
+  {
+   "id": 429,
+   "dim": "formulation/claim",
+   "value": "抗黑眼圈及眼袋",
+   "label": "抗黑眼圈及眼袋"
+  },
+  {
+   "id": 432,
+   "dim": "formulation/claim",
+   "value": "抗斑",
+   "label": "抗斑"
+  },
+  {
+   "id": 433,
+   "dim": "formulation/claim",
+   "value": "抗皱",
+   "label": "抗皱"
+  },
+  {
+   "id": 434,
+   "dim": "formulation/claim",
+   "value": "细胞更新",
+   "label": "细胞更新"
+  },
+  {
+   "id": 435,
+   "dim": "formulation/claim",
+   "value": "洁面",
+   "label": "洁面"
+  },
+  {
+   "id": 436,
+   "dim": "formulation/claim",
+   "value": "冷却",
+   "label": "冷却"
+  },
+  {
+   "id": 437,
+   "dim": "formulation/claim",
+   "value": "排毒",
+   "label": "排毒"
+  },
+  {
+   "id": 438,
+   "dim": "formulation/claim",
+   "value": "充满活力",
+   "label": "充满活力"
+  },
+  {
+   "id": 439,
+   "dim": "formulation/claim",
+   "value": "Hair discipline",
+   "label": "Hair discipline"
+  },
+  {
+   "id": 441,
+   "dim": "formulation/claim",
+   "value": "Hair protection",
+   "label": "Hair protection"
+  },
+  {
+   "id": 444,
+   "dim": "formulation/claim",
+   "value": "滋补",
+   "label": "滋补"
+  },
+  {
+   "id": 445,
+   "dim": "formulation/claim",
+   "value": "去皮",
+   "label": "去皮"
+  },
+  {
+   "id": 446,
+   "dim": "formulation/claim",
+   "value": "光老化",
+   "label": "光老化"
+  },
+  {
+   "id": 447,
+   "dim": "formulation/claim",
+   "value": "Photo-protection",
+   "label": "Photo-protection"
+  },
+  {
+   "id": 449,
+   "dim": "formulation/claim",
+   "value": "放松",
+   "label": "放松"
+  },
+  {
+   "id": 450,
+   "dim": "formulation/claim",
+   "value": "修复",
+   "label": "修复"
+  },
+  {
+   "id": 451,
+   "dim": "formulation/claim",
+   "value": "焕发活力",
+   "label": "焕发活力"
+  },
+  {
+   "id": 452,
+   "dim": "formulation/claim",
+   "value": "擦洗",
+   "label": "擦洗"
+  },
+  {
+   "id": 453,
+   "dim": "formulation/claim",
+   "value": "皮脂控制",
+   "label": "皮脂控制"
+  },
+  {
+   "id": 454,
+   "dim": "formulation/claim",
+   "value": "皮肤问题",
+   "label": "皮肤问题"
+  },
+  {
+   "id": 455,
+   "dim": "formulation/claim",
+   "value": "皮肤光泽",
+   "label": "皮肤光泽"
+  },
+  {
+   "id": 456,
+   "dim": "formulation/claim",
+   "value": "平滑",
+   "label": "平滑"
+  },
+  {
+   "id": 458,
+   "dim": "formulation/claim",
+   "value": "紫外线防护",
+   "label": "紫外线防护"
+  },
+  {
+   "id": 416,
+   "dim": "formulation/form",
+   "value": "乳霜啫喱",
+   "label": "乳霜啫喱"
+  },
+  {
+   "id": 418,
+   "dim": "formulation/form",
+   "value": "洗剂",
+   "label": "洗剂"
+  },
+  {
+   "id": 419,
+   "dim": "formulation/form",
+   "value": "面膜",
+   "label": "面膜"
+  },
+  {
+   "id": 420,
+   "dim": "formulation/form",
+   "value": "油",
+   "label": "油"
+  },
+  {
+   "id": 421,
+   "dim": "formulation/form",
+   "value": "擦洗",
+   "label": "擦洗"
+  },
+  {
+   "id": 422,
+   "dim": "formulation/form",
+   "value": "血清",
+   "label": "血清"
+  },
+  {
+   "id": 423,
+   "dim": "formulation/form",
+   "value": "固态",
+   "label": "固态"
+  },
+  {
+   "id": 424,
+   "dim": "formulation/form",
+   "value": "喷雾",
+   "label": "喷雾"
+  },
+  {
+   "id": 425,
+   "dim": "formulation/form",
+   "value": "膏",
+   "label": "膏"
+  },
+  {
+   "id": 426,
+   "dim": "formulation/form",
+   "value": "爽肤水",
+   "label": "爽肤水"
+  },
+  {
+   "id": 465,
+   "dim": "formulation/ingredient",
+   "value": "Compritol 888 CG MB",
+   "label": "Compritol 888 CG MB"
+  },
+  {
+   "id": 466,
+   "dim": "formulation/ingredient",
+   "value": "Cytobiol Iris A2",
+   "label": "Cytobiol Iris A2"
+  },
+  {
+   "id": 468,
+   "dim": "formulation/ingredient",
+   "value": "DPPG CG",
+   "label": "DPPG CG"
+  },
+  {
+   "id": 469,
+   "dim": "formulation/ingredient",
+   "value": "EleVastin",
+   "label": "EleVastin"
+  },
+  {
+   "id": 471,
+   "dim": "formulation/ingredient",
+   "value": "Emulium 22 MB",
+   "label": "Emulium 22 MB"
+  },
+  {
+   "id": 472,
+   "dim": "formulation/ingredient",
+   "value": "Emulium Delta MB",
+   "label": "Emulium Delta MB"
+  },
+  {
+   "id": 474,
+   "dim": "formulation/ingredient",
+   "value": "Emulium Dolcea MB",
+   "label": "Emulium Dolcea MB"
+  },
+  {
+   "id": 480,
+   "dim": "formulation/ingredient",
+   "value": "Gatuline Expression AF",
+   "label": "Gatuline Expression AF"
+  },
+  {
+   "id": 481,
+   "dim": "formulation/ingredient",
+   "value": "Gatuline In-Tense MB",
+   "label": "Gatuline In-Tense MB"
+  },
+  {
+   "id": 482,
+   "dim": "formulation/ingredient",
+   "value": "Gatuline Link n Lift",
+   "label": "Gatuline Link n Lift"
+  },
+  {
+   "id": 484,
+   "dim": "formulation/ingredient",
+   "value": "Gatuline RC Bio",
+   "label": "Gatuline RC Bio"
+  },
+  {
+   "id": 485,
+   "dim": "formulation/ingredient",
+   "value": "Gatuline Renew",
+   "label": "Gatuline Renew"
+  },
+  {
+   "id": 486,
+   "dim": "formulation/ingredient",
+   "value": "Gatuline Skin-Repair AF",
+   "label": "Gatuline Skin-Repair AF"
+  },
+  {
+   "id": 487,
+   "dim": "formulation/ingredient",
+   "value": "Hema Tite",
+   "label": "Hema Tite"
+  },
+  {
+   "id": 489,
+   "dim": "formulation/ingredient",
+   "value": "Lemon Secrets",
+   "label": "Lemon Secrets"
+  },
+  {
+   "id": 491,
+   "dim": "formulation/ingredient",
+   "value": "Mala Kite",
+   "label": "Mala Kite"
+  },
+  {
+   "id": 493,
+   "dim": "formulation/ingredient",
+   "value": "Oli Vine ST",
+   "label": "Oli Vine ST"
+  },
+  {
+   "id": 494,
+   "dim": "formulation/ingredient",
+   "value": "Original extract Ginger",
+   "label": "Original extract Ginger"
+  },
+  {
+   "id": 495,
+   "dim": "formulation/ingredient",
+   "value": "Original extract Grape Bio",
+   "label": "Original extract Grape Bio"
+  },
+  {
+   "id": 496,
+   "dim": "formulation/ingredient",
+   "value": "Original extract Grapefruit",
+   "label": "Original extract Grapefruit"
+  },
+  {
+   "id": 497,
+   "dim": "formulation/ingredient",
+   "value": "Original extract Kiwi",
+   "label": "Original extract Kiwi"
+  },
+  {
+   "id": 498,
+   "dim": "formulation/ingredient",
+   "value": "Original extract Lemon Bio",
+   "label": "Original extract Lemon Bio"
+  },
+  {
+   "id": 499,
+   "dim": "formulation/ingredient",
+   "value": "Original extract Lotus",
+   "label": "Original extract Lotus"
+  },
+  {
+   "id": 501,
+   "dim": "formulation/ingredient",
+   "value": "Plurol Stearique MB",
+   "label": "Plurol Stearique MB"
+  },
+  {
+   "id": 502,
+   "dim": "formulation/ingredient",
+   "value": "Exsensence",
+   "label": "Exsensence"
+  },
+  {
+   "id": 503,
+   "dim": "formulation/ingredient",
+   "value": "Acticire MB2",
+   "label": "Acticire MB2"
+  },
+  {
+   "id": 504,
+   "dim": "formulation/ingredient",
+   "value": "Emulgreen ECO 10-06 MB",
+   "label": "Emulgreen ECO 10-06 MB"
+  },
+  {
+   "id": 505,
+   "dim": "formulation/ingredient",
+   "value": "Coviopol",
+   "label": "Coviopol"
+  },
+  {
+   "id": 506,
+   "dim": "formulation/ingredient",
+   "value": "Deltinol A P",
+   "label": "Deltinol A P"
+  },
+  {
+   "id": 507,
+   "dim": "formulation/ingredient",
+   "value": "Gelucire 48/16",
+   "label": "Gelucire 48/16"
+  },
+  {
+   "id": 508,
+   "dim": "formulation/ingredient",
+   "value": "Precirol ATO 5",
+   "label": "Precirol ATO 5"
+  },
+  {
+   "id": 509,
+   "dim": "formulation/ingredient",
+   "value": "Transcutol CG",
+   "label": "Transcutol CG"
+  },
+  {
+   "id": 510,
+   "dim": "formulation/ingredient",
+   "value": "Labrasol",
+   "label": "Labrasol"
+  },
+  {
+   "id": 511,
+   "dim": "formulation/ingredient",
+   "value": "Acconon C-50",
+   "label": "Acconon C-50"
+  },
+  {
+   "id": 512,
+   "dim": "formulation/ingredient",
+   "value": "Montanov L",
+   "label": "Montanov L"
+  },
+  {
+   "id": 513,
+   "dim": "formulation/ingredient",
+   "value": "Sepinov EMT 10",
+   "label": "Sepinov EMT 10"
+  },
+  {
+   "id": 514,
+   "dim": "formulation/ingredient",
+   "value": "Simulsol 165",
+   "label": "Simulsol 165"
+  },
+  {
+   "id": 515,
+   "dim": "formulation/ingredient",
+   "value": "Lanette O",
+   "label": "Lanette O"
+  },
+  {
+   "id": 516,
+   "dim": "formulation/ingredient",
+   "value": "Apifil",
+   "label": "Apifil"
+  },
+  {
+   "id": 459,
+   "dim": "formulation/naturalityIndex",
+   "value": "> 99%",
+   "label": "> 99%"
+  },
+  {
+   "id": 460,
+   "dim": "formulation/naturalityIndex",
+   "value": "> 98%",
+   "label": "> 98%"
+  },
+  {
+   "id": 462,
+   "dim": "formulation/naturalityIndex",
+   "value": "> 90%",
+   "label": "> 90%"
+  },
+  {
+   "id": 265,
+   "dim": "pharma/dosage_form",
+   "value": "乳凝胶",
+   "label": "乳凝胶"
+  },
+  {
+   "id": 270,
+   "dim": "pharma/dosage_form",
+   "value": "洗剂",
+   "label": "洗剂"
+  },
+  {
+   "id": 274,
+   "dim": "pharma/dosage_form",
+   "value": "阴道栓",
+   "label": "阴道栓"
+  },
+  {
+   "id": 275,
+   "dim": "pharma/dosage_form",
+   "value": "浇泼剂/点滴剂",
+   "label": "浇泼剂/点滴剂"
+  },
+  {
+   "id": 276,
+   "dim": "pharma/dosage_form",
+   "value": "粉末",
+   "label": "粉末"
+  },
+  {
+   "id": 278,
+   "dim": "pharma/dosage_form",
+   "value": "溶液",
+   "label": "溶液"
+  },
+  {
+   "id": 279,
+   "dim": "pharma/dosage_form",
+   "value": "棒剂",
+   "label": "棒剂"
+  },
+  {
+   "id": 245,
+   "dim": "pharma/functionality",
+   "value": "生物利用度增强剂",
+   "label": "生物利用度增强剂"
+  },
+  {
+   "id": 246,
+   "dim": "pharma/functionality",
+   "value": "助乳化剂",
+   "label": "助乳化剂"
+  },
+  {
+   "id": 248,
+   "dim": "pharma/functionality",
+   "value": "乳化剂",
+   "label": "乳化剂"
+  },
+  {
+   "id": 250,
+   "dim": "pharma/functionality",
+   "value": "润滑剂",
+   "label": "润滑剂"
+  },
+  {
+   "id": 253,
+   "dim": "pharma/functionality",
+   "value": "渗透增强剂",
+   "label": "渗透增强剂"
+  },
+  {
+   "id": 254,
+   "dim": "pharma/functionality",
+   "value": "自乳化药物递送系统（SEDDS）",
+   "label": "自乳化药物递送系统（SEDDS）"
+  },
+  {
+   "id": 255,
+   "dim": "pharma/functionality",
+   "value": "皮肤渗透增强剂",
+   "label": "皮肤渗透增强剂"
+  },
+  {
+   "id": 257,
+   "dim": "pharma/functionality",
+   "value": "溶剂",
+   "label": "溶剂"
+  },
+  {
+   "id": 258,
+   "dim": "pharma/functionality",
+   "value": "稳定剂",
+   "label": "稳定剂"
+  },
+  {
+   "id": 235,
+   "dim": "pharma/market",
+   "value": "全部市场",
+   "label": "全部市场"
+  }
+ ]
+}

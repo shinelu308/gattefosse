@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
+import { tagGroup, mergeWhere } from '../utils/tag-filter';
 
 const FORMULATION_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -27,14 +28,17 @@ export async function listFormulations(req: Request, res: Response) {
     const limitNum = Math.min(100, Math.max(1, parseInt(String(limit))));
 
     const where: Record<string, unknown> = {};
+    const andParts: (Record<string, unknown> | null)[] = [];
 
     if (keyword) {
       const kw = String(keyword);
-      where.OR = [
-        { name: { contains: kw } },
-        { code: { contains: kw } },
-        { description: { contains: kw } },
-      ];
+      andParts.push({
+        OR: [
+          { name: { contains: kw } },
+          { code: { contains: kw } },
+          { description: { contains: kw } },
+        ],
+      });
     }
 
     const tagFilters: [string, string | undefined][] = [
@@ -43,14 +47,11 @@ export async function listFormulations(req: Request, res: Response) {
       ['claimTag', claim as string],
       ['conceptTag', ingredient as string],
     ];
-    for (const [field, val] of tagFilters) {
-      if (val) {
-        const vals = String(val).split(',').filter(Boolean);
-        if (vals.length > 0) {
-          where[field] = { contains: vals[0] };
-        }
-      }
-    }
+    // 同分类多选取并集(OR)。早前写的是 `where[field] = { contains: vals[0] }`，
+    // 多选时除第一个以外的选中项被静默丢弃（实测「保湿,清爽」只按「保湿」筛）。
+    for (const [field, val] of tagFilters) andParts.push(tagGroup(field, val));
+
+    mergeWhere(where, andParts);
 
     if (naturalityIndex) {
       where.naturalityIndex = String(naturalityIndex);

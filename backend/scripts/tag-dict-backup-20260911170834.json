@@ -1,0 +1,6289 @@
+{
+ "takenAt": "2026-09-11T17:08:35.026Z",
+ "dict": [
+  {
+   "id": 138,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "活性物",
+   "value": "活性物",
+   "sort_order": 0
+  },
+  {
+   "id": 141,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "润肤剂",
+   "value": "润肤剂",
+   "sort_order": 3
+  },
+  {
+   "id": 151,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "润湿剂",
+   "value": "润湿剂",
+   "sort_order": 13
+  },
+  {
+   "id": 153,
+   "product_line": "pc",
+   "category": "application",
+   "label": "身体护理",
+   "value": "身体护理",
+   "sort_order": 1
+  },
+  {
+   "id": 154,
+   "product_line": "pc",
+   "category": "application",
+   "label": "眼部护理",
+   "value": "眼部护理",
+   "sort_order": 2
+  },
+  {
+   "id": 159,
+   "product_line": "pc",
+   "category": "application",
+   "label": "彩妆",
+   "value": "彩妆",
+   "sort_order": 7
+  },
+  {
+   "id": 160,
+   "product_line": "pc",
+   "category": "application",
+   "label": "男士护理",
+   "value": "男士护理",
+   "sort_order": 8
+  },
+  {
+   "id": 165,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "美食原料",
+   "value": "美食原料",
+   "sort_order": 2
+  },
+  {
+   "id": 178,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "抗痘",
+   "value": "抗痘",
+   "sort_order": 0
+  },
+  {
+   "id": 179,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "抗衰老",
+   "value": "抗衰老",
+   "sort_order": 1
+  },
+  {
+   "id": 183,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "抗氧化",
+   "value": "抗氧化",
+   "sort_order": 5
+  },
+  {
+   "id": 187,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "抗皱",
+   "value": "抗皱",
+   "sort_order": 9
+  },
+  {
+   "id": 190,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "细胞更新",
+   "value": "细胞更新",
+   "sort_order": 12
+  },
+  {
+   "id": 195,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "紧致",
+   "value": "紧致",
+   "sort_order": 17
+  },
+  {
+   "id": 224,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "COSMOS 批准",
+   "value": "COSMOS 批准",
+   "sort_order": 0
+  },
+  {
+   "id": 225,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "COSMOS认证",
+   "value": "COSMOS认证",
+   "sort_order": 1
+  },
+  {
+   "id": 235,
+   "product_line": "pharma",
+   "category": "market",
+   "label": "全部市场",
+   "value": "全部市场",
+   "sort_order": 0
+  },
+  {
+   "id": 236,
+   "product_line": "pharma",
+   "category": "market",
+   "label": "人类健康",
+   "value": "人类健康",
+   "sort_order": 1
+  },
+  {
+   "id": 237,
+   "product_line": "pharma",
+   "category": "market",
+   "label": "动物健康",
+   "value": "动物健康",
+   "sort_order": 2
+  },
+  {
+   "id": 238,
+   "product_line": "pharma",
+   "category": "market",
+   "label": "膳食补充剂",
+   "value": "膳食补充剂",
+   "sort_order": 3
+  },
+  {
+   "id": 239,
+   "product_line": "pharma",
+   "category": "route",
+   "label": "口服",
+   "value": "口服",
+   "sort_order": 0
+  },
+  {
+   "id": 240,
+   "product_line": "pharma",
+   "category": "route",
+   "label": "注射（兽用）",
+   "value": "注射（兽用）",
+   "sort_order": 1
+  },
+  {
+   "id": 241,
+   "product_line": "pharma",
+   "category": "route",
+   "label": "直肠",
+   "value": "直肠",
+   "sort_order": 2
+  },
+  {
+   "id": 242,
+   "product_line": "pharma",
+   "category": "route",
+   "label": "外用/透皮",
+   "value": "外用/透皮",
+   "sort_order": 3
+  },
+  {
+   "id": 243,
+   "product_line": "pharma",
+   "category": "route",
+   "label": "阴道",
+   "value": "阴道",
+   "sort_order": 4
+  },
+  {
+   "id": 244,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "API 保护",
+   "value": "API 保护",
+   "sort_order": 0
+  },
+  {
+   "id": 245,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "生物利用度增强剂",
+   "value": "生物利用度增强剂",
+   "sort_order": 1
+  },
+  {
+   "id": 246,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "助乳化剂",
+   "value": "助乳化剂",
+   "sort_order": 2
+  },
+  {
+   "id": 247,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "助表面活性剂",
+   "value": "助表面活性剂",
+   "sort_order": 3
+  },
+  {
+   "id": 248,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "乳化剂",
+   "value": "乳化剂",
+   "sort_order": 4
+  },
+  {
+   "id": 249,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "硬脂",
+   "value": "硬脂",
+   "sort_order": 5
+  },
+  {
+   "id": 250,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "润滑剂",
+   "value": "润滑剂",
+   "sort_order": 6
+  },
+  {
+   "id": 251,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "淋巴吸收促进剂",
+   "value": "淋巴吸收促进剂",
+   "sort_order": 7
+  },
+  {
+   "id": 252,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "油性载体",
+   "value": "油性载体",
+   "sort_order": 8
+  },
+  {
+   "id": 253,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "渗透增强剂",
+   "value": "渗透增强剂",
+   "sort_order": 9
+  },
+  {
+   "id": 254,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "自乳化药物递送系统（SEDDS）",
+   "value": "自乳化药物递送系统（SEDDS）",
+   "sort_order": 10
+  },
+  {
+   "id": 255,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "皮肤渗透增强剂",
+   "value": "皮肤渗透增强剂",
+   "sort_order": 11
+  },
+  {
+   "id": 256,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "增溶剂",
+   "value": "增溶剂",
+   "sort_order": 12
+  },
+  {
+   "id": 257,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "溶剂",
+   "value": "溶剂",
+   "sort_order": 13
+  },
+  {
+   "id": 258,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "稳定剂",
+   "value": "稳定剂",
+   "sort_order": 14
+  },
+  {
+   "id": 259,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "表面活性剂",
+   "value": "表面活性剂",
+   "sort_order": 15
+  },
+  {
+   "id": 260,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "缓释",
+   "value": "缓释",
+   "sort_order": 16
+  },
+  {
+   "id": 261,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "掩味",
+   "value": "掩味",
+   "sort_order": 17
+  },
+  {
+   "id": 262,
+   "product_line": "pharma",
+   "category": "functionality",
+   "label": "增稠剂",
+   "value": "增稠剂",
+   "sort_order": 18
+  },
+  {
+   "id": 263,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "双凝胶",
+   "value": "双凝胶",
+   "sort_order": 0
+  },
+  {
+   "id": 264,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "乳膏",
+   "value": "乳膏",
+   "sort_order": 1
+  },
+  {
+   "id": 265,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "乳凝胶",
+   "value": "乳凝胶",
+   "sort_order": 2
+  },
+  {
+   "id": 266,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "泡沫",
+   "value": "泡沫",
+   "sort_order": 3
+  },
+  {
+   "id": 267,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "凝胶",
+   "value": "凝胶",
+   "sort_order": 4
+  },
+  {
+   "id": 268,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "颗粒",
+   "value": "颗粒",
+   "sort_order": 5
+  },
+  {
+   "id": 269,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "硬胶囊",
+   "value": "硬胶囊",
+   "sort_order": 6
+  },
+  {
+   "id": 270,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "洗剂",
+   "value": "洗剂",
+   "sort_order": 7
+  },
+  {
+   "id": 271,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "微乳",
+   "value": "微乳",
+   "sort_order": 8
+  },
+  {
+   "id": 272,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "软膏",
+   "value": "软膏",
+   "sort_order": 9
+  },
+  {
+   "id": 273,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "贴剂",
+   "value": "贴剂",
+   "sort_order": 10
+  },
+  {
+   "id": 274,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "阴道栓",
+   "value": "阴道栓",
+   "sort_order": 11
+  },
+  {
+   "id": 275,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "浇泼剂/点滴剂",
+   "value": "浇泼剂/点滴剂",
+   "sort_order": 12
+  },
+  {
+   "id": 276,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "粉末",
+   "value": "粉末",
+   "sort_order": 13
+  },
+  {
+   "id": 277,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "软胶囊",
+   "value": "软胶囊",
+   "sort_order": 14
+  },
+  {
+   "id": 278,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "溶液",
+   "value": "溶液",
+   "sort_order": 15
+  },
+  {
+   "id": 279,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "棒剂",
+   "value": "棒剂",
+   "sort_order": 16
+  },
+  {
+   "id": 280,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "栓剂",
+   "value": "栓剂",
+   "sort_order": 17
+  },
+  {
+   "id": 281,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "混悬剂",
+   "value": "混悬剂",
+   "sort_order": 18
+  },
+  {
+   "id": 282,
+   "product_line": "pharma",
+   "category": "dosage_form",
+   "label": "片剂",
+   "value": "片剂",
+   "sort_order": 19
+  },
+  {
+   "id": 309,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "增效剂",
+   "value": "增效剂",
+   "sort_order": 38
+  },
+  {
+   "id": 310,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "乳化剂(O/W)",
+   "value": "乳化剂(O/W)",
+   "sort_order": 39
+  },
+  {
+   "id": 311,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "植物/水果提取物",
+   "value": "植物/水果提取物",
+   "sort_order": 40
+  },
+  {
+   "id": 312,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "助溶剂",
+   "value": "助溶剂",
+   "sort_order": 41
+  },
+  {
+   "id": 313,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "纹理化剂",
+   "value": "纹理化剂",
+   "sort_order": 42
+  },
+  {
+   "id": 314,
+   "product_line": "pc",
+   "category": "functionality",
+   "label": "不含乳化剂",
+   "value": "不含乳化剂",
+   "sort_order": 43
+  },
+  {
+   "id": 315,
+   "product_line": "pc",
+   "category": "application",
+   "label": "婴儿和儿童护理",
+   "value": "婴儿和儿童护理",
+   "sort_order": 44
+  },
+  {
+   "id": 316,
+   "product_line": "pc",
+   "category": "application",
+   "label": "脸部护理",
+   "value": "脸部护理",
+   "sort_order": 45
+  },
+  {
+   "id": 317,
+   "product_line": "pc",
+   "category": "application",
+   "label": "头发和头皮护理",
+   "value": "头发和头皮护理",
+   "sort_order": 46
+  },
+  {
+   "id": 318,
+   "product_line": "pc",
+   "category": "application",
+   "label": "防晒",
+   "value": "防晒",
+   "sort_order": 47
+  },
+  {
+   "id": 319,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "炎症老化",
+   "value": "炎症老化",
+   "sort_order": 48
+  },
+  {
+   "id": 320,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "本地采购/法国",
+   "value": "本地采购/法国",
+   "sort_order": 49
+  },
+  {
+   "id": 321,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "矿物化妆品",
+   "value": "矿物化妆品",
+   "sort_order": 50
+  },
+  {
+   "id": 322,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "NaDES/LTTM 溶剂技术",
+   "value": "NaDES/LTTM 溶剂技术",
+   "sort_order": 51
+  },
+  {
+   "id": 323,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "传统医学植物",
+   "value": "传统医学植物",
+   "sort_order": 52
+  },
+  {
+   "id": 324,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "皮肤健康",
+   "value": "皮肤健康",
+   "sort_order": 53
+  },
+  {
+   "id": 325,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "升级再造和零浪费",
+   "value": "升级再造和零浪费",
+   "sort_order": 54
+  },
+  {
+   "id": 326,
+   "product_line": "pc",
+   "category": "concept",
+   "label": "蜡黄油技术",
+   "value": "蜡黄油技术",
+   "sort_order": 55
+  },
+  {
+   "id": 327,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "防黑眼圈和眼袋",
+   "value": "防黑眼圈和眼袋",
+   "sort_order": 56
+  },
+  {
+   "id": 328,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "防污染",
+   "value": "防污染",
+   "sort_order": 57
+  },
+  {
+   "id": 329,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "抗下垂",
+   "value": "抗下垂",
+   "sort_order": 58
+  },
+  {
+   "id": 330,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "抗斑",
+   "value": "抗斑",
+   "sort_order": 59
+  },
+  {
+   "id": 331,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "冷却",
+   "value": "冷却",
+   "sort_order": 60
+  },
+  {
+   "id": 332,
+   "product_line": "pc",
+   "category": "claim",
+   "label": "充满活力_",
+   "value": "充满活力_",
+   "sort_order": 61
+  },
+  {
+   "id": 333,
+   "product_line": "pc",
+   "category": "characteristic",
+   "label": "符合中国标准 (IECIC)",
+   "value": "符合中国标准 (IECIC)",
+   "sort_order": 62
+  },
+  {
+   "id": 334,
+   "product_line": "pc",
+   "category": "characteristic",
+   "label": "可冷加工",
+   "value": "可冷加工",
+   "sort_order": 63
+  },
+  {
+   "id": 335,
+   "product_line": "pc",
+   "category": "characteristic",
+   "label": "不含聚乙二醇",
+   "value": "不含聚乙二醇",
+   "sort_order": 64
+  },
+  {
+   "id": 336,
+   "product_line": "pc",
+   "category": "characteristic",
+   "label": "不含防腐剂",
+   "value": "不含防腐剂",
+   "sort_order": 65
+  },
+  {
+   "id": 337,
+   "product_line": "pc",
+   "category": "characteristic",
+   "label": "易于生物降解",
+   "value": "易于生物降解",
+   "sort_order": 66
+  },
+  {
+   "id": 338,
+   "product_line": "pc",
+   "category": "characteristic",
+   "label": "素食主义者",
+   "value": "素食主义者",
+   "sort_order": 67
+  },
+  {
+   "id": 339,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "ERI 360 铜牌",
+   "value": "ERI 360 铜牌",
+   "sort_order": 68
+  },
+  {
+   "id": 340,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "ERI 360 银",
+   "value": "ERI 360 银",
+   "sort_order": 69
+  },
+  {
+   "id": 341,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "NOI = 100 % (ISO 16128)",
+   "value": "NOI = 100 % (ISO 16128)",
+   "sort_order": 70
+  },
+  {
+   "id": 342,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "NOI > 99% (ISO 16128)",
+   "value": "NOI > 99% (ISO 16128)",
+   "sort_order": 71
+  },
+  {
+   "id": 343,
+   "product_line": "pc",
+   "category": "naturality",
+   "label": "RSPO 质量平衡",
+   "value": "RSPO 质量平衡",
+   "sort_order": 72
+  },
+  {
+   "id": 405,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "婴儿/儿童护理",
+   "value": "婴儿/儿童护理",
+   "sort_order": 0
+  },
+  {
+   "id": 406,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "身体护理",
+   "value": "身体护理",
+   "sort_order": 1
+  },
+  {
+   "id": 407,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "眼部护理",
+   "value": "眼部护理",
+   "sort_order": 2
+  },
+  {
+   "id": 408,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "脸部护理",
+   "value": "脸部护理",
+   "sort_order": 3
+  },
+  {
+   "id": 409,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "脸部和头皮护理",
+   "value": "脸部和头皮护理",
+   "sort_order": 4
+  },
+  {
+   "id": 410,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "彩妆",
+   "value": "彩妆",
+   "sort_order": 5
+  },
+  {
+   "id": 411,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "防晒",
+   "value": "防晒",
+   "sort_order": 6
+  },
+  {
+   "id": 412,
+   "product_line": "formulation",
+   "category": "application",
+   "label": "男士护理",
+   "value": "男士护理",
+   "sort_order": 7
+  },
+  {
+   "id": 413,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "香脂",
+   "value": "香脂",
+   "sort_order": 0
+  },
+  {
+   "id": 414,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "润肤膏",
+   "value": "润肤膏",
+   "sort_order": 1
+  },
+  {
+   "id": 415,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "乳霜",
+   "value": "乳霜",
+   "sort_order": 2
+  },
+  {
+   "id": 416,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "乳霜啫喱",
+   "value": "乳霜啫喱",
+   "sort_order": 3
+  },
+  {
+   "id": 417,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "凝胶",
+   "value": "凝胶",
+   "sort_order": 4
+  },
+  {
+   "id": 418,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "洗剂",
+   "value": "洗剂",
+   "sort_order": 5
+  },
+  {
+   "id": 419,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "面膜",
+   "value": "面膜",
+   "sort_order": 6
+  },
+  {
+   "id": 420,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "油",
+   "value": "油",
+   "sort_order": 7
+  },
+  {
+   "id": 421,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "擦洗",
+   "value": "擦洗",
+   "sort_order": 8
+  },
+  {
+   "id": 422,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "血清",
+   "value": "血清",
+   "sort_order": 9
+  },
+  {
+   "id": 423,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "固态",
+   "value": "固态",
+   "sort_order": 10
+  },
+  {
+   "id": 424,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "喷雾",
+   "value": "喷雾",
+   "sort_order": 11
+  },
+  {
+   "id": 425,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "膏",
+   "value": "膏",
+   "sort_order": 12
+  },
+  {
+   "id": 426,
+   "product_line": "formulation",
+   "category": "form",
+   "label": "爽肤水",
+   "value": "爽肤水",
+   "sort_order": 13
+  },
+  {
+   "id": 427,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗痘",
+   "value": "抗痘",
+   "sort_order": 0
+  },
+  {
+   "id": 428,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗衰老",
+   "value": "抗衰老",
+   "sort_order": 1
+  },
+  {
+   "id": 429,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗黑眼圈及眼袋",
+   "value": "抗黑眼圈及眼袋",
+   "sort_order": 2
+  },
+  {
+   "id": 430,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗氧化",
+   "value": "抗氧化",
+   "sort_order": 3
+  },
+  {
+   "id": 431,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗下垂",
+   "value": "抗下垂",
+   "sort_order": 4
+  },
+  {
+   "id": 432,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗斑",
+   "value": "抗斑",
+   "sort_order": 5
+  },
+  {
+   "id": 433,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "抗皱",
+   "value": "抗皱",
+   "sort_order": 6
+  },
+  {
+   "id": 434,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "细胞更新",
+   "value": "细胞更新",
+   "sort_order": 7
+  },
+  {
+   "id": 435,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "洁面",
+   "value": "洁面",
+   "sort_order": 8
+  },
+  {
+   "id": 436,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "冷却",
+   "value": "冷却",
+   "sort_order": 9
+  },
+  {
+   "id": 437,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "排毒",
+   "value": "排毒",
+   "sort_order": 10
+  },
+  {
+   "id": 438,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "充满活力",
+   "value": "充满活力",
+   "sort_order": 11
+  },
+  {
+   "id": 439,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "Hair discipline",
+   "value": "Hair discipline",
+   "sort_order": 12
+  },
+  {
+   "id": 440,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "紧致",
+   "value": "紧致",
+   "sort_order": 13
+  },
+  {
+   "id": 441,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "Hair protection",
+   "value": "Hair protection",
+   "sort_order": 14
+  },
+  {
+   "id": 442,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "哑光",
+   "value": "哑光",
+   "sort_order": 15
+  },
+  {
+   "id": 443,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "保湿",
+   "value": "保湿",
+   "sort_order": 16
+  },
+  {
+   "id": 444,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "滋补",
+   "value": "滋补",
+   "sort_order": 17
+  },
+  {
+   "id": 445,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "去皮",
+   "value": "去皮",
+   "sort_order": 18
+  },
+  {
+   "id": 446,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "光老化",
+   "value": "光老化",
+   "sort_order": 19
+  },
+  {
+   "id": 447,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "Photo-protection",
+   "value": "Photo-protection",
+   "sort_order": 20
+  },
+  {
+   "id": 448,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "净化",
+   "value": "净化",
+   "sort_order": 21
+  },
+  {
+   "id": 449,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "放松",
+   "value": "放松",
+   "sort_order": 22
+  },
+  {
+   "id": 450,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "修复",
+   "value": "修复",
+   "sort_order": 23
+  },
+  {
+   "id": 451,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "焕发活力",
+   "value": "焕发活力",
+   "sort_order": 24
+  },
+  {
+   "id": 452,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "擦洗",
+   "value": "擦洗",
+   "sort_order": 25
+  },
+  {
+   "id": 453,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "皮脂控制",
+   "value": "皮脂控制",
+   "sort_order": 26
+  },
+  {
+   "id": 454,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "皮肤问题",
+   "value": "皮肤问题",
+   "sort_order": 27
+  },
+  {
+   "id": 455,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "皮肤光泽",
+   "value": "皮肤光泽",
+   "sort_order": 28
+  },
+  {
+   "id": 456,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "平滑",
+   "value": "平滑",
+   "sort_order": 29
+  },
+  {
+   "id": 457,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "舒缓",
+   "value": "舒缓",
+   "sort_order": 30
+  },
+  {
+   "id": 458,
+   "product_line": "formulation",
+   "category": "claim",
+   "label": "紫外线防护",
+   "value": "紫外线防护",
+   "sort_order": 31
+  },
+  {
+   "id": 459,
+   "product_line": "formulation",
+   "category": "naturalityIndex",
+   "label": "> 99%",
+   "value": "> 99%",
+   "sort_order": 0
+  },
+  {
+   "id": 460,
+   "product_line": "formulation",
+   "category": "naturalityIndex",
+   "label": "> 98%",
+   "value": "> 98%",
+   "sort_order": 1
+  },
+  {
+   "id": 461,
+   "product_line": "formulation",
+   "category": "naturalityIndex",
+   "label": "> 95%",
+   "value": "> 95%",
+   "sort_order": 2
+  },
+  {
+   "id": 462,
+   "product_line": "formulation",
+   "category": "naturalityIndex",
+   "label": "> 90%",
+   "value": "> 90%",
+   "sort_order": 3
+  },
+  {
+   "id": 463,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Solastemis",
+   "value": "Solastemis",
+   "sort_order": 0
+  },
+  {
+   "id": 464,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Acticire MB",
+   "value": "Acticire MB",
+   "sort_order": 1
+  },
+  {
+   "id": 465,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Compritol 888 CG MB",
+   "value": "Compritol 888 CG MB",
+   "sort_order": 2
+  },
+  {
+   "id": 466,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Cytobiol Iris A2",
+   "value": "Cytobiol Iris A2",
+   "sort_order": 3
+  },
+  {
+   "id": 467,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Definicire",
+   "value": "Definicire",
+   "sort_order": 4
+  },
+  {
+   "id": 468,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "DPPG CG",
+   "value": "DPPG CG",
+   "sort_order": 5
+  },
+  {
+   "id": 469,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "EleVastin",
+   "value": "EleVastin",
+   "sort_order": 6
+  },
+  {
+   "id": 470,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulfree CBG MB",
+   "value": "Emulfree CBG MB",
+   "sort_order": 7
+  },
+  {
+   "id": 471,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium 22 MB",
+   "value": "Emulium 22 MB",
+   "sort_order": 8
+  },
+  {
+   "id": 472,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium Delta MB",
+   "value": "Emulium Delta MB",
+   "sort_order": 9
+  },
+  {
+   "id": 473,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium Dermolea MB",
+   "value": "Emulium Dermolea MB",
+   "sort_order": 10
+  },
+  {
+   "id": 474,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium Dolcea MB",
+   "value": "Emulium Dolcea MB",
+   "sort_order": 11
+  },
+  {
+   "id": 475,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium Illustro",
+   "value": "Emulium Illustro",
+   "sort_order": 12
+  },
+  {
+   "id": 476,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium Kappa MB",
+   "value": "Emulium Kappa MB",
+   "sort_order": 13
+  },
+  {
+   "id": 477,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulium Mellifera MB",
+   "value": "Emulium Mellifera MB",
+   "sort_order": 14
+  },
+  {
+   "id": 478,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "EnergiNius",
+   "value": "EnergiNius",
+   "sort_order": 15
+  },
+  {
+   "id": 479,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline Age Defense NP",
+   "value": "Gatuline Age Defense NP",
+   "sort_order": 16
+  },
+  {
+   "id": 480,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline Expression AF",
+   "value": "Gatuline Expression AF",
+   "sort_order": 17
+  },
+  {
+   "id": 481,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline In-Tense MB",
+   "value": "Gatuline In-Tense MB",
+   "sort_order": 18
+  },
+  {
+   "id": 482,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline Link n Lift",
+   "value": "Gatuline Link n Lift",
+   "sort_order": 19
+  },
+  {
+   "id": 483,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline Radiance",
+   "value": "Gatuline Radiance",
+   "sort_order": 20
+  },
+  {
+   "id": 484,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline RC Bio",
+   "value": "Gatuline RC Bio",
+   "sort_order": 21
+  },
+  {
+   "id": 485,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline Renew",
+   "value": "Gatuline Renew",
+   "sort_order": 22
+  },
+  {
+   "id": 486,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gatuline Skin-Repair AF",
+   "value": "Gatuline Skin-Repair AF",
+   "sort_order": 23
+  },
+  {
+   "id": 487,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Hema Tite",
+   "value": "Hema Tite",
+   "sort_order": 24
+  },
+  {
+   "id": 488,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Labrafac CC MB",
+   "value": "Labrafac CC MB",
+   "sort_order": 25
+  },
+  {
+   "id": 489,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Lemon Secrets",
+   "value": "Lemon Secrets",
+   "sort_order": 26
+  },
+  {
+   "id": 490,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Lipocire A SG",
+   "value": "Lipocire A SG",
+   "sort_order": 27
+  },
+  {
+   "id": 491,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Mala Kite",
+   "value": "Mala Kite",
+   "sort_order": 28
+  },
+  {
+   "id": 492,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "MOD MB",
+   "value": "MOD MB",
+   "sort_order": 29
+  },
+  {
+   "id": 493,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Oli Vine ST",
+   "value": "Oli Vine ST",
+   "sort_order": 30
+  },
+  {
+   "id": 494,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Ginger",
+   "value": "Original extract Ginger",
+   "sort_order": 31
+  },
+  {
+   "id": 495,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Grape Bio",
+   "value": "Original extract Grape Bio",
+   "sort_order": 32
+  },
+  {
+   "id": 496,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Grapefruit",
+   "value": "Original extract Grapefruit",
+   "sort_order": 33
+  },
+  {
+   "id": 497,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Kiwi",
+   "value": "Original extract Kiwi",
+   "sort_order": 34
+  },
+  {
+   "id": 498,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Lemon Bio",
+   "value": "Original extract Lemon Bio",
+   "sort_order": 35
+  },
+  {
+   "id": 499,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Lotus",
+   "value": "Original extract Lotus",
+   "sort_order": 36
+  },
+  {
+   "id": 500,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Original extract Orange Bio",
+   "value": "Original extract Orange Bio",
+   "sort_order": 37
+  },
+  {
+   "id": 501,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Plurol Stearique MB",
+   "value": "Plurol Stearique MB",
+   "sort_order": 38
+  },
+  {
+   "id": 502,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Exsensence",
+   "value": "Exsensence",
+   "sort_order": 39
+  },
+  {
+   "id": 503,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Acticire MB2",
+   "value": "Acticire MB2",
+   "sort_order": 40
+  },
+  {
+   "id": 504,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Emulgreen ECO 10-06 MB",
+   "value": "Emulgreen ECO 10-06 MB",
+   "sort_order": 41
+  },
+  {
+   "id": 505,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Coviopol",
+   "value": "Coviopol",
+   "sort_order": 42
+  },
+  {
+   "id": 506,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Deltinol A P",
+   "value": "Deltinol A P",
+   "sort_order": 43
+  },
+  {
+   "id": 507,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Gelucire 48/16",
+   "value": "Gelucire 48/16",
+   "sort_order": 44
+  },
+  {
+   "id": 508,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Precirol ATO 5",
+   "value": "Precirol ATO 5",
+   "sort_order": 45
+  },
+  {
+   "id": 509,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Transcutol CG",
+   "value": "Transcutol CG",
+   "sort_order": 46
+  },
+  {
+   "id": 510,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Labrasol",
+   "value": "Labrasol",
+   "sort_order": 47
+  },
+  {
+   "id": 511,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Acconon C-50",
+   "value": "Acconon C-50",
+   "sort_order": 48
+  },
+  {
+   "id": 512,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Montanov L",
+   "value": "Montanov L",
+   "sort_order": 49
+  },
+  {
+   "id": 513,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Sepinov EMT 10",
+   "value": "Sepinov EMT 10",
+   "sort_order": 50
+  },
+  {
+   "id": 514,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Simulsol 165",
+   "value": "Simulsol 165",
+   "sort_order": 51
+  },
+  {
+   "id": 515,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Lanette O",
+   "value": "Lanette O",
+   "sort_order": 52
+  },
+  {
+   "id": 516,
+   "product_line": "formulation",
+   "category": "ingredient",
+   "label": "Apifil",
+   "value": "Apifil",
+   "sort_order": 53
+  },
+  {
+   "id": 517,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "actives",
+   "value": "活性成分",
+   "sort_order": 100
+  },
+  {
+   "id": 518,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "aging",
+   "value": "抗老化",
+   "sort_order": 101
+  },
+  {
+   "id": 519,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "skin biology",
+   "value": "皮肤生物学",
+   "sort_order": 102
+  },
+  {
+   "id": 520,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "inspiration",
+   "value": "灵感",
+   "sort_order": 103
+  },
+  {
+   "id": 521,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "formulation",
+   "value": "配方",
+   "sort_order": 104
+  },
+  {
+   "id": 522,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "efficacy",
+   "value": "功效",
+   "sort_order": 105
+  },
+  {
+   "id": 523,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "sensory",
+   "value": "感官",
+   "sort_order": 106
+  },
+  {
+   "id": 524,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "texture",
+   "value": "质地",
+   "sort_order": 107
+  },
+  {
+   "id": 525,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "textures",
+   "value": "质地",
+   "sort_order": 108
+  },
+  {
+   "id": 526,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "sustainability",
+   "value": "可持续",
+   "sort_order": 109
+  },
+  {
+   "id": 527,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "microbiome",
+   "value": "微生态",
+   "sort_order": 110
+  },
+  {
+   "id": 528,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "wellness",
+   "value": "健康",
+   "sort_order": 111
+  },
+  {
+   "id": 529,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "sun care",
+   "value": "防晒",
+   "sort_order": 112
+  },
+  {
+   "id": 530,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "hair care",
+   "value": "洗护发",
+   "sort_order": 113
+  },
+  {
+   "id": 531,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "color cosmetics",
+   "value": "彩妆",
+   "sort_order": 114
+  },
+  {
+   "id": 532,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "emulsifiers",
+   "value": "乳化剂",
+   "sort_order": 115
+  },
+  {
+   "id": 533,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "soft focus",
+   "value": "柔焦",
+   "sort_order": 116
+  },
+  {
+   "id": 534,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "repair",
+   "value": "修护",
+   "sort_order": 117
+  },
+  {
+   "id": 535,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "soothing",
+   "value": "舒缓",
+   "sort_order": 118
+  },
+  {
+   "id": 536,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "moisturizing",
+   "value": "保湿",
+   "sort_order": 119
+  },
+  {
+   "id": 537,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "anti-pollution",
+   "value": "抗污染",
+   "sort_order": 120
+  },
+  {
+   "id": 538,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "biotech",
+   "value": "生物科技",
+   "sort_order": 121
+  },
+  {
+   "id": 539,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "clean beauty",
+   "value": "纯净美妆",
+   "sort_order": 122
+  },
+  {
+   "id": 540,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "blue beauty",
+   "value": "蓝色美妆",
+   "sort_order": 123
+  },
+  {
+   "id": 541,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "slower beauty",
+   "value": "慢美妆",
+   "sort_order": 124
+  },
+  {
+   "id": 542,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "skin longevity",
+   "value": "皮肤长寿",
+   "sort_order": 125
+  },
+  {
+   "id": 543,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "longevity",
+   "value": "长寿",
+   "sort_order": 126
+  },
+  {
+   "id": 544,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "resilience",
+   "value": "韧性",
+   "sort_order": 127
+  },
+  {
+   "id": 545,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "beauty",
+   "value": "美妆",
+   "sort_order": 128
+  },
+  {
+   "id": 546,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "self-care",
+   "value": "自我护理",
+   "sort_order": 129
+  },
+  {
+   "id": 547,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "circular economy",
+   "value": "循环经济",
+   "sort_order": 130
+  },
+  {
+   "id": 548,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "upcycling",
+   "value": "升级回收",
+   "sort_order": 131
+  },
+  {
+   "id": 549,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "natural origin",
+   "value": "天然来源",
+   "sort_order": 132
+  },
+  {
+   "id": 550,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "naturality",
+   "value": "自然性",
+   "sort_order": 133
+  },
+  {
+   "id": 551,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "preservation",
+   "value": "防腐",
+   "sort_order": 134
+  },
+  {
+   "id": 552,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "lipids and polymers",
+   "value": "脂质与聚合物",
+   "sort_order": 135
+  },
+  {
+   "id": 553,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "lipid-based formulations",
+   "value": "脂质制剂",
+   "sort_order": 136
+  },
+  {
+   "id": 554,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "liquid-based formulations",
+   "value": "液体制剂",
+   "sort_order": 137
+  },
+  {
+   "id": 555,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "animal health",
+   "value": "动物健康",
+   "sort_order": 138
+  },
+  {
+   "id": 556,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "cannabinoids",
+   "value": "大麻素",
+   "sort_order": 139
+  },
+  {
+   "id": 557,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "hot melt extrusion",
+   "value": "热熔挤出",
+   "sort_order": 140
+  },
+  {
+   "id": 558,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "intestinal permeation enhancers",
+   "value": "肠道渗透促进剂",
+   "sort_order": 141
+  },
+  {
+   "id": 559,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "oral drug delivery",
+   "value": "口服给药",
+   "sort_order": 142
+  },
+  {
+   "id": 560,
+   "product_line": "article_theme",
+   "category": "theme",
+   "label": "lipid-based drug delivery",
+   "value": "脂质给药",
+   "sort_order": 143
+  }
+ ],
+ "products": {
+  "pc_ingredients.functionality_tag": [
+   {
+    "id": 59,
+    "v": "活性物"
+   },
+   {
+    "id": 60,
+    "v": "活性物"
+   },
+   {
+    "id": 61,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 62,
+    "v": "活性物"
+   },
+   {
+    "id": 63,
+    "v": "活性物"
+   },
+   {
+    "id": 64,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 65,
+    "v": "不含乳化剂,润湿剂"
+   },
+   {
+    "id": 66,
+    "v": "增效剂,纹理化剂"
+   },
+   {
+    "id": 67,
+    "v": "活性物"
+   },
+   {
+    "id": 68,
+    "v": "活性物"
+   },
+   {
+    "id": 69,
+    "v": "活性物"
+   },
+   {
+    "id": 70,
+    "v": "活性物"
+   },
+   {
+    "id": 71,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 72,
+    "v": "活性物"
+   },
+   {
+    "id": 73,
+    "v": "纹理化剂"
+   },
+   {
+    "id": 74,
+    "v": "活性物"
+   },
+   {
+    "id": 75,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 76,
+    "v": "活性物"
+   },
+   {
+    "id": 77,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 78,
+    "v": "活性物"
+   },
+   {
+    "id": 79,
+    "v": "纹理化剂"
+   },
+   {
+    "id": 80,
+    "v": "活性物"
+   },
+   {
+    "id": 81,
+    "v": "纹理化剂"
+   },
+   {
+    "id": 82,
+    "v": "活性物"
+   },
+   {
+    "id": 83,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 84,
+    "v": "活性物"
+   },
+   {
+    "id": 85,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 86,
+    "v": "活性物"
+   },
+   {
+    "id": 87,
+    "v": "不含乳化剂,润湿剂"
+   },
+   {
+    "id": 88,
+    "v": "活性物"
+   },
+   {
+    "id": 89,
+    "v": "润肤剂"
+   },
+   {
+    "id": 90,
+    "v": "活性物"
+   },
+   {
+    "id": 91,
+    "v": "润肤剂"
+   },
+   {
+    "id": 92,
+    "v": "活性物"
+   },
+   {
+    "id": 93,
+    "v": "润肤剂"
+   },
+   {
+    "id": 94,
+    "v": "活性物"
+   },
+   {
+    "id": 95,
+    "v": "润肤剂"
+   },
+   {
+    "id": 96,
+    "v": "活性物"
+   },
+   {
+    "id": 97,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 98,
+    "v": "活性物"
+   },
+   {
+    "id": 99,
+    "v": "乳化剂(O/W)"
+   },
+   {
+    "id": 100,
+    "v": "活性物"
+   },
+   {
+    "id": 101,
+    "v": "增效剂,助溶剂"
+   },
+   {
+    "id": 102,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 103,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 104,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 105,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 106,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 107,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 108,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 109,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 110,
+    "v": ""
+   },
+   {
+    "id": 111,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 112,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 113,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 114,
+    "v": "植物/水果提取物"
+   },
+   {
+    "id": 115,
+    "v": "植物/水果提取物"
+   }
+  ],
+  "pc_ingredients.application_tag": [
+   {
+    "id": 59,
+    "v": "脸部护理,身体护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 60,
+    "v": "眼部护理,脸部护理,彩妆"
+   },
+   {
+    "id": 61,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 62,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 63,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 64,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 65,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 66,
+    "v": "头发和头皮护理,彩妆"
+   },
+   {
+    "id": 67,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 68,
+    "v": "脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 69,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 70,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 71,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 72,
+    "v": "脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 73,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 74,
+    "v": "脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 75,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 76,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 77,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 78,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 79,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 80,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 81,
+    "v": "身体护理,眼部护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 82,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 83,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 84,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 85,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 86,
+    "v": "脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 87,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 88,
+    "v": "眼部护理,脸部护理,彩妆,男士护理"
+   },
+   {
+    "id": 89,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理"
+   },
+   {
+    "id": 90,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 91,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 92,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 93,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 94,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 95,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 96,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 97,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 98,
+    "v": "身体护理,脸部护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 99,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 100,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 101,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 102,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 103,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 104,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 105,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 106,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 107,
+    "v": "身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 108,
+    "v": "脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 109,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 110,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 111,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 112,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 113,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 114,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   },
+   {
+    "id": 115,
+    "v": "婴儿和儿童护理,身体护理,脸部护理,头发和头皮护理,彩妆,男士护理,防晒"
+   }
+  ],
+  "pc_ingredients.concept_tag": [
+   {
+    "id": 59,
+    "v": "升级再造和零浪费,炎症老化"
+   },
+   {
+    "id": 60,
+    "v": "升级再造和零浪费"
+   },
+   {
+    "id": 61,
+    "v": "蜡黄油技术"
+   },
+   {
+    "id": 62,
+    "v": "NaDES/LTTM 溶剂技术,皮肤健康,升级再造和零浪费"
+   },
+   {
+    "id": 63,
+    "v": "NaDES/LTTM 溶剂技术,传统医学植物"
+   },
+   {
+    "id": 64,
+    "v": "蜡黄油技术"
+   },
+   {
+    "id": 65,
+    "v": ""
+   },
+   {
+    "id": 66,
+    "v": "蜡黄油技术"
+   },
+   {
+    "id": 67,
+    "v": "NaDES/LTTM 溶剂技术,传统医学植物"
+   },
+   {
+    "id": 68,
+    "v": "本地采购/法国,NaDES/LTTM 溶剂技术"
+   },
+   {
+    "id": 69,
+    "v": "皮肤健康"
+   },
+   {
+    "id": 70,
+    "v": ""
+   },
+   {
+    "id": 71,
+    "v": "蜡黄油技术"
+   },
+   {
+    "id": 72,
+    "v": "传统医学植物"
+   },
+   {
+    "id": 73,
+    "v": "蜡黄油技术"
+   },
+   {
+    "id": 74,
+    "v": "传统医学植物"
+   },
+   {
+    "id": 75,
+    "v": "蜡黄油技术"
+   },
+   {
+    "id": 76,
+    "v": "传统医学植物"
+   },
+   {
+    "id": 77,
+    "v": ""
+   },
+   {
+    "id": 78,
+    "v": "炎症老化,本地采购/法国"
+   },
+   {
+    "id": 79,
+    "v": ""
+   },
+   {
+    "id": 80,
+    "v": "本地采购/法国"
+   },
+   {
+    "id": 81,
+    "v": ""
+   },
+   {
+    "id": 82,
+    "v": "本地采购/法国,皮肤健康,升级再造和零浪费"
+   },
+   {
+    "id": 83,
+    "v": ""
+   },
+   {
+    "id": 84,
+    "v": ""
+   },
+   {
+    "id": 85,
+    "v": ""
+   },
+   {
+    "id": 86,
+    "v": ""
+   },
+   {
+    "id": 87,
+    "v": ""
+   },
+   {
+    "id": 88,
+    "v": ""
+   },
+   {
+    "id": 89,
+    "v": ""
+   },
+   {
+    "id": 90,
+    "v": "矿物化妆品"
+   },
+   {
+    "id": 91,
+    "v": ""
+   },
+   {
+    "id": 92,
+    "v": "矿物化妆品"
+   },
+   {
+    "id": 93,
+    "v": ""
+   },
+   {
+    "id": 94,
+    "v": "矿物化妆品"
+   },
+   {
+    "id": 95,
+    "v": ""
+   },
+   {
+    "id": 96,
+    "v": "矿物化妆品"
+   },
+   {
+    "id": 97,
+    "v": ""
+   },
+   {
+    "id": 98,
+    "v": "矿物化妆品"
+   },
+   {
+    "id": 99,
+    "v": ""
+   },
+   {
+    "id": 100,
+    "v": ""
+   },
+   {
+    "id": 101,
+    "v": ""
+   },
+   {
+    "id": 102,
+    "v": "美食原料"
+   },
+   {
+    "id": 103,
+    "v": "美食原料"
+   },
+   {
+    "id": 104,
+    "v": "美食原料"
+   },
+   {
+    "id": 105,
+    "v": "美食原料"
+   },
+   {
+    "id": 106,
+    "v": "美食原料"
+   },
+   {
+    "id": 107,
+    "v": "美食原料"
+   },
+   {
+    "id": 108,
+    "v": "美食原料"
+   },
+   {
+    "id": 109,
+    "v": "升级再造和零浪费"
+   },
+   {
+    "id": 110,
+    "v": ""
+   },
+   {
+    "id": 111,
+    "v": "升级再造和零浪费"
+   },
+   {
+    "id": 112,
+    "v": "升级再造和零浪费"
+   },
+   {
+    "id": 113,
+    "v": "升级再造和零浪费"
+   },
+   {
+    "id": 114,
+    "v": "升级再造和零浪费"
+   },
+   {
+    "id": 115,
+    "v": "升级再造和零浪费"
+   }
+  ],
+  "pc_ingredients.claim_tag": [
+   {
+    "id": 59,
+    "v": "抗氧化,防污染"
+   },
+   {
+    "id": 60,
+    "v": "防黑眼圈和眼袋"
+   },
+   {
+    "id": 61,
+    "v": "防污染"
+   },
+   {
+    "id": 62,
+    "v": "抗皱"
+   },
+   {
+    "id": 63,
+    "v": "抗下垂,抗皱"
+   },
+   {
+    "id": 64,
+    "v": "防污染"
+   },
+   {
+    "id": 65,
+    "v": ",主要针对含粉类配方设计,不需要助乳化剂,可冷加工,与多种化妆品成分兼容,专利申请中,"
+   },
+   {
+    "id": 66,
+    "v": "防污染"
+   },
+   {
+    "id": 67,
+    "v": "抗衰老,充满活力_"
+   },
+   {
+    "id": 68,
+    "v": "抗皱"
+   },
+   {
+    "id": 69,
+    "v": "细胞更新"
+   },
+   {
+    "id": 70,
+    "v": "抗斑"
+   },
+   {
+    "id": 71,
+    "v": "防污染"
+   },
+   {
+    "id": 72,
+    "v": "抗皱"
+   },
+   {
+    "id": 73,
+    "v": ",提高配方稳定性,支持创新配方,增强感官性能,提供持久的保湿和舒适,"
+   },
+   {
+    "id": 74,
+    "v": "防污染"
+   },
+   {
+    "id": 75,
+    "v": "源自天然蜡的无PEG乳化剂,活性质地&mdash;保湿,软垫感"
+   },
+   {
+    "id": 76,
+    "v": "抗皱,紧致"
+   },
+   {
+    "id": 77,
+    "v": "冷却"
+   },
+   {
+    "id": 78,
+    "v": "细胞更新"
+   },
+   {
+    "id": 79,
+    "v": ",植物黄油膏,完美的热稳定性,支撑乳状液骨架,提高铺展性和舒适度,"
+   },
+   {
+    "id": 80,
+    "v": "抗皱,充满活力_"
+   },
+   {
+    "id": 81,
+    "v": ",密实剂,油相增稠剂,粉质触感,乳化稳定剂,"
+   },
+   {
+    "id": 82,
+    "v": "抗氧化,防污染,充满活力_"
+   },
+   {
+    "id": 83,
+    "v": ",优异的乳化和稳定性能,困难配方的解决者,天鹅绒般的触感,"
+   },
+   {
+    "id": 84,
+    "v": ",减少促炎介质的分泌,减轻炎症的临床症状,提高敏感和高反应性皮肤的舒适度,"
+   },
+   {
+    "id": 85,
+    "v": ",出色的稳定性,优雅的触感,细腻的乳化体系,"
+   },
+   {
+    "id": 86,
+    "v": "抗痘"
+   },
+   {
+    "id": 87,
+    "v": ",100%天然,不含PEG的乳化剂,"
+   },
+   {
+    "id": 88,
+    "v": "防黑眼圈和眼袋"
+   },
+   {
+    "id": 89,
+    "v": ",形成保护膜,保持皮肤的屏障功能,改善肤感和铺展性,晶透级别,"
+   },
+   {
+    "id": 90,
+    "v": "抗皱"
+   },
+   {
+    "id": 91,
+    "v": ",形成保护膜,保持皮肤的屏障功能,改善配方的铺展性,柔软的肤感,"
+   },
+   {
+    "id": 92,
+    "v": "抗氧化"
+   },
+   {
+    "id": 93,
+    "v": ",形成保护膜,保持皮肤的屏障功能,改善配方的铺展性,干爽的肤感,抗氧化,"
+   },
+   {
+    "id": 94,
+    "v": "充满活力_"
+   },
+   {
+    "id": 95,
+    "v": ",形成保护膜,保持皮肤的屏障功能,改善肤感和铺展性,矿物油替代品,抗氧化,不含棕榈成分,"
+   },
+   {
+    "id": 96,
+    "v": "光老化"
+   },
+   {
+    "id": 97,
+    "v": "极简主义者"
+   },
+   {
+    "id": 98,
+    "v": "光老化"
+   },
+   {
+    "id": 99,
+    "v": "保湿"
+   },
+   {
+    "id": 100,
+    "v": "充满活力_"
+   },
+   {
+    "id": 101,
+    "v": ""
+   },
+   {
+    "id": 102,
+    "v": ""
+   },
+   {
+    "id": 103,
+    "v": ""
+   },
+   {
+    "id": 104,
+    "v": ""
+   },
+   {
+    "id": 105,
+    "v": ""
+   },
+   {
+    "id": 106,
+    "v": ""
+   },
+   {
+    "id": 107,
+    "v": ""
+   },
+   {
+    "id": 108,
+    "v": ""
+   },
+   {
+    "id": 109,
+    "v": ""
+   },
+   {
+    "id": 110,
+    "v": ""
+   },
+   {
+    "id": 111,
+    "v": ""
+   },
+   {
+    "id": 112,
+    "v": ""
+   },
+   {
+    "id": 113,
+    "v": ""
+   },
+   {
+    "id": 114,
+    "v": ""
+   },
+   {
+    "id": 115,
+    "v": ""
+   }
+  ],
+  "pc_ingredients.characteristic_tag": [
+   {
+    "id": 59,
+    "v": "不含防腐剂,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 60,
+    "v": "不含防腐剂,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 61,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 62,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 63,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 64,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 65,
+    "v": "可冷加工,不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 66,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 67,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 68,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 69,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 70,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 71,
+    "v": "不含聚乙二醇,易于生物降解,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 72,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 73,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 74,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 75,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 76,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 77,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 78,
+    "v": "不含防腐剂,素食主义者"
+   },
+   {
+    "id": 79,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 80,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 81,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 82,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 83,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 84,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 85,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 86,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 87,
+    "v": "可冷加工,不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 88,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 89,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 90,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 91,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 92,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 93,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 94,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 95,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 96,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 97,
+    "v": "不含聚乙二醇,易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 98,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 99,
+    "v": "符合中国标准 (IECIC)"
+   },
+   {
+    "id": 100,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 101,
+    "v": "易于生物降解,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 102,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 103,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 104,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 105,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 106,
+    "v": "素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 107,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 108,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 109,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 110,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 111,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 112,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 113,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 114,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   },
+   {
+    "id": 115,
+    "v": "不含防腐剂,素食主义者,符合中国标准 (IECIC)"
+   }
+  ],
+  "pc_ingredients.naturality_label": [
+   {
+    "id": 59,
+    "v": "COSMOS认证,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 60,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 61,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 62,
+    "v": "COSMOS 批准,NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 63,
+    "v": "ERI 360 银,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 64,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 65,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 66,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 67,
+    "v": "COSMOS认证,ERI 360 铜牌"
+   },
+   {
+    "id": 68,
+    "v": "COSMOS认证,ERI 360 银,NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 69,
+    "v": "COSMOS 批准,ERI 360 银,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 70,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 71,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 72,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 73,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 74,
+    "v": ""
+   },
+   {
+    "id": 75,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 76,
+    "v": "NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 77,
+    "v": "RSPO 质量平衡"
+   },
+   {
+    "id": 78,
+    "v": "COSMOS认证,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 79,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 80,
+    "v": "COSMOS认证,ERI 360 银"
+   },
+   {
+    "id": 81,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 82,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 83,
+    "v": "RSPO 质量平衡"
+   },
+   {
+    "id": 84,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 85,
+    "v": "RSPO 质量平衡"
+   },
+   {
+    "id": 86,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 87,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 88,
+    "v": ""
+   },
+   {
+    "id": 89,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 90,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 91,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 92,
+    "v": ""
+   },
+   {
+    "id": 93,
+    "v": ""
+   },
+   {
+    "id": 94,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 95,
+    "v": ""
+   },
+   {
+    "id": 96,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 97,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128),RSPO 质量平衡"
+   },
+   {
+    "id": 98,
+    "v": "COSMOS 批准,NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 99,
+    "v": ""
+   },
+   {
+    "id": 100,
+    "v": ""
+   },
+   {
+    "id": 101,
+    "v": ""
+   },
+   {
+    "id": 102,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 103,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 104,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 105,
+    "v": "COSMOS 批准,NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 106,
+    "v": "NOI > 99% (ISO 16128)"
+   },
+   {
+    "id": 107,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 108,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 109,
+    "v": "COSMOS认证,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 110,
+    "v": "NOI = 100 % (ISO 16128),COSMOS认证"
+   },
+   {
+    "id": 111,
+    "v": "NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 112,
+    "v": "COSMOS认证,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 113,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 114,
+    "v": "COSMOS 批准,NOI = 100 % (ISO 16128)"
+   },
+   {
+    "id": 115,
+    "v": "COSMOS认证,NOI = 100 % (ISO 16128)"
+   }
+  ],
+  "formulations.application_tag": [
+   {
+    "id": 100,
+    "v": "脸部护理"
+   },
+   {
+    "id": 101,
+    "v": "脸部护理"
+   },
+   {
+    "id": 102,
+    "v": "彩妆"
+   },
+   {
+    "id": 103,
+    "v": "脸部护理"
+   },
+   {
+    "id": 104,
+    "v": "脸部护理"
+   },
+   {
+    "id": 105,
+    "v": "脸部护理"
+   },
+   {
+    "id": 106,
+    "v": "彩妆"
+   },
+   {
+    "id": 107,
+    "v": "脸部护理"
+   },
+   {
+    "id": 108,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 109,
+    "v": "彩妆"
+   },
+   {
+    "id": 110,
+    "v": "身体护理"
+   },
+   {
+    "id": 111,
+    "v": "脸部护理"
+   },
+   {
+    "id": 112,
+    "v": "身体护理"
+   },
+   {
+    "id": 113,
+    "v": "脸部护理"
+   },
+   {
+    "id": 114,
+    "v": "脸部护理"
+   },
+   {
+    "id": 115,
+    "v": "眼部护理"
+   },
+   {
+    "id": 116,
+    "v": "脸部护理"
+   },
+   {
+    "id": 117,
+    "v": "脸部护理"
+   },
+   {
+    "id": 118,
+    "v": "脸部护理"
+   },
+   {
+    "id": 119,
+    "v": "身体护理"
+   },
+   {
+    "id": 120,
+    "v": "彩妆"
+   },
+   {
+    "id": 121,
+    "v": "脸部护理"
+   },
+   {
+    "id": 122,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 123,
+    "v": "眼部护理"
+   },
+   {
+    "id": 124,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 125,
+    "v": "脸部护理"
+   },
+   {
+    "id": 126,
+    "v": "防晒"
+   },
+   {
+    "id": 127,
+    "v": "彩妆"
+   },
+   {
+    "id": 128,
+    "v": "脸部护理"
+   },
+   {
+    "id": 129,
+    "v": "防晒"
+   },
+   {
+    "id": 130,
+    "v": "脸部护理"
+   },
+   {
+    "id": 131,
+    "v": "彩妆"
+   },
+   {
+    "id": 132,
+    "v": "脸部护理"
+   },
+   {
+    "id": 133,
+    "v": "脸部护理"
+   },
+   {
+    "id": 134,
+    "v": "防晒"
+   },
+   {
+    "id": 135,
+    "v": "防晒"
+   },
+   {
+    "id": 136,
+    "v": "防晒"
+   },
+   {
+    "id": 137,
+    "v": "脸部护理"
+   },
+   {
+    "id": 138,
+    "v": "身体护理"
+   },
+   {
+    "id": 139,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 140,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 141,
+    "v": "彩妆"
+   },
+   {
+    "id": 142,
+    "v": "防晒"
+   },
+   {
+    "id": 143,
+    "v": "彩妆"
+   },
+   {
+    "id": 144,
+    "v": "脸部护理"
+   },
+   {
+    "id": 145,
+    "v": "身体护理"
+   },
+   {
+    "id": 146,
+    "v": "眼部护理"
+   },
+   {
+    "id": 147,
+    "v": "眼部护理"
+   },
+   {
+    "id": 148,
+    "v": "彩妆"
+   },
+   {
+    "id": 149,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 150,
+    "v": "防晒"
+   },
+   {
+    "id": 151,
+    "v": "脸部护理"
+   },
+   {
+    "id": 152,
+    "v": "脸部护理"
+   },
+   {
+    "id": 153,
+    "v": "彩妆"
+   },
+   {
+    "id": 154,
+    "v": "防晒"
+   },
+   {
+    "id": 155,
+    "v": "身体护理"
+   },
+   {
+    "id": 156,
+    "v": "身体护理"
+   },
+   {
+    "id": 157,
+    "v": "彩妆"
+   },
+   {
+    "id": 158,
+    "v": "脸部护理"
+   },
+   {
+    "id": 159,
+    "v": "彩妆"
+   },
+   {
+    "id": 160,
+    "v": "彩妆"
+   },
+   {
+    "id": 161,
+    "v": "脸部护理"
+   },
+   {
+    "id": 162,
+    "v": "脸部护理"
+   },
+   {
+    "id": 163,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 164,
+    "v": "防晒"
+   },
+   {
+    "id": 165,
+    "v": "脸部护理"
+   },
+   {
+    "id": 166,
+    "v": "防晒"
+   },
+   {
+    "id": 167,
+    "v": "彩妆"
+   },
+   {
+    "id": 168,
+    "v": "脸部护理"
+   },
+   {
+    "id": 169,
+    "v": "脸部护理"
+   },
+   {
+    "id": 170,
+    "v": "防晒"
+   },
+   {
+    "id": 171,
+    "v": "身体护理"
+   },
+   {
+    "id": 172,
+    "v": "脸部护理"
+   },
+   {
+    "id": 173,
+    "v": "防晒"
+   },
+   {
+    "id": 174,
+    "v": "彩妆"
+   },
+   {
+    "id": 175,
+    "v": "脸部护理"
+   },
+   {
+    "id": 176,
+    "v": "脸部护理"
+   },
+   {
+    "id": 177,
+    "v": "眼部护理"
+   },
+   {
+    "id": 178,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 179,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 180,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 181,
+    "v": "脸部护理"
+   },
+   {
+    "id": 182,
+    "v": "彩妆"
+   },
+   {
+    "id": 183,
+    "v": "脸部护理"
+   },
+   {
+    "id": 184,
+    "v": "脸部护理"
+   },
+   {
+    "id": 185,
+    "v": "脸部和头皮护理"
+   },
+   {
+    "id": 186,
+    "v": "脸部护理"
+   },
+   {
+    "id": 187,
+    "v": "脸部护理"
+   },
+   {
+    "id": 188,
+    "v": "脸部护理"
+   },
+   {
+    "id": 189,
+    "v": "脸部护理"
+   },
+   {
+    "id": 190,
+    "v": "身体护理"
+   },
+   {
+    "id": 191,
+    "v": "身体护理"
+   },
+   {
+    "id": 192,
+    "v": "彩妆"
+   },
+   {
+    "id": 193,
+    "v": "眼部护理"
+   },
+   {
+    "id": 194,
+    "v": "脸部护理"
+   },
+   {
+    "id": 195,
+    "v": "脸部护理"
+   },
+   {
+    "id": 196,
+    "v": "脸部护理"
+   },
+   {
+    "id": 197,
+    "v": "脸部护理"
+   },
+   {
+    "id": 198,
+    "v": "脸部护理"
+   }
+  ],
+  "formulations.form_tag": [
+   {
+    "id": 100,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 101,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 102,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 103,
+    "v": "香脂"
+   },
+   {
+    "id": 104,
+    "v": "凝胶,乳霜"
+   },
+   {
+    "id": 105,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 106,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 107,
+    "v": "乳霜"
+   },
+   {
+    "id": 108,
+    "v": "乳霜"
+   },
+   {
+    "id": 109,
+    "v": "乳霜"
+   },
+   {
+    "id": 110,
+    "v": "乳霜,乳剂/啫哩"
+   },
+   {
+    "id": 111,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 112,
+    "v": "凝胶,乳剂/啫哩"
+   },
+   {
+    "id": 113,
+    "v": "乳霜,乳剂/啫哩"
+   },
+   {
+    "id": 114,
+    "v": "乳霜"
+   },
+   {
+    "id": 115,
+    "v": "乳霜"
+   },
+   {
+    "id": 116,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 117,
+    "v": "乳霜,香脂"
+   },
+   {
+    "id": 118,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 119,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 120,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 121,
+    "v": "乳剂/啫哩,乳霜"
+   },
+   {
+    "id": 122,
+    "v": "香脂"
+   },
+   {
+    "id": 123,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 124,
+    "v": "润肤膏"
+   },
+   {
+    "id": 125,
+    "v": "乳霜"
+   },
+   {
+    "id": 126,
+    "v": "乳霜"
+   },
+   {
+    "id": 127,
+    "v": "香脂"
+   },
+   {
+    "id": 128,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 129,
+    "v": "润肤膏"
+   },
+   {
+    "id": 130,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 131,
+    "v": "乳霜"
+   },
+   {
+    "id": 132,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 133,
+    "v": "润肤膏"
+   },
+   {
+    "id": 134,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 135,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 136,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 137,
+    "v": "乳剂/啫哩,凝胶"
+   },
+   {
+    "id": 138,
+    "v": "凝胶,香脂"
+   },
+   {
+    "id": 139,
+    "v": "乳霜"
+   },
+   {
+    "id": 140,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 141,
+    "v": "乳剂/啫哩,香脂"
+   },
+   {
+    "id": 142,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 143,
+    "v": "润肤膏"
+   },
+   {
+    "id": 144,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 145,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 146,
+    "v": "乳霜,乳剂/啫哩"
+   },
+   {
+    "id": 147,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 148,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 149,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 150,
+    "v": "润肤膏"
+   },
+   {
+    "id": 151,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 152,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 153,
+    "v": "乳剂/啫哩,香脂"
+   },
+   {
+    "id": 154,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 155,
+    "v": "乳霜"
+   },
+   {
+    "id": 156,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 157,
+    "v": "润肤膏"
+   },
+   {
+    "id": 158,
+    "v": "润肤膏"
+   },
+   {
+    "id": 159,
+    "v": "乳剂/啫哩,润肤膏"
+   },
+   {
+    "id": 160,
+    "v": "乳剂/啫哩,香脂"
+   },
+   {
+    "id": 161,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 162,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 163,
+    "v": "润肤膏"
+   },
+   {
+    "id": 164,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 165,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 166,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 167,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 168,
+    "v": "凝胶,乳霜"
+   },
+   {
+    "id": 169,
+    "v": "乳剂/啫哩,润肤膏"
+   },
+   {
+    "id": 170,
+    "v": "乳剂/啫哩,润肤膏"
+   },
+   {
+    "id": 171,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 172,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 173,
+    "v": "凝胶,乳剂/啫哩"
+   },
+   {
+    "id": 174,
+    "v": "香脂,乳霜"
+   },
+   {
+    "id": 175,
+    "v": "乳霜"
+   },
+   {
+    "id": 176,
+    "v": "润肤膏,乳剂/啫哩"
+   },
+   {
+    "id": 177,
+    "v": "香脂"
+   },
+   {
+    "id": 178,
+    "v": "润肤膏"
+   },
+   {
+    "id": 179,
+    "v": "乳剂/啫哩,润肤膏"
+   },
+   {
+    "id": 180,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 181,
+    "v": "乳剂/啫哩"
+   },
+   {
+    "id": 182,
+    "v": "乳剂/啫哩,香脂"
+   },
+   {
+    "id": 183,
+    "v": "乳霜"
+   },
+   {
+    "id": 184,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 185,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 186,
+    "v": "香脂,润肤膏"
+   },
+   {
+    "id": 187,
+    "v": "乳剂/啫哩,乳霜"
+   },
+   {
+    "id": 188,
+    "v": "乳剂/啫哩,润肤膏"
+   },
+   {
+    "id": 189,
+    "v": "凝胶,香脂"
+   },
+   {
+    "id": 190,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 191,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 192,
+    "v": "香脂"
+   },
+   {
+    "id": 193,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 194,
+    "v": "乳霜,润肤膏"
+   },
+   {
+    "id": 195,
+    "v": "乳剂/啫哩,香脂"
+   },
+   {
+    "id": 196,
+    "v": "乳霜,香脂"
+   },
+   {
+    "id": 197,
+    "v": "乳霜,乳剂/啫哩"
+   },
+   {
+    "id": 198,
+    "v": "乳霜,润肤膏"
+   }
+  ],
+  "formulations.claim_tag": [
+   {
+    "id": 100,
+    "v": "DIY自制,固态转乳霜,柔润触感"
+   },
+   {
+    "id": 101,
+    "v": "保湿,清爽"
+   },
+   {
+    "id": 102,
+    "v": "清爽,均匀肤色"
+   },
+   {
+    "id": 103,
+    "v": "眼部,+,面部,+,身体,闪耀效果,弹性粉末"
+   },
+   {
+    "id": 104,
+    "v": "快速水化,无表面活性剂,提神焕发活力"
+   },
+   {
+    "id": 105,
+    "v": "哑光,清爽"
+   },
+   {
+    "id": 106,
+    "v": "清爽,彩妆持久"
+   },
+   {
+    "id": 107,
+    "v": "哑光"
+   },
+   {
+    "id": 108,
+    "v": "舒缓,抗氧化,头发护理"
+   },
+   {
+    "id": 109,
+    "v": "防晒保护,美白提亮"
+   },
+   {
+    "id": 110,
+    "v": "保湿,滋养,修护"
+   },
+   {
+    "id": 111,
+    "v": "紧致,抗下垂,清爽"
+   },
+   {
+    "id": 112,
+    "v": "抗痘,净化排毒"
+   },
+   {
+    "id": 113,
+    "v": "保湿,紧致,滋养"
+   },
+   {
+    "id": 114,
+    "v": "保湿,舒缓,抗氧化"
+   },
+   {
+    "id": 115,
+    "v": "保湿,舒缓,淡化黑眼圈"
+   },
+   {
+    "id": 116,
+    "v": "有趣的质感,美食调,柔软肌肤"
+   },
+   {
+    "id": 117,
+    "v": "抗氧化,抗光老化,清爽"
+   },
+   {
+    "id": 118,
+    "v": "舒缓,修护,清爽"
+   },
+   {
+    "id": 119,
+    "v": "保湿,舒缓"
+   },
+   {
+    "id": 120,
+    "v": "保湿"
+   },
+   {
+    "id": 121,
+    "v": "保湿,净化排毒"
+   },
+   {
+    "id": 122,
+    "v": "哑光,头发护理"
+   },
+   {
+    "id": 123,
+    "v": "均匀肤色,淡化黑眼圈"
+   },
+   {
+    "id": 124,
+    "v": "抗氧化,头发护理"
+   },
+   {
+    "id": 125,
+    "v": "保湿,舒缓,修护"
+   },
+   {
+    "id": 126,
+    "v": "抗氧化,抗光老化,防晒保护"
+   },
+   {
+    "id": 127,
+    "v": "抗氧化"
+   },
+   {
+    "id": 128,
+    "v": "保湿,紧致,抗下垂"
+   },
+   {
+    "id": 129,
+    "v": "防晒保护,清爽"
+   },
+   {
+    "id": 130,
+    "v": "保湿,舒缓,修护"
+   },
+   {
+    "id": 131,
+    "v": "舒缓,焕肤,抗光老化"
+   },
+   {
+    "id": 132,
+    "v": "保湿,舒缓,抗下垂"
+   },
+   {
+    "id": 133,
+    "v": "滋养,头发护理"
+   },
+   {
+    "id": 134,
+    "v": "防晒保护,清爽"
+   },
+   {
+    "id": 135,
+    "v": "抗光老化,防晒保护"
+   },
+   {
+    "id": 136,
+    "v": "抗氧化,抗光老化,防晒保护"
+   },
+   {
+    "id": 137,
+    "v": "保湿,抗氧化,抗光老化"
+   },
+   {
+    "id": 138,
+    "v": "保湿,清爽"
+   },
+   {
+    "id": 139,
+    "v": "滋养,头发护理"
+   },
+   {
+    "id": 140,
+    "v": "抗痘,净化排毒,头发护理"
+   },
+   {
+    "id": 141,
+    "v": "哑光,美白提亮,均匀肤色"
+   },
+   {
+    "id": 142,
+    "v": "舒缓,防晒保护,清爽"
+   },
+   {
+    "id": 143,
+    "v": "彩妆持久,防水"
+   },
+   {
+    "id": 144,
+    "v": "保湿,均匀肤色"
+   },
+   {
+    "id": 145,
+    "v": "焕肤,清爽"
+   },
+   {
+    "id": 146,
+    "v": "清爽,淡化黑眼圈"
+   },
+   {
+    "id": 147,
+    "v": "美白提亮,清爽,淡化黑眼圈"
+   },
+   {
+    "id": 148,
+    "v": "舒缓,清爽,均匀肤色"
+   },
+   {
+    "id": 149,
+    "v": "抗氧化,滋养,头发护理"
+   },
+   {
+    "id": 150,
+    "v": "保湿,舒缓,抗光老化"
+   },
+   {
+    "id": 151,
+    "v": "失误质地,含有,AHA&nbsp;,焕然一新的肌肤"
+   },
+   {
+    "id": 152,
+    "v": "固体形式,单剂量,DIY"
+   },
+   {
+    "id": 153,
+    "v": "抗氧化"
+   },
+   {
+    "id": 154,
+    "v": "舒缓,抗光老化,防晒保护"
+   },
+   {
+    "id": 155,
+    "v": "保湿"
+   },
+   {
+    "id": 156,
+    "v": "保湿,舒缓,修护"
+   },
+   {
+    "id": 157,
+    "v": "保湿,美白提亮"
+   },
+   {
+    "id": 158,
+    "v": "保湿"
+   },
+   {
+    "id": 159,
+    "v": "美白提亮,均匀肤色"
+   },
+   {
+    "id": 160,
+    "v": "美白提亮,均匀肤色"
+   },
+   {
+    "id": 161,
+    "v": "舒缓,紧致,抗氧化"
+   },
+   {
+    "id": 162,
+    "v": "舒缓,滋养,清爽"
+   },
+   {
+    "id": 163,
+    "v": "保湿,抗氧化,滋养"
+   },
+   {
+    "id": 164,
+    "v": "舒缓,抗氧化,防晒保护"
+   },
+   {
+    "id": 165,
+    "v": "保湿,抗痘,抗氧化"
+   },
+   {
+    "id": 166,
+    "v": "抗光老化,防晒保护"
+   },
+   {
+    "id": 167,
+    "v": "保湿,焕肤,哑光"
+   },
+   {
+    "id": 168,
+    "v": "哑光,美白提亮"
+   },
+   {
+    "id": 169,
+    "v": "保湿,抗氧化,抗污染"
+   },
+   {
+    "id": 170,
+    "v": "滋养,防晒保护,美白提亮"
+   },
+   {
+    "id": 171,
+    "v": "抗下垂"
+   },
+   {
+    "id": 172,
+    "v": "紧致,美白提亮,均匀肤色"
+   },
+   {
+    "id": 173,
+    "v": "抗氧化,防晒保护,清爽"
+   },
+   {
+    "id": 174,
+    "v": "焕肤"
+   },
+   {
+    "id": 175,
+    "v": "抗光老化,修护"
+   },
+   {
+    "id": 176,
+    "v": "修护"
+   },
+   {
+    "id": 177,
+    "v": "美白提亮,清爽,均匀肤色"
+   },
+   {
+    "id": 178,
+    "v": "修护,头发护理"
+   },
+   {
+    "id": 179,
+    "v": "保湿,舒缓,头发护理"
+   },
+   {
+    "id": 180,
+    "v": "去角质,头发护理"
+   },
+   {
+    "id": 181,
+    "v": "保湿,清爽"
+   },
+   {
+    "id": 182,
+    "v": "美白提亮,均匀肤色"
+   },
+   {
+    "id": 183,
+    "v": "保湿,舒缓,抗氧化"
+   },
+   {
+    "id": 184,
+    "v": "去角质"
+   },
+   {
+    "id": 185,
+    "v": "抗氧化,防晒保护,头发护理"
+   },
+   {
+    "id": 186,
+    "v": "去角质"
+   },
+   {
+    "id": 187,
+    "v": "抗氧化,净化排毒"
+   },
+   {
+    "id": 188,
+    "v": "紧致,清爽"
+   },
+   {
+    "id": 189,
+    "v": "抗痘,净化排毒"
+   },
+   {
+    "id": 190,
+    "v": "保湿,滋养,修护"
+   },
+   {
+    "id": 191,
+    "v": "保湿,紧致"
+   },
+   {
+    "id": 192,
+    "v": "哑光,均匀肤色,淡化黑眼圈"
+   },
+   {
+    "id": 193,
+    "v": "保湿,舒缓,清爽"
+   },
+   {
+    "id": 194,
+    "v": "保湿"
+   },
+   {
+    "id": 195,
+    "v": "保湿,抗痘,抗氧化"
+   },
+   {
+    "id": 196,
+    "v": "抗衰老,紧致,抗下垂"
+   },
+   {
+    "id": 197,
+    "v": "抗氧化,抗光老化,防晒保护"
+   },
+   {
+    "id": 198,
+    "v": "哑光"
+   }
+  ],
+  "formulations.concept_tag": [
+   {
+    "id": 100,
+    "v": "Emulium® Kappa MB"
+   },
+   {
+    "id": 101,
+    "v": "Emulium® Illustro,Labrafac™ CC MB,Compritol® 888 CG,Lipocire™ A SG"
+   },
+   {
+    "id": 102,
+    "v": "Emulium® Illustro,Labrafac™ CC MB,Gatuline® Radiance"
+   },
+   {
+    "id": 103,
+    "v": "Emulium® Illustro,Acticire® MB,Lipocire™ A SG,Labrafac™ CC MB"
+   },
+   {
+    "id": 104,
+    "v": "Emulfree® CBG MB,EnergiNius®,Original Extract™ Orange Bio,Lipocire™ A SG"
+   },
+   {
+    "id": 105,
+    "v": "Emulium® Mellifera MB,Eyeglorius™,Solastemis™,Compritol® 888 CG"
+   },
+   {
+    "id": 106,
+    "v": "Emulium® Illustro,Acticire® MB,Labrafac™ CC MB,Compritol® 888 CG"
+   },
+   {
+    "id": 107,
+    "v": "Emulium® Illustro,Acticire® MB,Lipocire™ A SG,Labrafac™ CC MB"
+   },
+   {
+    "id": 108,
+    "v": "Emulium® Dermolea MB,Definicire®,Lipocire™ A SG,Gatuline® Age Defense NP,Phylderm® Vegetal"
+   },
+   {
+    "id": 109,
+    "v": "Emulium® Illustro,Eyeglorius™,Solastemis™,Lipocire™ A SG,Labrafac™ CC MB,MOD MB,Compritol® 888 CG"
+   },
+   {
+    "id": 110,
+    "v": ""
+   },
+   {
+    "id": 111,
+    "v": ""
+   },
+   {
+    "id": 112,
+    "v": ""
+   },
+   {
+    "id": 113,
+    "v": ""
+   },
+   {
+    "id": 114,
+    "v": ""
+   },
+   {
+    "id": 115,
+    "v": "Eyeglorius™,Emulium® Dermolea MB,Acticire® MB,Lipocire™ A SG"
+   },
+   {
+    "id": 116,
+    "v": ""
+   },
+   {
+    "id": 117,
+    "v": ""
+   },
+   {
+    "id": 118,
+    "v": ""
+   },
+   {
+    "id": 119,
+    "v": ""
+   },
+   {
+    "id": 120,
+    "v": ""
+   },
+   {
+    "id": 121,
+    "v": ""
+   },
+   {
+    "id": 122,
+    "v": ""
+   },
+   {
+    "id": 123,
+    "v": ""
+   },
+   {
+    "id": 124,
+    "v": ""
+   },
+   {
+    "id": 125,
+    "v": ""
+   },
+   {
+    "id": 126,
+    "v": ""
+   },
+   {
+    "id": 127,
+    "v": ""
+   },
+   {
+    "id": 128,
+    "v": ""
+   },
+   {
+    "id": 129,
+    "v": ""
+   },
+   {
+    "id": 130,
+    "v": ""
+   },
+   {
+    "id": 131,
+    "v": ""
+   },
+   {
+    "id": 132,
+    "v": ""
+   },
+   {
+    "id": 133,
+    "v": ""
+   },
+   {
+    "id": 134,
+    "v": ""
+   },
+   {
+    "id": 135,
+    "v": ""
+   },
+   {
+    "id": 136,
+    "v": ""
+   },
+   {
+    "id": 137,
+    "v": ""
+   },
+   {
+    "id": 138,
+    "v": ""
+   },
+   {
+    "id": 139,
+    "v": ""
+   },
+   {
+    "id": 140,
+    "v": ""
+   },
+   {
+    "id": 141,
+    "v": ""
+   },
+   {
+    "id": 142,
+    "v": ""
+   },
+   {
+    "id": 143,
+    "v": ""
+   },
+   {
+    "id": 144,
+    "v": ""
+   },
+   {
+    "id": 145,
+    "v": ""
+   },
+   {
+    "id": 146,
+    "v": ""
+   },
+   {
+    "id": 147,
+    "v": ""
+   },
+   {
+    "id": 148,
+    "v": ""
+   },
+   {
+    "id": 149,
+    "v": ""
+   },
+   {
+    "id": 150,
+    "v": ""
+   },
+   {
+    "id": 151,
+    "v": ""
+   },
+   {
+    "id": 152,
+    "v": ""
+   },
+   {
+    "id": 153,
+    "v": ""
+   },
+   {
+    "id": 154,
+    "v": ""
+   },
+   {
+    "id": 155,
+    "v": ""
+   },
+   {
+    "id": 156,
+    "v": ""
+   },
+   {
+    "id": 157,
+    "v": ""
+   },
+   {
+    "id": 158,
+    "v": ""
+   },
+   {
+    "id": 159,
+    "v": ""
+   },
+   {
+    "id": 160,
+    "v": ""
+   },
+   {
+    "id": 161,
+    "v": ""
+   },
+   {
+    "id": 162,
+    "v": ""
+   },
+   {
+    "id": 163,
+    "v": ""
+   },
+   {
+    "id": 164,
+    "v": ""
+   },
+   {
+    "id": 165,
+    "v": ""
+   },
+   {
+    "id": 166,
+    "v": ""
+   },
+   {
+    "id": 167,
+    "v": ""
+   },
+   {
+    "id": 168,
+    "v": ""
+   },
+   {
+    "id": 169,
+    "v": ""
+   },
+   {
+    "id": 170,
+    "v": ""
+   },
+   {
+    "id": 171,
+    "v": ""
+   },
+   {
+    "id": 172,
+    "v": ""
+   },
+   {
+    "id": 173,
+    "v": ""
+   },
+   {
+    "id": 174,
+    "v": ""
+   },
+   {
+    "id": 175,
+    "v": ""
+   },
+   {
+    "id": 176,
+    "v": ""
+   },
+   {
+    "id": 177,
+    "v": ""
+   },
+   {
+    "id": 178,
+    "v": ""
+   },
+   {
+    "id": 179,
+    "v": ""
+   },
+   {
+    "id": 180,
+    "v": ""
+   },
+   {
+    "id": 181,
+    "v": ""
+   },
+   {
+    "id": 182,
+    "v": ""
+   },
+   {
+    "id": 183,
+    "v": ""
+   },
+   {
+    "id": 184,
+    "v": ""
+   },
+   {
+    "id": 185,
+    "v": ""
+   },
+   {
+    "id": 186,
+    "v": ""
+   },
+   {
+    "id": 187,
+    "v": ""
+   },
+   {
+    "id": 188,
+    "v": ""
+   },
+   {
+    "id": 189,
+    "v": ""
+   },
+   {
+    "id": 190,
+    "v": ""
+   },
+   {
+    "id": 191,
+    "v": ""
+   },
+   {
+    "id": 192,
+    "v": ""
+   },
+   {
+    "id": 193,
+    "v": ""
+   },
+   {
+    "id": 194,
+    "v": ""
+   },
+   {
+    "id": 195,
+    "v": ""
+   },
+   {
+    "id": 196,
+    "v": ""
+   },
+   {
+    "id": 197,
+    "v": ""
+   },
+   {
+    "id": 198,
+    "v": ""
+   }
+  ],
+  "formulations.naturality_index": [
+   {
+    "id": 100,
+    "v": "> 95%"
+   },
+   {
+    "id": 101,
+    "v": "> 95%"
+   },
+   {
+    "id": 102,
+    "v": "> 95%"
+   },
+   {
+    "id": 103,
+    "v": ""
+   },
+   {
+    "id": 104,
+    "v": "> 95%"
+   },
+   {
+    "id": 105,
+    "v": "> 95%"
+   },
+   {
+    "id": 106,
+    "v": "> 95%"
+   },
+   {
+    "id": 107,
+    "v": "> 95%"
+   },
+   {
+    "id": 108,
+    "v": "> 95%"
+   },
+   {
+    "id": 109,
+    "v": "> 95%"
+   },
+   {
+    "id": 110,
+    "v": ""
+   },
+   {
+    "id": 111,
+    "v": ""
+   },
+   {
+    "id": 112,
+    "v": ""
+   },
+   {
+    "id": 113,
+    "v": ""
+   },
+   {
+    "id": 114,
+    "v": ""
+   },
+   {
+    "id": 115,
+    "v": ""
+   },
+   {
+    "id": 116,
+    "v": ""
+   },
+   {
+    "id": 117,
+    "v": ""
+   },
+   {
+    "id": 118,
+    "v": ""
+   },
+   {
+    "id": 119,
+    "v": ""
+   },
+   {
+    "id": 120,
+    "v": ""
+   },
+   {
+    "id": 121,
+    "v": ""
+   },
+   {
+    "id": 122,
+    "v": ""
+   },
+   {
+    "id": 123,
+    "v": ""
+   },
+   {
+    "id": 124,
+    "v": ""
+   },
+   {
+    "id": 125,
+    "v": ""
+   },
+   {
+    "id": 126,
+    "v": ""
+   },
+   {
+    "id": 127,
+    "v": ""
+   },
+   {
+    "id": 128,
+    "v": ""
+   },
+   {
+    "id": 129,
+    "v": ""
+   },
+   {
+    "id": 130,
+    "v": ""
+   },
+   {
+    "id": 131,
+    "v": ""
+   },
+   {
+    "id": 132,
+    "v": ""
+   },
+   {
+    "id": 133,
+    "v": ""
+   },
+   {
+    "id": 134,
+    "v": ""
+   },
+   {
+    "id": 135,
+    "v": ""
+   },
+   {
+    "id": 136,
+    "v": ""
+   },
+   {
+    "id": 137,
+    "v": ""
+   },
+   {
+    "id": 138,
+    "v": ""
+   },
+   {
+    "id": 139,
+    "v": ""
+   },
+   {
+    "id": 140,
+    "v": ""
+   },
+   {
+    "id": 141,
+    "v": ""
+   },
+   {
+    "id": 142,
+    "v": ""
+   },
+   {
+    "id": 143,
+    "v": ""
+   },
+   {
+    "id": 144,
+    "v": ""
+   },
+   {
+    "id": 145,
+    "v": ""
+   },
+   {
+    "id": 146,
+    "v": ""
+   },
+   {
+    "id": 147,
+    "v": ""
+   },
+   {
+    "id": 148,
+    "v": ""
+   },
+   {
+    "id": 149,
+    "v": ""
+   },
+   {
+    "id": 150,
+    "v": ""
+   },
+   {
+    "id": 151,
+    "v": ""
+   },
+   {
+    "id": 152,
+    "v": ""
+   },
+   {
+    "id": 153,
+    "v": ""
+   },
+   {
+    "id": 154,
+    "v": ""
+   },
+   {
+    "id": 155,
+    "v": ""
+   },
+   {
+    "id": 156,
+    "v": ""
+   },
+   {
+    "id": 157,
+    "v": ""
+   },
+   {
+    "id": 158,
+    "v": ""
+   },
+   {
+    "id": 159,
+    "v": ""
+   },
+   {
+    "id": 160,
+    "v": ""
+   },
+   {
+    "id": 161,
+    "v": ""
+   },
+   {
+    "id": 162,
+    "v": ""
+   },
+   {
+    "id": 163,
+    "v": ""
+   },
+   {
+    "id": 164,
+    "v": ""
+   },
+   {
+    "id": 165,
+    "v": ""
+   },
+   {
+    "id": 166,
+    "v": ""
+   },
+   {
+    "id": 167,
+    "v": "> 95%"
+   },
+   {
+    "id": 168,
+    "v": ""
+   },
+   {
+    "id": 169,
+    "v": ""
+   },
+   {
+    "id": 170,
+    "v": ""
+   },
+   {
+    "id": 171,
+    "v": ""
+   },
+   {
+    "id": 172,
+    "v": ""
+   },
+   {
+    "id": 173,
+    "v": ""
+   },
+   {
+    "id": 174,
+    "v": ""
+   },
+   {
+    "id": 175,
+    "v": ""
+   },
+   {
+    "id": 176,
+    "v": ""
+   },
+   {
+    "id": 177,
+    "v": ""
+   },
+   {
+    "id": 178,
+    "v": ""
+   },
+   {
+    "id": 179,
+    "v": ""
+   },
+   {
+    "id": 180,
+    "v": ""
+   },
+   {
+    "id": 181,
+    "v": ""
+   },
+   {
+    "id": 182,
+    "v": ""
+   },
+   {
+    "id": 183,
+    "v": ""
+   },
+   {
+    "id": 184,
+    "v": ""
+   },
+   {
+    "id": 185,
+    "v": ""
+   },
+   {
+    "id": 186,
+    "v": "> 95%"
+   },
+   {
+    "id": 187,
+    "v": ""
+   },
+   {
+    "id": 188,
+    "v": ""
+   },
+   {
+    "id": 189,
+    "v": ""
+   },
+   {
+    "id": 190,
+    "v": ""
+   },
+   {
+    "id": 191,
+    "v": ""
+   },
+   {
+    "id": 192,
+    "v": ""
+   },
+   {
+    "id": 193,
+    "v": ""
+   },
+   {
+    "id": 194,
+    "v": ""
+   },
+   {
+    "id": 195,
+    "v": "> 95%"
+   },
+   {
+    "id": 196,
+    "v": "> 95%"
+   },
+   {
+    "id": 197,
+    "v": ""
+   },
+   {
+    "id": 198,
+    "v": ""
+   }
+  ],
+  "pharma_products.market_tag": [
+   {
+    "id": 10913,
+    "v": "动物健康"
+   },
+   {
+    "id": 10914,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 10915,
+    "v": "人类健康"
+   },
+   {
+    "id": 10916,
+    "v": "人类健康"
+   },
+   {
+    "id": 10917,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 10918,
+    "v": "人类健康"
+   },
+   {
+    "id": 11009,
+    "v": "人类健康"
+   },
+   {
+    "id": 11010,
+    "v": "人类健康"
+   },
+   {
+    "id": 11011,
+    "v": "人类健康"
+   },
+   {
+    "id": 11012,
+    "v": "人类健康"
+   },
+   {
+    "id": 11013,
+    "v": "人类健康"
+   },
+   {
+    "id": 11014,
+    "v": "人类健康"
+   },
+   {
+    "id": 11015,
+    "v": "人类健康"
+   },
+   {
+    "id": 11016,
+    "v": "人类健康"
+   },
+   {
+    "id": 11017,
+    "v": "人类健康"
+   },
+   {
+    "id": 11018,
+    "v": "人类健康"
+   },
+   {
+    "id": 11019,
+    "v": "人类健康"
+   },
+   {
+    "id": 11020,
+    "v": "人类健康"
+   },
+   {
+    "id": 11021,
+    "v": "人类健康"
+   },
+   {
+    "id": 11022,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11023,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11024,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11025,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11026,
+    "v": "人类健康"
+   },
+   {
+    "id": 11027,
+    "v": "人类健康"
+   },
+   {
+    "id": 11028,
+    "v": "人类健康"
+   },
+   {
+    "id": 11029,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11030,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11031,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11032,
+    "v": "人类健康"
+   },
+   {
+    "id": 11033,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11034,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11035,
+    "v": "人类健康"
+   },
+   {
+    "id": 11036,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11037,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11038,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11039,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11040,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11041,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11042,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11043,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11044,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11045,
+    "v": "人类健康"
+   },
+   {
+    "id": 11046,
+    "v": "人类健康"
+   },
+   {
+    "id": 11047,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11048,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11049,
+    "v": "人类健康"
+   },
+   {
+    "id": 11050,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11051,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11052,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11053,
+    "v": "人类健康,动物健康"
+   },
+   {
+    "id": 11102,
+    "v": "膳食补充剂"
+   },
+   {
+    "id": 11103,
+    "v": "膳食补充剂"
+   },
+   {
+    "id": 11104,
+    "v": "膳食补充剂"
+   }
+  ],
+  "pharma_products.route_tag": [
+   {
+    "id": 10913,
+    "v": "口服,外用/透皮,注射（兽用）"
+   },
+   {
+    "id": 10914,
+    "v": "外用/透皮,直肠,阴道"
+   },
+   {
+    "id": 10915,
+    "v": "外用/透皮"
+   },
+   {
+    "id": 10916,
+    "v": "口服"
+   },
+   {
+    "id": 10917,
+    "v": "外用/透皮,直肠,阴道"
+   },
+   {
+    "id": 10918,
+    "v": "直肠"
+   },
+   {
+    "id": 11009,
+    "v": "直肠,阴道"
+   },
+   {
+    "id": 11010,
+    "v": "直肠"
+   },
+   {
+    "id": 11011,
+    "v": "直肠"
+   },
+   {
+    "id": 11012,
+    "v": "直肠"
+   },
+   {
+    "id": 11013,
+    "v": "直肠,阴道"
+   },
+   {
+    "id": 11014,
+    "v": "直肠"
+   },
+   {
+    "id": 11015,
+    "v": "直肠,阴道"
+   },
+   {
+    "id": 11016,
+    "v": "直肠"
+   },
+   {
+    "id": 11017,
+    "v": "直肠"
+   },
+   {
+    "id": 11018,
+    "v": "直肠"
+   },
+   {
+    "id": 11019,
+    "v": "直肠"
+   },
+   {
+    "id": 11020,
+    "v": "外用/透皮,直肠"
+   },
+   {
+    "id": 11021,
+    "v": "外用/透皮"
+   },
+   {
+    "id": 11022,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11023,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11024,
+    "v": "外用/透皮"
+   },
+   {
+    "id": 11025,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11026,
+    "v": "阴道"
+   },
+   {
+    "id": 11027,
+    "v": "阴道"
+   },
+   {
+    "id": 11028,
+    "v": "外用/透皮"
+   },
+   {
+    "id": 11029,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11030,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11031,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11032,
+    "v": "口服"
+   },
+   {
+    "id": 11033,
+    "v": "外用/透皮"
+   },
+   {
+    "id": 11034,
+    "v": "口服,外用/透皮,直肠,阴道"
+   },
+   {
+    "id": 11035,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11036,
+    "v": "口服,外用/透皮,注射（兽用）,直肠,阴道"
+   },
+   {
+    "id": 11037,
+    "v": "口服,外用/透皮,注射（兽用）"
+   },
+   {
+    "id": 11038,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11039,
+    "v": "口服,外用/透皮,注射（兽用）"
+   },
+   {
+    "id": 11040,
+    "v": "口服"
+   },
+   {
+    "id": 11041,
+    "v": "口服"
+   },
+   {
+    "id": 11042,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11043,
+    "v": "口服"
+   },
+   {
+    "id": 11044,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11045,
+    "v": "外用/透皮,直肠,阴道"
+   },
+   {
+    "id": 11046,
+    "v": "口服"
+   },
+   {
+    "id": 11047,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11048,
+    "v": "外用/透皮,直肠,阴道"
+   },
+   {
+    "id": 11049,
+    "v": "口服"
+   },
+   {
+    "id": 11050,
+    "v": "外用/透皮,直肠,阴道"
+   },
+   {
+    "id": 11051,
+    "v": "口服,阴道"
+   },
+   {
+    "id": 11052,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11053,
+    "v": "口服,外用/透皮"
+   },
+   {
+    "id": 11102,
+    "v": "口服"
+   },
+   {
+    "id": 11103,
+    "v": "口服"
+   },
+   {
+    "id": 11104,
+    "v": "口服"
+   }
+  ],
+  "pharma_products.functionality_tag": [
+   {
+    "id": 10913,
+    "v": "皮肤渗透促进剂,增溶剂,溶媒"
+   },
+   {
+    "id": 10914,
+    "v": "外用乳化剂"
+   },
+   {
+    "id": 10915,
+    "v": "皮肤渗透促进剂,增溶剂,溶媒"
+   },
+   {
+    "id": 10916,
+    "v": "口服生物利用度增强剂,增溶剂,溶媒"
+   },
+   {
+    "id": 10917,
+    "v": "外用乳化剂"
+   },
+   {
+    "id": 10918,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11009,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11010,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11011,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11012,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11013,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11014,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11015,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11016,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11017,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11018,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11019,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11020,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11021,
+    "v": "外用乳化剂"
+   },
+   {
+    "id": 11022,
+    "v": "API 保护,片剂润滑剂,掩味,增稠剂"
+   },
+   {
+    "id": 11023,
+    "v": "口服生物利用度增强剂,外用助乳化剂,助表面活性剂,淋巴吸收促进剂,皮肤渗透促进剂,增溶剂"
+   },
+   {
+    "id": 11024,
+    "v": "外用乳化剂"
+   },
+   {
+    "id": 11025,
+    "v": "口服生物利用度增强剂,淋巴吸收促进剂,油性载体,增溶剂"
+   },
+   {
+    "id": 11026,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11027,
+    "v": "硬脂（栓剂基质）"
+   },
+   {
+    "id": 11028,
+    "v": "增稠剂"
+   },
+   {
+    "id": 11029,
+    "v": "口服生物利用度增强剂,淋巴吸收促进剂,油性载体,增溶剂"
+   },
+   {
+    "id": 11030,
+    "v": "口服生物利用度增强剂,助表面活性剂,皮肤渗透促进剂,增溶剂"
+   },
+   {
+    "id": 11031,
+    "v": "口服生物利用度增强剂,助表面活性剂,皮肤渗透促进剂,增溶剂"
+   },
+   {
+    "id": 11032,
+    "v": "口服生物利用度增强剂,口服吸收促进剂,自乳化辅料,增溶剂"
+   },
+   {
+    "id": 11033,
+    "v": "皮肤渗透促进剂,增溶剂,表面活性剂"
+   },
+   {
+    "id": 11034,
+    "v": "外用助乳化剂,助表面活性剂,增溶剂"
+   },
+   {
+    "id": 11035,
+    "v": "口服生物利用度增强剂,外用助乳化剂,助表面活性剂,淋巴吸收促进剂,自乳化辅料,增溶剂"
+   },
+   {
+    "id": 11036,
+    "v": "口服生物利用度增强剂,外用助乳化剂,助表面活性剂,淋巴吸收促进剂,自乳化辅料,增溶剂"
+   },
+   {
+    "id": 11037,
+    "v": "口服生物利用度增强剂,油性载体,增溶剂"
+   },
+   {
+    "id": 11038,
+    "v": "口服生物利用度增强剂,口服吸收促进剂,皮肤渗透促进剂,增溶剂"
+   },
+   {
+    "id": 11039,
+    "v": "口服生物利用度增强剂,油性载体,增溶剂"
+   },
+   {
+    "id": 11040,
+    "v": "口服生物利用度增强剂,自乳化辅料,增溶剂"
+   },
+   {
+    "id": 11041,
+    "v": "自乳化辅料,增溶剂"
+   },
+   {
+    "id": 11042,
+    "v": "口服生物利用度增强剂,自乳化辅料,增溶剂,表面活性剂"
+   },
+   {
+    "id": 11043,
+    "v": "口服生物利用度增强剂,自乳化辅料,增溶剂"
+   },
+   {
+    "id": 11044,
+    "v": "API 保护,油性载体,增稠剂"
+   },
+   {
+    "id": 11045,
+    "v": "外用乳化剂"
+   },
+   {
+    "id": 11046,
+    "v": "油性载体"
+   },
+   {
+    "id": 11047,
+    "v": "API 保护,缓释制剂,掩味,增稠剂"
+   },
+   {
+    "id": 11048,
+    "v": ""
+   },
+   {
+    "id": 11049,
+    "v": "片剂润滑剂"
+   },
+   {
+    "id": 11050,
+    "v": "增稠剂"
+   },
+   {
+    "id": 11051,
+    "v": "API 保护,片剂润滑剂,缓释制剂"
+   },
+   {
+    "id": 11052,
+    "v": "口服生物利用度增强剂,助表面活性剂,皮肤渗透促进剂,增溶剂"
+   },
+   {
+    "id": 11053,
+    "v": "口服生物利用度增强剂,助表面活性剂,口服吸收促进剂,皮肤渗透促进剂,增溶剂"
+   },
+   {
+    "id": 11102,
+    "v": "API 保护,片剂润滑剂,缓释制剂"
+   },
+   {
+    "id": 11103,
+    "v": "API 保护,增稠剂"
+   },
+   {
+    "id": 11104,
+    "v": "油性载体,增溶剂"
+   }
+  ],
+  "pharma_products.dosage_form_tag": [
+   {
+    "id": 10913,
+    "v": "浇泼剂/滴剂"
+   },
+   {
+    "id": 10914,
+    "v": "乳膏剂,乳胶剂,乳液"
+   },
+   {
+    "id": 10915,
+    "v": "乳膏剂,乳胶剂,凝胶剂,乳液,微乳,软膏剂,贴剂"
+   },
+   {
+    "id": 10916,
+    "v": "硬胶囊,软胶囊"
+   },
+   {
+    "id": 10917,
+    "v": "乳膏剂,乳液"
+   },
+   {
+    "id": 10918,
+    "v": "栓剂"
+   },
+   {
+    "id": 11009,
+    "v": "栓剂"
+   },
+   {
+    "id": 11010,
+    "v": "栓剂"
+   },
+   {
+    "id": 11011,
+    "v": "栓剂"
+   },
+   {
+    "id": 11012,
+    "v": "栓剂"
+   },
+   {
+    "id": 11013,
+    "v": "栓剂"
+   },
+   {
+    "id": 11014,
+    "v": "栓剂"
+   },
+   {
+    "id": 11015,
+    "v": "栓剂"
+   },
+   {
+    "id": 11016,
+    "v": "栓剂"
+   },
+   {
+    "id": 11017,
+    "v": "栓剂"
+   },
+   {
+    "id": 11018,
+    "v": "栓剂"
+   },
+   {
+    "id": 11019,
+    "v": "栓剂"
+   },
+   {
+    "id": 11020,
+    "v": "膏棒剂,栓剂"
+   },
+   {
+    "id": 11021,
+    "v": "乳膏剂,软膏剂"
+   },
+   {
+    "id": 11022,
+    "v": "颗粒剂,硬胶囊,片剂"
+   },
+   {
+    "id": 11023,
+    "v": "乳膏剂,硬胶囊,乳液,微乳,贴剂,软胶囊"
+   },
+   {
+    "id": 11024,
+    "v": "膏棒剂,乳膏剂"
+   },
+   {
+    "id": 11025,
+    "v": "乳膏剂,硬胶囊,软膏剂,贴剂,软胶囊"
+   },
+   {
+    "id": 11026,
+    "v": "栓剂"
+   },
+   {
+    "id": 11027,
+    "v": "栓剂"
+   },
+   {
+    "id": 11028,
+    "v": "乳膏剂,软膏剂"
+   },
+   {
+    "id": 11029,
+    "v": "硬胶囊,贴剂,软胶囊"
+   },
+   {
+    "id": 11030,
+    "v": "乳膏剂,乳胶剂,硬胶囊,乳液,微乳,软膏剂,贴剂,软胶囊"
+   },
+   {
+    "id": 11031,
+    "v": "乳膏剂,乳胶剂,硬胶囊,乳液,微乳,软膏剂,贴剂,软胶囊"
+   },
+   {
+    "id": 11032,
+    "v": "硬胶囊,软胶囊"
+   },
+   {
+    "id": 11033,
+    "v": "泡沫剂,凝胶剂,乳液,微乳,软膏剂,贴剂"
+   },
+   {
+    "id": 11034,
+    "v": "乳膏剂,乳液"
+   },
+   {
+    "id": 11035,
+    "v": "硬胶囊,贴剂,软胶囊"
+   },
+   {
+    "id": 11036,
+    "v": "乳膏剂,泡沫剂,微乳,软胶囊"
+   },
+   {
+    "id": 11037,
+    "v": "乳膏剂,泡沫剂,乳液,微乳,软膏剂,软胶囊"
+   },
+   {
+    "id": 11038,
+    "v": "硬胶囊,软胶囊"
+   },
+   {
+    "id": 11039,
+    "v": "乳膏剂,泡沫剂,硬胶囊,乳液,微乳,软膏剂,软胶囊,膏棒剂"
+   },
+   {
+    "id": 11040,
+    "v": "硬胶囊,软胶囊,片剂"
+   },
+   {
+    "id": 11041,
+    "v": "硬胶囊,软胶囊,片剂"
+   },
+   {
+    "id": 11042,
+    "v": "硬胶囊,软胶囊,片剂"
+   },
+   {
+    "id": 11043,
+    "v": "硬胶囊,软胶囊,片剂"
+   },
+   {
+    "id": 11044,
+    "v": "乳膏剂,颗粒剂,软膏剂"
+   },
+   {
+    "id": 11045,
+    "v": "乳膏剂,乳胶剂,泡沫剂"
+   },
+   {
+    "id": 11046,
+    "v": "软胶囊"
+   },
+   {
+    "id": 11047,
+    "v": "颗粒剂,硬胶囊,片剂"
+   },
+   {
+    "id": 11048,
+    "v": "软膏剂,双凝胶"
+   },
+   {
+    "id": 11049,
+    "v": "颗粒剂,片剂"
+   },
+   {
+    "id": 11050,
+    "v": "乳膏剂,软膏剂"
+   },
+   {
+    "id": 11051,
+    "v": "颗粒剂,片剂"
+   },
+   {
+    "id": 11052,
+    "v": "乳膏剂,泡沫剂,凝胶剂,硬胶囊,乳液,软膏剂,贴剂,软胶囊"
+   },
+   {
+    "id": 11053,
+    "v": "乳膏剂,乳胶剂,泡沫剂,乳液,软膏剂,贴剂,软胶囊"
+   },
+   {
+    "id": 11102,
+    "v": "硬胶囊,片剂"
+   },
+   {
+    "id": 11103,
+    "v": "硬胶囊,软胶囊,混悬剂"
+   },
+   {
+    "id": 11104,
+    "v": "软胶囊,混悬剂"
+   }
+  ]
+ }
+}

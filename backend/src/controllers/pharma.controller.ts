@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
+import { tagGroup, mergeWhere } from '../utils/tag-filter';
 
 const PHARMA_LIST_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -26,15 +27,18 @@ export async function listPharmaProducts(req: Request, res: Response) {
     const limitNum = Math.min(100, Math.max(1, parseInt(String(limit))));
 
     const where: Record<string, unknown> = {};
+    const andParts: (Record<string, unknown> | null)[] = [];
 
     if (keyword) {
       const kw = String(keyword);
-      where.OR = [
-        { name: { contains: kw } },
-        { slug: { contains: kw } },
-        { inciName: { contains: kw } },
-        { description: { contains: kw } },
-      ];
+      andParts.push({
+        OR: [
+          { name: { contains: kw } },
+          { slug: { contains: kw } },
+          { inciName: { contains: kw } },
+          { description: { contains: kw } },
+        ],
+      });
     }
 
     const tagFilters: [string, string | undefined][] = [
@@ -44,22 +48,11 @@ export async function listPharmaProducts(req: Request, res: Response) {
       ['dosageFormTag', dosageForm as string],
     ];
 
-    const tagConditions: Record<string, unknown>[] = [];
-    for (const [field, value] of tagFilters) {
-      if (value) {
-        const values = String(value).split(',').filter(Boolean);
-        values.forEach(v => {
-          tagConditions.push({ [field]: { contains: v } });
-        });
-      }
-    }
+    // 同分类多选取并集(OR)，跨分类才是交集(AND)；并按逗号项精确匹配（避免「乳化剂」命中「外用乳化剂」）
+    for (const [field, value] of tagFilters) andParts.push(tagGroup(field, value));
 
-    // 标签条件用 AND 连接（同一分类多选 = 必须包含所有选中标签）
-    if (tagConditions.length === 1) {
-      Object.assign(where, tagConditions[0]);
-    } else if (tagConditions.length > 1) {
-      where.AND = tagConditions;
-    }
+    // 合并（统一走 AND 数组，避免覆盖关键词搜索的 where.OR）
+    mergeWhere(where, andParts);
 
     if (isPublished !== undefined && isPublished !== '') {
       where.isPublished = String(isPublished) === 'true';
