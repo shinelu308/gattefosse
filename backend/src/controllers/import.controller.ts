@@ -549,8 +549,11 @@ export async function importArticleFromSite(req: Request, res: Response) {
     /<div([^>]*class="[^"]*youtube_player[^"]*"[^>]*)><\/div>/gi,
     (full, attrs: string) => {
       const vidM = /\bvideoID="([^"]+)"/i.exec(attrs);
-      if (!vidM || !/^[A-Za-z0-9_-]{6,20}$/.test(vidM[1])) return full;
-      return `<iframe class="youtube_player" src="https://www.youtube.com/embed/${vidM[1]}" title="Video player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      // ⚠️ 原站 videoID 可能带跟踪参数（如 tGfp1ciqNZw?si=xxx），先截断再校验，
+      // 否则 /^[A-Za-z0-9_-]{6,20}$/ 不过 → return full 留下空壳 div，前台无法渲染视频（2026-09-11 silk-inspired 事故）
+      const vid = vidM ? vidM[1].split(/[?&]/)[0] : '';
+      if (!vid || !/^[A-Za-z0-9_-]{6,20}$/.test(vid)) return full;
+      return `<iframe class="youtube_player" src="https://www.youtube.com/embed/${vid}" title="Video player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     },
   );
 
