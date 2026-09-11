@@ -1079,8 +1079,8 @@ createApp({
       this.switchEditMode();
     },
     // ==================== 预览式原位编辑（2026-09-11，与 admin/index.html 文章编辑同机制） ====================
-    // blob iframe 加载正文 + 前台药用辅料文章样式；iframe 内脚本（preview-inline-260911.js）只产出
-    // 三类受限补丁（文本/img/视频 iframe src），保存时后端 jsdom 原位回填，版式 100% 保真。
+    // blob iframe 加载正文 + 前台药用辅料文章样式；iframe 内脚本（preview-inline-260912.js）只产出
+    // 三类受限补丁（文本/img/视频播放地址），保存时后端 jsdom 原位回填，版式 100% 保真。
     buildPreviewDoc() {
       var theme = this.editing.themeClass || 'theme-pharma';
       var content = this.editing.contentHtml || '';
@@ -1101,7 +1101,7 @@ createApp({
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content" id="cp-root">' + content + '</div>'
         + '</article></main>'
-        + '<script src="/admin/preview-inline-260911.js"><\/script></body></html>';
+        + '<script src="/admin/preview-inline-260912.js"><\/script></body></html>';
     },
     openPreview() {
       var iframe = document.getElementById('lm-preview-iframe');

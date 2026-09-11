@@ -7659,8 +7659,8 @@ createApp({
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
     },
     // ==================== 预览式原位编辑（2026-09-11） ====================
-    // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-260911.js）只产出
-    // 三类受限补丁（文本节点/img src/视频 iframe src），保存时后端 jsdom 原位回填，版式 100% 保真。
+    // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-260912.js）只产出
+    // 三类受限补丁（文本节点/img src/视频播放地址），保存时后端 jsdom 原位回填，版式 100% 保真。
     buildPreviewDoc() {
       var theme = this.editingArticle.themeClass || 'theme-cosm';
       var content = this.editingArticle.contentHtml || '';
@@ -7680,7 +7680,7 @@ createApp({
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content" id="cp-root">' + content + '</div>'
         + '</article></main>'
-        + '<script src="/admin/preview-inline-260911.js"><\/script></body></html>';
+        + '<script src="/admin/preview-inline-260912.js"><\/script></body></html>';
     },
     openArticlePreview() {
       var iframe = document.getElementById('article-preview-iframe');

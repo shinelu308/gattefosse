@@ -22,9 +22,9 @@ export interface PatchPathStep {
 export interface ContentPatch {
   type: 'text' | 'img' | 'video';
   path: PatchPathStep[];
-  /** 旧值：text=文本节点全文；img=img 的 src 属性；video=iframe 的 src 属性（用于防错位校验） */
+  /** 旧值：text=文本节点全文；img=img 的 src 属性；video=视频 iframe / source 的 src 属性（用于防错位校验） */
   old: string;
-  /** 新值：text=新文本；img=新图片地址（/uploads/...）；video=新 embed 地址 */
+  /** 新值：text=新文本；img=新图片地址（/uploads/...）；video=新播放地址（平台 embed 或视频文件直链） */
   next: string;
 }
 
@@ -32,6 +32,11 @@ export interface ContentPatch {
 function normText(t: string | null): string {
   return (t || '').replace(/\s+/g, ' ').trim();
 }
+
+/** 远程平台嵌入地址白名单（YouTube / 哔哩哔哩 / 腾讯视频 / 优酷 等） */
+const REMOTE_EMBED_RE = /^https:\/\/([a-z0-9-]+\.)*(youtube\.com|youtu\.be|bilibili\.com|bdstatic\.com|qq\.com|youku\.com|alicdn\.com)(\/|$)/i;
+/** 本机/直链视频文件地址：必须 http(s) 或根相对，且以视频扩展名结尾（禁 javascript:/data:） */
+const VIDEO_FILE_RE = /^(?:https?:\/\/|\/)[^\s"'<>]*\.(?:mp4|webm|ogv|ogg|mov|m4v)(?:[?#][^\s"'<>]*)?$/i;
 
 export interface ApplyPatchesResult {
   html: string;
@@ -81,16 +86,37 @@ export function applyContentPatches(html: string, patches: ContentPatch[]): Appl
         el.removeAttribute('sizes');
         applied++;
       } else if (p.type === 'video') {
-        if (node.nodeType !== 1 || (node as Element).tagName !== 'IFRAME') return reject('目标不是视频 <iframe> 元素');
+        // 视频块有两种形态（2026-09-11 二次扩展）：
+        //   ① 远程平台：<iframe src="https://player.../embed/...">（原站 paragraph--type--video-remote 导入后转 iframe）
+        //   ② 本机视频：<video><source src="/sites/.../xxx.mp4"></video>（原站 paragraph--type--video 原样保留）
+        // 两类都只改「播放地址」这一个属性，结构/class 一律不动。
+        if (node.nodeType !== 1) return reject('目标不是视频元素');
         const el = node as Element;
-        if (normText(el.getAttribute('src')) !== normText(p.old)) return reject('视频地址已变化，请刷新预览后重做');
-        // 嵌入地址白名单式校验：支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷等平台的 embed 地址，
-        // 以及各平台「通用嵌入代码」里的播放器地址（2026-09-11 扩展国内主流媒体）
-        if (!/^https:\/\/([a-z0-9-]+\.)*(youtube\.com|youtu\.be|bilibili\.com|bdstatic\.com|qq\.com|youku\.com|alicdn\.com)(\/|$)/i.test(p.next)) {
-          return reject('仅支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷 的播放器嵌入地址');
+        if (el.tagName === 'IFRAME') {
+          if (normText(el.getAttribute('src')) !== normText(p.old)) return reject('视频地址已变化，请刷新预览后重做');
+          if (!REMOTE_EMBED_RE.test(p.next)) {
+            return reject('仅支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷 的播放器嵌入地址');
+          }
+          el.setAttribute('src', p.next);
+          applied++;
+        } else if (el.tagName === 'SOURCE') {
+          // <source> 必须挂在 <video> 里，否则视为定位错位
+          const host = el.parentNode;
+          if (!host || host.nodeType !== 1 || (host as Element).tagName !== 'VIDEO') {
+            return reject('视频源 <source> 不在 <video> 元素内，拒绝修改');
+          }
+          if (normText(el.getAttribute('src')) !== normText(p.old)) return reject('视频地址已变化，请刷新预览后重做');
+          if (!VIDEO_FILE_RE.test(p.next)) {
+            return reject('本机视频仅支持视频文件地址（/uploads/… 或 https 直链，需以 mp4 / webm / mov 等结尾）');
+          }
+          el.setAttribute('src', p.next);
+          // 换文件后旧的 type="video/mp4" 可能不再匹配新格式（如换成 .webm），
+          // 清掉让浏览器按扩展名自行嗅探，否则会静默不播放。
+          if (el.hasAttribute('type')) el.removeAttribute('type');
+          applied++;
+        } else {
+          return reject(`目标不是视频 <iframe> 或 <source> 元素（${el.tagName}）`);
         }
-        el.setAttribute('src', p.next);
-        applied++;
       } else {
         return reject(`未知补丁类型 ${p.type}`);
       }

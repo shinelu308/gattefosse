@@ -6,10 +6,18 @@ const path = require('path');
 const fs = require('fs');
 
 // 1) 语法检查 iframe 内脚本
+// ⚠️ 该脚本按「改公共 JS 必须改文件名」的项目惯例会被改名（preview-inline-<日期>.js），
+//    所以这里自动解析 admin/ 下最新的一份，避免每次改名都要回来改死路径。
 const vm = require('vm');
-const inlineSrc = fs.readFileSync(path.resolve(__dirname, '../../admin/preview-inline-260911.js'), 'utf8');
-new vm.Script(inlineSrc, { filename: 'preview-inline-260911.js' });
-console.log('✅ preview-inline-260911.js 语法 OK');
+const adminDir = path.resolve(__dirname, '../../admin');
+const inlineName = fs.readdirSync(adminDir)
+  .filter((f) => /^preview-inline-\d+\.js$/.test(f))
+  .sort()
+  .pop();
+if (!inlineName) { console.error('❌ 未找到 admin/preview-inline-*.js'); process.exit(1); }
+const inlineSrc = fs.readFileSync(path.join(adminDir, inlineName), 'utf8');
+new vm.Script(inlineSrc, { filename: inlineName });
+console.log('✅ ' + inlineName + ' 语法 OK');
 
 // 2) 回填工具三类补丁
 const { applyContentPatches, extractYoutubeId } = require(path.resolve(__dirname, '../dist/utils/content-patch'));

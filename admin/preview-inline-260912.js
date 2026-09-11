@@ -2,9 +2,14 @@
  * 预览式原位编辑——iframe 内交互脚本（2026-09-11）
  * 运行在后台文章编辑页的预览 iframe 内（blob 文档，同源）。
  * 职责：高亮可编辑目标（文本节点/图片/视频）→ 弹出小编辑浮层 → 构造受限补丁 postMessage 给父页面。
- * 铁律：只允许改文本节点内容、img src、视频 iframe src 三类；class/结构/其余属性一律不可触碰。
+ * 铁律：只允许改文本节点内容、img src、视频播放地址（iframe src / video source src）三类；
+ *       class/结构/其余属性一律不可触碰。
  * 补丁路径：从 #cp-root（与后端回填的根容器一一对应）到目标节点的 childNodes 索引链，每步带 nodeName。
  * old 值：WeakMap 记录每个节点会话开始时的原始值（首次修改时登记），保证后端旧值校验始终对准库内版本。
+ *
+ * 2026-09-11 三次修订：补齐「本机视频块」支持（原站 paragraph--type--video）。
+ * 原站视频块有两种，只有 video-remote 导入后转成 <iframe>；本机 mp4 块保留为
+ * <video><source src="…mp4">，既不是 iframe 也没有 <video src> → 此前点击无反应。
  */
 (function () {
   'use strict';
@@ -34,7 +39,7 @@
       '.cp-btns .cp-ok{background:#8EB73C;color:#fff;}' +
       '.cp-btns .cp-ok:disabled{background:#c3d6a0;cursor:not-allowed;}' +
       '.cp-btns .cp-cancel{background:#eef1f4;color:#5b6570;}' +
-      '#cp-root{cursor:text;}#cp-root img,#cp-root iframe{cursor:pointer;}';
+      '#cp-root{cursor:text;}#cp-root img,#cp-root iframe,#cp-root video{cursor:pointer;}';
     document.head.appendChild(st);
   })();
 
@@ -293,30 +298,108 @@
     var cover = iframeEl.__cpCover;
     if (cover) cover.innerHTML = buildCoverHtmlBySrc(iframeEl.getAttribute('src'));
   }
+
+  // ---------- 本机视频（2026-09-11 三次修复：覆盖 paragraph--type--video） ----------
+  // 原站有两种视频块，只有 video-remote 会被导入器转成 <iframe>；本机 mp4 块原样保留为
+  // <video><source src="/sites/…mp4"></video>。它既不是 iframe，也没有 <video src>，于是此前
+  // ①封面层挂不上（旧 enhanceVideoCovers 只查 iframe）②点击落到「文本」分支后静默关闭浮层。
+  // 方案：封面挂在 .video__container 上，补丁路径指向 <source> 元素本身，后端认 SOURCE。
+  function fileBaseName(u) {
+    var seg = String(u || '').split(/[?#]/)[0].split('/');
+    var last = seg[seg.length - 1] || '';
+    try { return decodeURIComponent(last); } catch (e) { return last; }
+  }
+  /** 本机视频只接受「视频文件地址」：根相对路径或 http(s) 直链，且以视频扩展名结尾 */
+  function isLocalVideoSrc(v) {
+    var s = (v || '').trim();
+    if (!/^(?:https?:\/\/|\/)/i.test(s)) return false;
+    return /\.(?:mp4|webm|ogv|ogg|mov|m4v)(?:[?#]|$)/i.test(s);
+  }
+  /** 可编辑的地址载体：优先 <video> 内的 <source>，退回 <video src>；都没有则不可编辑 */
+  function localVideoTarget(vd) {
+    var kids = vd.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i].tagName === 'SOURCE' && kids[i].getAttribute('src')) return kids[i];
+    }
+    return vd.getAttribute('src') ? vd : null;
+  }
+  /** 本机视频封面：半透明遮罩（让视频首帧可辨认）+ 文件名角标 + 播放块 + 底部提示 */
+  function buildLocalCoverHtml(src) {
+    return '<div style="position:absolute;inset:0;background:rgba(10,12,15,.28);"></div>'
+      + '<div style="position:absolute;top:10px;left:10px;max-width:72%;background:rgba(0,0,0,.60);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;font-family:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">▶ 本机视频 · ' + esc(fileBaseName(src) || '未设置') + '</div>'
+      + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:44px;background:rgba(196,0,77,.90);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35);">'
+      + '<div style="width:0;height:0;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px;"></div></div>'
+      + '<div style="position:absolute;left:0;right:0;bottom:0;padding:5px 10px;background:rgba(0,0,0,.62);color:#fff;font-size:12px;text-align:center;font-family:inherit;">🎬 点击修改视频地址</div>';
+  }
+  function refreshLocalCover(keyEl, src) {
+    var cover = keyEl && keyEl.__cpCover;
+    if (cover) cover.innerHTML = buildLocalCoverHtml(src);
+  }
+  /** 编辑本机视频：只改地址（<source src> 或 <video src>），结构与 class 一律不动 */
+  function editLocalVideo(keyEl, target) {
+    var original = origOf(target, target.getAttribute('src'));
+    openPop(keyEl,
+      '<div class="cp-pop-title">🎬 修改视频地址（本机视频）</div>' +
+      '<input type="text" class="cp-input" id="cp-edit-video" placeholder="/uploads/2026/09/xxx.mp4">' +
+      '<div class="cp-hint">这是随正文导入的本地视频文件。填写新的视频文件地址（/uploads/ 下的 mp4 / webm / mov，或外部 https 直链）；只替换文件地址，版式与播放器样式保持不变</div>' +
+      '<div class="cp-btns"><button class="cp-ok">确定</button><button class="cp-cancel">取消</button></div>');
+    var input = pop.querySelector('#cp-edit-video');
+    input.value = original || '';
+    input.focus();
+    popActions(pop, function () {
+      var next = (input.value || '').trim();
+      if (!isLocalVideoSrc(next)) {
+        input.style.borderColor = '#C4004D';
+        input.placeholder = '请填写视频文件地址（需以 .mp4 / .webm / .mov 等结尾）';
+        return false;
+      }
+      if (next === (original || '').trim()) return true; // 未改动，直接关闭
+      var path = buildPath(target);
+      if (!path) { alert('无法定位该视频，请刷新预览重试'); return false; }
+      target.setAttribute('src', next);
+      refreshLocalCover(keyEl, next);
+      send({ type: 'patch', patch: { kind: 'video', path: path, old: original, next: next } });
+    });
+  }
+
+  /** 挂视频封面层：host = 定位容器（自动补 position:relative），keyEl = 记录 __cpCover 的元素 */
+  function mountVideoCover(host, keyEl, html, onOpen, solid) {
+    if (!host || host.nodeType !== 1 || keyEl.__cpCover) return;
+    try {
+      if (window.getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    } catch (e) { /* ignore */ }
+    var cover = document.createElement('div');
+    cover.className = 'cp-video-cover';
+    cover.setAttribute('style', 'position:absolute;inset:0;z-index:10;cursor:pointer;overflow:hidden;background:' + (solid ? '#111' : 'transparent') + ';');
+    cover.innerHTML = html;
+    host.appendChild(cover);
+    keyEl.__cpCover = cover;
+    cover.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      closePop();
+      onOpen();
+    });
+    cover.addEventListener('mouseover', function () { markHover(cover, 'video'); });
+    cover.addEventListener('mouseout', clearHover);
+  }
+
   function enhanceVideoCovers() {
     var r = root();
     if (!r) return;
-    var iframes = r.querySelectorAll('iframe');
-    Array.prototype.forEach.call(iframes, function (ifr) {
-      if (ifr.__cpCover) return;
-      var parent = ifr.parentNode;
-      if (!parent || parent.nodeType !== 1) return;
-      try {
-        if (window.getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
-      } catch (e) { /* ignore */ }
-      var cover = document.createElement('div');
-      cover.className = 'cp-video-cover';
-      cover.setAttribute('style', 'position:absolute;inset:0;z-index:10;cursor:pointer;overflow:hidden;background:#111;');
-      cover.innerHTML = buildCoverHtmlBySrc(ifr.getAttribute('src'));
-      parent.appendChild(cover);
-      ifr.__cpCover = cover;
-      cover.addEventListener('click', function (e) {
-        e.preventDefault(); e.stopPropagation();
-        closePop();
+    // ① 远程平台视频：封面挂 <iframe> 的父容器，补丁指向 <iframe>
+    Array.prototype.forEach.call(r.querySelectorAll('iframe'), function (ifr) {
+      mountVideoCover(ifr.parentNode, ifr, buildCoverHtmlBySrc(ifr.getAttribute('src')), function () {
         editVideo(ifr);
-      });
-      cover.addEventListener('mouseover', function () { markHover(cover, 'video'); });
-      cover.addEventListener('mouseout', clearHover);
+      }, true);
+    });
+    // ② 本机视频：封面挂 .video__container，补丁指向 <source>
+    Array.prototype.forEach.call(r.querySelectorAll('video'), function (vd) {
+      var target = localVideoTarget(vd);
+      if (!target) return;
+      var host = (vd.closest && vd.closest('.video__container')) || vd.parentNode;
+      mountVideoCover(host, vd, buildLocalCoverHtml(target.getAttribute('src')), function () {
+        editLocalVideo(vd, target);
+      }, false);
     });
   }
 
