@@ -41,14 +41,27 @@ export function downloadFile(url: string, dest: string, redirects = 0): Promise<
   });
 }
 
-/** 获取远程文本（HTML 抓取复用） */
-export function fetchText(target: string): Promise<string> {
+/** 获取远程文本（HTML 抓取复用）
+ *  ⚠️ 必须跟随 3xx（2026-09-11）：原站对频繁 / 可疑请求会返回 **302** 跳转（限流 / WAF），
+ *  旧实现「非 200 即 reject」会让列表页、详情页抓取随机失败 → R7 取不到列表卡片图，
+ *  静默回退成详情页 banner（超宽横幅塞进 369x208 卡片 = 大片留白，表现为「空占位」）。
+ *  downloadFile 一直有跟随跳转，这里对齐。 */
+export function fetchText(target: string, redirects = 0): Promise<string> {
   return new Promise((resolve, reject) => {
+    if (redirects > 5) return reject(new Error('重定向次数过多: ' + target));
     const mod: typeof http = target.startsWith('https') ? (https as unknown as typeof http) : http;
     const req = mod.get(target, {
       headers: { 'User-Agent': SCRAPER_UA, Accept: 'text/html,*/*', 'Accept-Language': 'en-US,en;q=0.9' },
       timeout: 30000,
     }, (r) => {
+      if (r.statusCode && r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) {
+        r.resume();
+        // 相对 Location 用 new URL 相对当前 target 解析
+        let next = '';
+        try { next = new URL(r.headers.location, target).toString(); } catch { next = ''; }
+        if (!next) return reject(new Error(`HTTP ${r.statusCode}: 无法解析 Location`));
+        return resolve(fetchText(next, redirects + 1));
+      }
       if (r.statusCode !== 200) { r.resume(); return reject(new Error(`HTTP ${r.statusCode}: ${target}`)); }
       let data = '';
       r.setEncoding('utf8');

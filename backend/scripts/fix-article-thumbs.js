@@ -37,6 +37,8 @@ const ONLY_IDS = ONLY ? ONLY.split(',').map((s) => parseInt(s.trim(), 10)).filte
 const CARD_RATIO = 369 / 208;   // 1.7740
 const TOLERANCE = 0.15;         // 偏差 15% 以内视为已是卡片图
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 const prisma = new PrismaClient();
 
 /** 从各种写法的 sourceUrl 里取出原站路径（兼容 /www.gattefosse.com/xxx 这类无协议脏数据） */
@@ -65,20 +67,24 @@ async function ratioOfFile(p) {
   } catch { return null; }
 }
 
-/** 依次试「落地页 → /articles → /hot-topics」，返回 { thumb, cat, from } */
+/** 依次试「落地页 → /articles → /hot-topics」，返回 { thumb, cat, from, errs }
+ *  ⚠️ 把「抓取失败」与「页面里没有这张卡」分开报，否则 302 限流会被误判成「原站没图」 */
 async function lookupCard(originPath) {
   const segs = originPath.split('/').filter(Boolean);
-  if (segs.length < 2) return {};
+  const errs = [];
+  if (segs.length < 2) return { thumb: null, cat: null, from: '', errs: ['路径层级不足'] };
   const parent = '/' + segs.slice(0, -1).join('/');
   let thumb = null, cat = null, from = '';
   for (const cand of [parent, parent + '/articles', parent + '/hot-topics']) {
     let html = '';
-    try { html = await fetchText(ORIGIN_BASE + cand); } catch { continue; }
+    try { html = await fetchText(ORIGIN_BASE + cand); }
+    catch (e) { errs.push(`${cand}（${e.message}）`); await sleep(400); continue; }
     if (!thumb) { thumb = findCardThumbBySlug(html, originPath); if (thumb) from = cand; }
     if (!cat) cat = findCardCategoryBySlug(html, originPath);
     if (thumb && cat) break;
+    await sleep(400); // 礼貌间隔，降低触发原站限流（302）的概率
   }
-  return { thumb, cat, from };
+  return { thumb, cat, from, errs };
 }
 
 (async () => {
@@ -107,8 +113,12 @@ async function lookupCard(originPath) {
       || Math.abs(curRatio - CARD_RATIO) / CARD_RATIO > TOLERANCE;
     const curTxt = curRatio ? `当前 ${curRatio.toFixed(3)}` : (curFile ? '当前 文件缺失' : `当前 ${String(it.imageUrl || '(空)').slice(0, 30)}`);
 
-    const { thumb, cat, from } = await lookupCard(originPath);
-    if (!thumb) { stat.noThumb++; console.log(`— ${label} | ${curTxt} | 原站未找到列表卡片图（候选页均未命中）`); continue; }
+    const { thumb, cat, from, errs } = await lookupCard(originPath);
+    if (!thumb) {
+      stat.noThumb++;
+      console.log(`— ${label} | ${curTxt} | ${errs.length ? '列表页抓取失败：' + errs.join('；') : '候选页均无此卡'}`);
+      continue;
+    }
 
     if (!curBad) {
       stat.skipOk++;
