@@ -84,6 +84,11 @@ export function applyContentPatches(html: string, patches: ContentPatch[]): Appl
         if (node.nodeType !== 1 || (node as Element).tagName !== 'IFRAME') return reject('目标不是视频 <iframe> 元素');
         const el = node as Element;
         if (normText(el.getAttribute('src')) !== normText(p.old)) return reject('视频地址已变化，请刷新预览后重做');
+        // 嵌入地址白名单式校验：支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷等平台的 embed 地址，
+        // 以及各平台「通用嵌入代码」里的播放器地址（2026-09-11 扩展国内主流媒体）
+        if (!/^https:\/\/([a-z0-9-]+\.)*(youtube\.com|youtu\.be|bilibili\.com|bdstatic\.com|qq\.com|youku\.com|alicdn\.com)(\/|$)/i.test(p.next)) {
+          return reject('仅支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷 的播放器嵌入地址');
+        }
         el.setAttribute('src', p.next);
         applied++;
       } else {

@@ -214,35 +214,48 @@
     });
   }
 
+  // ---------- 视频平台解析（2026-09-11 扩展：支持国内主流媒体） ----------
+  /** 任意输入 → { platform, embed }；识别 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷，
+   *  其它合法 https 链接按「通用嵌入地址」兜底（适配各平台播放器通用代码里的 src） */
+  function parseVideoPlatform(raw) {
+    var s = (raw || '').trim();
+    if (!s) return null;
+    var m;
+    // YouTube：裸 ID（11 位含 -/_，排除 BV/av 前缀）或 watch/shorts/youtu.be 链接
+    if (!/^(BV|av)/i.test(s) && /^[A-Za-z0-9_-]{6,20}$/.test(s)) return { platform: 'youtube', embed: 'https://www.youtube.com/embed/' + s };
+    if ((m = /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/i.exec(s))) return { platform: 'youtube', embed: 'https://www.youtube.com/embed/' + m[1] };
+    // 哔哩哔哩：BV 号 / av 号 / 视频页链接 / b23.tv 短链文本里的 BV
+    if ((m = /BV[0-9A-Za-z]{8,12}/i.exec(s))) return { platform: 'bilibili', embed: 'https://player.bilibili.com/player.html?bvid=' + m[0] + '&autoplay=0' };
+    if ((m = /\bav(\d{4,12})\b/i.exec(s))) return { platform: 'bilibili', embed: 'https://player.bilibili.com/player.html?aid=' + m[1] + '&autoplay=0' };
+    // 腾讯视频：x/cover/…/<vid>.html、x/page/<vid>.html、iframe/player.html?vid=…
+    if ((m = /v\.qq\.com\/x\/(?:cover\/[^\/\s"']+\/|page\/)([A-Za-z0-9]+)\.html/i.exec(s))) return { platform: 'qq', embed: 'https://v.qq.com/iframe/player.html?vid=' + m[1] + '&autoplay=0' };
+    if ((m = /v\.qq\.com\/iframe\/player\.html\?[^"']*vid=([A-Za-z0-9]+)/i.exec(s))) return { platform: 'qq', embed: 'https://v.qq.com/iframe/player.html?vid=' + m[1] + '&autoplay=0' };
+    // 优酷：v_show/id_xxx 或 player.youku.com/embed/xxx
+    if ((m = /youku\.com\/v_show\/id_([A-Za-z0-9=]+)/i.exec(s)) || (m = /player\.youku\.com\/embed\/([A-Za-z0-9=]+)/i.exec(s))) return { platform: 'youku', embed: 'https://player.youku.com/embed/' + m[1] };
+    return null;
+  }
+
+  var PLATFORM_LABEL = { youtube: '', bilibili: '哔哩哔哩', qq: '腾讯视频', youku: '优酷', generic: '视频' };
+
   function editVideo(iframeEl) {
     var original = origOf(iframeEl, iframeEl.getAttribute('src'));
     openPop(iframeEl,
       '<div class="cp-pop-title">🎬 修改视频链接</div>' +
-      '<input type="text" class="cp-input" id="cp-edit-video" placeholder="粘贴 YouTube 链接或视频 ID，如 https://www.youtube.com/watch?v=xxxx">' +
-      '<div class="cp-hint">支持 watch / youtu.be / shorts 链接或直接粘贴 11 位视频 ID</div>' +
+      '<input type="text" class="cp-input" id="cp-edit-video" placeholder="粘贴视频链接或 ID，如 youtube.com/watch?v=xxx、bilibili.com/video/BVxx、v.qq.com/x/cover/…/xxx.html">' +
+      '<div class="cp-hint">支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷 的链接、视频 ID（如 BV 号）或播放器嵌入地址</div>' +
       '<div class="cp-btns"><button class="cp-ok">确定</button><button class="cp-cancel">取消</button></div>');
     var input = pop.querySelector('#cp-edit-video');
     input.value = original || '';
     input.focus();
     popActions(pop, function () {
-      var raw = input.value.trim();
-      var id = extractYoutubeId(raw);
-      if (!id) { input.style.borderColor = '#C4004D'; input.placeholder = '无法识别，请粘贴完整的 YouTube 链接'; return false; }
-      var embed = 'https://www.youtube.com/embed/' + id;
+      var parsed = parseVideoPlatform(input.value);
+      if (!parsed) { input.style.borderColor = '#C4004D'; input.placeholder = '无法识别，请粘贴视频链接或视频 ID'; return false; }
       var path = buildPath(iframeEl);
       if (!path) { alert('无法定位该视频，请刷新预览重试'); return false; }
-      iframeEl.setAttribute('src', embed);
-      refreshVideoCover(iframeEl, id);
-      send({ type: 'patch', patch: { kind: 'video', path: path, old: original, next: embed } });
+      iframeEl.setAttribute('src', parsed.embed);
+      refreshVideoCover(iframeEl);
+      send({ type: 'patch', patch: { kind: 'video', path: path, old: original, next: parsed.embed } });
     });
-  }
-
-  function extractYoutubeId(raw) {
-    var s = (raw || '').trim();
-    if (!s) return null;
-    if (/^[A-Za-z0-9_-]{6,20}$/.test(s)) return s;
-    var m = /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/i.exec(s);
-    return m ? m[1] : null;
   }
 
   // ---------- 视频封面覆盖层（2026-09-11 二次修复） ----------
@@ -254,19 +267,31 @@
     var m = /\/embed\/([A-Za-z0-9_-]{6,20})/.exec(src || '');
     return m ? m[1] : null;
   }
-  function buildCoverHtml(id) {
-    var img = id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95;">' : '';
-    return img
+  /** 按来源构造封面卡：YouTube 显示缩略图；国内平台显示平台标识 + 渐变底（无公开缩略图接口） */
+  function buildCoverHtml(platform, ytId) {
+    var label = PLATFORM_LABEL[platform] || '视频';
+    var img = (platform === 'youtube' && ytId)
+      ? '<img src="https://i.ytimg.com/vi/' + ytId + '/hqdefault.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95;">'
+      : '<div style="position:absolute;inset:0;background:linear-gradient(135deg,#23262b 0%,#3a3f46 60%,#2b2e33 100%);"></div>';
+    var badge = label
+      ? '<div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;font-family:inherit;">▶ ' + label + '</div>'
+      : '';
+    return img + badge
       + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:44px;background:rgba(196,0,77,.92);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35);">'
       + '<div style="width:0;height:0;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px;"></div></div>'
       + '<div style="position:absolute;left:0;right:0;bottom:0;padding:5px 10px;background:rgba(0,0,0,.62);color:#fff;font-size:12px;text-align:center;font-family:inherit;">🎬 点击修改视频链接</div>';
   }
-  function refreshVideoCover(iframeEl, newId) {
+  function buildCoverHtmlBySrc(src) {
+    var yt = videoIdFromSrc(src);
+    if (yt) return buildCoverHtml('youtube', yt);
+    if (/player\.bilibili\.com/i.test(src || '')) return buildCoverHtml('bilibili');
+    if (/v\.qq\.com\/iframe/i.test(src || '')) return buildCoverHtml('qq');
+    if (/player\.youku\.com/i.test(src || '')) return buildCoverHtml('youku');
+    return buildCoverHtml('generic');
+  }
+  function refreshVideoCover(iframeEl) {
     var cover = iframeEl.__cpCover;
-    if (cover) {
-      var img = cover.querySelector('img');
-      if (img && newId) img.src = 'https://i.ytimg.com/vi/' + newId + '/hqdefault.jpg';
-    }
+    if (cover) cover.innerHTML = buildCoverHtmlBySrc(iframeEl.getAttribute('src'));
   }
   function enhanceVideoCovers() {
     var r = root();
@@ -282,7 +307,7 @@
       var cover = document.createElement('div');
       cover.className = 'cp-video-cover';
       cover.setAttribute('style', 'position:absolute;inset:0;z-index:10;cursor:pointer;overflow:hidden;background:#111;');
-      cover.innerHTML = buildCoverHtml(videoIdFromSrc(ifr.getAttribute('src')));
+      cover.innerHTML = buildCoverHtmlBySrc(ifr.getAttribute('src'));
       parent.appendChild(cover);
       ifr.__cpCover = cover;
       cover.addEventListener('click', function (e) {
