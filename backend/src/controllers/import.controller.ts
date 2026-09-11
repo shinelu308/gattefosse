@@ -398,16 +398,23 @@ export async function importArticleFromSite(req: Request, res: Response) {
     try { selfPathTmp = new URL(url).pathname; } catch { selfPathTmp = ''; }
     const listingCandidates: string[] = [];
     const segs = selfPathTmp.split('/').filter(Boolean);
-    if (segs.length > 1) listingCandidates.push('/' + segs.slice(0, -1).join('/'));
+    if (segs.length > 1) {
+      const parent = '/' + segs.slice(0, -1).join('/');
+      // ⚠️ 父目录只是「落地页」，上面仅渲染 3 张精选卡 → 必须再试它下面的完整列表子页（2026-09-11）
+      // 两侧命名不对称：个护 /articles、药用 /hot-topics，互相 404；两个都试，取不到由 fetchText 抛错自动跳过
+      listingCandidates.push(parent);
+      listingCandidates.push(parent + '/articles');
+      listingCandidates.push(parent + '/hot-topics');
+    }
     listingCandidates.push('/personal-care/get-inspired'); // 兼容：个护获取灵感历史入口
     let cardThumbRaw: string | null = null;
     let cardCategory: string | null = null;
     for (const cand of [...new Set(listingCandidates)]) {
       let listingHtml = '';
       try { listingHtml = await fetchText(SITE_ORIGIN + cand); } catch { continue; }
-      cardThumbRaw = findCardThumbBySlug(listingHtml, selfPathTmp);
-      cardCategory = findCardCategoryBySlug(listingHtml, selfPathTmp);
-      if (cardThumbRaw || cardCategory) break;
+      if (!cardThumbRaw) cardThumbRaw = findCardThumbBySlug(listingHtml, selfPathTmp);
+      if (!cardCategory) cardCategory = findCardCategoryBySlug(listingHtml, selfPathTmp);
+      if (cardThumbRaw && cardCategory) break; // 图与分类都拿到才停，否则继续换候选页
     }
     // 卡片分类（如 "Lipids and polymers"）→ 中文主题标签；详情页无标签区时这是主题唯一来源
     if (cardCategory) {

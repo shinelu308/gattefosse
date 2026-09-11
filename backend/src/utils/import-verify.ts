@@ -267,14 +267,23 @@ export async function reverifyArticle(id: number): Promise<VerifyItem[]> {
   try {
     const segs = originPath.split('/').filter(Boolean);
     if (segs.length > 1) {
-      const listingHtml = await fetchText(`${ORIGIN_BASE}/${segs.slice(0, -1).join('/')}`);
-      const thumbRaw = findCardThumbBySlug(listingHtml, originPath);
+      // ⚠️ 父目录只是「落地页」（仅 3 张精选卡），完整列表在 /articles 或 /hot-topics 子页（2026-09-11）
+      // 两侧命名不对称，互相 404 —— 两个都试，fetchText 非 200 抛错自动跳过
+      const parent = '/' + segs.slice(0, -1).join('/');
+      let listingHtml = '';
+      let thumbRaw: string | null = null;
+      let catRaw: string | null = null;
+      for (const cand of [parent, parent + '/articles', parent + '/hot-topics']) {
+        try { listingHtml = await fetchText(ORIGIN_BASE + cand); } catch { continue; }
+        if (!thumbRaw) thumbRaw = findCardThumbBySlug(listingHtml, originPath);
+        if (!catRaw) catRaw = findCardCategoryBySlug(listingHtml, originPath);
+        if (thumbRaw && catRaw) break;
+      }
       // 主题补齐：热点话题详情页无标签区，分类只在列表卡片——tags 为空时从卡片补
       let existingTags: string[] = [];
       if (item.tags) {
         try { existingTags = JSON.parse(item.tags); } catch { existingTags = item.tags.split(',').map(s => s.trim()).filter(Boolean); }
       }
-      const catRaw = findCardCategoryBySlug(listingHtml, originPath);
       if (catRaw && !existingTags.length) {
         const catZh = await translateArticleTheme(catRaw);
         await prisma.newsEvent.update({ where: { id: item.id }, data: { tags: JSON.stringify([catZh]) } });
