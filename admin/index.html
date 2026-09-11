@@ -1026,7 +1026,7 @@ const QUILL_TOOLBAR = [
               </div>
               <div class="card-body" data-page-node-id="pSFE686SskegB9EntEpxmK">
                 <div style="font-size:13px;color:var(--text-secondary);line-height:2;" data-page-node-id="GPPWMNH17FfPADZstn8Dnz">
-                  <div data-page-node-id="3l0whm5AvAvLtzRacrIBqj">版本：v2.0.0</div>
+                  <div data-page-node-id="3l0whm5AvAvLtzRacrIBqj">版本：{{ systemVersion }}</div>
                   <div data-page-node-id="sztldBSYKGQKjbSyq9SSNM">数据库：SQLite</div>
                   <div data-page-node-id="alF8Ornkoa8JK7DQCSYzIx">开发主体：上海唯风信息技术有限公司</div>
                 </div>
@@ -4375,6 +4375,7 @@ createApp({
       articleContentMode: 'visual',
       articleContentLocked: false,
       previewPatches: [],   // 预览编辑未保存的内容补丁（text/img/video，2026-09-11）
+      systemVersion: 'v2.0.0',   // 系统版本（后端按构建自动递增，/api/system/version）
       editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] },
       articleTagInput: '',
       articleTagList: [],
@@ -8464,6 +8465,8 @@ createApp({
     this.confirmDialog.show = false;
     this.tagForm.show = false;
     console.log('[Admin] Token exists:', !!this.token, '|前20位:', this.token ? this.token.substring(0,20) : '(空)');
+    // 系统版本（公开接口，后端按构建自动递增）
+    fetch(API + '/system/version').then(r => r.json()).then(d => { if (d && d.code === 0 && d.data && d.data.version) this.systemVersion = d.data.version; }).catch(function () {});
     if (this.token) {
       // 先用 /auth/me 校验 token 有效性（独立 fetch，不走 api() 避免误清）
       try {

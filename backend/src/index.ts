@@ -26,6 +26,8 @@ import orderPublicRoutes from './routes/order-public.routes';
 import blockRoutes from './routes/block.routes';
 import authorRoutes from './routes/authors.routes';
 import statsRoutes from './routes/stats.routes';
+import systemRoutes from './routes/system.routes';
+import { bumpVersionOnBoot } from './utils/version';
 import { pageViewTracker } from './middleware/tracker';
 
 const app = express();
@@ -109,6 +111,7 @@ app.use('/api/orders', orderPublicRoutes);
 app.use('/api/blocks', blockRoutes);
 app.use('/api/authors', authorRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/system', systemRoutes);
 
 // 404 处理
 app.use('*', (_req, res) => {
@@ -127,4 +130,6 @@ app.listen(PORT, () => {
   console.log(`🚀 嘉法狮后台 API 服务启动成功`);
   console.log(`   地址: http://localhost:${PORT}`);
   console.log(`   环境: ${config.env}`);
+  // 新构建部署时自动递增系统版本（v2.0.0 → v2.0.1 → …）
+  bumpVersionOnBoot();
 });
