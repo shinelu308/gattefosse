@@ -17,6 +17,59 @@
  * ⚠️ 两处共用本文件，口径必须一致；调整规则只改这里，不要在两处各写一份。
  */
 
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * 站点页面清单（惰性构建一次，进程级复用）
+ *
+ * 用途：判断某个 path 是否对应 site/ 目录下真实存在的 .html 文件。
+ * 这是比「扫描路径黑名单」更彻底的方案 —— 扫描器的 /containers/json、
+ * /_profiler/phpinfo、/jsonapi/node/article、/fr.html 等一律不在清单内，
+ * 无需逐个维护正则，新增页面也无需改代码（部署重启后自动生效）。
+ *
+ * ⚠️ site 目录不可读时返回空集，此时 isKnownPagePath 一律放行（不启用白名单），
+ * 避免因部署形态差异把统计全部清零。
+ */
+let _pageSet: Set<string> | null = null;
+
+function buildPageSet(): Set<string> {
+  const out = new Set<string>();
+  const roots = [
+    path.resolve(__dirname, '../../../site'),
+    path.resolve(process.cwd(), 'site'),
+    path.resolve(process.cwd(), '../site'),
+  ];
+  for (const root of roots) {
+    try {
+      if (!fs.statSync(root).isDirectory()) continue;
+    } catch { continue; }
+    const walk = (dir: string, prefix: string) => {
+      let entries: fs.Dirent[] = [];
+      try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+      for (const e of entries) {
+        if (e.name.startsWith('.')) continue;
+        const rel = prefix + '/' + e.name;
+        if (e.isDirectory()) walk(path.join(dir, e.name), rel);
+        else if (e.name.toLowerCase().endsWith('.html')) out.add(rel);
+      }
+    };
+    walk(root, '');
+    if (out.size > 0) break; // 找到有效目录即停
+  }
+  return out;
+}
+
+/** 该路径是否对应站点里真实存在的页面文件 */
+export function isKnownPagePath(p: string): boolean {
+  const v = (p || '').trim();
+  if (!v) return false;
+  if (v === '/' || v === '/(首页)') return true;
+  if (!_pageSet) _pageSet = buildPageSet();
+  if (_pageSet.size === 0) return true; // site 目录不可读 → 不启用白名单，避免误杀
+  return _pageSet.has(v.split('?')[0]);
+}
+
 /** 页头 / 页脚 / 菜单等 HTML 片段路径（前台 jQuery .load 异步拉取），不是页面 */
 export const FRAGMENT_PATHS = new Set([
   '/header.html',
@@ -100,7 +153,12 @@ export interface VisitLike {
 
 /**
  * 高置信度噪声：不可能是真人，埋点层直接丢弃（不入库）
- * 判定项：片段 / 非页面 / 扫描路径 / 爬虫脚本 UA / 内网 IP
+ * 判定项：片段 / 非页面 / 扫描路径 / 爬虫脚本 UA / 内网 IP / **非站点真实页面**
+ *
+ * 最后一项（白名单）是关键补充：线上实测扫描器会请求 /containers/json、
+ * /_profiler/phpinfo、/jsonapi/node/article、/fr.html 等（均 404），
+ * 它们既不在片段清单也不匹配扫描正则，只有「不是站点页面」这一条能拦住。
+ * 历史数据里这类路径同样靠这一条清洗（B 方案回溯）。
  */
 export function isSourceNoise(v: VisitLike): boolean {
   const p = (v.path || '').trim();
@@ -110,6 +168,7 @@ export function isSourceNoise(v: VisitLike): boolean {
   if (isScanPath(p)) return true;
   if (isBotUa(v.ua)) return true;
   if (isInternalIp(v.ip)) return true;
+  if (!isKnownPagePath(p)) return true;
   return false;
 }
 
