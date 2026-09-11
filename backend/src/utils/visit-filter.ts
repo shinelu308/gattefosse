@@ -180,3 +180,25 @@ export function isCountableVisit(v: VisitLike): boolean {
   if (isSourceNoise(v)) return false;
   return !isSelfTraffic(v.ip);
 }
+
+/**
+ * 内容浏览事件（content_views）是否计入展示口径（2026-09-12 新增）
+ *
+ * 为什么不能直接复用 isCountableVisit：
+ *   isCountableVisit 会调 isSourceNoise，而后者含 `isKnownPagePath(path)` 白名单 ——
+ *   content_views 的 pagePath 可能为空（隐私设置会去掉 Referer）或不带 query 的
+ *   详情页路径，用白名单判会被整体误杀。故这里**只沿用与真人判定相关的三条**：
+ *   爬虫 UA / 内网 IP / 自测出口 IP。
+ *
+ * 分层口径与 page_views 一致：
+ *   - 写入层（controllers/track.controller.ts）只挡「爬虫 UA」这类高置信噪声；
+ *     内网/自测 IP 照写不误（本地自测能落库，便于验证），
+ *   - 展示层（controllers/content-stats.controller.ts）用本函数剔除，
+ *     改白名单只改本文件，历史统计立刻跟着变。
+ */
+export function isCountableView(v: { ip?: string | null; ua?: string | null }): boolean {
+  if (isBotUa(v.ua)) return false;
+  if (isInternalIp(v.ip)) return false;
+  if (isSelfTraffic(v.ip)) return false;
+  return true;
+}

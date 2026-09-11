@@ -18,6 +18,7 @@
   <script src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/api-260908.js"></script>
+  <script src="/static/js/track-260912.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
 <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -297,6 +298,8 @@
               data._productData = product;
               data.productName = product.name || '';
               document.title = (product.name || '产品详情') + ' - 产品详情 | 嘉法狮';
+              // 内容热度埋点：药用辅料（对象身份只有前端知道，page_views 只记得到页面路径）
+              if (window.GatteTrack) GatteTrack.view('pharma_product', product.id, product.name, 'pharma');
 
               // 头部大图（与个人护理 bg 格式完全一致）
               var imgUrl = product.detailImageUrl || product.imageUrl;
@@ -435,7 +438,8 @@
                 html += '<div class="s-product-document__type"><h3 class="s-product-document__title">' + _escape(tn) + '</h3><ul class="s-product-document__list">';
                 items.forEach(function (doc) {
                   var lc = doc.isPublic === false ? ' c-link--locked' : '';
-                  html += '<li class="c-link c-link--document' + lc + '"><a class="c-link__link" href="' + _escape(doc.fileUrl || '#') + '" target="_blank"><div class="c-link__params"><span class="c-link__name">' + _escape(doc.title || doc.fileName || '') + '</span></div></a></li>';
+                  // data-gt-doc 供内容热度埋点取「资料」的唯一标识（对齐 documents.id，便于统计未被打开的资料）
+                  html += '<li class="c-link c-link--document' + lc + '"><a class="c-link__link" data-gt-doc="' + doc.id + '" href="' + _escape(doc.fileUrl || '#') + '" target="_blank"><div class="c-link__params"><span class="c-link__name">' + _escape(doc.title || doc.fileName || '') + '</span></div></a></li>';
                 });
                 html += '</ul></div>';
               });

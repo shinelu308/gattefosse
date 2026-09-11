@@ -465,3 +465,44 @@ model PageView {
   @@index([visitorId])
   @@map("page_views")
 }
+
+/// 内容浏览事件（业务对象口径，2026-09-12 新增）
+/// ---------------------------------------------------------------------------
+/// 与 PageView 的分工（**两个口径不要混**）：
+///   - page_views   = 流量口径：按「页面路径」记 PV/UV，回答"今天来了多少人"
+///   - content_views= 业务口径：按「内容对象」记 PV/UV，回答"哪个产品/资料被看得多"
+///
+/// 为什么不复用 page_views 加列：
+///   1. page_views 的 path 是**去掉 query 后**的路径，产品详情页 57 个产品全压成一条，
+///      加列也还原不出是哪个产品（历史数据无法回溯）；
+///   2. 资料（PDF）走的是 /uploads/xxx.pdf 静态直链，page_views 的 isPage 判定
+///      （只收 html）根本无法覆盖；
+///   3. 产品名称只有前端知道，后端加列只能存 slug/id，产品一改名统计即失真；
+///   4. 混在一起会让 page_views 行数涨一个量级，拖慢现有总览页。
+///
+/// 写入方：POST /api/track/content（前端 sendBeacon 显式上报，见 site/static/js/track-*.js）
+/// 读 取 方：GET /api/stats/content-heat（后台「内容热度」页）
+model ContentView {
+  id         Int      @id @default(autoincrement())
+  objectType String   @map("object_type") // 对象类型：pc_product | formulation | pharma_product | article | news | event | hot_topic | document
+  objectId   String   @map("object_id") // 对象标识：数字 id 或 slug（统一转字符串，避免类型不一）
+  objectName String?  @map("object_name") // 对象名称**快照**：对象被删/改名后热度榜仍可读
+  section    String?  // 所属板块：personal_care | pharma | news | learn_more
+  eventType  String   @default("view") @map("event_type") // view=打开详情页，download=打开资料
+  pagePath   String?  @map("page_path") // 事件发生所在页面（去 query），便于反查入口
+  parentId   String?  @map("parent_id") // 资料的归属对象 id（如某产品下打开的 PDF）
+  parentName String?  @map("parent_name") // 归属对象名称快照
+  visitorId  String   @map("visitor_id") // 访客标识（cookie __gv，回退 ip+ua hash）
+  ip         String?
+  ua         String?
+  referer    String?
+  region     String?  // 归属地：国家|省份（如 中国|上海）
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([objectType, objectId])
+  @@index([eventType, createdAt])
+  @@index([createdAt])
+  @@index([visitorId])
+  @@index([section])
+  @@map("content_views")
+}

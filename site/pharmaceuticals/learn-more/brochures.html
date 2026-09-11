@@ -17,6 +17,7 @@
   <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/track-260912.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -287,6 +288,7 @@
                           <p class="c-card__summary">{{item.summary}}</p>
                           <div class="c-card__cta">
                             <a :class="(item.lock == true && (data.userEnabled == 0 || data.userEnabled == null)) ? 'private-file btn btn-primary btn-disabled' : 'btn btn-primary'"
+                              :data-gt-doc-name="item.title"
                               :href="(item.lock == true && (data.userEnabled == 0 || data.userEnabled == null)) ? '' : item.url"
                               title="Product catalogue" target="_blank">
                               下载 (.pdf)

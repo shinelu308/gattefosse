@@ -6,8 +6,9 @@
     <link rel="canonical" href="https://www.gattefossechina.cn/pharmaceuticals-article-detail.html">
     <link rel="icon" href="/themes/custom/gattefosse/favicon.ico" type="image/vnd.microsoft.icon" />
     <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
-    <script src="/static/js/axios.min.js"></script>
-    <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/track-260912.js"></script>
 
     <!-- Global CSS (与热点话题 hot-topics.html 同款 Drupal 聚合样式) -->
     <link rel="stylesheet" media="all"
@@ -449,6 +450,9 @@
                         .then(function (resp) {
                             if (resp.data.code === 0) {
                                 var item = resp.data.data;
+
+                                // 内容热度埋点：药用辅料文章 / 热点话题（objectType 统一走 article）
+                                if (window.GatteTrack) GatteTrack.view('article', articleId, item.title, 'pharma');
 
                                 // Parse tags
                                 var tagsList = [];

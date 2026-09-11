@@ -76,6 +76,7 @@
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script src="/static/js/api-260908.js"></script>
     <script src="/static/js/auth-260908.js"></script>
+    <script src="/static/js/track-260912.js"></script>
 <style>[v-cloak]{display:none!important}</style>
 </head>
 <body class="path-node page-node-type-formulations-personal-care    bg- d-flex flex-column">
@@ -137,7 +138,7 @@
                     <h1 class="s-product-header__title">{{data.productDetail.goodsName}}</h1>
                     <p class="s-product-header__subtitle">{{data.productDetail.subtitle}}</p>
                     <div class="s-product-header__btns">
-                        <a v-if="data.productDetail.pdfUrl" :href="data.productDetail.pdfUrl" class="btn btn-primary btn-icon--r" target="_blank">下载资料<i
+                        <a v-if="data.productDetail.pdfUrl" :href="data.productDetail.pdfUrl" :data-gt-doc="'formulation-' + data.productDetail.ID + '-pdf'" :data-gt-doc-name="data.productDetail.goodsName + ' 配方资料'" class="btn btn-primary btn-icon--r" target="_blank">下载资料<i
                                 class="o-icon --download" aria-hidden="true"></i></a>
                     </div>
                 </div>
@@ -221,7 +222,7 @@
                                                     <ul style="list-style:none;padding:0;margin:0;">
                                                         <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
                                                             <li v-if="isTdsDoc(file)" style="margin-bottom:10px;">
-                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
+                                                                <a v-if="file.isPublic !== false" :data-gt-doc="file.fileId || ''" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
                                                                     <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </a>
@@ -239,7 +240,7 @@
                                                     <ul style="list-style:none;padding:0;margin:0;">
                                                         <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
                                                             <li v-if="isBrochureDoc(file)" style="margin-bottom:10px;">
-                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
+                                                                <a v-if="file.isPublic !== false" :data-gt-doc="file.fileId || ''" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
                                                                     <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </a>
@@ -257,7 +258,7 @@
                                                     <ul style="list-style:none;padding:0;margin:0;">
                                                         <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
                                                             <li v-if="isFormulaDoc(file)" style="margin-bottom:10px;">
-                                                                <a v-if="file.isPublic !== false" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
+                                                                <a v-if="file.isPublic !== false" :data-gt-doc="file.fileId || ''" :href="file.url" target="_blank" style="display:flex;align-items:center;gap:12px;color:#333;text-decoration:none;font-size:20px;line-height:1.5;">
                                                                     <img src="/static/images/document/public-icon.png" alt="" style="width:70px;height:70px;flex-shrink:0;">
                                                                     <span>{{ file.title || file.url }}</span>
                                                                 </a>
@@ -629,6 +630,8 @@
                         // 解析特点图标（pictos）
                         try { data.pictoList = JSON.parse(f.pictos || '[]'); } catch(e) { data.pictoList = []; }
                         if (!Array.isArray(data.pictoList)) data.pictoList = [];
+                        // 内容热度埋点：应用配方（对象身份只有前端知道，page_views 只记得到页面路径）
+                        if (window.GatteTrack) GatteTrack.view('formulation', f.id, f.name, 'personal_care');
                         data.loading = false;
                         if (f.id) loadContentBlocks(f.id);
                     }).catch(function (err) {

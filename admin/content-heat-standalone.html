@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>内容热度</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; }
+body { font-family: system-ui, sans-serif; background: #f6f6f6; padding: 24px; }
+h1 { font-size: 20px; margin-bottom: 4px; color: #232426; }
+.subtitle { font-size: 13px; color: #999; margin-bottom: 18px; line-height: 1.6; }
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; width: 100%; }
+.card-header { padding: 14px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card-body { padding: 16px 20px; }
+.card-title { font-size: 14px; font-weight: 600; color: #232426; }
+.hint { font-size: 12px; color: #999; font-weight: 400; }
+button { cursor: pointer; background: #fff; padding: 6px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; }
+button:hover { border-color: #bbb; }
+button.active { background: #8EB73C; color: #fff; border-color: #8EB73C; }
+/* ===== 概览卡 ===== */
+.sum { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.sum-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 14px 18px; min-width: 150px; flex: 1; }
+.sum-label { font-size: 12px; color: #999; margin-bottom: 6px; }
+.sum-value { font-size: 24px; font-weight: 600; color: #232426; line-height: 1.1; }
+.sum-sub { font-size: 12px; color: #999; margin-top: 4px; }
+/* ===== 分组榜 ===== */
+.grp { margin-bottom: 6px; }
+.grp-head { display: flex; align-items: center; gap: 10px; padding: 12px 0 8px; border-top: 1px solid #f2f2f2; }
+.grp:first-child .grp-head { border-top: none; padding-top: 0; }
+.grp-name { font-size: 13px; font-weight: 600; color: #232426; }
+.grp-cov { font-size: 12px; color: #999; }
+.grp-cov b { color: #5a7d1f; font-weight: 600; }
+.row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed #f4f4f4; font-size: 13px; }
+.row:last-child { border-bottom: none; }
+.rank { width: 20px; height: 20px; line-height: 20px; text-align: center; border-radius: 4px; background: #f1f1f1; color: #888; font-size: 11px; flex: 0 0 auto; }
+.rank.top { background: #8EB73C; color: #fff; }
+.nm { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #232426; }
+.nm .parent { color: #999; font-size: 12px; margin-left: 6px; }
+.spark { flex: 0 0 auto; width: 74px; height: 18px; display: block; }
+.num { flex: 0 0 auto; text-align: right; font-variant-numeric: tabular-nums; min-width: 96px; }
+.num .pv { color: #232426; font-weight: 600; }
+.num .uv { color: #999; font-size: 12px; margin-left: 8px; }
+.when { flex: 0 0 auto; width: 108px; text-align: right; color: #aaa; font-size: 12px; white-space: nowrap; }
+/* ===== 未被浏览 ===== */
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; max-height: 176px; overflow-y: auto; padding-right: 4px; }
+.chip { padding: 4px 10px; border-radius: 14px; font-size: 12px; background: #f1f1f1; color: #666; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip-more { padding: 4px 10px; font-size: 12px; color: #999; }
+.empty { color: #999; font-size: 13px; padding: 8px 0; }
+.err { color: #c0392b; font-size: 13px; padding: 8px 0; }
+.note { font-size: 12px; color: #999; line-height: 1.7; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h1>内容热度</h1>
+<p class="subtitle">
+  按「内容对象」统计访问量 —— 哪些产品被看得多、哪份资料被打开得多、哪篇文章有人读。<br>
+  与总览页的「热门页面」不同：这里不按 URL 聚合，而是按产品 / 配方 / 资料 / 文章逐个计数。
+</p>
+
+<div class="sum" id="sum"></div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">时间范围</span>
+    <span id="rangeTabs" style="display:flex;gap:6px;"></span>
+    <span class="hint" style="margin-left:8px;">近 7 天趋势条为「最近 7 天每天的浏览次数」，与所选范围无关</span>
+    <button id="reloadBtn" style="margin-left:auto;" onclick="reload()">刷新</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">板块</span>
+    <span id="sectionTabs" style="display:flex;gap:6px;"></span>
+    <span class="hint" style="margin-left:auto;">行右侧 = 浏览次数 · 独立访客数</span>
+  </div>
+  <div class="card-body" id="heatBody"><div class="empty">加载中…</div></div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">未被浏览过的对象 <span class="hint">（本期）</span></span>
+    <span class="hint">营销上要推的就是这些「没人看」的产品与资料</span>
+  </div>
+  <div class="card-body" id="zeroBody"><div class="empty">加载中…</div></div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="note">
+      <b>数据来源</b>：前台详情页在数据加载完成后上报（打开产品页 / 配方页 / 文章页，以及点击资料 PDF），写入 content_views 表。<br>
+      <b>口径</b>：爬虫、扫描器、内网与自测出口 IP 一律剔除（与总览页同一套 utils/visit-filter.ts 规则）。<br>
+      <b>同一访客 30 秒内重复打开同一对象只计一次</b>，避免刷新造成虚高。<br>
+      埋点自本功能上线之日起生效，历史访问无法回溯 —— 这是「URL 里没带对象身份」的必然结果。
+    </div>
+  </div>
+</div>
+
+<script src="/admin/static/js/admin-dialog-260911.js"></script>
+<script>
+const API = parent.location.protocol + '//' + parent.location.host + '/api';
+function getToken() { return localStorage.getItem('admin_token') || ''; }
+async function api(path, opts = {}) {
+  const res = await fetch(API + path, {
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+    ...opts
+  });
+  const data = await res.json();
+  if (data.code !== 0) throw new Error(data.message || '请求失败');
+  return data.data;
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+const RANGES = [
+  { key: '7d',   label: '近 7 天' },
+  { key: '30d',  label: '近 30 天' },
+  { key: '90d',  label: '近 90 天' },
+  { key: 'all',  label: '全部' },
+];
+
+// 未被浏览的清单：按类型分块展示（资料不区分所属板块，故不跟随上方板块 Tab）
+const ZERO_TYPES = [
+  { key: 'pc_product',     label: '个人护理原料' },
+  { key: 'pharma_product', label: '药用辅料' },
+  { key: 'formulation',    label: '应用配方' },
+  { key: 'document',       label: '资料' },
+];
+
+let RANGE = '7d';
+let SECTION = '';
+let DATA = null;
+
+function fmtWhen(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = now - d;
+  if (diff < 60 * 1000) return '刚刚';
+  if (diff < 3600 * 1000) return Math.floor(diff / 60000) + ' 分钟前';
+  if (diff < 24 * 3600 * 1000) return Math.floor(diff / 3600000) + ' 小时前';
+  if (diff < 30 * 24 * 3600 * 1000) return Math.floor(diff / 86400000) + ' 天前';
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+/** 近 7 天迷你趋势：16×74 的 polyline，绿线（本项目图表主色） */
+function sparkline(spark) {
+  const W = 74, H = 18, PAD = 3;
+  const arr = (Array.isArray(spark) && spark.length === 7) ? spark : [0, 0, 0, 0, 0, 0, 0];
+  const max = Math.max.apply(null, arr);
+  const step = (W - PAD * 2) / 6;
+  const pts = arr.map((v, i) => {
+    const x = PAD + i * step;
+    // 全 0 时画一条压在中线的平线，避免 6 个点全叠在底部看不出所以然
+    const y = max === 0 ? H / 2 : H - PAD - (v / max) * (H - PAD * 2);
+    return x.toFixed(1) + ',' + y.toFixed(1);
+  }).join(' ');
+  return '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">'
+    + '<polyline points="' + pts + '" fill="none" stroke="' + (max === 0 ? '#ddd' : '#8EB73C') + '" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></polyline>'
+    + '</svg>';
+}
+
+function renderRangeTabs() {
+  document.getElementById('rangeTabs').innerHTML = RANGES.map((r) =>
+    '<button class="' + (r.key === RANGE ? 'active' : '') + '" onclick="setRange(\'' + r.key + '\')">' + esc(r.label) + '</button>'
+  ).join('');
+}
+
+function renderSectionTabs() {
+  const box = document.getElementById('sectionTabs');
+  const secs = DATA ? (DATA.sections || []) : [];
+  if (!secs.length) { box.innerHTML = '<span class="hint">暂无数据</span>'; return; }
+  let html = '<button class="' + (SECTION === '' ? 'active' : '') + '" onclick="setSection(\'\')">全部</button>';
+  html += secs.map((s) =>
+    '<button class="' + (s.key === SECTION ? 'active' : '') + '" onclick="setSection(\'' + s.key + '\')">'
+    + esc(s.label) + ' <span style="opacity:.65">' + s.pv + '</span></button>'
+  ).join('');
+  box.innerHTML = html;
+}
+
+function renderSummary() {
+  const s = (DATA && DATA.summary) || {};
+  const box = document.getElementById('sum');
+  const rangeLabel = (RANGES.find((r) => r.key === RANGE) || {}).label || RANGE;
+  box.innerHTML = [
+    ['浏览事件', s.pv != null ? s.pv : 0, rangeLabel + '内计入口径的所有对象浏览与资料打开'],
+    ['独立访客', s.uv != null ? s.uv : 0, '同一访客多次浏览同一对象只算一人'],
+    ['被浏览过的对象', s.objectCount != null ? s.objectCount : 0, '不同产品 / 配方 / 资料 / 文章的数量'],
+  ].map(([label, value, sub]) =>
+    '<div class="sum-card"><div class="sum-label">' + esc(label) + '</div>'
+    + '<div class="sum-value">' + value + '</div>'
+    + '<div class="sum-sub">' + esc(sub) + '</div></div>'
+  ).join('');
+}
+
+function renderHeat() {
+  const body = document.getElementById('heatBody');
+  if (!DATA) { body.innerHTML = '<div class="empty">加载中…</div>'; return; }
+  const secs = (DATA.sections || []).filter((s) => !SECTION || s.key === SECTION);
+  if (!secs.length) {
+    body.innerHTML = '<div class="empty">该时间范围内还没有内容浏览记录。'
+      + '<div class="note">埋点自上线之日起生效；若刚上线，需等访客真实访问产品页 / 文章页后才有数据。</div></div>';
+    return;
+  }
+  let html = '';
+  secs.forEach((sec) => {
+    if (SECTION === '') {
+      html += '<div style="font-size:13px;font-weight:600;color:#232426;margin:6px 0 2px;">'
+        + esc(sec.label) + ' <span class="hint">浏览 ' + sec.pv + ' · 访客 ' + sec.uv + '</span></div>';
+    }
+    (sec.groups || []).forEach((g) => {
+      const cov = (g.total != null)
+        ? '<span class="grp-cov">本期被浏览 <b>' + g.viewed + '</b> / 共 ' + g.total + ' 个</span>'
+        : '<span class="grp-cov">本期被浏览 <b>' + g.viewed + '</b> 个</span>';
+      html += '<div class="grp"><div class="grp-head"><span class="grp-name">' + esc(g.label) + '</span>' + cov + '</div>';
+      html += g.items.map((it, i) => {
+        const parent = (g.type === 'document' && it.parentName)
+          ? '<span class="parent">· ' + esc(it.parentName) + '</span>' : '';
+        return '<div class="row">'
+          + '<span class="rank' + (i < 3 ? ' top' : '') + '">' + (i + 1) + '</span>'
+          + '<span class="nm" title="' + esc(it.name) + '">' + esc(it.name) + parent + '</span>'
+          + sparkline(it.spark)
+          + '<span class="num" title="左侧为浏览次数，右侧为独立访客数"><span class="pv">' + it.pv + '</span><span class="uv">· ' + it.uv + ' 人</span></span>'
+          + '<span class="when" title="' + esc(it.lastAt || '') + '">' + esc(fmtWhen(it.lastAt)) + '</span>'
+          + '</div>';
+      }).join('');
+      if (g.items.length < g.viewed) {
+        html += '<div class="note">仅显示本期前 ' + g.items.length + ' 名（共 ' + g.viewed + ' 个对象有浏览）。</div>';
+      }
+      html += '</div>';
+    });
+  });
+  body.innerHTML = html || '<div class="empty">该板块没有内容浏览记录。</div>';
+}
+
+function renderZero() {
+  const body = document.getElementById('zeroBody');
+  const zero = DATA && DATA.unviewed;
+  if (!zero) { body.innerHTML = '<div class="empty">—</div>'; return; }
+  let html = '';
+  let totalZero = 0;
+  ZERO_TYPES.forEach((t) => {
+    const list = zero[t.key] || [];
+    totalZero += list.length;
+    const total = (DATA.totals || {})[t.key];
+    const cov = (total != null) ? '（共 ' + total + ' 个，本期 ' + list.length + ' 个没被看过）' : '';
+    html += '<div class="grp"><div class="grp-head"><span class="grp-name">' + esc(t.label) + '</span>'
+      + '<span class="grp-cov">' + cov + '</span></div>';
+    html += list.length
+      ? '<div class="chips">' + list.map((x) => '<span class="chip" title="' + esc(x.name) + '">' + esc(x.name) + '</span>').join('') + '</div>'
+      : '<div class="empty">该类型的对象在本期都被浏览过。</div>';
+    html += '</div>';
+  });
+  if (!totalZero) {
+    html += '<div class="note">本期所有上架产品与公开资料都至少被浏览过一次。</div>';
+  }
+  body.innerHTML = html;
+}
+
+async function load() {
+  document.getElementById('heatBody').innerHTML = '<div class="empty">加载中…</div>';
+  document.getElementById('zeroBody').innerHTML = '<div class="empty">加载中…</div>';
+  try {
+    DATA = await api('/stats/content-heat?range=' + encodeURIComponent(RANGE) + '&withZero=1');
+    renderSummary();
+    renderSectionTabs();
+    renderHeat();
+    renderZero();
+  } catch (e) {
+    document.getElementById('heatBody').innerHTML = '<div class="err">加载失败：' + esc(e.message) + '</div>';
+    document.getElementById('zeroBody').innerHTML = '<div class="empty">—</div>';
+    document.getElementById('sum').innerHTML = '';
+  }
+}
+
+function setRange(k) { RANGE = k; renderRangeTabs(); load(); }
+function setSection(k) { SECTION = k; renderSectionTabs(); renderHeat(); }
+function reload() { load(); }
+
+renderRangeTabs();
+load();
+</script>
+</body>
+</html>

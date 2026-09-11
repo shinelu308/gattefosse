@@ -73,6 +73,7 @@
   <script src="/static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api-260908.js"></script>
   <script src="/static/js/auth-260908.js"></script>
+  <script src="/static/js/track-260912.js"></script>
   <script>
    $(document).ready(function () {
       $("#header").load("/header.html", function(){
@@ -319,6 +320,13 @@
             imageUrl: item.imageUrl || '',
             topBackground: item.topBackground || ''
           };
+          // 内容热度埋点：新闻 / 活动 / 文章（用接口返回的 type 与 category 决定归类）
+          // content_views 的 objectType 是热点话题、文章、新闻、活动统一追踪的入口
+          if (window.GatteTrack) {
+            var gtType = item.type === 'news' ? 'news' : (item.type === 'event' ? 'event' : 'article');
+            var gtSec = item.category === 'pc' ? 'personal_care' : (item.category === 'pharma' ? 'pharma' : 'news');
+            GatteTrack.view(gtType, id, item.title, gtSec);
+          }
           // 顶部 meta 行：分类 / 日期（14 Aug 2026）/ 阅读时长（对齐原站 s-article__data）
           data.categoryLabel = item.type === 'event' ? 'Event' : 'News';
           if (item.publishedDate) {

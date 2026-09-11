@@ -530,7 +530,7 @@
                           <ul class="s-product-document__list">
                             <template v-for="(file, fi) in block.content.files" :key="'tds-'+fi">
                               <li v-if="isTdsDoc(file)" class="c-link c-link--document" :class="{ 'c-link--locked': file.isPublic === false }">
-                                <a v-if="file.isPublic !== false" class="c-link__link" :href="file.url" target="_blank">
+                                <a v-if="file.isPublic !== false" class="c-link__link" :data-gt-doc="file.fileId || ''" :href="file.url" target="_blank">
                                   <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </a>
                                 <span v-else class="c-link__link">
@@ -547,7 +547,7 @@
                           <ul class="s-product-document__list">
                             <template v-for="(file, fi) in block.content.files" :key="'bro-'+fi">
                               <li v-if="isBrochureDoc(file)" class="c-link c-link--document" :class="{ 'c-link--locked': file.isPublic === false }">
-                                <a v-if="file.isPublic !== false" class="c-link__link" :href="file.url" target="_blank">
+                                <a v-if="file.isPublic !== false" class="c-link__link" :data-gt-doc="file.fileId || ''" :href="file.url" target="_blank">
                                   <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </a>
                                 <span v-else class="c-link__link">
@@ -564,7 +564,7 @@
                           <ul class="s-product-document__list">
                             <template v-for="(file, fi) in block.content.files" :key="'for-'+fi">
                               <li v-if="isFormulaDoc(file)" class="c-link c-link--document" :class="{ 'c-link--locked': file.isPublic === false }">
-                                <a v-if="file.isPublic !== false" class="c-link__link" :href="file.url" target="_blank">
+                                <a v-if="file.isPublic !== false" class="c-link__link" :data-gt-doc="file.fileId || ''" :href="file.url" target="_blank">
                                   <div class="c-link__params"><span class="c-link__name">{{ file.title || file.url }}</span></div>
                                 </a>
                                 <span v-else class="c-link__link">
@@ -778,6 +778,7 @@
   </script>
   <script src="/static/js/api-260908.js"></script>
   <script src="/static/js/auth-260908.js"></script>
+  <script src="/static/js/track-260912.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     var id = params.get('id');
@@ -867,6 +868,8 @@
               url: '/personal-care/product-finder/product-detail.html?id=' + product.id,
               favUrl: '/account.html?url=/personal-care/product-finder/product-detail.html?id=' + id,
             };
+            // 内容热度埋点：个人护理原料（对象身份只有前端知道，page_views 只记得到页面路径）
+            if (window.GatteTrack) GatteTrack.view('pc_product', product.id, product.name, 'personal_care');
             // 加载产品规格（specInfo 是 JSON 字符串或对象）
             if (product.specInfo) {
               var spec = typeof product.specInfo === 'string' ? JSON.parse(product.specInfo) : product.specInfo;

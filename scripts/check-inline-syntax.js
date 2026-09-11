@@ -1,13 +1,17 @@
 /**
  * 前台内联脚本语法体检
  *
- * 用途：site/*.html 里的内联 <script> 一旦有语法错误，整个 Vue app 会静默挂载失败
+ * 用途：site/ 里的内联 <script> 一旦有语法错误，整个 Vue app 会静默挂载失败
  *      （页面 #app 空白，但在浏览器里只报一行 SyntaxError，很容易漏）。
  *      原本这类残骸多次出现在「静态模式」改造之后（axios(...).then(...) 被替换成
  *      console.log 但没删干净闭包体）。本脚本用 vm.Script 只编译不执行，全量体检。
  *
+ * ⚠️ 2026-09-12：改为**递归**扫描。此前只读 site/ 顶层，导致
+ *    site/personal-care/**・site/pharmaceuticals/** 下的详情页 —— 恰恰是内联脚本最长、
+ *    最容易挂的一批 —— 从未被体检过。新增页面无需改脚本。
+ *
  * 用法：
- *   node scripts/check-inline-syntax.js                  # 默认体检 site/*.html
+ *   node scripts/check-inline-syntax.js                  # 递归体检 site/ 下全部 .html
  *   node scripts/check-inline-syntax.js site/a.html ...  # 指定文件
  *
  * 退出码：全部通过 0，存在语法错误 1（可用于 CI / 提交前自检）
@@ -16,9 +20,22 @@ const fs = require('fs');
 const vm = require('vm');
 const path = require('path');
 
+/** 递归收集 site/ 下所有 .html（跳过点目录，如 .localize_tmp 备份） */
 function defaultTargets() {
-  const dir = path.join(__dirname, '..', 'site');
-  return fs.readdirSync(dir).filter((f) => f.endsWith('.html')).sort().map((f) => path.join('site', f));
+  const root = path.join(__dirname, '..');
+  const out = [];
+  const walk = (abs, rel) => {
+    let entries = [];
+    try { entries = fs.readdirSync(abs, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      if (e.name.startsWith('.')) continue;
+      const childRel = rel + '/' + e.name;
+      if (e.isDirectory()) walk(path.join(abs, e.name), childRel);
+      else if (e.name.toLowerCase().endsWith('.html')) out.push(childRel.replace(/^\//, ''));
+    }
+  };
+  walk(path.join(root, 'site'), 'site');
+  return out.sort();
 }
 
 const files = process.argv.slice(2).length ? process.argv.slice(2) : defaultTargets();

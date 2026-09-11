@@ -820,6 +820,10 @@ const QUILL_TOOLBAR = [
           <span class="nav-icon" data-page-node-id="k2yEj9LiRQP46FfBqZdLEj"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="Hhwqx2nk36hgei4bpKWcrU"><rect x="3" y="3" width="7" height="7" rx="1" data-page-node-id="2ZgK3fGwRqwDpqaqHeFHut"/><rect x="14" y="3" width="7" height="7" rx="1" data-page-node-id="9noRNWuXPHWavWqcZgQxuw"/><rect x="3" y="14" width="7" height="7" rx="1" data-page-node-id="X4scLs3XWNZdrzm2iIGFMg"/><rect x="14" y="14" width="7" height="7" rx="1" data-page-node-id="5H8Rzajx7q7NufxDo8u0mT"/></svg></span>
           总览
         </a>
+        <a class="nav-item" :class="{ active: currentPage === 'content-heat' }" @click="currentPage = 'content-heat'" data-page-node-id="NavContentHeat001">
+          <span class="nav-icon" data-page-node-id="NavContentHeatIcon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" data-page-node-id="NavContentHeatSvg"><line x1="18" y1="20" x2="18" y2="10" data-page-node-id="NavContentHeatL1"/><line x1="12" y1="20" x2="12" y2="4" data-page-node-id="NavContentHeatL2"/><line x1="6" y1="20" x2="6" y2="14" data-page-node-id="NavContentHeatL3"/></svg></span>
+          内容热度
+        </a>
         <div class="nav-section" data-page-node-id="Kum06zg2KJojKGaDD6PjHd"><div class="nav-section-title" data-page-node-id="GUM2geZgaSi5ah6GIXfOb8">产品管理</div></div>
         <div class="nav-parent" v-if="canModule('pc') || canModule('formula')" @click="pcMenuCollapsed = !pcMenuCollapsed"
           :class="{ active: currentPage === 'pc-list' || currentPage === 'pc-edit' || currentPage === 'formula-list' || currentPage === 'formula-edit' }" data-page-node-id="dwjXwpZK3ePISZH18Juu0R">
@@ -973,7 +977,7 @@ const QUILL_TOOLBAR = [
       <div class="content" data-page-node-id="wjtBdC1wtCmRiRy5jo3nIS">
 
         <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
-        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
           <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe>
         </div>
 
@@ -4804,6 +4808,7 @@ createApp({
         'lm-publications': '/admin/learn-more-standalone.html?tab=publications',
         'lm-brochures': '/admin/learn-more-standalone.html?tab=brochures',
         'lm-journees': '/admin/learn-more-standalone.html?tab=journees',
+        'content-heat': '/admin/content-heat-standalone.html',
       };
       return map[this.currentPage] || '';
     },
@@ -4845,6 +4850,7 @@ createApp({
         'lm-publications': '内容管理 / 了解更多 / 出版物',
         'lm-brochures': '内容管理 / 了解更多 / 资料手册',
         'lm-journees': '内容管理 / 了解更多 / Journées Galéniques',
+        'content-heat': '内容热度',
       };
       return m[this.currentPage] || '管理后台';
     },

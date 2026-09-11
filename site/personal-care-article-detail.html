@@ -8,6 +8,7 @@
     <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
     <script src="/static/js/axios.min.js"></script>
     <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/track-260912.js"></script>
 
     <!-- Global CSS -->
     <link rel="stylesheet" media="all"
@@ -517,6 +518,9 @@
                         .then(function (resp) {
                             if (resp.data.code === 0) {
                                 var item = resp.data.data;
+
+                                // 内容热度埋点：个人护理文章 / 热点话题（objectType 统一走 article）
+                                if (window.GatteTrack) GatteTrack.view('article', articleId, item.title, 'personal_care');
 
                                 // Parse tags
                                 var tagsList = [];

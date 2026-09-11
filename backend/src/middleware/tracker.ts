@@ -1,18 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
-import path from 'path';
 import { prisma } from '../utils/prisma';
-import { newWithFileOnly, defaultDbFile } from 'ip2region-ts';
 import { isSourceNoise } from '../utils/visit-filter';
+import { resolveRegion, resolveVisitorId } from '../utils/analytics';
 
 // 不统计的静态资源扩展名
 const EXCLUDED_EXTS = new Set([
   'css', 'js', 'mjs', 'map', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'svg', 'ico',
   'woff', 'woff2', 'ttf', 'eot', 'otf', 'txt', 'xml', 'json', 'pdf', 'mp4', 'webm',
 ]);
-
-// ip2region 搜索器（惰性初始化，进程级复用）
-let ipSearcher: ReturnType<typeof newWithFileOnly> | null = null;
 
 /**
  * 页面访问埋点中间件
@@ -43,11 +39,8 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
     const clientUa = req.headers['user-agent'] || '';
     if (isSourceNoise({ path: pathname, ip: clientIp, ua: clientUa })) return next();
 
-    // 访客标识：优先 cookie
-    let visitorId = (req.cookies as Record<string, string> | undefined)?.__gv || '';
-    if (!visitorId) {
-      visitorId = crypto.createHash('md5').update(clientIp + '|' + clientUa).digest('hex').slice(0, 16);
-    }
+    // 访客标识：优先 cookie（解析口径见 utils/analytics.ts，与 content_views 共用）
+    const { visitorId, fromCookie } = resolveVisitorId(req);
     const path = pathname === '/' ? '/(首页)' : pathname;
 
     // 口径过滤二：等响应结束，仅 200 才落库（异步链，失败不影响业务）
@@ -55,18 +48,7 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
       if (res.statusCode !== 200) return;
       Promise.resolve()
         .then(async () => {
-          let region: string | null = null;
-          try {
-            const searcher = ipSearcher || (ipSearcher = newWithFileOnly(defaultDbFile));
-            const r = await searcher.search(clientIp);
-            if (r && r.region) {
-              const parts = r.region.split('|');
-              const country = parts[0] && parts[0] !== '0' ? parts[0] : '';
-              const province = parts[2] && parts[2] !== '0' ? parts[2] : '';
-              if (country === '0' && province.includes('内网')) region = '内网|';
-              else if (country) region = country + '|' + province;
-            }
-          } catch { /* 解析失败忽略 */ }
+          const region = await resolveRegion(clientIp);
           return prisma.pageView.create({
             data: {
               path,
@@ -82,7 +64,7 @@ export function pageViewTracker(req: Request, res: Response, next: NextFunction)
     });
 
     // 下发访客 cookie（无则种一年）
-    if (!(req.cookies as Record<string, string> | undefined)?.__gv) {
+    if (!fromCookie) {
       res.cookie('__gv', crypto.randomUUID(), { maxAge: 365 * 24 * 3600 * 1000, sameSite: 'lax' });
     }
   } catch {

@@ -18,6 +18,7 @@
   <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/track-260912.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -290,7 +291,7 @@
                           <p class="c-card__summary">{{item.summary}}<br />
                           </p>
                           <div class="c-card__cta" v-if="item.pdfUrl">
-                            <a class="btn btn-primary" :href="item.url" :title="item.title" target="_blank">
+                            <a class="btn btn-primary" :href="item.url" :title="item.title" :data-gt-doc-name="item.title" target="_blank">
                               下载 (.pdf{{ item.pdfSizeText ? ' - ' + item.pdfSizeText : '' }})
                             </a>
                           </div>

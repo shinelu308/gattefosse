@@ -26,6 +26,7 @@ import orderPublicRoutes from './routes/order-public.routes';
 import blockRoutes from './routes/block.routes';
 import authorRoutes from './routes/authors.routes';
 import statsRoutes from './routes/stats.routes';
+import trackRoutes from './routes/track.routes';
 import systemRoutes from './routes/system.routes';
 import { bumpVersionOnBoot } from './utils/version';
 import { pageViewTracker } from './middleware/tracker';
@@ -111,6 +112,7 @@ app.use('/api/orders', orderPublicRoutes);
 app.use('/api/blocks', blockRoutes);
 app.use('/api/authors', authorRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/track', trackRoutes);
 app.use('/api/system', systemRoutes);
 
 // 404 处理
