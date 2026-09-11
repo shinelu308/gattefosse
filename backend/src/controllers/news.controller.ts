@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
 import { success, fail, paginate } from '../utils/response';
 import { getAiConfig, translateText, translateHtml, mapPool } from '../utils/ai-translate';
+import { applyContentPatches } from '../utils/content-patch';
 
 const NEWS_INCLUDE = {
   createdBy: { select: { id: true, fullName: true } },
@@ -727,4 +728,37 @@ export function aiTranslateStatus(req: Request, res: Response) {
     result: job.status === 'done' ? job.result : undefined,
     error: job.status === 'error' ? job.error : undefined,
   }));
+}
+
+/**
+ * 预览式原位编辑：内容补丁回填（2026-09-11）
+ * 后台预览编辑器只产出三类受限补丁（文本节点 / img src / 视频iframe src），
+ * 后端 jsdom 原位回填进 contentHtml——class/结构一个不动，版式 100% 保真。
+ * 逐补丁校验旧值，任何失败都不落库（全部成功才保存），返回失败明细。
+ */
+export async function applyContentPatchesHandler(req: Request, res: Response) {
+  try {
+    const id = parseInt(String(req.params.id), 10);
+    if (!id) return res.status(400).json(fail('缺少文章 ID'));
+    const patches = Array.isArray(req.body?.patches) ? req.body.patches : null;
+    if (!patches || !patches.length) return res.status(400).json(fail('缺少补丁数据'));
+
+    const item = await prisma.newsEvent.findUnique({ where: { id }, select: { id: true, contentHtml: true } });
+    if (!item) return res.status(404).json(fail('该内容不存在'));
+    if (!item.contentHtml) return res.status(400).json(fail('本文没有 HTML 正文，无法应用内容修改'));
+
+    const result = applyContentPatches(item.contentHtml, patches);
+    if (result.failed.length) {
+      return res.status(400).json(fail(
+        `${result.failed.length} 处修改应用失败（未保存）：` +
+        result.failed.map((f) => `第 ${f.index + 1} 处 ${f.reason}`).join('；')
+      ));
+    }
+
+    await prisma.newsEvent.update({ where: { id }, data: { contentHtml: result.html } });
+    return res.json(success({ applied: result.applied, html: result.html }, `已更新 ${result.applied} 处内容`));
+  } catch (error: any) {
+    console.error('内容补丁应用失败:', error);
+    return res.status(500).json(fail('内容修改失败：' + (error?.message || '未知错误')));
+  }
 }

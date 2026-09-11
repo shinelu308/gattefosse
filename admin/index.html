@@ -2769,10 +2769,24 @@ const QUILL_TOOLBAR = [
           <div class="card" data-page-node-id="fpSeT53Q1GvknOXRaFIOck">
             <div class="card-header" data-page-node-id="XDr7ig3VjRdx04G9o4gj71"><h3 data-page-node-id="xp8vjrtfYsYGq2ynBenWk1">正文内容</h3></div>
             <div class="card-body" data-page-node-id="YaJqNYGtNElMAJdFCAvTdf">
-              <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+                <button v-if="articleContentLocked" class="btn btn-sm" :class="articleContentMode==='preview' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('preview')">✏️ 预览编辑<span style="font-size:11px;background:#fff;color:#8EB73C;border:1px solid #8EB73C;border-radius:8px;padding:0 6px;margin-left:4px;">推荐</span></button>
                 <button class="btn btn-sm" :class="articleContentMode==='visual' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('visual')">可视化编辑</button>
                 <button class="btn btn-sm" :class="articleContentMode==='html' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('html')">HTML 源码</button>
-                <span v-if="articleContentLocked" style="font-size:12px;color:#B45309;">🔒 原站导入内容，已锁定源码模式（可视化编辑会破坏原站版式）</span>
+                <span v-if="articleContentLocked" style="font-size:12px;color:#B45309;">🔒 原站导入内容：推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变；可视化编辑会破坏版式已禁用</span>
+              </div>
+              <!-- 预览编辑（原站导入内容专用，2026-09-11） -->
+              <div v-show="articleContentMode==='preview'" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+                <div style="display:flex;gap:10px;align-items:center;padding:8px 12px;background:#f4f7ee;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+                  <span style="font-size:13px;font-weight:600;color:#3B6D11;">预览编辑</span>
+                  <span style="font-size:12px;color:var(--text-tertiary);">在下方页面中{{ articleContentLocked ? '' : '' }}点击文字改文字、点图片换图、点视频改链接</span>
+                  <span style="flex:1;"></span>
+                  <span v-if="previewPatches.length" style="font-size:12px;color:#B45309;font-weight:600;">已修改 {{ previewPatches.length }} 处（未保存）</span>
+                  <button class="btn btn-sm btn-primary" style="font-size:12px;" @click="savePreviewPatches" :disabled="!previewPatches.length || saving">保存修改</button>
+                  <button class="btn btn-sm btn-outline" style="font-size:12px;" @click="abandonPreviewChanges" :disabled="!previewPatches.length">放弃修改</button>
+                </div>
+                <iframe id="article-preview-iframe" style="display:block;width:100%;height:640px;border:0;background:#fff;" title="正文预览编辑"></iframe>
+                <div style="padding:6px 12px;background:#fafafa;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);">🔒 结构与版式锁定，仅文字 / 图片 / 视频链接可修改 · 修改直接入库，无需点页面底部「保存」</div>
               </div>
               <div :id="'article-quill-editor'" class="quill-editor" style="min-height:400px;" v-show="articleContentMode==='visual'" data-page-node-id="4ROjTL4kkyX1sKr24fpNKO"></div>
               <textarea class="form-control" v-model="editingArticle.contentHtml" v-show="articleContentMode==='html'" rows="22" style="font-family:monospace;font-size:13px;white-space:pre;" spellcheck="false"></textarea>
@@ -4176,7 +4190,7 @@ const QUILL_TOOLBAR = [
           </div>
           <div style="font-size:12px;color:var(--text-muted);background:#fafbfc;border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;">
             导入后保存为<strong>草稿</strong>（分类固定为个人护理 / 获取灵感），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
-            支持英文站（gattefosse.com）与中文站链接；导入内容含原站版式标记，会自动以 HTML 源码模式打开编辑。
+            支持英文站（gattefosse.com）与中文站链接；导入内容含原站版式标记，编辑时推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变。
           </div>
           <div v-if="articleImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: articleImportMsg.indexOf('✅')===0 ? 'var(--green)' : (articleImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ articleImportMsg }}</div>
         </div>
@@ -4356,6 +4370,7 @@ createApp({
       articleImport: { url: '' },
       articleContentMode: 'visual',
       articleContentLocked: false,
+      previewPatches: [],   // 预览编辑未保存的内容补丁（text/img/video，2026-09-11）
       editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] },
       articleTagInput: '',
       articleTagList: [],
@@ -7341,6 +7356,8 @@ createApp({
       this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] };
       this.articleContentMode = 'visual';
       this.articleContentLocked = false;
+      this.previewPatches = [];
+      if (this._previewBlobUrl) { try { URL.revokeObjectURL(this._previewBlobUrl); } catch(e) {} this._previewBlobUrl = null; }
       this.loadArticleTags();
       this.loadAuthorList();
       // 一页式布局：新增文章进入页面即初始化可视化编辑器
@@ -7352,7 +7369,11 @@ createApp({
     },
     setArticleContentMode(mode) {
       if (mode === 'visual' && this.articleContentLocked) {
-        this.showAlert('本文含原站导入的版式标记（.paragraph 等），可视化编辑会破坏版式，已锁定为 HTML 源码模式');
+        this.showAlert('本文含原站导入的版式标记（.paragraph 等），可视化编辑会破坏版式，请使用「预览编辑」或 HTML 源码');
+        return;
+      }
+      if (this.articleContentMode === 'preview' && mode !== 'preview' && this.previewPatches.length) {
+        this.showAlert('预览编辑还有 ' + this.previewPatches.length + ' 处未保存的修改，请先「保存修改」或「放弃修改」再切换模式');
         return;
       }
       if (mode === 'visual') {
@@ -7363,6 +7384,7 @@ createApp({
           this.editingArticle.contentHtml = this.articleQuill.root.innerHTML;
         }
         this.articleContentMode = mode;
+        if (mode === 'preview') this.$nextTick(this.openArticlePreview);
       }
     },
     editArticle(item) {
@@ -7405,19 +7427,27 @@ createApp({
         });
       }
       this.editingArticle = { ...item, tagsList, publishedDate: item.publishedDate ? new Date(item.publishedDate).toISOString().slice(0,10) : '', blocks: blocks };
-      // 原站导入内容锁定为源码模式（Quill 可视化会剥掉 .paragraph 等标记）
+      // 原站导入内容锁定（Quill 可视化会剥掉 .paragraph 等标记），默认进预览编辑（2026-09-11）
       this.articleContentLocked = this.isImportedArticleHtml(item.contentHtml);
-      this.articleContentMode = this.articleContentLocked ? 'html' : 'visual';
+      this.articleContentMode = this.articleContentLocked ? 'preview' : 'visual';
       this.loadArticleTags();
       this.loadAuthorList();
       this.currentPage = 'article-edit';
-      // 一页式布局：进入页面即初始化可视化编辑器（源码锁定模式除外）
-      this.$nextTick(() => { if (this.articleContentMode === 'visual') this.initArticleQuill(); });
+      // 一页式布局：进入页面即初始化可视化编辑器（锁定时初始化预览编辑）
+      this.$nextTick(() => {
+        if (this.articleContentMode === 'visual') this.initArticleQuill();
+        else if (this.articleContentMode === 'preview') this.openArticlePreview();
+      });
     },
     async saveArticle() {
       if (!this.editingArticle.title) { this.showAlert('标题不能为空'); return; }
       if (!this.editingArticle.publishedDate) { this.showAlert('发布日期不能为空'); return; }
       this.saving = true;
+      // 预览编辑有未保存修改：先落库再保存文章整体（失败则中止，防丢改动）
+      if (this.previewPatches.length) {
+        var patchesOk = await this.savePreviewPatches();
+        if (!patchesOk) { this.saving = false; return; }
+      }
       // 同步 Quill 内容（仅可视化模式）
       if (this.articleContentMode === 'visual' && this.articleQuill && this.articleQuill.root) {
         this.editingArticle.contentHtml = this.articleQuill.root.innerHTML;
@@ -7451,6 +7481,102 @@ createApp({
         else { await this.api('/news', { method: 'POST', body: JSON.stringify(payload) }); }
         this.currentPage = 'article-list'; this.loadArticleList();
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
+    },
+    // ==================== 预览式原位编辑（2026-09-11） ====================
+    // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-260911.js）只产出
+    // 三类受限补丁（文本节点/img src/视频 iframe src），保存时后端 jsdom 原位回填，版式 100% 保真。
+    buildPreviewDoc() {
+      var theme = this.editingArticle.themeClass || 'theme-cosm';
+      var content = this.editingArticle.contentHtml || '';
+      var cssList = [
+        '/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css',
+        '/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css',
+        '/sites/default/files/css/css_pPfrrsOwLXxDLw7-UYKDqFONEmjyh_dCi89ZBWzLKGc.css',
+        '/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css',
+        '/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css',
+        '/static/css/article-render-260909b.css',
+      ];
+      return '<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
+        + '<base href="' + window.location.origin + '/">'
+        + '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
+        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}</style></head><body>'
+        + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
+        + '<div class="adp-content node__content" id="cp-root">' + content + '</div>'
+        + '</article></main>'
+        + '<script src="/admin/preview-inline-260911.js"><\/script></body></html>';
+    },
+    openArticlePreview() {
+      var iframe = document.getElementById('article-preview-iframe');
+      if (!iframe) return;
+      this.previewPatches = [];
+      try {
+        var blob = new Blob([this.buildPreviewDoc()], { type: 'text/html' });
+        if (this._previewBlobUrl) { try { URL.revokeObjectURL(this._previewBlobUrl); } catch (e) {} }
+        this._previewBlobUrl = URL.createObjectURL(blob);
+        iframe.src = this._previewBlobUrl;
+      } catch (e) { this.showAlert('预览加载失败：' + e.message); }
+    },
+    async handlePreviewMessage(msg) {
+      if (!msg || msg.type !== 'patch' || !msg.patch) return;
+      var p = msg.patch;
+      if (p.kind === 'img') {
+        await this.uploadPreviewImage(p);
+      } else if (p.kind === 'text' || p.kind === 'video') {
+        this.upsertPreviewPatch(p);
+      }
+    },
+    upsertPreviewPatch(p) {
+      var key = p.kind + ':' + (p.path || []).map(function (s) { return s.i + ':' + s.tag; }).join('>');
+      var arr = this.previewPatches;
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i]._key === key) { arr[i].old = p.old; arr[i].next = p.next; return; }
+      }
+      arr.push({ _key: key, kind: p.kind, path: p.path, old: p.old, next: p.next });
+    },
+    async uploadPreviewImage(p) {
+      var iframe = document.getElementById('article-preview-iframe');
+      var post = function (type, extra) {
+        if (iframe && iframe.contentWindow) iframe.contentWindow.postMessage(Object.assign({ source: 'cp-host', type: type, path: p.path }, extra), '*');
+      };
+      try {
+        var m = /^data:([^;]+);base64,(.*)$/.exec(p.dataUrl || '');
+        if (!m) throw new Error('图片数据异常');
+        var bin = atob(m[2]);
+        var u8 = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+        var extM = /\.(jpe?g|png|webp|gif)$/i.exec(p.name || '');
+        var ext = extM ? (extM[1].toLowerCase() === 'jpeg' ? 'jpg' : extM[1].toLowerCase()) : 'png';
+        var fd = new FormData();
+        fd.append('file', new Blob([u8], { type: m[1] }), 'preview-edit-' + Date.now() + '.' + ext);
+        var data = await this.api('/upload/image', { method: 'POST', body: fd, noJson: true });
+        this.upsertPreviewPatch({ kind: 'img', path: p.path, old: p.old, next: data.url });
+        post('img-uploaded', { url: data.url });
+      } catch (e) {
+        post('img-failed', { msg: e.message });
+      }
+    },
+    async savePreviewPatches() {
+      if (!this.previewPatches.length) return true;
+      if (!this.editingArticle.id) { this.showAlert('请先保存文章基本信息后再应用内容修改'); return false; }
+      try {
+        var patches = this.previewPatches.map(function (p) {
+          return { type: p.kind, path: p.path, old: p.old, next: p.next };
+        });
+        var data = await this.api('/news/' + this.editingArticle.id + '/content-patches', { method: 'POST', body: JSON.stringify({ patches: patches }) });
+        this.editingArticle.contentHtml = data.html;
+        this.previewPatches = [];
+        this.openArticlePreview();
+        this.showAlert('已更新 ' + data.applied + ' 处内容，版式保持不变');
+        return true;
+      } catch (e) {
+        this.showAlert(e.message);
+        return false;
+      }
+    },
+    abandonPreviewChanges() {
+      this.previewPatches = [];
+      this.openArticlePreview();
     },
     // ---- 区块操作方法 ----
     addBlock(type) {
@@ -8323,6 +8449,10 @@ createApp({
       if (ev.data && ev.data.type === 'lm-open-pub-import') {
         this.openPublicationImport();
         this.publicationImport.fromIframe = true;
+      }
+      // 预览式原位编辑：预览 iframe 发来的内容补丁意图（2026-09-11）
+      if (ev.data && ev.data.source === 'cp-preview') {
+        this.handlePreviewMessage(ev.data);
       }
     });
     // 强制关闭所有 modal（防止刷新时弹框残留）

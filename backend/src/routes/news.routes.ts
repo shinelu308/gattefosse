@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth';
 import { requireRole } from '../middleware/role';
-import { listNews, getNewsItem, createNewsItem, updateNewsItem, deleteNewsItem, listNewsTags, incrementNewsViews, batchDeleteNews, aiTranslateNews, aiTranslateStatus } from '../controllers/news.controller';
+import { listNews, getNewsItem, createNewsItem, updateNewsItem, deleteNewsItem, listNewsTags, incrementNewsViews, batchDeleteNews, aiTranslateNews, aiTranslateStatus, applyContentPatchesHandler } from '../controllers/news.controller';
 import { importArticleFromSite, importPublicationsFromSite, backfillPublicationPdfs, importMagazinesFromSite, backfillMagazinePdfs, applyDocxTranslation, reverifyImportedArticle } from '../controllers/import.controller';
 import { uploadTranslationDoc } from '../middleware/upload';
 
@@ -29,6 +29,8 @@ router.get('/ai-translate/status/:jobId', authMiddleware, requireRole('editor', 
 router.post('/:id/ai-translate', authMiddleware, requireRole('editor', 'super_admin'), aiTranslateNews);
 // 重新校验已导入文章与原站的一致性
 router.post('/:id/reverify', authMiddleware, requireRole('editor', 'super_admin'), reverifyImportedArticle);
+// 预览式原位编辑：内容补丁回填（文本/图片/视频三类受限修改，版式保真）
+router.post('/:id/content-patches', authMiddleware, requireRole('editor', 'super_admin'), applyContentPatchesHandler);
 router.post('/:id/apply-docx', authMiddleware, requireRole('editor', 'super_admin'), uploadTranslationDoc.single('file'), applyDocxTranslation);
 router.post('/', authMiddleware, requireRole('editor', 'super_admin'), createNewsItem);
 router.put('/:id', authMiddleware, requireRole('editor', 'super_admin'), updateNewsItem);
