@@ -95,6 +95,33 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 .pagination button { min-width:28px; height:28px; border:1px solid #ddd; background:#fff; border-radius:4px; cursor:pointer; color:#555; }
 .pagination button.active { background:#8EB73C; color:#fff; border-color:#8EB73C; }
 .pagination button:disabled { opacity:.4; cursor:default; }
+
+/* ===== 导入器机器人（搬运机器人）2026-09-11 =====
+   素材：admin/static/img/robot-importer.png（与 admin/index.html 共用同一文件） */
+.bot { display:inline-block; flex:none; border-radius:50%; background-color:#EAF3DA;
+  background-image:url("/admin/static/img/robot-importer.png");
+  background-size:cover; background-position:50% 46%; background-repeat:no-repeat; }
+.bot-ico    { width:19px; height:19px; vertical-align:-4px; margin-right:5px; }
+.bot-badge  { width:26px; height:26px; box-shadow:0 0 0 2px #E3EED0; }
+.bot-avatar { width:34px; height:34px; box-shadow:0 0 0 2.5px #E3EED0; }
+.bot-figure { width:60px; height:60px; box-shadow:0 0 0 4px #F1F8E5; }
+.btn-bot { background:#f4f9e9; color:#5E7F22; border-color:#CFE2A6; }
+.btn-bot:hover { background:#EAF3DA; border-color:#B9D486; }
+.modal-header .mh-bot { display:flex; align-items:center; gap:11px; }
+.bot-tag { font-size:11px; font-weight:500; color:#5E7F22; background:#f4f9e9; border:1px solid #CFE2A6; border-radius:20px; padding:1px 9px; margin-left:4px; }
+.modal-accent { height:3px; border-radius:12px 12px 0 0; background:linear-gradient(90deg,#8EB73C,#B9D486 55%,#E3EED0); }
+.bot-tip { display:flex; gap:14px; align-items:flex-start; background:linear-gradient(180deg,#FAFCF4 0%,#FFFFFF 100%);
+  border:1px solid #E3EED0; border-radius:8px; padding:13px 15px; font-size:12px; color:#949494; line-height:1.8; }
+.bot-tip strong { color:#333; }
+.bot-tip .bot-figure { flex:none; }
+.imp-msg { font-size:12px; margin-top:8px; display:flex; align-items:flex-start; gap:7px; line-height:1.8; }
+.imp-msg .bot-badge { margin-top:1px; flex:none; }
+.imp-msg .imp-msg-text { white-space:pre-line; }
+.bot-lock { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:#B45309; line-height:1.7; }
+.bot-lock .bot-badge { width:22px; height:22px; }
+.btn-spin { display:inline-block; width:13px; height:13px; flex:none; margin-right:5px; vertical-align:-2px;
+  border-radius:50%; border:2px solid rgba(255,255,255,.45); border-top-color:#fff; animation:btn-spin .8s linear infinite; }
+@keyframes btn-spin { to { transform:rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -127,7 +154,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       <button class="btn btn-primary" @click="reloadList()">搜索</button>
       <button class="btn btn-outline" @click="keyword=''; filterArticleType=''; filterPublished=''; page=1; loadList();">重置</button>
       <button class="btn btn-primary" @click="openNew()">+ 新增{{ activeMeta.addLabel }}</button>
-      <button class="btn btn-slate" v-if="activeTab==='hot-topics' || activeTab==='publications' || activeTab==='journees'" @click="openImport()">⬇ 从原站导入</button>
+      <button class="btn btn-bot" v-if="activeTab==='hot-topics' || activeTab==='publications' || activeTab==='journees'" @click="openImport()"><i class="bot bot-ico"></i>从原站导入</button>
       <button class="btn btn-sm btn-danger" @click="batchDelete" :disabled="selectedIds.length === 0">批量删除 ({{ selectedIds.length }})</button>
     </div>
     <table>
@@ -371,7 +398,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <button v-if="contentLocked" class="btn btn-sm" :class="editMode==='preview' ? 'btn-primary' : 'btn-outline'" @click="setEditMode('preview')">✏️ 预览编辑<span style="font-size:11px;background:#fff;color:#8EB73C;border:1px solid #8EB73C;border-radius:8px;padding:0 6px;margin-left:4px;">推荐</span></button>
           <button class="btn btn-sm" :class="editMode==='visual' ? 'btn-primary' : 'btn-outline'" @click="setEditMode('visual')">可视化编辑</button>
           <button class="btn btn-sm" :class="editMode==='html' ? 'btn-primary' : 'btn-outline'" @click="setEditMode('html')">HTML 源码</button>
-          <span v-if="contentLocked" style="font-size:12px;color:#B45309;">🔒 原站导入内容：推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变；可视化编辑会破坏版式已禁用</span>
+          <span v-if="contentLocked" class="bot-lock"><i class="bot bot-badge"></i>原站导入内容：推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变；可视化编辑会破坏版式已禁用</span>
         </div>
         <!-- 预览编辑（原站导入内容专用，2026-09-11） -->
         <div v-show="editMode==='preview'" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
@@ -406,8 +433,13 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
   <!-- ============ 原站导入弹框（样式对齐 admin/index.html 基准） ============ -->
   <div v-if="showImport" ref="importOverlay" class="modal-overlay" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'import' : ''" @click="onOverlayClick($event, 'import')">
     <div class="modal" ref="importModal" style="width:600px;">
+      <div class="modal-accent"></div>
       <div class="modal-header">
-        <h3>{{ activeTab==='publications' ? '从原站导入出版物' : (activeTab==='journees' ? '从原站导入 Journées Galéniques 专题页' : '从原站导入文章') }}</h3>
+        <div class="mh-bot">
+          <i class="bot bot-avatar"></i>
+          <h3>{{ activeTab==='publications' ? '从原站导入出版物' : (activeTab==='journees' ? '从原站导入 Journées Galéniques 专题页' : '从原站导入文章') }}</h3>
+          <span class="bot-tag">搬运机器人</span>
+        </div>
         <button class="btn btn-sm" @click="showImport=false">✕</button>
       </div>
       <div class="modal-body">
@@ -421,10 +453,17 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             <label>抓取页数 <span class="hint">（每页约 9 条，首导建议 1 页试跑）</span></label>
             <input type="number" class="form-control" v-model="importMaxPages" min="1" max="30" style="max-width:120px;">
           </div>
-          <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
-            从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
+          <div class="bot-tip">
+            <i class="bot bot-figure"></i>
+            <div>
+              <strong>给我一个列表页，我一次搬一叠。</strong><br>
+              从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
+            </div>
           </div>
-          <div v-if="importMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
+          <div v-if="importMsg" class="imp-msg" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">
+            <i v-if="importMsg.indexOf('✅')===0" class="bot bot-badge"></i>
+            <span class="imp-msg-text">{{ importMsg }}</span>
+          </div>
           <div v-if="importItems.length" style="margin-top:8px;border:1px solid #e0e0e0;border-radius:6px;max-height:260px;overflow-y:auto;">
             <div v-for="(it, i) in importItems" :key="i" style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.7;">
               <div style="font-weight:500;">{{ it.status === 'ok' ? '✅' : (it.status === 'skipped' ? '⏭️' : (it.status === 'partial' ? '⚠️' : '❌')) }} {{ it.title }}</div>
@@ -438,12 +477,19 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             <label>{{ activeTab==='journees' ? '原站专题页链接' : '原站文章链接' }} <span class="hint">（{{ activeTab==='journees' ? 'Journées Galéniques 详情页地址' : '热点话题 / 了解更多文章详情页地址' }}）</span></label>
             <input type="text" class="form-control" v-model="importUrl" :placeholder="activeTab==='journees' ? 'https://www.gattefosse.com/journees-galeniques-xxx' : 'https://www.gattefosse.com/pharmaceuticals/learn-more/xxx'" @keyup.enter="doImport()">
           </div>
-          <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
-            <template v-if="activeTab==='journees'">导入后保存为<strong>专题页草稿</strong>（Journées Galéniques 专题页），正文图片自动下载到本站，页面主题色（如蓝色）一并带入，核对后发布。</template>
-            <template v-else>导入后保存为<strong>草稿</strong>（分类固定为热点话题），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
-            支持英文站（gattefosse.com）与中文站链接；导入内容含原站脱版标记，会自动以预览编辑模式打开（点选修改文字/图片/视频，版式保持不变）。</template>
+          <div class="bot-tip">
+            <i class="bot bot-figure"></i>
+            <div>
+              <strong>把链接丢给我，剩下的我来搬。</strong><br>
+              <template v-if="activeTab==='journees'">导入后保存为<strong>专题页草稿</strong>（Journées Galéniques 专题页），正文图片自动下载到本站，页面主题色（如蓝色）一并带入，核对后发布。</template>
+              <template v-else>导入后保存为<strong>草稿</strong>（分类固定为热点话题），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
+              支持英文站（gattefosse.com）与中文站链接；导入内容含原站脱版标记，会自动以预览编辑模式打开（点选修改文字/图片/视频，版式保持不变）。</template>
+            </div>
           </div>
-          <div v-if="importMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ importMsg }}</div>
+          <div v-if="importMsg" class="imp-msg" :style="{color: importMsg.indexOf('✅')===0 ? 'var(--green)' : (importMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">
+            <i v-if="importMsg.indexOf('✅')===0" class="bot bot-badge"></i>
+            <span class="imp-msg-text">{{ importMsg }}</span>
+          </div>
         </template>
       </div>
       <div class="modal-footer">
@@ -453,12 +499,12 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="openImportEditor()">打开编辑</button>
           <button v-if="importLastId && importMsg && importMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="importing" @click="reverifyImport()">{{ importing ? '校验中...' : '重新校验' }}</button>
           <button v-if="importMsg && importMsg.indexOf('✅')===0" class="btn btn-primary" @click="showImport=false">完成</button>
-          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()">{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
+          <button v-else class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl || importDoneUrl === importUrl.trim()"><span v-if="importing" class="btn-spin"></span><i v-else class="bot bot-ico"></i>{{ importing ? '正在抓取与下载图片...' : (importDoneUrl === importUrl.trim() ? '已导入' : '开始导入') }}</button>
         </template>
         <!-- 出版物批量导入 -->
         <template v-else>
           <button class="btn btn-outline" @click="showImport=false">关闭</button>
-          <button class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl">{{ importing ? '正在抓取与下载 PDF...' : '开始导入' }}</button>
+          <button class="btn btn-primary" @click="doImport()" :disabled="importing || !importUrl"><span v-if="importing" class="btn-spin"></span><i v-else class="bot bot-ico"></i>{{ importing ? '正在抓取与下载 PDF...' : '开始导入' }}</button>
         </template>
       </div>
     </div>

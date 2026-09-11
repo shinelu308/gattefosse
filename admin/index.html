@@ -634,6 +634,63 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 @media (max-width: 480px) {
   .login-card { width: 92vw; max-width: 420px; padding: 28px 20px; }
 }
+
+/* ===== 导入器机器人（搬运机器人）2026-09-11 =====
+   素材：admin/static/img/robot-importer.png（全站引用同一文件，浏览器只下一次）
+   圆形裁切靠 border-radius + background-size:cover，素材本身是浅绿圆底，无需抠图 */
+.bot {
+  display: inline-block; flex: none;
+  border-radius: 50%; background-color: #EAF3DA;
+  background-image: url("/admin/static/img/robot-importer.png");
+  background-size: cover; background-position: 50% 46%; background-repeat: no-repeat;
+}
+.bot-ico    { width: 19px; height: 19px; }
+.bot-badge  { width: 26px; height: 26px; box-shadow: 0 0 0 2px #E3EED0; }
+.bot-avatar { width: 34px; height: 34px; box-shadow: 0 0 0 2.5px #E3EED0; }
+.bot-figure { width: 60px; height: 60px; box-shadow: 0 0 0 4px #F1F8E5; }
+
+/* 入口按钮：浅绿底 + 机器人小头像（不与实心绿主按钮抢焦点） */
+.btn-bot { background: var(--green-light); color: #5E7F22; border-color: #CFE2A6; }
+.btn-bot:hover { background: #EAF3DA; border-color: #B9D486; }
+.btn-bot .bot-ico { margin-right: 1px; }
+
+/* 导入弹框标题行：头像 + 标题 + 「搬运机器人」小标签 */
+.modal-header .mh-bot { display: flex; align-items: center; gap: 11px; }
+.bot-tag {
+  font-size: 11px; font-weight: 500; color: #5E7F22;
+  background: var(--green-light); border: 1px solid #CFE2A6;
+  border-radius: 20px; padding: 1px 9px; margin-left: 4px;
+}
+/* 导入弹框顶部渐变细线（贴在圆角内） */
+.modal-accent {
+  height: 3px; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: linear-gradient(90deg, #8EB73C, #B9D486 55%, #E3EED0);
+}
+/* 机器人说明卡（替换原灰色提示块） */
+.bot-tip {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: linear-gradient(180deg, #FAFCF4 0%, #FFFFFF 100%);
+  border: 1px solid #E3EED0; border-radius: 8px;
+  padding: 13px 15px; font-size: 12px; color: var(--text-muted); line-height: 1.8;
+}
+.bot-tip strong { color: var(--text); }
+.bot-tip .bot-figure { flex: none; }
+
+/* 导入结果提示：成功时机器人交差（⚠️/❌ 不加，错误提示保持严肃） */
+.imp-msg { font-size: 12px; margin-top: 8px; display: flex; align-items: flex-start; gap: 7px; line-height: 1.8; }
+.imp-msg .bot-badge { margin-top: 1px; }
+.imp-msg .imp-msg-text { white-space: pre-line; }
+
+/* 原站导入内容锁定提示：机器人头像 + 文案 */
+.bot-lock { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #B45309; line-height: 1.7; }
+.bot-lock .bot-badge { width: 22px; height: 22px; }
+/* 导入中：主按钮内白色转圈 */
+.btn-spin {
+  width: 13px; height: 13px; flex: none; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.45); border-top-color: #fff;
+  animation: btn-spin .8s linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
 </style>
 
 <!-- Quill.js 富文本编辑器 CDN -->
@@ -2387,7 +2444,7 @@ const QUILL_TOOLBAR = [
                 <span style="flex:1;"></span>
                 <span style="font-size:13px;color:var(--text-muted);">共 {{ newsPagination.total }} 条</span>
                 <button v-if="selectedNewsIds.length > 0" class="btn btn-sm btn-danger" @click="batchDeleteNews">批量删除 ({{ selectedNewsIds.length }})</button>
-                <button class="btn btn-slate" @click="newsImportOpen = true; newsImportMsg = ''">⬇ 从原站导入</button>
+                <button class="btn btn-bot" @click="newsImportOpen = true; newsImportMsg = ''"><i class="bot bot-ico"></i>从原站导入</button>
                 <button class="btn btn-primary" @click="resetNewsEdit(); goPage('news-edit')" data-page-node-id="uH91bZ4kiFy0zHmGab67g9">+ 新增新闻</button>
               </div>
               <div v-if="selectedNewsIds.length > 0" style="font-size:12px;color:var(--text-secondary);margin-top:8px;">已选 {{ selectedNewsIds.length }} 项</div>
@@ -2590,7 +2647,7 @@ const QUILL_TOOLBAR = [
                 <button class="btn btn-primary" @click="loadArticleList()" data-page-node-id="wL3G0VOAZFxgDcjCc2Jmt3">搜索</button>
                 <button class="btn btn-outline" @click="articleFilter = { page:1, limit:20, keyword:'', articleType:'', isPublished:'' }; loadArticleList();" data-page-node-id="2ynIWezkxhhbtKZDIFrAbU">重置</button>
                 <button class="btn btn-primary" @click="currentPage='article-edit'; resetArticleEdit()" data-page-node-id="qOB3KiqDvBswc6RN08Mi87">+ 新增文章</button>
-                <button class="btn btn-slate" @click="articleImportOpen = true; articleImportMsg = ''; articleImport.url = ''">⬇ 从原站导入</button>
+                <button class="btn btn-bot" @click="articleImportOpen = true; articleImportMsg = ''; articleImport.url = ''"><i class="bot bot-ico"></i>从原站导入</button>
                 <span v-if="selectedArticleIds.length > 0" style="font-size:12px;color:var(--text-secondary);">已选 {{ selectedArticleIds.length }} 项</span>
                 <button class="btn btn-sm btn-danger" @click="batchDeleteArticle" :disabled="selectedArticleIds.length === 0" data-page-node-id="iiqacKuwfrlOmKpriYY1ye">批量删除 ({{ selectedArticleIds.length }})</button>
               </div>
@@ -2777,7 +2834,7 @@ const QUILL_TOOLBAR = [
                 <button v-if="articleContentLocked" class="btn btn-sm" :class="articleContentMode==='preview' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('preview')">✏️ 预览编辑<span style="font-size:11px;background:#fff;color:#8EB73C;border:1px solid #8EB73C;border-radius:8px;padding:0 6px;margin-left:4px;">推荐</span></button>
                 <button class="btn btn-sm" :class="articleContentMode==='visual' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('visual')">可视化编辑</button>
                 <button class="btn btn-sm" :class="articleContentMode==='html' ? 'btn-primary' : 'btn-outline'" @click="setArticleContentMode('html')">HTML 源码</button>
-                <span v-if="articleContentLocked" style="font-size:12px;color:#B45309;">🔒 原站导入内容：推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变；可视化编辑会破坏版式已禁用</span>
+                <span v-if="articleContentLocked" class="bot-lock"><i class="bot bot-badge"></i>原站导入内容：推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变；可视化编辑会破坏版式已禁用</span>
               </div>
               <!-- 预览编辑（原站导入内容专用，2026-09-11） -->
               <div v-show="articleContentMode==='preview'" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
@@ -3058,7 +3115,7 @@ const QUILL_TOOLBAR = [
                 <button class="btn btn-primary" @click="loadPublicationList()">搜索</button>
                 <button class="btn btn-outline" @click="publicationFilter = { page:1, limit:20, keyword:'', isPublished:'', articleType:'' }; loadPublicationList();">重置</button>
                 <button class="btn btn-primary" @click="currentPage='publication-edit'; resetPublicationEdit()">+ 新增出版物</button>
-                <button class="btn btn-slate" @click="openPublicationImport()">⬇ 从原站导入</button>
+                <button class="btn btn-bot" @click="openPublicationImport()"><i class="bot bot-ico"></i>从原站导入</button>
                 <button class="btn btn-sm btn-danger" @click="batchDeletePublications" :disabled="publicationSelectedIds.length === 0">批量删除 ({{ publicationSelectedIds.length }})</button>
               </div>
             </div>
@@ -3231,8 +3288,13 @@ const QUILL_TOOLBAR = [
         <!-- 出版物批量导入弹框（原站列表页 → 卡片解析 + PDF 入文档资源） -->
         <div v-if="publicationImport.open" class="modal-overlay is-open" @mousedown.self="!publicationImport.importing && (publicationImport.open = false)">
           <div class="modal" style="width:640px;max-height:86vh;overflow-y:auto;">
+            <div class="modal-accent"></div>
             <div class="modal-header">
-              <h3>从原站导入出版物</h3>
+              <div class="mh-bot">
+                <i class="bot bot-avatar"></i>
+                <h3>从原站导入出版物</h3>
+                <span class="bot-tag">搬运机器人</span>
+              </div>
               <button class="btn btn-sm" @click="publicationImport.open = false">✕</button>
             </div>
             <div class="modal-body">
@@ -3244,10 +3306,17 @@ const QUILL_TOOLBAR = [
                 <label>抓取页数 <span class="hint">（每页约 9 条，首导建议 1 页试跑）</span></label>
                 <input type="number" class="form-control" v-model="publicationImport.maxPages" min="1" max="30" style="width:120px;">
               </div>
-              <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
-                从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
+              <div class="bot-tip">
+                <i class="bot bot-figure"></i>
+                <div>
+                  <strong>给我一个列表页，我一次搬一叠。</strong><br>
+                  从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
+                </div>
               </div>
-              <div v-if="publicationImport.msg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: publicationImport.msg.indexOf('✅')===0 ? 'var(--green)' : (publicationImport.msg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ publicationImport.msg }}</div>
+              <div v-if="publicationImport.msg" class="imp-msg" :style="{color: publicationImport.msg.indexOf('✅')===0 ? 'var(--green)' : (publicationImport.msg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">
+                <i v-if="publicationImport.msg.indexOf('✅')===0" class="bot bot-badge"></i>
+                <span class="imp-msg-text">{{ publicationImport.msg }}</span>
+              </div>
               <div v-if="publicationImport.items.length" style="margin-top:8px;border:1px solid #e0e0e0;border-radius:6px;max-height:260px;overflow-y:auto;">
                 <div v-for="(it, i) in publicationImport.items" :key="i" style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.7;">
                   <div style="font-weight:500;">{{ it.status === 'ok' ? '✅' : (it.status === 'skipped' ? '⏭️' : (it.status === 'partial' ? '⚠️' : '❌')) }} {{ it.title }}</div>
@@ -3257,7 +3326,7 @@ const QUILL_TOOLBAR = [
             </div>
             <div class="modal-footer">
               <button class="btn btn-outline" @click="publicationImport.open = false">关闭</button>
-              <button class="btn btn-primary" @click="doPublicationImport()" :disabled="publicationImport.importing || !publicationImport.url">{{ publicationImport.importing ? '正在抓取与下载 PDF...' : '开始导入' }}</button>
+              <button class="btn btn-primary" @click="doPublicationImport()" :disabled="publicationImport.importing || !publicationImport.url"><span v-if="publicationImport.importing" class="btn-spin"></span><i v-else class="bot bot-ico"></i>{{ publicationImport.importing ? '正在抓取与下载 PDF...' : '开始导入' }}</button>
             </div>
           </div>
         </div>
@@ -3265,8 +3334,13 @@ const QUILL_TOOLBAR = [
         <!-- 杂志批量导入弹框（原站 addiactive 列表页 → 封面卡片解析） -->
         <div v-if="magazineImport.open" class="modal-overlay is-open" @mousedown.self="!magazineImport.importing && (magazineImport.open = false)">
           <div class="modal" style="width:640px;max-height:86vh;overflow-y:auto;">
+            <div class="modal-accent"></div>
             <div class="modal-header">
-              <h3>从原站导入 addiactive 杂志</h3>
+              <div class="mh-bot">
+                <i class="bot bot-avatar"></i>
+                <h3>从原站导入 addiactive 杂志</h3>
+                <span class="bot-tag">搬运机器人</span>
+              </div>
               <button class="btn btn-sm" @click="magazineImport.open = false">✕</button>
             </div>
             <div class="modal-body">
@@ -3278,10 +3352,17 @@ const QUILL_TOOLBAR = [
                 <label>抓取页数 <span class="hint">（每页约 6 期，全部抓完建议 5 页）</span></label>
                 <input type="number" class="form-control" v-model="magazineImport.maxPages" min="1" max="20" style="width:120px;">
               </div>
-              <div style="font-size:12px;color:#949494;background:#fafbfc;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;line-height:1.8;">
-                逐页抓取封面卡片：期号 / 标题 / 年份 / 封面图（自动本地化到 /uploads/magazines）。按<strong>期号去重</strong>（同期不同裁剪图视为同一条），保存为<strong>草稿</strong>。原站 addiactive 为会员专享，PDF 需登录后在各期详情页获取，可后续在编辑页填写 PDF 后用「杂志 PDF 归档」入文档资源。
+              <div class="bot-tip">
+                <i class="bot bot-figure"></i>
+                <div>
+                  <strong>一本一本地搬，期号自动去重。</strong><br>
+                  逐页抓取封面卡片：期号 / 标题 / 年份 / 封面图（自动本地化到 /uploads/magazines）。按<strong>期号去重</strong>（同期不同裁剪图视为同一条），保存为<strong>草稿</strong>。原站 addiactive 为会员专享，PDF 需登录后在各期详情页获取，可后续在编辑页填写 PDF 后用「杂志 PDF 归档」入文档资源。
+                </div>
               </div>
-              <div v-if="magazineImport.msg" style="font-size:12px;margin-top:8px;white-space:pre-line;line-height:1.8;" :style="{color: magazineImport.msg.indexOf('✅')===0 ? 'var(--green)' : (magazineImport.msg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ magazineImport.msg }}</div>
+              <div v-if="magazineImport.msg" class="imp-msg" :style="{color: magazineImport.msg.indexOf('✅')===0 ? 'var(--green)' : (magazineImport.msg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">
+                <i v-if="magazineImport.msg.indexOf('✅')===0" class="bot bot-badge"></i>
+                <span class="imp-msg-text">{{ magazineImport.msg }}</span>
+              </div>
               <div v-if="magazineImport.items.length" style="margin-top:8px;border:1px solid #e0e0e0;border-radius:6px;max-height:260px;overflow-y:auto;">
                 <div v-for="(it, i) in magazineImport.items" :key="i" style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.7;">
                   <div style="font-weight:500;">{{ it.status === 'ok' ? '✅' : (it.status === 'skipped' ? '⏭️' : '❌') }} {{ it.title }}</div>
@@ -3292,7 +3373,7 @@ const QUILL_TOOLBAR = [
             <div class="modal-footer">
               <button class="btn btn-outline" @click="magazineImport.open = false">关闭</button>
               <button class="btn btn-outline" @click="doMagazineBackfill()" :disabled="magazineImport.importing">杂志 PDF 归档</button>
-              <button class="btn btn-primary" @click="doMagazineImport()" :disabled="magazineImport.importing">{{ magazineImport.importing ? '正在抓取封面...' : '开始导入' }}</button>
+              <button class="btn btn-primary" @click="doMagazineImport()" :disabled="magazineImport.importing"><span v-if="magazineImport.importing" class="btn-spin"></span><i v-else class="bot bot-ico"></i>{{ magazineImport.importing ? '正在抓取封面...' : '开始导入' }}</button>
             </div>
           </div>
         </div>
@@ -3311,7 +3392,7 @@ const QUILL_TOOLBAR = [
                 <button class="btn btn-primary" @click="loadMagazineList()" data-page-node-id="GHZdLbQCbBOIJcXA4ORv6h">搜索</button>
                 <button class="btn btn-outline" @click="magazineFilter = { page:1, limit:20, keyword:'', isPublished:'' }; loadMagazineList();" data-page-node-id="1sNsrYK3bnC4n0Q6EieOFk">重置</button>
                 <button class="btn btn-primary" @click="currentPage='magazine-edit'; resetMagazineEdit()" style="margin-left:auto;" data-page-node-id="FUO0QfRHLnIDkeZZXx97Az">+ 新增杂志</button>
-                <button class="btn btn-primary" @click="openMagazineImport()" style="background:#54616C;border-color:#54616C;" data-page-node-id="FUO0QfRHLnIDkeZZXx97Bz">从原站导入</button>
+                <button class="btn btn-bot" @click="openMagazineImport()" data-page-node-id="FUO0QfRHLnIDkeZZXx97Bz"><i class="bot bot-ico"></i>从原站导入</button>
               </div>
             </div>
             <table class="table" data-page-node-id="Q2KM3DF5725a4n7v7ejrFu">
@@ -4147,8 +4228,13 @@ const QUILL_TOOLBAR = [
     <!-- 原站导入弹框（新闻与活动） -->
     <div class="modal-overlay" :class="{'is-open': newsImportOpen}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'newsImport' : ''" @click="onOverlayClick($event, 'newsImport')">
       <div class="modal" style="width:600px;">
+        <div class="modal-accent"></div>
         <div class="modal-header">
-          <h3>从原站导入新闻/活动</h3>
+          <div class="mh-bot">
+            <i class="bot bot-avatar"></i>
+            <h3>从原站导入新闻/活动</h3>
+            <span class="bot-tag">搬运机器人</span>
+          </div>
           <button class="btn btn-sm" @click="newsImportOpen=false">✕</button>
         </div>
         <div class="modal-body">
@@ -4164,18 +4250,25 @@ const QUILL_TOOLBAR = [
               <option value="pharma">药用辅料</option>
             </select>
           </div>
-          <div style="font-size:12px;color:var(--text-muted);background:#fafbfc;border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;">
-            导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
-            英文站（gattefosse.com）导入后为英文稿；中文站（gattefossechina.cn）直接取中文内容，并自动识别新闻/活动类型与分类（面板所选分类仅作兜底）。
+          <div class="bot-tip">
+            <i class="bot bot-figure"></i>
+            <div>
+              <strong>把链接丢给我，剩下的我来搬。</strong><br>
+              导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
+              英文站（gattefosse.com）导入后为英文稿；中文站（gattefossechina.cn）直接取中文内容，并自动识别新闻/活动类型与分类（面板所选分类仅作兜底）。
+            </div>
           </div>
-          <div v-if="newsImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : (newsImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ newsImportMsg }}</div>
+          <div v-if="newsImportMsg" class="imp-msg" :style="{color: newsImportMsg.indexOf('✅')===0 ? 'var(--green)' : (newsImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">
+            <i v-if="newsImportMsg.indexOf('✅')===0" class="bot bot-badge"></i>
+            <span class="imp-msg-text">{{ newsImportMsg }}</span>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" @click="newsImportOpen=false">取消</button>
           <button v-if="newsImportLastId && newsImportMsg && newsImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="newsImporting" @click="openNewsImportEditor()">打开编辑</button>
           <button v-if="newsImportLastId && newsImportMsg && newsImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="newsImporting" @click="reverifyNewsImport()">{{ newsImporting ? '校验中...' : '重新校验' }}</button>
           <button v-if="newsImportMsg && newsImportMsg.indexOf('✅')===0" class="btn btn-primary" @click="newsImportOpen=false">完成</button>
-          <button v-else class="btn btn-primary" :disabled="newsImporting || !newsImport.url || newsImportDoneUrl === newsImport.url.trim()" @click="importNewsFromSite()">{{ newsImporting ? '导入中...' : (newsImportDoneUrl === newsImport.url.trim() ? '已导入' : '开始导入') }}</button>
+          <button v-else class="btn btn-primary" :disabled="newsImporting || !newsImport.url || newsImportDoneUrl === newsImport.url.trim()" @click="importNewsFromSite()"><span v-if="newsImporting" class="btn-spin"></span><i v-else class="bot bot-ico"></i>{{ newsImporting ? '导入中...' : (newsImportDoneUrl === newsImport.url.trim() ? '已导入' : '开始导入') }}</button>
         </div>
       </div>
     </div>
@@ -4183,8 +4276,13 @@ const QUILL_TOOLBAR = [
     <!-- 原站导入弹框（获取灵感 / 文章） -->
     <div class="modal-overlay" :class="{'is-open': articleImportOpen}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'articleImport' : ''" @click="onOverlayClick($event, 'articleImport')">
       <div class="modal" style="width:600px;">
+        <div class="modal-accent"></div>
         <div class="modal-header">
-          <h3>从原站导入文章</h3>
+          <div class="mh-bot">
+            <i class="bot bot-avatar"></i>
+            <h3>从原站导入文章</h3>
+            <span class="bot-tag">搬运机器人</span>
+          </div>
           <button class="btn btn-sm" @click="articleImportOpen=false">✕</button>
         </div>
         <div class="modal-body">
@@ -4192,17 +4290,24 @@ const QUILL_TOOLBAR = [
             <label>原站文章链接 <span class="hint">（获取灵感 / 专栏文章详情页地址）</span></label>
             <input type="text" class="form-control" v-model="articleImport.url" placeholder="https://www.gattefosse.com/inspirations/xxx" @keyup.enter="importArticleFromSite()">
           </div>
-          <div style="font-size:12px;color:var(--text-muted);background:#fafbfc;border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;">
-            导入后保存为<strong>草稿</strong>（分类固定为个人护理 / 获取灵感），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
-            支持英文站（gattefosse.com）与中文站链接；导入内容含原站版式标记，编辑时推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变。
+          <div class="bot-tip">
+            <i class="bot bot-figure"></i>
+            <div>
+              <strong>把链接丢给我，剩下的我来搬。</strong><br>
+              导入后保存为<strong>草稿</strong>（分类固定为个人护理 / 获取灵感），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
+              支持英文站（gattefosse.com）与中文站链接；导入内容含原站版式标记，编辑时推荐用「预览编辑」点选修改文字/图片/视频，版式自动保持不变。
+            </div>
           </div>
-          <div v-if="articleImportMsg" style="font-size:12px;margin-top:8px;white-space:pre-line;" :style="{color: articleImportMsg.indexOf('✅')===0 ? 'var(--green)' : (articleImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">{{ articleImportMsg }}</div>
+          <div v-if="articleImportMsg" class="imp-msg" :style="{color: articleImportMsg.indexOf('✅')===0 ? 'var(--green)' : (articleImportMsg.indexOf('⚠️')===0 ? '#b45309' : 'var(--red)')}">
+            <i v-if="articleImportMsg.indexOf('✅')===0" class="bot bot-badge"></i>
+            <span class="imp-msg-text">{{ articleImportMsg }}</span>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" @click="articleImportOpen=false">取消</button>
           <button v-if="articleImportLastId && articleImportMsg && articleImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="articleImporting" @click="openImportedEditor()">打开编辑</button>
           <button v-if="articleImportLastId && articleImportMsg && articleImportMsg.indexOf('⚠️')===0" class="btn btn-outline" :disabled="articleImporting" @click="reverifyArticleImport()">{{ articleImporting ? '校验中...' : '重新校验' }}</button>
-          <button class="btn btn-primary" :disabled="articleImporting || !articleImport.url || articleImportDoneUrl === articleImport.url.trim()" @click="importArticleFromSite()">{{ articleImporting ? '导入中...' : (articleImportDoneUrl === articleImport.url.trim() ? '已导入' : '开始导入') }}</button>
+          <button class="btn btn-primary" :disabled="articleImporting || !articleImport.url || articleImportDoneUrl === articleImport.url.trim()" @click="importArticleFromSite()"><span v-if="articleImporting" class="btn-spin"></span><i v-else class="bot bot-ico"></i>{{ articleImporting ? '导入中...' : (articleImportDoneUrl === articleImport.url.trim() ? '已导入' : '开始导入') }}</button>
         </div>
       </div>
     </div>
