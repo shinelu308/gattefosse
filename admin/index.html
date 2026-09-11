@@ -5076,7 +5076,9 @@ createApp({
       const data = src.map(r => ({ name: isChina ? (PROV_FULL[r.name] || r.name) : (COUNTRY_EN[r.name] || r.name), value: r.pv }));
       const maxV = Math.max(1, ...data.map(d => d.value));
       this.regionChart.setOption({
-        tooltip: { trigger: 'item', formatter: p => (p.value != null ? (p.name + '：' + p.value + ' 次') : p.name) },
+        // ⚠️ 未计数地区 echarts 给的是 NaN，而 `NaN != null` 恒为 true → 此前直接印出「NaN 次」。
+        // 必须用 Number.isFinite 判断（同时挡掉 NaN / Infinity / undefined / null）。
+        tooltip: { trigger: 'item', formatter: p => (Number.isFinite(p.value) ? p.name + '：' + p.value + ' 次' : p.name + '：暂无数据') },
         visualMap: {
           min: 0, max: maxV, left: 'left', top: 'bottom',
           text: ['高', '低'], calculable: false,
