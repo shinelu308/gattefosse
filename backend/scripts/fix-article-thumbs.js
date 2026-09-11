@@ -35,7 +35,10 @@ const ONLY = (process.argv.find((a) => a.startsWith('--only=')) || '').split('='
 const ONLY_IDS = ONLY ? ONLY.split(',').map((s) => parseInt(s.trim(), 10)).filter(Boolean) : null;
 
 const CARD_RATIO = 369 / 208;   // 1.7740
-const TOLERANCE = 0.15;         // 偏差 15% 以内视为已是卡片图
+// 原站卡片图是像素级精确的 369×208（同比例的 738×416 也算），所以容差要收紧：
+// 3% 足以容纳等比例的其他尺寸裁剪，同时能识破「比例碰巧接近」的详情页 banner
+// （1033「气候适应型美容」的 1440×900 = 1.600，偏差 9.8%，用 15% 会误判成已是卡片图）
+const TOLERANCE = 0.03;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
