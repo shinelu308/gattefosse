@@ -329,6 +329,9 @@
                                         </div>
                                     </div>
 
+                                    <!-- Subtitle（原站 s-article__subtitle，标题正下方灰色大写小字，2026-09-11） -->
+                                    <div v-if="article.subtitle" class="s-article__subtitle" style="margin-bottom:1.6rem;">{{ article.subtitle }}</div>
+
                                     <!-- Summary -->
                                     <!-- Summary section (matching original Drupal .s-article__subtitle + .block-accroche) -->
                                     <div v-if="article.summary && article.showSummary !== false" class="adp-summary-wrap" data-page-node-id="s6gHma35OvjDMCgCwVKiEs">
@@ -551,7 +554,8 @@
                                 // （部分文章如 bioactive 的导语就是正文首段，原站不渲染该块；若重复显示会与原站不一致）
                                 var showSummary = true;
                                 if (summaryText && summaryText.length > 20) {
-                                    var norm = function (s) { return (s || '').replace(/\s+/g, '').toLowerCase(); };
+                                    // ⚠️ 归一化去所有非文字字符：摘要与正文可能标点不同（。vs ，）、被截断带省略号（2026-09-11 CO2 案例）
+                                    var norm = function (s) { return (s || '').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, ''); };
                                     var sample = norm(summaryText).substring(0, 50);
                                     if (sample && norm(item.contentHtml).indexOf(sample) !== -1) showSummary = false;
                                 }

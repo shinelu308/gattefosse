@@ -190,6 +190,7 @@ export async function createNewsItem(req: Request, res: Response) {
       title,
       slug,
       summary,
+      subtitle,
       contentHtml,
       imageUrl,
       readingTime,
@@ -234,6 +235,7 @@ export async function createNewsItem(req: Request, res: Response) {
         title,
         slug: slug || null,
         summary: summary || null,
+        subtitle: subtitle || null,
         contentHtml: contentHtml || null,
         imageUrl: imageUrl || null,
         readingTime: readingTime || null,
@@ -295,6 +297,7 @@ export async function updateNewsItem(req: Request, res: Response) {
       title,
       slug,
       summary,
+      subtitle,
       contentHtml,
       imageUrl,
       readingTime,
@@ -325,6 +328,7 @@ export async function updateNewsItem(req: Request, res: Response) {
     if (title !== undefined) updateData.title = title;
     if (slug !== undefined) updateData.slug = slug || null;
     if (summary !== undefined) updateData.summary = summary || null;
+    if (subtitle !== undefined) updateData.subtitle = subtitle || null;
     if (contentHtml !== undefined) updateData.contentHtml = contentHtml || null;
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl || null;
     if (readingTime !== undefined) updateData.readingTime = readingTime || null;

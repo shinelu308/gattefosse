@@ -205,6 +205,10 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
           <label>Slug/URL</label>
           <input class="form-control" v-model="editing.slug" placeholder="自动生成或手动输入">
         </div>
+        <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='journees'">
+          <label>副标题 <span class="hint">（原站 s-article__subtitle，前台标题下灰色大写小字，留空不显示）</span></label>
+          <input class="form-control" v-model="editing.subtitle" placeholder="如：An eco-friendly extractive solution">
+        </div>
         <div class="form-group" v-if="activeTab==='hot-topics' || activeTab==='publications'">
           <label>文章子类型</label>
           <select class="form-control" style="max-width:300px;" v-model="editing.articleType">
@@ -669,6 +673,7 @@ createApp({
     defaultEditing() {
       return {
         id: null, title: '', slug: '', publishedDate: todayStr(), imageUrl: '', topBackground: '', summary: '',
+        subtitle: '',
         articleType: this.activeTab === 'brochures' ? '资料手册' : '',
         contentHtml: '', videoUrl: '', pdfUrl: '', publicationName: '', authorName: '', authorId: '',
         lock: false, isPublished: false, tagsText: '', tags: null, readingTime: null,
@@ -943,6 +948,7 @@ createApp({
         imageUrl: item.imageUrl || '',
         topBackground: item.topBackground || '',
         summary: item.summary || '',
+        subtitle: item.subtitle || '',
         articleType: this.activeTab === 'brochures' ? '资料手册' : (item.articleType || ''),
         contentHtml: item.contentHtml || '',
         videoUrl: item.videoUrl || '',
@@ -1122,6 +1128,7 @@ createApp({
         type: m.type,
         category: 'pharma',
         title: this.editing.title,
+        subtitle: this.editing.subtitle || null,
         summary: this.editing.summary || null,
         imageUrl: this.editing.imageUrl || null,
         topBackground: this.activeTab === 'hot-topics' ? (this.editing.topBackground || null) : undefined,

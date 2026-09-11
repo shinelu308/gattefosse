@@ -2652,6 +2652,10 @@ const QUILL_TOOLBAR = [
                 <label data-page-node-id="QCg9PTSfkDyrnuf38gGWrk">Slug/URL</label>
                 <input class="form-control" v-model="editingArticle.slug" placeholder="自动生成或手动输入" data-page-node-id="5DUtYLzslFM5wOMCPHBLXX">
               </div>
+              <div class="form-group">
+                <label>副标题 <span class="hint">（原站 s-article__subtitle，前台标题下灰色大写小字，留空不显示）</span></label>
+                <input class="form-control" v-model="editingArticle.subtitle" placeholder="如：An eco-friendly extractive solution">
+              </div>
               <div class="form-group" data-page-node-id="vIF5iYUCLmXsyHNZLNf7uX">
                 <label data-page-node-id="MR4hWgbg38DDjJtCZjZ8MP">文章子类型</label>
                 <select class="form-control" v-model="editingArticle.articleType" data-page-node-id="99xpxr6tgBShxK0h5pP7Uk">
@@ -7353,7 +7357,7 @@ createApp({
     resetArticleEdit() {
       var self = this;
       if (this.articleQuill) { this.articleQuill.container.remove(); this.articleQuill = null; }
-      this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] };
+      this.editingArticle = { id: null, type: 'article', category: 'pc', title: '', slug: '', subtitle: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: new Date().toISOString().slice(0,10), isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] };
       this.articleContentMode = 'visual';
       this.articleContentLocked = false;
       this.previewPatches = [];

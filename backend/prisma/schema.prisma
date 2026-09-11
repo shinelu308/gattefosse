@@ -194,6 +194,7 @@ model NewsEvent {
   title          String
   slug           String?
   summary        String?
+  subtitle       String?   // 副标题（原站 s-article__subtitle，标题下灰色大写小字，2026-09-11）
   contentHtml    String?   @map("content_html")
   imageUrl       String?   @map("image_url")
   topBackground  String?   @map("top_background")  // 文章页头图（hero image）

@@ -277,9 +277,12 @@
                                         </div>
                                     </div>
 
+                                    <!-- Subtitle（原站 s-article__subtitle，标题正下方灰色大写小字，2026-09-11） -->
+                                    <div v-if="article.subtitle" class="s-article__subtitle" style="margin-bottom:1.6rem;">{{ article.subtitle }}</div>
+
                                     <!-- Summary -->
                                     <!-- Summary section (matching original Drupal .s-article__subtitle + .block-accroche) -->
-                                    <div v-if="article.summary" class="adp-summary-wrap">
+                                    <div v-if="article.summary && article.showSummary !== false" class="adp-summary-wrap">
                                         <div>
                                             <div class="s-article__subtitle"><span>{{ article.summaryLabel || '' }}</span></div>
                                         </div>
@@ -497,6 +500,15 @@
                                 // 阅读进度圆窗：取正文第一张图
                                 var orbImgM = /<img[^>]*\ssrc="([^"]+)"/.exec(processedContent);
 
+                                // 导语去重：原站仅在摘要与正文不重复时显示 accroche 块（2026-09-11 与 PC 详情页对齐）
+                                var showSummary = true;
+                                if (summaryText && summaryText.length > 20) {
+                                    // ⚠️ 归一化去所有非文字字符：摘要与正文可能标点不同（。vs ，）、被截断带省略号（2026-09-11 CO2 案例）
+                                    var norm = function (s) { return (s || '').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, ''); };
+                                    var sample = norm(summaryText).substring(0, 50);
+                                    if (sample && norm(item.contentHtml).indexOf(sample) !== -1) showSummary = false;
+                                }
+
                                 self.article = Object.assign({}, item, {
                                     // hero 仅在原站真 banner（topBackground）存在时显示；
                                     // 无 banner 版式（部分热点话题）与原站一致：无顶部大图，正文插图自然呈现
@@ -504,6 +516,7 @@
                                     tagsList: tagsList,
                                     displayDate: displayDate,
                                     summaryLabel: summaryLabel,
+                                    showSummary: showSummary,
                                     contentHtml: rawContent,
                                     processedContentHtml: processedContent,
                                     blocks: blocks,

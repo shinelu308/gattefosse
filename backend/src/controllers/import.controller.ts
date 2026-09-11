@@ -346,6 +346,15 @@ export async function importArticleFromSite(req: Request, res: Response) {
   if (!contentDiv) return res.status(400).json(fail('正文容器解析失败'));
   const children = splitChildDivs(contentDiv);
 
+  // 3.1 副标题（s-article__subtitle）：标题正下方的灰色大写小字，位于 node__content 之外，需单独提取（2026-09-11）
+  let subtitle = '';
+  const subtitleStart = articleDiv.indexOf('s-article__subtitle');
+  if (subtitleStart >= 0) {
+    const subDivOpen = articleDiv.lastIndexOf('<div', subtitleStart);
+    const subtitleDiv = subDivOpen >= 0 ? extractBalancedDiv(articleDiv, subDivOpen) : null;
+    if (subtitleDiv) subtitle = stripTags(subtitleDiv).trim();
+  }
+
   // 3.5 封面大图：page-top__image 的背景图（原站文章专用 banner 裁剪，1140×405）
   // 优先于正文首图——正文首图常是 6000px 原始大图，直接当列表封面会模糊/比例失衡
   const uploadDir = path.resolve(__dirname, '../../uploads/articles');
@@ -627,6 +636,7 @@ export async function importArticleFromSite(req: Request, res: Response) {
       title,
       slug: slugBase,
       summary: summary || null,
+      subtitle: subtitle || null,
       contentHtml,
       imageUrl: thumbLocal || coverLocal || firstLocal,
       topBackground: coverLocal || null,
