@@ -296,7 +296,20 @@
   }
 
   // ---------- 事件接管 ----------
+  // ⚠️ 拖选保护（2026-09-11 用户反馈）：在浮层输入框里向左拖选内容滑出浮层边界时，
+  // 浏览器把 click 派发到浮层外的共同祖先，会误触发「点击浮层外关闭」。
+  // 记录 mousedown 起点：从浮层内开始的按下-拖动-抬起全程不触发浮层外点击逻辑。
+  var mouseDownAt = null; // 'pop' | 'outside' | null
+  document.addEventListener('mousedown', function (e) {
+    mouseDownAt = (pop && (pop === e.target || pop.contains(e.target))) ? 'pop' : 'outside';
+  }, true);
+  document.addEventListener('mouseup', function () {
+    // click 在 mouseup 后同步派发，延迟复位保证 click 能读到本次按下的起点
+    setTimeout(function () { mouseDownAt = null; }, 0);
+  }, true);
+
   document.addEventListener('mouseover', function (e) {
+    if (mouseDownAt) { clearHover(); return; } // 拖选中不高亮，避免选文字时闪框
     var t = hitTarget(e.target);
     if (t) {
       var el = t.kind === 'text' ? (t.el.nodeType === 3 ? t.el.parentNode : t.el) : t.el;
@@ -307,6 +320,9 @@
   document.addEventListener('mouseout', function (e) { clearHover(); }, true);
 
   document.addEventListener('click', function (e) {
+    // 浮层内开始的按下（含拖选滑出）：交给浮层自身，不关闭、不弹新浮层
+    if (mouseDownAt === 'pop') { mouseDownAt = null; return; }
+    mouseDownAt = null;
     // 浮层内点击放行
     if (pop && (pop === e.target || pop.contains(e.target))) return;
     // 阻止一切跳转/交互
