@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>了解更多 — 药用辅料内容管理</title>
 <script src="/admin/static/js/vue.global.prod.js"></script>
-<script src="/admin/static/js/admin-dialog.js"></script>
+<script src="/admin/static/js/admin-dialog-260911.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <style>
@@ -122,6 +122,41 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 .btn-spin { display:inline-block; width:13px; height:13px; flex:none; margin-right:5px; vertical-align:-2px;
   border-radius:50%; border:2px solid rgba(255,255,255,.45); border-top-color:#fff; animation:btn-spin .8s linear infinite; }
 @keyframes btn-spin { to { transform:rotate(360deg); } }
+
+/* ===== 机器人动效（四机位 · 2026-09-11）=====
+   素材 /admin/static/video/robots/{importer,translator,editor,publisher}.mp4
+   480×480 · 4.04s · 无音轨 · 合计 224KB。无 alpha 通道，但画面背景 #F2F3EE 与后台浅色卡片
+   色差仅 2~6/255，方形可直接放置，无需抠图。
+   ⚠️ 尺寸规则：≥56px 立绘位不放大（--z:1，保住箱子徽章/「语」气泡/✓/纸飞机）；
+      24~44px 头像位圆形裁切 + 放大（各机位 --z 不同） */
+.bot-v { position: relative; display: inline-block; flex: none; overflow: hidden;
+  border-radius: 50%; background: #F2F3EE; line-height: 0; pointer-events: none; }
+.bot-v > video { position: absolute; left: 50%; top: 50%; width: 100%; height: 100%;
+  transform: translate(-50%,-50%) scale(var(--z, 1.30));
+  object-fit: cover; object-position: var(--p, 50% 50%); }
+.bot-v.importer   > video { --z: 1.30; --p: 52% 52%; }
+.bot-v.translator > video { --z: 1.42; --p: 50% 50%; }
+.bot-v.editor     > video { --z: 1.30; --p: 50% 50%; }
+.bot-v.publisher  > video { --z: 1.36; --p: 50% 50%; }
+.bot-v-24 { width: 24px; height: 24px; }
+.bot-v-28 { width: 28px; height: 28px; }
+.bot-v-44 { width: 44px; height: 44px; box-shadow: 0 0 0 2.5px #E3EED0; }
+.bot-v-56 { width: 56px; height: 56px; box-shadow: 0 0 0 3px #E3EED0; }
+.bot-v-110 { width: 110px; height: 110px; }
+/* 立绘位（方形不放大） */
+.bot-v-sq { border-radius: 12px; }
+.bot-v-sq > video { --z: 1; }
+.bot-tip .bot-v { flex: none; }
+/* 首页「数字营销产线 · 四机位」总览卡 */
+.pl-card { border-color: #E3EED0; background: linear-gradient(180deg,#FAFCF4 0%,#FFFFFF 70%); }
+.pl-card .card-header { display: flex; align-items: center; justify-content: space-between; }
+.pl-card .card-header .pl-sub { font-size: 12px; color: var(--text-muted); }
+.pl-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pl-col { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
+.pl-col .nm { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.pl-col .ds { font-size: 11px; color: var(--text-muted); text-align: center; line-height: 1.55; }
+.pl-col .arw { position: absolute; right: -9px; top: 44px; color: #CFE2A6; font-size: 15px; }
+
 </style>
 </head>
 <body>
@@ -403,7 +438,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
         <!-- 预览编辑（原站导入内容专用，2026-09-11） -->
         <div v-show="editMode==='preview'" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
           <div style="display:flex;gap:10px;align-items:center;padding:8px 12px;background:#f4f7ee;border-bottom:1px solid var(--border);flex-wrap:wrap;">
-            <span style="font-size:13px;font-weight:600;color:#3B6D11;">预览编辑</span>
+            <span class="bot-v bot-v-28 editor" style="margin-right:7px;"><video src="/admin/static/video/robots/editor.mp4" autoplay muted loop playsinline preload="metadata"></video></span><span style="font-size:13px;font-weight:600;color:#3B6D11;">预览编辑</span>
             <span style="font-size:12px;color:var(--text-tertiary);">在下方页面中点击文字改文字、点图片换图、点视频改链接（支持 YouTube / 哔哩哔哩 / 腾讯视频 / 优酷）</span>
             <span style="flex:1;"></span>
             <span v-if="previewPatches.length" style="font-size:12px;color:#B45309;font-weight:600;">已修改 {{ previewPatches.length }} 处（未保存）</span>
@@ -436,7 +471,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
       <div class="modal-accent"></div>
       <div class="modal-header">
         <div class="mh-bot">
-          <i class="bot bot-avatar"></i>
+          <span class="bot-v bot-v-44 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
           <h3>{{ activeTab==='publications' ? '从原站导入出版物' : (activeTab==='journees' ? '从原站导入 Journées Galéniques 专题页' : '从原站导入文章') }}</h3>
           <span class="bot-tag">搬运机器人</span>
         </div>
@@ -454,7 +489,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             <input type="number" class="form-control" v-model="importMaxPages" min="1" max="30" style="max-width:120px;">
           </div>
           <div class="bot-tip">
-            <i class="bot bot-figure"></i>
+            <span class="bot-v bot-v-56 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
             <div>
               <strong>给我一个列表页，我一次搬一叠。</strong><br>
               从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
@@ -478,7 +513,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
             <input type="text" class="form-control" v-model="importUrl" :placeholder="activeTab==='journees' ? 'https://www.gattefosse.com/journees-galeniques-xxx' : 'https://www.gattefosse.com/pharmaceuticals/learn-more/xxx'" @keyup.enter="doImport()">
           </div>
           <div class="bot-tip">
-            <i class="bot bot-figure"></i>
+            <span class="bot-v bot-v-56 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
             <div>
               <strong>把链接丢给我，剩下的我来搬。</strong><br>
               <template v-if="activeTab==='journees'">导入后保存为<strong>专题页草稿</strong>（Journées Galéniques 专题页），正文图片自动下载到本站，页面主题色（如蓝色）一并带入，核对后发布。</template>
@@ -798,7 +833,7 @@ createApp({
     async aiTranslateItem(item) {
       if (!(await AdminDialog.confirm('确定将《' + item.title + '》整篇 AI 翻译为中文？\n\n· 标题 / 摘要 / 正文将替换为中文\n· HTML 版式、图片、链接完全保留', { title: 'AI 翻译确认', confirmText: '开始翻译' }))) return;
       item._translating = true;
-      const prog = AdminDialog.progress('AI 翻译中');
+      const prog = AdminDialog.progress('AI 翻译中', 'translator');
       const sleep = (ms) => new Promise(r => setTimeout(r, ms));
       try {
         const start = await this.api('/news/' + item.id + '/ai-translate', { method: 'POST' });
@@ -1294,6 +1329,26 @@ createApp({
     },
   },
 }).mount('#app');
+</script>
+
+<script>
+/* 机器人动效自动播放兜底（2026-09-11）
+   v-show / 折叠容器里的 video 会被浏览器暂停，重新显示后不会自动续播 */
+(function () {
+  function kick() {
+    var vs = document.querySelectorAll('.bot-v > video, .adlg-bot > video');
+    for (var i = 0; i < vs.length; i++) {
+      if (vs[i].paused) {
+        var p = vs[i].play();
+        if (p && p['catch']) p['catch'](function () {});
+      }
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', kick);
+  else kick();
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+  setInterval(kick, 1500);
+})();
 </script>
 </body>
 </html>

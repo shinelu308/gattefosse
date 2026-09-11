@@ -691,6 +691,41 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
   animation: btn-spin .8s linear infinite;
 }
 @keyframes btn-spin { to { transform: rotate(360deg); } }
+
+/* ===== 机器人动效（四机位 · 2026-09-11）=====
+   素材 /admin/static/video/robots/{importer,translator,editor,publisher}.mp4
+   480×480 · 4.04s · 无音轨 · 合计 224KB。无 alpha 通道，但画面背景 #F2F3EE 与后台浅色卡片
+   色差仅 2~6/255，方形可直接放置，无需抠图。
+   ⚠️ 尺寸规则：≥56px 立绘位不放大（--z:1，保住箱子徽章/「语」气泡/✓/纸飞机）；
+      24~44px 头像位圆形裁切 + 放大（各机位 --z 不同） */
+.bot-v { position: relative; display: inline-block; flex: none; overflow: hidden;
+  border-radius: 50%; background: #F2F3EE; line-height: 0; pointer-events: none; }
+.bot-v > video { position: absolute; left: 50%; top: 50%; width: 100%; height: 100%;
+  transform: translate(-50%,-50%) scale(var(--z, 1.30));
+  object-fit: cover; object-position: var(--p, 50% 50%); }
+.bot-v.importer   > video { --z: 1.30; --p: 52% 52%; }
+.bot-v.translator > video { --z: 1.42; --p: 50% 50%; }
+.bot-v.editor     > video { --z: 1.30; --p: 50% 50%; }
+.bot-v.publisher  > video { --z: 1.36; --p: 50% 50%; }
+.bot-v-24 { width: 24px; height: 24px; }
+.bot-v-28 { width: 28px; height: 28px; }
+.bot-v-44 { width: 44px; height: 44px; box-shadow: 0 0 0 2.5px #E3EED0; }
+.bot-v-56 { width: 56px; height: 56px; box-shadow: 0 0 0 3px #E3EED0; }
+.bot-v-110 { width: 110px; height: 110px; }
+/* 立绘位（方形不放大） */
+.bot-v-sq { border-radius: 12px; }
+.bot-v-sq > video { --z: 1; }
+.bot-tip .bot-v { flex: none; }
+/* 首页「数字营销产线 · 四机位」总览卡 */
+.pl-card { border-color: #E3EED0; background: linear-gradient(180deg,#FAFCF4 0%,#FFFFFF 70%); }
+.pl-card .card-header { display: flex; align-items: center; justify-content: space-between; }
+.pl-card .card-header .pl-sub { font-size: 12px; color: var(--text-muted); }
+.pl-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pl-col { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
+.pl-col .nm { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.pl-col .ds { font-size: 11px; color: var(--text-muted); text-align: center; line-height: 1.55; }
+.pl-col .arw { position: absolute; right: -9px; top: 44px; color: #CFE2A6; font-size: 15px; }
+
 </style>
 
 <!-- Quill.js 富文本编辑器 CDN -->
@@ -1077,13 +1112,42 @@ const QUILL_TOOLBAR = [
                 <button class="btn btn-outline" @click="resetNewsEdit();goPage('news-edit')" data-page-node-id="7nejGXcrazZBcsaoRSFyWd">+ 发布新闻</button>
               </div>
             </div>
+            <div class="card pl-card">
+              <div class="card-header">
+                <h3>数字营销产线 · 四机位</h3>
+                <span class="pl-sub">搬 · 译 · 改 · 发</span>
+              </div>
+              <div class="card-body">
+                <div class="pl-cols">
+                  <div class="pl-col">
+                    <span class="bot-v bot-v-110 bot-v-sq importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
+                    <div class="nm">搬运机器人</div><div class="ds">原站导入</div>
+                    <span class="arw">→</span>
+                  </div>
+                  <div class="pl-col">
+                    <span class="bot-v bot-v-110 bot-v-sq translator"><video src="/admin/static/video/robots/translator.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
+                    <div class="nm">AI 译制官</div><div class="ds">保版式翻译</div>
+                    <span class="arw">→</span>
+                  </div>
+                  <div class="pl-col">
+                    <span class="bot-v bot-v-110 bot-v-sq editor"><video src="/admin/static/video/robots/editor.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
+                    <div class="nm">保真编辑助手</div><div class="ds">预览式原位编辑</div>
+                    <span class="arw">→</span>
+                  </div>
+                  <div class="pl-col">
+                    <span class="bot-v bot-v-110 bot-v-sq publisher"><video src="/admin/static/video/robots/publisher.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
+                    <div class="nm">发布机器人</div><div class="ds">部署与版本自增</div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="card" data-page-node-id="Wt66UzKYzJKg6JV45fgirv">
               <div class="card-header" data-page-node-id="9uIC53gpWHZQoEIa5W4zik">
                 <h3 data-page-node-id="bR0BVeW1jbHOtyCBCjCXV4">系统信息</h3>
               </div>
               <div class="card-body" data-page-node-id="pSFE686SskegB9EntEpxmK">
                 <div style="font-size:13px;color:var(--text-secondary);line-height:2;" data-page-node-id="GPPWMNH17FfPADZstn8Dnz">
-                  <div data-page-node-id="3l0whm5AvAvLtzRacrIBqj">版本：{{ systemVersion }}</div>
+                  <div data-page-node-id="3l0whm5AvAvLtzRacrIBqj" style="display:flex;align-items:center;gap:7px;"><span class="bot-v bot-v-24 publisher"><video src="/admin/static/video/robots/publisher.mp4" autoplay muted loop playsinline preload="metadata"></video></span>版本：{{ systemVersion }}</div>
                   <div data-page-node-id="sztldBSYKGQKjbSyq9SSNM">数据库：SQLite</div>
                   <div data-page-node-id="alF8Ornkoa8JK7DQCSYzIx">开发主体：上海唯风信息技术有限公司</div>
                 </div>
@@ -2839,7 +2903,7 @@ const QUILL_TOOLBAR = [
               <!-- 预览编辑（原站导入内容专用，2026-09-11） -->
               <div v-show="articleContentMode==='preview'" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
                 <div style="display:flex;gap:10px;align-items:center;padding:8px 12px;background:#f4f7ee;border-bottom:1px solid var(--border);flex-wrap:wrap;">
-                  <span style="font-size:13px;font-weight:600;color:#3B6D11;">预览编辑</span>
+                  <span class="bot-v bot-v-28 editor" style="margin-right:7px;"><video src="/admin/static/video/robots/editor.mp4" autoplay muted loop playsinline preload="metadata"></video></span><span style="font-size:13px;font-weight:600;color:#3B6D11;">预览编辑</span>
                   <span style="font-size:12px;color:var(--text-tertiary);">在下方页面中{{ articleContentLocked ? '' : '' }}点击文字改文字、点图片换图、点视频改链接</span>
                   <span style="flex:1;"></span>
                   <span v-if="previewPatches.length" style="font-size:12px;color:#B45309;font-weight:600;">已修改 {{ previewPatches.length }} 处（未保存）</span>
@@ -3291,7 +3355,7 @@ const QUILL_TOOLBAR = [
             <div class="modal-accent"></div>
             <div class="modal-header">
               <div class="mh-bot">
-                <i class="bot bot-avatar"></i>
+                <span class="bot-v bot-v-44 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
                 <h3>从原站导入出版物</h3>
                 <span class="bot-tag">搬运机器人</span>
               </div>
@@ -3307,7 +3371,7 @@ const QUILL_TOOLBAR = [
                 <input type="number" class="form-control" v-model="publicationImport.maxPages" min="1" max="30" style="width:120px;">
               </div>
               <div class="bot-tip">
-                <i class="bot bot-figure"></i>
+                <span class="bot-v bot-v-56 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
                 <div>
                   <strong>给我一个列表页，我一次搬一叠。</strong><br>
                   从列表页逐卡抓取标题 / 类型 / 会议名 / 日期 / 作者 / 摘要 / PDF，PDF 自动下载并<strong>入文档资源</strong>（类型 Publication），出版物保存为<strong>草稿</strong>。已导入过的条目自动跳过。
@@ -3337,7 +3401,7 @@ const QUILL_TOOLBAR = [
             <div class="modal-accent"></div>
             <div class="modal-header">
               <div class="mh-bot">
-                <i class="bot bot-avatar"></i>
+                <span class="bot-v bot-v-44 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
                 <h3>从原站导入 addiactive 杂志</h3>
                 <span class="bot-tag">搬运机器人</span>
               </div>
@@ -3353,7 +3417,7 @@ const QUILL_TOOLBAR = [
                 <input type="number" class="form-control" v-model="magazineImport.maxPages" min="1" max="20" style="width:120px;">
               </div>
               <div class="bot-tip">
-                <i class="bot bot-figure"></i>
+                <span class="bot-v bot-v-56 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
                 <div>
                   <strong>一本一本地搬，期号自动去重。</strong><br>
                   逐页抓取封面卡片：期号 / 标题 / 年份 / 封面图（自动本地化到 /uploads/magazines）。按<strong>期号去重</strong>（同期不同裁剪图视为同一条），保存为<strong>草稿</strong>。原站 addiactive 为会员专享，PDF 需登录后在各期详情页获取，可后续在编辑页填写 PDF 后用「杂志 PDF 归档」入文档资源。
@@ -4231,7 +4295,7 @@ const QUILL_TOOLBAR = [
         <div class="modal-accent"></div>
         <div class="modal-header">
           <div class="mh-bot">
-            <i class="bot bot-avatar"></i>
+            <span class="bot-v bot-v-44 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
             <h3>从原站导入新闻/活动</h3>
             <span class="bot-tag">搬运机器人</span>
           </div>
@@ -4251,7 +4315,7 @@ const QUILL_TOOLBAR = [
             </select>
           </div>
           <div class="bot-tip">
-            <i class="bot bot-figure"></i>
+            <span class="bot-v bot-v-56 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
             <div>
               <strong>把链接丢给我，剩下的我来搬。</strong><br>
               导入后保存为<strong>草稿</strong>，正文图片自动下载到本站，需人工核对译文后手动发布。支持连续导入多篇。<br>
@@ -4279,7 +4343,7 @@ const QUILL_TOOLBAR = [
         <div class="modal-accent"></div>
         <div class="modal-header">
           <div class="mh-bot">
-            <i class="bot bot-avatar"></i>
+            <span class="bot-v bot-v-44 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
             <h3>从原站导入文章</h3>
             <span class="bot-tag">搬运机器人</span>
           </div>
@@ -4291,7 +4355,7 @@ const QUILL_TOOLBAR = [
             <input type="text" class="form-control" v-model="articleImport.url" placeholder="https://www.gattefosse.com/inspirations/xxx" @keyup.enter="importArticleFromSite()">
           </div>
           <div class="bot-tip">
-            <i class="bot bot-figure"></i>
+            <span class="bot-v bot-v-56 importer"><video src="/admin/static/video/robots/importer.mp4" autoplay muted loop playsinline preload="metadata"></video></span>
             <div>
               <strong>把链接丢给我，剩下的我来搬。</strong><br>
               导入后保存为<strong>草稿</strong>（分类固定为个人护理 / 获取灵感），正文图片自动下载到本站，子类型与标签导入后手动补选，核对后发布。<br>
@@ -4342,7 +4406,7 @@ const QUILL_TOOLBAR = [
 
 <script src="/admin/static/js/vue.global.prod.js"></script>
 <script src="/admin/static/js/echarts.min.js"></script>
-<script src="/admin/static/js/admin-dialog.js"></script>
+<script src="/admin/static/js/admin-dialog-260911.js"></script>
 <script>
 const { createApp } = Vue;
 const API = location.protocol + '//' + location.host + '/api';
@@ -7173,7 +7237,7 @@ createApp({
     // AI 翻译：启动后台任务并轮询进度（新闻与文章共用）
     async runAiTranslateJob(id) {
       const start = await this.api('/news/' + id + '/ai-translate', { method: 'POST' });
-      const prog = AdminDialog.progress('AI 翻译中');
+      const prog = AdminDialog.progress('AI 翻译中', 'translator');
       const sleep = (ms) => new Promise(r => setTimeout(r, ms));
       let st = null;
       try {
@@ -8620,6 +8684,26 @@ createApp({
     }
   }
 }).mount('#app');
+</script>
+
+<script>
+/* 机器人动效自动播放兜底（2026-09-11）
+   v-show / 折叠容器里的 video 会被浏览器暂停，重新显示后不会自动续播 */
+(function () {
+  function kick() {
+    var vs = document.querySelectorAll('.bot-v > video, .adlg-bot > video');
+    for (var i = 0; i < vs.length; i++) {
+      if (vs[i].paused) {
+        var p = vs[i].play();
+        if (p && p['catch']) p['catch'](function () {});
+      }
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', kick);
+  else kick();
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+  setInterval(kick, 1500);
+})();
 </script>
 </body>
 </html>

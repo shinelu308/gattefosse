@@ -7,6 +7,9 @@
  */
 (function () {
   if (window.AdminDialog) return;
+  // 机器人动效素材（2026-09-11）：/admin/static/video/robots/{importer,translator,editor,publisher}.mp4
+  var BOT_DIR = '/admin/static/video/robots/';
+  var BOT_KEYS = { importer: 1, translator: 1, editor: 1, publisher: 1 };
 
   var CSS = [
     '.adlg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:10000;',
@@ -172,14 +175,21 @@
         confirmText: o.confirmText || '确认'
       });
     },
-    /** 进度面板（长任务轮询用）：const p = AdminDialog.progress('标题'); p.update('文字'); p.close(); */
-    progress: function (title) {
+    /** 进度面板（长任务轮询用）：const p = AdminDialog.progress('标题', 'translator'); p.update('文字'); p.close();
+     *  bot 可选：importer / translator / editor / publisher（2026-09-11）
+     *  传入则用对应机器人循环动效替代转圈，让「谁在干活」一眼可见 */
+    progress: function (title, bot) {
       ensure();
+      if (bot && !BOT_KEYS[bot]) bot = null;
       var el = document.createElement('div');
       el.className = 'adlg-overlay is-open';
+      var head = bot
+        ? '<span class="adlg-bot ' + bot + '"><video src="' + BOT_DIR + bot + '.mp4"' +
+          ' autoplay muted loop playsinline preload="auto"></video></span>'
+        : '<div class="adlg-spinner"></div>';
       el.innerHTML =
         '<div class="adlg-box" style="width:360px;text-align:center;">' +
-          '<div class="adlg-spinner"></div>' +
+          head +
           '<h3 class="adlg-title" style="margin-bottom:6px;"></h3>' +
           '<p class="adlg-msg" style="margin:0;" ></p>' +
         '</div>';
@@ -193,10 +203,20 @@
     }
   };
 
-  // 进度圈样式（与弹框同套注入）
+  // 进度圈 / 机器人动效样式（与弹框同套注入，6 个后台页面共用）
   var progStyle = document.createElement('style');
   progStyle.textContent =
     '.adlg-spinner{width:36px;height:36px;border:4px solid #e8efda;border-top-color:#8EB73C;border-radius:50%;' +
-    'margin:0 auto 14px;animation:adlgSpin .8s linear infinite;}@keyframes adlgSpin{to{transform:rotate(360deg);}}';
+    'margin:0 auto 14px;animation:adlgSpin .8s linear infinite;}@keyframes adlgSpin{to{transform:rotate(360deg);}}' +
+    /* 机器人动效（2026-09-11）：素材 480×480 / 无 alpha，背景 #F2F3EE。
+       圆形裁切 + 各机位不同放大值，与后台 .bot-v 组件同规则 */
+    '.adlg-bot{position:relative;display:block;width:64px;height:64px;margin:0 auto 14px;border-radius:50%;' +
+    'overflow:hidden;background:#F2F3EE;box-shadow:0 0 0 3px #E3EED0;}' +
+    '.adlg-bot>video{position:absolute;left:50%;top:50%;width:100%;height:100%;' +
+    'transform:translate(-50%,-50%) scale(1.34);object-fit:cover;}' +
+    '.adlg-bot.importer>video{transform:translate(-50%,-50%) scale(1.30);}' +
+    '.adlg-bot.translator>video{transform:translate(-50%,-50%) scale(1.42);}' +
+    '.adlg-bot.editor>video{transform:translate(-50%,-50%) scale(1.30);}' +
+    '.adlg-bot.publisher>video{transform:translate(-50%,-50%) scale(1.36);}';
   document.head.appendChild(progStyle);
 })();
