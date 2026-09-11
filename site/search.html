@@ -20,7 +20,7 @@
   <script type="text/javascript" src="/static/js/vue.global.prod.js"></script>
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/jquery-3.7.1.min.js"></script>
-  <script src="/static/js/api-260908.js"></script>
+  <script src="/static/js/api-260912.js"></script>
   <script src="/static/js/auth-260908.js"></script>
   <script src="/static/js/site-dialog-260910.js"></script>
   <script>
@@ -186,85 +186,85 @@
                     class="facet-inactive js-facets-links facet-list item-list__links">
                     <li class="facet-item facets-reset">
                       <a class="btn btn-outline-secondary" :class="data.type == null ? 'is-active' : ''"
-                        href="search.html">所有内容</a>
+                        :href="facetUrl(null)">所有内容</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 5  && data.goodsCategoryId == 1)? 'is-active' : ''"
-                        href="search.html?type=5&i=1">Addiactive :个人护理 (9)</a>
+                        :href="facetUrl({type:'5',i:'1'})">Addiactive :个人护理 (9)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary" :class="data.type == 7 ? 'is-active' : ''"
-                        href="search.html?type=7">分公司 (12)</a>
+                        :href="facetUrl({type:'7'})">分公司 (12)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 6 && data.goodsCategoryId == 1) ? 'is-active' : ''"
-                        href="search.html?type=6&i=1">文章 : 个人护理
+                        :href="facetUrl({type:'6',i:'1'})">文章 : 个人护理
                         (33)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 5 && data.goodsCategoryId == 117) ? 'is-active' : ''"
-                        href="search.html?type=5&i=117">手册:
+                        :href="facetUrl({type:'5',i:'117'})">手册:
                         药用辅料 (20)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 1 && data.catId == 36)? 'is-active' : ''"
-                        href="search.html?type=1&catId=36">基本内容 (75)</a>
+                        :href="facetUrl({type:'1',catId:'36'})">基本内容 (75)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 9  && data.goodsCategoryId == 120)? 'is-active' : ''"
-                        href="search.html?type=9&i=120">配方 :
+                        :href="facetUrl({type:'9',i:'120'})">配方 :
                         个人护理 (75)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 6 && data.goodsCategoryId == 117) ? 'is-active' : ''"
-                        href="search.html?type=6&i=117">热点话题 :
+                        :href="facetUrl({type:'6',i:'117'})">热点话题 :
                         药用辅料 (5)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 9  && data.goodsCategoryId == 121) ? 'is-active' : ''"
-                        href="search.html?type=9&i=121">成分 : 个人护理 (55)</a>
+                        :href="facetUrl({type:'9',i:'121'})">成分 : 个人护理 (55)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 1  && data.catId == 30)? 'is-active' : ''"
-                        href="search.html?type=1&catId=30">新闻: 全球
+                        :href="facetUrl({type:'1',catId:'30'})">新闻: 全球
                         (31)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 9 && data.goodsCategoryId == 117) ? 'is-active' : ''"
-                        href="search.html?type=9&i=117">产品 :
+                        :href="facetUrl({type:'9',i:'117'})">产品 :
                         药用辅料 (51)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 4 && data.goodsCategoryId == 1) ? 'is-active' : ''"
-                        href="search.html?type=4&i=1">出版物 :
+                        :href="facetUrl({type:'4',i:'1'})">出版物 :
                         个人护理 (21)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 4 && data.goodsCategoryId == 117) ? 'is-active' : ''"
-                        href="search.html?type=4&i=117">出版物:
+                        :href="facetUrl({type:'4',i:'117'})">出版物:
                         药用辅料 (162)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 3 && data.goodsCategoryId == 1) ? 'is-active' : ''"
-                        href="search.html?type=3&i=1">网络研讨会 : 个人护理
+                        :href="facetUrl({type:'3',i:'1'})">网络研讨会 : 个人护理
                         (4)</a>
                     </li>
                     <li class="facet-item">
                       <a class="btn btn-outline-secondary"
                         :class="(data.type == 3 && data.goodsCategoryId == 117) ? 'is-active' : ''"
-                        href="search.html?type=3&i=117">网络研讨会: 药用辅料
+                        :href="facetUrl({type:'3',i:'117'})">网络研讨会: 药用辅料
                         (21)</a>
                     </li>
                   </ul>
@@ -279,7 +279,8 @@
                   项搜索结果</p>
                 <div class="form-item">
                   <label for="order-by" class="visually-hidden">排序</label>
-                  <select class="form-select js-order-by" id="order-by" name="sort_order">
+                  <select class="form-select js-order-by" id="order-by" name="sort_order" :value="data.order || ''"
+                    @change="onOrderChange($event)">
                     <option value="">排序</option>
                     <option value="ASC">A-Z</option>
                     <option value="DESC">Z-A</option>
@@ -287,6 +288,10 @@
                 </div>
               </div>
             </div>
+            <div class="c-search-empty" v-if="data.keyword && data.total === 0"
+                 style="padding:48px 0;text-align:center;color:#6f6f6f;font-size:1.6rem;">
+                未找到与「{{ data.keyword }}」相关的结果，请尝试其他关键词或减少筛选条件。
+              </div>
             <div class="c-cards c-cards--vertical">
               <div v-for="(item, index) in data.productList"
                 :class="item.type == 7 ? 'c-card c-card--horizontal c-card--bordered' : item.divClass">
@@ -629,20 +634,15 @@
   </div>
   <script setup>
     const params = new URLSearchParams(window.location.search);
-    const tokenStr = params.get('_token');
-    const goodsCategoryId = params.get('i'); // "关联产品分类ID"
+    const goodsCategoryId = params.get('i'); // 关联产品分类ID：1=个人护理 117=药用辅料 120=配方 121=PC成分
     var w = params.get('keyword'); //搜索关键词
-    var atype = params.get('type'); //0所有，1新闻 2活动 3研讨会 4出版物 5手册 6热点话题 9产品
-    var searchType = params.get('searchType');
+    var atype = params.get('type'); //1新闻 2活动 3研讨会 4出版物 5杂志/手册 6文章 7分公司 9产品
     var curPage = params.get('page');
     var desc = params.get('order');
-    var tagId = params.get('tagId');
     var catId = params.get('catId');
-    var curUrl = window.location.href;
-    var hasParam = curUrl.indexOf('?');
-    var hasTypeParam = curUrl.indexOf('i=');
-    var total = 0, count_0 = 0, count_1 = 0, count_2 = 0;
-    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
+    var hasParam = window.location.href.indexOf('?');
+    var hasTypeParam = window.location.href.indexOf('i=');
+    const { createApp, reactive, ref } = Vue;
     const app = createApp({
       data() {
         return {
@@ -651,33 +651,52 @@
         }
       },
       setup() {
-        let randomNum = Math.floor(Math.random() * 100);
+        const loading = ref(false);
         const data = reactive({
-          formData: [],
           total: 0,
-          count_0: 0,
-          count_1: 0,
-          count_2: 0,
-          cur_page: curPage == null ? 1 : curPage,
+          cur_page: parseInt(curPage) || 1,
           page_size: 9,
           total_page: 1,
           prev_url: '',
           next_url: '',
-          keyword: w,
+          keyword: w || '',
+          order: desc || '',
           type: atype,
           catId: catId,
           goodsCategoryId: goodsCategoryId,
           hasParam: hasParam,
-          hasTypeParam: hasTypeParam,
-          randomNum: randomNum
+          hasTypeParam: hasTypeParam
         });
+        // 依据当前 URL 参数重建链接；overrides 值为 null 表示删除该参数；始终去掉 page
+        const buildUrl = (overrides) => {
+          var p = new URLSearchParams(window.location.search);
+          if (overrides) {
+            for (var k in overrides) {
+              if (overrides[k] === null) p.delete(k); else p.set(k, overrides[k]);
+            }
+          }
+          p.delete('page');
+          var qs = p.toString();
+          return 'search.html' + (qs ? '?' + qs : '');
+        };
+        // 侧栏 facet 链接：保留当前关键词
+        const facetUrl = (extra) => {
+          if (!w || w === '') {
+            var qs = extra ? new URLSearchParams(extra).toString() : '';
+            return 'search.html' + (qs ? '?' + qs : '');
+          }
+          return buildUrl(extra);
+        };
+        // 排序下拉：导航式（URL 可分享、page 重置）
+        const onOrderChange = (e) => {
+          window.location.href = buildUrl({ order: e.target.value || null });
+        };
         const addProductFav = (item) => {
           let tmp = checkLoginStatus();
           if (!tmp) {
             SiteDialog.alert('请先登录', { type: 'warn' });
             return
           }
-          var api = "/api/mallUserFavorite/createMallUserFavorite";
           console.log("API call disabled - addProductFav");
         }
         const addCart = (item, index) => {
@@ -686,11 +705,11 @@
             SiteDialog.alert('您可以注册会员，或者点击页面最下方的留言板进行申请样品！', { type: 'warn' });
             return
           }
-          var api = "/api/mallShoppingCartItem/createMallShoppingCartItem";
           console.log("API call disabled - addCart");
           data.productList[index].show = "display: flex";
         }
-        const loading = ref(false);
+        // news_events.type → 前台卡片 type
+        var mapNewsType = { news: 1, event: 2, webinar: 3, publication: 4, magazine: 5, article: 6 };
         const getAllContentList = () => {
           if (!w || w === '' || w === '0') {
             data.productList = [];
@@ -699,10 +718,15 @@
             return;
           }
           data.cur_page = parseInt(data.cur_page) || 1;
-          GatteAPI.Search.all(w).then(function (res) {
+          // facet 过滤参数透传后端
+          var extra = {};
+          if (atype) extra.type = atype;
+          if (goodsCategoryId) extra.i = goodsCategoryId;
+          if (catId) extra.catId = catId;
+          GatteAPI.Search.all(w, extra).then(function (res) {
             var result = res.data || res;
             var allItems = [];
-            // Map products
+            // 产品（PC成分 121 / 药用辅料 117）
             (result.products || []).forEach(function (p) {
               allItems.push({
                 ID: p.id,
@@ -722,25 +746,7 @@
                 tagName: ''
               });
             });
-            // Map news
-            (result.news || []).forEach(function (n) {
-              allItems.push({
-                ID: n.id,
-                title: n.title,
-                summary: n.summary || '',
-                thumb: n.imageUrl || '',
-                type: 1,
-                goodsCategoryId: 1,
-                url: '/news-detail.html?id=' + n.id,
-                eventTime: n.publishedDate,
-                eventTimeYear: n.publishedDate ? n.publishedDate.substring(0, 4) : '',
-                eventTimeDate: n.publishedDate ? n.publishedDate.substring(5, 10).replace('-', '月') : '',
-                eventTimeMonth: n.publishedDate ? n.publishedDate.substring(5, 7) : '',
-                divClass: 'c-card c-card--horizontal theme-cosm',
-                tagName: ''
-              });
-            });
-            // Map formulations
+            // 配方（120）
             (result.formulations || []).forEach(function (f) {
               allItems.push({
                 ID: f.id,
@@ -756,17 +762,83 @@
                 tagName: ''
               });
             });
+            // 新闻/活动/研讨会/出版物/杂志/手册/文章（按后端返回的实际 type 动态映射卡片）
+            (result.news || []).forEach(function (n) {
+              var itype = mapNewsType[n.type] || 1;
+              var isPharma = n.category === 'pharma';
+              var gcat;
+              if (itype === 5) {
+                gcat = (n.type === 'magazine') ? 1 : 117; // 杂志→个人护理，资料手册→药用辅料
+              } else if (itype === 6 || itype === 3) {
+                gcat = isPharma ? 117 : 1;
+              } else {
+                gcat = 1;
+              }
+              var pd = n.publishedDate ? String(n.publishedDate) : '';
+              var item = {
+                ID: n.id,
+                title: n.title,
+                summary: n.summary || '',
+                thumb: n.imageUrl || '',
+                type: itype,
+                goodsCategoryId: gcat,
+                eventTime: pd,
+                eventTimeYear: pd.substring(0, 4),
+                eventTimeDate: pd.length >= 10 ? pd.substring(5, 10).replace('-', '月') : '',
+                eventTimeMonth: pd.length >= 7 ? pd.substring(5, 7) : '',
+                eventAddress: n.location || '',
+                eventEndTimeDate: n.eventEndDate ? String(n.eventEndDate).substring(5, 10).replace('-', '月') : '',
+                author: n.authorName || '',
+                pdfUrl: n.pdfUrl || '',
+                tagName: '',
+                divClass: isPharma ? 'c-card c-card--horizontal theme-pharma' : 'c-card c-card--horizontal theme-cosm'
+              };
+              if (itype === 6) {
+                item.url = isPharma
+                  ? '/pharmaceuticals-article-detail.html?id=' + n.id
+                  : '/personal-care-article-detail.html?id=' + n.id;
+              } else if (itype === 1 || itype === 2) {
+                item.url = '/news-detail.html?id=' + n.id;
+              } else if (itype === 5) {
+                item.url = n.pdfUrl || '';
+              } else {
+                item.url = '';
+              }
+              allItems.push(item);
+            });
+            // 分公司（7）
+            (result.contents || []).forEach(function (s) {
+              allItems.push({
+                ID: s.id,
+                title: s.name,
+                summary: s.description || '',
+                thumb: '',
+                type: 7,
+                goodsCategoryId: '',
+                url: s.website || '#',
+                tagName: '',
+                divClass: 'c-card c-card--horizontal c-card--bordered'
+              });
+            });
+            // 排序（A-Z / Z-A，中文拼音序）
+            if (desc === 'ASC') {
+              allItems.sort(function (a, b) { return String(a.title || '').localeCompare(String(b.title || ''), 'zh-CN'); });
+            } else if (desc === 'DESC') {
+              allItems.sort(function (a, b) { return String(b.title || '').localeCompare(String(a.title || ''), 'zh-CN'); });
+            }
             data.total = result.total || allItems.length;
             data.total_page = Math.max(1, Math.ceil(data.total / data.page_size));
+            // 分页钳制，越界页码回落到有效区间
+            data.cur_page = Math.min(Math.max(parseInt(data.cur_page) || 1, 1), data.total_page);
             var start = (data.cur_page - 1) * data.page_size;
             data.productList = allItems.slice(start, start + data.page_size);
             if (data.cur_page < data.total_page) {
-              data.next_url = setUrlParam(curUrl, 'page', data.cur_page + 1);
+              data.next_url = buildUrl({ page: data.cur_page + 1 });
             } else {
               data.next_url = null;
             }
             if (data.cur_page > 1) {
-              data.prev_url = setUrlParam(curUrl, 'page', data.cur_page - 1);
+              data.prev_url = buildUrl({ page: data.cur_page - 1 });
             } else {
               data.prev_url = null;
             }
@@ -782,7 +854,9 @@
           data,
           getAllContentList,
           addProductFav,
-          addCart
+          addCart,
+          facetUrl,
+          onOrderChange
         };
       },
     });
@@ -790,22 +864,7 @@
     if (w != null && w !== '') {
       $('#edit-keyword').val(w);
     }
-    function setUrlParam(url, paramName, paramValue) {
-      paramName = paramName.replace(/[\[\]]/g, '\\$&');
-      let regular = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
-      let val = regular.exec(url);
-      if (val && val[2]) {
-        url = url.replace(new RegExp(paramName + '=' + val[2]), `${paramName}=${paramValue}`);
-      } else {
-        if (url.indexOf('?') < 0) {
-          url += `?${paramName}=${paramValue}`;
-        } else {
-          url += `&${paramName}=${paramValue}`;
-        }
-      }
-      return url;
-    }
-  </script>
+  </script></script>
   <script>
 
     $(document).ready(function () {

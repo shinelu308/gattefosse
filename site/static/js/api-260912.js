@@ -199,8 +199,8 @@
 
   // ==================== 全局搜索 Search ====================
   var SearchAPI = {
-    all: function (keyword) {
-      return http.get('/api/search', { params: { keyword: keyword } });
+    all: function (keyword, extra) {
+      return http.get('/api/search', { params: Object.assign({ keyword: keyword }, extra || {}) });
     },
     products: function (keyword) {
       return Promise.all([
