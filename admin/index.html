@@ -6,7 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" data-page-node-id="Aus2mWGqaW4BtQHWZBMLtM">
 <meta http-equiv="Pragma" content="no-cache" data-page-node-id="VN1qo1Et0O8WSha952F43H">
 <meta http-equiv="Expires" content="0" data-page-node-id="X3QMTSDTwWO3NxIyt0ku7u">
-<title>嘉法狮后台管理系统</title>
+<title>Gattefossé 中国数字营销自动化平台</title>
+<link rel="icon" type="image/svg+xml" href="/admin/static/img/favicon.svg">
 <script>console.log("[Admin v3] loaded", new Date().toISOString());</script>
 <link rel="stylesheet" href="icon-font.css?v=3" data-page-node-id="8MTphEVdkOwt3ZzPotVCuu">
 <style>
@@ -79,14 +80,16 @@ body {
 }
 .login-card h1 {
   text-align: center;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
   color: var(--slate);
   margin-bottom: 4px;
 }
 .login-card .login-sub {
   text-align: center;
-  color: var(--text-muted);
+  color: var(--slate-light);
+  font-weight: 500;
+  letter-spacing: 0.3px;
   font-size: 13px;
   margin-bottom: 28px;
 }
@@ -134,13 +137,14 @@ body {
 .sidebar::-webkit-scrollbar { width: 6px; }
 .sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 .sidebar-logo {
-  padding: 14px 20px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border-light);
   display: flex;
   align-items: center;
   gap: 10px;
-  height: var(--header-h);
+  height: 64px;
 }
+.sidebar-logo svg { width: 162px; height: auto; display: block; }
 .sidebar-logo span {
   font-size: 14px; font-weight: 500; color: var(--slate);
   letter-spacing: 0.5px;
@@ -788,8 +792,8 @@ const QUILL_TOOLBAR = [
   <!-- ==================== 登录页 ==================== -->
   <div v-if="!token" class="login-container" data-page-node-id="gUhpilu14EMVssCwvNALus">
     <div class="login-card" data-page-node-id="xSO9CCK3bEpTV2DwEmaJx0">
-      <h1 data-page-node-id="cAm1lC0wqoTiw59UuKHJ85">嘉法狮 Gattefossé</h1>
-      <div class="login-sub" data-page-node-id="8LAicv4E4TgJhOdCSbbrIF">后台管理系统</div>
+      <h1 data-page-node-id="cAm1lC0wqoTiw59UuKHJ85">Gattefossé</h1>
+      <div class="login-sub" data-page-node-id="8LAicv4E4TgJhOdCSbbrIF">中国数字营销自动化平台</div>
       <div style="display:flex;flex-direction:column;gap:14px;" data-page-node-id="qJbBc4kduqCZ5DwNvbMCKp">
         <input v-model="loginForm.email" placeholder="邮箱" @keyup.enter="doLogin" data-page-node-id="HebK2iRc2xrNraLK2NXzLS">
         <input v-model="loginForm.password" type="password" placeholder="密码" @keyup.enter="doLogin" data-page-node-id="S8dO2qasLlfPpaEXBpBFAf">
@@ -806,13 +810,7 @@ const QUILL_TOOLBAR = [
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false" data-page-node-id="W3RbzmX5w9NG2lS98md8hf"></div>
     <aside class="sidebar" :class="{ open: sidebarOpen }" data-page-node-id="L4pVs0l5wLkIu5Va6wKKwc">
       <div class="sidebar-logo" data-page-node-id="3PU459K6CNobhzWMsa4ETu">
-        <svg width="93" height="52" viewBox="0 0 93 52" fill="none" style="width:36px;height:auto;" data-page-node-id="nFQZeWlglCCF7Kj1gitMeI">
-          <path d="M43.8104 18.0694C43.8104 28.0451 35.765 36.1388 25.8276 36.1388C15.8902 36.1388 7.85434 28.0451 7.85434 18.0694C7.85434 8.0938 15.8998 0 25.8372 0C35.7745 0 43.82 8.0842 43.82 18.0694H43.8104Z" fill="#54616C" data-page-node-id="KIgWyyXGld2MpAMkxkcwsX"/>
-          <path d="M54.2638 16.6388C54.2064 17.2053 54.1873 17.7814 54.1969 18.3575L51.3877 18.9143C51.3494 18.0694 51.3685 17.2053 51.4545 16.3316C51.9992 10.6861 54.9517 5.88552 59.1082 2.97637C56.2895 1.13294 52.9165 0.0480061 49.2951 0.0480061C39.3577 0.0480061 31.3123 8.1418 31.3123 18.1174C31.3123 28.0931 39.3577 36.1869 49.2951 36.1869C59.2325 36.1869 67.2779 28.1027 67.2779 18.1174C67.2779 12.8752 65.0515 8.1514 61.497 4.8486C57.6367 7.44092 54.7224 11.9247 54.2638 16.6388Z" fill="#8EB73C" data-page-node-id="J8IqxYTJUqFDGrzMyAQeHG"/>
-          <path d="M15.6227 42.8885H17.0846L21.3367 51.8272H19.2632L18.1835 49.5229H14.5525L13.4728 51.8272H11.3993L15.6227 42.8885Z" fill="#8EB73C" data-page-node-id="BoothQTzxCAyURjzFoIkqQ"/>
-          <path d="M51.1679 25.8272C51.1679 23.0428 53.4134 20.7866 56.1748 20.7866C58.9362 20.7866 61.1817 23.0428 61.1817 25.8272C61.1817 28.6115 58.9362 30.8582 56.1748 30.8582C53.4134 30.8582 51.1679 28.6019 51.1679 25.8272Z" fill="#54616C" data-page-node-id="AMRxSNcZUcEDtDMSyPM5Ue"/>
-        </svg>
-        <span data-page-node-id="rr5QvB1Ed6g1RTHEhDIdVa">后台管理</span>
+        <svg viewBox="0 0 161.86 22.00" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gattefossé" data-brand-lockup><g transform="translate(-4.791,0) scale(0.34077)"><path id="Fill-1" fill="#58616b" d="M78.44,32.2A32.19,32.19,0,1,1,46.25,0,32.2,32.2,0,0,1,78.44,32.2" transform="translate(0 0)"/><path id="Fill-3" fill="#58616b" d="M114.73,57.56a21.62,21.62,0,0,0,7.86,1.7c10.07,0,23.1-10.61,23.1-22.13h-30l4.41-4.81h30.06c2.24,8.09-.66,15-6,21.59A27.5,27.5,0,0,1,109.64,61" transform="translate(0 0)"/><path id="Fill-5" fill="#8eb73c" d="M97.16,29.66A27.58,27.58,0,0,0,97,32.72l-5,1a33.24,33.24,0,0,1,13.83-28.4,32.24,32.24,0,1,0,4.27,3.33c-6.91,4.62-12.13,12.61-12.94,21" transform="translate(0 0)"/><path id="Fill-7" fill="#58616b" d="M125.32.14c-7.15-.18-13.9,1.3-19.48,5.19a32.75,32.75,0,0,0-13.71,23.8A32.19,32.19,0,0,0,92,33.72l5-1a27.58,27.58,0,0,1,.12-3.06c.82-8.4,6-16.39,12.94-21A22.07,22.07,0,0,1,124.92,4.7c8.85,1.06,14.92,6.49,20.27,13.79l5-1.3C144.52,7.7,135.26.39,125.32.14" transform="translate(0 0)"/><path id="Fill-9" fill="#58616b" d="M91.61,46a9,9,0,1,1,9,9,9,9,0,0,1-9-9" transform="translate(0 0)"/></g><g transform="translate(52.64,3.63) scale(0.66158)"><g transform="translate(0,-70.43)"><path id="Fill-11" fill="#8eb73c" d="M27.19,85.47h4.17L29.3,80.59h0Zm.78-9H30.6l7.62,15.92H34.51l-1.94-4.11H26.06l-1.94,4.11H20.41Z" transform="translate(0 0)"/><polygon id="Fill-13" fill="#8eb73c" points="74.48 76.44 84.26 76.44 84.26 79.19 77.85 79.19 77.85 83.09 83.99 83.09 83.99 85.84 77.85 85.84 77.85 89.61 84.26 89.61 84.26 92.36 74.48 92.36 74.48 76.44"/><polygon id="Fill-15" fill="#8eb73c" points="89.66 76.44 98.91 76.44 98.91 79.19 93.03 79.19 93.03 83.09 98.65 83.09 98.65 85.84 93.03 85.84 93.03 92.36 89.66 92.36 89.66 76.44"/><path id="Fill-17" fill="#8eb73c" d="M110.79,89.93c3.46,0,6.14-2.56,6.14-5.5a6.17,6.17,0,0,0-12.27,0c0,2.95,2.67,5.5,6.14,5.5m0-13.81c5.16,0,9.5,3.61,9.5,8.32s-4.27,8.25-9.5,8.25-9.5-3.68-9.5-8.25,4.34-8.32,9.5-8.32" transform="translate(0 0)"/><path id="Fill-19" fill="#8eb73c" d="M127.35,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78,1.71,1.71,0,0,0-1.87,1.62c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.9,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-21" fill="#8eb73c" d="M142.52,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78A1.71,1.71,0,0,0,143,80.48c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.89,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-23" fill="#8eb73c" d="M157.33,73.29l5.52-2.86,1.32,2.26-5.6,2.59Zm-2,3.14h9.77v2.75h-6.41v3.89h6.14v2.76h-6.14v3.77h6.41v2.75h-9.77Z" transform="translate(0 0)"/><polygon id="Fill-26" fill="#8eb73c" points="70.18 76.45 56.22 76.45 56.22 79.2 61.51 79.19 61.51 92.36 64.87 92.36 64.87 79.19 70.18 79.2 70.18 76.45"/><polygon id="Fill-28" fill="#8eb73c" points="52.47 76.45 38.5 76.45 38.51 79.2 43.79 79.19 43.79 92.36 47.16 92.36 47.16 79.19 52.47 79.2 52.47 76.45"/><path id="Fill-30" fill="#8eb73c" d="M9.28,84.23h9.63v.33c0,4.43-4.43,7.89-9.39,7.89S0,89,0,84.38,4.43,76.3,9.43,76.3c4.45,0,7.69,2.64,8.6,4.87H14.1A5.88,5.88,0,0,0,9.36,79,5.72,5.72,0,0,0,3.28,84.4c0,2.37,2,5.37,6.25,5.37a6,6,0,0,0,5.25-2.85H9.28" transform="translate(0 0)"/></g></g></svg>
       </div>
       <nav class="sidebar-nav" @click="onSidebarNavClick" data-page-node-id="bhGjSHx7VN7UbjLoV54ao2">
         <div class="nav-section" data-page-node-id="UVgcwH0HPQEJzLkB7lCSMM"><div class="nav-section-title" data-page-node-id="QmU3nc0E3IT5DwUKuL1IBz">主菜单</div></div>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>后台品牌与系统命名 · 效果图</title>
+<style>
+:root{
+  --green:#8EB73C; --green-hover:#7aa030; --green-light:#f4f9e9; --green-lighter:#fafcf5;
+  --slate:#54616C; --slate-light:#6b7a87; --slate-lighter:#e8ebed; --slate-lightest:#f5f6f7;
+  --red:#d9534f; --red-light:#fdf2f2;
+  --text:#333333; --text-secondary:#666666; --text-muted:#949494;
+  --border:#e0e0e0; --border-light:#f0f0f0; --white:#fff; --bg:#f6f6f6;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC",sans-serif;
+  --radius:8px; --radius-lg:12px; --sidebar-w:240px; --header-h:56px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:#eef0f2;color:var(--text);padding:34px 28px 70px;font-size:13px;line-height:1.65}
+.wrap{max-width:1120px;margin:0 auto}
+h1{font-size:22px;font-weight:600;color:var(--slate);margin-bottom:6px}
+.lead{color:var(--text-secondary);font-size:13px;margin-bottom:26px}
+h2{font-size:15px;font-weight:600;color:var(--slate);margin:34px 0 12px;padding-left:10px;border-left:3px solid var(--green)}
+h3{font-size:13px;font-weight:600;color:var(--text);margin:0 0 8px}
+.note{background:#fff;border:1px solid var(--border-light);border-radius:var(--radius);padding:12px 14px;color:var(--text-secondary);font-size:12.5px}
+.note b{color:var(--text)}
+.row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+.panel{background:#fff;border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:16px 18px 18px;flex:1 1 300px;min-width:290px}
+.panel.wide{flex:1 1 100%}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin-bottom:10px;font-weight:500}
+.tag.now{background:var(--red-light);color:var(--red)}
+.tag.rec{background:var(--green-light);color:#6c8f2a}
+.tag.alt{background:var(--slate-lightest);color:var(--slate-light)}
+.rec-line{font-size:12px;color:#6c8f2a;margin-top:10px;font-weight:500}
+.dim{font-size:11.5px;color:var(--text-muted);margin-top:6px}
+code{background:var(--slate-lightest);padding:1px 5px;border-radius:4px;font-size:11.5px;font-family:Consolas,Monaco,monospace;color:var(--slate)}
+
+/* ===== 真实侧栏复刻 ===== */
+.sb{width:var(--sidebar-w);background:#fff;border:1px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid var(--border-light);height:var(--header-h)}
+.sb-logo span{font-size:14px;font-weight:500;color:var(--slate);letter-spacing:.5px}
+.sb-logo.tall{height:64px}
+.sb-logo.taller{height:70px}
+.sb-logo .brandcol{display:flex;flex-direction:column;gap:1px}
+.sb-logo .brandcol em{font-style:normal;font-size:10.5px;color:var(--text-muted);letter-spacing:.3px}
+.sb-nav{padding:10px 0}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:1px 8px;border-radius:var(--radius);color:var(--text-secondary);font-size:13px}
+.sb-item.active{background:var(--green-light);color:var(--green);font-weight:500}
+.sb-item .ico{width:16px;height:16px;border:1.6px solid currentColor;border-radius:3px;opacity:.55}
+.sb-sec{font-size:11px;color:var(--text-muted);letter-spacing:.8px;padding:8px 16px 6px}
+
+/* ===== 真实登录页复刻 ===== */
+.login-demo{background:linear-gradient(135deg,#8EB73C 0%,#54616C 100%);border-radius:var(--radius-lg);padding:26px 20px;display:flex;justify-content:center}
+.login-card{width:340px;padding:32px 34px;background:#fff;border-radius:var(--radius-lg);box-shadow:0 18px 50px rgba(0,0,0,.16)}
+.login-card h1{text-align:center;font-size:20px;font-weight:500;color:var(--slate);margin-bottom:4px}
+.login-card .login-sub{text-align:center;color:var(--text-muted);font-size:13px;margin-bottom:24px}
+.login-card h1.big{font-size:24px;letter-spacing:.5px}
+.login-card h1.oneline{font-size:17px;letter-spacing:0;white-space:nowrap}
+.login-card input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:var(--font);color:var(--text);background:#fff;margin-bottom:12px}
+.login-card .login-btn{width:100%;padding:11px;background:var(--green);color:#fff;border:1px solid var(--green);border-radius:var(--radius);font-size:14px;font-weight:500;font-family:var(--font);text-align:center;margin-top:2px}
+.login-sub.strong{color:var(--slate-light);font-weight:500;letter-spacing:.4px}
+
+/* ===== 浏览器标签示意 ===== */
+.browser{background:#dee1e6;border-radius:10px 10px 0 0;padding:9px 12px 0;display:flex;gap:6px;align-items:flex-end}
+.tab{background:#fff;border-radius:8px 8px 0 0;padding:8px 16px;font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;max-width:330px}
+.tab.on{color:var(--text)}
+.tab .fav{width:14px;height:14px;border-radius:3px;background:var(--green);flex:none}
+.tab .fav.old{background:#c9cdd2}
+.tab .x{color:#b9bec5;font-size:13px;margin-left:2px}
+.browser-body{background:#fff;border:1px solid #dee1e6;border-top:none;border-radius:0 0 10px 10px;padding:14px 16px;font-size:12px;color:var(--text-muted)}
+
+/* ===== 素材对比 ===== */
+.swatch{border:1px dashed var(--border);border-radius:var(--radius);padding:14px;background:#fafafa;display:flex;align-items:center;justify-content:center;min-height:96px}
+.swatch.bad{background:var(--red-light);border-color:#f0c9c7}
+
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border-light);border-radius:var(--radius);overflow:hidden;font-size:12.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border-light);vertical-align:top}
+th{background:var(--slate-lightest);font-weight:600;color:var(--slate);font-size:12px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td code{white-space:nowrap}
+.ok{color:#6c8f2a;font-weight:600}
+.no{color:var(--red);font-weight:600}
+ul.clean{list-style:none;font-size:12.5px;color:var(--text-secondary)}
+ul.clean li{padding-left:18px;position:relative;margin-bottom:5px}
+ul.clean li:before{content:"·";position:absolute;left:6px;top:-1px;font-weight:700;color:var(--green)}
+ul.clean li.x:before{content:"×";color:var(--red)}
+</style></head>
+<body><div class="wrap">
+
+<h1>后台品牌与系统命名 · 效果图</h1>
+<div class="lead">两件事：① 系统名称统一改为「Gattefossé 中国数字营销自动化平台」；② 侧栏左上角 logo 现在太小且是残片，重排为完整品牌标。<b>本页只是效果图，真实文件尚未改动。</b></div>
+
+<h2>一、先说清 logo 现在的问题</h2>
+<div class="note" style="margin-bottom:14px">
+侧栏现在引用的那段 SVG，viewBox 是 <code>93 × 52</code>，但里面只抠出了 <b>双圆图标 + 一个碎字母「A」</b>——GATTEFOSSÉ 其余 9 个字母全丢了；再被 <code>style="width:36px"</code> 压到 36px 宽，所以看上去就是「一个小绿点 + 莫名其妙的一撇」。
+</div>
+<div class="row">
+  <div class="panel">
+    <span class="tag now">现在用的</span>
+    <h3>93×52 残片（4 个 path）</h3>
+    <div class="swatch bad"><svg style="width:150px;height:auto" width="150" height="84" viewBox="0 0 93 52" fill="none" >
+          <path d="M43.8104 18.0694C43.8104 28.0451 35.765 36.1388 25.8276 36.1388C15.8902 36.1388 7.85434 28.0451 7.85434 18.0694C7.85434 8.0938 15.8998 0 25.8372 0C35.7745 0 43.82 8.0842 43.82 18.0694H43.8104Z" fill="#54616C"/>
+          <path d="M54.2638 16.6388C54.2064 17.2053 54.1873 17.7814 54.1969 18.3575L51.3877 18.9143C51.3494 18.0694 51.3685 17.2053 51.4545 16.3316C51.9992 10.6861 54.9517 5.88552 59.1082 2.97637C56.2895 1.13294 52.9165 0.0480061 49.2951 0.0480061C39.3577 0.0480061 31.3123 8.1418 31.3123 18.1174C31.3123 28.0931 39.3577 36.1869 49.2951 36.1869C59.2325 36.1869 67.2779 28.1027 67.2779 18.1174C67.2779 12.8752 65.0515 8.1514 61.497 4.8486C57.6367 7.44092 54.7224 11.9247 54.2638 16.6388Z" fill="#8EB73C"/>
+          <path d="M15.6227 42.8885H17.0846L21.3367 51.8272H19.2632L18.1835 49.5229H14.5525L13.4728 51.8272H11.3993L15.6227 42.8885Z" fill="#8EB73C"/>
+          <path d="M51.1679 25.8272C51.1679 23.0428 53.4134 20.7866 56.1748 20.7866C58.9362 20.7866 61.1817 23.0428 61.1817 25.8272C61.1817 28.6115 58.9362 30.8582 56.1748 30.8582C53.4134 30.8582 51.1679 28.6019 51.1679 25.8272Z" fill="#54616C"/>
+        </svg></div>
+    <div class="dim">放大到 150px 后能看出：只有图标 + 一个「A」，且字母比图标小得离谱。实际渲染只有 36px 宽。</div>
+  </div>
+  <div class="panel">
+    <span class="tag rec">官方完整矢量</span>
+    <h3>165.13 × 92.69 全套</h3>
+    <div class="swatch"><svg style="width:150px;height:auto" id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="165.13" height="92.69" viewBox="0 0 165.13 92.69"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#58616b;}.cls-3{fill:#8eb73c;}.cls-4{mask:url(#mask);}</style><mask id="mask" x="155.36" y="70.43" width="9.77" height="21.93" maskUnits="userSpaceOnUse"><g transform="translate(0 0)"><g id="mask-2"><polygon id="path-1" class="cls-1" points="165.13 92.36 165.13 70.43 155.36 70.43 155.36 92.36 165.13 92.36"/></g></g></mask></defs><title>logo_2</title><g id="Symbols-_-menus-VALIDES" data-name="Symbols-+-menus-VALIDES"><g id="LOGO-GATEFOSSE"><g id="Group-8"><g id="Page-1"><path id="Fill-1" class="cls-2" d="M78.44,32.2A32.19,32.19,0,1,1,46.25,0,32.2,32.2,0,0,1,78.44,32.2" transform="translate(0 0)"/><path id="Fill-3" class="cls-2" d="M114.73,57.56a21.62,21.62,0,0,0,7.86,1.7c10.07,0,23.1-10.61,23.1-22.13h-30l4.41-4.81h30.06c2.24,8.09-.66,15-6,21.59A27.5,27.5,0,0,1,109.64,61" transform="translate(0 0)"/><path id="Fill-5" class="cls-3" d="M97.16,29.66A27.58,27.58,0,0,0,97,32.72l-5,1a33.24,33.24,0,0,1,13.83-28.4,32.24,32.24,0,1,0,4.27,3.33c-6.91,4.62-12.13,12.61-12.94,21" transform="translate(0 0)"/><path id="Fill-7" class="cls-2" d="M125.32.14c-7.15-.18-13.9,1.3-19.48,5.19a32.75,32.75,0,0,0-13.71,23.8A32.19,32.19,0,0,0,92,33.72l5-1a27.58,27.58,0,0,1,.12-3.06c.82-8.4,6-16.39,12.94-21A22.07,22.07,0,0,1,124.92,4.7c8.85,1.06,14.92,6.49,20.27,13.79l5-1.3C144.52,7.7,135.26.39,125.32.14" transform="translate(0 0)"/><path id="Fill-9" class="cls-2" d="M91.61,46a9,9,0,1,1,9,9,9,9,0,0,1-9-9" transform="translate(0 0)"/><path id="Fill-11" class="cls-3" d="M27.19,85.47h4.17L29.3,80.59h0Zm.78-9H30.6l7.62,15.92H34.51l-1.94-4.11H26.06l-1.94,4.11H20.41Z" transform="translate(0 0)"/><polygon id="Fill-13" class="cls-3" points="74.48 76.44 84.26 76.44 84.26 79.19 77.85 79.19 77.85 83.09 83.99 83.09 83.99 85.84 77.85 85.84 77.85 89.61 84.26 89.61 84.26 92.36 74.48 92.36 74.48 76.44"/><polygon id="Fill-15" class="cls-3" points="89.66 76.44 98.91 76.44 98.91 79.19 93.03 79.19 93.03 83.09 98.65 83.09 98.65 85.84 93.03 85.84 93.03 92.36 89.66 92.36 89.66 76.44"/><path id="Fill-17" class="cls-3" d="M110.79,89.93c3.46,0,6.14-2.56,6.14-5.5a6.17,6.17,0,0,0-12.27,0c0,2.95,2.67,5.5,6.14,5.5m0-13.81c5.16,0,9.5,3.61,9.5,8.32s-4.27,8.25-9.5,8.25-9.5-3.68-9.5-8.25,4.34-8.32,9.5-8.32" transform="translate(0 0)"/><path id="Fill-19" class="cls-3" d="M127.35,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78,1.71,1.71,0,0,0-1.87,1.62c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.9,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-21" class="cls-3" d="M142.52,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78A1.71,1.71,0,0,0,143,80.48c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.89,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><g id="Group-25"><g class="cls-4"><path id="Fill-23" class="cls-3" d="M157.33,73.29l5.52-2.86,1.32,2.26-5.6,2.59Zm-2,3.14h9.77v2.75h-6.41v3.89h6.14v2.76h-6.14v3.77h6.41v2.75h-9.77Z" transform="translate(0 0)"/></g></g><polygon id="Fill-26" class="cls-3" points="70.18 76.45 56.22 76.45 56.22 79.2 61.51 79.19 61.51 92.36 64.87 92.36 64.87 79.19 70.18 79.2 70.18 76.45"/><polygon id="Fill-28" class="cls-3" points="52.47 76.45 38.5 76.45 38.51 79.2 43.79 79.19 43.79 92.36 47.16 92.36 47.16 79.19 52.47 79.2 52.47 76.45"/><path id="Fill-30" class="cls-3" d="M9.28,84.23h9.63v.33c0,4.43-4.43,7.89-9.39,7.89S0,89,0,84.38,4.43,76.3,9.43,76.3c4.45,0,7.69,2.64,8.6,4.87H14.1A5.88,5.88,0,0,0,9.36,79,5.72,5.72,0,0,0,3.28,84.4c0,2.37,2,5.37,6.25,5.37a6,6,0,0,0,5.25-2.85H9.28" transform="translate(0 0)"/></g></g></g></g></svg></div>
+    <div class="dim">这就是前台在用的官方 logo：双圆图标 + GATTEFOSSÉ 字标。本次就用它重排，<b>不重新画、不换字体</b>。</div>
+  </div>
+</div>
+
+<h2>二、侧栏 logo · 现状与两个方案（真实侧栏尺寸 240px 复刻）</h2>
+<div class="row">
+
+  <div class="panel">
+    <span class="tag now">Before</span>
+    <h3>现状 · 56px 高</h3>
+    <div class="sb">
+      <div class="sb-logo">
+        <svg style="width:36px;height:auto" width="93" height="52" viewBox="0 0 93 52" fill="none" >
+          <path d="M43.8104 18.0694C43.8104 28.0451 35.765 36.1388 25.8276 36.1388C15.8902 36.1388 7.85434 28.0451 7.85434 18.0694C7.85434 8.0938 15.8998 0 25.8372 0C35.7745 0 43.82 8.0842 43.82 18.0694H43.8104Z" fill="#54616C"/>
+          <path d="M54.2638 16.6388C54.2064 17.2053 54.1873 17.7814 54.1969 18.3575L51.3877 18.9143C51.3494 18.0694 51.3685 17.2053 51.4545 16.3316C51.9992 10.6861 54.9517 5.88552 59.1082 2.97637C56.2895 1.13294 52.9165 0.0480061 49.2951 0.0480061C39.3577 0.0480061 31.3123 8.1418 31.3123 18.1174C31.3123 28.0931 39.3577 36.1869 49.2951 36.1869C59.2325 36.1869 67.2779 28.1027 67.2779 18.1174C67.2779 12.8752 65.0515 8.1514 61.497 4.8486C57.6367 7.44092 54.7224 11.9247 54.2638 16.6388Z" fill="#8EB73C"/>
+          <path d="M15.6227 42.8885H17.0846L21.3367 51.8272H19.2632L18.1835 49.5229H14.5525L13.4728 51.8272H11.3993L15.6227 42.8885Z" fill="#8EB73C"/>
+          <path d="M51.1679 25.8272C51.1679 23.0428 53.4134 20.7866 56.1748 20.7866C58.9362 20.7866 61.1817 23.0428 61.1817 25.8272C61.1817 28.6115 58.9362 30.8582 56.1748 30.8582C53.4134 30.8582 51.1679 28.6019 51.1679 25.8272Z" fill="#54616C"/>
+        </svg>
+        <span>后台管理</span>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-item active"><i class="ico"></i>总览</div>
+        <div class="sb-item"><i class="ico"></i>内容热度</div>
+        <div class="sb-sec">产品管理</div>
+        <div class="sb-item"><i class="ico"></i>个人护理 · 成分</div>
+      </div>
+    </div>
+    <div class="dim">图标仅 36px 宽，且是残缺素材 —— 这就是你说的「太小」。</div>
+  </div>
+
+  <div class="panel">
+    <span class="tag rec">推荐 · A 方案</span>
+    <h3>横向完整品牌标 · 64px 高</h3>
+    <div class="sb">
+      <div class="sb-logo tall">
+        <svg viewBox="0 0 161.86 22.00" width="161.86" height="22.00" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gattefossé"><style>.cls-1{fill:#fff;}.cls-2{fill:#58616b;}.cls-3{fill:#8eb73c;}</style><g transform="translate(-4.791,0) scale(0.34077)"><path id="Fill-1" class="cls-2" d="M78.44,32.2A32.19,32.19,0,1,1,46.25,0,32.2,32.2,0,0,1,78.44,32.2" transform="translate(0 0)"/><path id="Fill-3" class="cls-2" d="M114.73,57.56a21.62,21.62,0,0,0,7.86,1.7c10.07,0,23.1-10.61,23.1-22.13h-30l4.41-4.81h30.06c2.24,8.09-.66,15-6,21.59A27.5,27.5,0,0,1,109.64,61" transform="translate(0 0)"/><path id="Fill-5" class="cls-3" d="M97.16,29.66A27.58,27.58,0,0,0,97,32.72l-5,1a33.24,33.24,0,0,1,13.83-28.4,32.24,32.24,0,1,0,4.27,3.33c-6.91,4.62-12.13,12.61-12.94,21" transform="translate(0 0)"/><path id="Fill-7" class="cls-2" d="M125.32.14c-7.15-.18-13.9,1.3-19.48,5.19a32.75,32.75,0,0,0-13.71,23.8A32.19,32.19,0,0,0,92,33.72l5-1a27.58,27.58,0,0,1,.12-3.06c.82-8.4,6-16.39,12.94-21A22.07,22.07,0,0,1,124.92,4.7c8.85,1.06,14.92,6.49,20.27,13.79l5-1.3C144.52,7.7,135.26.39,125.32.14" transform="translate(0 0)"/><path id="Fill-9" class="cls-2" d="M91.61,46a9,9,0,1,1,9,9,9,9,0,0,1-9-9" transform="translate(0 0)"/></g><g transform="translate(52.64,3.63) scale(0.66158)"><g transform="translate(0,-70.43)"><path id="Fill-11" class="cls-3" d="M27.19,85.47h4.17L29.3,80.59h0Zm.78-9H30.6l7.62,15.92H34.51l-1.94-4.11H26.06l-1.94,4.11H20.41Z" transform="translate(0 0)"/><polygon id="Fill-13" class="cls-3" points="74.48 76.44 84.26 76.44 84.26 79.19 77.85 79.19 77.85 83.09 83.99 83.09 83.99 85.84 77.85 85.84 77.85 89.61 84.26 89.61 84.26 92.36 74.48 92.36 74.48 76.44"/><polygon id="Fill-15" class="cls-3" points="89.66 76.44 98.91 76.44 98.91 79.19 93.03 79.19 93.03 83.09 98.65 83.09 98.65 85.84 93.03 85.84 93.03 92.36 89.66 92.36 89.66 76.44"/><path id="Fill-17" class="cls-3" d="M110.79,89.93c3.46,0,6.14-2.56,6.14-5.5a6.17,6.17,0,0,0-12.27,0c0,2.95,2.67,5.5,6.14,5.5m0-13.81c5.16,0,9.5,3.61,9.5,8.32s-4.27,8.25-9.5,8.25-9.5-3.68-9.5-8.25,4.34-8.32,9.5-8.32" transform="translate(0 0)"/><path id="Fill-19" class="cls-3" d="M127.35,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78,1.71,1.71,0,0,0-1.87,1.62c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.9,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-21" class="cls-3" d="M142.52,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78A1.71,1.71,0,0,0,143,80.48c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.89,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-23" class="cls-3" d="M157.33,73.29l5.52-2.86,1.32,2.26-5.6,2.59Zm-2,3.14h9.77v2.75h-6.41v3.89h6.14v2.76h-6.14v3.77h6.41v2.75h-9.77Z" transform="translate(0 0)"/><polygon id="Fill-26" class="cls-3" points="70.18 76.45 56.22 76.45 56.22 79.2 61.51 79.19 61.51 92.36 64.87 92.36 64.87 79.19 70.18 79.2 70.18 76.45"/><polygon id="Fill-28" class="cls-3" points="52.47 76.45 38.5 76.45 38.51 79.2 43.79 79.19 43.79 92.36 47.16 92.36 47.16 79.19 52.47 79.2 52.47 76.45"/><path id="Fill-30" class="cls-3" d="M9.28,84.23h9.63v.33c0,4.43-4.43,7.89-9.39,7.89S0,89,0,84.38,4.43,76.3,9.43,76.3c4.45,0,7.69,2.64,8.6,4.87H14.1A5.88,5.88,0,0,0,9.36,79,5.72,5.72,0,0,0,3.28,84.4c0,2.37,2,5.37,6.25,5.37a6,6,0,0,0,5.25-2.85H9.28" transform="translate(0 0)"/></g></g></svg>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-item active"><i class="ico"></i>总览</div>
+        <div class="sb-item"><i class="ico"></i>内容热度</div>
+        <div class="sb-sec">产品管理</div>
+        <div class="sb-item"><i class="ico"></i>个人护理 · 成分</div>
+      </div>
+    </div>
+    <div class="dim">图标 + <b>GATTEFOSSÉ</b> 字标并排，整体 162 × 22 px。用官方矢量重排（图标原比例、字标原字距），不是打字排的。去掉「后台管理」四字 —— 完整的品牌名本身就是最好的标识。</div>
+    <div class="rec-line">✓ 推荐：品牌感最强，侧栏顶高只加 8px，不影响导航区</div>
+  </div>
+
+  <div class="panel">
+    <span class="tag alt">B 方案 · 更醒目</span>
+    <h3>放大一档 · 70px 高</h3>
+    <div class="sb">
+      <div class="sb-logo taller">
+        <svg viewBox="0 0 191.20 26.00" width="191.20" height="26.00" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gattefossé"><style>.cls-1{fill:#fff;}.cls-2{fill:#58616b;}.cls-3{fill:#8eb73c;}</style><g transform="translate(-5.662,0) scale(0.40273)"><path id="Fill-1" class="cls-2" d="M78.44,32.2A32.19,32.19,0,1,1,46.25,0,32.2,32.2,0,0,1,78.44,32.2" transform="translate(0 0)"/><path id="Fill-3" class="cls-2" d="M114.73,57.56a21.62,21.62,0,0,0,7.86,1.7c10.07,0,23.1-10.61,23.1-22.13h-30l4.41-4.81h30.06c2.24,8.09-.66,15-6,21.59A27.5,27.5,0,0,1,109.64,61" transform="translate(0 0)"/><path id="Fill-5" class="cls-3" d="M97.16,29.66A27.58,27.58,0,0,0,97,32.72l-5,1a33.24,33.24,0,0,1,13.83-28.4,32.24,32.24,0,1,0,4.27,3.33c-6.91,4.62-12.13,12.61-12.94,21" transform="translate(0 0)"/><path id="Fill-7" class="cls-2" d="M125.32.14c-7.15-.18-13.9,1.3-19.48,5.19a32.75,32.75,0,0,0-13.71,23.8A32.19,32.19,0,0,0,92,33.72l5-1a27.58,27.58,0,0,1,.12-3.06c.82-8.4,6-16.39,12.94-21A22.07,22.07,0,0,1,124.92,4.7c8.85,1.06,14.92,6.49,20.27,13.79l5-1.3C144.52,7.7,135.26.39,125.32.14" transform="translate(0 0)"/><path id="Fill-9" class="cls-2" d="M91.61,46a9,9,0,1,1,9,9,9,9,0,0,1-9-9" transform="translate(0 0)"/></g><g transform="translate(62.12,4.29) scale(0.78187)"><g transform="translate(0,-70.43)"><path id="Fill-11" class="cls-3" d="M27.19,85.47h4.17L29.3,80.59h0Zm.78-9H30.6l7.62,15.92H34.51l-1.94-4.11H26.06l-1.94,4.11H20.41Z" transform="translate(0 0)"/><polygon id="Fill-13" class="cls-3" points="74.48 76.44 84.26 76.44 84.26 79.19 77.85 79.19 77.85 83.09 83.99 83.09 83.99 85.84 77.85 85.84 77.85 89.61 84.26 89.61 84.26 92.36 74.48 92.36 74.48 76.44"/><polygon id="Fill-15" class="cls-3" points="89.66 76.44 98.91 76.44 98.91 79.19 93.03 79.19 93.03 83.09 98.65 83.09 98.65 85.84 93.03 85.84 93.03 92.36 89.66 92.36 89.66 76.44"/><path id="Fill-17" class="cls-3" d="M110.79,89.93c3.46,0,6.14-2.56,6.14-5.5a6.17,6.17,0,0,0-12.27,0c0,2.95,2.67,5.5,6.14,5.5m0-13.81c5.16,0,9.5,3.61,9.5,8.32s-4.27,8.25-9.5,8.25-9.5-3.68-9.5-8.25,4.34-8.32,9.5-8.32" transform="translate(0 0)"/><path id="Fill-19" class="cls-3" d="M127.35,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78,1.71,1.71,0,0,0-1.87,1.62c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.9,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-21" class="cls-3" d="M142.52,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78A1.71,1.71,0,0,0,143,80.48c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.89,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-23" class="cls-3" d="M157.33,73.29l5.52-2.86,1.32,2.26-5.6,2.59Zm-2,3.14h9.77v2.75h-6.41v3.89h6.14v2.76h-6.14v3.77h6.41v2.75h-9.77Z" transform="translate(0 0)"/><polygon id="Fill-26" class="cls-3" points="70.18 76.45 56.22 76.45 56.22 79.2 61.51 79.19 61.51 92.36 64.87 92.36 64.87 79.19 70.18 79.2 70.18 76.45"/><polygon id="Fill-28" class="cls-3" points="52.47 76.45 38.5 76.45 38.51 79.2 43.79 79.19 43.79 92.36 47.16 92.36 47.16 79.19 52.47 79.2 52.47 76.45"/><path id="Fill-30" class="cls-3" d="M9.28,84.23h9.63v.33c0,4.43-4.43,7.89-9.39,7.89S0,89,0,84.38,4.43,76.3,9.43,76.3c4.45,0,7.69,2.64,8.6,4.87H14.1A5.88,5.88,0,0,0,9.36,79,5.72,5.72,0,0,0,3.28,84.4c0,2.37,2,5.37,6.25,5.37a6,6,0,0,0,5.25-2.85H9.28" transform="translate(0 0)"/></g></g></svg>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-item active"><i class="ico"></i>总览</div>
+        <div class="sb-item"><i class="ico"></i>内容热度</div>
+        <div class="sb-sec">产品管理</div>
+        <div class="sb-item"><i class="ico"></i>个人护理 · 成分</div>
+      </div>
+    </div>
+    <div class="dim">整体 191 × 26 px，占侧栏宽约 80%。如果你觉得 A 还不够大，直接上这版。</div>
+  </div>
+
+</div>
+
+<h2>三、登录页命名（卡片宽度按真实 420px 复刻）</h2>
+<div class="row">
+  <div class="panel">
+    <span class="tag now">Before</span>
+    <h3>现状</h3>
+    <div class="login-demo">
+      <div class="login-card">
+        <h1>嘉法狮 Gattefossé</h1>
+        <div class="login-sub">后台管理系统</div>
+        <input placeholder="admin@gattefosse.cn" disabled>
+        <input placeholder="••••••" disabled>
+        <div class="login-btn">登 录</div>
+      </div>
+    </div>
+    <div class="dim">中英混排「嘉法狮 Gattefossé」+ 泛称「后台管理系统」。</div>
+  </div>
+
+  <div class="panel">
+    <span class="tag rec">推荐 · 方案 1</span>
+    <h3>品牌 + 系统定位，分两行</h3>
+    <div class="login-demo">
+      <div class="login-card">
+        <h1 class="big">Gattefossé</h1>
+        <div class="login-sub strong">中国数字营销自动化平台</div>
+        <input placeholder="admin@gattefosse.cn" disabled>
+        <input placeholder="••••••" disabled>
+        <div class="login-btn">登 录</div>
+      </div>
+    </div>
+    <div class="dim">主标题放大到 24px 只放品牌名，系统定位作副标（13px、加深一档）。层级清楚，中文不会把品牌名挤小。</div>
+    <div class="rec-line">✓ 推荐：品牌名能撑住视觉重心</div>
+  </div>
+
+  <div class="panel">
+    <span class="tag alt">方案 2</span>
+    <h3>整串名称放一行</h3>
+    <div class="login-demo">
+      <div class="login-card">
+        <h1 class="oneline">Gattefossé 中国数字营销自动化平台</h1>
+        <input placeholder="admin@gattefosse.cn" disabled style="margin-top:22px">
+        <input placeholder="••••••" disabled>
+        <div class="login-btn">登 录</div>
+      </div>
+    </div>
+    <div class="dim">严格照你给的字串显示，但 22 个字挤 340px 宽，字号只能压到 17px，主标题反而变小了。</div>
+  </div>
+</div>
+
+<h2>四、浏览器标签页</h2>
+<div class="browser">
+  <div class="tab on"><i class="fav"></i>Gattefossé 中国数字营销自动化平台<span class="x">×</span></div>
+  <div class="tab"><i class="fav old"></i>嘉法狮后台管理系统<span class="x">×</span></div>
+</div>
+<div class="browser-body">标签页标题改成新名称（<code>&lt;title&gt;</code>），并顺手补一个 favicon（现在没有图标，是浏览器默认的空白页图标）。favicon 直接用双圆图标，绿色版。</div>
+
+<h2>五、落地清单</h2>
+<table>
+  <tr><th>#</th><th>文件</th><th>位置</th><th>改什么</th></tr>
+  <tr><td>1</td><td><code>admin/index.html</code></td><td>第 9 行 <code>&lt;title&gt;</code></td><td><code>嘉法狮后台管理系统</code> → <code>Gattefossé 中国数字营销自动化平台</code></td></tr>
+  <tr><td>2</td><td><code>admin/index.html</code></td><td>第 791~792 行 登录卡</td><td><code>嘉法狮 Gattefossé</code> + <code>后台管理系统</code> → 按选中方案改</td></tr>
+  <tr><td>3</td><td><code>admin/index.html</code></td><td>第 808~816 行 侧栏 logo</td><td>去掉 93×52 残片 SVG 与「后台管理」四字，换成完整横向品牌标</td></tr>
+  <tr><td>4</td><td><code>admin/index.html</code></td><td>第 136~147 行 CSS</td><td><code>.sidebar-logo</code> 高度 56 → 64px，纵向内边距与间距微调</td></tr>
+  <tr><td>5</td><td><code>admin/index.html</code></td><td>第 38 行 <code>--header-h</code></td><td>保持 56px 不动（只加高侧栏 logo 区，不影响顶栏）</td></tr>
+  <tr><td>6</td><td><code>admin/index.html</code></td><td><code>&lt;head&gt;</code></td><td>新增 favicon 链接（补上现在缺的图标）</td></tr>
+</table>
+<div class="note" style="margin-top:12px">
+<b>不动的部分：</b><br>
+· <code>admin/index-v3.html</code> 是 9/10 的旧版备份，没有任何页面引用它，<b>不改</b>；<br>
+· 侧栏菜单结构、导航项、权限逻辑、所有 standalone 子页 —— 全部不碰；<br>
+· 后端零改动，纯前端视觉层，出问题可以单独 revert。
+</div>
+
+<h2>六、我的建议</h2>
+<ul class="clean">
+  <li><b>侧栏用 A 方案</b>（横向完整品牌标 22px 高、总宽约 162px）：品牌名一旦完整，就不再需要「后台管理」四个字来提示这是什么系统，这也是大多数后台的做法。</li>
+  <li><b>登录页用方案 1</b>（Gattefossé + 中国数字营销自动化平台）：把完整系统名放进副标题，字号够大、读得清，也不用为 22 个字牺牲主标题的字号。</li>
+  <li>顺手补 favicon，成本极低但观感完整度提升明显。</li>
+  <li class="x">不建议在侧栏 logo 旁边再塞系统全称：240px 宽度里放两行中文小字，一眼看上去比现在更挤，还会和品牌标抢视觉重心 —— 系统全称交给登录页和浏览器标题就够了。</li>
+</ul>
+
+</div></body></html>
