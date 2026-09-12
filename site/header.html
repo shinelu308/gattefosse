@@ -348,6 +348,19 @@
   }
 </style>
 <script>
+  // 会话范围检查（260913）：登录真相源 = session cookie site_token（关浏览器即失效）。
+  // 浏览器新会话（cookie 已消失）但 localStorage 还留着上次登录 → 全部清除，强制重新登录。
+  // 放在公共 header 保证全站页面（含首页）都执行；auth-260913.js 内有同款逻辑兜底。
+  (function () {
+    var m = document.cookie.match(/(?:^|;\s*)site_token=([^;]*)/);
+    if (m) return;
+    var had = localStorage.getItem('token') || localStorage.getItem('_token') || localStorage.getItem('isLoggedIn') === 'true';
+    if (had) {
+      var KEYS = ['token', '_token', 'user', 'userId', 'userid', 'username', 'nickname', 'userEnabled'];
+      for (var i = 0; i < KEYS.length; i++) localStorage.removeItem(KEYS[i]);
+      localStorage.setItem('isLoggedIn', 'false');
+    }
+  })();
   // 检查登录状态 — 基于 JWT Token
   function checkLoginStatus() {
     // 使用 auth.js 中的实现（如果已加载）
