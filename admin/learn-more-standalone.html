@@ -9,6 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <style>
+[v-cloak] { display: none !important; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 100%; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f6f7; min-height: 100vh; color: #232426; }
@@ -160,7 +161,7 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 </style>
 </head>
 <body>
-<div id="app">
+<div id="app" v-cloak>
   <!-- 列表视图 -->
   <div v-if="!showEdit">
   <h1 class="page-title">了解更多</h1>

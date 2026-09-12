@@ -7,6 +7,7 @@
 <script src="/admin/static/js/vue.global.prod.js"></script>
 <script src="/admin/static/js/admin-dialog-260911.js"></script>
 <style>
+[v-cloak] { display: none !important; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 100%; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f6f7; min-height: 100vh; color: #232426; }
@@ -51,7 +52,7 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
 </style>
 </head>
 <body>
-<div id="app">
+<div id="app" v-cloak>
   <h1 class="page-title">作者管理</h1>
   <p class="page-subtitle">管理文章作者，供文章编辑时选择</p>
   <div class="card">
