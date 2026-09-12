@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>嘉法狮 Gattefossé 网站管理系统 · 使用手册</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --green:#8EB73C; --green-d:#6f9a22; --red:#E4004D; --ink:#232426;
+    --ink2:#5b6169; --line:#e4e7eb; --bg:#fff; --soft:#f6f8f4; --code:#f0f2f5;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;font-size:15px}
+
+  /* 左侧目录 */
+  aside{position:fixed;top:0;left:0;width:272px;height:100vh;overflow-y:auto;background:var(--soft);border-right:1px solid var(--line);padding:22px 16px 60px}
+  aside .brand{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:4px}
+  aside .brand small{display:block;font-weight:400;font-size:12px;color:var(--ink2);margin-top:4px}
+  aside nav{margin-top:16px}
+  aside a{display:block;font-size:13px;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:7px;border-left:3px solid transparent}
+  aside a:hover{background:#fff}
+  aside a.lv1{font-weight:700;color:var(--ink);margin-top:10px}
+  aside a.lv2{padding-left:20px;font-size:12.5px}
+  aside a.on{background:#fff;border-left-color:var(--green);color:var(--green-d)}
+
+  main{margin-left:272px;max-width:1060px;padding:40px 48px 120px}
+
+  h1{font-size:30px;line-height:1.3;letter-spacing:-.5px}
+  .sub{color:var(--ink2);margin-top:10px;font-size:14px}
+  .meta{margin:18px 0 8px;padding:14px 18px;background:var(--soft);border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--ink2)}
+  .meta b{color:var(--ink)}
+
+  h2{font-size:22px;margin:52px 0 6px;padding-top:14px;border-top:2px solid var(--line)}
+  h2 .no{display:inline-block;min-width:30px;height:30px;line-height:30px;text-align:center;background:var(--green);color:#fff;border-radius:8px;font-size:15px;margin-right:10px;vertical-align:2px}
+  h3{font-size:17px;margin:30px 0 8px;color:var(--ink)}
+  h3::before{content:"▍";color:var(--green);margin-right:6px}
+  h4{font-size:15px;margin:20px 0 6px;color:var(--ink)}
+  p{margin:10px 0;color:#33393f}
+  ul,ol{margin:10px 0 10px 22px}
+  li{margin:5px 0}
+  a{color:var(--green-d)}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-size:13px;font-family:Consolas,Monaco,monospace}
+  kbd{background:#fff;border:1px solid #c9cfd6;border-bottom-width:2px;border-radius:5px;padding:1px 7px;font-size:12.5px}
+
+  .lead{background:linear-gradient(180deg,#f2f7ea,#fff);border:1px solid #dbe8c6;border-left:5px solid var(--green);border-radius:10px;padding:16px 20px;margin:18px 0}
+  .tip,.warn{border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .tip{background:#f2f7ea;border:1px solid #dbe8c6}
+  .warn{background:#fff4f7;border:1px solid #ffd3e0}
+  .tip::before{content:"💡 小贴士  ";}
+  .warn::before{content:"⚠️ 注意  ";}
+  .tip b,.warn b{color:var(--ink)}
+
+  /* 截图 + 标注 */
+  figure{margin:16px 0 26px}
+  .wrap{position:relative;display:block;max-width:100%;line-height:0}
+  .wrap img{width:100%;display:block;border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 10px rgba(20,30,40,.06)}
+  .mk{position:absolute;width:23px;height:23px;border-radius:50%;background:var(--red);color:#fff;
+      font:700 12.5px/23px -apple-system,sans-serif;text-align:center;transform:translate(-50%,-50%);
+      box-shadow:0 1px 5px rgba(0,0,0,.35);border:2px solid #fff;z-index:3}
+  .box{position:absolute;border:2px solid var(--red);border-radius:5px;z-index:2;
+       box-shadow:0 0 0 2px rgba(228,0,77,.12)}
+  figcaption{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.5}
+  .steps{counter-reset:s;list-style:none;margin:12px 0 0}
+  .steps li{position:relative;padding-left:34px;margin:8px 0}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+      width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:12.5px;font-weight:700;text-align:center;line-height:22px}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:700}
+  tr:nth-child(even) td{background:#fafbfc}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}
+  .card h4{margin-top:0}
+  .card p{font-size:13px;color:var(--ink2);margin:6px 0 0}
+
+  .top{position:fixed;right:22px;bottom:22px;background:var(--green);color:#fff;text-decoration:none;padding:10px 14px;border-radius:24px;font-size:13px;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+  hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+  .end{color:var(--ink2);font-size:13px;text-align:center;margin-top:40px}
+  @media print{aside,.top{display:none}main{margin:0;max-width:none;padding:0}}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">嘉法狮 Gattefossé<small>网站管理系统 · 使用手册</small></div>
+  <nav>
+    <a class="lv1" href="#c0">开始之前</a>
+    <a class="lv1" href="#c1">1 · 3 分钟快速上手</a>
+    <a class="lv1" href="#c2">2 · 登录与账号</a>
+    <a class="lv1" href="#c3">3 · 总览看板</a>
+    <a class="lv1" href="#c4">4 · 内容热度</a>
+    <a class="lv1" href="#c5">5 · 产品管理</a>
+    <a class="lv2" href="#c5-1">5.1 个人护理 · 成分</a>
+    <a class="lv2" href="#c5-2">5.2 个人护理 · 配方</a>
+    <a class="lv2" href="#c5-3">5.3 药用辅料</a>
+    <a class="lv1" href="#c6">6 · 内容管理</a>
+    <a class="lv2" href="#c6-1">6.1 新闻与活动</a>
+    <a class="lv2" href="#c6-2">6.2 获取灵感（文章/研讨会/出版物/杂志）</a>
+    <a class="lv2" href="#c6-3">6.3 了解更多（5 个子页）</a>
+    <a class="lv2" href="#c6-4">6.4 文档资源</a>
+    <a class="lv2" href="#c6-5">6.5 站点内容</a>
+    <a class="lv2" href="#c6-6">6.6 作者管理</a>
+    <a class="lv1" href="#c7">7 · 运营</a>
+    <a class="lv2" href="#c7-1">7.1 样品订单</a>
+    <a class="lv2" href="#c7-2">7.2 用户管理（前台会员）</a>
+    <a class="lv2" href="#c7-3">7.3 招聘管理</a>
+    <a class="lv2" href="#c7-4">7.4 标签管理</a>
+    <a class="lv2" href="#c7-5">7.5 系统设置 · 员工与权限</a>
+    <a class="lv1" href="#c8">8 · 前台速览</a>
+    <a class="lv1" href="#c9">9 · 常见问题 FAQ</a>
+    <a class="lv1" href="#c10">10 · 附录：名词对照</a>
+  </nav>
+</aside>
+
+<main>
+  <h1>嘉法狮 Gattefossé 网站管理系统</h1>
+  <div class="sub">使用手册 · 面向内容编辑与运营同事</div>
+  <div class="meta">
+    <b>后台地址</b>　https://gattefosse.loudaren.com/admin/　　<b>前台地址</b>　https://gattefosse.loudaren.com/
+    <br><b>建议浏览器</b>　Chrome / Edge 最新版（其它浏览器可能出现显示异常）
+  </div>
+
+  <h2 id="c0"><span class="no">0</span>开始之前</h2>
+  <div class="lead">
+    这个系统分两块：<b>前台</b>是访客看到的官网；<b>后台</b>是你们编辑内容的地方。后台改完并「保存」，前台刷新就能看到。
+    本手册按后台左侧菜单顺序编写，遇到不会的地方，直接翻到对应章节即可。
+  </div>
+  <table>
+    <tr><th style="width:130px">你会用到</th><th>用途</th></tr>
+    <tr><td>后台 · 内容管理</td><td>发文章、发活动、上传资料、改页面文案</td></tr>
+    <tr><td>后台 · 产品管理</td><td>维护成分、配方、药用辅料</td></tr>
+    <tr><td>后台 · 运营</td><td>看订单、管会员、管标签、配权限</td></tr>
+    <tr><td>前台</td><td>检查改完的效果是否正常</td></tr>
+  </table>
+
+  <h2 id="c1"><span class="no">1</span>3 分钟快速上手</h2>
+  <p>先跑通一遍「登录 → 找到内容 → 改一处 → 看效果」，之后所有模块都是同一套逻辑。</p>
+  <ol class="steps">
+    <li>浏览器打开后台地址，输入<b>邮箱 + 密码</b>，点「登录」。</li>
+    <li>左侧菜单点「<b>内容管理 → 新闻与活动</b>」，右侧出现列表。</li>
+    <li>在列表里找到一条内容，点它右侧的「<b>编辑</b>」。</li>
+    <li>改动标题或正文，拉到页面底部点「<b>保存</b>」。</li>
+    <li>打开前台对应页面，按 <kbd>Ctrl</kbd>+<kbd>F5</kbd> 强制刷新，确认改动已生效。</li>
+  </ol>
+  <div class="tip">列表页、编辑页在<b>所有模块长得都一样</b>：列表页用来「找和筛」，编辑页用来「改和存」。学会一个模块，其它模块照搬即可。</div>
+
+  <h2 id="c2"><span class="no">2</span>登录与账号</h2>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A01-login.png" alt="后台登录页">
+      <span class="box" style="left:37.6%;top:44.2%;width:24.8%;height:7.2%"></span><span class="mk" style="left:63.5%;top:47.5%">1</span>
+      <span class="box" style="left:37.6%;top:51.8%;width:24.8%;height:7.2%"></span><span class="mk" style="left:63.5%;top:55%">2</span>
+      <span class="box" style="left:37.6%;top:59.4%;width:24.8%;height:7.2%"></span><span class="mk" style="left:63.5%;top:62.8%">3</span>
+    </div>
+    <figcaption>登录页：① 邮箱　② 密码　③ 点「登录」进入后台</figcaption>
+  </figure>
+  <table>
+    <tr><th style="width:150px">我想做的事</th><th>怎么做</th></tr>
+    <tr><td>登录</td><td>填邮箱和密码 → 登录。账号由管理员在「系统设置」里开通</td></tr>
+    <tr><td>退出</td><td>点右上角「退出登录」</td></tr>
+    <tr><td>忘记密码</td><td>联系系统管理员重置（后台不提供自助改密）</td></tr>
+  </table>
+  <div class="warn">看不到某些菜单？那是<b>权限</b>没勾。请管理员到「系统设置 → 系统功能权限」给你的角色打勾，保存后<b>重新登录</b>生效。详见 <a href="#c7-5">7.5</a>。</div>
+
+  <h2 id="c3"><span class="no">3</span>总览看板</h2>
+  <p>登录后的第一个页面，一眼看清网站访问情况。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A02-dashboard.png" alt="总览看板">
+      <span class="box" style="left:0.6%;top:11%;width:21%;height:78%"></span><span class="mk" style="left:21.8%;top:13%">1</span>
+      <span class="box" style="left:23.5%;top:15.8%;width:71.5%;height:15.5%"></span><span class="mk" style="left:22.8%;top:17%">2</span>
+      <span class="box" style="left:23.5%;top:33.5%;width:47.5%;height:57%"></span><span class="mk" style="left:22.8%;top:35%">3</span>
+      <span class="box" style="left:72.5%;top:33.5%;width:22.5%;height:57%"></span><span class="mk" style="left:96.5%;top:35%">4</span>
+    </div>
+    <figcaption>① 左侧菜单　② 四个关键数字　③ 访问地图　④ 地区排行</figcaption>
+  </figure>
+  <h4>四个数字怎么看</h4>
+  <table>
+    <tr><th style="width:150px">指标</th><th>含义</th></tr>
+    <tr><td>今日访问量（PV）</td><td>今天页面被打开了多少次（同一人多开几次也算多次）</td></tr>
+    <tr><td>今日访客数（UV）</td><td>今天有多少个「不同的人」来访</td></tr>
+    <tr><td>昨日访问量</td><td>昨天一共打开了多少次</td></tr>
+    <tr><td>累计访问量</td><td>系统上线至今的总和</td></tr>
+  </table>
+  <div class="tip">下方地图与「地区排行」显示访客来自哪些省市，可切换<b>中国 / 世界</b>，点「展开全部」看完整排行。</div>
+
+  <h2 id="c4"><span class="no">4</span>内容热度</h2>
+  <p>回答一个问题：<b>哪个产品、哪份资料被看得最多？</b> 和总览不同，这里按「产品 / 资料 / 文章」这类<b>业务对象</b>统计，而不是按页面。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A03-content-heat.png" alt="内容热度">
+      <span class="box" style="left:25.2%;top:35.5%;width:21%;height:6.6%"></span><span class="mk" style="left:24.5%;top:37%">1</span>
+      <span class="box" style="left:25.2%;top:45%;width:12.5%;height:6.6%"></span><span class="mk" style="left:24.5%;top:46.5%">2</span>
+      <span class="box" style="left:25.2%;top:82%;width:71%;height:8%"></span><span class="mk" style="left:24.5%;top:83.5%">3</span>
+    </div>
+    <figcaption>① 时间范围　② 板块筛选　③「未被浏览过的对象」——营销上最该关注的清单</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>选<b>时间范围</b>（近 7 天 / 30 天 / 90 天 / 全部）。</li>
+    <li>选<b>板块</b>（全部 / 个人护理 …），只看某个产品线。</li>
+    <li>下方「<b>未被浏览过的对象</b>」列出<b>从没被访问</b>的产品与资料，适合安排推广。</li>
+  </ol>
+
+  <h2 id="c5"><span class="no">5</span>产品管理</h2>
+  <p>左侧「产品管理」下有三块：<b>个人护理</b>（含「成分」「配方」两个子页）、<b>药用辅料</b>。三者页面结构一致。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A04-pc-list.png" alt="成分列表">
+      <span class="box" style="left:31%;top:19.6%;width:22.5%;height:6.4%"></span><span class="mk" style="left:30.3%;top:21.2%">1</span>
+      <span class="box" style="left:87.8%;top:19.2%;width:9.2%;height:7%"></span><span class="mk" style="left:91.4%;top:21%">2</span>
+      <span class="box" style="left:23.8%;top:25.6%;width:72.7%;height:4.6%"></span><span class="mk" style="left:23.2%;top:27.2%">3</span>
+      <span class="box" style="left:86.6%;top:47%;width:11%;height:14%"></span><span class="mk" style="left:98.2%;top:52%">4</span>
+    </div>
+    <figcaption>列表页通用结构：① 搜索框　② 新增按钮　③ 表头（列名）　④ 每行的操作（编辑 / 下架 / 删除）</figcaption>
+  </figure>
+  <h4>列表页能做什么</h4>
+  <ul>
+    <li><b>搜索</b>：按产品名 / INCI 名称查找，回车或点搜索。</li>
+    <li><b>筛选</b>：点「展开筛选」，按功能分类、应用领域、状态等组合过滤。</li>
+    <li><b>批量操作</b>：勾选多行 →「批量删除」；或「导出 Excel」备份。</li>
+    <li><b>上架 / 下架</b>：控制这条内容在前台是否显示。</li>
+  </ul>
+
+  <h3 id="c5-1">5.1 个人护理 · 成分</h3>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A05-pc-edit.png" alt="新增成分表单">
+      <span class="box" style="left:23.8%;top:19.6%;width:11.5%;height:6.6%"></span><span class="mk" style="left:23.2%;top:21.4%">1</span>
+      <span class="box" style="left:23.8%;top:29%;width:72.7%;height:16%"></span><span class="mk" style="left:23.2%;top:31%">2</span>
+      <span class="box" style="left:23.8%;top:55%;width:72.7%;height:29%"></span><span class="mk" style="left:23.2%;top:57%">3</span>
+    </div>
+    <figcaption>编辑页：① 两个分页（基本信息 / 标签与分类）　② 必填的基本信息　③ 图片与视频</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>列表页点「<b>+ 新增产品</b>」（或某行的「编辑」）。</li>
+    <li>「<b>基本信息</b>」页填：产品名称*、INCI 名称*、宣传标语、产品描述。</li>
+    <li>传<b>产品图片</b>、<b>详情大图</b>（点「选择文件」上传，或粘贴图片 URL）。</li>
+    <li>有视频就填<b>产品视频</b>（B 站链接 / iframe 代码）与视频标题。</li>
+    <li>切到「<b>标签与分类</b>」页，勾选功能、应用领域、认证等标签。</li>
+    <li>底部点「<b>保存</b>」。想前台看得见，确认状态为「已发布」。</li>
+  </ol>
+  <div class="warn">带 * 的是必填项；空着保存会提示。图片建议用清晰大图，前台会自适应缩放。</div>
+
+  <h3 id="c5-2">5.2 个人护理 · 配方</h3>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A07-formula-list.png" alt="配方列表">
+    </div>
+    <figcaption>配方列表：比成分多「编号 / 剂型 / 天然指数」等列，操作方式完全一致</figcaption>
+  </figure>
+  <p>配方用于「配方查找器」。字段与成分类似，另有 <b>编号、应用领域、剂型、天然指数</b>。编辑步骤同 <a href="#c5-1">5.1</a>。</p>
+
+  <h3 id="c5-3">5.3 药用辅料</h3>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A06-pharma-list.png" alt="药用辅料列表">
+    </div>
+    <figcaption>药用辅料：字段为 给药途径 / 剂型 / 功能 等医药类属性</figcaption>
+  </figure>
+  <p>结构同样是「列表 + 编辑」，搜索、筛选、上下架、批量删除都一样操作。</p>
+
+  <h2 id="c6"><span class="no">6</span>内容管理</h2>
+
+  <h3 id="c6-1">6.1 新闻与活动</h3>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A08-news-list.png" alt="新闻与活动列表">
+      <span class="box" style="left:25.2%;top:18.4%;width:67.5%;height:8.6%"></span><span class="mk" style="left:24.5%;top:20%">1</span>
+      <span class="box" style="left:25.2%;top:23.6%;width:9.5%;height:6.6%"></span><span class="mk" style="left:35%;top:26.8%">2</span>
+      <span class="box" style="left:78.6%;top:18.8%;width:11.5%;height:6.6%"></span><span class="mk" style="left:77.9%;top:20.4%">3</span>
+    </div>
+    <figcaption>① 筛选区　②「+ 新增新闻」　③「从原站导入」可批量抓取英文站内容</figcaption>
+  </figure>
+  <ul>
+    <li><b>类型</b>分「新闻」和「活动」，可在筛选区切换。</li>
+    <li>新增/编辑时可填标题、摘要、正文、配图、发布日期。</li>
+    <li>「<b>从原站导入</b>」用于一次性把 gattefosse.com 的对应文章抓过来（导入后仍需人工校对）。</li>
+  </ul>
+
+  <h3 id="c6-2">6.2 获取灵感（文章 / 在线研讨会 / 出版物 / 杂志）</h3>
+  <p>「获取灵感」是一个<b>带 4 个标签页的合集</b>，点顶部标签切换类型，列表与操作完全一致。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A09-article-list.png" alt="文章管理">
+      <span class="box" style="left:25.2%;top:19%;width:38%;height:6.2%"></span><span class="mk" style="left:24.5%;top:24.5%">1</span>
+      <span class="box" style="left:66.5%;top:23%;width:12%;height:6.6%"></span><span class="mk" style="left:65.8%;top:24.6%">2</span>
+    </div>
+    <figcaption>① 顶部四个标签页（文章/在线研讨会/出版物/杂志）　② 各页都有「+ 新增」</figcaption>
+  </figure>
+  <table>
+    <tr><th style="width:120px">标签页</th><th>用途</th></tr>
+    <tr><td>文章</td><td>技术/趋势类图文，出现在「获取灵感 → 文章」</td></tr>
+    <tr><td>在线研讨会</td><td>视频研讨回放，可填视频链接、是否需登录</td></tr>
+    <tr><td>出版物</td><td>论文、会议报告等，含作者/出处/日期</td></tr>
+    <tr><td>杂志</td><td>addiactive 系列，逐期维护（含 PDF、是否需登录）</td></tr>
+  </table>
+  <figure>
+    <div class="wrap"><img src="assets/raw/A10-article-edit.png" alt="新增文章表单"></div>
+    <figcaption>新增文章：标题、Slug/URL、副标题、子类型、发布日期、摘要；正文区支持富文本</figcaption>
+  </figure>
+  <div class="warn"><b>Slug/URL</b> 是这篇文章的网址后缀，留空会自动生成；一旦发布，<b>不建议再改</b>，否则旧链接会失效。</div>
+
+  <h3 id="c6-3">6.3 了解更多（5 个子页）</h3>
+  <p>「了解更多」是给<b>药用辅料客户</b>看的资料区，含 5 个标签页：热点话题、在线研讨会、出版物、资料手册、Journées Galéniques。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A14-lm-publications.png" alt="了解更多-出版物">
+      <span class="box" style="left:25.2%;top:19%;width:44%;height:6.2%"></span><span class="mk" style="left:24.5%;top:25.5%">1</span>
+      <span class="box" style="left:25.2%;top:23.6%;width:12.5%;height:6.6%"></span><span class="mk" style="left:38%;top:26.8%">2</span>
+    </div>
+    <figcaption>① 五个标签页（数字为条数）　② 当前页的「+ 新增出版物」</figcaption>
+  </figure>
+  <div class="tip">点左侧菜单「了解更多」的任一子项，都会进到这个页面并自动切到对应标签页。</div>
+
+  <h3 id="c6-4">6.4 文档资源</h3>
+  <p>全局的<b>文件仓库</b>：产品手册、配方资料、技术数据表、安全数据表都在这里，供产品详情页的「文件下载」区引用。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A15-doc-list.png" alt="文档资源列表">
+      <span class="box" style="left:25.2%;top:19%;width:46%;height:6.2%"></span><span class="mk" style="left:24.5%;top:24.5%">1</span>
+      <span class="box" style="left:87.5%;top:18.6%;width:8.8%;height:6.6%"></span><span class="mk" style="left:91.6%;top:20.4%">2</span>
+    </div>
+    <figcaption>① 按类型/权限筛选　②「+ 新建文档」上传 PDF</figcaption>
+  </figure>
+  <ul>
+    <li>筛选「<b>公开 / 需登录</b>」：需登录的文件，前台访客登录后才能下载。</li>
+    <li>「类型」区分产品手册、配方资料、技术数据表、安全数据表等。</li>
+  </ul>
+
+  <h3 id="c6-5">6.5 站点内容</h3>
+  <p>管理<b>首页、个人护理、药用辅料</b>等独立页面的文案与区块，以及「寻找我们」页面的分公司/经销商信息。</p>
+  <figure>
+    <div class="wrap"><img src="assets/raw/A16-content-list.png" alt="站点内容管理"></div>
+    <figcaption>上半部分「页面列表」按页标识管理；下半部分管理分公司（用于「寻找我们」页面）</figcaption>
+  </figure>
+  <div class="tip">这一页保存后，前台对应页面的文案才会更新。</div>
+
+  <h3 id="c6-6">6.6 作者管理</h3>
+  <p>维护文章作者（姓名、职位、简介、头像、部门、地区），写文章时可直接选择。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A17-author-list.png" alt="作者管理">
+      <span class="box" style="left:24.9%;top:27.4%;width:6.6%;height:36.2%"></span><span class="mk" style="left:24.1%;top:29.2%">1</span>
+      <span class="box" style="left:87.8%;top:30.4%;width:8.6%;height:6.4%"></span><span class="mk" style="left:96.9%;top:32.2%">2</span>
+    </div>
+    <figcaption>① 头像列（圆形裁切）　② 每行的「编辑 / 删除」</figcaption>
+  </figure>
+  <ul>
+    <li><b>头像</b>有两种填法：直接贴图片网址，或点「本地上传」选电脑里的图片（限图片格式、≤5MB）。</li>
+    <li>列表里头像按 <b>44×44 圆形</b>显示并自动裁切，<b>建议用正方形图</b>（如 400×400），长方形会被裁掉两边。</li>
+    <li><b>头像留空不影响使用</b>——只是列表这一格空着，不会报错。</li>
+    <li>「排序」在编辑弹窗里填数字，<b>数字越小越靠前</b>；它只影响后台列表顺序。</li>
+  </ul>
+
+  <h2 id="c7"><span class="no">7</span>运营</h2>
+
+  <h3 id="c7-1">7.1 样品订单</h3>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A18-order-list.png" alt="样品订单">
+      <span class="box" style="left:25.2%;top:23.4%;width:67.5%;height:6.6%"></span><span class="mk" style="left:24.5%;top:25%">1</span>
+      <span class="box" style="left:88%;top:30%;width:8.5%;height:6.6%"></span><span class="mk" style="left:97.6%;top:32%">2</span>
+    </div>
+    <figcaption>① 状态筛选（全部 / 待处理 / 处理中 / 已取消…）　② 每行「详情」查看联系方式与申请明细</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>用「状态」筛出<b>待处理</b>的申请。</li>
+    <li>点「详情」查看客户公司、联系人、申请的样品清单。</li>
+    <li>线下跟进后，回到列表更新状态。</li>
+  </ol>
+
+  <h3 id="c7-2">7.2 用户管理（前台会员）</h3>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A19-user-list.png" alt="用户管理">
+      <span class="box" style="left:25.2%;top:14.2%;width:46%;height:3.6%"></span><span class="mk" style="left:24.5%;top:15.9%">1</span>
+    </div>
+    <figcaption>① 页面顶部提示：这里是<b>前台注册会员</b>；员工与权限在「系统设置」里管</figcaption>
+  </figure>
+  <ul>
+    <li>这里管的是<b>前台注册的客户会员</b>：审核、禁用、删除。</li>
+    <li><b>公司员工与系统操作人员</b>不在这里，请在「系统设置 → 企业组织架构」中管理（见 <a href="#c7-5">7.5</a>）。</li>
+  </ul>
+
+  <h3 id="c7-3">7.3 招聘管理</h3>
+  <figure>
+    <div class="wrap"><img src="assets/raw/A20-career-list.png" alt="招聘管理"></div>
+    <figcaption>顶部分状态标签（新申请/沟通中/面试/录用/不合适/归档），可下载简历、写内部备注</figcaption>
+  </figure>
+
+  <h3 id="c7-4">7.4 标签管理</h3>
+  <p>维护前台筛选器里的标签（功能、应用领域、认证…）。<b>改标签会影响前台筛选结果</b>，务必谨慎。</p>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A21-tag-manage.png" alt="标签管理">
+      <span class="box" style="left:25.2%;top:19%;width:19.5%;height:6.4%"></span><span class="mk" style="left:24.5%;top:20.6%">1</span>
+      <span class="box" style="left:45.6%;top:19%;width:10.5%;height:6.6%"></span><span class="mk" style="left:57%;top:21%">2</span>
+      <span class="box" style="left:25.2%;top:86.5%;width:71.5%;height:9.5%"></span><span class="mk" style="left:24.5%;top:88%">3</span>
+    </div>
+    <figcaption>① 先选产品线 + 分类　② 新增 / 编辑标签　③「一致性检查」发现异常标签</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>顶部两个下拉：选<b>产品线</b>（成分/配方/药用辅料…）与<b>分类</b>（功能/应用领域…）。</li>
+    <li>表格里可「编辑」改名或排序、「删除」移除标签。</li>
+    <li>底部点「<b>开始检查</b>」，系统会列出：产品用了但字典没有的标签、字典有却没人用的「死标签」、同值冲突等。</li>
+  </ol>
+  <div class="warn">删标签前先确认没有产品在用；改名/删除都会影响前台筛选。</div>
+
+  <h3 id="c7-5">7.5 系统设置 · 员工与权限</h3>
+  <p>「系统设置」共 5 个标签页：企业基本信息、企业组织架构、系统功能权限、AI 翻译配置、邮件通知。</p>
+  <h4>① 企业基本信息</h4>
+  <figure>
+    <div class="wrap"><img src="assets/raw/A22-settings.png" alt="系统设置-企业基本信息"></div>
+    <figcaption>网站名称、联系方式、备案号、SEO 标题/描述、页脚版权等；保存后自动同步到前台页脚</figcaption>
+  </figure>
+
+  <h4>② 企业组织架构（管员工账号）</h4>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A23-settings-org.png" alt="系统设置-企业组织架构">
+      <span class="box" style="left:25.2%;top:34%;width:71%;height:26%"></span><span class="mk" style="left:24.5%;top:36%">1</span>
+      <span class="box" style="left:25.2%;top:72.5%;width:71%;height:13%"></span><span class="mk" style="left:24.5%;top:74%">2</span>
+    </div>
+    <figcaption>① 部门结构（部门名、负责人、排序）　② 员工账号（新增员工、重置密码）</figcaption>
+  </figure>
+  <ul>
+    <li><b>部门</b>：点「+ 添加部门」建部门，填名称、负责人、排序；员工按「所属部门」自动归组。</li>
+    <li><b>员工账号</b>：点「+ 新增员工」开通登录账号；忘记密码时点「重置密码」。</li>
+    <li>「超级管理员」为系统内置账号，<b>不可编辑/禁用/删除</b>。</li>
+  </ul>
+
+  <h4>③ 系统功能权限（勾菜单权限）</h4>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/A24-settings-perm.png" alt="系统设置-系统功能权限">
+      <span class="box" style="left:25.2%;top:31.5%;width:19%;height:8%"></span><span class="mk" style="left:24.5%;top:33%">1</span>
+      <span class="box" style="left:71%;top:31.5%;width:21%;height:8%"></span><span class="mk" style="left:93.5%;top:33%">2</span>
+      <span class="box" style="left:25.2%;top:38.5%;width:67%;height:56%"></span><span class="mk" style="left:70%;top:41%">3</span>
+    </div>
+    <figcaption>① 功能模块（=左侧菜单项）　② 每个角色一列　③ 打勾 = 显示该菜单</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>找到要授权的<b>功能模块</b>（每一行就是后台左侧的一个菜单）。</li>
+    <li>在对应<b>角色列</b>（如「编辑员」）里打勾。</li>
+    <li>点「<b>保存设置</b>」。</li>
+    <li>让该同事<b>退出后重新登录</b>——权限在重新登录后才生效。</li>
+  </ol>
+  <div class="warn">如果同事反映「勾了权限但还是看不到菜单」，通常是<b>没重新登录</b>。另注意：未勾选的模块，其所有子页也会一并隐藏。</div>
+
+  <h2 id="c8"><span class="no">8</span>前台速览</h2>
+  <p>后台改完，务必到前台确认效果。下面是访客最常用的几个页面。</p>
+  <h4>首页</h4>
+  <figure>
+    <div class="wrap"><img src="assets/raw/F01-home.png" alt="前台首页"></div>
+    <figcaption>顶部导航：个人护理 / 药用辅料 / 社会责任 / 专业知识 / 关于我们；右上角为语言切换与登录</figcaption>
+  </figure>
+  <h4>产品导览与详情</h4>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/F02-pc-finder.png" alt="产品导览">
+      <span class="box" style="left:23%;top:39%;width:55%;height:8.5%"></span><span class="mk" style="left:22.3%;top:41%">1</span>
+      <span class="box" style="left:8.8%;top:62%;width:20%;height:32%"></span><span class="mk" style="left:30%;top:64%">2</span>
+      <span class="box" style="left:36.8%;top:63%;width:12.5%;height:6%"></span><span class="mk" style="left:36%;top:64.5%">3</span>
+    </div>
+    <figcaption>① 关键词搜索　② 左侧过滤器（勾选后 0 结果的项会置灰）　③ 产品总数</figcaption>
+  </figure>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/F03-pc-detail.png" alt="产品详情">
+      <span class="box" style="left:0.6%;top:13.6%;width:19%;height:4.6%"></span><span class="mk" style="left:20.5%;top:15.8%">1</span>
+      <span class="box" style="left:64.8%;top:50.6%;width:11.5%;height:7%"></span><span class="mk" style="left:77.5%;top:53%">2</span>
+    </div>
+    <figcaption>① 面包屑（可快速返回上级）　②「申请样品」入口</figcaption>
+  </figure>
+  <h4>配方查找器 / 药用辅料</h4>
+  <div class="grid2">
+    <figure><div class="wrap"><img src="assets/raw/F04-formula-finder.png" alt="配方"></div><figcaption>配方：按「应用领域」筛选，点「阅读更多」进详情</figcaption></figure>
+    <figure><div class="wrap"><img src="assets/raw/F05-formula-detail.png" alt="配方详情"></div><figcaption>配方详情：简述 + 关键点，「下载资料」获取配方文件</figcaption></figure>
+  </div>
+  <div class="grid2">
+    <figure><div class="wrap"><img src="assets/raw/F06-pharma.png" alt="药用辅料"></div><figcaption>药用辅料：提供「查找产品 / 查找出版物」两个入口</figcaption></figure>
+    <figure><div class="wrap"><img src="assets/raw/F08-get-inspired.png" alt="获取灵感"></div><figcaption>获取灵感：文章 / 研讨会 / 出版物 / 杂志合集</figcaption></figure>
+  </div>
+  <h4>站内搜索</h4>
+  <figure>
+    <div class="wrap">
+      <img src="assets/raw/F07-search.png" alt="搜索页">
+      <span class="box" style="left:23%;top:39.5%;width:55%;height:8%"></span><span class="mk" style="left:22.3%;top:41.5%">1</span>
+      <span class="box" style="left:8.8%;top:64%;width:21%;height:30%"></span><span class="mk" style="left:30.5%;top:66%">2</span>
+      <span class="box" style="left:36.8%;top:63%;width:17%;height:6%"></span><span class="mk" style="left:36%;top:64.5%">3</span>
+    </div>
+    <figcaption>① 关键词　② 内容类型筛选（显示各类型命中条数）　③ 命中总数</figcaption>
+  </figure>
+
+  <h2 id="c9"><span class="no">9</span>常见问题 FAQ</h2>
+  <table>
+    <tr><th style="width:290px">现象</th><th>原因与处理</th></tr>
+    <tr><td>后台看不到某个菜单</td><td>权限没勾：管理员到「系统设置 → 系统功能权限」勾选并保存，然后<b>退出重新登录</b></td></tr>
+    <tr><td>改了内容，前台没变化</td><td>① 确认点了「保存」；② 前台按 <kbd>Ctrl</kbd>+<kbd>F5</kbd> 强刷；③ 确认状态是「已发布」而不是「已下架」</td></tr>
+    <tr><td>图片上传了但不显示</td><td>检查是否点了保存、图片格式（jpg/png/webp）、以及是否选了「产品图片」而不是「详情大图」</td></tr>
+    <tr><td>点了子菜单屏幕闪一下模板文字</td><td>属加载瞬间的正常现象，刷新或稍等即恢复；如持续出现请联系技术支持</td></tr>
+    <tr><td>搜索不到某个产品</td><td>确认该产品状态为「已发布」；换用产品名或 INCI 名再搜</td></tr>
+    <tr><td>筛选某个标签后没有结果</td><td>该标签可能无任何产品命中，前台会把 0 结果的筛选项置灰</td></tr>
+    <tr><td>忘了密码</td><td>联系管理员，在「系统设置 → 企业组织架构」里「重置密码」</td></tr>
+  </table>
+
+  <h2 id="c10"><span class="no">10</span>附录：名词对照</h2>
+  <table>
+    <tr><th style="width:170px">名词</th><th>含义</th></tr>
+    <tr><td>PV / 访问量</td><td>页面被打开的次数（可重复计）</td></tr>
+    <tr><td>UV / 访客数</td><td>去重后的访问人数</td></tr>
+    <tr><td>INCI 名称</td><td>国际化妆品原料命名，产品的标准学名</td></tr>
+    <tr><td>Slug / URL</td><td>内容在前台的网址后缀，发布后不宜更改</td></tr>
+    <tr><td>上架 / 下架</td><td>控制内容在前台是否可见</td></tr>
+    <tr><td>标签字典</td><td>前台筛选器的全部标签来源（见「标签管理」）</td></tr>
+    <tr><td>角色 / 权限</td><td>不同岗位能看到的菜单与操作范围（见「系统功能权限」）</td></tr>
+  </table>
+
+  <hr>
+  <div class="end">嘉法狮 Gattefossé 网站管理系统 · 使用手册　|　如需补充内容或反馈问题，请联系系统管理员</div>
+</main>
+
+<a class="top" href="#">↑ 回到顶部</a>
+
+<script>
+// 目录高亮
+(function(){
+  var links = [...document.querySelectorAll('aside a')];
+  var secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function onScroll(){
+    var y = window.scrollY + 120, cur = null;
+    secs.forEach(s => { if (s.offsetTop <= y) cur = s; });
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) { var l = links.find(a => a.getAttribute('href') === '#' + cur.id); if (l) l.classList.add('on'); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
