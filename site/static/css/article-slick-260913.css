@@ -1,0 +1,3 @@
+/* 文章详情滑块保险样式（260913）：模板 CSS 聚合组合与原站存在差异时的最小修复 */
+/* slick-list 裁切：防止相邻帧面板溢出到可视区外（原站 overflow:hidden） */
+.js-full-width-slider .slick-list{overflow:hidden;}

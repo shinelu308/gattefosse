@@ -347,6 +347,11 @@
     <script src="/sites/default/files/js/js_s6aNHaNyXsaLLFMbA3H-L-jz0lJviaanDGet7HBKEvU.js"></script>
     <script src="/themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitron.js?1713335028"></script>
     <script src="/sites/default/files/js/js_-YsAXWEB4twbIcIo_-Yc1WeAgi9b2E4Oba79--lmNQ0.js"></script>
+<link rel="stylesheet" href="/sites/default/files/css/css_Oh89pvktvw9j_fKvj9jUiQTyRMCXavGNir5Y-lIQWW0.css">
+  <link rel="stylesheet" media="print" href="/sites/default/files/css/css_bieXaGr6XZ7mreGL93wYIWEdJM9FGFdMIykc8rbucjU.css">
+  <link rel="stylesheet" href="/sites/default/files/css/css_BKJqrUrNc9mxB0Gu3xQkxuydjwMluQb6-MGDCPQpCRA.css">
+  <link rel="stylesheet" href="/static/css/article-slick-260913.css">
+  <script src="/static/js/article-slick-260913.js"></script>
 
     <script>
         var params = new URLSearchParams(window.location.search);
@@ -523,6 +528,15 @@
                                 });
 
                                 document.title = (item.metaTitle || item.title) + ' | 嘉法狮';
+                                // 滑块初始化（260913）：内容为异步渲染，slick 需 DOM 更新后手动初始化；
+                                // $nextTick 可能早于 v-html 补丁完成（预览首开空白同款时序）→ 有界重试
+                                self.$nextTick(function () {
+                                    var tries = 0;
+                                    (function bootSlider() {
+                                        if (window.initArticleSlider && window.initArticleSlider()) return;
+                                        if (++tries <= 10) setTimeout(bootSlider, 120);
+                                    })();
+                                });
                                 axios.put('/api/news/' + articleId + '/views').catch(function(){});
                             }
                         })

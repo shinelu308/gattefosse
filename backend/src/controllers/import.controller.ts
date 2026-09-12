@@ -455,8 +455,18 @@ export async function importArticleFromSite(req: Request, res: Response) {
     if (wm) widthMap.set(im[1], parseInt(wm[1], 10));
   }
 
+  // 背景图（滑块等区块用 style="background-image:url(...)" 引图，不走 <img>；260913 药用辅料
+  //「Streamline Your Journey」文章踩坑：滑块 3 张图留在原站地址，前端加载被反爬拦 → 空面板）——同样本地化
+  const bgSrcs: string[] = [];
+  const bgRe = /background-image:\s*url\(([^)]+)\)/gi;
+  let bm: RegExpExecArray | null;
+  while ((bm = bgRe.exec(contentDiv)) !== null) {
+    const raw = bm[1].trim().replace(/^['"]|['"]$/g, '');
+    if (raw && !raw.startsWith('/uploads/')) bgSrcs.push(raw);
+  }
+
   // 并发下载（5 并发）——串行下载多图常超过反代默认 60s 超时导致 nginx 返回 504 HTML 页
-  const rawList = [...new Set(allSrcs)];
+  const rawList = [...new Set([...allSrcs, ...bgSrcs])];
   let cursor = 0;
   const worker = async (): Promise<void> => {
     while (cursor < rawList.length) {
@@ -495,6 +505,12 @@ export async function importArticleFromSite(req: Request, res: Response) {
     // 图片本地化
     out = out.replace(/(<img[^>]*\ssrc=")([^"]+)(")/g, (full, p1, src, p3) => {
       const local = imgMap.get(src);
+      return local ? p1 + local + p3 : full;
+    });
+    // 背景图本地化（滑块等，与上面 bgSrcs 同一批 imgMap 键）
+    out = out.replace(/(background-image:\s*url\()([^)]+)(\))/g, (full, p1, src, p3) => {
+      const clean = String(src).trim().replace(/^['"]|['"]$/g, '');
+      const local = imgMap.get(clean);
       return local ? p1 + local + p3 : full;
     });
     // 指向本文的链接 → 页内锚点
