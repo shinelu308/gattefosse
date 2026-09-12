@@ -506,3 +506,24 @@ model ContentView {
   @@index([section])
   @@map("content_views")
 }
+
+/// 使用手册章节（后台「帮助 → 使用手册」页的数据源）
+/// 目的：操作人员可在后台查阅；系统改版后文字与截图能在后台自己更新，不用等发版。
+/// 建表：scripts/create-manual-sections-table.js（建在数据文件里，不随 deploy，部署后需补跑 --apply）
+/// 读取：GET /api/manual/sections（需登录）　写入：PUT /api/manual/admin/sections/:id（editor / super_admin）
+model ManualSection {
+  id          Int      @id @default(autoincrement())
+  sectionKey  String   @unique @map("section_key") // 章节号，如 "5.1"（幂等导入与后台定位的锚点）
+  chapterNo   String   @map("chapter_no")          // 所属章号，如 "5"
+  chapter     String                               // 所属章标题，如 "产品管理"
+  title       String                               // 节标题，如 "个人护理 · 成分"
+  bodyHtml    String?  @map("body_html")           // 正文 HTML（含截图与标注覆盖层）
+  sortOrder   Int      @default(0) @map("sort_order")
+  isPublished Boolean  @default(true) @map("is_published")
+  updatedBy   String?  @map("updated_by")          // 最后修改人邮箱
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+  @@index([sortOrder])
+  @@map("manual_sections")
+}

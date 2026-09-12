@@ -85,6 +85,30 @@ export const uploadVideo = multer({
   limits: { fileSize: config.upload.maxFileSize },
 });
 
+/**
+ * 使用手册配图上传（后台「使用手册」编辑用）
+ * - 单独落在 uploads/manual 下，与产品图/文章图分开，便于整目录备份与迁移
+ * - 不生成缩略图（手册用的是整屏截图，缩略图无意义）
+ */
+export const uploadManualImage = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      const dir = path.join(config.upload.dir, 'manual');
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase() || '.png';
+      cb(null, `manual_${Date.now()}_${Math.random().toString(36).slice(2, 8)}${ext}`);
+    },
+  }),
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) cb(null, true);
+    else cb(new Error('手册配图只支持图片文件'));
+  },
+  limits: { fileSize: config.upload.maxFileSize },
+});
+
 // 翻译 Word 上传配置（文章翻译回填用，用完即删的临时文件）
 export const uploadTranslationDoc = multer({
   storage: multer.diskStorage({

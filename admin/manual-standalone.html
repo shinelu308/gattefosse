@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>使用手册</title>
+<script src="/admin/static/js/vue.global.prod.js"></script>
+<script src="/admin/static/js/admin-dialog-260911.js"></script>
+<style>
+  [v-cloak] { display: none !important; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #8EB73C;
+    --green-light: #f4f9e9;
+    --green-lighter: #fafcf5;
+    --slate: #54616C;
+    --ink: #1f2b36;
+    --ink2: #666;
+    --line: #e3e6e9;
+    --soft: #f6f8fa;
+    --red: #e4004d;
+    --code: #f2f4f6;
+  }
+  html, body { width: 100%; height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Microsoft YaHei', sans-serif;
+    background: #fff; color: #333; font-size: 13px; overflow: hidden;
+  }
+  .m-page { display: flex; height: 100vh; }
+
+  /* ============ 左侧目录 ============ */
+  .m-toc {
+    width: 248px; flex: 0 0 248px; border-right: 1px solid var(--line);
+    background: #fbfcfd; display: flex; flex-direction: column; min-height: 0;
+  }
+  .toc-head { padding: 14px 14px 10px; border-bottom: 1px solid var(--line); background: #fff; }
+  .toc-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 9px; display: flex; align-items: center; gap: 6px; }
+  .toc-title em { font-style: normal; font-size: 11px; font-weight: 500; color: #9aa3ab; margin-left: auto; }
+  .toc-search {
+    width: 100%; height: 30px; border: 1px solid #dfe3e7; border-radius: 6px;
+    padding: 0 9px; font-size: 12.5px; outline: none; background: #fafbfc;
+  }
+  .toc-search:focus { border-color: var(--green); background: #fff; }
+  .toc-body { flex: 1; overflow-y: auto; padding: 8px 0 18px; min-height: 0; }
+  .toc-body::-webkit-scrollbar { width: 6px; }
+  .toc-body::-webkit-scrollbar-thumb { background: #d5dae0; border-radius: 3px; }
+  .toc-ch {
+    font-size: 11px; font-weight: 700; color: #8a939b; letter-spacing: .6px;
+    padding: 12px 16px 5px; text-transform: uppercase;
+  }
+  .toc-item {
+    display: block; padding: 6px 16px 6px 24px; font-size: 12.5px; color: #5c666f;
+    cursor: pointer; border-left: 2px solid transparent; line-height: 1.45;
+  }
+  .toc-item:hover { background: #f2f5f8; color: #333; }
+  .toc-item.on { background: var(--green-light); border-left-color: var(--green); color: #3f550f; font-weight: 700; }
+  .toc-empty { padding: 20px 16px; font-size: 12.5px; color: #9aa3ab; text-align: center; }
+  .toc-foot { border-top: 1px solid var(--line); padding: 9px 12px; background: #fff; display: flex; gap: 7px; }
+
+  /* ============ 右侧主体 ============ */
+  .m-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .m-head {
+    flex: 0 0 auto; padding: 14px 26px 12px; border-bottom: 1px solid var(--line); background: #fff;
+  }
+  .m-crumb { font-size: 11.5px; color: #9aa3ab; margin-bottom: 7px; }
+  .m-headrow { display: flex; align-items: flex-start; gap: 12px; }
+  .m-h1 { font-size: 20px; font-weight: 700; color: var(--ink); flex: 1; line-height: 1.35; }
+  .m-meta { font-size: 11.5px; color: #9aa3ab; font-weight: 400; margin-top: 5px; }
+  .m-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+  .btn {
+    padding: 6px 13px; border-radius: 6px; border: 1px solid #dfe3e7; background: #fff;
+    cursor: pointer; font-size: 12.5px; color: #54616C; transition: all .15s; white-space: nowrap;
+  }
+  .btn:hover { border-color: #b9c2ca; color: #333; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
+  .btn-primary:hover { background: #7aa030; border-color: #7aa030; color: #fff; }
+  .btn-outline { background: #fff; border-color: #bcd68e; color: #4f6b16; font-weight: 600; }
+  .btn-outline:hover { background: var(--green-light); }
+  .btn-sm { padding: 4px 9px; font-size: 12px; }
+  .btn-danger { color: #a3342f; border-color: #f0c8c6; }
+  .btn-danger:hover { background: #fdf2f2; border-color: #e0a5a2; }
+
+  .m-scroll { flex: 1; overflow-y: auto; min-height: 0; }
+  .m-scroll::-webkit-scrollbar { width: 9px; }
+  .m-scroll::-webkit-scrollbar-thumb { background: #ccd3da; border-radius: 5px; }
+  .m-inner { max-width: 1080px; padding: 22px 26px 90px; }
+
+  /* ============ 工具栏 ============ */
+  .tb-bar {
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+    background: #f7f9f3; border: 1px solid #e0e9d0; border-radius: 8px;
+    padding: 7px 9px; margin-bottom: 12px; position: sticky; top: 0; z-index: 20;
+  }
+  .tb {
+    min-width: 28px; height: 26px; padding: 0 7px; border: 1px solid #dbe3cb; background: #fff;
+    border-radius: 5px; cursor: pointer; font-size: 12px; color: #4f6b16; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .tb:hover { background: var(--green-light); border-color: #bcd68e; }
+  .tb.on { background: var(--green); border-color: var(--green); color: #fff; }
+  .tb-sep { width: 1px; height: 18px; background: #dbe3cb; margin: 0 3px; }
+  .tb-hint { margin-left: auto; font-size: 11.5px; color: #8a9a6a; }
+
+  /* ============ 正文渲染（与离线手册视觉一致） ============ */
+  .mbody { font-size: 14px; line-height: 1.78; color: #33393f; }
+  .mbody h2 { font-size: 21px; margin: 40px 0 6px; padding-top: 12px; border-top: 2px solid var(--line); color: var(--ink); }
+  .mbody h2:first-child { margin-top: 0; border-top: 0; padding-top: 0; }
+  .mbody h3 { font-size: 16.5px; margin: 26px 0 8px; color: var(--ink); }
+  .mbody h3::before { content: "▍"; color: var(--green); margin-right: 6px; }
+  .mbody h4 { font-size: 14.5px; margin: 18px 0 6px; color: var(--ink); }
+  .mbody p { margin: 10px 0; }
+  .mbody b, .mbody strong { color: var(--ink); }
+  .mbody ul, .mbody ol { margin: 10px 0 10px 24px; }
+  .mbody li { margin: 5px 0; }
+  .mbody a { color: #003CC5; }
+  .mbody code { background: var(--code); padding: 2px 6px; border-radius: 5px; font-size: 12.8px; font-family: Consolas, Monaco, monospace; color: #a3324a; }
+  .mbody hr { border: 0; border-top: 1px solid var(--line); margin: 22px 0; }
+  .mbody blockquote { border-left: 3px solid #d7dde3; padding: 4px 0 4px 14px; color: #5c666f; margin: 12px 0; }
+
+  .mbody .tip, .mbody .warn { border-radius: 10px; padding: 11px 15px; margin: 14px 0; font-size: 13.5px; }
+  .mbody .tip { background: #f2f7ea; border: 1px solid #dbe8c6; }
+  .mbody .warn { background: #fff4f7; border: 1px solid #ffd3e0; }
+  .mbody .tip::before { content: "💡 小贴士  "; font-weight: 700; }
+  .mbody .warn::before { content: "⚠️ 注意  "; font-weight: 700; }
+  .mbody .tip b, .mbody .warn b { color: var(--ink); }
+
+  .mbody figure { margin: 16px 0 24px; }
+  .mbody .wrap { position: relative; display: block; line-height: 0; }
+  .mbody .wrap img { width: 100%; display: block; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 2px 10px rgba(20,30,40,.06); }
+  .mbody figcaption { font-size: 12.5px; color: var(--ink2); margin-top: 8px; line-height: 1.55; }
+  .mbody .mk {
+    position: absolute; width: 23px; height: 23px; border-radius: 50%; background: var(--red); color: #fff;
+    font: 700 12.5px/23px -apple-system, sans-serif; text-align: center;
+    transform: translate(-50%, -50%); box-shadow: 0 1px 5px rgba(0,0,0,.35);
+    border: 2px solid #fff; z-index: 3;
+  }
+  .mbody .box {
+    position: absolute; border: 2px solid var(--red); border-radius: 5px; z-index: 2;
+    box-shadow: 0 0 0 2px rgba(228,0,77,.12);
+  }
+  .mbody ol.steps { counter-reset: s; list-style: none; margin: 12px 0 0 0; }
+  .mbody ol.steps li { position: relative; padding-left: 34px; margin: 8px 0; }
+  .mbody ol.steps li::before {
+    counter-increment: s; content: counter(s); position: absolute; left: 0; top: 1px;
+    width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff;
+    font-size: 12.5px; font-weight: 700; text-align: center; line-height: 22px;
+  }
+  .mbody table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 13px; }
+  .mbody th, .mbody td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+  .mbody th { background: var(--soft); font-weight: 700; }
+  .mbody tr:nth-child(even) td { background: #fafbfc; }
+  .mbody .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+
+  /* ============ 编辑态 ============ */
+  .mbody.edit { outline: none; min-height: 320px; }
+  .mbody.edit:focus { box-shadow: inset 0 0 0 1px #e6eccf; border-radius: 8px; }
+  .mbody.edit figure { position: relative; }
+  .mbody.edit figure > .wrap::after {
+    content: "点我选中这张图"; position: absolute; right: 8px; top: 8px; z-index: 5;
+    background: rgba(31,43,54,.72); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    opacity: 0; transition: opacity .15s; line-height: 1.6;
+  }
+  .mbody.edit figure:hover > .wrap::after { opacity: 1; }
+  .mbody.edit figure.sel > .wrap { outline: 2px dashed var(--green); outline-offset: 3px; }
+  .mbody.edit figure.sel > .wrap::after { opacity: 1; content: "已选中 · 可加标注框"; background: var(--green); }
+  .anno-hint {
+    position: absolute; right: 8px; top: 8px; z-index: 6; pointer-events: none;
+    background: rgba(228,0,77,.94); color: #fff; font-size: 11px; line-height: 1.6;
+    padding: 3px 10px; border-radius: 11px; box-shadow: 0 1px 5px rgba(0,0,0,.25);
+  }
+  .box-live { border-style: dashed !important; background: rgba(228,0,77,.08); }
+  .mbody.edit .wrap.annotating { cursor: crosshair; }
+  .mbody.edit .wrap.annotating .box { z-index: 4; cursor: pointer; }
+  .mbody.edit .wrap.annotating .box:hover { border-color: #111; box-shadow: 0 0 0 3px rgba(0,0,0,.18); }
+  .mbody.edit .wrap.annotating .mk { z-index: 5; pointer-events: none; }
+
+  .src-box {
+    width: 100%; min-height: 460px; border: 1px solid #bcd68e; border-radius: 8px;
+    padding: 12px 14px; font: 12.5px/1.75 Consolas, Monaco, monospace; color: #2f3a44;
+    background: #fcfdfa; outline: none; resize: vertical; white-space: pre; overflow: auto;
+  }
+  .edit-foot {
+    display: flex; align-items: center; gap: 10px; margin-top: 16px;
+    padding-top: 14px; border-top: 1px solid var(--line);
+  }
+  .edit-foot .hint { font-size: 12px; color: #9aa3ab; margin-right: auto; }
+  .empty-hint { padding: 60px 20px; text-align: center; color: #9aa3ab; font-size: 13px; }
+  .loading { padding: 60px; text-align: center; color: #9aa3ab; font-size: 13px; }
+  .toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    background: rgba(31,43,54,.92); color: #fff; font-size: 12.5px;
+    padding: 8px 16px; border-radius: 18px; z-index: 9000; pointer-events: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
+  }
+</style>
+</head>
+<body>
+<div id="app" v-cloak>
+  <div class="m-page">
+
+    <!-- ===== 左侧目录 ===== -->
+    <aside class="m-toc">
+      <div class="toc-head">
+        <div class="toc-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8EB73C" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          使用手册<em v-if="total">{{ total }} 节</em>
+        </div>
+        <input class="toc-search" v-model="keyword" placeholder="搜索章节，如「头像」「标签」">
+      </div>
+      <div class="toc-body">
+        <div v-if="loading" class="toc-empty">加载中…</div>
+        <template v-else-if="filtered.length">
+          <div v-for="ch in filtered" :key="ch.no">
+            <div class="toc-ch" v-if="ch.sections.length > 1">{{ ch.no }} · {{ ch.title }}</div>
+            <a v-for="s in ch.sections" :key="s.id"
+               class="toc-item" :class="{ on: s.id === activeId }"
+               @click="open(s)">{{ s.key }}　{{ s.title }}</a>
+          </div>
+        </template>
+        <div v-else-if="!loading" class="toc-empty">{{ keyword ? '没有匹配的章节' : '手册还是空的' }}</div>
+      </div>
+      <div class="toc-foot">
+        <button class="btn btn-sm btn-outline" @click="addSection" style="flex:1">+ 新增章节</button>
+        <button class="btn btn-sm" @click="load" title="重新加载">↻</button>
+      </div>
+    </aside>
+
+    <!-- ===== 右侧主体 ===== -->
+    <main class="m-main">
+      <div class="m-head">
+        <div class="m-crumb">使用手册<span v-if="active">　/　{{ activeChapterNo }} · {{ activeChapterTitle }}</span></div>
+        <div class="m-headrow">
+          <div class="m-h1">
+            <template v-if="active">{{ mode === 'edit' ? '编辑：' : '' }}{{ active.key }}　{{ mode === 'edit' ? editTitle : active.title }}</template>
+            <template v-else>使用手册</template>
+            <div class="m-meta" v-if="active && mode === 'read'">
+              本节省 {{ len(active) }} 字　·　{{ figCount(active) }} 张截图　·　最近更新 {{ fmt(active.updatedAt) }}<span v-if="active.updatedBy">　by {{ active.updatedBy }}</span>
+            </div>
+          </div>
+          <div class="m-actions">
+            <template v-if="mode === 'read'">
+              <button class="btn btn-sm" @click="prev" :disabled="!prevId">‹ 上一节</button>
+              <button class="btn btn-sm" @click="next" :disabled="!nextId">下一节 ›</button>
+              <button class="btn btn-sm btn-outline" @click="startEdit" v-if="active">✎ 编辑本章</button>
+              <button class="btn btn-sm btn-danger" @click="removeSection" v-if="active">删除</button>
+            </template>
+            <template v-else>
+              <button class="btn btn-sm" @click="cancelEdit">取消</button>
+              <button class="btn btn-sm btn-primary" @click="save" :disabled="saving">{{ saving ? '保存中…' : '保存并发布' }}</button>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div class="m-scroll">
+        <div v-if="loading" class="loading">正在加载手册…</div>
+
+        <div v-else-if="!active" class="empty-hint">
+          左侧点击任意章节开始阅读<span v-if="!total"><br><br>手册还没有内容，点左下角「+ 新增章节」开始</span>
+        </div>
+
+        <!-- 阅读态 -->
+        <article v-else-if="mode === 'read'" class="m-inner">
+          <div class="mbody" v-html="active.bodyHtml || '<p style=&quot;color:#9aa3ab&quot;>本章还没有内容，点右上角「✎ 编辑本章」开始写。</p>'"></div>
+        </article>
+
+        <!-- 编辑态 -->
+        <div v-else class="m-inner">
+          <div class="tb-bar">
+            <button class="tb" @mousedown.prevent="cmd('bold')" title="加粗"><b>B</b></button>
+            <button class="tb" @mousedown.prevent="cmd('italic')" title="斜体"><i>I</i></button>
+            <span class="tb-sep"></span>
+            <button class="tb" @mousedown.prevent="block('h3')" title="小标题">H</button>
+            <button class="tb" @mousedown.prevent="insertPara" title="正文段落（整块插入）">¶ 正文</button>
+            <span class="tb-sep"></span>
+            <button class="tb" @mousedown.prevent="cmd('insertUnorderedList')" title="无序列表">• 列表</button>
+            <button class="tb" @mousedown.prevent="cmd('insertOrderedList')" title="有序列表">1. 列表</button>
+            <button class="tb" @mousedown.prevent="insertSteps" title="带绿色圆圈编号的步骤">①② 步骤</button>
+            <span class="tb-sep"></span>
+            <button class="tb" @mousedown.prevent="insertTip" title="小贴士（绿色提示框）">💡 小贴士</button>
+            <button class="tb" @mousedown.prevent="insertWarn" title="注意事项（红色提示框）">⚠️ 注意</button>
+            <button class="tb" @mousedown.prevent="cmd('insertHorizontalRule')" title="分隔线">―</button>
+            <span class="tb-sep"></span>
+            <button class="tb" @mousedown.prevent="pickImage" title="上传并插入截图">🖼 插入截图</button>
+            <button class="tb" @mousedown.prevent="annotate" title="给选中的截图加红框标注">▢ 加标注框</button>
+            <button class="tb" @mousedown.prevent="clearAnno" title="清掉选中截图的全部标注">清空标注</button>
+            <button class="tb" @mousedown.prevent="editCaption" title="改选中截图的图注">改图注</button>
+            <span class="tb-sep"></span>
+            <button class="tb" :class="{ on: srcMode }" @mousedown.prevent="toggleSrcMode" title="直接改 HTML 源码">源码</button>
+            <span class="tb-hint">选中文字点按钮即可加粗；截图请先点一下图选中</span>
+          </div>
+
+          <div ref="ed" v-show="!srcMode" class="mbody edit" contenteditable="true"
+               @paste="onPaste" @click="onBodyClick"></div>
+          <textarea v-show="srcMode" ref="src" v-model="srcText" class="src-box" spellcheck="false"></textarea>
+
+          <div class="edit-foot">
+            <span class="hint">保存后对所有登录用户立即生效；前台网站不受影响。</span>
+            <button class="btn" @click="cancelEdit">取消</button>
+            <button class="btn btn-primary" @click="save" :disabled="saving">{{ saving ? '保存中…' : '保存并发布' }}</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <input type="file" ref="file" accept="image/*" style="display:none" @change="onImagePicked">
+  <div class="toast" v-if="toast">{{ toast }}</div>
+</div>
+
+<script>
+const API = location.protocol + '//' + location.host + '/api';
+const { createApp } = Vue;
+function getToken() {
+  try { const t = parent.localStorage.getItem('admin_token'); if (t) return t; } catch (e) {}
+  return localStorage.getItem('admin_token') || '';
+}
+
+createApp({
+  data() {
+    return {
+      loading: true,
+      chapters: [],
+      total: 0,
+      activeId: null,
+      keyword: '',
+      mode: 'read',
+      editTitle: '',
+      saving: false,
+      srcMode: false,
+      srcText: '',
+      annotating: false,
+      _annoCleanup: null,
+      toast: '',
+      _toastT: null,
+    };
+  },
+  computed: {
+    flat() {
+      const out = [];
+      for (const ch of this.chapters) for (const s of ch.sections) out.push(s);
+      return out;
+    },
+    filtered() {
+      const k = this.keyword.trim().toLowerCase();
+      if (!k) return this.chapters;
+      return this.chapters
+        .map((ch) => {
+          if (`${ch.no} ${ch.title}`.toLowerCase().includes(k)) return ch;
+          const sections = ch.sections.filter((s) =>
+            `${s.key} ${s.title}`.toLowerCase().includes(k));
+          return sections.length ? { ...ch, sections } : null;
+        })
+        .filter(Boolean);
+    },
+    active() {
+      return this.flat.find((s) => s.id === this.activeId) || null;
+    },
+    activeChapter() {
+      return this.chapters.find((ch) =>
+        ch.sections.some((s) => s.id === this.activeId)) || null;
+    },
+    activeChapterNo() { return this.activeChapter ? this.activeChapter.no : ''; },
+    activeChapterTitle() { return this.activeChapter ? this.activeChapter.title : ''; },
+    prevId() {
+      const i = this.flat.findIndex((s) => s.id === this.activeId);
+      return i > 0 ? this.flat[i - 1].id : null;
+    },
+    nextId() {
+      const i = this.flat.findIndex((s) => s.id === this.activeId);
+      return i >= 0 && i < this.flat.length - 1 ? this.flat[i + 1].id : null;
+    },
+  },
+  mounted() { this.load(); },
+  methods: {
+    async api(path, opts) {
+      const token = getToken();
+      const res = await fetch(API + path, {
+        headers: { 'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : '' },
+        ...opts,
+      });
+      const data = await res.json();
+      if (data.code !== 0) throw new Error(data.message || '请求失败');
+      return data.data;
+    },
+
+    async load(keepId) {
+      this.loading = true;
+      try {
+        const d = await this.api('/manual/sections');
+        this.chapters = d.chapters || [];
+        this.total = d.total || 0;
+        const want = keepId || this.activeId;
+        const hit = this.flat.find((s) => s.id === want);
+        if (hit) this.activeId = hit.id;
+        else if (this.flat.length) this.activeId = this.flat[0].id;
+        else this.activeId = null;
+      } catch (e) {
+        AdminDialog.alert('加载手册失败：' + e.message, { type: 'error' });
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    open(s) {
+      if (this.mode === 'edit') {
+        // 编辑中切章，先确认（避免误丢改动）
+        AdminDialog.confirm('正在编辑本章，切换会丢失未保存的修改，确定切换吗？', { danger: true, confirmText: '丢弃并切换' })
+          .then((ok) => { if (ok) { this.mode = 'read'; this.activeId = s.id; this.scrollTop(); } });
+        return;
+      }
+      this.activeId = s.id;
+      this.srcMode = false;
+      this.scrollTop();
+    },
+    prev() { if (this.prevId) { this.activeId = this.prevId; this.scrollTop(); } },
+    next() { if (this.nextId) { this.activeId = this.nextId; this.scrollTop(); } },
+    scrollTop() {
+      this.$nextTick(() => { const el = document.querySelector('.m-scroll'); if (el) el.scrollTop = 0; });
+    },
+
+    /* ---------- 统计 / 格式化 ---------- */
+    len(s) {
+      const html = s.bodyHtml || '';
+      const text = html.replace(/<[^>]*>/g, '').replace(/\s+/g, '');
+      return text.length;
+    },
+    figCount(s) {
+      return ((s.bodyHtml || '').match(/<figure/gi) || []).length;
+    },
+    fmt(t) {
+      if (!t) return '—';
+      const d = new Date(t);
+      const p = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    },
+
+    /* ---------- 编辑 ---------- */
+    startEdit() {
+      if (!this.active) return;
+      this.editTitle = this.active.title;
+      this.mode = 'edit';
+      this.srcMode = false;
+      this.$nextTick(() => {
+        this.$refs.ed.innerHTML = this.active.bodyHtml || '';
+        this.$refs.ed.focus();
+      });
+    },
+    cancelEdit() {
+      AdminDialog.confirm('放弃本次修改？', { danger: true, confirmText: '放弃修改' }).then((ok) => {
+        if (!ok) return;
+        this.mode = 'read';
+        this.srcMode = false;
+      });
+    },
+    async save() {
+      if (!this.active) return;
+      if (!this.editTitle.trim()) return AdminDialog.alert('章节标题不能为空', { type: 'warn' });
+      const bodyHtml = this.srcMode ? this.srcText : this.$refs.ed.innerHTML;
+      this.saving = true;
+      try {
+        await this.api('/manual/admin/sections/' + this.active.id, {
+          method: 'PUT',
+          body: JSON.stringify({ title: this.editTitle.trim(), bodyHtml }),
+        });
+        this.mode = 'read';
+        this.srcMode = false;
+        await this.load(this.active.id);
+        AdminDialog.alert('已保存，所有登录用户立即可见', { type: 'success' });
+      } catch (e) {
+        AdminDialog.alert('保存失败：' + e.message, { type: 'error' });
+      } finally {
+        this.saving = false;
+      }
+    },
+
+    /* ---------- 工具栏：富文本 ---------- */
+    cmd(name) {
+      const ed = this.$refs.ed;
+      if (!ed) return;
+      ed.focus();
+      try { document.execCommand('styleWithCSS', false, false); } catch (e) {}
+      document.execCommand(name, false, null);
+    },
+    block(tag) {
+      const ed = this.$refs.ed;
+      if (!ed) return;
+      ed.focus();
+      document.execCommand('formatBlock', false, tag);
+    },
+    /** 光标所在的一级块元素（直接子节点）；光标不在正文里返回 null */
+    currentBlock(ed) {
+      const sel = window.getSelection();
+      if (!sel || !sel.rangeCount) return null;
+      let n = sel.anchorNode;
+      if (!n || !ed.contains(n)) return null;
+      while (n && n.parentNode !== ed) n = n.parentNode;
+      return n && n.parentNode === ed ? n : null;
+    },
+    /**
+     * 插入「块级」内容（提示框 / 步骤 / 截图 / 段落）。
+     * ⚠️ 不用 execCommand('insertHTML')：光标停在已有提示框里时，会把新块塞进那个框、
+     *    并被浏览器加上继承样式的 inline style。改成插到「光标所在块的后面」，结构稳定。
+     */
+    insertBlock(html) {
+      const ed = this.$refs.ed;
+      if (!ed) return;
+      ed.focus();
+      const anchor = this.currentBlock(ed);
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      const frag = document.createDocumentFragment();
+      while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+      if (anchor && anchor.nextSibling) ed.insertBefore(frag, anchor.nextSibling);
+      else ed.appendChild(frag);
+      const r = document.createRange();
+      r.selectNodeContents(ed); r.collapse(false);
+      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      this.flash('已插入，记得点右下角「保存并发布」');
+    },
+    insertTip() { this.insertBlock('<div class="tip">在这里写提示内容，例如：保存后前台不会立刻变。</div>'); },
+    insertWarn() { this.insertBlock('<div class="warn">在这里写注意事项，例如：删除后无法恢复。</div>'); },
+    insertSteps() {
+      this.insertBlock('<ol class="steps"><li>第一步</li><li>第二步</li><li>第三步</li></ol>');
+    },
+    insertPara() { this.insertBlock('<p>在这里写正文段落。</p>'); },
+    onPaste(e) {
+      // 只粘纯文本，避免带入外部网页的字体/颜色把正文弄花
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, text);
+    },
+
+    /* ---------- 轻提示 ---------- */
+    flash(msg) {
+      this.toast = msg;
+      if (this._toastT) clearTimeout(this._toastT);
+      this._toastT = setTimeout(() => { this.toast = ''; }, 2400);
+    },
+
+    /* ---------- 图片 ---------- */
+    pickImage() { this.$refs.file.value = ''; this.$refs.file.click(); },
+    async onImagePicked(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (!/^image\//.test(file.type)) return AdminDialog.alert('请选择图片文件', { type: 'warn' });
+      if (file.size > 10 * 1024 * 1024) return AdminDialog.alert('图片不能超过 10MB', { type: 'warn' });
+      const prog = AdminDialog.progress('正在上传截图…');
+      try {
+        const token = getToken();
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch(API + '/manual/admin/upload', {
+          method: 'POST',
+          headers: { 'Authorization': token ? 'Bearer ' + token : '' },
+          body: fd,
+        });
+        const data = await res.json();
+        if (data.code !== 0) throw new Error(data.message);
+        prog.close();
+        const url = data.data.url;
+        const cap = await AdminDialog.prompt('给这张截图写一句图注（可留空）', {
+          title: '图注', placeholder: '例如：① 顶部搜索框　② 新增按钮', defaultValue: '',
+        });
+        this.insertBlock(
+          '<figure><span class="wrap"><img src="' + url + '" alt=""></span>' +
+          '<figcaption>' + (cap || '').replace(/</g, '&lt;') + '</figcaption></figure>'
+        );
+      } catch (err) {
+        prog.close();
+        AdminDialog.alert('上传失败：' + err.message, { type: 'error' });
+      }
+    },
+
+    /* ---------- 选中图片（figure） ---------- */
+    onBodyClick(e) {
+      const fig = e.target.closest ? e.target.closest('figure') : null;
+      this.markFigure(fig);
+      if (fig && this.annotating) this.enterAnnotate(fig);
+    },
+    markFigure(fig) {
+      const ed = this.$refs.ed;
+      if (!ed) return;
+      ed.querySelectorAll('figure.sel').forEach((f) => f.classList.remove('sel'));
+      if (fig) fig.classList.add('sel');
+    },
+    selFigure() { return this.$refs.ed ? this.$refs.ed.querySelector('figure.sel') : null; },
+
+    /* ---------- 标注框：在图上拖出红框 ---------- */
+    annotate() {
+      const fig = this.selFigure();
+      if (!fig) return AdminDialog.alert('先在正文里点一下要做标注的截图，选中它再点「加标注框」', { type: 'warn' });
+      this.enterAnnotate(fig);
+    },
+    enterAnnotate(fig) {
+      if (this.annotating) return;
+      const wrap = fig.querySelector('.wrap');
+      if (!wrap) return AdminDialog.alert('这张图缺少可标注的容器（.wrap）', { type: 'warn' });
+
+      // 先把导入时就带着的标注（没有 data-anno）纳入统一编号，之后才能单个删除 / 续编号
+      this.normalizeAnno(wrap);
+
+      const hint = document.createElement('div');
+      hint.className = 'anno-hint';
+      hint.textContent = '拖出红框 · 点框删除 · Esc 退出';
+      wrap.classList.add('annotating');
+      wrap.appendChild(hint);
+      this.annotating = true;
+
+      let live = null, sx = 0, sy = 0, dragging = false;
+      const rectOf = () => wrap.getBoundingClientRect();
+
+      const onDown = (ev) => {
+        // 落在已有的框上：交给 click 处理（删除），不开始拖新框
+        if (ev.target && ev.target.classList && ev.target.classList.contains('box')) return;
+        const r = rectOf();
+        dragging = true;
+        sx = ((ev.clientX - r.left) / r.width) * 100;
+        sy = ((ev.clientY - r.top) / r.height) * 100;
+        live = document.createElement('span');
+        live.className = 'box box-live';
+        live.style.left = sx + '%'; live.style.top = sy + '%';
+        live.style.width = '0%'; live.style.height = '0%';
+        wrap.appendChild(live);
+        ev.preventDefault();
+      };
+      const onMove = (ev) => {
+        if (!dragging || !live) return;
+        const r = rectOf();
+        const cx = Math.min(100, Math.max(0, ((ev.clientX - r.left) / r.width) * 100));
+        const cy = Math.min(100, Math.max(0, ((ev.clientY - r.top) / r.height) * 100));
+        live.style.left = Math.min(sx, cx) + '%';
+        live.style.top = Math.min(sy, cy) + '%';
+        live.style.width = Math.abs(cx - sx) + '%';
+        live.style.height = Math.abs(cy - sy) + '%';
+      };
+      const onUp = () => {
+        if (!dragging) return;
+        dragging = false;
+        if (!live) return;
+        const l = parseFloat(live.style.left), t = parseFloat(live.style.top);
+        const w = parseFloat(live.style.width), h = parseFloat(live.style.height);
+        live.remove(); live = null;
+        if (w < 1.5 || h < 1.5) return;       // 误触，忽略
+        this.addBox(wrap, l, t, w, h);
+      };
+      const onKey = (ev) => { if (ev.key === 'Escape') this.exitAnnotate(); };
+      // 点已有的框 = 删除它
+      const onClickBox = (ev) => {
+        const el = ev.target;
+        if (el.classList && el.classList.contains('box') && el.hasAttribute('data-anno')) {
+          const n = el.getAttribute('data-anno');
+          wrap.querySelectorAll('.box[data-anno="' + n + '"],.mk[data-anno="' + n + '"]')
+            .forEach((x) => x.remove());
+          this.renumber(wrap);
+          ev.stopPropagation();
+        }
+      };
+
+      wrap.addEventListener('mousedown', onDown);
+      wrap.addEventListener('click', onClickBox);
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('keydown', onKey);
+
+      this._annoCleanup = () => {
+        wrap.removeEventListener('mousedown', onDown);
+        wrap.removeEventListener('click', onClickBox);
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        document.removeEventListener('keydown', onKey);
+        wrap.classList.remove('annotating');
+        if (hint.parentNode) hint.parentNode.removeChild(hint);
+        this.annotating = false;
+        this._annoCleanup = null;
+      };
+      this.flash('标注模式：在图上拖出红框 · 点已有的框可删除 · Esc 退出');
+    },
+    exitAnnotate() { if (this._annoCleanup) this._annoCleanup(); },
+    /** 把 .wrap 里已有的标注框与序号统一编号（导入的旧标注没有 data-anno） */
+    normalizeAnno(wrap) {
+      const boxes = [...wrap.querySelectorAll('.box')].filter((b) => !b.classList.contains('box-live'));
+      const mks = [...wrap.querySelectorAll('.mk')];
+      boxes.forEach((b, i) => b.setAttribute('data-anno', String(i + 1)));
+      mks.forEach((m, i) => { m.setAttribute('data-anno', String(i + 1)); m.textContent = String(i + 1); });
+    },
+    addBox(wrap, l, t, w, h) {
+      const used = [...wrap.querySelectorAll('.box[data-anno]')]
+        .map((b) => parseInt(b.getAttribute('data-anno'), 10))
+        .filter((n) => Number.isFinite(n));
+      const n = used.length ? Math.max(...used) + 1 : 1;
+      const b = document.createElement('span');
+      b.className = 'box';
+      b.setAttribute('data-anno', String(n));
+      b.style.left = l + '%'; b.style.top = t + '%';
+      b.style.width = w + '%'; b.style.height = h + '%';
+      const m = document.createElement('span');
+      m.className = 'mk';
+      m.setAttribute('data-anno', String(n));
+      m.textContent = String(n);
+      m.style.left = l + '%';
+      m.style.top = Math.max(1.8, t) + '%';
+      wrap.appendChild(b);
+      wrap.appendChild(m);
+    },
+    renumber(wrap) {
+      // 按 DOM 顺序重新编号，框与序号圆点各自对齐
+      const boxes = [...wrap.querySelectorAll('.box[data-anno]')];
+      const mks = [...wrap.querySelectorAll('.mk[data-anno]')];
+      boxes.forEach((b, i) => b.setAttribute('data-anno', String(i + 1)));
+      mks.forEach((m, i) => { m.setAttribute('data-anno', String(i + 1)); m.textContent = String(i + 1); });
+    },
+    clearAnno() {
+      const fig = this.selFigure();
+      if (!fig) return AdminDialog.alert('先点一下要清理的截图', { type: 'warn' });
+      const wrap = fig.querySelector('.wrap');
+      const boxes = wrap ? wrap.querySelectorAll('.box, .mk') : [];
+      if (!boxes.length) return AdminDialog.alert('这张图没有标注框', { type: 'warn' });
+      boxes.forEach((x) => x.remove());
+      AdminDialog.alert('已清空这张图的标注，记得点「保存并发布」', { type: 'success' });
+    },
+    editCaption() {
+      const fig = this.selFigure();
+      if (!fig) return AdminDialog.alert('先点一下要改图注的截图', { type: 'warn' });
+      const cap = fig.querySelector('figcaption');
+      AdminDialog.prompt('修改图注', {
+        title: '图注', defaultValue: cap ? cap.textContent : '',
+        placeholder: '例如：① 顶部搜索框　② 新增按钮',
+      }).then((v) => {
+        if (v === null) return;
+        if (!cap) {
+          const el = document.createElement('figcaption');
+          el.textContent = v;
+          fig.appendChild(el);
+        } else cap.textContent = v;
+      });
+    },
+
+    /* ---------- 源码模式 ---------- */
+    toggleSrcMode() {
+      if (!this.srcMode) {
+        this.srcText = this.$refs.ed.innerHTML;
+        this.srcMode = true;
+      } else {
+        this.$refs.ed.innerHTML = this.srcText;
+        this.srcMode = false;
+      }
+    },
+
+    /* ---------- 章节增删 ---------- */
+    async addSection() {
+      const key = await AdminDialog.prompt('新章节号（形如 11.1，要与现有章节不重复）', {
+        title: '新增章节 · 第 1 步', placeholder: '11.1',
+      });
+      if (!key) return;
+      const title = await AdminDialog.prompt('节标题', { title: '新增章节 · 第 2 步', placeholder: '例如：新建用户' });
+      if (!title) return;
+      const no = String(key).split('.')[0];
+      const exist = this.chapters.find((c) => c.no === no);
+      const chapter = exist ? exist.title : no;
+      try {
+        const item = await this.api('/manual/admin/sections', {
+          method: 'POST',
+          body: JSON.stringify({ sectionKey: String(key).trim(), chapterNo: no, chapter, title }),
+        });
+        await this.load(item.id);
+        AdminDialog.alert('已新增，接下来点「✎ 编辑本章」写内容', { type: 'success' });
+      } catch (e) {
+        AdminDialog.alert('新增失败：' + e.message, { type: 'error' });
+      }
+    },
+    removeSection() {
+      if (!this.active) return;
+      AdminDialog.confirm(`确定删除「${this.active.key} ${this.active.title}」这一章？删除后无法恢复。`, {
+        danger: true, confirmText: '删除',
+      }).then(async (ok) => {
+        if (!ok) return;
+        try {
+          await this.api('/manual/admin/sections/' + this.active.id, { method: 'DELETE' });
+          this.activeId = null;
+          await this.load();
+          AdminDialog.alert('已删除', { type: 'success' });
+        } catch (e) {
+          AdminDialog.alert('删除失败：' + e.message, { type: 'error' });
+        }
+      });
+    },
+  },
+  watch: {
+    activeId() { if (this.mode === 'edit') this.exitAnnotate(); },
+  },
+}).mount('#app');
+</script>
+</body>
+</html>
