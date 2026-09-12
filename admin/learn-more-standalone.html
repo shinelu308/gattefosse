@@ -550,6 +550,10 @@ input[type="text"], input[type="date"], select.form-control { width:100%; max-wi
 <script>
 const { createApp } = Vue;
 const API = location.protocol + '//' + location.host + '/api';
+// iframe 卸载兜底：导入弹框若已 teleport 到父窗口 body，页面离开前移除，避免残留死弹框
+window.addEventListener('pagehide', function () {
+  try { if (window._lmTeleOverlay && window._lmTeleOverlay.isConnected) window._lmTeleOverlay.remove(); } catch (e) {}
+});
 function getToken() {
   try { const t = parent.localStorage.getItem('admin_token'); if (t) return t; } catch(e) {}
   return localStorage.getItem('admin_token') || '';
@@ -782,7 +786,7 @@ createApp({
       this.importItems = [];
       this.importMaxPages = 1;
       this.showImport = true;
-      this.alignImportOverlayToWindow();
+      this.teleportImportOverlay();
     },
     // 导入完成（父页面弹框导入成功后广播）：刷新本页列表并提示完成
     onParentMessage(ev) {
@@ -801,20 +805,28 @@ createApp({
         }
       }
     },
-    // 本页经 iframe 嵌入后台时，把弹框平移到整个浏览器窗口的视觉中心（同源可读父窗口尺寸）
-    alignImportOverlayToWindow() {
+    // 本页经 iframe 嵌入后台时，把整个导入弹框（遮罩+内容）搬到父窗口 body（同源）：
+    // position:fixed 相对父窗口生效 → 遮罩盖满整个后台窗口、弹框真正全屏居中（对齐文章管理页效果）。
+    // 关闭时 Vue 按当前 parentNode 移除节点（跨文档同样生效）；再次打开时 Vue 重新插回本页，再由本方法搬回。
+    // 直接打开本页（无父窗口或跨域）时保持原位不动。
+    teleportImportOverlay() {
       this.$nextTick(() => {
-        const modal = this.$refs.importModal;
-        if (!modal) return;
-        modal.style.transform = '';
+        const overlay = this.$refs.importOverlay;
+        if (!overlay) return;
         try {
-          if (window.parent === window || !window.parent.innerWidth) return;
-          const fe = window.frameElement;
-          if (!fe) return;
-          const r = fe.getBoundingClientRect();
-          const dx = (window.parent.innerWidth / 2) - (r.left + r.width / 2);
-          const dy = (window.parent.innerHeight / 2) - (r.top + r.height / 2);
-          modal.style.transform = 'translate(' + Math.round(dx) + 'px,' + Math.round(dy) + 'px)';
+          if (window.parent === window || !window.parent.document || !window.parent.document.body) return;
+          const doc = window.parent.document;
+          if (overlay.parentElement === doc.body) return;
+          // 父页面 .modal-overlay 默认 display:none（靠 .is-open 显示）→ 加标记类并注入一次性覆盖样式，仅作用于本节点
+          overlay.classList.add('lm-tele');
+          if (!doc.getElementById('lm-tele-css')) {
+            const st = doc.createElement('style');
+            st.id = 'lm-tele-css';
+            st.textContent = '.modal-overlay.lm-tele{display:flex;z-index:9999;padding:20px;}';
+            doc.head.appendChild(st);
+          }
+          doc.body.appendChild(overlay);
+          window._lmTeleOverlay = overlay;
         } catch (e) { /* 跨域或父窗口不可达时保持 iframe 内居中 */ }
       });
     },
