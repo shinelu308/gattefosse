@@ -8597,7 +8597,14 @@ createApp({
     },
     async openPagePreview() {
       var iframe = document.getElementById('page-preview-iframe');
-      if (!iframe || !this.pageHasHtml()) return;
+      if (!iframe) {
+        // 首次从列表进编辑抽屉时，$nextTick 回调可能跑在抽屉 DOM 渲染之前（实测 about-us 预览空白的根因）→ 定时重试
+        this._ppRetry = (this._ppRetry || 0) + 1;
+        if (this._ppRetry <= 10) { var self = this; setTimeout(function () { self.openPagePreview(); }, 120); }
+        return;
+      }
+      this._ppRetry = 0;
+      if (!this.pageHasHtml()) return;
       this.pagePreviewPatches = [];
       try {
         var blob = new Blob([await this.buildPagePreviewDoc()], { type: 'text/html' });
