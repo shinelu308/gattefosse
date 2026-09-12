@@ -3897,8 +3897,8 @@ const QUILL_TOOLBAR = [
           </div>
           <div class="tabs" data-page-node-id="qOVQsXsW0qW2jnMSdPJzc4">
             <button class="tab" :class="{ active: contentEditTab === 'basic' }" @click="contentEditTab = 'basic'" data-page-node-id="Jd8aAxSTA5DwyV5belQd2G">基本信息</button>
-            <button class="tab" :class="{ active: contentEditTab === 'blocks' }" @click="contentEditTab = 'blocks'" data-page-node-id="RHtIjW3mh7xKJWh4Kjnrn5">区块内容</button>
-            <button class="tab" :class="{ active: contentEditTab === 'html' }" @click="contentEditTab = 'html'" data-page-node-id="EXc9epIPFkM5iEArF6QICv">HTML 源码</button>
+            <button class="tab" :class="{ active: contentEditTab === 'blocks' }" @click="switchPageTab('blocks')" data-page-node-id="RHtIjW3mh7xKJWh4Kjnrn5">区块内容</button>
+            <button class="tab" :class="{ active: contentEditTab === 'html' }" @click="switchPageTab('html')" data-page-node-id="EXc9epIPFkM5iEArF6QICv">正文编辑</button>
           </div>
           <!-- 基本信息 -->
           <div v-show="contentEditTab === 'basic'" class="card" data-page-node-id="XJke5VWQGHHeDEiel6FmeK">
@@ -4221,22 +4221,44 @@ const QUILL_TOOLBAR = [
             </div>
           </div>
           </div>
-          <!-- HTML 源码（contentHtml 型页面，如市场分类 markets） -->
+          <!-- 正文编辑（contentHtml 型页面）：预览编辑（推荐）与 HTML 源码，2026-09-13 -->
           <div v-show="contentEditTab === 'html'" class="card" data-page-node-id="VtgqPj8ShS6FCXffhPPsro">
-            <div class="card-header" data-page-node-id="naIgpIYE0QFE6Ztr1VP1U2"><h3 data-page-node-id="5FoeZ52VtRk6CMb630E1nf">整段 HTML 源码</h3></div>
+            <div class="card-header" data-page-node-id="naIgpIYE0QFE6Ztr1VP1U2"><h3 data-page-node-id="5FoeZ52VtRk6CMb630E1nf">正文编辑</h3></div>
             <div class="card-body" data-page-node-id="mKWkw9Eizu0Ij4rZuE949K">
-              <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 8px;" data-page-node-id="Wup11BoLMCm6n3QnedL7Iy">适用于「市场分类」等以整段富文本/交互组件（如图文左右分栏、cartography 交互地图）发布的页面。保存后前端页面直接按此 HTML 渲染。若下方为空，请使用「区块内容」结构化编辑。</p>
-              <div v-if="editingContent._blocks && editingContent._blocks.length > 0" style="background:#FFF7E6;border:1px solid #FFE0A0;border-radius:var(--radius);padding:10px 14px;font-size:12px;margin:0 0 8px;color:#B45309;">
-                ⚠️ 该页面同时存在结构化区块（{{ editingContent._blocks.length }} 个）。保存时将以「HTML 源码」内容为主，区块内容将被清空。如需保留结构化区块，请清空此 HTML 后切回「区块内容」编辑。
-              </div>
-              <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;" data-page-node-id="ltILIFAsAV6FEGccCSH8WU">
-                <span style="font-size:12px;color:var(--text-secondary);" data-page-node-id="WQ1ia1nqlnUiCYlaP4uMEb">contentHtml 长度：{{ (editingContent.contentHtml || '').length }} 字符</span>
-                <button class="btn btn-sm btn-outline" @click="contentHtmlWrap=!contentHtmlWrap" style="font-size:12px;padding:2px 8px;" data-page-node-id="qtIGbz2AvFCAEnml4NCvNC">{{ contentHtmlWrap ? '显示原始' : '显示格式化预览' }}</button>
-              </div>
-              <textarea v-if="contentHtmlWrap" class="form-control code-editor" v-model="editingContent.contentHtml" rows="26" spellcheck="false" style="font-family:Consolas,Menlo,monospace;font-size:12px;line-height:1.6;white-space:pre;overflow-x:auto;" placeholder="在此粘贴整段 HTML..."></textarea>
-              <div v-else style="border:1px solid var(--border);border-radius:var(--radius);padding:16px;max-height:520px;overflow:auto;background:var(--white);" data-page-node-id="CgxLClrofOXhQGEVhzkJgf">
-                <div v-html="editingContent.contentHtml" style="pointer-events:none;" data-page-node-id="QVBkwFelXZ5GFxHuWzgG9n"></div>
-              </div>
+              <template v-if="(editingContent.contentHtml || '').trim().length > 0">
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+                  <button class="btn btn-sm" :class="pageContentMode==='preview' ? 'btn-primary' : 'btn-outline'" @click="setPageContentMode('preview')">✏️ 预览编辑<span style="font-size:11px;background:#fff;color:#8EB73C;border:1px solid #8EB73C;border-radius:8px;padding:0 6px;margin-left:4px;">推荐</span></button>
+                  <button class="btn btn-sm" :class="pageContentMode==='html' ? 'btn-primary' : 'btn-outline'" @click="setPageContentMode('html')">HTML 源码</button>
+                  <span style="font-size:12px;color:var(--text-tertiary);">预览编辑：点击文字改文字、点图片换图、点视频改链接，版式自动保持</span>
+                </div>
+                <div v-show="pageContentMode==='preview'" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+                  <div style="display:flex;gap:10px;align-items:center;padding:8px 12px;background:#f4f7ee;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+                    <span class="bot-v bot-v-28 editor" style="margin-right:7px;"><video src="/admin/static/video/robots/editor.mp4" autoplay muted loop playsinline preload="metadata"></video></span><span style="font-size:13px;font-weight:600;color:#3B6D11;">预览编辑</span>
+                    <span style="font-size:12px;color:var(--text-tertiary);">按该页真实样式渲染正文区（不含页头/横幅/页脚）</span>
+                    <span style="flex:1;"></span>
+                    <span v-if="pagePreviewPatches.length" style="font-size:12px;color:#B45309;font-weight:600;">已修改 {{ pagePreviewPatches.length }} 处（未保存）</span>
+                    <button class="btn btn-sm btn-primary" style="font-size:12px;" @click="savePagePreviewPatches" :disabled="!pagePreviewPatches.length || saving">保存修改</button>
+                    <button class="btn btn-sm btn-outline" style="font-size:12px;" @click="abandonPagePreviewChanges" :disabled="!pagePreviewPatches.length">放弃修改</button>
+                  </div>
+                  <iframe id="page-preview-iframe" style="display:block;width:100%;height:640px;border:0;background:#fff;" title="页面正文预览编辑"></iframe>
+                  <div style="padding:6px 12px;background:#fafafa;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);">🔒 结构与版式锁定，仅文字 / 图片 / 视频链接可修改 · 修改直接入库，无需点页面底部「保存」</div>
+                </div>
+                <div v-show="pageContentMode==='html'">
+                  <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;" data-page-node-id="ltILIFAsAV6FEGccCSH8WU">
+                    <span style="font-size:12px;color:var(--text-secondary);" data-page-node-id="WQ1ia1nqlnUiCYlaP4uMEb">contentHtml 长度：{{ (editingContent.contentHtml || '').length }} 字符</span>
+                    <button class="btn btn-sm btn-outline" @click="contentHtmlWrap=!contentHtmlWrap" style="font-size:12px;padding:2px 8px;" data-page-node-id="qtIGbz2AvFCAEnml4NCvNC">{{ contentHtmlWrap ? '显示原始' : '显示格式化预览' }}</button>
+                  </div>
+                  <textarea v-if="contentHtmlWrap" class="form-control code-editor" v-model="editingContent.contentHtml" rows="26" spellcheck="false" style="font-family:Consolas,Menlo,monospace;font-size:12px;line-height:1.6;white-space:pre;overflow-x:auto;" placeholder="在此粘贴整段 HTML..."></textarea>
+                  <div v-else style="border:1px solid var(--border);border-radius:var(--radius);padding:16px;max-height:520px;overflow:auto;background:var(--white);" data-page-node-id="CgxLClrofOXhQGEVhzkJgf">
+                    <div v-html="editingContent.contentHtml" style="pointer-events:none;" data-page-node-id="QVBkwFelXZ5GFxHuWzgG9n"></div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div style="padding:24px;text-align:center;color:var(--text-tertiary);border:1px dashed var(--border);border-radius:8px;">
+                  该页面没有整段 HTML 正文，请使用「<strong>区块内容</strong>」结构化编辑。
+                </div>
+              </template>
             </div>
           </div>
           <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:12px;" data-page-node-id="gULbl4vd8s7idG8B97Afrt">
@@ -4572,6 +4594,8 @@ createApp({
       articleContentMode: 'visual',
       articleContentLocked: false,
       previewPatches: [],   // 预览编辑未保存的内容补丁（text/img/video，2026-09-11）
+      pageContentMode: 'preview',   // 页面正文编辑模式：preview（预览编辑）/ html（源码），2026-09-13
+      pagePreviewPatches: [],       // 页面预览编辑未保存的内容补丁（2026-09-13）
       systemVersion: 'v2.0.0',   // 系统版本（后端按构建自动递增，/api/system/version）
       editingArticle: { id: null, type: 'article', category: 'pc', title: '', slug: '', summary: '', contentHtml: '', imageUrl: '', topBackground: '', articleType: '', readingTime: null, publishedDate: '', isPublished: false, tagsList: [], metaTitle: '', metaDescription: '', metaKeywords: '', authorId: null, views: 0, blocks: [] },
       articleTagInput: '',
@@ -7763,8 +7787,8 @@ createApp({
       }
       arr.push({ _key: key, kind: p.kind, path: p.path, old: p.old, next: p.next });
     },
-    async uploadPreviewImage(p) {
-      var iframe = document.getElementById('article-preview-iframe');
+    async uploadPreviewImage(p, iframeId) {
+      var iframe = document.getElementById(iframeId || 'article-preview-iframe');
       var post = function (type, extra) {
         if (iframe && iframe.contentWindow) iframe.contentWindow.postMessage(Object.assign({ source: 'cp-host', type: type, path: p.path }, extra), '*');
       };
@@ -8359,6 +8383,8 @@ createApp({
     addContent() {
       this.editingContent = { id: null, pageKey: '', title: '', contentHtml: '', content: '', metaTitle: '', metaDescription: '', slug: '', _blocks: [] };
       this.isNewPage = true;
+      this.pagePreviewPatches = [];
+      this.pageContentMode = 'preview';
       this.contentEditTab = 'basic';
       this.currentPage = 'content-edit';
     },
@@ -8384,11 +8410,14 @@ createApp({
       }
       this.editingContent = full;
       this.isNewPage = false;
-      // 智能选择默认 tab：优先有结构化区块的页面；否则走 HTML 源码（markets 类型）；都没有则基本信息
-      if (full._blocks && full._blocks.length > 0) {
-        this.contentEditTab = 'blocks';
-      } else if (full.contentHtml && full.contentHtml.trim().length > 0) {
+      this.pagePreviewPatches = [];
+      // 互斥规则（2026-09-13）：有整段 HTML ⇒ 正文编辑（默认预览编辑）；无 HTML 但有区块 ⇒ 区块内容
+      if (full.contentHtml && full.contentHtml.trim().length > 0) {
+        this.pageContentMode = 'preview';
         this.contentEditTab = 'html';
+        this.$nextTick(this.openPagePreview);
+      } else if (full._blocks && full._blocks.length > 0) {
+        this.contentEditTab = 'blocks';
       } else {
         this.contentEditTab = 'basic';
       }
@@ -8514,6 +8543,102 @@ createApp({
       // 清空搜索结果
       var sd = this.productSearchData[bi];
       if (sd) { sd.results = []; sd.keyword = ''; }
+    },
+    // ==================== 页面正文预览编辑（2026-09-13） ====================
+    // 与文章版同一条链路：preview-inline-260912.js 产出三类受限补丁 →
+    // POST /content/admin/pages/:pageKey/content-patches → jsdom 原位回填 content_html。
+    // 预览文档的 CSS 与 main class 按页各用各的（后端从 site/<页面>.html 提取真实引用）。
+    pageHasHtml() { return !!(this.editingContent.contentHtml && this.editingContent.contentHtml.trim().length > 0); },
+    pageHasBlocks() { return !!(this.editingContent._blocks && this.editingContent._blocks.length > 0); },
+    switchPageTab(tab) {
+      // 一页二选一（互斥规则）：有整段 HTML ⇒ 正文编辑（区块锁定）；无 HTML ⇒ 区块内容
+      if (tab === 'blocks' && this.pageHasHtml()) {
+        this.showAlert('该页面已有整段 HTML 正文（用「正文编辑」里的预览编辑，点哪改哪、版式自动保持）。为避免两种内容互相覆盖，「区块内容」已锁定；如确需区块编辑，请先清空 HTML 源码并保存');
+        return;
+      }
+      if (tab === 'html' && !this.pageHasHtml()) {
+        this.showAlert(this.pageHasBlocks() ? '该页面使用结构化区块编辑（无整段 HTML 正文），请使用「区块内容」' : '该页面暂无正文，请先在「区块内容」添加区块并保存');
+        return;
+      }
+      if (this.contentEditTab === 'html' && this.pageContentMode === 'preview' && this.pagePreviewPatches.length) {
+        this.showAlert('预览编辑还有 ' + this.pagePreviewPatches.length + ' 处未保存的修改，请先「保存修改」或「放弃修改」再切换');
+        return;
+      }
+      this.contentEditTab = tab;
+    },
+    setPageContentMode(mode) {
+      if (this.pageContentMode === 'preview' && mode !== 'preview' && this.pagePreviewPatches.length) {
+        this.showAlert('预览编辑还有 ' + this.pagePreviewPatches.length + ' 处未保存的修改，请先「保存修改」或「放弃修改」再切换');
+        return;
+      }
+      this.pageContentMode = mode;
+      if (mode === 'preview') this.$nextTick(this.openPagePreview);
+    },
+    async buildPagePreviewDoc() {
+      var content = this.editingContent.contentHtml || '';
+      var theme = null;
+      try { theme = await this.api('/content/admin/pages/' + this.editingContent.pageKey + '/preview-theme'); } catch (e) { /* 用兜底样式 */ }
+      var cssList = (theme && theme.cssList && theme.cssList.length)
+        ? theme.cssList
+        : ['/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css',
+           '/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css',
+           '/sites/default/files/css/menu_icons_1701865611.css',
+           '/sites/default/files/css/css_zCDCU-o2LKXngtpj6DBjU0-DPPFPfqZNHXrxn4tmXuY.css',
+           '/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css',
+           '/sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css'];
+      var mainClass = (theme && theme.mainClass) || 's-page--inner main';
+      return '<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
+        + '<base href="' + window.location.origin + '/">'
+        + '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
+        + '<style>body{margin:0;padding:20px;background:#fff}</style></head><body>'
+        + '<main class="' + mainClass + '"><div class="region region-content" id="cp-root">' + content + '</div></main>'
+        + '<script src="/admin/preview-inline-260912.js"><\/script></body></html>';
+    },
+    async openPagePreview() {
+      var iframe = document.getElementById('page-preview-iframe');
+      if (!iframe || !this.pageHasHtml()) return;
+      this.pagePreviewPatches = [];
+      try {
+        var blob = new Blob([await this.buildPagePreviewDoc()], { type: 'text/html' });
+        if (this._pagePreviewBlobUrl) { try { URL.revokeObjectURL(this._pagePreviewBlobUrl); } catch (e) {} }
+        this._pagePreviewBlobUrl = URL.createObjectURL(blob);
+        iframe.src = this._pagePreviewBlobUrl;
+      } catch (e) { this.showAlert('预览加载失败：' + e.message); }
+    },
+    async handlePagePreviewMessage(msg) {
+      if (!msg || msg.type !== 'patch' || !msg.patch) return;
+      var p = msg.patch;
+      if (p.kind === 'img') {
+        await this.uploadPreviewImage(p, 'page-preview-iframe');
+      } else if (p.kind === 'text' || p.kind === 'video') {
+        var key = p.kind + ':' + (p.path || []).map(function (s) { return s.i + ':' + s.tag; }).join('>');
+        var arr = this.pagePreviewPatches;
+        var found = false;
+        for (var i = 0; i < arr.length; i++) { if (arr[i]._key === key) { arr[i].old = p.old; arr[i].next = p.next; found = true; break; } }
+        if (!found) arr.push({ _key: key, kind: p.kind, path: p.path, old: p.old, next: p.next });
+      }
+    },
+    async savePagePreviewPatches() {
+      if (!this.pagePreviewPatches.length) return;
+      if (!this.editingContent.pageKey) { this.showAlert('请先保存页面基本信息后再应用内容修改'); return; }
+      this.saving = true;
+      try {
+        var patches = this.pagePreviewPatches.map(function (p) {
+          return { type: p.kind, path: p.path, old: p.old, next: p.next };
+        });
+        var data = await this.api('/content/admin/pages/' + this.editingContent.pageKey + '/content-patches', { method: 'POST', body: JSON.stringify({ patches: patches }) });
+        this.editingContent.contentHtml = data.html;
+        this.pagePreviewPatches = [];
+        this.openPagePreview();
+        this.showAlert('✅ 已更新 ' + data.applied + ' 处内容，版式保持不变（前台刷新即可看到）', 'success');
+      } catch (e) {
+        this.showAlert(e.message, 'error');
+      } finally { this.saving = false; }
+    },
+    abandonPagePreviewChanges() {
+      this.pagePreviewPatches = [];
+      this.openPagePreview();
     },
     // 页面排序
     async movePage(index, direction) {
@@ -8701,7 +8826,9 @@ createApp({
         this.refreshRolePermissions();
       }
       if (ev.data && ev.data.source === 'cp-preview') {
-        this.handlePreviewMessage(ev.data);
+        // 页面编辑器（content-edit）与文章编辑器各自处理自己的预览补丁（2026-09-13）
+        if (this.currentPage === 'content-edit') this.handlePagePreviewMessage(ev.data);
+        else this.handlePreviewMessage(ev.data);
       }
     });
     // 强制关闭所有 modal（防止刷新时弹框残留）

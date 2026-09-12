@@ -5,6 +5,8 @@ import {
   getPageContent,
   listAllPages,
   savePageContent,
+  applyPageContentPatchesHandler,
+  getPagePreviewTheme,
   reorderPages,
   deletePage,
   listSubsidiaries,
@@ -22,6 +24,9 @@ router.get('/pages/:pageKey', getPageContent);
 router.get('/admin/pages', auth, requireRole('editor', 'super_admin'), listAllPages);
 router.put('/admin/pages/:pageKey', auth, requireRole('editor', 'super_admin'), savePageContent);
 router.post('/admin/pages/reorder', auth, requireRole('editor', 'super_admin'), reorderPages);
+// 预览式原位编辑（2026-09-13）：只回填 content_html / 探测该页真实预览样式
+router.post('/admin/pages/:pageKey/content-patches', auth, requireRole('editor', 'super_admin'), applyPageContentPatchesHandler);
+router.get('/admin/pages/:pageKey/preview-theme', auth, requireRole('editor', 'super_admin'), getPagePreviewTheme);
 router.delete('/admin/pages/:id', auth, requireRole('editor', 'super_admin'), deletePage);
 
 // 公开：分公司列表
