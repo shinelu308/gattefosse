@@ -16,12 +16,28 @@ export const CN_BASE = 'https://www.gattefossechina.cn';
 /** 抓取 UA（原站对无 UA 请求可能返回 403） */
 export const SCRAPER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
+/** 原站 shield 反爬 cookie（2026-09-13）：原站偶发对正常请求返回 200 + 约 1KB 的 JS 挑战页——
+ *  页面内 setCookie("shield", challenge+":"+(challenge*1337)%1000000, 1) 后 300ms JS 跳回原 URL。
+ *  浏览器无感，Node 端拿到的是挑战页 → 导入器报「未找到文章主体」。对策：按同款算法现算 shield
+ *  直接随请求带上（fetchText / downloadFile 全部生效，每次请求现算保新鲜）；若仍命中挑战页
+ *  （算法变更/校验加严），fetchText 带新 cookie 再试一次，再中则报错终止。 */
+function shieldCookie(): string {
+  const challenge = Date.now();
+  const solution = (challenge * 1337) % 1000000;
+  return 'shield=' + challenge + ':' + solution;
+}
+
+/** 挑战页特征：极短 + 内嵌 setCookie("shield",...) 脚本（正常文章页几十 KB 起且有 <head>） */
+function isShieldChallenge(html: string): boolean {
+  return html.length < 4000 && html.indexOf('setCookie("shield"') >= 0;
+}
+
 /** 下载远程文件到本地（带 UA，跟随跳转，最多 5 次重定向） */
 export function downloadFile(url: string, dest: string, redirects = 0): Promise<void> {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('重定向次数过多'));
     const mod: typeof http = url.startsWith('https') ? (https as unknown as typeof http) : http;
-    const req = mod.get(url, { headers: { 'User-Agent': SCRAPER_UA, Accept: '*/*' }, timeout: 30000 }, (res) => {
+    const req = mod.get(url, { headers: { 'User-Agent': SCRAPER_UA, Accept: '*/*', Cookie: shieldCookie() }, timeout: 30000 }, (res) => {
       if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         res.resume();
         const next = new URL(res.headers.location, url).toString();
@@ -46,12 +62,12 @@ export function downloadFile(url: string, dest: string, redirects = 0): Promise<
  *  旧实现「非 200 即 reject」会让列表页、详情页抓取随机失败 → R7 取不到列表卡片图，
  *  静默回退成详情页 banner（超宽横幅塞进 369x208 卡片 = 大片留白，表现为「空占位」）。
  *  downloadFile 一直有跟随跳转，这里对齐。 */
-export function fetchText(target: string, redirects = 0): Promise<string> {
+export function fetchText(target: string, redirects = 0, shieldRetried = false): Promise<string> {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('重定向次数过多: ' + target));
     const mod: typeof http = target.startsWith('https') ? (https as unknown as typeof http) : http;
     const req = mod.get(target, {
-      headers: { 'User-Agent': SCRAPER_UA, Accept: 'text/html,*/*', 'Accept-Language': 'en-US,en;q=0.9' },
+      headers: { 'User-Agent': SCRAPER_UA, Accept: 'text/html,*/*', 'Accept-Language': 'en-US,en;q=0.9', Cookie: shieldCookie() },
       timeout: 30000,
     }, (r) => {
       if (r.statusCode && r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) {
@@ -66,7 +82,13 @@ export function fetchText(target: string, redirects = 0): Promise<string> {
       let data = '';
       r.setEncoding('utf8');
       r.on('data', (c: string) => { data += c; });
-      r.on('end', () => resolve(data));
+      r.on('end', () => {
+        if (isShieldChallenge(data)) {
+          if (shieldRetried) return reject(new Error('原站反爬挑战页重试后仍出现（shield 算法可能已变更）: ' + target));
+          return resolve(fetchText(target, redirects, true));
+        }
+        resolve(data);
+      });
       r.on('error', reject);
     });
     req.on('timeout', () => req.destroy(new Error('请求超时')));
