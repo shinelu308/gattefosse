@@ -129,7 +129,12 @@
         el.className = 'adlg-btn ' + b.cls;
         el.type = 'button';
         el.textContent = b.text;
-        el.addEventListener('click', function () { close(b.value); });
+        el.addEventListener('click', function () {
+          // prompt 场景：确认时 resolve 输入框内容（取消按钮 value=null 保持 null）
+          var v = b.value;
+          if (v !== null && current && current.kind === 'prompt') v = inputEl.value;
+          close(v);
+        });
         btnsEl.appendChild(el);
         if (b.value === true) primaryBtn = el;
       });
