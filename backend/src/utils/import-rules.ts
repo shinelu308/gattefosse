@@ -32,28 +32,70 @@ function isShieldChallenge(html: string): boolean {
   return html.length < 4000 && html.indexOf('setCookie("shield"') >= 0;
 }
 
-/** 下载远程文件到本地（带 UA，跟随跳转，最多 5 次重定向） */
-export function downloadFile(url: string, dest: string, redirects = 0): Promise<void> {
+/**
+ * 【原站反爬形态清单（持续补充，踩一坑记一坑）】
+ * ① 无 UA → 403：SCRAPER_UA 必带（2026-09 初）。
+ * ② 频繁/可疑请求 → 302 限流跳转：fetchText/downloadFile 必须跟随 3xx，否则列表页随机失败（2026-09-11）。
+ * ③ 偶发 200 + ~1KB JS 挑战页：shield cookie 算法 challenge:(challenge*1337)%1000000，服务端校验 cookie；
+ *    对策 = 每次请求现算 shield 直带 + 命中挑战页带新 cookie 重试一次（2026-09-13，见上方 shieldCookie）。
+ * ④ 挑战页可能伪装成任意 URL 的响应体（包括图片/PDF 下载）→ downloadFile 落盘后检查文件头，
+ *    HTML 开头的「图片」= 被拦截，删掉重试，防脏文件入库（2026-09-13）。
+ * ⑤ 偶发 403 / 429 / 5xx / 超时 / 连接重置 → 指数退避重试（2026-09-13 强化，导入并发 5 曾触发限流）。
+ */
+
+/** 限流/抖动退避：0.8s → 1.6s → 3.2s 指数退避（含随机抖动），最多重试 BACKOFF_TIMES 次 */
+const BACKOFF_TIMES = 2;
+function backoffDelay(attempt: number): number {
+  return 800 * Math.pow(2, attempt) + Math.floor(Math.random() * 400);
+}
+/** 该状态码值得退避重试：403（偶发误拦）/ 429（限流）/ 5xx（源站抖动） */
+function retryableStatus(code: number | undefined): boolean {
+  return code === 403 || code === 429 || (typeof code === 'number' && code >= 500);
+}
+
+/** 下载远程文件到本地（带 UA+shield，跟随跳转最多 5 次；限流退避重试；落盘查挑战页伪装） */
+export function downloadFile(url: string, dest: string, redirects = 0, attempts = 0): Promise<void> {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('重定向次数过多'));
     const mod: typeof http = url.startsWith('https') ? (https as unknown as typeof http) : http;
+    const retry = (why: string) => {
+      if (attempts < BACKOFF_TIMES) {
+        setTimeout(() => resolve(downloadFile(url, dest, redirects, attempts + 1)), backoffDelay(attempts));
+      } else {
+        reject(new Error(why + `（已退避重试 ${BACKOFF_TIMES} 次）: ` + url));
+      }
+    };
     const req = mod.get(url, { headers: { 'User-Agent': SCRAPER_UA, Accept: '*/*', Cookie: shieldCookie() }, timeout: 30000 }, (res) => {
       if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         res.resume();
         const next = new URL(res.headers.location, url).toString();
-        return resolve(downloadFile(next, dest, redirects + 1));
+        return resolve(downloadFile(next, dest, redirects + 1, attempts));
       }
+      if (retryableStatus(res.statusCode)) { res.resume(); return retry(`HTTP ${res.statusCode}`); }
       if (res.statusCode !== 200) {
         res.resume();
         return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
       }
       const ws = fs.createWriteStream(dest);
       res.pipe(ws);
-      ws.on('finish', () => resolve());
+      ws.on('finish', () => {
+        try {
+          // 挑战页伪装检查：极小文件且内容是 HTML 开头 = 被反爬拦截，不是真图/文档
+          const st = fs.statSync(dest);
+          if (st.size < 4096) {
+            const head = fs.readFileSync(dest).slice(0, 256).toString('latin1');
+            if (/^\s*<(!doctype|html|\?xml|script)/i.test(head)) {
+              fs.unlinkSync(dest);
+              return retry('下载到反爬挑战页(HTML 伪装)');
+            }
+          }
+          resolve();
+        } catch (e) { reject(e); }
+      });
       ws.on('error', reject);
     });
     req.on('timeout', () => req.destroy(new Error('下载超时')));
-    req.on('error', reject);
+    req.on('error', (e) => retry('网络错误: ' + e.message));
   });
 }
 
@@ -62,10 +104,17 @@ export function downloadFile(url: string, dest: string, redirects = 0): Promise<
  *  旧实现「非 200 即 reject」会让列表页、详情页抓取随机失败 → R7 取不到列表卡片图，
  *  静默回退成详情页 banner（超宽横幅塞进 369x208 卡片 = 大片留白，表现为「空占位」）。
  *  downloadFile 一直有跟随跳转，这里对齐。 */
-export function fetchText(target: string, redirects = 0, shieldRetried = false): Promise<string> {
+export function fetchText(target: string, redirects = 0, shieldRetried = false, attempts = 0): Promise<string> {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('重定向次数过多: ' + target));
     const mod: typeof http = target.startsWith('https') ? (https as unknown as typeof http) : http;
+    const retry = (why: string) => {
+      if (attempts < BACKOFF_TIMES) {
+        setTimeout(() => resolve(fetchText(target, redirects, shieldRetried, attempts + 1)), backoffDelay(attempts));
+      } else {
+        reject(new Error(why + `（已退避重试 ${BACKOFF_TIMES} 次）: ` + target));
+      }
+    };
     const req = mod.get(target, {
       headers: { 'User-Agent': SCRAPER_UA, Accept: 'text/html,*/*', 'Accept-Language': 'en-US,en;q=0.9', Cookie: shieldCookie() },
       timeout: 30000,
@@ -76,8 +125,9 @@ export function fetchText(target: string, redirects = 0, shieldRetried = false):
         let next = '';
         try { next = new URL(r.headers.location, target).toString(); } catch { next = ''; }
         if (!next) return reject(new Error(`HTTP ${r.statusCode}: 无法解析 Location`));
-        return resolve(fetchText(next, redirects + 1));
+        return resolve(fetchText(next, redirects + 1, shieldRetried, attempts));
       }
+      if (retryableStatus(r.statusCode)) { r.resume(); return retry(`HTTP ${r.statusCode}`); }
       if (r.statusCode !== 200) { r.resume(); return reject(new Error(`HTTP ${r.statusCode}: ${target}`)); }
       let data = '';
       r.setEncoding('utf8');
@@ -85,14 +135,14 @@ export function fetchText(target: string, redirects = 0, shieldRetried = false):
       r.on('end', () => {
         if (isShieldChallenge(data)) {
           if (shieldRetried) return reject(new Error('原站反爬挑战页重试后仍出现（shield 算法可能已变更）: ' + target));
-          return resolve(fetchText(target, redirects, true));
+          return resolve(fetchText(target, redirects, true, attempts));
         }
         resolve(data);
       });
       r.on('error', reject);
     });
     req.on('timeout', () => req.destroy(new Error('请求超时')));
-    req.on('error', reject);
+    req.on('error', (e) => retry('网络错误: ' + e.message));
   });
 }
 
