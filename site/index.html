@@ -96,7 +96,12 @@
           </div>
           <div class="s-banner">
             <div class="s-banner__list js-banner-list">
+              <!-- 首屏英雄图：内联背景，随首屏一起绘制。
+                   原来只靠主题 JS 里的一次性 setTimeout(1000) + data-src 来设，
+                   那个回调不重试、且门控读的是 .s-home-number 的 data-src，
+                   页面加载稍慢（强刷/缓存全失效）时就漏设，留下灰块。 -->
               <div class="s-banner__item"
+                style="background-image:url('/sites/default/files/styles/page_banner_desktop_full/public/2023-07/10-web-shooting-gattefosse-jour4-3nov2022-saintpriest-chloelapeyssonnie-8859.jpg')"
                 data-src="/sites/default/files/styles/page_banner_desktop_full/public/2023-07/10-web-shooting-gattefosse-jour4-3nov2022-saintpriest-chloelapeyssonnie-8859.jpg">
                 <div class="container s-banner__container">
                   <h2 class="s-banner__title">
