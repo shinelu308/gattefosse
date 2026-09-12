@@ -218,7 +218,11 @@
               </div>
             </div>
           </div>
-          <div class="s-home-number" data-src="/sites/default/files/styles/webp/public/2023-06/bgd-map.png" v-if="getStatsBlock()">
+          <!-- 概况区底图：内联背景，随模板渲染即刻绘制。
+               病根同上方 hero——主题 JS 的一次性 setTimeout(1000) 在慢加载下压根不执行
+               （它读的 data-src 判断还挂在 .s-home-number 上，而该元素是 v-if 异步渲染的），
+               实测 Fast3G 限速下背景为空、连图都不请求。内联后不依赖定时器与接口。 -->
+          <div class="s-home-number" style="background-image:url('/sites/default/files/styles/webp/public/2023-06/bgd-map.png')" data-src="/sites/default/files/styles/webp/public/2023-06/bgd-map.png" v-if="getStatsBlock()">
             <div class="container ">
               <div class="s-home-number__container">
                 <h2 class="s-home-number__title u-title-styled">概况</h2>
