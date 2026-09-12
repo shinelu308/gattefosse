@@ -184,79 +184,55 @@
             </template>
 
             <!-- 最新资讯（真实 API：pharma 新闻 / 文章 + 出版物） -->
-            <div class="s-tunnel-news" v-if="data.newsItems.length > 0 || data.publicationData.length > 0">
+            <div class="s-tunnel-news" v-if="data.latestItems.length > 0">
               <div class="container">
                 <h2 class="s-tunnel-news__title u-title-styled">
                   最新资讯
                 </h2>
                 <div class="s-tunnel-news__grid">
-                  <div class="s-tunnel-news__card s-tunnel-news__card--first" v-if="data.newsItems[0]">
-                    <div class="c-card c-card--bordered theme-pharma c-card--private">
-                      <a :href="data.newsItems[0].url" class="c-card__private-btn"></a>
-                      <div class="c-card__content">
-                        <h3 class="c-card__title">
-                          <a class="c-card__title-link" :href="data.newsItems[0].url">{{data.newsItems[0].title}}</a>
-                        </h3>
-                        <ul class="c-card__breadcrumb">
-                          <li class="category">{{data.newsItems[0].catName}}</li>
-                        </ul>
-                        <p class="c-card__info">
-                          <span class="c-card__date">
-                            {{data.newsItems[0].eventTimeYear}}年{{data.newsItems[0].eventTimeDate}}日
-                          </span>
-                        </p>
-                        <p class="c-card__summary">{{data.newsItems[0].summary}}</p>
-                      </div>
-                      <div class="c-card__image">
-                        <img :src="data.newsItems[0].thumb" :data-src="data.newsItems[0].thumb"
-                          alt="" width="803" height="453" class="card__image img-fluid" loading="lazy">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="s-tunnel-news__card" v-for="(item, index) in data.newsItems.slice(1)" :key="item.id">
-                    <div class="c-card c-card--bordered theme-pharma c-card--private">
-                      <a :href="item.url" class="c-card__private-btn"></a>
-                      <div class="c-card__content">
-                        <h3 class="c-card__title">
-                          <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
-                        </h3>
-                        <ul class="c-card__breadcrumb">
-                          <li class="category">{{item.catName}}</li>
-                        </ul>
-                        <p class="c-card__info">
-                          <span class="c-card__date">{{item.eventTimeYear}}年{{item.eventTimeDate}}日</span>
-                        </p>
-                        <p class="c-card__summary">{{item.summary}}</p>
-                      </div>
-                      <div class="c-card__image">
-                        <img :src="item.thumb" :data-src="item.thumb" alt="" width="369" height="208"
-                          class="card__image img-fluid" loading="lazy">
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 出版物卡片 -->
-                  <div class="s-tunnel-news__card" v-for="(pub, pi) in data.publicationData" :key="'pub' + pub.id">
-                    <div class="c-card c-card--pub c-card--bordered theme-pharma">
-                      <div class="c-card__content">
-                        <h3 class="c-card__title">
-                          {{pub.title}}
-                        </h3>
-                        <ul class="c-card__breadcrumb">
-                          <li>出版物</li>
-                          <li class="category">{{pub.catName || '海报'}}</li>
-                        </ul>
-                        <p class="c-card__info">
-                          <span class="c-card__date">{{pub.eventTimeYear}}年{{pub.eventTimeDate}}日</span>
-                        </p>
-                        <p class="c-card__summary">{{pub.summary}}</p>
-                        <div class="c-card__cta" v-if="pub.pdfUrl">
-                          <a class="btn btn-primary" :href="pub.pdfUrl" :title="pub.title" target="_blank">
-                            下载 (PDF)
-                          </a>
+                  <!-- 新闻 + 出版物按时间混排，对齐原站 Latest News 构成（260913） -->
+                  <template v-for="(item, idx) in data.latestItems" :key="(item.kind === 'pub' ? 'pub' : 'news') + item.id">
+                    <div class="s-tunnel-news__card" :class="{ 's-tunnel-news__card--first': idx === 0 }" v-if="item.kind !== 'pub'">
+                      <div class="c-card c-card--bordered theme-pharma c-card--private">
+                        <a :href="item.url" class="c-card__private-btn"></a>
+                        <div class="c-card__content">
+                          <h3 class="c-card__title">
+                            <a class="c-card__title-link" :href="item.url">{{item.title}}</a>
+                          </h3>
+                          <ul class="c-card__breadcrumb">
+                            <li class="category">{{item.catName}}</li>
+                          </ul>
+                          <p class="c-card__summary">{{item.summary}}</p>
+                        </div>
+                        <div class="c-card__image">
+                          <img :src="item.thumb" :data-src="item.thumb" alt="" :width="idx === 0 ? 803 : 369"
+                            :height="idx === 0 ? 453 : 208" class="card__image img-fluid" loading="lazy">
                         </div>
                       </div>
                     </div>
-                  </div>
+                    <div class="s-tunnel-news__card" v-else>
+                      <div class="c-card c-card--pub c-card--bordered theme-pharma">
+                        <div class="c-card__content">
+                          <h3 class="c-card__title">
+                            {{item.title}}
+                          </h3>
+                          <ul class="c-card__breadcrumb">
+                            <li>出版物</li>
+                            <li class="category">{{item.catName || '海报'}}</li>
+                          </ul>
+                          <p class="c-card__info">
+                            <span class="c-card__date">{{item.eventTimeYear}}年{{item.eventTimeDate}}日</span>
+                          </p>
+                          <p class="c-card__summary">{{item.summary}}</p>
+                          <div class="c-card__cta" v-if="item.pdfUrl">
+                            <a class="btn btn-primary" :href="item.pdfUrl" :title="item.title" target="_blank">
+                              下载 (PDF)
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
                 </div>
                 <div class="s-tunnel-news__btn-container">
                   <a class="btn btn-outline-secondary" href="/news.html?i=117&type=1">
@@ -418,7 +394,7 @@
           // 从 API 加载的页面区块
           blocks: [],
           // 动态数据（pharma 新闻 + 出版物 + 活动）
-          newsItems: [],
+          newsItems: [], latestItems: [],
           publicationData: [],
           eventData: [],
           // hero 快捷引用（从 blocks 中提取）
@@ -483,6 +459,7 @@
                 id: item.id,
                 title: item.title || '',
                 catName: item.articleType || item.category || '新闻',
+                kind: 'article', ts: item.publishedDate || '',
                 summary: item.summary || '',
                 thumb: item.imageUrl || '',
                 url: '/news-detail.html?id=' + item.id,
@@ -523,6 +500,7 @@
                 id: item.id,
                 title: item.title || '',
                 catName: item.articleType || item.publicationName || '海报',
+                kind: 'pub', ts: item.publishedDate || '',
                 summary: item.summary || '',
                 pdfUrl: item.pdfUrl || '',
                 eventTimeYear: f.year,
@@ -532,6 +510,10 @@
           } else {
             console.error('Failed to load publications:', pubRes.reason);
           }
+          // 新闻 + 出版物按时间混排（对齐原站 Latest News：混排、最多 4 条）
+          data.latestItems = data.newsItems.concat(data.publicationData)
+            .sort(function (a, b) { return String(b.ts || '').localeCompare(String(a.ts || '')); })
+            .slice(0, 4);
         });
 
         // 获取 hero 背景样式
