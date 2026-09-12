@@ -102,17 +102,14 @@
                    页面加载稍慢（强刷/缓存全失效）时就漏设，留下灰块。 -->
               <div class="s-banner__item"
                 style="background-image:url('/sites/default/files/styles/page_banner_desktop_full/public/2023-07/10-web-shooting-gattefosse-jour4-3nov2022-saintpriest-chloelapeyssonnie-8859.jpg')"
+                :style="heroBgStyle()"
                 data-src="/sites/default/files/styles/page_banner_desktop_full/public/2023-07/10-web-shooting-gattefosse-jour4-3nov2022-saintpriest-chloelapeyssonnie-8859.jpg">
                 <div class="container s-banner__container">
                   <h2 class="s-banner__title">
-                    <a href="/about-us.html" class="s-banner__link u-cover">以科学进步推动人类福祉</a>
+                    <a href="/about-us.html" class="s-banner__link u-cover">{{ data.hero.title || '以科学进步推动人类福祉' }}</a>
                   </h2>
                   <div class="s-banner__content">
-                    <div>
-                      <p lang="EN-US"><span><span><span><span><span><span><span><span>
-                                        我们的业务是为客户和合作伙伴提供制药和个人护理领域专业、定制和负责任的解决方案。</span></span></span></span></span></span></span></span>
-                      </p>
-                    </div>
+                    <div v-html="heroDescHtml()"></div>
                   </div>
                 </div>
               </div>
@@ -379,7 +376,16 @@
       const getThemesBlock = () => getBlockByType('home_themes');
       const getStatsBlock = () => getBlockByType('stats');
 
-      return { data, getTaglineBlock, getThemesBlock, getStatsBlock };
+      // 首页 hero（后台「头部横幅」区块，2026-09-13 接线）：标题/摘要/背景图后台可改。
+      // 背景图静态内联兜底（首刷规则：不依赖接口返回），API 拿到区块数据后才覆盖。
+      // buttons 字段不渲染 —— 英文原站首页 banner 无按钮，保持一致。
+      function heroBgStyle() {
+        return data.hero.backgroundImage ? 'background-image:url(' + data.hero.backgroundImage + ')' : '';
+      }
+      function heroDescHtml() {
+        return '<p>' + (data.hero.summary || '我们的业务是为客户和合作伙伴提供制药和个人护理领域专业、定制和负责任的解决方案。') + '</p>';
+      }
+      return { data, heroBgStyle, heroDescHtml, getTaglineBlock, getThemesBlock, getStatsBlock };
     }
   });
   app.mount("#app");

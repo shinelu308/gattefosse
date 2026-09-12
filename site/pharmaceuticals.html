@@ -118,6 +118,12 @@
           <div class="s-tunnel-header__desc">
             <p v-html="data.hero.summary"></p>
           </div>
+          <div class="s-tunnel-header__video" v-if="data.hero.videoUrl">
+            <button id="btn-video" class="btn-video btn btn-outline-secondary" @click="openVideoModal()">
+              See the video
+              <i class="o-icon --play" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
         <div class="s-tunnel-header__btns">
           <a v-for="btn in data.hero.buttons" :key="btn.label" class="btn btn-primary" :href="btn.url">
@@ -342,6 +348,18 @@
           </div>
         </div>
       </div>
+          <div id="video-modal" class="modal video-modal" :class="{ 'show': ui.videoModalVisible }">
+            <div class="modal-content formulaire">
+              <button class="btn-close" @click="closeVideoModal()" aria-label="关闭"></button>
+              <div class="o-video media media--type-remote-video media--view-mode-full">
+                <div class="video__container">
+                  <iframe v-if="data.hero.videoType === 'youtube' && data.hero.videoUrl" :src="youtubeEmbedUrl()" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>
+                  <video v-else-if="data.hero.videoType === 'local' && data.hero.videoUrl" :src="data.hero.videoUrl" controls style="width:100%;height:100%;position:absolute;top:0;left:0;background:#000;"></video>
+                </div>
+                <div class="video__footer"></div>
+              </div>
+            </div>
+          </div>
       <a href="#main-content" id="js_back-to-top" title="Revenir en haut de la page"
         class="c-back-to-top smoothHide d-none"></a>
     </main>
@@ -406,7 +424,7 @@
           // hero 快捷引用（从 blocks 中提取）
           hero: { title: '药用辅料', summary: '', backgroundImage: '', buttons: [] }
         });
-        const ui = reactive({});
+        const ui = reactive({ videoModalVisible: false });
 
         // 格式化日期：'2026-05-13' → { year:'2026', date:'05月13' }
         function fmtDate(d) {
@@ -448,6 +466,8 @@
                 data.hero.summary = heroBlock.data.summary || '';
                 data.hero.backgroundImage = heroBlock.data.backgroundImage || '';
                 data.hero.buttons = heroBlock.data.buttons || [];
+                data.hero.videoUrl = heroBlock.data.videoUrl || '';
+                data.hero.videoType = heroBlock.data.videoType || '';
               }
             }
           } else {
@@ -519,12 +539,22 @@
           return data.hero.backgroundImage ? 'background-image: url(' + data.hero.backgroundImage + ')' : '';
         }
 
+        // 视频弹窗（2026-09-13 移植自个人护理页，配合后台「头部横幅」的视频字段）
+        function openVideoModal() { ui.videoModalVisible = true; }
+        function closeVideoModal() { ui.videoModalVisible = false; }
+        function youtubeEmbedUrl() {
+          var id = data.hero.videoUrl;
+          if (!id) return '';
+          var match = id.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+          return 'https://www.youtube.com/embed/' + (match ? match[1] : id) + '?autoplay=1&rel=0';
+        }
+
         // 获取 cta_cards 区块
         function getCtaBlock() {
           return (data.blocks || []).find(function (b) { return b.type === 'cta_cards'; });
         }
 
-        return { data, ui, heroBg, getCtaBlock };
+        return { data, ui, heroBg, getCtaBlock, openVideoModal, closeVideoModal, youtubeEmbedUrl };
       }
     });
     app.mount("#app");
