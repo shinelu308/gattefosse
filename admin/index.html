@@ -1082,7 +1082,7 @@ const QUILL_TOOLBAR = [
                 <div class="top-list" v-if="visit.topPages.length" data-page-node-id="rqm1auMpWfen34cHHcwEXx">
                   <div class="top-item" v-for="t in visit.topPages" :key="t.path" data-page-node-id="YvGZjhRznhbZCDSeiT1Pbr">
                     <div class="t-row" data-page-node-id="htowc3u1YRz2AzsHmbPPUx">
-                      <span class="t-path" :title="t.path" data-page-node-id="hlFu99dtDm5A3FXJEKcnFR">{{ pageName(t.path) }}<span class="t-subpath" data-page-node-id="kjt8CKRdj6F01OmIw8Nqia">{{ t.path }}</span></span>
+                      <span class="t-path" :title="t.path" data-page-node-id="hlFu99dtDm5A3FXJEKcnFR">{{ pageName(t.path) }}</span>
                       <span class="t-pv" data-page-node-id="4NQ7QY2vv4tTyNCyE9L8mN">{{ t.pv }}</span>
                     </div>
                     <div class="t-bar" data-page-node-id="GPJUE5rJoktb8EzXN0d6DE"><i :style="{ width: Math.max(6, Math.round(t.pv / topMaxPv * 100)) + '%' }" data-page-node-id="Ug0s8VDpyXLk5ZT6xmyfwA"></i></div>
@@ -5051,7 +5051,9 @@ createApp({
       } catch (e) { /* 无权限或网络异常不影响主流程 */ }
     },
     /* ===== 页面中文名 + 地区图 ===== */
-    pageName(path) {
+    pageName(rawPath) {
+      // 剥掉 query/hash，后续按目录路径匹配（260913）
+      const path = String(rawPath || '').split('?')[0].split('#')[0];
       const PAGE_NAMES = {
         '/(首页)': '首页', '/index.html': '首页',
         '/personal-care.html': '个人护理', '/pharmaceuticals.html': '药用辅料',
@@ -5092,8 +5094,27 @@ createApp({
         '/terms-and-conditions.html': '条款与条件', '/samllogin.html': 'SAML 登录',
         '/article-template.html': '文章模板', '/article-normal-template-top.html': '文章模板（带头图）',
         '/article-normal-template-notop.html': '文章模板（无头图）', '/personal-care-article-detail.html': '个护文章详情',
+        '/news': '新闻与活动', '/search': '搜索', '/personal-care': '个人护理', '/pharmaceuticals': '药用辅料',
+        '/personal-care/corporate-social-responsibility.html': '企业社会责任',
+        '/pharmaceuticals/product-finder': '药用产品查询', '/pharmaceuticals/product-finder.html': '药用产品查询',
+        '/personal-care/product-finder': '产品查询', '/personal-care/formulation-finder': '配方查询',
       };
-      return PAGE_NAMES[path] || path.replace(/^\//, '').replace(/\.html$/, '');
+      // 变体双查（前端路由无 .html / 统计带 .html）
+      const base = path.replace(/\.html$/, '');
+      if (PAGE_NAMES[path]) return PAGE_NAMES[path];
+      if (PAGE_NAMES[base]) return PAGE_NAMES[base];
+      if (PAGE_NAMES[base + '.html']) return PAGE_NAMES[base + '.html'];
+      // 结构化中文兜底：界面不直接暴露英文 slug（260913）
+      if (/article-detail/.test(path)) return '文章详情';
+      if (/news-detail/.test(path)) return '新闻详情';
+      if (/^\/personal-care\/(inspired|get-inspired)\//.test(path)) return '个人护理 · 灵感文章';
+      if (/^\/personal-care\/(formulation-finder|product-finder)/.test(path)) return '个人护理 · 产品与配方查询';
+      if (/^\/pharmaceuticals\/(product-finder)/.test(path)) return '药用产品查询';
+      if (/^\/pharmaceuticals\/learn-more\//.test(path)) return '药用辅料 · 了解更多';
+      if (/^\/personal-care\//.test(path)) return '个人护理 · 内容页';
+      if (/^\/pharmaceuticals\//.test(path)) return '药用辅料 · 内容页';
+      if (/^\/(api\/|@fs|actuator|debug\/|_profiler|containers\/|webhook|fetch|proxy|read|download|preview|redirect|screenshot|image|env)/.test(path)) return '外部访问';
+      return '其他页面';
     },
     async ensureMaps() {
       if (this.mapsReady) return;
