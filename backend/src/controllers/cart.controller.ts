@@ -27,7 +27,7 @@ export async function listCart(req: Request, res: Response) {
               description: true, dosage: true, isPublished: true,
             },
           });
-        } else if (item.productType === 'pharma') {
+        } else if (item.productType === 'pharma_product' || item.productType === 'pharma') {
           productDetail = await prisma.pharmaProduct.findUnique({
             where: { id: item.productId },
             select: {

@@ -496,12 +496,12 @@
               // 映射 API 响应到模板字段
               return {
                 ID: item.id,
-                goodsName: item.product.name,
-                subtitle: item.product.inciName || '',
+                goodsName: (item.product && item.product.name) || item.productName || '未命名产品',
+                subtitle: (item.product && item.product.inciName) || '',
                 code: item.productId || '',
-                goodsIntro: item.product.description || '',
-                goodsCoverImg: item.product.imageUrl || '',
-                goodsCategoryId: item.productType === 'pharmaceuticals' ? 117 : 1,
+                goodsIntro: (item.product && item.product.description) || '',
+                goodsCoverImg: (item.product && item.product.imageUrl) || '',
+                goodsCategoryId: (item.productType === 'pharma_product' || item.productType === 'pharma') ? 117 : 1,
                 quantity: item.quantity,
                 show: ''
               };
@@ -528,8 +528,8 @@
             if (data.total == 0) {
               data.show = "display:none";
             }
-          }).catch((err, res) => {
-            console.log(err)
+          }).catch((err) => {
+            console.error('获取购物车数据失败:', err)
           })
         }
         const loading = ref(false);

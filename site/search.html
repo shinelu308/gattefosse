@@ -700,13 +700,28 @@
           console.log("API call disabled - addProductFav");
         }
         const addCart = (item, index) => {
-          let tmp = checkLoginStatus();
-          if (!tmp) {
-            SiteDialog.alert('您可以注册会员，或者点击页面最下方的留言板进行申请样品！', { type: 'warn' });
+          if (!checkLoginStatus()) {
+            SiteDialog.alert('您可以注册会员，或者点击页面最下方的留言板进行申请样品！', { type: 'warn', title: '提示' });
             return
           }
-          console.log("API call disabled - addCart");
-          data.productList[index].show = "display: flex";
+          // 药用辅料(goodsCategoryId=117) → pharma_product；个人护理原料(121) → pc_ingredient
+          // 取值必须与后端 listCart 的判定、cart.html 的分组判断保持一致
+          var isPharma = item.goodsCategoryId == 117;
+          GatteAPI.Cart.add({
+            productType: isPharma ? 'pharma_product' : 'pc_ingredient',
+            productId: parseInt(item.ID, 10),
+            productName: item.title || ''
+          }).then(function () {
+            // 加购成功：本卡「申请样品」收起、「查看购物车」展开
+            data.productList[index].flex = 'display: none';
+            data.productList[index].show = 'display: flex';
+            // 刷新 header 购物车角标（auth-260913.js 导出）
+            if (typeof updateCartCount === 'function') updateCartCount();
+            SiteDialog.alert('已加入购物车', { type: 'success', title: '提示' });
+          }).catch(function (err) {
+            console.error('加入购物车失败:', err);
+            SiteDialog.alert('加入购物车失败，请稍后重试', { type: 'error', title: '提示' });
+          });
         }
         // news_events.type → 前台卡片 type
         var mapNewsType = { news: 1, event: 2, webinar: 3, publication: 4, magazine: 5, article: 6 };
