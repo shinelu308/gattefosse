@@ -53,8 +53,11 @@ export async function addFavorite(req: Request, res: Response) {
       return res.status(400).json(fail('itemType 和 itemId 不能为空'));
     }
 
-    if (!['pc_ingredient', 'pharma', 'formulation'].includes(itemType)) {
-      return res.status(400).json(fail('itemType 无效，允许: pc_ingredient, pharma, formulation'));
+    // 收藏分类标签（必须与前台「我的收藏」页的判定保持一致）
+    // pc_ingredient 个人护理原料 / pharma 药用辅料 / formulation 配方 / news 新闻
+    // pharma_product 为历史兼容值（前台现已统一为 pharma）
+    if (!['pc_ingredient', 'pharma', 'pharma_product', 'formulation', 'news'].includes(itemType)) {
+      return res.status(400).json(fail('itemType 无效，允许: pc_ingredient, pharma, formulation, news'));
     }
 
     // 检查是否已经收藏

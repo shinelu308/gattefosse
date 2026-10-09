@@ -488,7 +488,7 @@
           if (data.inFav) return;
           var product = data._productData || {};
           GatteAPI.Favorite.add({
-            itemType: 'pharma_product',
+            itemType: 'pharma',
             itemId: parseInt(product.id)
           }).then(function () {
             data.inFav = true;

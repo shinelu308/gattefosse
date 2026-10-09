@@ -521,7 +521,7 @@
                     <a class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html" :style="item.show">查看购物车</a>
                     <a :href="item.url" class="btn btn-outline-primary">阅读更多</a>
                   </div>
-                  <a @click="addProductFav(item)" class="c-card__favorite">
+                  <a @click="addProductFav(item)" :class="item.fav ? 'c-card__favorite is-active' : 'c-card__favorite'">
                     <i aria-hidden="true" class="o-icon --star"></i>
                     <span class="visually-hidden">收藏</span>
                   </a>
@@ -555,7 +555,7 @@
                   v-if="(item.thumb != '' && item.thumb != null) && (item.type == 9 && item.goodsCategoryId != 117)">
                   <a :href="item.url"><img :src="item.thumb" :alt="item.title" width="268" height="201"
                       class="card__image img_thumb268_201" loading="lazy"></a>
-                  <a @click="addProductFav(item)" class="c-card__favorite">
+                  <a @click="addProductFav(item)" :class="item.fav ? 'c-card__favorite is-active' : 'c-card__favorite'">
                     <i aria-hidden="true" class="o-icon --star"></i>
                     <span class="visually-hidden">收藏</span>
                   </a>
@@ -563,7 +563,7 @@
                 <div class="c-card__image" v-if="(item.thumb != '' && item.thumb != null) && item.type == 1">
                   <a :href="item.url"><img :src="item.thumb" :alt="item.title" width="369" height="208"
                       class="card__image img_thumb369_208" loading="lazy"></a>
-                  <a @click="addProductFav(item)" class="c-card__favorite">
+                  <a @click="addProductFav(item)" :class="item.fav ? 'c-card__favorite is-active' : 'c-card__favorite'">
                     <i aria-hidden="true" class="o-icon --star"></i>
                     <span class="visually-hidden">收藏</span>
                   </a>
@@ -691,13 +691,58 @@
         const onOrderChange = (e) => {
           window.location.href = buildUrl({ order: e.target.value || null });
         };
+        // ⭐ 收藏 itemType 必须与「我的收藏」页(account-my-favorite.html)的判定保持一致：
+        //    个人护理=pc_ingredient / 药用辅料=pharma / 配方=formulation / 新闻=news
+        //    用错的后果：收藏列表页落到 else 分支，只显示 "Item 123"
+        const favItemType = (item) => {
+          if (item.type === 1) return 'news';
+          if (item.goodsCategoryId == 117) return 'pharma';
+          if (item.goodsCategoryId == 120) return 'formulation';
+          return 'pc_ingredient';
+        };
+        // key('itemType:itemId') → 收藏记录 id（取消收藏要用记录 id，不是商品 id）
+        const favIds = {};
+        // 拉取当前用户收藏，回填卡片上的已收藏态（未登录/失败静默，不影响搜索）
+        const loadFavorites = () => {
+          if (!checkLoginStatus()) return;
+          GatteAPI.Favorite.list({ limit: 100 }).then(function (res) {
+            var payload = res.data;
+            var list = Array.isArray(payload) ? payload : ((payload && payload.list) || []);
+            list.forEach(function (f) { favIds[f.itemType + ':' + f.itemId] = f.id; });
+            data.productList.forEach(function (it) {
+              it.fav = !!favIds[favItemType(it) + ':' + it.ID];
+            });
+          }).catch(function () { /* 静默 */ });
+        };
         const addProductFav = (item) => {
-          let tmp = checkLoginStatus();
-          if (!tmp) {
-            SiteDialog.alert('请先登录', { type: 'warn' });
+          if (!checkLoginStatus()) {
+            SiteDialog.alert('请先登录', { type: 'warn', title: '提示' });
             return
           }
-          console.log("API call disabled - addProductFav");
+          var itemType = favItemType(item);
+          var itemId = parseInt(item.ID, 10);
+          var key = itemType + ':' + itemId;
+          // 已收藏 → 取消收藏
+          if (item.fav && favIds[key]) {
+            GatteAPI.Favorite.remove(favIds[key]).then(function () {
+              item.fav = false;
+              delete favIds[key];
+              SiteDialog.alert('已取消收藏', { type: 'info', title: '提示' });
+            }).catch(function (err) {
+              console.error('取消收藏失败:', err);
+              SiteDialog.alert('取消收藏失败，请稍后重试', { type: 'error', title: '提示' });
+            });
+            return;
+          }
+          GatteAPI.Favorite.add({ itemType: itemType, itemId: itemId }).then(function (res) {
+            var rec = res.data || {};
+            item.fav = true;
+            if (rec.id) favIds[key] = rec.id;
+            SiteDialog.alert('已添加到收藏', { type: 'success', title: '提示' });
+          }).catch(function (err) {
+            console.error('收藏失败:', err);
+            SiteDialog.alert('收藏失败，请稍后重试', { type: 'error', title: '提示' });
+          });
         }
         const addCart = (item, index) => {
           if (!checkLoginStatus()) {
@@ -857,6 +902,8 @@
             } else {
               data.prev_url = null;
             }
+            // 回填已收藏态（星标变实心）
+            loadFavorites();
           }).catch(function (err) {
             console.log(err);
             data.productList = [];
