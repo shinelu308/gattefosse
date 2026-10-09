@@ -7763,8 +7763,8 @@ createApp({
       } catch (e) { this.showAlert('保存失败：' + e.message); } finally { this.saving = false; }
     },
     // ==================== 预览式原位编辑（2026-09-11） ====================
-    // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-260913.js）只产出
-    // 三类受限补丁（文本节点/img src/视频播放地址），保存时后端 jsdom 原位回填，版式 100% 保真。
+    // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-261010.js）只产出
+    // 四类受限补丁（文本节点/img src/视频播放地址/链接 href），保存时后端 jsdom 原位回填，版式 100% 保真。
     buildPreviewDoc() {
       var theme = this.editingArticle.themeClass || 'theme-cosm';
       var content = this.editingArticle.contentHtml || '';
@@ -7784,7 +7784,7 @@ createApp({
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content" id="cp-root">' + content + '</div>'
         + '</article></main>'
-        + '<script src="/admin/preview-inline-260913.js"><\/script></body></html>';
+        + '<script src="/admin/preview-inline-261010.js"><\/script></body></html>';
     },
     openArticlePreview() {
       var iframe = document.getElementById('article-preview-iframe');
@@ -7802,7 +7802,7 @@ createApp({
       var p = msg.patch;
       if (p.kind === 'img') {
         await this.uploadPreviewImage(p);
-      } else if (p.kind === 'text' || p.kind === 'video') {
+      } else if (p.kind === 'text' || p.kind === 'video' || p.kind === 'link') {
         this.upsertPreviewPatch(p);
       }
     },
@@ -8572,7 +8572,7 @@ createApp({
       if (sd) { sd.results = []; sd.keyword = ''; }
     },
     // ==================== 页面正文预览编辑（2026-09-13） ====================
-    // 与文章版同一条链路：preview-inline-260913.js 产出三类受限补丁 →
+    // 与文章版同一条链路：preview-inline-261010.js 产出四类受限补丁（含链接 href）→
     // POST /content/admin/pages/:pageKey/content-patches → jsdom 原位回填 content_html。
     // 预览文档的 CSS 与 main class 按页各用各的（后端从 site/<页面>.html 提取真实引用）。
     pageHasHtml() { return !!(this.editingContent.contentHtml && this.editingContent.contentHtml.trim().length > 0); },
@@ -8620,7 +8620,7 @@ createApp({
         + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
         + '<style>body{margin:0;padding:20px;background:#fff}</style></head><body>'
         + '<main class="' + mainClass + '"><div class="region region-content" id="cp-root">' + content + '</div></main>'
-        + '<script src="/admin/preview-inline-260913.js"><\/script></body></html>';
+        + '<script src="/admin/preview-inline-261010.js"><\/script></body></html>';
     },
     async openPagePreview() {
       var iframe = document.getElementById('page-preview-iframe');
@@ -8645,7 +8645,7 @@ createApp({
       var p = msg.patch;
       if (p.kind === 'img') {
         await this.uploadPreviewImage(p, 'page-preview-iframe');
-      } else if (p.kind === 'text' || p.kind === 'video') {
+      } else if (p.kind === 'text' || p.kind === 'video' || p.kind === 'link') {
         var key = p.kind + ':' + (p.path || []).map(function (s) { return s.i + ':' + s.tag; }).join('>');
         var arr = this.pagePreviewPatches;
         var found = false;

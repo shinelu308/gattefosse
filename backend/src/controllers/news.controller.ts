@@ -736,7 +736,7 @@ export function aiTranslateStatus(req: Request, res: Response) {
 
 /**
  * 预览式原位编辑：内容补丁回填（2026-09-11）
- * 后台预览编辑器只产出三类受限补丁（文本节点 / img src / 视频iframe src），
+ * 后台预览编辑器只产出四类受限补丁（文本节点 / img src / 视频iframe src / 链接 href），
  * 后端 jsdom 原位回填进 contentHtml——class/结构一个不动，版式 100% 保真。
  * 逐补丁校验旧值，任何失败都不落库（全部成功才保存），返回失败明细。
  */

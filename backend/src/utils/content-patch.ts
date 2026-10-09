@@ -1,7 +1,7 @@
 /**
  * 正文内容补丁回填（2026-09-11 预览式原位编辑）
  * 背景：原站导入文章的 contentHtml 锁定为源码模式防止版式破坏，小白用户改文字/图片/视频困难。
- * 方案：后台预览编辑器只产出三类「补丁」（文本节点 / img src / 视频iframe src），
+ * 方案：后台预览编辑器只产出四类「补丁」（文本节点 / img src / 视频iframe src / a href），
  *       本模块用 jsdom 解析 contentHtml 后按路径定位原位回填——class/结构/属性一个不动，
  *       版式 100% 保真（与 ai-translate 的 translateHtml 同一 DOM 级回填技术路线）。
  *
@@ -20,11 +20,12 @@ export interface PatchPathStep {
 }
 
 export interface ContentPatch {
-  type: 'text' | 'img' | 'video';
+  type: 'text' | 'img' | 'video' | 'link';
   path: PatchPathStep[];
   /** 旧值：text=文本节点全文；img=img 的 src 属性；video=视频 iframe / source 的 src 属性（用于防错位校验） */
   old: string;
-  /** 新值：text=新文本；img=新图片地址（/uploads/...）；video=新播放地址（平台 embed 或视频文件直链） */
+  /** 新值：text=新文本；img=新图片地址（/uploads/...）；video=新播放地址（平台 embed 或视频文件直链）；
+   *        link=新链接地址（留空串表示删除 href、取消该链接） */
   next: string;
 }
 
@@ -37,6 +38,15 @@ function normText(t: string | null): string {
 const REMOTE_EMBED_RE = /^https:\/\/([a-z0-9-]+\.)*(youtube\.com|youtu\.be|bilibili\.com|bdstatic\.com|qq\.com|youku\.com|alicdn\.com)(\/|$)/i;
 /** 本机/直链视频文件地址：必须 http(s) 或根相对，且以视频扩展名结尾（禁 javascript:/data:） */
 const VIDEO_FILE_RE = /^(?:https?:\/\/|\/)[^\s"'<>]*\.(?:mp4|webm|ogv|ogg|mov|m4v)(?:[?#][^\s"'<>]*)?$/i;
+/**
+ * 链接地址白名单（2026-10-10 新增 link 补丁）——「文字挂链接跳第三级页面」的入口地址。
+ *   ① 站内根相对 /xxx（禁 //host 协议相对写法：那等价于外站）
+ *   ② http(s) 完整地址（必须带主机部分）
+ *   ③ 页内锚点 #xxx
+ * javascript: / data: / vbscript: 等危险协议不以这三类开头，天然被拒；整体禁空白与 " ' < > \ 防属性逃逸。
+ * ⚠️ 前端 admin/preview-inline-<日期>.js 的 LINK_HREF_RE 必须与本正则逐字一致（前端给即时反馈，后端防绕过）。
+ */
+const LINK_HREF_RE = /^(?:\/(?!\/)[^\s"'<>\\]*|https?:\/\/[^\s"'<>\\]+|#[^\s"'<>\\]*)$/i;
 
 export interface ApplyPatchesResult {
   html: string;
@@ -116,6 +126,25 @@ export function applyContentPatches(html: string, patches: ContentPatch[]): Appl
           applied++;
         } else {
           return reject(`目标不是视频 <iframe> 或 <source> 元素（${el.tagName}）`);
+        }
+      } else if (p.type === 'link') {
+        // 链接（<a href>）：正文里「文字挂链接跳第三级页面」的入口地址。
+        // 只改 href 一个属性，class / target / rel / 结构 / 兄弟节点一律不动；
+        // next 为空串 = 删除 href（取消链接）——sitemap 里有 3 个导入时丢了 href 的 <a>，正好可用本类型补回。
+        // ⚠️ 前端点击 <a> 内文字时同时可能产出 text + link 两个补丁：text 改文字、link 改地址，互不干扰。
+        if (node.nodeType !== 1 || (node as Element).tagName !== 'A') return reject('目标不是 <a> 链接元素');
+        const el = node as Element;
+        if (normText(el.getAttribute('href')) !== normText(p.old)) return reject('链接地址已变化，请刷新预览后重做');
+        const href = (p.next || '').trim();
+        if (!href) {
+          el.removeAttribute('href');
+          applied++;
+        } else {
+          if (!LINK_HREF_RE.test(href)) {
+            return reject('链接地址不合法（仅支持 /站内路径、https:// 完整地址、#页内锚点；禁止 javascript: 等）');
+          }
+          el.setAttribute('href', href);
+          applied++;
         }
       } else {
         return reject(`未知补丁类型 ${p.type}`);
