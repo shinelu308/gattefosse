@@ -2958,7 +2958,8 @@ const QUILL_TOOLBAR = [
                   <span style="flex:1;"></span>
                   <span style="font-size:12px;color:var(--text-tertiary);">{{ builderBlocks.length }} 个块</span>
                 </div>
-                <div style="padding:14px;max-height:640px;overflow-y:auto;">
+                <div style="display:flex;align-items:stretch;">
+                <div style="width:47%;flex:none;border-right:1px solid var(--border);padding:14px;overflow-y:auto;max-height:640px;">
                   <!-- 模板起步条：仅空块时显示 -->
                   <div v-if="!builderBlocks.length" style="border:1.5px dashed var(--border);border-radius:10px;padding:18px;text-align:center;background:#fafbfa;margin-bottom:14px;">
                     <div style="font-size:13.5px;font-weight:700;margin-bottom:4px;">从模板开始，或直接添加内容块</div>
@@ -3101,8 +3102,9 @@ const QUILL_TOOLBAR = [
                         <div v-else class="gfb-textview" @click="showBuilderQuill(b,'html')" v-html="b.html" style="border:1px dashed var(--border);border-radius:6px;padding:8px 10px;font-size:13px;cursor:text;min-height:38px;color:#3C4248;"></div>
                       </div>
                       <!-- 按钮链接 -->
-                      <div v-else-if="b.type==='button'" style="display:flex;gap:8px;align-items:center;">
-                        <input class="form-control" v-model="b.text" placeholder="按钮文字" style="max-width:38%;">
+                      <div v-else-if="b.type==='button'" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <select class="form-control" v-model="b.align" style="max-width:105px;flex:none;" title="按钮位置"><option value="">位置：靠左</option><option value="center">位置：居中</option><option value="right">位置：靠右</option></select>
+                        <input class="form-control" v-model="b.text" placeholder="按钮文字" style="max-width:32%;">
                         <input class="form-control" v-model="b.href" placeholder="链接：/站内路径 或 https://完整地址 或 #锚点">
                       </div>
                       <!-- 视频 -->
@@ -3143,6 +3145,16 @@ const QUILL_TOOLBAR = [
                       <div style="margin-top:10px;"><button class="btn btn-sm btn-outline" @click="addBuilderProduct">🛍 关联产品（添加到下方附加区块）</button></div>
                     </div>
                   </div>
+                </div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
+                  <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
+                    <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网真实版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="flex:1;"></span>
+                    <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
+                  </div>
+                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;min-height:520px;" title="实时预览"></iframe>
+                </div>
                 </div>
                 <div style="padding:6px 12px;background:#fafafa;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);">🔒 保存即拼成官网原版式 HTML（前台渲染零改动）· 保存后可切「预览编辑」查看真实效果并点选精修</div>
               </div>
@@ -4822,6 +4834,7 @@ createApp({
       builderAddOpen: false,
       builderQuill: null,
       bqBlock: null, bqField: '',
+      builderPreviewDoc: '',   // 实时预览文档（:srcdoc，2026-10-10）
       // 作者管理
       authorFilter: { page: 1, limit: 50, keyword: '' },
       authorPagination: { total: 0, totalPages: 0 },
@@ -5131,6 +5144,16 @@ createApp({
     },
   },
   watch: {
+    // 块搭建：块序列任何变化 → 防抖刷新右侧实时预览（2026-10-10）
+    builderBlocks: {
+      deep: true,
+      handler: function () {
+        if (this.articleContentMode !== 'builder') return;
+        var self = this;
+        if (this._gfbDebounce) clearTimeout(this._gfbDebounce);
+        this._gfbDebounce = setTimeout(function () { self.refreshBuilderPreview(); }, 650);
+      }
+    },
     // 切回总览时重渲染地区地图（v-if 重建了容器，且总览菜单不经过 goPage）
     currentPage(v) {
       if (v === 'dashboard') this.$nextTick(() => this.renderRegionChart());
@@ -7873,7 +7896,7 @@ createApp({
       else if (type === 'twocol') b = { type: 'twocol', ratio: '66', left: [{ kind: 'text', html: '<p></p>' }], right: [{ kind: 'image', url: '', alt: '' }] };
       else if (type === 'quote') b = { type: 'quote', text: '<p></p>', author: '' };
       else if (type === 'highlight') b = { type: 'highlight', title: '', html: '<p></p>' };
-      else if (type === 'button') b = { type: 'button', text: '了解更多', href: '' };
+      else if (type === 'button') b = { type: 'button', text: '了解更多', href: '', align: '' };
       else if (type === 'video') b = { type: 'video', url: '' };
       else if (type === 'files') b = { type: 'files', title: '', items: [{ name: '', format: 'pdf', url: '' }] };
       if (!b) return;
@@ -7993,6 +8016,31 @@ createApp({
     twocolRemoveSeg(b, side, i) { b[side].splice(i, 1); },
     filesAddRow(b) { b.items.push({ name: '', format: 'pdf', url: '' }); },
     filesRemoveRow(b, i) { b.items.splice(i, 1); },
+    refreshBuilderPreview() {
+      // 用前台同款 CSS 渲染当前块序列（srcdoc，免落库）
+      var html = GFBuilder.build(this.builderBlocks);
+      var theme = this.editingArticle.themeClass || 'theme-cosm';
+      var cssList = [
+        '/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css',
+        '/sites/default/files/css/css_UNWZAvJR_UXv2Sq6NFSjgMAclzwo_we9g7Y8Kyl7oro.css',
+        '/sites/default/files/css/css_pPfrrsOwLXxDLw7-UYKDqFONEmjyh_dCi89ZBWzLKGc.css',
+        '/sites/default/files/css/css_Dwr1bX48YmNECzBBt7nwDptwptEaW3gdWtZuB5hvXVM.css',
+        '/sites/default/files/css/css_XQDl2didkH3hS4vpdKEYK2CLe0-WNSbnpUgzCUfOXjU.css',
+        '/static/css/article-render-260909b.css',
+      ];
+      if (!html) html = '<div style="padding:60px 20px;text-align:center;color:#9aa5ad;font-size:14px;">在左侧添加内容块后，这里实时显示官网真实效果</div>';
+      var doc = '<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
+        + '<base href="' + window.location.origin + '/">'
+        + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
+        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}</style></head><body>'
+        + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
+        + '<div class="adp-content node__content">' + html + '</div>'
+        + '</article></main>'
+        + '<script src="/static/js/jquery-3.7.1.min.js"><\/script>'
+        + '<script src="/static/js/article-slick-260913.js"><\/script>'
+        + '<script>window.addEventListener("load",function(){ if(window.initArticleSlider) window.initArticleSlider(); });<\/script></body></html>';
+      this.builderPreviewDoc = doc;
+    },
     addArticleTag(tag) {
       const t = (tag || '').trim();
       if (!t) return;
@@ -8014,6 +8062,7 @@ createApp({
       this.articleContentMode = 'builder';   // 新建文章默认进块搭建（2026-10-10）
       this.builderBlocks = []; this.builderSel = -1; this.builderAddOpen = false;
       this.resetBuilderQuill();
+      this.$nextTick(this.refreshBuilderPreview);
       this.articleContentLocked = false;
       this.previewPatches = [];
       if (this._previewBlobUrl) { try { URL.revokeObjectURL(this._previewBlobUrl); } catch(e) {} this._previewBlobUrl = null; }
@@ -8118,6 +8167,7 @@ createApp({
           this.builderBlocks = _pr.blocks;
           this.articleContentMode = 'builder';   // 块搭建器产出的文章：反解析回块继续搭
           if (_pr.notices && _pr.notices.length) this.showAlert(_pr.notices.join('；'));
+          var _sf = this; this.$nextTick(function () { _sf.refreshBuilderPreview(); });
         } else {
           this.builderBlocks = [];
           this.articleContentMode = 'preview';   // 反解析失败：降级预览编辑（locked 已禁可视化）

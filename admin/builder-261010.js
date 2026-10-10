@@ -138,7 +138,8 @@
 
   function buildButton(b) {
     if (!isValidHref(b.href)) return '';
-    return '<div class="paragraph paragraph--type--bouton-cta paragraph--view-mode--default" id="' + rid() + '">'
+    var al = (b.align === 'center' || b.align === 'right') ? ' style="text-align:' + b.align + '"' : '';
+    return '<div class="paragraph paragraph--type--bouton-cta paragraph--view-mode--default" id="' + rid() + '"' + al + '>'
       + '<a href="' + esc(b.href) + '" target="_self" class="btn btn-primary"><span>' + esc(b.text) + '</span></a></div>';
   }
 
@@ -320,7 +321,9 @@
       case 'bouton-cta': {
         var a = el.querySelector('a.btn');
         if (!a) return { ok: false, reason: '按钮区块缺链接' };
-        blocks.push({ type: 'button', text: normText(a.textContent), href: a.getAttribute('href') || '' });
+        var st = el.getAttribute('style') || '';
+        var am = st.match(/text-align:\s*(center|right)/i);
+        blocks.push({ type: 'button', text: normText(a.textContent), href: a.getAttribute('href') || '', align: am ? am[1].toLowerCase() : '' });
         return { ok: true };
       }
       case 'video-remote': {
@@ -435,7 +438,7 @@
         { type: 'twocol', ratio: '66', left: [{ kind: 'text', html: '<p>在这里介绍这款产品的来历与核心功效……</p>' }], right: [{ kind: 'image', url: '', alt: '' }] },
         P('<p>详细描述产品的成分理念、应用场景与配方建议……</p>'),
         { type: 'quote', text: '一句来自客户或研发的推荐语。', author: '' },
-        { type: 'button', text: '了解更多', href: '/personal-care/product-finder.html' }
+        { type: 'button', text: '了解更多', href: '/personal-care/product-finder.html', align: '' }
       ];
       case 'news': return [
         H('新闻标题', 'h2'),
@@ -454,7 +457,7 @@
         P('<p>背景与问题……</p>'),
         { type: 'twocol', ratio: '50', left: [{ kind: 'text', html: '<p>左栏要点……</p>' }], right: [{ kind: 'text', html: '<p>右栏要点……</p>' }] },
         P('<p>结论与建议……</p>'),
-        { type: 'button', text: '联系我们', href: '/contact.html' }
+        { type: 'button', text: '联系我们', href: '/contact.html', align: '' }
       ];
       default: return [];
     }
