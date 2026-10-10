@@ -4353,6 +4353,16 @@ const QUILL_TOOLBAR = [
             </div>
           </div>
 
+
+          <!-- 审批意见（261010 新增）：随状态流转一并邮件推送给会员，并在订单留痕 -->
+          <div class="card" style="margin-top:16px;" data-page-node-id="orderApprNoteCard">
+            <div class="card-header" data-page-node-id="orderApprNoteCardHdr"><h3 data-page-node-id="orderApprNoteCardH3">审批意见</h3></div>
+            <div class="card-body" data-page-node-id="orderApprNoteCardBody">
+              <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;" data-page-node-id="orderApprNoteHint">选填。填写后点击上方「流转到」按钮，审批意见将随状态提醒邮件一并推送给会员，并在订单中留痕。</div>
+              <textarea class="form-control" rows="3" v-model="orderRemark" placeholder="例如：资料已通过资质初审，样品将于 3 个工作日内寄出，请注意查收。" data-page-node-id="orderApprNoteInput"></textarea>
+              <div v-if="viewingOrder.adminNote" style="margin-top:8px;font-size:12px;color:var(--text-muted);" data-page-node-id="orderApprNoteSaved">已保存的审批意见：{{ viewingOrder.adminNote }}</div>
+            </div>
+          </div>
           <div class="card" style="margin-top:16px;" data-page-node-id="wl5mBwe8XHS7EVMjyreGwG">
             <div class="card-header" data-page-node-id="apCEBOY7b0kh64f4pmVqMh"><h3 data-page-node-id="LDbbGplRgW7VZFMCsSLXVk">订单信息</h3></div>
             <div class="card-body" data-page-node-id="FTHdcimtfladb9zfhxD8fN">
@@ -4370,12 +4380,12 @@ const QUILL_TOOLBAR = [
             <div class="card-header" data-page-node-id="waeQeWaXRAU2vnJhBDxYLy"><h3 data-page-node-id="gXAGmLSTIqXj0uagpyHiUt">订单明细</h3></div>
             <div class="card-body" style="padding:0;" data-page-node-id="Bb73IAJ04u50MiHPBwxOba">
               <table class="table" data-page-node-id="GSfibmyvVaY2DWGBlmBOBw">
-                <thead data-page-node-id="EmseCozqlBB7REGBuKJuLJ"><tr data-page-node-id="TPKpY0RBns9iw7PNVmnxdd"><th data-page-node-id="UH4fML5sNVOc1VxLFE8RCP">产品类型</th><th data-page-node-id="cJCGrgiottA7Tbe51SAnJV">产品 ID</th><th data-page-node-id="rnfU0WBtkgLX5qPkmzEkCA">数量</th></tr></thead>
+                <thead data-page-node-id="EmseCozqlBB7REGBuKJuLJ"><tr data-page-node-id="TPKpY0RBns9iw7PNVmnxdd"><th data-page-node-id="UH4fML5sNVOc1VxLFE8RCP">产品类型</th><th data-page-node-id="cJCGrgiottA7Tbe51SAnJV">产品名称</th><th data-page-node-id="rnfU0WBtkgLX5qPkmzEkCA">数量</th></tr></thead>
                 <tbody data-page-node-id="2pnkEYxwBaQhP6fXHuWQTy">
                   <tr v-if="!viewingOrder.items||viewingOrder.items.length===0" data-page-node-id="IZIpHU6rUQnmC5ad3VCcC4"><td colspan="3" class="cell-center" data-page-node-id="n1KdSBkMY1AILdZRVET6Yq">无明细</td></tr>
-                  <tr v-for="it in viewingOrder.items" data-page-node-id="17HlKxI6kjow55FwWuke5e">
+                  <tr v-for="it in (viewingOrder.itemsResolved && viewingOrder.itemsResolved.length ? viewingOrder.itemsResolved : (viewingOrder.items || []))" data-page-node-id="17HlKxI6kjow55FwWuke5e">
                     <td data-page-node-id="MlZSd2FjzPt98p7AUoHqO5">{{ {pc_ingredient:'成分',pharma:'药用辅料'}[it.productType]||it.productType }}</td>
-                    <td data-page-node-id="CdBWLa31pBN70l9a5uGkcD">{{ it.productId }}</td>
+                    <td data-page-node-id="CdBWLa31pBN70l9a5uGkcD">{{ it.name || ('#' + it.productId) }}<span v-if="it.code" style="color:var(--text-tertiary);font-size:12px;"> · {{ it.code }}</span></td>
                     <td data-page-node-id="WO6i5FzmcmkErC96qQWLx3">{{ it.quantity }}</td>
                   </tr>
                 </tbody>
@@ -5326,6 +5336,7 @@ createApp({
       orderFilter: { page: 1, limit: 20, keyword: '', status: '' },
       orderPagination: { total: 0, totalPages: 0 },
       viewingOrder: { id: null, orderNumber: '', status: '', items: [], companyName: '', contactName: '', email: '', phone: '', address: '', notes: '', submittedAt: '' },
+      orderRemark: '',
       // Users
       userList: [],
       userFilter: { page: 1, limit: 20, keyword: '', role: '', status: '' },
@@ -9389,16 +9400,17 @@ createApp({
     async viewOrder(item) {
       try {
         const data = await this.api('/admin/orders/' + item.id);
-        this.viewingOrder = data;
+        this.viewingOrder = data; this.orderRemark = data.adminNote || '';
         this.currentPage = 'order-detail';
       } catch (e) { this.showAlert('获取详情失败：' + e.message); }
     },
     async changeOrderStatus(orderId, newStatus) {
       try {
-        await this.api('/admin/orders/' + orderId + '/status', { method: 'PUT', body: JSON.stringify({ status: newStatus }) });
+        const r = await this.api('/admin/orders/' + orderId + '/status', { method: 'PUT', body: JSON.stringify({ status: newStatus, remark: (this.orderRemark || '').trim() }) });
         if (this.currentPage === 'order-detail' && this.viewingOrder.id === orderId) {
-          this.viewingOrder.status = newStatus;
-          this.showAlert('状态已更新为「' + this.orderStatusText(newStatus) + '」');
+          this.viewingOrder.status = newStatus; if (this.orderRemark) this.viewingOrder.adminNote = this.orderRemark;
+          const mailHint = (r && r.mailSent === 'queued') ? '，已向会员推送邮件通知' : '（邮件通知尚未配置，本次未发送）';
+          this.showAlert('状态已更新为「' + this.orderStatusText(newStatus) + '」' + (this.orderRemark ? '，审批意见已同步' : '') + mailHint);
         }
         this.loadOrderList();
       } catch (e) { this.showAlert('状态更新失败：' + e.message); }

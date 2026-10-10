@@ -182,6 +182,30 @@
             max-width: 40%;
         }
 
+        /* 审批意见（261010 新增）：后台审核结论随状态提醒同步展示 */
+        .order-card__review {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 0 24px 18px;
+            padding: 11px 14px;
+            background: #f6f9ef;
+            border-left: 3px solid #8eb73c;
+            border-radius: 4px;
+            font-size: 1.3rem;
+            line-height: 1.75;
+            color: #4a5568;
+        }
+        .order-card__review-label {
+            flex: 0 0 auto;
+            color: #5b7a1f;
+            font-weight: 600;
+        }
+        .order-card__review-text {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
         /* ===== 空状态 ===== */
         .order-empty {
             text-align: center;
@@ -313,6 +337,10 @@
                                                 <template v-if="order.companyName"> · {{ order.companyName }}</template>
                                             </span>
                                             <span class="order-card__note" v-if="order.notes">备注：{{ order.notes }}</span>
+                                        </div>
+                                        <div class="order-card__review" v-if="order.adminNote">
+                                            <span class="order-card__review-label">审批意见</span>
+                                            <span class="order-card__review-text">{{ order.adminNote }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -480,6 +508,7 @@
                                 phone: order.phone || '',
                                 companyName: order.companyName || '',
                                 notes: order.notes || '',
+                                adminNote: order.adminNote || '',
                                 items
                             }));
                         });

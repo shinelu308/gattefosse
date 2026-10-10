@@ -280,6 +280,7 @@ model SampleOrder {
   phone        String?
   address      String?
   notes        String?
+  adminNote    String?   @map("admin_note") // 后台审批意见：随状态变更邮件发给会员，并在订单详情留痕
   submittedAt  DateTime? @map("submitted_at")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
