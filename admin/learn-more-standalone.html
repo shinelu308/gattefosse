@@ -8,7 +8,7 @@
 <script src="/admin/static/js/admin-dialog-260913.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
-<script src="/admin/builder-261010.js"></script><!-- 文章块搭建器（2026-10-10 全局化）：build/parse 纯函数 -->
+<script src="/admin/builder-261010.js?v=2"></script><!-- 文章块搭建器（2026-10-10 全局化）：build/parse 纯函数 -->
 <!-- GF_BUILDER_LM_V1 -->
 <style>
 [v-cloak] { display: none !important; }
@@ -1059,7 +1059,7 @@ createApp({
     filesRemoveRow(b, i) { b.items.splice(i, 1); },
     refreshBuilderPreview() {
       // 用前台同款 CSS 渲染当前块序列（srcdoc，免落库）
-      var html = GFBuilder.build(this.builderBlocks);
+      var html = GFBuilder.buildPreview(this.builderBlocks);   // 逐块容错（2026-10-10）
       var theme = this.editing.themeClass || 'theme-cosm';
       var cssList = [
         '/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css',

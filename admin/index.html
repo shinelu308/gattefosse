@@ -749,7 +749,7 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 <!-- Quill.js 富文本编辑器 CDN -->
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet" data-page-node-id="sQWsTDl3x70zO8qGDNLIQv">
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
-<script src="/admin/builder-261010.js"></script><!-- 文章块搭建器（2026-10-10）：build/parse 纯函数 -->
+<script src="/admin/builder-261010.js?v=2"></script><!-- 文章块搭建器（2026-10-10）：build/parse 纯函数 -->
 
 <!-- 区块编辑器样式 -->
 <style>
@@ -8564,7 +8564,7 @@ createApp({
     filesRemoveRow(b, i) { b.items.splice(i, 1); },
     refreshBuilderPreview() {
       // 用前台同款 CSS 渲染当前块序列（srcdoc，免落库）
-      var html = GFBuilder.build(this.builderBlocks);
+      var html = GFBuilder.buildPreview(this.builderBlocks);   // 逐块容错：单块异常显示红字占位，不僵死预览（2026-10-10）
       var theme = this.editingArticle.themeClass || 'theme-cosm';
       var cssList = [
         '/sites/default/files/css/css_83IgK5qSyQ2WQkmA4TkQRTkFz3jcESwHWiU_M3oYQ7Q.css',

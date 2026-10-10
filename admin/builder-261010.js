@@ -179,6 +179,22 @@
     return BUILD_MARK + list.map(function (b) { return BUILDERS[b.type](b); }).filter(Boolean).join('\n');
   }
 
+  // 预览专用：逐块容错（2026-10-10）——单块构建失败显示红字错误占位，避免整个预览僵死在上一次快照
+  // 仅用于实时预览（srcdoc）；保存链路仍走严格 build，构建异常以「保存失败」提示，防静默丢内容
+  function buildPreview(blocks) {
+    var list = (blocks || []).filter(function (b) { return b && BUILDERS[b.type]; });
+    if (!list.length) return '';
+    return BUILD_MARK + list.map(function (b) {
+      try {
+        return BUILDERS[b.type](b) || '';
+      } catch (e) {
+        var msg = '⚠ 此块（' + (b && b.type || '?') + '）预览构建失败：' + String((e && e.message) || e);
+        if (window.console && console.warn) console.warn('[GFBuilder]', msg, b);
+        return '<div style="border:2px dashed #d33;border-radius:8px;padding:14px;margin:8px 0;color:#c0392b;font-size:13px;background:#fff5f5;">' + esc(msg) + '</div>';
+      }
+    }).join('\n');
+  }
+
   // ================= 反解析（parse，需注入 DOMParser） =================
 
   function parseWith(DOMParserCtor, html) {
@@ -468,6 +484,7 @@
     isValidHref: isValidHref,
     toEmbedUrl: toEmbedUrl,
     build: build,
+    buildPreview: buildPreview,
     parse: function (html) { return parseWith(global.DOMParser, html); },
     parseWith: parseWith,
     templateBlocks: templateBlocks
