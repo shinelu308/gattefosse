@@ -765,6 +765,10 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .block-actions { display:flex; gap:4px; }
 .quill-editor { min-height:200px; }
 /* 块搭建器（2026-10-10） */
+/* GF_IMG_PREVIEW_V1 图片地址实时预览 */
+.gfb-imgbox img { max-width:100%; max-height:120px; display:block; border:1px solid var(--border); border-radius:6px; background:#f6f7f6; margin-top:6px; }
+.gfb-imgbox.gfb-bad img { opacity:.25; outline:2px dashed #d33; }
+.gfb-imgbox.gfb-bad::after { content:"⚠ 图片地址无法加载 —— 请点「上传」重新传图，或核对地址是否与上传后返回的一致"; color:#c0392b; font-size:12px; display:block; margin-top:4px; }
 .gfb-k { padding:2px 8px; font-size:12px; }
 .gfb-chip { width:24px; min-width:24px !important; height:24px; border-radius:50%; padding:0 !important; }
 .gfb-textview p { margin:0 0 6px 0; }
@@ -2710,6 +2714,7 @@ const QUILL_TOOLBAR = [
                           <button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(b,'url')">上传图片</button>
                         </div>
                         <input class="form-control" v-model="b.alt" placeholder="图片描述（无障碍用，选填）" style="margin-bottom:8px;">
+                        <div class="gfb-imgbox" v-if="b.url"><img :src="b.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                         <button class="btn btn-sm btn-outline" @click="imageToGallery(b)">🎞 多张图？转为图集轮播</button>
                       </div>
                       <!-- 图集轮播 -->
@@ -2717,6 +2722,7 @@ const QUILL_TOOLBAR = [
                         <div v-for="(f, fi) in b.frames" :key="fi" style="border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;background:#fff;">
                           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><b style="font-size:12.5px;">第 {{ fi+1 }} 帧</b><span style="flex:1;"></span><button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 8px;" v-if="b.frames.length>1" @click="removeGalleryFrame(b,fi)">删帧</button></div>
                           <div style="display:flex;gap:8px;margin-bottom:6px;"><input class="form-control" v-model="f.url" placeholder="图片地址（或点右侧上传）" style="flex:1;"><button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(f,'url')">上传</button></div>
+                          <div class="gfb-imgbox" v-if="f.url"><img :src="f.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                           <input class="form-control" v-model="f.title" placeholder="帧标题（选填）" style="margin-bottom:6px;">
                           <div v-if="bqBlock===f" style="margin-bottom:6px;">
                             <span style="display:inline-flex;gap:4px;flex-wrap:wrap;align-items:center;">
@@ -2759,6 +2765,7 @@ const QUILL_TOOLBAR = [
                               </template>
                               <template v-else-if="sg.kind==='image'">
                                 <div style="display:flex;gap:8px;"><input class="form-control" v-model="sg.url" placeholder="图片地址" style="flex:1;"><button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(sg,'url')">上传</button></div>
+                                        <div class="gfb-imgbox" v-if="sg.url"><img :src="sg.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                               </template>
                               <div v-else style="font-size:12px;color:var(--text-tertiary);">此区块来自原站导入，保存时原样保留</div>
                             </div>
@@ -3235,6 +3242,7 @@ const QUILL_TOOLBAR = [
                           <button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(b,'url')">上传图片</button>
                         </div>
                         <input class="form-control" v-model="b.alt" placeholder="图片描述（无障碍用，选填）" style="margin-bottom:8px;">
+                        <div class="gfb-imgbox" v-if="b.url"><img :src="b.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                         <button class="btn btn-sm btn-outline" @click="imageToGallery(b)">🎞 多张图？转为图集轮播</button>
                       </div>
                       <!-- 图集轮播 -->
@@ -3242,6 +3250,7 @@ const QUILL_TOOLBAR = [
                         <div v-for="(f, fi) in b.frames" :key="fi" style="border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;background:#fff;">
                           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><b style="font-size:12.5px;">第 {{ fi+1 }} 帧</b><span style="flex:1;"></span><button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 8px;" v-if="b.frames.length>1" @click="removeGalleryFrame(b,fi)">删帧</button></div>
                           <div style="display:flex;gap:8px;margin-bottom:6px;"><input class="form-control" v-model="f.url" placeholder="图片地址（或点右侧上传）" style="flex:1;"><button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(f,'url')">上传</button></div>
+                          <div class="gfb-imgbox" v-if="f.url"><img :src="f.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                           <input class="form-control" v-model="f.title" placeholder="帧标题（选填）" style="margin-bottom:6px;">
                           <div v-if="bqBlock===f" style="margin-bottom:6px;">
                             <span style="display:inline-flex;gap:4px;flex-wrap:wrap;align-items:center;">
@@ -3284,6 +3293,7 @@ const QUILL_TOOLBAR = [
                               </template>
                               <template v-else-if="sg.kind==='image'">
                                 <div style="display:flex;gap:8px;"><input class="form-control" v-model="sg.url" placeholder="图片地址" style="flex:1;"><button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(sg,'url')">上传</button></div>
+                                        <div class="gfb-imgbox" v-if="sg.url"><img :src="sg.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                               </template>
                               <div v-else style="font-size:12px;color:var(--text-tertiary);">此区块来自原站导入，保存时原样保留</div>
                             </div>
@@ -3693,6 +3703,7 @@ const QUILL_TOOLBAR = [
                           <button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(b,'url')">上传图片</button>
                         </div>
                         <input class="form-control" v-model="b.alt" placeholder="图片描述（无障碍用，选填）" style="margin-bottom:8px;">
+                        <div class="gfb-imgbox" v-if="b.url"><img :src="b.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                         <button class="btn btn-sm btn-outline" @click="imageToGallery(b)">🎞 多张图？转为图集轮播</button>
                       </div>
                       <!-- 图集轮播 -->
@@ -3700,6 +3711,7 @@ const QUILL_TOOLBAR = [
                         <div v-for="(f, fi) in b.frames" :key="fi" style="border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;background:#fff;">
                           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><b style="font-size:12.5px;">第 {{ fi+1 }} 帧</b><span style="flex:1;"></span><button class="btn btn-sm btn-danger" style="font-size:12px;padding:2px 8px;" v-if="b.frames.length>1" @click="removeGalleryFrame(b,fi)">删帧</button></div>
                           <div style="display:flex;gap:8px;margin-bottom:6px;"><input class="form-control" v-model="f.url" placeholder="图片地址（或点右侧上传）" style="flex:1;"><button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(f,'url')">上传</button></div>
+                          <div class="gfb-imgbox" v-if="f.url"><img :src="f.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                           <input class="form-control" v-model="f.title" placeholder="帧标题（选填）" style="margin-bottom:6px;">
                           <div v-if="bqBlock===f" style="margin-bottom:6px;">
                             <span style="display:inline-flex;gap:4px;flex-wrap:wrap;align-items:center;">
@@ -3742,6 +3754,7 @@ const QUILL_TOOLBAR = [
                               </template>
                               <template v-else-if="sg.kind==='image'">
                                 <div style="display:flex;gap:8px;"><input class="form-control" v-model="sg.url" placeholder="图片地址" style="flex:1;"><button class="btn btn-sm btn-outline" style="flex:none;" @click="gfbUpload(sg,'url')">上传</button></div>
+                                        <div class="gfb-imgbox" v-if="sg.url"><img :src="sg.url" @load="gfbImgState($event,1)" @error="gfbImgState($event,0)"></div>
                               </template>
                               <div v-else style="font-size:12px;color:var(--text-tertiary);">此区块来自原站导入，保存时原样保留</div>
                             </div>
@@ -8527,6 +8540,11 @@ createApp({
       if (ev) ev.preventDefault();
     },
     gfbUploadFile(it, field, ev) { this.gfbUpload(it, field, ev); },
+    // 图片地址实时预览状态（404 时输入框下方红字提示，2026-10-10）
+    gfbImgState(ev, ok) {
+      var box = ev.target && ev.target.parentNode;
+      if (box) box.classList.toggle('gfb-bad', !ok);
+    },
     imageToGallery(b) {
       var g = { type: 'gallery', frames: [{ url: b.url, title: '', text: '<p></p>', ctaText: '', ctaHref: '' }] };
       var idx = this.builderBlocks.indexOf(b);
