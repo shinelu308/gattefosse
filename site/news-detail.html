@@ -70,6 +70,11 @@
     href="/sites/default/files/css/css_Rkjqo42AWGaXcQ1N9nzMKkdpjwbx3qNM2DzW5Ew23jo.css" />
   <!-- R8 渲染一致性共享样式（单一来源，全站详情页统一引用；改名后需同步所有引用页） -->
   <link rel="stylesheet" href="/static/css/article-render-260909b.css" />
+  <!-- 滑块基础样式与保险样式（261010 修复）：缺 slick 基础 CSS 时 .slick-slide 不上浮 → 轮播帧上下堆叠、版式错乱 -->
+  <link rel="stylesheet" href="/sites/default/files/css/css_Oh89pvktvw9j_fKvj9jUiQTyRMCXavGNir5Y-lIQWW0.css" />
+  <link rel="stylesheet" media="print" href="/sites/default/files/css/css_bieXaGr6XZ7mreGL93wYIWEdJM9FGFdMIykc8rbucjU.css" />
+  <link rel="stylesheet" href="/sites/default/files/css/css_BKJqrUrNc9mxB0Gu3xQkxuydjwMluQb6-MGDCPQpCRA.css" />
+  <link rel="stylesheet" href="/static/css/article-slick-260913.css" />
   <script src="/static/js/jquery-3.7.1.min.js"></script>
   <script src="/static/js/api-260912.js"></script>
   <script src="/static/js/auth-260913.js"></script>
@@ -258,9 +263,11 @@
   <script src="sites/default/files/js/js_8BuAs9Sw2TTNhi0GE7MD3a1dnncZfmSIot0-EWq8qeo.js"></script>
   <script src="themes/custom/gattefosse/js/libraries/tarteaucitron/tarteaucitronb5d7.js?1702896742"></script>
   <script src="sites/default/files/js/js_5iKymwOOJPvi-BEjcX5dUH4MDxgs5ELOD8_ZF4I0BVM.js"></script>
+  <!-- 滑块库必须在 Drupal 打包 JS（内含 jQuery，会覆盖 window.jQuery）之后加载，否则 slick 挂到被覆盖的旧实例上而失效（261010） -->
+  <script src="/static/js/article-slick-260913.js"></script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive, onMounted } = Vue;
+  const { createApp, reactive, onMounted, nextTick } = Vue;
   const app = createApp({
     setup() {
       const data = reactive({
@@ -349,6 +356,15 @@
           console.error('News detail load failed:', err);
         }
         data.loaded = true;
+        // 滑块初始化（261010 修复）：正文为异步 v-html，slick 需 DOM 更新后手动初始化。
+        // 未初始化时轮播帧会上下堆叠 → 前台版式错乱；$nextTick 可能早于 v-html 补丁完成 → 有界重试
+        nextTick(function () {
+          var tries = 0;
+          (function bootSlider() {
+            if (window.initArticleSlider && window.initArticleSlider()) return;
+            if (++tries <= 10) setTimeout(bootSlider, 120);
+          })();
+        });
         try {
           var relRes = await GatteAPI.News.list({ limit: 3, isPublished: 'true', type: 'news,event' });
           var payload = relRes.data || {};
