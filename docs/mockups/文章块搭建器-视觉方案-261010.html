@@ -1,0 +1,888 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>文章排版编辑优化 · 方案与视觉预览（261010）</title><link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet"><style>
+:root {
+  --green: #8EB73C;
+  --green-hover: #7aa030;
+  --green-light: #f4f9e9;
+  --green-lighter: #fafcf5;
+  --slate: #54616C;
+  --slate-light: #6b7a87;
+  --slate-lighter: #e8ebed;
+  --slate-lightest: #f5f6f7;
+  --blue-link: #003CC5;
+  --red: #d9534f;
+  --red-light: #fdf2f2;
+  --amber: #ba7517;
+  --amber-light: #fef9f0;
+  --text: #333333;
+  --text-secondary: #666666;
+  --text-muted: #949494;
+  --border: #e0e0e0;
+  --border-light: #f0f0f0;
+  --white: #ffffff;
+  --bg: #f6f6f6;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --sidebar-w: 240px;
+  --header-h: 56px;
+}
+
+/* Vue 挂载前遮罩：消除刷新瞬间闪现登录页/未编译模板 */
+[v-cloak] { display: none !important; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+#app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+.layout {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ===== 登录页 ===== */
+.login-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8EB73C 0%, #54616C 100%);
+}
+.login-card {
+  width: 420px;
+  padding: 40px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.login-card h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--slate);
+  margin-bottom: 4px;
+}
+.login-card .login-sub {
+  text-align: center;
+  color: var(--slate-light);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+.login-card input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: var(--font);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.login-card input:focus { border-color: var(--green); }
+.login-card .login-error { color: var(--red); font-size: 13px; line-height: 20px; }
+.login-card .login-btn {
+  width: 100%;
+  padding: 11px;
+  background: var(--green);
+  color: white;
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.login-card .login-btn:hover { background: var(--green-hover); }
+
+/* ===== 侧边栏 ===== */
+.sidebar {
+  flex: 0 0 25%;
+  min-width: 200px;
+  max-width: 320px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+.sidebar-logo {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px;
+}
+.sidebar-logo svg { width: 162px; height: auto; display: block; }
+.sidebar-logo span {
+  font-size: 14px; font-weight: 500; color: var(--slate);
+  letter-spacing: 0.5px;
+}
+.sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; min-height: 0; }
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
+.nav-section { padding: 0 16px; margin-bottom: 4px; }
+.nav-section-title {
+  font-size: 11px; font-weight: 500; color: var(--text-muted);
+  letter-spacing: 0.8px; padding: 8px 0 6px 0;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; margin: 1px 8px;
+  border-radius: var(--radius);
+  color: var(--text-secondary); text-decoration: none;
+  transition: all 0.15s; cursor: pointer;
+  font-size: 13px; font-weight: 400; position: relative;
+}
+.nav-item:hover { background: var(--slate-lightest); color: var(--text); }
+.nav-item.nav-sub { font-size: 12px; padding: 5px 12px 5px 40px; margin: 0 8px; }
+.nav-item.nav-sub .nav-icon { width: 16px; height: 16px; }
+.nav-item.active { background: var(--green-light); color: var(--green); font-weight: 500; }
+.nav-item .badge {
+  margin-left: auto; font-size: 11px; background: var(--slate-lighter);
+  color: var(--slate); padding: 2px 8px; border-radius: 10px; font-weight: 500;
+}
+.nav-item.active .badge { background: var(--green); color: white; }
+.nav-icon {
+  width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-icon svg { width: 16px; height: 16px; stroke: currentColor; }
+
+/* 可折叠父级菜单 */
+.nav-parent {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; margin: 1px 8px;
+  border-radius: var(--radius);
+  color: var(--text-secondary); text-decoration: none;
+  transition: all 0.15s; cursor: pointer;
+  font-size: 13px; font-weight: 400; position: relative;
+}
+.nav-parent:hover { background: var(--slate-lightest); color: var(--text); }
+.nav-parent.active { background: var(--green-light); color: var(--green); font-weight: 500; }
+.nav-parent .arrow-icon {
+  margin-left: auto; display: flex; align-items: center;
+  width: 18px; height: 18px; flex-shrink: 0;
+  transition: transform 0.2s ease;
+  color: var(--text-muted);
+}
+.nav-parent .arrow-icon.open { transform: rotate(90deg); }
+.nav-parent .arrow-icon svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.nav-parent.active .arrow-icon { color: var(--green); }
+.nav-parent .total-badge {
+  font-size: 11px; background: var(--slate-lighter);
+  color: var(--slate); padding: 2px 8px; border-radius: 10px; font-weight: 500;
+  margin-left: 0;
+}
+.nav-parent.active .total-badge { background: var(--green); color: white; }
+.nav-sublist { overflow: hidden; transition: max-height 0.25s ease; }
+.nav-sublist.collapsed { max-height: 0; }
+.nav-sublist .nav-item {
+  padding-left: 40px; font-size: 12px;
+}
+
+.sidebar-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border-light);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-footer .avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--green); color: white; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500;
+}
+.sidebar-footer .user-info { flex: 1; min-width: 0; }
+.sidebar-footer .user-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.sidebar-footer .user-role { font-size: 11px; color: var(--text-muted); }
+
+/* ===== 主区域 ===== */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.topbar {
+  height: var(--header-h); background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-breadcrumb {
+  font-size: 13px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.topbar-breadcrumb .sep { color: var(--border); }
+.topbar-breadcrumb .current { color: var(--text); font-weight: 500; }
+.topbar-search {
+  margin-left: auto; position: relative;
+  display: flex; align-items: center;
+}
+.topbar-search input {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 6px 12px 6px 32px; font-size: 13px; width: 220px;
+  outline: none; font-family: var(--font); color: var(--text);
+  transition: border-color 0.15s;
+}
+.topbar-search input:focus { border-color: var(--green); }
+.topbar-search .search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none;
+}
+.topbar-actions { display: flex; align-items: center; gap: 6px; }
+.topbar-btn {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius); border: none; background: transparent;
+  cursor: pointer; color: var(--text-secondary); transition: all 0.15s;
+}
+.topbar-btn:hover { background: var(--slate-lightest); color: var(--text); }
+.topbar-logout {
+  padding: 5px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius); background: var(--white);
+  cursor: pointer; font-size: 12px; font-family: var(--font);
+  color: var(--text-secondary); margin-left: 4px;
+  transition: all 0.15s;
+}
+.topbar-logout:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+
+/* ===== 内容区 ===== */
+.content { flex: 1; padding: 24px; overflow-y: auto; }
+.page-title {
+  font-size: 18px; font-weight: 500; color: var(--text);
+  margin-bottom: 4px;
+}
+.page-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+/* 获取灵感内容数量统计条（与「了解更多」的 tab 条同一视觉与口径） */
+.insp-tab-bar { display: flex; gap: 4px; background: #fff; border-radius: 10px; padding: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 16px; flex-wrap: wrap; }
+.insp-tab { padding: 9px 18px; border: 0; background: transparent; border-radius: 8px; font-size: 14px; font-weight: 500; color: #555; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .15s; font-family: inherit; }
+.insp-tab:hover { background: #f0f1f2; }
+.insp-tab.active { background: #8EB73C; color: #fff; }
+.insp-tab .cnt { font-size: 11px; background: rgba(0,0,0,.08); border-radius: 9px; padding: 1px 7px; }
+.insp-tab.active .cnt { background: rgba(255,255,255,.25); }
+
+/* 统计卡片 */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.stat-card .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+.stat-card .stat-value { font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.2; }
+.stat-card .stat-change { font-size: 12px; font-weight: 500; }
+.stat-card .stat-change.up { color: var(--green); }
+.stat-card .stat-change.down { color: var(--red); }
+
+/* 卡片 */
+.card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-bottom: 20px;
+}
+.card-header {
+  padding: 14px 20px; border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-header h3 { font-size: 14px; font-weight: 500; color: var(--text); }
+.card-body { padding: 20px; }
+
+/* 按钮 */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: var(--radius);
+  font-size: 13px; font-weight: 500; font-family: var(--font);
+  cursor: pointer; border: 1px solid transparent;
+  transition: all 0.15s; text-decoration: none; line-height: 1.4;
+  white-space: nowrap; flex-shrink: 0;
+}
+.btn-primary { background: var(--green); color: white; border-color: var(--green); }
+.btn-primary:hover { background: var(--green-hover); border-color: var(--green-hover); }
+.btn-outline { background: white; color: var(--text-secondary); border-color: var(--border); }
+.btn-outline:hover { background: var(--slate-lightest); color: var(--text); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-danger { background: white; color: var(--red); border-color: var(--red); }
+.btn-danger:hover { background: var(--red-light); }
+.btn-slate { background: white; color: var(--slate); border-color: var(--slate); }
+.btn-slate:hover { background: var(--slate-lightest); }
+
+/* 表格 */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+table th {
+  text-align: left; padding: 10px 14px; font-weight: 500;
+  color: var(--text-muted); font-size: 12px;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+table td {
+  padding: 10px 14px; border-bottom: 1px solid var(--border-light);
+  color: var(--text); vertical-align: middle;
+}
+table tbody tr:hover { background: var(--slate-lightest); }
+table tbody tr:last-child td { border-bottom: none; }
+.table-name { font-weight: 500; color: var(--text); }
+.table-inci { color: var(--text-secondary); font-size: 12px; }
+.table-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.table-actions { white-space: nowrap; }
+.table-actions .btn { margin-right: 4px; }
+
+/* 标签 */
+.tag {
+  display: inline-block; padding: 2px 10px; border-radius: 10px;
+  font-size: 11px; font-weight: 500; line-height: 1.6; margin: 1px 2px;
+  white-space: nowrap;
+}
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-blue { background: #e8f0fd; color: var(--blue-link); }
+.tag-slate { background: var(--slate-lighter); color: var(--slate); }
+.tag-amber { background: var(--amber-light); color: var(--amber); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-corp { background: var(--green-light); color: var(--green); }
+.tag-cosm { background: #F9F1F4; color: #C4004D; }
+.tag-pharma { background: #EBF3F7; color: #0075BB; }
+
+/* 表格内状态徽章 */
+.badge-success { background: var(--green-light); color: var(--green); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+.badge-secondary { background: var(--slate-lightest); color: var(--slate); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+.badge-warning { background: var(--amber-light); color: var(--amber); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+.badge-danger { background: var(--red-light); color: var(--red); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+td .badge, th .badge { white-space: nowrap; }
+
+/* 表格空状态 */
+.cell-center { text-align: center; padding: 40px; color: var(--text-muted); }
+
+/* 表单 */
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 500; color: var(--text);
+  margin-bottom: 6px;
+}
+.form-group .hint { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+.form-control {
+  width: 100%; padding: 8px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: 13px; font-family: var(--font);
+  color: var(--text); background: var(--white); outline: none;
+  transition: border-color 0.15s; line-height: 1.5;
+}
+.form-control:focus { border-color: var(--green); }
+textarea.form-control { resize: vertical; min-height: 80px; }
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23949494' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.form-input {
+  width: 100%; padding: 8px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: 13px; font-family: var(--font);
+  color: var(--text); background: var(--white); outline: none;
+  transition: border-color 0.15s; line-height: 1.5;
+}
+.form-input:focus { border-color: var(--green); }
+textarea.form-input { resize: vertical; min-height: 80px; }
+.form-label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+
+/* 文本工具类 */
+.text-sm { font-size: 12px; }
+.text-muted { color: var(--text-muted); }
+.text-danger { color: var(--red); }
+.text-center { text-align: center; }
+code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; font-size: 11px; color: var(--slate); }
+
+/* Card 页签 */
+.card-tabs { display: flex; gap: 8px; }
+.tab-btn {
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg); font-size: 13px; color: var(--text-secondary); cursor: pointer;
+  transition: all 0.15s;
+}
+.tab-btn.active { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.tab-btn:hover:not(.active) { border-color: var(--slate-light); }
+
+/* 表格名称列 */
+.td-name { font-weight: 500; color: var(--text); }
+
+/* 标签选择器 (check-tag) */
+.check-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.check-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px; border: 1px solid var(--border); border-radius: 20px;
+  font-size: 12px; color: var(--text-secondary); cursor: pointer;
+  transition: all 0.15s; user-select: none;
+}
+.check-tag:hover { border-color: var(--green); }
+.check-tag.checked { background: var(--green-light); border-color: var(--green); color: var(--green); }
+
+/* 编辑标签页 */
+.tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.tab {
+  padding: 10px 18px; font-size: 13px; font-weight: 400;
+  color: var(--text-secondary); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.15s;
+  background: none; border-top: none; border-left: none; border-right: none;
+  font-family: var(--font);
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); font-weight: 500; }
+
+/* 分页 */
+.pagination {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px;
+}
+.pagination-info { font-size: 12px; color: var(--text-muted); }
+.pagination-btns { display: flex; gap: 4px; }
+.pagination-btns button {
+  min-width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: white; color: var(--text-secondary); cursor: pointer; font-size: 12px;
+  font-family: var(--font); transition: all 0.15s;
+  padding: 0 8px;
+}
+.pagination-btns button:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+.pagination-btns button.active { background: var(--green); color: white; border-color: var(--green); }
+.pagination-btns button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 操作链接 */
+.action-links { display: flex; gap: 8px; }
+.action-links a {
+  font-size: 12px; color: var(--blue-link); text-decoration: none; cursor: pointer;
+}
+.action-links a:hover { text-decoration: underline; }
+.action-links a.danger { color: var(--red); }
+
+/* 筛选栏 */
+.filter-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-bar .form-control { width: auto; min-width: 140px; padding: 5px 30px 5px 10px; font-size: 12px; }
+.filter-bar .search-input { width: 220px; padding: 5px 10px; min-width: auto; background-image: none; }
+
+/* 两列布局 */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+/* 总览：趋势 + TOP 榜布局 */
+.dash-row { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+.dash-chart-wrap { width: 100%; }
+.dash-chart-wrap svg { width: 100%; height: auto; display: block; }
+.chart-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--text-secondary); }
+.chart-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.top-list { display: flex; flex-direction: column; gap: 12px; max-height: 480px; overflow-y: auto; padding-right: 6px; }
+.top-list::-webkit-scrollbar { width: 6px; }
+.top-list::-webkit-scrollbar-thumb { background: #d9dee3; border-radius: 3px; }
+.top-list::-webkit-scrollbar-thumb:hover { background: #c2c9d0; }
+.top-list::-webkit-scrollbar-track { background: transparent; }
+/* 地区排行展开/收起：淡绿药丸按钮，贴合品牌色 */
+.region-toggle { display: flex; justify-content: center; margin-top: 14px; }
+.region-toggle button { display: inline-flex; align-items: center; gap: 6px; background: #f4f9ea; color: #6f9a24; border: 1px solid #e3eecb; border-radius: 999px; padding: 5px 16px; font-size: 12px; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; }
+.region-toggle button:hover { background: #e9f3d4; border-color: #cfe3a8; }
+.region-toggle button:active { transform: scale(.97); }
+.region-toggle .chev { font-size: 10px; line-height: 1; transition: transform .25s; }
+.region-toggle .chev.open { transform: rotate(180deg); }
+.top-item .t-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.top-item .t-path { font-size: 12px; color: var(--text); max-width: 78%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top-item .t-path .t-subpath { font-size: 11px; color: var(--text-tertiary); margin-left: 6px; }
+.region-tabs { display: flex; gap: 6px; }
+.region-tabs button { padding: 4px 14px; border: 1px solid var(--border); background: #fff; border-radius: 14px; font-size: 12px; cursor: pointer; color: var(--text-secondary); }
+.region-tabs button.active { background: var(--green); border-color: var(--green); color: #fff; }
+.top-item .t-pv { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+.top-item .t-bar { height: 6px; border-radius: 3px; background: var(--slate-lightest); overflow: hidden; }
+.top-item .t-bar i { display: block; height: 100%; border-radius: 3px; background: var(--green); }
+.stat-accent { border-left: 3px solid var(--green); }
+
+@media (max-width: 1280px) {
+  .dash-row { grid-template-columns: 1fr; }
+}
+
+/* 占位页面 */
+.placeholder-page { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+.placeholder-page .ph-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.35; }
+.placeholder-page .ph-title { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.placeholder-page .ph-desc { font-size: 13px; }
+
+/* ===== 弹窗 ===== */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 999;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.is-open { display: flex; }
+.modal {
+  background: var(--white); border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15); width: 100%;
+  max-height: 90vh; overflow-y: auto;
+}
+.modal-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h3 { font-size: 15px; font-weight: 500; color: var(--text); }
+.modal-body { padding: 20px; }
+.modal-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border-light);
+  display: flex; justify-content: flex-end; gap: 8px;
+}
+.btn-icon {
+  width: 28px; height: 28px; border: none; background: none;
+  font-size: 20px; color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+}
+.btn-icon:hover { background: var(--slate-lightest); color: var(--text); }
+
+/* 确认弹框 */
+.confirm-dialog {
+  background: var(--white); border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  padding: 32px 36px; text-align: center; min-width: 380px; max-width: 480px;
+}
+.confirm-icon {
+  width: 48px; height: 48px; line-height: 48px; border-radius: 50%;
+  background: #FFF3E0; color: #E65100; font-size: 24px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.confirm-icon.error { background: #FFEBEE; color: #c62828; }
+.confirm-icon.info { background: #E3F2FD; color: #1565C0; }
+.confirm-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.confirm-msg { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; white-space: pre-line; }
+.confirm-btns { display: flex; gap: 10px; justify-content: center; }
+.confirm-btns .btn-danger { background: #d9534f; color: #fff; border-color: #d9534f; }
+.confirm-btns .btn-danger:hover { background: #c9302c; border-color: #c9302c; }
+
+/* 响应式 */
+@media (max-width: 1280px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* 移动端汉堡按钮（桌面隐藏） */
+.topbar-menu-btn {
+  display: none; width: 34px; height: 34px; flex-shrink: 0;
+  align-items: center; justify-content: center;
+  border: none; background: transparent; border-radius: var(--radius);
+  cursor: pointer; color: var(--text);
+}
+.topbar-menu-btn:hover { background: var(--slate-lightest); }
+.sidebar-overlay {
+  display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 1000;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+}
+
+@media (max-width: 1024px) {
+  .topbar-menu-btn { display: flex; }
+  /* 侧边栏 → 抽屉 */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    flex: none; width: 264px; max-width: 82vw;
+    z-index: 1001; transform: translateX(-105%);
+    transition: transform 0.2s ease;
+    box-shadow: 0 0 24px rgba(0,0,0,0.12);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+  .main { margin-left: 0; }
+  .form-row { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  /* 顶栏防挤压 */
+  .topbar { padding: 0 12px; gap: 10px; }
+  .topbar-breadcrumb { min-width: 0; flex-shrink: 1; white-space: nowrap; overflow: hidden; }
+  .topbar-breadcrumb .crumb-root, .topbar-breadcrumb .sep { display: none; }
+  .topbar-breadcrumb .current { overflow: hidden; text-overflow: ellipsis; }
+  .topbar-search { flex: 1; min-width: 0; margin-left: 0; }
+  .topbar-search input { width: 100%; max-width: 220px; }
+  .topbar-actions { flex-shrink: 0; }
+  .topbar-logout { white-space: nowrap; }
+  /* 弹窗与确认框 */
+  .modal { max-width: 94vw; }
+  .confirm-dialog { min-width: 0; width: 86vw; max-width: 420px; padding: 24px 20px; }
+}
+
+@media (max-width: 640px) {
+  .content { padding: 16px 12px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { padding: 14px; }
+  .page-title { font-size: 16px; }
+  /* 四机位：移动端 2×2，保证 4 个机器人同屏可见（原 4 列会被挤出屏外） */
+  .pl-card .pl-cols { grid-template-columns: 1fr 1fr; gap: 14px 10px; }
+  .pl-card .pl-col .arw { display: none; }
+  .pl-card .pl-col:nth-child(1) .arw, .pl-card .pl-col:nth-child(3) .arw { display: block; }
+  .pl-card .pl-col .nm { font-size: 12px; }
+  .pl-card .pl-col .ds { font-size: 10.5px; }
+  .modal-body { padding: 14px; }
+  .modal-header { padding: 12px 14px; }
+  .modal-footer { padding: 10px 14px; }
+  /* 内联 flex 工具栏允许换行，防止按钮竖排挤字（兼容 display:flex 与 display: flex 两种写法） */
+  [style*="display:flex"], [style*="display: flex"] { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .login-card { width: 92vw; max-width: 420px; padding: 28px 20px; }
+}
+
+/* ===== 导入器机器人（搬运机器人）2026-09-11 =====
+   素材：admin/static/img/robot-importer.png（全站引用同一文件，浏览器只下一次）
+   圆形裁切靠 border-radius + background-size:cover，素材本身是浅绿圆底，无需抠图 */
+.bot {
+  display: inline-block; flex: none;
+  border-radius: 50%; background-color: #EAF3DA;
+  background-image: url("/admin/static/img/robot-importer.png");
+  background-size: cover; background-position: 50% 46%; background-repeat: no-repeat;
+}
+.bot-ico    { width: 19px; height: 19px; }
+.bot-badge  { width: 26px; height: 26px; box-shadow: 0 0 0 2px #E3EED0; }
+.bot-avatar { width: 34px; height: 34px; box-shadow: 0 0 0 2.5px #E3EED0; }
+.bot-figure { width: 60px; height: 60px; box-shadow: 0 0 0 4px #F1F8E5; }
+
+/* 入口按钮：浅绿底 + 机器人小头像（不与实心绿主按钮抢焦点） */
+.btn-bot { background: var(--green-light); color: #5E7F22; border-color: #CFE2A6; }
+.btn-bot:hover { background: #EAF3DA; border-color: #B9D486; }
+.btn-bot .bot-ico { margin-right: 1px; }
+
+/* 导入弹框标题行：头像 + 标题 + 「搬运机器人」小标签 */
+.modal-header .mh-bot { display: flex; align-items: center; gap: 11px; }
+.bot-tag {
+  font-size: 11px; font-weight: 500; color: #5E7F22;
+  background: var(--green-light); border: 1px solid #CFE2A6;
+  border-radius: 20px; padding: 1px 9px; margin-left: 4px;
+}
+/* 导入弹框顶部渐变细线（贴在圆角内） */
+.modal-accent {
+  height: 3px; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: linear-gradient(90deg, #8EB73C, #B9D486 55%, #E3EED0);
+}
+/* 机器人说明卡（替换原灰色提示块） */
+.bot-tip {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: linear-gradient(180deg, #FAFCF4 0%, #FFFFFF 100%);
+  border: 1px solid #E3EED0; border-radius: 8px;
+  padding: 13px 15px; font-size: 12px; color: var(--text-muted); line-height: 1.8;
+}
+.bot-tip strong { color: var(--text); }
+.bot-tip .bot-figure { flex: none; }
+
+/* 导入结果提示：成功时机器人交差（⚠️/❌ 不加，错误提示保持严肃） */
+.imp-msg { font-size: 12px; margin-top: 8px; display: flex; align-items: flex-start; gap: 7px; line-height: 1.8; }
+.imp-msg .bot-badge { margin-top: 1px; }
+.imp-msg .imp-msg-text { white-space: pre-line; }
+
+/* 原站导入内容锁定提示：机器人头像 + 文案 */
+.bot-lock { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #B45309; line-height: 1.7; }
+.bot-lock .bot-badge { width: 22px; height: 22px; }
+/* 导入中：主按钮内白色转圈 */
+.btn-spin {
+  width: 13px; height: 13px; flex: none; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.45); border-top-color: #fff;
+  animation: btn-spin .8s linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+
+/* ===== 机器人动效（四机位 · 2026-09-11）=====
+   素材 /admin/static/video/robots/{importer,translator,editor,publisher}.mp4
+   480×480 · 4.04s · 无音轨 · 合计 224KB。无 alpha 通道，但画面背景 #F2F3EE 与后台浅色卡片
+   色差仅 2~6/255，方形可直接放置，无需抠图。
+   ⚠️ 尺寸规则：≥56px 立绘位不放大（--z:1，保住箱子徽章/「语」气泡/✓/纸飞机）；
+      24~44px 头像位圆形裁切 + 放大（各机位 --z 不同） */
+.bot-v { position: relative; display: inline-block; flex: none; overflow: hidden;
+  border-radius: 50%; background: #F2F3EE; line-height: 0; pointer-events: none; }
+.bot-v > video { position: absolute; left: 50%; top: 50%; width: 100%; height: 100%;
+  transform: translate(-50%,-50%) scale(var(--z, 1.30));
+  object-fit: cover; object-position: var(--p, 50% 50%); }
+.bot-v.importer   > video { --z: 1.30; --p: 52% 52%; }
+.bot-v.translator > video { --z: 1.42; --p: 50% 50%; }
+.bot-v.editor     > video { --z: 1.30; --p: 50% 50%; }
+.bot-v.publisher  > video { --z: 1.36; --p: 50% 50%; }
+.bot-v-24 { width: 24px; height: 24px; }
+.bot-v-28 { width: 28px; height: 28px; }
+.bot-v-44 { width: 44px; height: 44px; box-shadow: 0 0 0 2.5px #E3EED0; }
+.bot-v-56 { width: 56px; height: 56px; box-shadow: 0 0 0 3px #E3EED0; }
+.bot-v-110 { width: 110px; height: 110px; }
+/* 立绘位（方形不放大） */
+.bot-v-sq { border-radius: 12px; }
+.bot-v-sq > video { --z: 1; }
+.bot-tip .bot-v { flex: none; }
+/* 首页「数字营销产线 · 四机位」总览卡 */
+.pl-card { border-color: #E3EED0; background: linear-gradient(180deg,#FAFCF4 0%,#FFFFFF 70%); }
+.pl-card .card-header { display: flex; align-items: center; justify-content: space-between; }
+.pl-card .card-header .pl-sub { font-size: 12px; color: var(--text-muted); }
+.pl-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pl-col { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
+.pl-col .nm { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.pl-col .ds { font-size: 11px; color: var(--text-muted); text-align: center; line-height: 1.55; }
+.pl-col .arw { position: absolute; right: -9px; top: 44px; color: #CFE2A6; font-size: 15px; }
+
+
+
+.block-list { display:flex; flex-direction:column; gap:16px; }
+.block-item { border:1px solid var(--border); border-radius:var(--radius); padding:0; }
+.block-header { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--slate-lightest); border-bottom:1px solid var(--border); border-radius:var(--radius) var(--radius) 0 0; }
+.block-body { padding:14px; }
+.block-drag { display:flex; gap:2px; }
+.block-drag button { width:28px; height:28px; border:1px solid var(--border); border-radius:4px; background:#fff; cursor:pointer; font-size:14px; line-height:1; }
+.block-drag button:disabled { opacity:0.3; cursor:default; }
+.block-drag button:hover:not(:disabled) { background:var(--slate-lighter); }
+.block-title { flex:1; }
+.block-actions { display:flex; gap:4px; }
+.quill-editor { min-height:200px; }
+.quill-editor .ql-editor { min-height:200px; }
+.block-entry-row { display:flex; gap:8px; margin-bottom:6px; }
+.block-entry-row input { flex:1; }
+.block-saved-msg { color:var(--green); font-size:12px; margin-left:8px; }
+.alert-info { background:var(--blue-link); color:#fff; padding:12px 16px; border-radius:var(--radius); margin-bottom:12px; font-size:13px; }
+/* Picto 图标编辑器 */
+.picto-editor { }
+.picto-editor__item { display:flex; align-items:center; gap:8px; margin-bottom:6px; padding:8px 10px; border:1px solid var(--border); border-radius:var(--radius); cursor:grab; transition:border-color .15s; }
+.picto-editor__item:hover { border-color:#c4004d; }
+.picto-editor__item:active { cursor:grabbing; }
+.picto-editor__drag { color:#999; font-size:14px; cursor:grab; user-select:none; flex-shrink:0; }
+.picto-editor__icon-preview { width:44px; height:44px; min-width:44px; background:#F7F5F0; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}
+body{margin:0;padding:20px;background:#fff}</style><style>
+/* ============ 效果图外壳（mk- 前缀，防与后台 CSS 互相污染） ============ */
+body{font-size:14px;background:#eef1f4;}
+.mk-wrap{max-width:1420px;margin:0 auto;padding:28px 26px 80px;}
+.mk-hero{background:linear-gradient(135deg,#232a31 0%,#39434d 100%);border-radius:14px;padding:34px 38px;color:#fff;margin-bottom:26px;}
+.mk-hero h1{margin:0 0 10px;font-size:24px;font-weight:700;letter-spacing:.5px;}
+.mk-hero p{margin:0;color:#c9d2da;font-size:14px;line-height:1.8;}
+.mk-hero .mk-tagline{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:rgba(142,183,60,.16);border:1px solid rgba(142,183,60,.45);color:#c8e39a;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:600;}
+.mk-sec{margin:34px 0 14px;display:flex;align-items:baseline;gap:12px;}
+.mk-sec h2{margin:0;font-size:19px;font-weight:700;color:#232a31;}
+.mk-sec .mk-sec-sub{font-size:13px;color:#7b8792;}
+.mk-card{background:#fff;border:1px solid #dfe4e9;border-radius:12px;padding:22px 24px;box-shadow:0 1px 3px rgba(16,24,40,.05);}
+.mk-pain{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.mk-pain .mk-pain-item{border:1px solid #f0d9d9;background:#fdf7f7;border-radius:10px;padding:14px 16px;}
+.mk-pain .mk-pain-item b{display:block;color:#b03a3a;font-size:13px;margin-bottom:6px;}
+.mk-pain .mk-pain-item span{font-size:13px;color:#5b6570;line-height:1.7;}
+.mk-i{display:inline-flex;align-items:center;justify-content:center;flex:none;}
+.mk-i svg{width:100%;height:100%;}
+/* 三案对比表 */
+table.mk-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+table.mk-table th{background:#232a31;color:#fff;font-weight:600;padding:10px 12px;font-size:13px;text-align:left;white-space:nowrap;}
+table.mk-table td{border:1px solid #e3e8ed;padding:11px 12px;font-size:13px;color:#3d4650;vertical-align:top;line-height:1.65;white-space:normal;max-width:none;overflow:visible;}
+table.mk-table tr:nth-child(even) td{background:#fafbfc;}
+table.mk-table td.mk-rec{background:#f4f9e9 !important;border-color:#c9dd9b;}
+.mk-pill{display:inline-block;font-size:11px;font-weight:700;border-radius:10px;padding:2px 10px;white-space:nowrap;}
+.mk-pill.g{background:#e6f0d2;color:#4c7210;} .mk-pill.y{background:#fdf3e0;color:#9a6516;} .mk-pill.r{background:#fdeaea;color:#b03a3a;} .mk-pill.gray{background:#eceff2;color:#5b6570;}
+/* 效果图取景框 */
+.mk-frame{border:1px solid #cfd6dd;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(16,24,40,.10);background:#fff;}
+.mk-frame .layout{height:auto !important;min-height:660px;}
+.mk-frame .sidebar{height:auto !important;position:relative;}
+.mk-frame .sidebar-nav{overflow:visible !important;flex:none !important;}
+.mk-frame .content{overflow:visible !important;flex:none !important;}
+/* 标注气泡 */
+.mk-note{position:relative;border:1px solid #e8b4b4;background:#fdf1f1;color:#a53636;border-radius:8px;padding:8px 12px;font-size:12px;line-height:1.6;}
+.mk-note b{font-weight:700;}
+/* 块搭建器（方案B 核心，这些类名以后就是实施蓝本） */
+.bb{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;min-height:560px;}
+.bb-left{width:46%;border-right:1px solid var(--border);background:#f7f9f6;display:flex;flex-direction:column;}
+.bb-right{width:54%;background:#fff;display:flex;flex-direction:column;}
+.bb-head{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#fff;border-bottom:1px solid var(--border);font-size:12.5px;font-weight:600;color:var(--text);}
+.bb-head .mk-mini{margin-left:auto;font-size:11.5px;font-weight:400;color:var(--text-muted);}
+.bb-list{flex:1;padding:12px 12px 4px;overflow:visible;}
+.bb-item{background:#fff;border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;margin-bottom:9px;display:flex;gap:10px;align-items:flex-start;}
+.bb-item.sel{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,183,60,.14);}
+.bb-item .bb-ico{width:30px;height:30px;border-radius:7px;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;flex:none;}
+.bb-item.sel .bb-ico{background:var(--green);color:#fff;}
+.bb-item .bb-body{flex:1;min-width:0;}
+.bb-item .bb-name{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;}
+.bb-item .bb-name .bb-kind{font-size:10.5px;font-weight:600;color:var(--green);background:var(--green-light);border-radius:8px;padding:1px 7px;}
+.bb-item .bb-sum{font-size:12px;color:var(--text-muted);margin-top:3px;line-height:1.55;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.bb-tools{display:flex;gap:3px;flex:none;padding-top:2px;}
+.bb-tools button{width:24px;height:24px;border:1px solid var(--slate-lighter);background:#fff;border-radius:6px;color:var(--slate);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.bb-tools button:hover{border-color:var(--green);color:var(--green);}
+.bb-tools button.danger:hover{border-color:var(--red);color:var(--red);}
+.bb-add{margin:6px 12px 14px;border:2px dashed #b9cf8d;background:var(--green-lighter);border-radius:9px;padding:11px;text-align:center;color:var(--green);font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+/* 右列预览（按原站观感示意） */
+.bb-preview-bar{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#fff;border-bottom:1px solid var(--border);font-size:12.5px;font-weight:600;}
+.bb-preview{flex:1;padding:26px 34px;overflow:visible;font-size:14px;line-height:1.9;color:#333;}
+.bb-preview h2.pp-h{font-size:22px;font-weight:700;margin:0 0 6px;line-height:1.4;}
+.bb-preview .pp-sub{font-size:13px;color:#98a2ad;margin-bottom:16px;}
+.bb-preview p{margin:0 0 14px;}
+.bb-preview .pp-img{background:linear-gradient(135deg,#dfe5da,#cfd8c6);border-radius:4px;height:120px;display:flex;align-items:center;justify-content:center;color:#8b9683;font-size:12px;margin-bottom:16px;}
+.bb-preview .pp-lr{display:flex;gap:18px;margin-bottom:16px;}
+.bb-preview .pp-lr .pp-img2{width:44%;height:110px;border-radius:4px;background:linear-gradient(135deg,#dfe5da,#cfd8c6);display:flex;align-items:center;justify-content:center;color:#8b9683;font-size:12px;flex:none;}
+.bb-preview .pp-quote{border-left:4px solid var(--green);background:var(--green-lighter);padding:12px 16px;font-size:14.5px;color:#3d4650;margin-bottom:16px;border-radius:0 6px 6px 0;}
+.bb-preview .pp-btn{display:inline-flex;background:var(--green);color:#fff;border-radius:22px;padding:8px 24px;font-size:13.5px;font-weight:600;margin-bottom:16px;}
+.bb-preview .pp-pcard{border:1px solid #e3e8ed;border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;max-width:420px;background:#fff;}
+.bb-preview .pp-pcard .pp-pimg{width:52px;height:52px;border-radius:6px;background:linear-gradient(135deg,#e8e8e2,#d8dad0);flex:none;}
+/* 模板条 */
+.bb-tpl{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#f0f6e3;border-bottom:1px solid #dbe7c2;font-size:12.5px;color:#4c7210;flex-wrap:wrap;}
+.bb-tpl b{font-weight:700;}
+.bb-tpl .tpl{background:#fff;border:1px solid #c9dd9b;border-radius:16px;padding:3px 13px;font-size:12px;color:#4c7210;cursor:pointer;font-weight:500;}
+.bb-tpl .tpl:hover{background:var(--green);color:#fff;}
+/* 添加块面板（宫格） */
+.mk-modal{position:relative;background:#fff;border:1px solid #cfd6dd;border-radius:12px;box-shadow:0 12px 40px rgba(16,24,40,.16);max-width:860px;margin:0 auto;}
+.mk-modal .mk-modal-h{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:15px;font-weight:700;}
+.mk-modal .mk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:18px 20px;}
+.mk-sec-title{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:1px;margin-top:4px;}
+.mk-btype{border:1.5px solid var(--border);border-radius:10px;padding:13px 13px 11px;cursor:pointer;transition:all .12s;background:#fff;}
+.mk-btype:hover{border-color:var(--green);background:var(--green-lighter);}
+.mk-btype .mk-bt-ico{width:34px;height:34px;border-radius:8px;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.mk-btype b{display:block;font-size:13px;color:var(--text);margin-bottom:3px;}
+.mk-btype span{display:block;font-size:11.5px;color:var(--text-muted);line-height:1.5;}
+.mk-btype .mk-bt-map{display:inline-block;font:10px/1.5 Consolas,'Courier New',monospace;color:#54616C;background:#f2f5f7;border:1px solid var(--border);border-radius:4px;padding:1px 6px;margin-bottom:5px;max-width:100%;overflow-wrap:break-word;}
+/* 单块编辑态 */
+.bb-edit{border:1.5px solid var(--green);border-radius:9px;background:#fff;padding:14px 16px;margin-bottom:9px;}
+.bb-edit .bb-edit-h{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:12px;}
+.bb-edit .fld{margin-bottom:12px;}
+.bb-edit .fld label{display:block;font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:5px;}
+.bb-edit .up{border:2px dashed var(--slate-lighter);border-radius:8px;padding:18px;text-align:center;color:var(--text-muted);font-size:12.5px;background:#fafbfc;}
+.bb-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.qbar{display:flex;gap:2px;background:#f3f5f7;border:1px solid #e2e6ea;border-bottom:none;border-radius:6px 6px 0 0;padding:4px 6px;}
+.qbar b{width:24px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4a5560;font-weight:600;font-family:Georgia,serif;}
+.qbar b:hover{background:#e2e8ee;}
+.qbar b.mono{font-family:ui-monospace,monospace;font-size:11px;}
+.qarea{border:1px solid #e2e6ea;border-radius:0 0 6px 6px;padding:10px 12px;font-size:13px;line-height:1.7;min-height:64px;color:#3d4650;background:#fff;}
+/* 流程闭环 */
+.mk-flow{display:flex;align-items:stretch;gap:0;}
+.mk-flow .mk-step{flex:1;background:#fff;border:1px solid #dfe4e9;border-radius:10px;padding:16px;position:relative;}
+.mk-flow .mk-step + .mk-step{margin-left:34px;}
+.mk-flow .mk-step + .mk-step::before{content:'';position:absolute;left:-22px;top:50%;transform:translateY(-50%);border:9px solid transparent;border-left:13px solid #9aa7b1;}
+.mk-flow .mk-step b{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text);margin-bottom:7px;}
+.mk-flow .mk-step span{font-size:12.5px;color:#5b6570;line-height:1.7;display:block;}
+.mk-flow .mk-step .n{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+/* 建议清单 */
+.mk-advice{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.mk-advice .mk-do{border:1px solid #c9dd9b;background:#f7faef;border-radius:10px;padding:16px 18px;}
+.mk-advice .mk-dont{border:1px solid #e4c9c9;background:#fdf6f6;border-radius:10px;padding:16px 18px;}
+.mk-advice h3{margin:0 0 10px;font-size:14px;display:flex;align-items:center;gap:8px;}
+.mk-advice ul{margin:0;padding-left:18px;}
+.mk-advice li{font-size:13px;color:#3d4650;line-height:1.85;}
+.mk-kbd{display:inline-block;border:1px solid #cfd6dd;border-bottom-width:2px;border-radius:5px;padding:0 6px;font-size:11.5px;background:#f7f9fa;color:#4a5560;font-family:ui-monospace,monospace;}
+/* 细节调整节 */
+.mk-stylebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#f7f9f2;border:1px dashed #b9cf8e;border-radius:8px;padding:9px 12px;margin:0 0 12px;}
+.mk-stylebar .lbl{font-size:11px;font-weight:700;color:#54616C;letter-spacing:.5px;}
+.mk-chip{display:inline-block;width:21px;height:21px;border-radius:50%;box-shadow:0 0 0 1.5px #d5dbe0;vertical-align:middle;cursor:pointer;}
+.mk-chip.on{box-shadow:0 0 0 2px var(--green);}
+.mk-gal{position:relative;background:#edf0ee;border-radius:10px;overflow:hidden;height:190px;}
+.mk-gal .frame{position:absolute;top:14px;bottom:34px;width:54%;background:#dde4de;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#93a08f;}
+.mk-gal .arrow{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(35,42,49,.18);display:flex;align-items:center;justify-content:center;font-size:14px;color:#3d4650;z-index:2;}
+.mk-gal .dots{position:absolute;bottom:11px;left:0;right:0;display:flex;gap:6px;justify-content:center;}
+.mk-gal .dot{width:7px;height:7px;border-radius:50%;background:#c3ccc5;}
+.mk-gal .dot.on{background:var(--green);}
+.mk-gal .cnt{position:absolute;right:12px;bottom:8px;font-size:11px;color:#7b8792;}
+.mk-why{font-size:12px;color:#7b8792;line-height:1.7;background:#f5f7f9;border-left:3px solid #cfd6dd;border-radius:0 8px 8px 0;padding:8px 12px;margin-top:10px;}
+.mk-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+</style></head><body><div class="mk-wrap"><div class="mk-hero"><h1>新建文章排版编辑优化 · 方案与视觉预览</h1><p>客户反馈：新建文章只能用一个富文本编辑器排版，自由度不够、不好用、对小白不友好。本页给出三个方案的成本对比、推荐方案的完整交互预览与落地清单 —— <b style="color:#fff;">仅为效果图，未动任何真实代码</b>。</p><span class="mk-tagline">核心思路：把「写文章」变成「搭积木」—— 块搭好后保存成官网原版式 HTML，前台零改动</span></div><div class="mk-sec"><h2>1、客户痛点拆解</h2><span class="mk-sec-sub">三条反馈对应三个结构性缺陷</span></div><div class="mk-card"><div class="mk-pain"><div class="mk-pain-item"><b>「自由度不够」</b><span>富文本只有一种「连续文本流」结构，官网的图文两列 / 引用 / 重点块 / CTA 按钮等版式完全搭不出来</span></div><div class="mk-pain-item"><b>「使用度不够简单」</b><span>Quill 工具栏 14+ 按钮 + 附加区块另一套入口：两套系统、位置割裂，小白不知道从哪下手</span></div><div class="mk-pain-item"><b>「对小白不友好」</b><span>排出来的内容与官网版式对不上（class 完全不同），前台观感失控；且新建文章用不了「预览编辑」</span></div></div></div><div class="mk-sec"><h2>2、三个方案</h2><span class="mk-sec-sub">成本并排 —— 用户看的其实是成本，不是创意</span></div><div class="mk-card"><table class="mk-table"><colgroup><col style="width:16%"><col style="width:27%"><col style="width:31%"><col style="width:26%"></colgroup><tr><th>维度</th><th>方案 A · Quill 减法<span style="font-weight:400;font-size:11px;">（克制版）</span></th><th>方案 B · 块搭建器<span class="mk-pill g" style="margin-left:6px;">推荐</span></th><th>方案 C · Notion 式斜杠命令</th></tr><tr><td style="font-weight:600;">一句话</td><td>精简 Quill 工具栏 + 几个「插入排版块」按钮</td><td class="mk-rec">模板起步 + 左列搭块 + 右列实时预览，保存拼成官网版式</td><td>正文里输入 / 唤出块菜单，原位插入</td></tr><tr><td style="font-weight:600;">小白友好度</td><td><span class="mk-pill y">中</span> 仍要自己把握整体结构</td><td class="mk-rec"><span class="mk-pill g">高</span> 所见即所得，填空式创作</td><td><span class="mk-pill y">中高</span> 要记住 / 命令</td></tr><tr><td style="font-weight:600;">版式还原</td><td><span class="mk-pill r">低</span> Quill 产出与官网 class 对不上</td><td class="mk-rec"><span class="mk-pill g">高</span> 直接用官网 paragraph class 拼装</td><td><span class="mk-pill y">中</span> 取决于插入器实现</td></tr><tr><td style="font-weight:600;">改动面</td><td>小：改工具栏配置 + 1 个插入弹层</td><td class="mk-rec">中：builder 视图 + 拼装/反解析模块；<b>后端与前台零改动</b></td><td>大：光标定位、块菜单、键盘交互全要自研</td></tr><tr><td style="font-weight:600;">风险</td><td>低</td><td class="mk-rec">低～中（拼装器要配单测；有预览编辑兜底）</td><td>高</td></tr></table></div><div class="mk-sec"><h2>3、现状（Before）</h2><span class="mk-sec-sub">新建文章 = 空白 Quill + 底部割裂的附加区块</span></div><div class="mk-frame"><div class="layout" style="flex-direction:row;"><aside class="sidebar" style="width:212px;flex:none;display:flex;flex-direction:column;"><div class="sidebar-logo"><svg viewBox="0 0 161.86 22.00" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gattefossé"><g transform="translate(-4.791,0) scale(0.34077)"><path id="Fill-1" fill="#58616b" d="M78.44,32.2A32.19,32.19,0,1,1,46.25,0,32.2,32.2,0,0,1,78.44,32.2" transform="translate(0 0)"/><path id="Fill-3" fill="#58616b" d="M114.73,57.56a21.62,21.62,0,0,0,7.86,1.7c10.07,0,23.1-10.61,23.1-22.13h-30l4.41-4.81h30.06c2.24,8.09-.66,15-6,21.59A27.5,27.5,0,0,1,109.64,61" transform="translate(0 0)"/><path id="Fill-5" fill="#8eb73c" d="M97.16,29.66A27.58,27.58,0,0,0,97,32.72l-5,1a33.24,33.24,0,0,1,13.83-28.4,32.24,32.24,0,1,0,4.27,3.33c-6.91,4.62-12.13,12.61-12.94,21" transform="translate(0 0)"/><path id="Fill-7" fill="#58616b" d="M125.32.14c-7.15-.18-13.9,1.3-19.48,5.19a32.75,32.75,0,0,0-13.71,23.8A32.19,32.19,0,0,0,92,33.72l5-1a27.58,27.58,0,0,1,.12-3.06c.82-8.4,6-16.39,12.94-21A22.07,22.07,0,0,1,124.92,4.7c8.85,1.06,14.92,6.49,20.27,13.79l5-1.3C144.52,7.7,135.26.39,125.32.14" transform="translate(0 0)"/><path id="Fill-9" fill="#58616b" d="M91.61,46a9,9,0,1,1,9,9,9,9,0,0,1-9-9" transform="translate(0 0)"/></g><g transform="translate(52.64,3.63) scale(0.66158)"><g transform="translate(0,-70.43)"><path id="Fill-11" fill="#8eb73c" d="M27.19,85.47h4.17L29.3,80.59h0Zm.78-9H30.6l7.62,15.92H34.51l-1.94-4.11H26.06l-1.94,4.11H20.41Z" transform="translate(0 0)"/><polygon id="Fill-13" fill="#8eb73c" points="74.48 76.44 84.26 76.44 84.26 79.19 77.85 79.19 77.85 83.09 83.99 83.09 83.99 85.84 77.85 85.84 77.85 89.61 84.26 89.61 84.26 92.36 74.48 92.36 74.48 76.44"/><polygon id="Fill-15" fill="#8eb73c" points="89.66 76.44 98.91 76.44 98.91 79.19 93.03 79.19 93.03 83.09 98.65 83.09 98.65 85.84 93.03 85.84 93.03 92.36 89.66 92.36 89.66 76.44"/><path id="Fill-17" fill="#8eb73c" d="M110.79,89.93c3.46,0,6.14-2.56,6.14-5.5a6.17,6.17,0,0,0-12.27,0c0,2.95,2.67,5.5,6.14,5.5m0-13.81c5.16,0,9.5,3.61,9.5,8.32s-4.27,8.25-9.5,8.25-9.5-3.68-9.5-8.25,4.34-8.32,9.5-8.32" transform="translate(0 0)"/><path id="Fill-19" fill="#8eb73c" d="M127.35,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78,1.71,1.71,0,0,0-1.87,1.62c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.9,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-21" fill="#8eb73c" d="M142.52,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78A1.71,1.71,0,0,0,143,80.48c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.89,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-23" fill="#8eb73c" d="M157.33,73.29l5.52-2.86,1.32,2.26-5.6,2.59Zm-2,3.14h9.77v2.75h-6.41v3.89h6.14v2.76h-6.14v3.77h6.41v2.75h-9.77Z" transform="translate(0 0)"/><polygon id="Fill-26" fill="#8eb73c" points="70.18 76.45 56.22 76.45 56.22 79.2 61.51 79.19 61.51 92.36 64.87 92.36 64.87 79.19 70.18 79.2 70.18 76.45"/><polygon id="Fill-28" fill="#8eb73c" points="52.47 76.45 38.5 76.45 38.51 79.2 43.79 79.19 43.79 92.36 47.16 92.36 47.16 79.19 52.47 79.2 52.47 76.45"/><path id="Fill-30" fill="#8eb73c" d="M9.28,84.23h9.63v.33c0,4.43-4.43,7.89-9.39,7.89S0,89,0,84.38,4.43,76.3,9.43,76.3c4.45,0,7.69,2.64,8.6,4.87H14.1A5.88,5.88,0,0,0,9.36,79,5.72,5.72,0,0,0,3.28,84.4c0,2.37,2,5.37,6.25,5.37a6,6,0,0,0,5.25-2.85H9.28" transform="translate(0 0)"/></g></g></svg></div><nav class="sidebar-nav" style="font-size:0;"><div class="nav-section"><div class="nav-section-title">主菜单</div></div><a class="nav-item"><i class="nav-icon"></i>总览</a><a class="nav-item"><i class="nav-icon"></i>内容热度</a><div class="nav-section"><div class="nav-section-title">产品管理</div></div><a class="nav-item"><i class="nav-icon"></i>个人护理<span class="badge">94</span></a><a class="nav-item"><i class="nav-icon"></i>药用辅料<span class="badge">54</span></a><div class="nav-section"><div class="nav-section-title">内容管理</div></div><a class="nav-item"><i class="nav-icon"></i>新闻与活动</a><a class="nav-item nav-sub"><i class="nav-icon"></i>文章</a><a class="nav-item nav-sub"><i class="nav-icon"></i>在线研讨会</a><a class="nav-item nav-sub active"><i class="nav-icon"></i>文章</a><div class="nav-section"><div class="nav-section-title">系统</div></div><a class="nav-item"><i class="nav-icon"></i>系统设置</a></nav></aside><div class="main"><header class="topbar"><div class="topbar-breadcrumb">内容管理 <span class="sep">/</span> 文章 <span class="sep">/</span> <span class="current">新建文章</span></div></header><div class="content" style="padding:20px 24px;"><div class="card" style="margin-bottom:16px;"><div class="card-header"><h3 style="margin:0;font-size:14px;">基本信息</h3></div><div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><div style="font-size:12px;color:var(--text-secondary);margin-bottom:5px;">文章标题</div><input class="form-control" value="皮肤微生态与功效原料的协同" readonly></div><div><div style="font-size:12px;color:var(--text-secondary);margin-bottom:5px;">所属栏目</div><input class="form-control" value="获取灵感 · 文章" readonly></div></div></div><div class="card"><div class="card-header"><h3 style="margin:0;font-size:14px;">正文内容</h3></div><div class="card-body" style="position:relative;"><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn btn-sm btn-primary">可视化编辑</button><button class="btn btn-sm btn-outline">HTML 源码</button><span style="font-size:12px;color:var(--text-muted);align-self:center;">新建文章暂无「预览编辑」（要等有内容之后才能点选修改）</span></div><div class="qbar"><b style="font-family:Georgia,serif">B</b><b style="font-family:Georgia,serif">I</b><b style="font-family:Georgia,serif">U</b><b class="mono">S</b><b class="mono">"</b><b class="mono"></></b><b class="mono">•—</b><b class="mono">1.</b><b class="mono">⟲</b><b class="mono">⟳</b><b class="mono">🔗</b><b class="mono">🖼</b><b class="mono">🎬</b><b class="mono">⋮</b></div><div style="border:1px solid #e2e6ea;border-top:none;border-radius:0 0 6px 6px;min-height:300px;padding:16px 18px;color:#a8b2bc;font-size:13.5px;position:relative;">Compose in Epic…<div style="position:absolute;right:14px;top:14px;width:250px;display:flex;flex-direction:column;gap:8px;"><div class="mk-note"><b>① 工具栏 14+ 个按钮</b>：小白不知道哪些能用、哪些会破坏版式</div><div class="mk-note"><b>② 排版靠手感</b>：拖出来的样子与官网版式完全对不上，前台观感失控</div><div class="mk-note"><b>③ 附加区块是另一套</b>：产品卡/视频/文件挂在页面底部，与正文割裂，位置不可控</div></div></div><div style="margin-top:14px;border-top:2px solid var(--border);padding-top:12px;"><div style="font-size:13px;font-weight:700;margin-bottom:8px;">附加区块 <span style="font-weight:400;color:var(--text-muted);font-size:12px;">（可选：关联产品、视频、文件）</span></div><button class="btn btn-sm btn-outline">+ 添加区块</button><span style="font-size:12px;color:var(--text-muted);margin-left:10px;">← 只能加在正文最底部，且要另存一次</span></div></div></div></div></div></div></div><div class="mk-sec"><h2>4、推荐方案（After）· 块搭建器</h2><span class="mk-sec-sub">模板起步 → 左列搭块 → 右列实时预览 → 保存拼成官网版式</span></div><div class="mk-frame"><div class="layout" style="flex-direction:row;"><aside class="sidebar" style="width:212px;flex:none;display:flex;flex-direction:column;"><div class="sidebar-logo"><svg viewBox="0 0 161.86 22.00" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gattefossé"><g transform="translate(-4.791,0) scale(0.34077)"><path id="Fill-1" fill="#58616b" d="M78.44,32.2A32.19,32.19,0,1,1,46.25,0,32.2,32.2,0,0,1,78.44,32.2" transform="translate(0 0)"/><path id="Fill-3" fill="#58616b" d="M114.73,57.56a21.62,21.62,0,0,0,7.86,1.7c10.07,0,23.1-10.61,23.1-22.13h-30l4.41-4.81h30.06c2.24,8.09-.66,15-6,21.59A27.5,27.5,0,0,1,109.64,61" transform="translate(0 0)"/><path id="Fill-5" fill="#8eb73c" d="M97.16,29.66A27.58,27.58,0,0,0,97,32.72l-5,1a33.24,33.24,0,0,1,13.83-28.4,32.24,32.24,0,1,0,4.27,3.33c-6.91,4.62-12.13,12.61-12.94,21" transform="translate(0 0)"/><path id="Fill-7" fill="#58616b" d="M125.32.14c-7.15-.18-13.9,1.3-19.48,5.19a32.75,32.75,0,0,0-13.71,23.8A32.19,32.19,0,0,0,92,33.72l5-1a27.58,27.58,0,0,1,.12-3.06c.82-8.4,6-16.39,12.94-21A22.07,22.07,0,0,1,124.92,4.7c8.85,1.06,14.92,6.49,20.27,13.79l5-1.3C144.52,7.7,135.26.39,125.32.14" transform="translate(0 0)"/><path id="Fill-9" fill="#58616b" d="M91.61,46a9,9,0,1,1,9,9,9,9,0,0,1-9-9" transform="translate(0 0)"/></g><g transform="translate(52.64,3.63) scale(0.66158)"><g transform="translate(0,-70.43)"><path id="Fill-11" fill="#8eb73c" d="M27.19,85.47h4.17L29.3,80.59h0Zm.78-9H30.6l7.62,15.92H34.51l-1.94-4.11H26.06l-1.94,4.11H20.41Z" transform="translate(0 0)"/><polygon id="Fill-13" fill="#8eb73c" points="74.48 76.44 84.26 76.44 84.26 79.19 77.85 79.19 77.85 83.09 83.99 83.09 83.99 85.84 77.85 85.84 77.85 89.61 84.26 89.61 84.26 92.36 74.48 92.36 74.48 76.44"/><polygon id="Fill-15" fill="#8eb73c" points="89.66 76.44 98.91 76.44 98.91 79.19 93.03 79.19 93.03 83.09 98.65 83.09 98.65 85.84 93.03 85.84 93.03 92.36 89.66 92.36 89.66 76.44"/><path id="Fill-17" fill="#8eb73c" d="M110.79,89.93c3.46,0,6.14-2.56,6.14-5.5a6.17,6.17,0,0,0-12.27,0c0,2.95,2.67,5.5,6.14,5.5m0-13.81c5.16,0,9.5,3.61,9.5,8.32s-4.27,8.25-9.5,8.25-9.5-3.68-9.5-8.25,4.34-8.32,9.5-8.32" transform="translate(0 0)"/><path id="Fill-19" fill="#8eb73c" d="M127.35,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78,1.71,1.71,0,0,0-1.87,1.62c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.9,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-21" fill="#8eb73c" d="M142.52,87.8a2.49,2.49,0,0,0,4.91.13c0-1.64-1.2-1.94-3.46-2.69-1.4-.47-4.32-1.23-4.32-4.58,0-2.53,2.26-4.53,5.33-4.53,2.11,0,5.21,1.29,5.38,4.53h-3.44a1.84,1.84,0,0,0-2-1.78A1.71,1.71,0,0,0,143,80.48c0,1.38,1.18,1.68,3,2.22,1.5.43,4.76,1.44,4.76,4.91s-3,5.08-5.89,5.08c-2.33,0-5.72-1.38-5.92-4.89Z" transform="translate(0 0)"/><path id="Fill-23" fill="#8eb73c" d="M157.33,73.29l5.52-2.86,1.32,2.26-5.6,2.59Zm-2,3.14h9.77v2.75h-6.41v3.89h6.14v2.76h-6.14v3.77h6.41v2.75h-9.77Z" transform="translate(0 0)"/><polygon id="Fill-26" fill="#8eb73c" points="70.18 76.45 56.22 76.45 56.22 79.2 61.51 79.19 61.51 92.36 64.87 92.36 64.87 79.19 70.18 79.2 70.18 76.45"/><polygon id="Fill-28" fill="#8eb73c" points="52.47 76.45 38.5 76.45 38.51 79.2 43.79 79.19 43.79 92.36 47.16 92.36 47.16 79.19 52.47 79.2 52.47 76.45"/><path id="Fill-30" fill="#8eb73c" d="M9.28,84.23h9.63v.33c0,4.43-4.43,7.89-9.39,7.89S0,89,0,84.38,4.43,76.3,9.43,76.3c4.45,0,7.69,2.64,8.6,4.87H14.1A5.88,5.88,0,0,0,9.36,79,5.72,5.72,0,0,0,3.28,84.4c0,2.37,2,5.37,6.25,5.37a6,6,0,0,0,5.25-2.85H9.28" transform="translate(0 0)"/></g></g></svg></div><nav class="sidebar-nav" style="font-size:0;"><div class="nav-section"><div class="nav-section-title">主菜单</div></div><a class="nav-item"><i class="nav-icon"></i>总览</a><a class="nav-item"><i class="nav-icon"></i>内容热度</a><div class="nav-section"><div class="nav-section-title">产品管理</div></div><a class="nav-item"><i class="nav-icon"></i>个人护理<span class="badge">94</span></a><a class="nav-item"><i class="nav-icon"></i>药用辅料<span class="badge">54</span></a><div class="nav-section"><div class="nav-section-title">内容管理</div></div><a class="nav-item"><i class="nav-icon"></i>新闻与活动</a><a class="nav-item nav-sub"><i class="nav-icon"></i>文章</a><a class="nav-item nav-sub"><i class="nav-icon"></i>在线研讨会</a><a class="nav-item nav-sub active"><i class="nav-icon"></i>文章</a><div class="nav-section"><div class="nav-section-title">系统</div></div><a class="nav-item"><i class="nav-icon"></i>系统设置</a></nav></aside><div class="main"><header class="topbar"><div class="topbar-breadcrumb">内容管理 <span class="sep">/</span> 文章 <span class="sep">/</span> <span class="current">新建文章</span></div></header><div class="content" style="padding:20px 24px;"><div class="card" style="margin-bottom:16px;"><div class="card-header"><h3 style="margin:0;font-size:14px;">基本信息</h3></div><div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><div style="font-size:12px;color:var(--text-secondary);margin-bottom:5px;">文章标题</div><input class="form-control" value="皮肤微生态与功效原料的协同" readonly></div><div><div style="font-size:12px;color:var(--text-secondary);margin-bottom:5px;">所属栏目</div><input class="form-control" value="获取灵感 · 文章" readonly></div></div></div><div class="card"><div class="card-header" style="display:flex;align-items:center;"><h3 style="margin:0;font-size:14px;">正文内容</h3><span style="margin-left:auto;font-size:12px;color:var(--text-muted);">搭完保存即成稿，之后随时可切「预览编辑」精修</span></div><div class="card-body" style="position:relative;"><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn btn-sm btn-primary">🧱 块搭建<span style="font-size:11px;background:#fff;color:#8EB73C;border:1px solid #8EB73C;border-radius:8px;padding:0 6px;margin-left:4px;">推荐</span></button><button class="btn btn-sm btn-outline">✏️ 预览编辑</button><button class="btn btn-sm btn-outline">HTML 源码</button></div><div class="bb-tpl"><b>⚡ 从模板一键开始：</b><span class="tpl">产品故事</span><span class="tpl">新闻动态</span><span class="tpl">活动回顾</span><span class="tpl">技术文章</span><span class="tpl">空白</span><span style="margin-left:auto;font-size:11.5px;color:#6d8a35;">选一个 → 自动铺好块骨架，改文字就能发</span></div><div class="bb"><div class="bb-left"><div class="bb-head"><i class="mk-i" style="width:14px;height:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></svg></i> 块结构 <span style="color:var(--text-muted);font-weight:400;">（6 块）</span><span class="mk-mini">选中第 3 块</span></div><div class="bb-list"><div class="bb-item"><div class="bb-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v16M18 4v16M6 12h12"/></svg></i></div><div class="bb-body"><div class="bb-name">标题<span class="bb-kind">titre-h2</span></div><div class="bb-sum">皮肤微生态：下一场功效革命</div></div><div class="bb-tools"><button title="上移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i></button><button title="下移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></button><button title="复制"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></i></button><button class="danger" title="删除"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button></div></div><div class="bb-item"><div class="bb-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></svg></i></div><div class="bb-body"><div class="bb-name">段落<span class="bb-kind">texte-encadre</span></div><div class="bb-sum">皮肤并不是一个孤立的器官，而是一个由数以万亿计微生物共同构成的生态系统……</div></div><div class="bb-tools"><button title="上移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i></button><button title="下移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></button><button title="复制"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></i></button><button class="danger" title="删除"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button></div></div><div class="bb-item sel"><div class="bb-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="8" height="14" rx="1.5"/><rect x="13" y="5" width="8" height="14" rx="1.5"/></svg></i></div><div class="bb-body"><div class="bb-name">图文两列<span class="bb-kind">slider-content</span></div><div class="bb-sum">左：微生态示意图 · 右：益生菌如何参与屏障修护</div></div><div class="bb-tools"><button title="上移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i></button><button title="下移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></button><button title="复制"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></i></button><button class="danger" title="删除"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button></div></div><div class="bb-item"><div class="bb-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 6h6v6H7c0 3 1 4 4 4v2c-5 0-8-3-8-8V6h2zm10 0h6v6h-4c0 3 1 4 4 4v2c-5 0-8-3-8-8V6h2z"/></svg></i></div><div class="bb-body"><div class="bb-name">引用<span class="bb-kind">citation</span></div><div class="bb-sum">“未来的功效原料，不是杀菌，而是喂养皮肤的好细菌。”</div></div><div class="bb-tools"><button title="上移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i></button><button title="下移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></button><button title="复制"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></i></button><button class="danger" title="删除"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button></div></div><div class="bb-item"><div class="bb-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M9 12h6"/></svg></i></div><div class="bb-body"><div class="bb-name">按钮链接<span class="bb-kind">bouton-cta</span></div><div class="bb-sum">了解 GammeSolve™ 微生态系列 → /personal-care/…</div></div><div class="bb-tools"><button title="上移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i></button><button title="下移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></button><button title="复制"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></i></button><button class="danger" title="删除"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button></div></div><div class="bb-item"><div class="bb-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></i></div><div class="bb-body"><div class="bb-name">关联产品<span class="bb-kind">product_cards</span></div><div class="bb-sum">3 个产品：Emulium® Mellifera MB、Acticire®、Definicire®</div></div><div class="bb-tools"><button title="上移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i></button><button title="下移"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></button><button title="复制"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></i></button><button class="danger" title="删除"><i class="mk-i" style="width:13px;height:13px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button></div></div></div><div class="bb-add"><i class="mk-i" style="width:16px;height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i> 添加内容块</div></div><div class="bb-right"><div class="bb-preview-bar"><i class="mk-i" style="width:15px;height:15px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3"/></svg></i> 实时预览 <span style="margin-left:auto;font-size:11.5px;font-weight:400;color:var(--text-muted);">按官网真实版式渲染 · 改一块立即看到</span></div><div class="bb-preview"><h2 class="pp-h">皮肤微生态：下一场功效革命</h2><div class="pp-sub">2026 年 10 月 · 获取灵感</div><p>皮肤并不是一个孤立的器官，而是一个由数以万亿计微生物共同构成的生态系统。当菌群平衡被打破，屏障功能、水合度与外观都会随之波动——这正是新一代功效原料的切入点。</p><div class="pp-lr"><div class="pp-img2">📷 微生态示意图</div><div style="flex:1;"><p style="margin:0;">益生菌通过争夺营养、分泌抗菌肽与调节 pH，参与并稳定皮肤屏障。实验显示，连续使用含益生元配方的受试者，经皮失水率（TEWL）在 28 天内下降 19%……</p></div></div><div class="pp-quote">“未来的功效原料，不是杀菌，而是喂养皮肤的好细菌。”</div><span class="pp-btn">了解 GammeSolve™ 微生态系列</span><div class="pp-pcard"><div class="pp-pimg"></div><div><div style="font-size:13.5px;font-weight:700;">Emulium® Mellifera MB</div><div style="font-size:12px;color:#8a939c;">天然来源指数 1.0 · 屏障修护</div></div></div></div></div></div><div style="margin-top:10px;font-size:12px;color:var(--text-muted);">🔒 保存时把块序列拼装成<strong>官网原版式 HTML</strong>（paragraph--type--titre-h2 / texte-encadre / slider-content…）存入正文 —— 前台与「预览编辑」零改动</div></div></div></div></div></div></div><div class="mk-sec"><h2>5、「添加内容块」面板</h2><span class="mk-sec-sub">10 种块 = 库内高频段落类型全覆盖（texte-encadre 143 / titre-h 79 / image 54 …）</span></div><div style="background:#e6eaf0;border-radius:12px;padding:26px 18px;"><div class="mk-modal"><div class="mk-modal-h"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i> 添加内容块 <span style="margin-left:auto;font-size:12px;font-weight:400;color:var(--text-muted);">点击插入到选中块之后</span></div><div class="mk-grid"><div class="mk-sec-title">内容</div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v16M18 4v16M6 12h12"/></svg></i></div><b>标题</b><code class="mk-bt-map">paragraph--type--titre-h2</code><span>章节大标题，可选 H2 / H3</span></div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></svg></i></div><b>段落</b><code class="mk-bt-map">paragraph--type--texte-encadre</code><span>正文文字，支持加粗 / 链接 / 列表</span></div><div class="mk-sec-title">媒体</div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 17l5-4 4 3 4-4 5 5"/></svg></i></div><b>图片</b><code class="mk-bt-map">paragraph--type--image</code><span>单张横图或竖图，带说明文字</span></div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="8" height="14" rx="1.5"/><rect x="13" y="5" width="8" height="14" rx="1.5"/></svg></i></div><b>图文两列</b><code class="mk-bt-map">paragraph--type--slider-content</code><span>左图右文 / 左文右图，官网经典版式</span></div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></i></div><b>视频</b><code class="mk-bt-map">paragraph--type--video-remote</code><span>粘贴 YouTube / B站 / 腾讯视频链接</span></div><div class="mk-sec-title">强调</div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 6h6v6H7c0 3 1 4 4 4v2c-5 0-8-3-8-8V6h2zm10 0h6v6h-4c0 3 1 4 4 4v2c-5 0-8-3-8-8V6h2z"/></svg></i></div><b>引用</b><code class="mk-bt-map">paragraph--type--citation</code><span>大字引言，官网绿边样式</span></div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 5.6 6.1.5-4.6 4 1.4 6-5.3-3.2L6.7 19l1.4-6-4.6-4 6.1-.5z"/></svg></i></div><b>重点块</b><code class="mk-bt-map">paragraph--type--highlighted-block</code><span>带底色的要点提示卡</span></div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M9 12h6"/></svg></i></div><b>按钮链接</b><code class="mk-bt-map">paragraph--type--bouton-cta</code><span>跳转按钮，站内或站外</span></div><div class="mk-sec-title">资源</div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></svg></i></div><b>文件下载</b><code class="mk-bt-map">paragraph--type--liste-documents</code><span>PDF / 文档列表，自动显示文件大小</span></div><div class="mk-btype"><div class="mk-bt-ico"><i class="mk-i" style="width:17px;height:17px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></i></div><b>关联产品</b><code class="mk-bt-map">自定义区块 product_cards</code><span>搜索并挂产品卡，与详情页互通</span></div></div></div></div><div class="mk-sec"><h2>6、单块编辑态</h2><span class="mk-sec-sub">以「图文两列」为例 —— 编辑器只在块内出现，工具栏只留 6 键</span></div><div class="mk-card" style="max-width:980px;"><div class="bb-edit"><div class="bb-edit-h"><i class="mk-i" style="width:16px;height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="8" height="14" rx="1.5"/><rect x="13" y="5" width="8" height="14" rx="1.5"/></svg></i> 图文两列 <span style="font-weight:400;color:var(--text-muted);font-size:12px;">（对应官网 slider-content 版式）</span><span style="margin-left:auto;display:flex;gap:4px;"><button class="btn btn-sm btn-primary" style="font-size:12px;padding:3px 12px;">完成</button><button class="btn btn-sm btn-outline" style="font-size:12px;padding:3px 12px;">取消</button></span></div><div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;"><span style="font-size:12px;color:var(--text-secondary);">布局</span><span class="mk-pill g" style="cursor:pointer;">◀ 图在左</span><span class="mk-pill gray" style="cursor:pointer;">图在右 ▶</span></div><div class="fld"><label>图片</label><div class="up">拖拽图片到这里，或 <span style="color:var(--blue-link);font-weight:600;">点击上传</span>（jpg / png / webp）</div></div><div class="bb-cols"><div class="fld"><label>左列文字</label><div class="qbar"><b>B</b><b>I</b><b>U</b><b class="mono">🔗</b><b class="mono">•—</b><b class="mono">✕清</b></div><div class="qarea">益生菌通过争夺营养、分泌抗菌肽与调节 pH，参与并稳定皮肤屏障……</div></div><div class="fld"><label>右列文字（可选）</label><div class="qbar"><b>B</b><b>I</b><b>U</b><b class="mono">🔗</b><b class="mono">•—</b><b class="mono">✕清</b></div><div class="qarea" style="color:#a8b2bc;">留空则只显示单列文字……</div></div></div><div class="fld" style="margin-bottom:0;"><label>跳转链接（可选）</label><input class="form-control" value="/personal-care/get-inspired/microbiome.html" style="max-width:420px;"></div></div></div><div class="mk-sec"><h2>7、细节调整如何呈现</h2><span class="mk-sec-sub">图片边框 / 多图滚动 / 字体颜色大小 —— 原则：预设变体，不是开放设计器</span></div><div class="mk-detail-grid"><div class="mk-card" style="max-width:none;"><div class="bb-edit"><div class="bb-edit-h"><i class="mk-i" style="width:16px;height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 17l5-4 4 3 4-4 5 5"/></svg></i> 图片 <span style="font-weight:400;color:var(--text-muted);font-size:12px;">（对应官网 image 版式）</span><span style="margin-left:auto;display:flex;gap:4px;"><button class="btn btn-sm btn-primary" style="font-size:12px;padding:3px 12px;">完成</button><button class="btn btn-sm btn-outline" style="font-size:12px;padding:3px 12px;">取消</button></span></div><div class="mk-stylebar"><span class="lbl">样式</span><span style="font-size:12px;color:var(--text-muted);">说明文字</span><span class="mk-pill g" style="cursor:pointer;">开</span><span class="mk-pill gray" style="cursor:pointer;">关</span><span style="font-size:12px;color:var(--text-muted);margin-left:8px;">边框</span><span class="mk-pill g" style="cursor:pointer;">原站风 · 无框</span><span class="mk-pill gray" style="cursor:pointer;">细边框 ⚠️</span></div><div class="fld"><label>图片（已传 1 张）</label><div class="up" style="display:flex;align-items:center;gap:12px;"><span style="width:86px;height:54px;background:#dde4de;border-radius:6px;display:inline-block;flex:none;"></span><span>microbiome-lab.jpg <button class="btn btn-sm btn-outline" style="font-size:11px;padding:2px 8px;margin-left:8px;">替换</button><button class="btn btn-sm btn-outline" style="font-size:11px;padding:2px 8px;">删除</button></span></div></div><button class="btn btn-sm btn-outline">+ 添加图片</button><span style="font-size:12px;color:var(--text-muted);margin-left:10px;">多张图片自动变「图集轮播」→</span></div></div><div class="mk-card"><div class="card-header" style="display:flex;align-items:center;"><h3 style="margin:0;font-size:14px;">图集轮播（多图滚动）</h3><span style="margin-left:auto;font-size:12px;color:var(--text-muted);">同一 slider-content 段落的多帧形态 —— 拼装结果原样复用官网 slick</span></div><div class="card-body"><div class="mk-gal"><div class="frame" style="left:-14%;opacity:.45;">第 1 帧</div><div class="frame" style="left:23%;background:#cdd6cf;box-shadow:0 6px 22px rgba(35,42,49,.14);z-index:1;">第 2 帧 · 显微视野</div><div class="frame" style="left:60%;opacity:.45;">第 3 帧</div><div class="arrow" style="left:14px;">‹</div><div class="arrow" style="right:14px;">›</div><div class="dots"><span class="dot"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><span class="cnt">2 / 5</span></div><div class="mk-why">后台只是「往一个块里传多张图、拖动调顺序」；保存后前台拿到的就是官网已上线的轮播结构（.js-full-width-slider + slick），<b>箭头 / 圆点 / 计数器 / 触屏滑动全部由官网既有 JS 提供，零新增</b>。文章页已带 article-slick-260913.js，直接生效。</div></div></div></div><div class="mk-card"><div class="card-header" style="display:flex;align-items:center;"><h3 style="margin:0;font-size:14px;">文字 · 预设样式条</h3><span style="margin-left:auto;font-size:12px;color:var(--text-muted);">出现在段落 / 图文两列等块的迷你编辑器上方</span></div><div class="card-body"><div class="mk-stylebar" style="margin-bottom:10px;"><span class="lbl">颜色</span><span class="mk-chip on" style="background:#C4004D;" title="标题强调 · 品红（PC 主题）"></span><span class="mk-chip" style="background:#3C4248;" title="正文"></span><span class="mk-chip" style="background:#74797D;" title="辅助说明"></span><span class="mk-chip" style="background:#910039;" title="链接"></span><span class="mk-pill gray" style="cursor:pointer;">跟随主题</span><span class="lbl" style="margin-left:10px;">字号</span><span class="mk-pill gray" style="cursor:pointer;">大 20</span><span class="mk-pill g" style="cursor:pointer;">标准</span><span class="mk-pill gray" style="cursor:pointer;">小 12</span><span class="lbl" style="margin-left:10px;">强调</span><span class="mk-kbd" style="cursor:pointer;">B</span><span class="mk-kbd" style="cursor:pointer;">I</span><span class="mk-kbd" style="cursor:pointer;">U</span><span class="mk-kbd" style="cursor:pointer;">🔗</span></div><div class="qarea" style="font-size:13px;color:#3C4248;line-height:1.8;">益生菌通过争夺营养、分泌抗菌肽与调节 pH，<span style="color:#C4004D;font-weight:600;">参与并稳定皮肤屏障</span>——这正是新一代功效原料的切入点。 <span style="color:#910039;text-decoration:underline;">了解微生态系列 →</span></div><div class="mk-why"><b>为什么不开放自由取色 / 任意字号 / 字体选择？</b>原站的文字颜色全部由主题决定（标题品红 #C4004D、链接 #910039、正文 #3C4248），字号是固定梯度（48/40/33/20/13/12px），全站只有一种品牌字体 —— 选项就 4 个颜色 + 3 档字号，<b>小白点选即可，永远不会把页面做花</b>；这些值与原站逐字一致，前台观感 1:1。自由取色器看似「自由度高」，实际是把设计责任推给不会设计的人。</div></div></div><div class="mk-card" style="margin-top:14px;"><table class="mk-table"><colgroup><col style="width:17%"><col style="width:27%"><col style="width:42%"><col style="width:14%"></colgroup><tr><th>客户的需求</th><th>呈现方式</th><th>拼装 / 落地形态</th><th style="text-align:center;">前台新增</th></tr><tr><td style="font-weight:600;white-space:nowrap;">图片说明文字</td><td>图片块样式条 · 开 / 关</td><td>figure &gt; figcaption（原站既有形态）</td><td style="text-align:center;"><span class="mk-pill g">✅ 零</span></td></tr><tr><td style="font-weight:600;white-space:nowrap;">图片边框</td><td>图片块样式条 · 二选</td><td>默认「原站风 · 无框」（原站文章图片本就无框）；选「细边框」输出 .img-frame 类</td><td style="text-align:center;"><span class="mk-pill y">⚠️ 1 条</span></td></tr><tr><td style="font-weight:600;white-space:nowrap;">多图滚动 / 轮播</td><td>图片块点「+ 添加图片」，多张自动变图集</td><td>paragraph--type--slider-content 多帧 + .js-full-width-slider，复用官网 slick JS</td><td style="text-align:center;"><span class="mk-pill g">✅ 零</span></td></tr><tr><td style="font-weight:600;white-space:nowrap;">字体颜色</td><td>预设色板 4 色 + 跟随主题</td><td>行内 color（与原站导出的 HTML 同法），色值逐字取自原站主题</td><td style="text-align:center;"><span class="mk-pill g">✅ 零</span></td></tr><tr><td style="font-weight:600;white-space:nowrap;">字号大小</td><td>三档：大 20 / 标准 / 小 12</td><td>行内 font-size，映射原站正文已有梯度</td><td style="text-align:center;"><span class="mk-pill g">✅ 零</span></td></tr><tr><td style="font-weight:600;white-space:nowrap;">字体选择</td><td>不开放</td><td>原站全站单一品牌字体；开放 = 必然偏离官网观感</td><td style="text-align:center;"><span class="mk-pill g">✅ 零</span></td></tr></table><div class="mk-why" style="margin-top:2px;">原则：<b>细节调整 = 预设变体，不是开放设计器</b>。每个细节需求都收敛成「原站已有形态」的选项，小白点选即可得到与官网一致的成品；除「细边框」需要补 1 条 CSS 外，其余全部复用既有样式与脚本。</div></div><div class="mk-sec"><h2>8、与现有系统的闭环</h2><span class="mk-sec-sub">预览编辑 / 原站导入 / 前台渲染全部不受影响</span></div><div class="mk-card"><div class="mk-flow"><div class="mk-step"><b><span class="n">1</span>搭块</b><span>小白选模板 → 加块 → 在小表单里填字传图，右侧实时预览</span></div><div class="mk-step"><b><span class="n">2</span>保存 = 拼装</b><span>块序列拼成官网原版式 HTML（titre-h2 / texte-encadre / slider-content…）存入 contentHtml，<b style="display:inline;">后端与前台零改动</b></span></div><div class="mk-step"><b><span class="n">3</span>精修</b><span>随时切「预览编辑」点哪改哪（已有的原位编辑链路直接复用，含改链接/换图/换视频）</span></div><div class="mk-step"><b><span class="n">4</span>再编辑</b><span>下次打开自动反解析回块继续搭；若正文被 HTML 模式大改过，反解析失败则自动降级为「预览编辑」并提示</span></div></div></div><div class="mk-sec"><h2>9、落地清单</h2><span class="mk-sec-sub">确认后照此实施；独立模块 builder-2609xx.js 便于单测与回滚</span></div><div class="mk-card"><table class="mk-table"><colgroup><col style="width:24%"><col style="width:26%"><col style="width:38%"><col style="width:12%"></colgroup><tr><th>文件</th><th>位置</th><th>改动</th><th style="text-align:center;">工作量</th></tr><tr><td style="white-space:nowrap;">admin/index.html</td><td>模式按钮行（~2917）</td><td>加「🧱 块搭建」按钮；<b>新建且无正文时设为默认模式</b></td><td style="text-align:center;"><span class="mk-pill g">小</span></td></tr><tr><td style="white-space:nowrap;">admin/index.html</td><td>正文容器（~2929）</td><td>新增 builder 视图 DOM（v-show），复用 .card / .btn 既有样式</td><td style="text-align:center;"><span class="mk-pill y">中</span></td></tr><tr><td style="white-space:nowrap;">admin/index.html</td><td>JS data / methods</td><td>builderBlocks 状态 + 块 CRUD / 上下移 / 复制 / 选中；保存时改走拼装器</td><td style="text-align:center;"><span class="mk-pill r">大</span></td></tr><tr><td style="white-space:nowrap;">admin/builder-2609xx.js（新）</td><td>独立模块</td><td><b>块定义表 + 拼 HTML + 反解析</b>：纯函数、可单测；拼装映射全部用库里已存在的 paragraph class</td><td style="text-align:center;"><span class="mk-pill r">大</span></td></tr><tr><td style="white-space:nowrap;">admin/index.html</td><td>Quill 实例</td><td>块内迷你编辑器复用现有 Quill，工具栏收敛为 6 键（B / I / U / 链接 / 列表 / 清格式）</td><td style="text-align:center;"><span class="mk-pill g">小</span></td></tr><tr><td style="white-space:nowrap;">后端 / 前台</td><td>—</td><td><b style="color:#4c7210;">零改动</b>（contentHtml 仍是唯一真相源，前台照常渲染）</td><td style="text-align:center;"><span class="mk-pill gray">✅</span></td></tr></table></div><div class="mk-sec"><h2>10、我的建议</h2><span class="mk-sec-sub"></span></div><div class="mk-advice"><div class="mk-do"><h3>✅ 建议这样做</h3><ul><li><b>第一期</b>：10 种块 + 3 个模板（产品故事 / 新闻动态 / 活动回顾）+ 拼 contentHtml —— 后端、前台零改动，风险最小</li><li><b>第二期</b>（可选）：反解析回块 + 块结构持久化；再补 key-figures（数字组）、accordeon（折叠）两种块</li><li>新建文章<b>默认进块搭建</b>；已有原站内容的文章维持「预览编辑」默认，互不干扰</li><li>块内迷你编辑器只留 <span class="mk-kbd">B</span> <span class="mk-kbd">I</span> <span class="mk-kbd">U</span> <span class="mk-kbd">链接</span> <span class="mk-kbd">列表</span> <span class="mk-kbd">清格式</span> 六个键</li></ul></div><div class="mk-dont"><h3>⚠️ 刻意不做</h3><ul><li><b>Notion 式 / 斜杠命令</b>（方案 C）：自由度最高，但快捷键与输入习惯对小白反而是新的学习成本，且实现复杂度大 —— 不符合「简单」这个目标</li><li><b>自由拖拽排序</b>：↑↓ 按钮已够用；HTML5 拖拽在 iframe/触屏上坑多，收益低</li><li><b>块类型贪多</b>：库里 15 种段落类型，10 种已覆盖 98% 使用；剩下（cartography 地图 / key-figures-carousel 等）等真实需求出现再加</li><li><b>不要碰已有文章的默认模式</b>：原站导入内容仍是「预览编辑」，避免两种心智并存</li><li><b>不开放自由取色 / 任意字号 / 字体选择</b>：全部收敛为原站已有形态的预设变体（见第 7 节），防止把页面做花</li></ul></div></div><div style="margin-top:30px;font-size:12px;color:#8a939c;text-align:center;">Gattefossé 中国数字营销自动化平台 · 方案视觉预览 · 2026-10-10 · 仅效果图，未改任何真实代码</div></div></body></html>
