@@ -5695,7 +5695,7 @@ createApp({
       try {
         const data = await this.api('/auth/login', { method: 'POST', body: JSON.stringify(this.loginForm) });
         // 后台仅企业员工可用：C 端会员（role=user）请从前台网站登录
-        if (!data.user || !['super_admin', 'editor'].includes(data.user.role)) {
+        if (!data.user || data.user.role === 'user') {
           this.loginError = '该账号为网站会员账号，请从前台网站登录；后台请使用企业员工账号';
           this.loggingIn = false;
           return;
