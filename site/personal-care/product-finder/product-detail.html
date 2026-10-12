@@ -442,7 +442,7 @@
             <div class="s-product-description">
               <div class="s-product-description__container">
                 <div class="s-product-description__main">
-                  <h2 class="u-title-styled s-product-description__main-title">描述</h2>
+                  <h2 class="u-title-styled s-product-description__main-title">{{ getBlockTitle('描述', '描述') }}</h2>
                   <div class="s-product-description__main-content">
                     <div class="page-cosmetic-product-intro m-t">
                       <div class="content" v-html="getBlockContent('描述') || data.productDetail.description">
@@ -452,8 +452,8 @@
                 </div>
                 <div class="s-product-description__side">
                   <div class="s-product-description__revendication">
-                    <h3 class="s-product-description__revendication-title">宣称</h3>
-                    <span class="ul-li" v-html="getBlockContent('产品宣称') || data.productDetail.claims"></span>
+                    <h3 class="s-product-description__revendication-title">{{ getBlockTitle(['产品宣称', '宣称'], '宣称') }}</h3>
+                    <span class="ul-li" v-html="getBlockContent(['产品宣称', '宣称']) || data.productDetail.claims"></span>
                   </div>
                 </div>
               </div>
@@ -501,7 +501,7 @@
                 <div class="s-product-content__inside" style="max-width: 1170px; margin: 0 auto;">
                   <!-- 模块化内容区块渲染（跳过顶部已显示的描述和宣称） -->
                   <template v-for="(block, bi) in data.contentBlocks" :key="block.id || bi">
-                    <div v-if="block.title !== '描述' && block.title !== '产品宣称'" class="s-product-content__item" style="margin-bottom: 40px;">
+                    <div v-if="!isTopBlock(block)" class="s-product-content__item" style="margin-bottom: 40px;">
                     <!-- 区块标题 -->
                     <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
                     <!-- 富文本区块 -->
@@ -1058,15 +1058,29 @@
         const loading = ref(false);
         const items = ref([]);
 
-        // 从 contentBlocks 中按标题取区块的 HTML 内容
-        function getBlockContent(title) {
+        // 从 contentBlocks 中按候选标题取区块的 HTML 内容（支持多种叫法，避免后台改名后前台取不到内容）
+        var TOP_BLOCK_TITLES = ['描述', '产品宣称', '宣称'];
+        function findBlockByTitles(titles) {
+          if (!Array.isArray(titles)) titles = [titles];
           for (var i = 0; i < data.contentBlocks.length; i++) {
             var b = data.contentBlocks[i];
-            if (b.title === title && b.blockType === 'richtext' && b.content && b.content.html) {
-              return b.content.html;
+            if (titles.indexOf(b.title) !== -1 && b.blockType === 'richtext' && b.content && b.content.html) {
+              return b;
             }
           }
-          return '';
+          return null;
+        }
+        function getBlockContent(titles) {
+          var b = findBlockByTitles(titles);
+          return b ? b.content.html : '';
+        }
+        // 顶部区块标题与后台区块标题保持一致（后台写什么，前台就显示什么）
+        function getBlockTitle(titles, fallback) {
+          var b = findBlockByTitles(titles);
+          return b ? (b.title || fallback) : fallback;
+        }
+        function isTopBlock(block) {
+          return TOP_BLOCK_TITLES.indexOf(block.title) !== -1 && block.blockType === 'richtext';
         }
 
         // 规格文字：将 \n 换行为 <br>，保持前端换行显示
@@ -1101,7 +1115,7 @@
         var _isBrochureDoc = function(f) { if (f.docType) return f.docType === 'Brochure'; return f.title && (f.title.indexOf('手册') !== -1 || f.title.indexOf('Brochure') !== -1 || f.title.indexOf('介绍') !== -1); };
         var _hasDocs = function(files, fn) { if (!files) return false; for (var i = 0; i < files.length; i++) { if (fn(files[i])) return true; } return false; };
         return {
-          data, addProductFav, addCart, getBlockContent, formatSpecText, convertVideoUrl,
+          data, addProductFav, addCart, getBlockContent, getBlockTitle, isTopBlock, formatSpecText, convertVideoUrl,
           isTdsDoc: _isTdsDoc,
           isBrochureDoc: _isBrochureDoc,
           isFormulaDoc: function(f) { return !_isTdsDoc(f) && !_isBrochureDoc(f); },
