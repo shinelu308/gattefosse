@@ -481,16 +481,16 @@
                 </div>
               </div>
             </div>
-            <!-- 产品视频区 — 固定在规格区下方、内容区块上方（左文字 + 右视频） -->
-            <div v-if="data.productDetail.videoUrl" class="s-product-video" style="padding:6.8rem 0 8rem;background:#F7F5F0;">
+            <!-- 产品视频区 — 1:1 复刻原站结构（class 样式来自 Drupal 复刻 CSS，含移动端适配与红点 ::after） -->
+            <div v-if="data.productDetail.videoUrl" class="s-product-video" style="padding:6.8rem 0 0;">
               <div class="container" style="max-width:1170px;margin:0 auto;">
-                <div style="display:flex;gap:40px;align-items:center;">
-                  <div style="flex:1;min-width:0;">
-                    <p style="font-size:4.8rem;font-family:'Din Next Slab Pro Bold',sans-serif;font-weight:400;letter-spacing:0;position:relative;padding-right:2.8rem;color:#3E3E3E;line-height:1.3;margin:0;" v-html="(data.productDetail.videoSectionTitle || '成分视频摘要') + '<span style=&quot;color:#C4004D;margin-left:10px;&quot;>●</span>'"></p>
-                  </div>
-                  <div style="flex:1;min-width:0;">
-                    <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
-                      <iframe :src="convertVideoUrl(data.productDetail.videoUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+                <div class="s-product-video__container">
+                  <h2 class="s-product-video__title u-title-styled">{{ data.productDetail.videoSectionTitle || '视频' }}</h2>
+                  <div class="s-product-video__video">
+                    <div class="video__container">
+                      <div class="js-video-wrapper">
+                        <iframe :src="convertVideoUrl(data.productDetail.videoUrl)" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1087,7 +1087,12 @@
           if (bvMatch) return '//player.bilibili.com/player.html?bvid=' + bvMatch[1] + '&autoplay=0';
           // 3. B站嵌入链接已含 player.bilibili.com，直接返回
           if (url.indexOf('player.bilibili.com') !== -1) return url;
-          // 4. 其他直接返回
+          // 4. YouTube 视频页 → 嵌入链接（watch 地址不能直接 iframe 嵌入，会被拒绝）
+          var ytMatch = url.match(/(?:https?:)?\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/i);
+          if (ytMatch) return 'https://www.youtube.com/embed/' + ytMatch[1];
+          var ytbMatch = url.match(/(?:https?:)?\/\/youtu\.be\/([a-zA-Z0-9_-]+)/i);
+          if (ytbMatch) return 'https://www.youtube.com/embed/' + ytbMatch[1];
+          // 5. 其他直接返回
           return url;
         }
 
