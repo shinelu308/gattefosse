@@ -102,7 +102,7 @@ input[type="text"], input[type="number"], input[type="file"], select.form-contro
   </div>
 
   <!-- 编辑弹框 -->
-  <div v-if="showEdit" class="modal-overlay" @click.self="showEdit=false">
+  <div v-if="showEdit" class="modal-overlay" @mousedown.self="showEdit=false">
     <div class="card modal-card">
       <div class="card-header">
         <h3 style="font-size:16px;font-weight:600;">{{ editItem.id ? '编辑作者' : '新增作者' }}</h3>

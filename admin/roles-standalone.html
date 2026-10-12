@@ -141,7 +141,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 </div>
 
 <!-- 新建角色弹层 -->
-<div class="modal-mask" id="createMask" onclick="if(event.target===this)closeCreateModal()">
+<div class="modal-mask" id="createMask" onmousedown="this._md=(event.target===this)" onclick="if(this._md&&event.target===this)closeCreateModal()">
   <div class="modal">
     <h3>新建角色</h3>
     <div class="m-desc">角色标识是系统内部识别码，创建后不可修改</div>

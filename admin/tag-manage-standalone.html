@@ -87,7 +87,7 @@ th { background: #f9f9f9; font-weight: 600; }
   </div>
 </div>
 
-<div id="modal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeModal()">
+<div id="modal" class="modal-overlay" style="display:none;" onmousedown="this._md=(event.target===this)" onclick="if(this._md&&event.target===this) closeModal()">
   <div class="modal">
     <h3 id="modalTitle">新增标签</h3>
     <div style="margin:14px 0;">

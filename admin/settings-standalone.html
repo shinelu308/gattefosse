@@ -220,7 +220,7 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   </div>
 
   <!-- 部门新建/编辑弹层 -->
-  <div class="avatar-picker-mask" id="deptModal" onclick="if(event.target===this)closeDeptModal()">
+  <div class="avatar-picker-mask" id="deptModal" onmousedown="this._md=(event.target===this)" onclick="if(this._md&&event.target===this)closeDeptModal()">
     <div class="avatar-picker" style="width:460px;">
       <div style="font-size:15px;font-weight:600;" id="dm_title">新建部门</div>
       <div style="font-size:12px;color:#999;margin-top:3px;">部门用于员工账号的「所属部门」归组，保存全部设置后生效</div>
@@ -271,7 +271,7 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   </div>
 
   <!-- 头像选择弹窗（预设 3D 卡通头像） -->
-  <div class="avatar-picker-mask" id="avatarPicker" onclick="if(event.target===this)closeAvatarPicker()">
+  <div class="avatar-picker-mask" id="avatarPicker" onmousedown="this._md=(event.target===this)" onclick="if(this._md&&event.target===this)closeAvatarPicker()">
     <div class="avatar-picker">
       <div style="font-size:15px;font-weight:600;">选择头像</div>
       <div style="font-size:12px;color:#999;margin-top:3px;">内置 3D 卡通头像，点击即应用；「默认」恢复显示姓名首字母</div>
