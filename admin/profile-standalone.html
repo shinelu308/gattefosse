@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>个人资料</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; }
+body { font-family: system-ui, sans-serif; background: #f6f6f6; padding: 24px; }
+h1 { font-size: 20px; margin-bottom: 4px; color: #232426; }
+.subtitle { font-size: 13px; color: #999; margin-bottom: 20px; }
+.tip { display: flex; align-items: center; gap: 6px; background: #f4f8ea; border: 1px solid #dce8c2; color: #6f9a24; font-size: 12px; padding: 8px 12px; border-radius: 5px; margin-bottom: 16px; }
+.layout { display: flex; gap: 20px; align-items: flex-start; }
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 24px; flex: 1; min-width: 0; }
+.card-title { font-size: 15px; font-weight: 600; color: #232426; margin-bottom: 16px; }
+.basic-col { flex: 1.4; min-width: 0; }
+.pwd-col { flex: 1; min-width: 300px; max-width: 460px; }
+/* 头部：头像 + 姓名 + 角色 */
+.profile-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: #8EB73C; color: #fff; font-size: 22px; font-weight: 600; display: flex; align-items: center; justify-content: center; overflow: hidden; flex: none; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph-name { font-size: 16px; font-weight: 600; color: #232426; }
+.ph-sub { font-size: 12px; color: #999; margin-top: 2px; }
+.role-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px; vertical-align: 2px; }
+.role-super { background: #eef3e2; color: #6f9a24; }
+.role-custom { background: #f3eefb; color: #7c5cbf; }
+.role-editor { background: #e8f1fb; color: #3a6ea5; }
+/* 表单 */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 4px; }
+.pwd-col .form-grid { grid-template-columns: 1fr; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #333; }
+.form-group label .hint { font-weight: 400; color: #aaa; font-size: 12px; }
+.form-group input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; background: #fff; font-family: inherit; }
+.form-group input:focus { outline: none; border-color: #8EB73C; }
+.form-group input:disabled { background: #f5f6f7; color: #999; cursor: not-allowed; }
+.form-group.full { grid-column: 1 / -1; }
+.save-bar { margin-top: 18px; display: flex; align-items: center; gap: 12px; }
+button { padding: 8px 20px; background: #8EB73C; color: white; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; }
+button:hover:not(:disabled) { background: #7da334; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.pwd-note { font-size: 12px; color: #999; margin-top: 10px; line-height: 1.8; }
+.loading { color: #999; padding: 20px; text-align: center; }
+</style>
+</head>
+<body>
+<h1>个人资料</h1>
+<p class="subtitle">查看与维护我的账号信息 · 仅本人可见，与其他员工信息相互隔离</p>
+<div class="tip">✦ 系统角色、所属部门、职位由管理员统一分配；如需调整请联系系统管理员。修改密码后下次登录生效，当前登录不受影响</div>
+
+<div class="layout" id="layout" style="display:none;">
+  <!-- 左：基本信息 -->
+  <div class="card basic-col">
+    <div class="card-title">基本信息</div>
+    <div class="profile-head">
+      <div class="avatar" id="ph_avatar"></div>
+      <div>
+        <div class="ph-name"><span id="ph_name">—</span><span id="ph_badge" class="role-badge" style="display:none;"></span></div>
+        <div class="ph-sub" id="ph_email">—</div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>姓名 <span class="hint">可修改</span></label>
+        <input id="p_name" maxlength="50" placeholder="姓名">
+      </div>
+      <div class="form-group">
+        <label>电话 <span class="hint">可修改</span></label>
+        <input id="p_phone" maxlength="30" placeholder="手机号码">
+      </div>
+      <div class="form-group">
+        <label>邮箱 <span class="hint">登录账号，不可修改</span></label>
+        <input id="p_email" disabled>
+      </div>
+      <div class="form-group">
+        <label>系统角色 <span class="hint">管理员分配</span></label>
+        <input id="p_role" disabled>
+      </div>
+      <div class="form-group">
+        <label>所属部门 <span class="hint">管理员分配</span></label>
+        <input id="p_dept" disabled>
+      </div>
+      <div class="form-group">
+        <label>职位 <span class="hint">管理员分配</span></label>
+        <input id="p_job" disabled>
+      </div>
+      <div class="form-group full">
+        <label>最近登录</label>
+        <input id="p_lastlogin" disabled>
+      </div>
+    </div>
+    <div class="save-bar">
+      <button id="p_saveBtn" onclick="saveProfile()">保存修改</button>
+    </div>
+  </div>
+
+  <!-- 右：修改密码 -->
+  <div class="card pwd-col">
+    <div class="card-title">修改密码</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>当前密码 <span class="hint">必填</span></label>
+        <input id="pw_old" type="password" autocomplete="current-password" placeholder="请输入当前密码">
+      </div>
+      <div class="form-group">
+        <label>新密码 <span class="hint">至少 6 位</span></label>
+        <input id="pw_new" type="password" autocomplete="new-password" placeholder="设置新密码">
+      </div>
+      <div class="form-group">
+        <label>确认新密码</label>
+        <input id="pw_confirm" type="password" autocomplete="new-password" placeholder="再次输入新密码">
+      </div>
+    </div>
+    <div class="save-bar">
+      <button id="pw_saveBtn" onclick="changePwd()">更新密码</button>
+    </div>
+    <div class="pwd-note">· 为保障账号安全，修改密码需先验证当前密码<br>· 新密码不能与当前密码相同<br>· 更新成功后，下次登录请使用新密码</div>
+  </div>
+</div>
+<div class="loading" id="loading">加载中...</div>
+
+<script src="/admin/static/js/admin-dialog-260913.js"></script>
+<script>
+const API = parent.location.protocol + '//' + parent.location.host + '/api';
+function getToken() { return localStorage.getItem('admin_token') || ''; }
+async function api(path, opts = {}) {
+  const res = await fetch(API + path, {
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+    ...opts
+  });
+  if (res.status === 401) { parent.postMessage({ type: 'profile-auth-expired' }, '*'); throw new Error('登录已过期，请重新登录'); }
+  const data = await res.json();
+  if (data.code !== 0) throw new Error(data.message);
+  return data.data;
+}
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+function fmtDate(v) {
+  if (!v) return '—';
+  const d = new Date(v);
+  if (isNaN(d.getTime())) return '—';
+  const p = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+
+let me = null;
+let roleDict = {};   // role key -> name
+
+async function init() {
+  try {
+    const [profile, roles] = await Promise.all([
+      api('/admin/profile'),
+      api('/admin/roles').catch(() => [])   // 角色字典加载失败不阻塞页面
+    ]);
+    me = profile;
+    (roles || []).forEach(r => { roleDict[r.key] = r.name; });
+    render();
+    document.getElementById('layout').style.display = 'flex';
+    document.getElementById('loading').style.display = 'none';
+  } catch (e) {
+    document.getElementById('loading').textContent = '加载失败：' + e.message;
+  }
+}
+
+function render() {
+  const isSuper = me.role === 'super_admin';
+  const roleName = roleDict[me.role] || (isSuper ? '超级管理员' : (me.role === 'editor' ? '编辑员' : me.role));
+  // 头部头像
+  const av = document.getElementById('ph_avatar');
+  if (me.avatar) { av.innerHTML = '<img src="/admin/avatars/' + encodeURIComponent(me.avatar) + '.png" alt="">'; }
+  else { av.textContent = (me.fullName || me.email || 'U').charAt(0).toUpperCase(); }
+  document.getElementById('ph_name').textContent = me.fullName || '—';
+  const badge = document.getElementById('ph_badge');
+  badge.textContent = roleName;
+  badge.className = 'role-badge ' + (isSuper ? 'role-super' : (me.role === 'editor' ? 'role-editor' : 'role-custom'));
+  badge.style.display = 'inline-block';
+  document.getElementById('ph_email').textContent = me.email || '';
+  // 表单
+  document.getElementById('p_name').value = me.fullName || '';
+  document.getElementById('p_phone').value = me.phone || '';
+  document.getElementById('p_email').value = me.email || '';
+  document.getElementById('p_role').value = roleName;
+  document.getElementById('p_dept').value = me.department || '—';
+  document.getElementById('p_job').value = me.jobFunction || '—';
+  document.getElementById('p_lastlogin').value = fmtDate(me.lastLogin);
+}
+
+/* 保存基本资料（仅姓名/电话） */
+async function saveProfile() {
+  const fullName = document.getElementById('p_name').value.trim();
+  const phone = document.getElementById('p_phone').value.trim();
+  if (!fullName) { AdminDialog.alert('姓名不能为空', { type: 'warn' }); return; }
+  const btn = document.getElementById('p_saveBtn');
+  btn.disabled = true;
+  try {
+    me = await api('/admin/profile', { method: 'PUT', body: JSON.stringify({ fullName: fullName, phone: phone }) });
+    render();
+    // 同步父页底栏显示的姓名/头像
+    parent.postMessage({ type: 'profile-updated', user: { fullName: me.fullName, avatar: me.avatar } }, '*');
+    AdminDialog.alert('资料已更新', { type: 'success', title: '保存成功' });
+  } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
+  finally { btn.disabled = false; }
+}
+
+/* 修改密码 */
+async function changePwd() {
+  const oldPwd = document.getElementById('pw_old').value;
+  const newPwd = document.getElementById('pw_new').value;
+  const confirmPwd = document.getElementById('pw_confirm').value;
+  if (!oldPwd) { AdminDialog.alert('请输入当前密码', { type: 'warn' }); return; }
+  if (newPwd.length < 6) { AdminDialog.alert('新密码至少 6 位', { type: 'warn' }); return; }
+  if (newPwd !== confirmPwd) { AdminDialog.alert('两次输入的新密码不一致', { type: 'warn' }); return; }
+  if (newPwd === oldPwd) { AdminDialog.alert('新密码不能与当前密码相同', { type: 'warn' }); return; }
+  const btn = document.getElementById('pw_saveBtn');
+  btn.disabled = true;
+  try {
+    await api('/admin/profile/password', { method: 'PUT', body: JSON.stringify({ oldPassword: oldPwd, newPassword: newPwd }) });
+    document.getElementById('pw_old').value = '';
+    document.getElementById('pw_new').value = '';
+    document.getElementById('pw_confirm').value = '';
+    AdminDialog.alert('密码已更新，下次登录请使用新密码', { type: 'success', title: '修改成功' });
+  } catch (e) { AdminDialog.alert('修改失败: ' + e.message, { type: 'error' }); }
+  finally { btn.disabled = false; }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -215,7 +215,9 @@ body {
 .sidebar-footer {
   padding: 12px 20px; border-top: 1px solid var(--border-light);
   display: flex; align-items: center; gap: 10px;
+  cursor: pointer; transition: background .15s;
 }
+.sidebar-footer:hover { background: rgba(0,0,0,0.04); }
 .sidebar-footer .avatar {
   width: 32px; height: 32px; border-radius: 50%;
   background: var(--green); color: white; display: flex;
@@ -970,7 +972,7 @@ const QUILL_TOOLBAR = [
           使用手册
         </a>
       </nav>
-      <div class="sidebar-footer" data-page-node-id="jDhtE4xwIYs6147pR3XisH">
+      <div class="sidebar-footer" data-page-node-id="jDhtE4xwIYs6147pR3XisH" @click="currentPage = 'profile'" title="点击查看与编辑个人资料">/*ProfileStandalone20261012*/
         <div class="avatar" data-page-node-id="Qe9SHBwkiBI7nK30FLNsrA" :style="userInfo && userInfo.avatar ? 'padding:0;overflow:hidden;' : ''"><img v-if="userInfo && userInfo.avatar" :src="'/admin/avatars/' + userInfo.avatar + '.png'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""><template v-else>{{ userInfo?.fullName ? userInfo.fullName.charAt(0).toUpperCase() : 'U' }}</template></div>
         <div class="user-info" data-page-node-id="kl6ne7gxPq77PKWPDeKlqs">
           <div class="user-name" data-page-node-id="BpBXYCadiYVllQ2qiEsOWm">{{ userInfo?.fullName || userInfo?.email }}</div>
@@ -1005,7 +1007,7 @@ const QUILL_TOOLBAR = [
       <div class="content" data-page-node-id="wjtBdC1wtCmRiRy5jo3nIS">
 
         <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
-        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual' || currentPage === 'role-list'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual' || currentPage === 'role-list' || currentPage === 'profile'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
           <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe>
         </div>
 
@@ -5540,6 +5542,7 @@ createApp({
         'content-heat': '/admin/content-heat-standalone.html',
         'role-list': '/admin/roles-standalone.html',
         manual: '/admin/manual-standalone.html',
+        profile: '/admin/profile-standalone.html',
       };
       return map[this.currentPage] || '';
     },
@@ -5568,6 +5571,7 @@ createApp({
         'manual': '帮助 / 使用手册',
         'career-list': '运营 / 招聘管理',
         'role-list': '运营 / 角色管理',
+        profile: '账号 / 个人资料',
         'article-list': '内容管理 / 获取灵感 / 文章',
         'article-edit': '内容管理 / 获取灵感 / 文章 / ' + (this.editingArticle.id ? '编辑' : '新增'),
         'webinar-list': '内容管理 / 获取灵感 / 在线研讨会',
@@ -9933,6 +9937,15 @@ createApp({
     // 监听 iframe 子页面消息：复用本页出版物导入弹框（了解更多-出版物 经 iframe 嵌入，自身弹框无法全窗口居中）
     window.addEventListener('message', (ev) => {
       if (ev.origin !== window.location.origin) return;
+      // 个人资料子页：同步本人姓名/头像（底栏即时刷新）
+      if (ev.data && ev.data.type === 'profile-updated' && ev.data.user && this.userInfo) {
+        this.userInfo.fullName = ev.data.user.fullName;
+        this.userInfo.avatar = ev.data.user.avatar;
+      }
+      // 个人资料子页：登录过期 → 回登录页
+      if (ev.data && ev.data.type === 'profile-auth-expired') {
+        this.token = ''; this.userInfo = null; this.currentPage = 'dashboard';
+      }
       if (ev.data && ev.data.type === 'lm-open-pub-import') {
         this.openPublicationImport();
         this.publicationImport.fromIframe = true;
