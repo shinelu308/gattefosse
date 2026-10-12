@@ -3,6 +3,14 @@ import { prisma } from '../utils/prisma';
 import { hashPassword } from '../utils/hash';
 import { success, fail, paginate } from '../utils/response';
 
+  /**
+ * 角色白名单校验：key 必须已登记在 roles 表（super_admin 恒在内置种子中）
+ */
+async function isValidRoleKey(key: string): Promise<boolean> {
+  const role = await prisma.role.findUnique({ where: { key } });
+  return !!role;
+}
+
 const USER_SELECT = {
   id: true,
   email: true,
@@ -40,11 +48,11 @@ export async function listUsers(req: Request, res: Response) {
 
     const where: Record<string, unknown> = {};
 
-    // scope=member 只显示前台注册会员；scope=staff 只显示后台员工（超管/编辑员）
+    // scope=member 只显示前台注册会员；scope=staff 显示后台员工（roles 表登记的全部后台角色）
     if (scope === 'member') {
       where.role = 'user';
     } else if (scope === 'staff') {
-      where.role = { in: ['super_admin', 'editor'] };
+      where.role = { not: 'user' };
     }
 
     if (keyword) {
@@ -139,7 +147,14 @@ export async function updateUser(req: Request, res: Response) {
     if (jobFunction !== undefined) updateData.jobFunction = jobFunction;
     if (department !== undefined) updateData.department = department || null;
     if (phone !== undefined) updateData.phone = phone;
-    if (role !== undefined) updateData.role = role;
+    if (role !== undefined) {
+      // 角色白名单：必须是 roles 表里登记的角色 key（防止越权写入任意字符串）
+      const roleKey = String(role);
+      if (!(await isValidRoleKey(roleKey))) {
+        return res.status(400).json(fail('无效的角色，请从角色管理中选择'));
+      }
+      updateData.role = roleKey;
+    }
     if (status !== undefined) updateData.status = status;
 
     const user = await prisma.user.update({
@@ -250,8 +265,10 @@ export async function createStaff(req: Request, res: Response) {
     if (String(password).length < 6) {
       return res.status(400).json(fail('密码至少 6 位'));
     }
-    if (role !== 'editor') {
-      return res.status(400).json(fail('员工角色只能为编辑员（超级管理员为系统内置账号，不可创建）'));
+    // 角色白名单：可创建 roles 表登记的任意后台角色（超级管理员为系统内置，不可创建）
+    const roleKey = String(role);
+    if (roleKey === 'super_admin' || !(await isValidRoleKey(roleKey))) {
+      return res.status(400).json(fail('无效的角色，请从角色管理中选择'));
     }
 
     const exists = await prisma.user.findUnique({ where: { email: String(email).toLowerCase().trim() } });

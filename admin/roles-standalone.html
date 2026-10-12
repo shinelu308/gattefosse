@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>角色管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; }
+body { font-family: system-ui, sans-serif; background: #f6f6f6; padding: 24px; }
+h1 { font-size: 20px; margin-bottom: 4px; color: #232426; }
+.subtitle { font-size: 13px; color: #999; margin-bottom: 20px; }
+.tip { display: flex; align-items: center; gap: 6px; background: #f4f8ea; border: 1px solid #dce8c2; color: #6f9a24; font-size: 12px; padding: 8px 12px; border-radius: 5px; margin-bottom: 16px; }
+/* ===== 左右布局 ===== */
+.layout { display: flex; gap: 20px; align-items: flex-start; }
+.role-col { flex: 0 0 25%; min-width: 200px; max-width: 320px; }
+.detail-col { flex: 1; min-width: 0; }
+/* 左：角色列表 */
+.role-list { display: flex; flex-direction: column; gap: 10px; }
+.role-item { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.role-item:hover { border-color: #b9d289; }
+.role-item.is-active { border-color: #8EB73C; box-shadow: 0 0 0 2px rgba(142,183,60,.15); }
+.role-item .ri-name { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #232426; }
+.role-item .ri-key { font-size: 11px; color: #9aa; font-family: monospace; }
+.role-item .ri-meta { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; color: #999; }
+.builtin-tag { font-size: 10px; padding: 1px 7px; border-radius: 8px; background: #EDEFF2; color: #8A8F99; flex: none; }
+.member-badge { display: inline-flex; align-items: center; gap: 4px; }
+.member-badge svg { width: 12px; height: 12px; stroke: #999; fill: none; stroke-width: 2; }
+.add-role-btn { margin-top: 2px; width: 100%; padding: 10px; border: 1px dashed #c9cfd6; background: #fff; color: #666; border-radius: 8px; font-size: 13px; cursor: pointer; }
+.add-role-btn:hover { border-color: #8EB73C; color: #8EB73C; }
+/* 右：角色详情 */
+.detail-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 24px; }
+.detail-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px; flex-wrap: wrap; }
+.detail-title { font-size: 15px; font-weight: 600; color: #232426; display: flex; align-items: center; gap: 8px; }
+.detail-desc { font-size: 12px; color: #999; margin-bottom: 18px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.form-group { }
+.form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #333; }
+.form-group label .hint { font-weight: 400; color: #aaa; font-size: 12px; }
+.form-group input, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; background: #fff; font-family: inherit; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: #8EB73C; }
+.form-group input:disabled { background: #f5f6f7; color: #999; }
+/* 权限矩阵 */
+.perm-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.perm-table th, .perm-table td { border: 1px solid #e8e8e8; padding: 9px 12px; text-align: left; }
+.perm-table thead th { background: #fafbfa; font-size: 12px; color: #666; }
+.perm-table td.center, .perm-table th.center { text-align: center; }
+.perm-table input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #8EB73C; }
+.perm-table input[type="checkbox"]:disabled { cursor: not-allowed; }
+.perm-note { font-size: 12px; color: #999; margin-top: 12px; line-height: 1.8; }
+.save-bar { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+.save-msg { font-size: 13px; color: #6f9a24; display: none; }
+button { padding: 8px 20px; background: #8EB73C; color: white; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; }
+button:hover:not(:disabled) { background: #7da334; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-outline { background: #fff; color: #555; border: 1px solid #ddd; }
+.btn-outline:hover:not(:disabled) { border-color: #8EB73C; color: #8EB73C; background: #fff; }
+.btn-sm { padding: 5px 14px; font-size: 12px; }
+.btn-danger-sm { padding: 5px 14px; font-size: 12px; background: #fff; color: #d9534f; border: 1px solid #d9534f; }
+.btn-danger-sm:hover { background: #fdf2f2; color: #d9534f; }
+.role-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; }
+.role-super { background: #eef3e2; color: #6f9a24; }
+.role-editor { background: #e8f1fb; color: #3a6ea5; }
+.role-custom { background: #f3eefb; color: #7c5cbf; }
+/* 新建角色弹层（iframe 内 fixed，与头像选择弹窗同模式） */
+.modal-mask { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 1000; align-items: center; justify-content: center; }
+.modal { background: #fff; border-radius: 12px; padding: 24px; width: 460px; }
+.modal h3 { font-size: 15px; margin-bottom: 4px; color: #232426; }
+.modal .m-desc { font-size: 12px; color: #999; margin-bottom: 16px; }
+.modal .m-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.modal .form-group { margin-bottom: 12px; }
+.loading { color: #999; padding: 20px; text-align: center; }
+</style>
+</head>
+<body>
+<h1>角色管理</h1>
+<p class="subtitle">管理后台员工角色与功能权限 · 与「系统设置 → 组织架构」的员工角色下拉联动</p>
+
+<div class="tip">✦ 超级管理员为系统内置角色（全部权限锁定）；「查看」列保存后即时生效（侧边栏菜单按角色显隐），新增/编辑/删除列已存储、随接口接入逐步生效</div>
+
+<div class="layout">
+  <!-- 左：角色列表 -->
+  <div class="role-col">
+    <div class="role-list" id="roleList"></div>
+    <button class="add-role-btn" onclick="openCreateModal()">+ 新建角色</button>
+  </div>
+
+  <!-- 右：角色详情 + 权限矩阵 -->
+  <div class="detail-col">
+    <div class="detail-card" id="detailCard">
+      <div class="loading" id="detailLoading">加载中...</div>
+      <div id="detailBody" style="display:none;">
+        <div class="detail-head">
+          <div class="detail-title">
+            <span id="d_badge" class="role-badge"></span>
+            <span id="d_name" style="display:none;"></span>
+            <span id="d_nameText">—</span>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-outline btn-sm" id="d_delBtn" style="display:none;" onclick="delRole()">删除角色</button>
+            <button class="btn-sm" onclick="saveRole()">保存角色</button>
+          </div>
+        </div>
+        <div class="detail-desc" id="d_meta">—</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>角色名称 <span class="hint" id="d_nameHint"></span></label>
+            <input id="d_nameInput" placeholder="如：内容运营">
+          </div>
+          <div class="form-group">
+            <label>角色标识 <span class="hint">（创建后不可改）</span></label>
+            <input id="d_keyInput" disabled style="font-family:monospace;">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>角色描述</label>
+          <input id="d_descInput" placeholder="该角色的职责范围说明（可选）">
+        </div>
+
+        <div class="detail-title" style="margin-bottom:10px;">模块权限矩阵</div>
+        <table class="perm-table">
+          <thead>
+            <tr>
+              <th>功能模块</th>
+              <th class="center">查看</th>
+              <th class="center">新增</th>
+              <th class="center">编辑</th>
+              <th class="center">删除</th>
+            </tr>
+          </thead>
+          <tbody id="permBody"></tbody>
+        </table>
+        <div class="perm-note">
+          · 超级管理员始终拥有全部权限（不可修改）<br>
+          · 「查看」未勾选的模块，该角色登录后台后隐藏侧边栏入口并禁止访问<br>
+          · 保存后即时生效，无需重新登录
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 新建角色弹层 -->
+<div class="modal-mask" id="createMask" onclick="if(event.target===this)closeCreateModal()">
+  <div class="modal">
+    <h3>新建角色</h3>
+    <div class="m-desc">角色标识是系统内部识别码，创建后不可修改</div>
+    <div class="form-group">
+      <label>角色名称 <span class="hint">（必填）</span></label>
+      <input id="c_name" placeholder="如：内容运营">
+    </div>
+    <div class="form-group">
+      <label>角色标识 <span class="hint">（必填，字母开头，字母/数字/下划线）</span></label>
+      <input id="c_key" placeholder="如：content_ops" style="font-family:monospace;">
+    </div>
+    <div class="form-group">
+      <label>角色描述</label>
+      <input id="c_desc" placeholder="该角色的职责范围说明（可选）">
+    </div>
+    <div class="m-actions">
+      <button class="btn-outline btn-sm" onclick="closeCreateModal()">取消</button>
+      <button class="btn-sm" id="c_saveBtn" onclick="createRole()">创建角色</button>
+    </div>
+  </div>
+</div>
+
+<script src="/admin/static/js/admin-dialog-260913.js"></script>
+<script>
+const API = parent.location.protocol + '//' + parent.location.host + '/api';
+function getToken() { return localStorage.getItem('admin_token') || ''; }
+async function api(path, opts = {}) {
+  const res = await fetch(API + path, {
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+    ...opts
+  });
+  const data = await res.json();
+  if (data.code !== 0) throw new Error(data.message);
+  return data.data;
+}
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+
+/* ===== 模块定义（与后台侧边栏一致；roles = 本页自身） ===== */
+const MODULES = [
+  { key: 'pc',        label: '个人护理（产品管理）' },
+  { key: 'pharma',    label: '药用辅料（产品管理）' },
+  { key: 'formula',   label: '配方（产品管理）' },
+  { key: 'news',      label: '新闻与活动（资讯/文章/研讨会/出版物/杂志）' },
+  { key: 'learnmore', label: '了解更多（热点话题/资料手册等 5 个子页）' },
+  { key: 'docs',      label: '文档资源' },
+  { key: 'content',   label: '站点内容' },
+  { key: 'authors',   label: '作者管理' },
+  { key: 'orders',    label: '样品订单' },
+  { key: 'users',     label: '用户管理' },
+  { key: 'careers',   label: '招聘管理' },
+  { key: 'tags',      label: '标签管理' },
+  { key: 'settings',  label: '系统设置' },
+  { key: 'roles',     label: '角色管理' },
+];
+
+let roleList = [];       // 后端返回的角色数组（含 permissions 已解析、memberCount）
+let selectedId = null;   // 当前右侧展示的角色 id
+let editingPerm = {};    // 右侧权限矩阵工作副本 { mod: {view,create,edit,delete} }
+
+/* ===== 加载与渲染 ===== */
+async function loadRoles(keepSelection) {
+  roleList = await api('/admin/roles');
+  if (!keepSelection || !roleList.some(r => r.id === selectedId)) {
+    // 默认选中第一个非 super_admin 角色（超管无可编辑内容）
+    const first = roleList.find(r => r.key !== 'super_admin') || roleList[0];
+    selectedId = first ? first.id : null;
+  }
+  renderRoleList();
+  renderDetail();
+}
+
+function badgeClass(r) {
+  return r.key === 'super_admin' ? 'role-super' : (r.key === 'editor' ? 'role-editor' : 'role-custom');
+}
+
+function renderRoleList() {
+  const wrap = document.getElementById('roleList');
+  wrap.innerHTML = roleList.map(r => `
+    <div class="role-item ${r.id === selectedId ? 'is-active' : ''}" onclick="selectRole(${r.id})">
+      <div class="ri-name">${esc(r.name)}${r.builtin ? '<span class="builtin-tag">内置</span>' : ''}</div>
+      <div class="ri-key">${esc(r.key)}</div>
+      <div class="ri-meta">
+        <span class="member-badge"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>${r.memberCount} 名成员</span>
+        <span>${Object.keys(r.permissions || {}).filter(m => r.permissions[m] && r.permissions[m].view).length} 个模块可见</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectRole(id) {
+  if (selectedId === id) return;
+  selectedId = id;
+  renderRoleList();
+  renderDetail();
+}
+
+function renderDetail() {
+  const r = roleList.find(x => x.id === selectedId);
+  const body = document.getElementById('detailBody');
+  const loading = document.getElementById('detailLoading');
+  if (!r) { loading.style.display = 'block'; loading.textContent = '暂无角色'; body.style.display = 'none'; return; }
+  loading.style.display = 'none';
+  body.style.display = 'block';
+
+  const isSuper = r.key === 'super_admin';
+  const isBuiltin = !!r.builtin;
+  document.getElementById('d_badge').className = 'role-badge ' + badgeClass(r);
+  document.getElementById('d_badge').textContent = isSuper ? '超级管理员' : (r.key === 'editor' ? '编辑员' : '自定义角色');
+  document.getElementById('d_nameText').textContent = r.name;
+  document.getElementById('d_nameInput').value = r.name;
+  document.getElementById('d_nameInput').disabled = isBuiltin; // 内置角色名称锁定
+  document.getElementById('d_keyInput').value = r.key;
+  document.getElementById('d_descInput').value = r.description || '';
+  document.getElementById('d_meta').textContent = (r.memberCount ? r.memberCount + ' 名成员使用该角色 · ' : '暂无成员使用 · ') + (isBuiltin ? '系统内置角色，标识与名称不可修改' : '自定义角色，可编辑名称/描述/权限，删除前需先移出全部成员');
+  document.getElementById('d_delBtn').style.display = isBuiltin ? 'none' : 'inline-block';
+
+  // 权限矩阵工作副本（深拷贝，未保存前不污染 roleList）
+  editingPerm = {};
+  MODULES.forEach(m => {
+    const src = (r.permissions || {})[m.key] || {};
+    editingPerm[m.key] = { view: src.view ? 1 : 0, create: src.create ? 1 : 0, edit: src.edit ? 1 : 0, delete: src.delete ? 1 : 0 };
+  });
+  renderPermTable(isSuper);
+}
+
+function renderPermTable(isSuper) {
+  const body = document.getElementById('permBody');
+  body.innerHTML = MODULES.map(m => {
+    const p = editingPerm[m.key];
+    const cell = (dim) => {
+      if (isSuper) return `<input type="checkbox" checked disabled title="超级管理员始终拥有全部权限">`;
+      return `<input type="checkbox" ${p[dim] ? 'checked' : ''} onchange="togglePerm('${m.key}','${dim}',this.checked)">`;
+    };
+    return `<tr><td>${m.label}</td><td class="center">${cell('view')}</td><td class="center">${cell('create')}</td><td class="center">${cell('edit')}</td><td class="center">${cell('delete')}</td></tr>`;
+  }).join('');
+}
+
+function togglePerm(mod, dim, checked) {
+  if (!editingPerm[mod]) editingPerm[mod] = { view: 0, create: 0, edit: 0, delete: 0 };
+  editingPerm[mod][dim] = checked ? 1 : 0;
+}
+
+/* ===== 保存（权限 + 基本信息）+ role_permissions 投影 ===== */
+async function saveRole() {
+  const r = roleList.find(x => x.id === selectedId);
+  if (!r) return;
+  if (r.key === 'super_admin') { AdminDialog.alert('超级管理员为系统内置角色，不可修改', { type: 'warn' }); return; }
+  const btn = document.querySelector('.detail-head button.btn-sm');
+  if (btn) btn.disabled = true;
+  try {
+    const payload = { permissions: editingPerm, description: document.getElementById('d_descInput').value.trim() };
+    if (!r.builtin) payload.name = document.getElementById('d_nameInput').value.trim();
+    const updated = await api('/admin/roles/' + r.id, { method: 'PUT', body: JSON.stringify(payload) });
+    // 更新本地列表（后端返回 permissions 已解析为对象）
+    const idx = roleList.findIndex(x => x.id === r.id);
+    roleList[idx] = { ...roleList[idx], ...updated };
+    renderRoleList();
+    renderDetail();
+    await projectToRolePermissions();
+    AdminDialog.alert('角色已保存，菜单权限即时生效', { type: 'success', title: '保存成功' });
+  } catch (e) { AdminDialog.alert('保存失败: ' + e.message, { type: 'error' }); }
+  finally { if (btn) btn.disabled = false; }
+}
+
+/**
+ * 把各角色的「查看」维度投影到 settings.role_permissions，
+ * 主框架 index.html 的 canModule 无需改动即可按角色显隐侧边栏。
+ */
+async function projectToRolePermissions() {
+  const out = {};
+  roleList.forEach(r => {
+    if (r.key === 'super_admin') return; // 主框架对 super_admin 短路放行，无需投影
+    const perms = r.permissions || {};
+    out[r.key] = MODULES.filter(m => perms[m.key] && perms[m.key].view).map(m => m.key);
+  });
+  await api('/settings/batch', { method: 'POST', body: JSON.stringify({ role_permissions: JSON.stringify(out) }) });
+  try { if (window.parent && window.parent !== window) window.parent.postMessage({ type: 'perm-updated' }, '*'); } catch (e) {}
+}
+
+/* ===== 新建 / 删除 ===== */
+function openCreateModal() {
+  ['c_name', 'c_key', 'c_desc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('createMask').style.display = 'flex';
+}
+function closeCreateModal() { document.getElementById('createMask').style.display = 'none'; }
+async function createRole() {
+  const name = document.getElementById('c_name').value.trim();
+  const key = document.getElementById('c_key').value.trim();
+  const description = document.getElementById('c_desc').value.trim();
+  if (!name || !key) { AdminDialog.alert('角色名称与标识为必填项', { type: 'warn' }); return; }
+  const btn = document.getElementById('c_saveBtn');
+  btn.disabled = true;
+  try {
+    const created = await api('/admin/roles', { method: 'POST', body: JSON.stringify({ key, name, description }) });
+    closeCreateModal();
+    await loadRoles();
+    selectedId = created.id;
+    renderRoleList();
+    renderDetail();
+    AdminDialog.alert('角色「' + name + '」已创建，请在右侧勾选模块权限后保存', { type: 'success', title: '创建成功' });
+  } catch (e) { AdminDialog.alert('创建失败: ' + e.message, { type: 'error' }); }
+  finally { btn.disabled = false; }
+}
+
+async function delRole() {
+  const r = roleList.find(x => x.id === selectedId);
+  if (!r) return;
+  if (r.builtin) { AdminDialog.alert('系统内置角色不可删除', { type: 'warn' }); return; }
+  if (r.memberCount > 0) { AdminDialog.alert('仍有 ' + r.memberCount + ' 名员工使用该角色，请先在「系统设置 → 组织架构」中调整其角色', { type: 'warn' }); return; }
+  if (!(await AdminDialog.confirm('确定删除角色「' + r.name + '」？此操作不可恢复。', { title: '删除确认', danger: true, confirmText: '删除' }))) return;
+  try {
+    await api('/admin/roles/' + r.id, { method: 'DELETE' });
+    await loadRoles();
+    await projectToRolePermissions();
+    AdminDialog.alert('角色已删除', { type: 'success', title: '删除成功' });
+  } catch (e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
+}
+
+loadRoles().catch(e => {
+  const loading = document.getElementById('detailLoading');
+  loading.style.display = 'block';
+  loading.textContent = '加载失败：' + e.message;
+});
+</script>
+</body>
+</html>

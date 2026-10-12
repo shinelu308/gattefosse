@@ -96,19 +96,42 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
 .role-super { background: #eef3e2; color: #6f9a24; }
 .role-editor { background: #e8f1fb; color: #3a6ea5; }
 .role-user { background: #f0f0f0; color: #777; }
+
+/* ===== B 版式组织结构图（2026-10-13） ===== */
+.link-btn { background: none; border: 0; color: #6f9a24; font-size: 12px; cursor: pointer; padding: 2px 6px; }
+.link-btn:hover { text-decoration: underline; }
+.link-btn.danger { color: #d9534f; }
+.org-chart { background: #fafbfa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px 16px 16px; }
+.oc-root { display: flex; flex-direction: column; align-items: center; }
+.oc-root-card { background: #8EB73C; color: #fff; border-radius: 8px; padding: 10px 28px; font-size: 14px; font-weight: 600; text-align: center; min-width: 160px; box-shadow: 0 2px 6px rgba(142,183,60,.3); }
+.oc-vline { width: 2px; height: 18px; background: #c9d6b0; }
+.oc-hline { height: 2px; background: #c9d6b0; width: calc(100% - 40px); max-width: 100%; min-width: 60px; }
+.oc-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 14px; margin-top: 0; }
+.oc-dept { background: #fff; border: 1px solid #e0e6d8; border-radius: 8px; padding: 12px 14px 10px; width: 232px; position: relative; display: flex; flex-direction: column; }
+.oc-dept::before { content: ''; position: absolute; top: -14px; left: 50%; margin-left: -1px; width: 2px; height: 14px; background: #c9d6b0; }
+.oc-dept-name { font-size: 14px; font-weight: 600; color: #232426; }
+.oc-dept-leader { font-size: 12px; color: #666; margin-top: 3px; }
+.oc-dept-desc { font-size: 11px; color: #999; margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.oc-dept-chips { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eae8e0; display: flex; flex-wrap: wrap; gap: 5px; min-height: 26px; flex: 1; }
+.oc-dept-actions { display: flex; justify-content: flex-end; gap: 2px; margin-top: 6px; }
+.oc-add { width: 232px; min-height: 120px; border: 2px dashed #cdd8b8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6f9a24; font-size: 13px; cursor: pointer; background: #fff; }
+.oc-add:hover { border-color: #8EB73C; background: #fbfdf7; }
+.oc-unassigned { margin-top: 16px; border-top: 1px dashed #e0e0e0; padding-top: 12px; }
+.oc-unassigned .u-label { font-size: 12px; color: #999; margin-bottom: 8px; }
+.member-chip .r-custom { background: #f3eefb; color: #7c5cbf; }
+.role-badge.role-custom { background: #f3eefb; color: #7c5cbf; }
 .loading { color: #999; padding: 20px; text-align: center; }
 </style>
 </head>
 <body>
 <h1>系统设置</h1>
-<p class="subtitle">企业信息 · 组织架构与员工 · 功能权限</p>
+<p class="subtitle">企业信息 · 组织架构与员工 · AI 翻译 · 邮件通知</p>
 
 <div class="tabs">
   <button class="tab active" data-tab="basic" onclick="switchTab('basic')"><span class="tab-no">1</span>企业基本信息</button>
   <button class="tab" data-tab="org" onclick="switchTab('org')"><span class="tab-no">2</span>企业组织架构</button>
-  <button class="tab" data-tab="perm" onclick="switchTab('perm')"><span class="tab-no">3</span>系统功能权限</button>
-  <button class="tab" data-tab="ai" onclick="switchTab('ai')"><span class="tab-no">4</span>AI 翻译配置</button>
-  <button class="tab" data-tab="smtp" onclick="switchTab('smtp')"><span class="tab-no">5</span>邮件通知</button>
+  <button class="tab" data-tab="ai" onclick="switchTab('ai')"><span class="tab-no">3</span>AI 翻译配置</button>
+  <button class="tab" data-tab="smtp" onclick="switchTab('smtp')"><span class="tab-no">4</span>邮件通知</button>
 </div>
 
 <!-- ======== Tab 1：企业基本信息 ======== -->
@@ -181,18 +204,57 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
 
   <!-- 部门结构 -->
   <div class="section-head">
-    <div class="section-title">部门结构 <span class="cnt" id="orgCnt"></span></div>
+    <div class="section-title">组织结构图 <span class="cnt" id="orgCnt"></span></div>
   </div>
-  <div class="org-list" id="orgList"></div>
-  <div class="org-empty" id="orgEmpty" style="display:none;">暂无部门，点击下方按钮添加</div>
-  <button class="btn-outline add-org" onclick="addOrgRow()">+ 添加部门</button>
+  <div class="org-chart" id="orgChart">
+    <div class="oc-root">
+      <div class="oc-root-card"><span id="ocRootName">公司总部</span></div>
+      <div class="oc-vline"></div>
+      <div class="oc-hline"></div>
+    </div>
+    <div class="oc-row" id="ocRow"></div>
+    <div class="oc-unassigned">
+      <div class="u-label">未分配成员 <span id="uaCount"></span> — 员工账号未设置部门，或所属部门已删除（在下方员工表格「所属部门」下拉中分配）</div>
+      <div class="chips" id="uaChips"></div>
+    </div>
+  </div>
+
+  <!-- 部门新建/编辑弹层 -->
+  <div class="avatar-picker-mask" id="deptModal" onclick="if(event.target===this)closeDeptModal()">
+    <div class="avatar-picker" style="width:460px;">
+      <div style="font-size:15px;font-weight:600;" id="dm_title">新建部门</div>
+      <div style="font-size:12px;color:#999;margin-top:3px;">部门用于员工账号的「所属部门」归组，保存全部设置后生效</div>
+      <div class="form-group" style="margin-top:14px;">
+        <label>部门名称 <span class="hint">（必填）</span></label>
+        <input id="dm_name" placeholder="如：市场部">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 110px;gap:12px;">
+        <div class="form-group">
+          <label>负责人</label>
+          <input id="dm_leader" placeholder="如：张三">
+        </div>
+        <div class="form-group">
+          <label>排序</label>
+          <input id="dm_sort" type="number" placeholder="10">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>职责说明</label>
+        <textarea id="dm_desc" rows="2" style="resize:vertical;font-family:inherit;"></textarea>
+      </div>
+      <div style="text-align:right;margin-top:16px;display:flex;gap:10px;justify-content:flex-end;">
+        <button class="btn-outline btn-sm" onclick="closeDeptModal()">取消</button>
+        <button class="btn-sm" id="dm_saveBtn" onclick="saveDeptModal()">保存</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 员工账号 -->
   <div class="section-head" style="margin-top:32px;">
     <div class="section-title">员工账号 <span class="cnt" id="staffCnt"></span></div>
     <button class="btn-sm" onclick="showStaffForm()">+ 新增员工</button>
   </div>
-  <div class="staff-tip">✦ 员工账号仅管理编辑员；超级管理员为系统内置账号，置顶单独展示（不可编辑/禁用/删除）</div>
+  <div class="staff-tip">✦ 员工账号管理后台员工，角色由「角色管理」统一维护；超级管理员为系统内置账号，置顶单独展示（不可编辑/禁用/删除）</div>
 
   <!-- 超级管理员锁定卡片 -->
   <div id="superCard" style="display:none;align-items:center;gap:14px;background:#F7F8FA;border:1px dashed #C9CFD6;border-radius:8px;padding:14px 18px;margin:14px 0 22px;">
@@ -239,10 +301,8 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
     </div>
     <div class="form-row-3">
       <div class="form-group">
-        <label>系统角色 <span class="hint">（新增员工均为编辑员）</span></label>
-        <select id="sf_role">
-          <option value="editor">编辑员</option>
-        </select>
+        <label>系统角色 <span class="hint">（角色在「角色管理」中维护）</span></label>
+        <select id="sf_role"></select>
       </div>
       <div class="form-group">
         <label>所属部门</label>
@@ -270,27 +330,6 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
     <thead><tr><th>姓名</th><th>邮箱</th><th>系统角色</th><th>所属部门</th><th>状态</th><th class="actions">操作</th></tr></thead>
     <tbody id="staffBody"><tr><td colspan="6" class="loading">加载中...</td></tr></tbody>
   </table>
-</div>
-
-<!-- ======== Tab 3：系统功能权限 ======== -->
-<div class="card" id="tab-perm">
-  <div class="card-title">系统功能权限设置</div>
-  <div class="card-desc">按角色分配后台功能模块的访问权限，保存后重新登录生效</div>
-  <table class="perm-table">
-    <thead>
-      <tr>
-        <th>功能模块</th>
-        <th class="center"><span class="role-badge role-super">超级管理员</span></th>
-        <th class="center"><span class="role-badge role-editor">编辑员</span></th>
-      </tr>
-    </thead>
-    <tbody id="permBody"></tbody>
-  </table>
-  <div class="perm-note">
-    · 超级管理员始终拥有全部模块权限（不可修改）<br>
-    · 未勾选的模块对相应角色隐藏侧边栏入口并禁止访问<br>
-    · 权限保存后，对应用户重新登录后台后生效
-  </div>
 </div>
 
 <!-- ======== Tab 4：AI 翻译配置 ======== -->
@@ -420,23 +459,8 @@ function switchTab(name) {
 }
 
 /* ===== 模块定义（与后台侧边栏一致） ===== */
-const MODULES = [
-  { key: 'pc',        label: '个人护理（产品管理）' },
-  { key: 'pharma',    label: '药用辅料（产品管理）' },
-  { key: 'formula',   label: '配方（产品管理）' },
-  { key: 'news',      label: '新闻与活动（资讯/文章/研讨会/出版物/杂志）' },
-  { key: 'learnmore', label: '了解更多（热点话题/资料手册等 5 个子页）' },
-  { key: 'docs',      label: '文档资源' },
-  { key: 'content',   label: '站点内容' },
-  { key: 'authors',   label: '作者管理' },
-  { key: 'orders',    label: '样品订单' },
-  { key: 'users',     label: '用户管理' },
-  { key: 'careers',   label: '招聘管理' },
-  { key: 'tags',      label: '标签管理' },
-  { key: 'settings',  label: '系统设置' },
-];
-const PERM_ROLES = ['editor'];   // 后台仅超管+企业员工两种角色，C 端会员不使用后台
-let permData = {};    // { editor: [module...], user: [...] }
+let roleDict = { editor: { key: 'editor', name: '编辑员' } }; // 角色字典（/admin/roles，super_admin 除外）
+let editingDeptIdx = null; // 部门弹层当前编辑的 orgData 下标；null=新建
 let orgData = [];     // [{ name, leader, desc, sort }]
 let staffList = [];   // 后台员工（super_admin / editor）
 let editingStaffId = null; // null=新增模式
@@ -453,13 +477,10 @@ async function loadAll() {
     }
     // Tab2 组织架构
     try { orgData = JSON.parse(map.org_structure || '[]'); } catch (e) { orgData = []; }
+    await loadRoleDict();
     await refreshStaff();
     renderOrg();
-    // Tab3 权限矩阵
-    try { permData = JSON.parse(map.role_permissions || 'null') || {}; } catch (e) { permData = {}; }
-    delete permData.user;   // 后台已无普通用户角色，清理历史配置残留
-    renderPerm();
-    // Tab4 AI 翻译配置
+// Tab4 AI 翻译配置
     document.getElementById('ai_provider').value = map.aiTranslateProvider || 'zhipu';
     document.getElementById('ai_model').value = map.aiTranslateModel || '';
     document.getElementById('ai_api_key').value = map.aiTranslateApiKey || '';  // 已配置时为脱敏占位 ******
@@ -516,46 +537,97 @@ async function testAi() {
   finally { btn.disabled = false; }
 }
 
-/* ===== Tab2 组织架构：部门 ===== */
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+/* ===== Tab2 组织架构：B 版式组织图 + 部门弹层（2026-10-13） ===== */
 function renderOrg() {
-  const wrap = document.getElementById('orgList');
-  document.getElementById('orgEmpty').style.display = orgData.length ? 'none' : 'block';
-  document.getElementById('orgCnt').textContent = orgData.length ? '（' + orgData.length + ' 个部门）' : '';
-  wrap.innerHTML = orgData.map((o, i) => {
+  const row = document.getElementById('ocRow');
+  document.getElementById('orgCnt').textContent = orgData.length ? '（' + orgData.length + ' 个部门）' : '（暂无部门，点击虚线卡新建）';
+  const siteInput = document.getElementById('basicForm').elements['site_name'];
+  document.getElementById('ocRootName').textContent = (siteInput && siteInput.value.trim()) || '公司总部';
+  // 排序生效：小者靠前
+  const sorted = orgData.map((o, i) => ({ o, i })).sort((a, b) => (Number(a.o.sort) || 0) - (Number(b.o.sort) || 0));
+  row.innerHTML = sorted.map(({ o, i }) => {
     const members = staffList.filter(s => s.department === o.name && s.role !== 'super_admin');
-    const chips = members.length
-      ? members.map(s => `
-          <span class="member-chip">
-            <span class="avatar" style="overflow:hidden;padding:0;">${s.avatar ? '<img class="avatar-img" src="' + avatarSrc(s.avatar) + '" alt="">' : esc((s.fullName || '?').charAt(0))}</span>
-            ${esc(s.fullName)}
-            <span class="r ${s.role === 'super_admin' ? 'r-super' : 'r-editor'}">${s.role === 'super_admin' ? '超管' : '编辑'}</span>
-          </span>`).join('')
-      : '<span class="none">暂无人员，可在下方员工账号中分配</span>';
-    return `
-    <div class="org-item">
-      <div class="org-item-head">
-        <span class="org-idx">部门 ${i + 1}</span>
-        <button class="org-del" onclick="removeOrgRow(${i})">✕ 删除</button>
-      </div>
-      <div class="org-grid">
-        <div class="form-group"><label>部门名称</label><input value="${esc(o.name)}" oninput="orgData[${i}].name=this.value" onchange="renderOrg()" placeholder="如：市场部"></div>
-        <div class="form-group"><label>负责人</label><input value="${esc(o.leader)}" oninput="orgData[${i}].leader=this.value" placeholder="如：张三"></div>
-        <div class="form-group"><label>排序</label><input type="number" value="${Number(o.sort) || 0}" oninput="orgData[${i}].sort=Number(this.value)||0"></div>
-        <textarea oninput="orgData[${i}].desc=this.value" placeholder="职责说明（可选）">${esc(o.desc)}</textarea>
-      </div>
-      <div class="org-members">
-        <div class="m-label">部门人员（${members.length} 人，随下方员工账号的「所属部门」自动归组）</div>
-        <div class="chips">${chips}</div>
+    const chips = members.length ? members.map(chipHtml).join('') : '<span style="font-size:11px;color:#bbb;">暂无人员</span>';
+    return `<div class="oc-dept">
+      <div class="oc-dept-name">${esc(o.name)}</div>
+      ${o.leader ? '<div class="oc-dept-leader">负责人：' + esc(o.leader) + '</div>' : ''}
+      ${o.desc ? '<div class="oc-dept-desc">' + esc(o.desc) + '</div>' : ''}
+      <div class="oc-dept-chips">${chips}</div>
+      <div class="oc-dept-actions">
+        <button class="link-btn" onclick="openDeptModal(${i})">编辑</button>
+        <button class="link-btn danger" onclick="delDept(${i})">删除</button>
       </div>
     </div>`;
-  }).join('');
+  }).join('') + '<div class="oc-add" onclick="openDeptModal()">+ 新建部门</div>';
+  // 未分配成员池
+  const unassigned = staffList.filter(s => s.role !== 'super_admin' && (!s.department || !orgData.some(o => o.name === s.department)));
+  document.getElementById('uaCount').textContent = unassigned.length ? '（' + unassigned.length + ' 人）' : '';
+  document.getElementById('uaChips').innerHTML = unassigned.length ? unassigned.map(chipHtml).join('') : '<span style="font-size:12px;color:#bbb;">所有员工都已分配到部门</span>';
 }
-function addOrgRow() {
-  orgData.push({ name: '', leader: '', desc: '', sort: (orgData.length + 1) * 10 });
+function chipHtml(s) {
+  const info = roleDict[s.role];
+  const short = s.role === 'super_admin' ? '超管' : (info && info.name ? String(info.name).slice(0, 2) : '员工');
+  const cls = s.role === 'super_admin' ? 'r-super' : (s.role === 'editor' ? 'r-editor' : 'r-custom');
+  return `<span class="member-chip"><span class="avatar" style="overflow:hidden;padding:0;">${s.avatar ? '<img class="avatar-img" src="' + avatarSrc(s.avatar) + '" alt="">' : esc((s.fullName || '?').charAt(0))}</span>${esc(s.fullName)}<span class="r ${cls}">${esc(short)}</span></span>`;
+}
+/* 角色字典与徽章（「角色管理」页维护） */
+async function loadRoleDict() {
+  try {
+    const roles = await api('/admin/roles');
+    const d = {};
+    (roles || []).forEach(r => { if (r.key !== 'super_admin') d[r.key] = r; });
+    roleDict = d;
+  } catch (e) { console.warn('角色字典加载失败（沿用默认）:', e.message); }
+  renderRoleOptions('editor');
+}
+function renderRoleOptions(selected) {
+  const sel = document.getElementById('sf_role');
+  if (!sel) return;
+  sel.innerHTML = Object.keys(roleDict).map(k =>
+    `<option value="${esc(k)}" ${k === selected ? 'selected' : ''}>${esc(roleDict[k].name || k)}</option>`
+  ).join('');
+}
+function roleBadge(role) {
+  if (role === 'super_admin') return '<span class="role-badge role-super">超级管理员</span>';
+  const info = roleDict[role];
+  const cls = role === 'editor' ? 'role-editor' : 'role-custom';
+  return '<span class="role-badge ' + cls + '">' + esc((info && info.name) || role || '—') + '</span>';
+}
+/* 部门新建/编辑弹层 */
+function openDeptModal(i) {
+  editingDeptIdx = (i === undefined || i === null) ? null : i;
+  const o = editingDeptIdx !== null ? orgData[editingDeptIdx] : { name: '', leader: '', desc: '', sort: (orgData.length + 1) * 10 };
+  document.getElementById('dm_title').textContent = editingDeptIdx !== null ? '编辑部门 — ' + o.name : '新建部门';
+  document.getElementById('dm_name').value = o.name || '';
+  document.getElementById('dm_leader').value = o.leader || '';
+  document.getElementById('dm_sort').value = Number(o.sort) || 0;
+  document.getElementById('dm_desc').value = o.desc || '';
+  document.getElementById('deptModal').style.display = 'flex';
+}
+function closeDeptModal() { document.getElementById('deptModal').style.display = 'none'; editingDeptIdx = null; }
+function saveDeptModal() {
+  const name = document.getElementById('dm_name').value.trim();
+  if (!name) { AdminDialog.alert('部门名称为必填项', { type: 'warn' }); return; }
+  if (orgData.some((o, i) => i !== editingDeptIdx && o.name && o.name.trim() === name)) {
+    AdminDialog.alert('已存在同名部门', { type: 'warn' }); return;
+  }
+  const val = {
+    name,
+    leader: document.getElementById('dm_leader').value.trim(),
+    desc: document.getElementById('dm_desc').value.trim(),
+    sort: Number(document.getElementById('dm_sort').value) || 0,
+  };
+  if (editingDeptIdx !== null) orgData[editingDeptIdx] = val; else orgData.push(val);
+  closeDeptModal();
   renderOrg();
 }
-function removeOrgRow(i) {
+async function delDept(i) {
+  const o = orgData[i];
+  if (!o) return;
+  const cnt = staffList.filter(s => s.department === o.name && s.role !== 'super_admin').length;
+  const extra = cnt ? '该部门下仍有 ' + cnt + ' 名员工，删除后他们将成为「未分配成员」。' : '';
+  if (!(await AdminDialog.confirm('确定删除部门「' + o.name + '」？' + extra, { title: '删除确认', danger: true, confirmText: '删除' }))) return;
   orgData.splice(i, 1);
   renderOrg();
 }
@@ -630,7 +702,7 @@ function renderStaff() {
     <tr>
       <td><span class="avatar avatar-editable" title="点击更换头像" onclick="openAvatarPicker(${s.id})" style="overflow:hidden;">${avatarInner(s)}</span><strong>${esc(s.fullName)}</strong>${s.jobFunction ? '<div style="font-size:11px;color:#999;margin-left:40px;">' + esc(s.jobFunction) + '</div>' : ''}</td>
       <td>${esc(s.email)}${s.phone ? '<div style="font-size:11px;color:#999;">' + esc(s.phone) + '</div>' : ''}</td>
-      <td><span class="role-badge ${s.role === 'super_admin' ? 'role-super' : 'role-editor'}">${s.role === 'super_admin' ? '超级管理员' : '编辑员'}</span></td>
+      <td>${roleBadge(s.role)}</td>
       <td><select onchange="assignDept(${s.id}, this.value)">${deptOptions(s.department)}</select></td>
       <td><span class="status-tag ${s.status === 'active' ? 'st-active' : 'st-disabled'}">${s.status === 'active' ? '启用' : '已禁用'}</span></td>
       <td class="actions">
@@ -734,28 +806,6 @@ async function delStaff(id, name) {
   } catch (e) { AdminDialog.alert('删除失败: ' + e.message, { type: 'error' }); }
 }
 
-/* ===== Tab3 权限矩阵 ===== */
-function renderPerm() {
-  const body = document.getElementById('permBody');
-  body.innerHTML = MODULES.map(m => `
-    <tr>
-      <td>${m.label}</td>
-      <td class="center"><input type="checkbox" checked disabled title="超级管理员始终拥有全部权限"></td>
-      ${PERM_ROLES.map(r => {
-        const allowed = !permData[r] || permData[r].includes(m.key);
-        return `<td class="center"><input type="checkbox" ${allowed ? 'checked' : ''} onchange="togglePerm('${r}','${m.key}',this.checked)"></td>`;
-      }).join('')}
-    </tr>
-  `).join('');
-}
-function togglePerm(role, mod, checked) {
-  if (!permData[role]) permData[role] = [];
-  const arr = permData[role];
-  const idx = arr.indexOf(mod);
-  if (checked && idx === -1) arr.push(mod);
-  if (!checked && idx > -1) arr.splice(idx, 1);
-}
-
 /* ===== save ===== */
 async function saveAll() {
   const btn = document.getElementById('saveBtn');
@@ -766,7 +816,6 @@ async function saveAll() {
     const settings = {};
     new FormData(form).forEach((v, k) => { settings[k] = v; });
     settings.org_structure = JSON.stringify(orgData.filter(o => o.name && o.name.trim()));
-    settings.role_permissions = JSON.stringify(permData);
     // Tab4 AI 翻译配置
     settings.aiTranslateProvider = document.getElementById('ai_provider').value;
     settings.aiTranslateModel = document.getElementById('ai_model').value.trim();

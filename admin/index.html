@@ -948,6 +948,10 @@ const QUILL_TOOLBAR = [
           <span class="nav-icon" data-page-node-id="3oU3Eo6srhTBbTtnkahd5r"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="444GgTQXQ7BjkVH1WD9XoC"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" data-page-node-id="vQG5QXKsLDzYXQqiEVnMMm"/><circle cx="9" cy="7" r="4" data-page-node-id="G7BJQDhWRyK0E7GXh5sS45"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" data-page-node-id="QS9wi3vJfOAyh4iVwMk73f"/><path d="M16 3.13a4 4 0 0 1 0 7.75" data-page-node-id="HWC06XxfpYS2Mfn2nnEX6G"/></svg></span>
           用户管理
         </a>
+        <a class="nav-item" v-if="canModule('roles')" :class="{ active: currentPage === 'role-list' }" @click="currentPage = 'role-list'" data-page-node-id="RolesNavItem0001">
+          <span class="nav-icon" data-page-node-id="RolesNavIcon0001"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="RolesNavSvg0001"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" data-page-node-id="RolesNavPath0001"/></svg></span>
+          角色管理
+        </a>
         <a class="nav-item" v-if="canModule('careers')" :class="{ active: currentPage === 'career-list' }" @click="goPage('career-list')" data-page-node-id="CrMgrNavItem0001">
           <span class="nav-icon" data-page-node-id="CrMgrNavIcon0001"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" data-page-node-id="CrMgrNavSvg00001"><rect x="2" y="7" width="20" height="14" rx="2" data-page-node-id="CrMgrNavRect0001"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" data-page-node-id="CrMgrNavPath0001"/></svg></span>
           招聘管理
@@ -970,7 +974,7 @@ const QUILL_TOOLBAR = [
         <div class="avatar" data-page-node-id="Qe9SHBwkiBI7nK30FLNsrA" :style="userInfo && userInfo.avatar ? 'padding:0;overflow:hidden;' : ''"><img v-if="userInfo && userInfo.avatar" :src="'/admin/avatars/' + userInfo.avatar + '.png'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""><template v-else>{{ userInfo?.fullName ? userInfo.fullName.charAt(0).toUpperCase() : 'U' }}</template></div>
         <div class="user-info" data-page-node-id="kl6ne7gxPq77PKWPDeKlqs">
           <div class="user-name" data-page-node-id="BpBXYCadiYVllQ2qiEsOWm">{{ userInfo?.fullName || userInfo?.email }}</div>
-          <div class="user-role" data-page-node-id="Ij9S73RK5Jnbzm41qSstIL">{{ !userInfo ? '' : userInfo.role === 'super_admin' ? '超级管理员' : '编辑员' }}</div>
+          <div class="user-role" data-page-node-id="Ij9S73RK5Jnbzm41qSstIL">{{ !userInfo ? '' : (roleNames[userInfo.role] || (userInfo.role === 'super_admin' ? '超级管理员' : '编辑员')) }}</div>
         </div>
       </div>
     </aside>
@@ -1001,7 +1005,7 @@ const QUILL_TOOLBAR = [
       <div class="content" data-page-node-id="wjtBdC1wtCmRiRy5jo3nIS">
 
         <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
-        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual' || currentPage === 'role-list'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
           <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe>
         </div>
 
@@ -5193,6 +5197,7 @@ createApp({
       token: safeStorage.getItem('admin_token') || '',
       userInfo: null,
       rolePermissions: null,
+      roleNames: {},               // 角色 key → 名称字典（/admin/roles，侧栏底栏与徽章渲染用）
       loginForm: { email: '', password: '' },
       loginError: '',
       loggingIn: false,
@@ -5533,6 +5538,7 @@ createApp({
         'lm-brochures': '/admin/learn-more-standalone.html?tab=brochures',
         'lm-journees': '/admin/learn-more-standalone.html?tab=journees',
         'content-heat': '/admin/content-heat-standalone.html',
+        'role-list': '/admin/roles-standalone.html',
         manual: '/admin/manual-standalone.html',
       };
       return map[this.currentPage] || '';
@@ -5561,6 +5567,7 @@ createApp({
         'tag-manage': '运营 / 标签管理',
         'manual': '帮助 / 使用手册',
         'career-list': '运营 / 招聘管理',
+        'role-list': '运营 / 角色管理',
         'article-list': '内容管理 / 获取灵感 / 文章',
         'article-edit': '内容管理 / 获取灵感 / 文章 / ' + (this.editingArticle.id ? '编辑' : '新增'),
         'webinar-list': '内容管理 / 获取灵感 / 在线研讨会',
@@ -9890,6 +9897,7 @@ createApp({
         careers: ['career-list'],
         settings: ['settings'],
         tags: ['tag-manage'],
+        roles: ['role-list'],
       };
       for (const mod of Object.keys(map)) {
         if (map[mod].includes(page)) return mod;
@@ -9901,6 +9909,13 @@ createApp({
         const s = await this.api('/settings');
         this.rolePermissions = s && s.role_permissions ? JSON.parse(s.role_permissions) : null;
       } catch (e) { console.warn('权限配置刷新失败（保持原值）:', e.message); }
+      // 角色名映射（/admin/roles 对登录员工只读开放）：侧栏底栏按真实角色名渲染
+      try {
+        const roles = await this.api('/admin/roles');
+        const map = {};
+        (roles || []).forEach(r => { map[r.key] = r.name; });
+        this.roleNames = map;
+      } catch (e2) { console.warn('角色名加载失败（沿用默认显示）:', e2.message); }
     },
     canModule(mod) {
       if (!mod) return true;                       // 总览等公共页
@@ -9950,7 +9965,7 @@ createApp({
           const meData = await meResp.json();
           if (meData.code === 0) {
             // 后台仅企业员工可用：C 端会员 token 直接清除回登录页
-            if (!['super_admin', 'editor'].includes(meData.data.role)) {
+            if (!meData.data.role || meData.data.role === 'user') {
               this.doLogout();
               console.warn('检测到会员账号 token，已退出后台');
               return;

@@ -339,6 +339,27 @@ model PageContent {
   @@map("page_contents")
 }
 
+// ===== 角色表（后台角色管理，2026-10-13 新增）=====
+// 员工可分配角色字典 + 每角色的模块权限矩阵（JSON）。
+// super_admin 为系统内置（builtin=1，不可编辑/删除）；editor 为默认员工角色。
+// permissions JSON 结构：{ "<moduleKey>": { view:1, create:1, edit:1, delete:1 }, ... }
+//   当前生效维度 = view（主框架侧边栏 canModule，经 role_permissions 投影）；
+//   create/edit/delete 先存储，供后端接口逐模块接入。
+// 建表：scripts/create-roles-table.js（建在数据文件里，不随 deploy，部署后需补跑 --apply）
+model Role {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  name        String
+  description String?
+  permissions String   @default("{}")
+  sort        Int      @default(0) @map("sort")
+  builtin     Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("roles")
+}
+
 // ===== 系统设置表 =====
 model Setting {
   id        Int       @id @default(autoincrement())
