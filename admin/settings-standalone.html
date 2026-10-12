@@ -117,6 +117,11 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
 .oc-dept-actions { display: flex; justify-content: flex-end; gap: 2px; margin-top: 6px; }
 .oc-add { width: 232px; min-height: 120px; border: 2px dashed #cdd8b8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6f9a24; font-size: 13px; cursor: pointer; background: #fff; }
 .oc-add:hover { border-color: #8EB73C; background: #fbfdf7; }
+.oc-branch { display: flex; flex-direction: column; align-items: center; }
+.oc-sub-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 12px; margin-top: 14px; }
+.oc-row > .oc-add { align-self: flex-start; }
+.oc-dept-chips .member-chip { transform: none; }
+.oc-hline-sub { }
 .oc-unassigned { margin-top: 16px; border-top: 1px dashed #e0e0e0; padding-top: 12px; }
 .oc-unassigned .u-label { font-size: 12px; color: #999; margin-bottom: 8px; }
 .member-chip .r-custom { background: #f3eefb; color: #7c5cbf; }
@@ -224,10 +229,14 @@ button.btn-danger-sm:hover { background: #fdf2f2; }
   <div class="avatar-picker-mask" id="deptModal" onmousedown="this._md=(event.target===this)" onclick="if(this._md&&event.target===this)closeDeptModal()">
     <div class="avatar-picker" style="width:460px;">
       <div style="font-size:15px;font-weight:600;" id="dm_title">新建部门</div>
-      <div style="font-size:12px;color:#999;margin-top:3px;">部门用于员工账号的「所属部门」归组，保存全部设置后生效</div>
+      <div style="font-size:12px;color:#999;margin-top:3px;">部门支持两级层级（下级挂在上级部门卡下方）；用于员工账号的「所属部门」归组，保存全部设置后生效</div>
       <div class="form-group" style="margin-top:14px;">
         <label>部门名称 <span class="hint">（必填）</span></label>
         <input id="dm_name" placeholder="如：市场部">
+      </div>
+      <div class="form-group">
+        <label>上级部门 <span class="hint">（留空为一级部门，挂在公司总部下）</span></label>
+        <select id="dm_parent"></select>
       </div>
       <div style="display:grid;grid-template-columns:1fr 110px;gap:12px;">
         <div class="form-group">
@@ -540,17 +549,23 @@ async function testAi() {
 
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 /* ===== Tab2 组织架构：B 版式组织图 + 部门弹层（2026-10-13） ===== */
-function renderOrg() {
-  const row = document.getElementById('ocRow');
-  document.getElementById('orgCnt').textContent = orgData.length ? '（' + orgData.length + ' 个部门）' : '（暂无部门，点击虚线卡新建）';
-  const siteInput = document.getElementById('basicForm').elements['site_name'];
-  document.getElementById('ocRootName').textContent = (siteInput && siteInput.value.trim()) || '公司总部';
-  // 排序生效：小者靠前
-  const sorted = orgData.map((o, i) => ({ o, i })).sort((a, b) => (Number(a.o.sort) || 0) - (Number(b.o.sort) || 0));
-  row.innerHTML = sorted.map(({ o, i }) => {
-    const members = staffList.filter(s => s.department === o.name && s.role !== 'super_admin');
-    const chips = members.length ? members.map(chipHtml).join('') : '<span style="font-size:11px;color:#bbb;">暂无人员</span>';
-    return `<div class="oc-dept">
+function buildOrgTree() {
+  // 兼容旧数据：无 parent = 一级；父部门已删除的挂回一级
+  const names = new Set(orgData.map(o => o.name));
+  orgData.forEach(o => { if (o.parent && !names.has(o.parent)) o.parent = ''; });
+  const roots = [], children = {};
+  orgData.forEach((o, i) => {
+    if (o.parent && o.name) (children[o.parent] = children[o.parent] || []).push({ o, i });
+    else roots.push({ o, i });
+  });
+  const bySort = arr => arr.sort((a, b) => (Number(a.o.sort) || 0) - (Number(b.o.sort) || 0));
+  bySort(roots); Object.values(children).forEach(bySort);
+  return { roots, children };
+}
+function deptCardHtml(o, i) {
+  const members = staffList.filter(s => s.department === o.name && s.role !== 'super_admin');
+  const chips = members.length ? members.map(chipHtml).join('') : '<span style="font-size:11px;color:#bbb;">暂无人员</span>';
+  return `<div class="oc-dept">
       <div class="oc-dept-name">${esc(o.name)}</div>
       ${o.leader ? '<div class="oc-dept-leader">负责人：' + esc(o.leader) + '</div>' : ''}
       ${o.desc ? '<div class="oc-dept-desc">' + esc(o.desc) + '</div>' : ''}
@@ -560,27 +575,45 @@ function renderOrg() {
         <button class="link-btn danger" onclick="delDept(${i})">删除</button>
       </div>
     </div>`;
+}
+function renderOrg() {
+  const row = document.getElementById('ocRow');
+  document.getElementById('orgCnt').textContent = orgData.length ? '（' + orgData.length + ' 个部门）' : '（暂无部门，点击虚线卡新建）';
+  const siteInput = document.getElementById('basicForm').elements['site_name'];
+  document.getElementById('ocRootName').textContent = (siteInput && siteInput.value.trim()) || '公司总部';
+  const { roots, children } = buildOrgTree();
+  // 一级部门横排接根卡；有下级的一级卡下挂子卡行（branch：卡→竖线→子横线→子卡）
+  row.innerHTML = roots.map(({ o, i }) => {
+    const card = deptCardHtml(o, i);
+    const kids = children[o.name] || [];
+    if (!kids.length) return card;
+    return `<div class="oc-branch">${card}
+      <div class="oc-vline"></div>
+      <div class="oc-hline oc-hline-sub"></div>
+      <div class="oc-sub-row">${kids.map(k => deptCardHtml(k.o, k.i)).join('')}</div>
+    </div>`;
   }).join('') + '<div class="oc-add" onclick="openDeptModal()">+ 新建部门</div>';
   // 未分配成员池
   const unassigned = staffList.filter(s => s.role !== 'super_admin' && (!s.department || !orgData.some(o => o.name === s.department)));
   document.getElementById('uaCount').textContent = unassigned.length ? '（' + unassigned.length + ' 人）' : '';
   document.getElementById('uaChips').innerHTML = unassigned.length ? unassigned.map(chipHtml).join('') : '<span style="font-size:12px;color:#bbb;">所有员工都已分配到部门</span>';
-  fitHline();
+  fitLines();
 }
-/* 连接横线只画到第一行部门卡的中心（不悬空、不含新建虚线卡）；折行卡隐藏竖线 */
-function fitHline() {
-  const hl = document.querySelector('.oc-hline');
-  const chart = document.getElementById('orgChart');
-  const cards = [...chart.querySelectorAll('.oc-dept')];
+/* 连接横线只画到所在行第一行部门卡的中心（不悬空、不含新建虚线卡）；折行卡隐藏竖线 */
+function fitLines() {
+  fitOne(document.querySelector('.oc-hline:not(.oc-hline-sub)'), document.getElementById('ocRow'));
+  document.querySelectorAll('.oc-sub-row').forEach(r => fitOne(r.parentElement.querySelector('.oc-hline-sub'), r));
+}
+function fitOne(hl, row) {
+  if (!hl || !row) return;
+  const cards = [...row.querySelectorAll('.oc-dept')];
   if (!cards.length) { hl.style.width = '0px'; return; }
-  const chartLeft = chart.getBoundingClientRect().left;
   const firstTop = cards[0].getBoundingClientRect().top;
   const firstRow = cards.filter(c => Math.abs(c.getBoundingClientRect().top - firstTop) < 8);
   cards.forEach(c => c.classList.toggle('no-line', !firstRow.includes(c)));
   const a = firstRow[0].getBoundingClientRect();
   const b = firstRow[firstRow.length - 1].getBoundingClientRect();
-  const w = (b.left + b.width / 2) - (a.left + a.width / 2);
-  hl.style.width = Math.max(0, Math.round(w)) + 'px';
+  hl.style.width = Math.max(0, Math.round((b.left + b.width / 2) - (a.left + a.width / 2))) + 'px';
 }
 function chipHtml(s) {
   const info = roleDict[s.role];
@@ -620,7 +653,21 @@ function openDeptModal(i) {
   document.getElementById('dm_leader').value = o.leader || '';
   document.getElementById('dm_sort').value = Number(o.sort) || 0;
   document.getElementById('dm_desc').value = o.desc || '';
+  document.getElementById('dm_parent').innerHTML = parentOptions(editingDeptIdx, o.parent || '');
   document.getElementById('deptModal').style.display = 'flex';
+}
+/* 上级部门候选：排除自身与自身后代（防环） */
+function parentOptions(excludeIdx, selected) {
+  const excl = new Set();
+  if (excludeIdx !== null && excludeIdx !== undefined && orgData[excludeIdx]) {
+    const selfName = orgData[excludeIdx].name;
+    excl.add(selfName);
+    let changed = true;
+    while (changed) { changed = false; orgData.forEach(o => { if (o.name && !excl.has(o.name) && excl.has(o.parent)) { excl.add(o.name); changed = true; } }); }
+  }
+  return '<option value="">无（一级部门）</option>' + orgData.filter((o, i) => o.name && o.name.trim() && i !== excludeIdx && !excl.has(o.name))
+    .sort((a, b) => (Number(a.sort) || 0) - (Number(b.sort) || 0))
+    .map(o => `<option value="${esc(o.name)}" ${o.name === selected ? 'selected' : ''}>${esc(o.name)}</option>`).join('');
 }
 function closeDeptModal() { document.getElementById('deptModal').style.display = 'none'; editingDeptIdx = null; }
 function saveDeptModal() {
@@ -631,6 +678,7 @@ function saveDeptModal() {
   }
   const val = {
     name,
+    parent: document.getElementById('dm_parent').value || '',
     leader: document.getElementById('dm_leader').value.trim(),
     desc: document.getElementById('dm_desc').value.trim(),
     sort: Number(document.getElementById('dm_sort').value) || 0,
@@ -643,9 +691,13 @@ async function delDept(i) {
   const o = orgData[i];
   if (!o) return;
   const cnt = staffList.filter(s => s.department === o.name && s.role !== 'super_admin').length;
-  const extra = cnt ? '该部门下仍有 ' + cnt + ' 名员工，删除后他们将成为「未分配成员」。' : '';
+  const kidCnt = orgData.filter(x => x.parent === o.name).length;
+  let extra = cnt ? '该部门下仍有 ' + cnt + ' 名员工，删除后他们将成为「未分配成员」。' : '';
+  if (kidCnt) extra += (extra ? '' : ' ') + '其下 ' + kidCnt + ' 个下级部门将提升为一级部门。';
   if (!(await AdminDialog.confirm('确定删除部门「' + o.name + '」？' + extra, { title: '删除确认', danger: true, confirmText: '删除' }))) return;
+  const name = o.name;
   orgData.splice(i, 1);
+  orgData.forEach(x => { if (x.parent === name) x.parent = ''; });
   renderOrg();
 }
 
@@ -682,8 +734,9 @@ async function pickAvatar(a) {
   } catch (e) { AdminDialog.alert('头像设置失败: ' + e.message, { type: 'error' }); }
 }
 function deptOptions(selected) {
-  return '<option value="">未分配</option>' + orgData.filter(o => o.name && o.name.trim())
-    .map(o => `<option value="${esc(o.name)}" ${o.name === selected ? 'selected' : ''}>${esc(o.name)}</option>`).join('');
+  const sorted = orgData.filter(o => o.name && o.name.trim()).sort((a, b) => (Number(a.sort) || 0) - (Number(b.sort) || 0));
+  return '<option value="">未分配</option>' + sorted
+    .map(o => `<option value="${esc(o.name)}" ${o.name === selected ? 'selected' : ''}>${o.parent ? '└ ' : ''}${esc(o.name)}</option>`).join('');
 }
 async function refreshStaff() {
   try {
