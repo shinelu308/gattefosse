@@ -312,7 +312,8 @@ export async function setStaffAvatar(req: Request, res: Response) {
     if (!existing) {
       return res.status(404).json(fail('用户不存在'));
     }
-    if (!['super_admin', 'editor'].includes(existing.role)) {
+    // 后台员工 = role 非 C 端会员（自定义角色同样可设置头像，2026-10-13）
+    if (existing.role === 'user') {
       return res.status(400).json(fail('仅后台员工可设置头像'));
     }
     const user = await prisma.user.update({
