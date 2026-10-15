@@ -844,6 +844,21 @@ const QUILL_TOOLBAR = [
           <span class="nav-icon" data-page-node-id="NavContentHeatIcon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" data-page-node-id="NavContentHeatSvg"><line x1="18" y1="20" x2="18" y2="10" data-page-node-id="NavContentHeatL1"/><line x1="12" y1="20" x2="12" y2="4" data-page-node-id="NavContentHeatL2"/><line x1="6" y1="20" x2="6" y2="14" data-page-node-id="NavContentHeatL3"/></svg></span>
           内容热度
         </a>
+        <div class="nav-section" data-page-node-id="NavSparkSection"><div class="nav-section-title" data-page-node-id="NavSparkSectionTitle">增长</div></div>
+        <a class="nav-item" :class="{ active: currentPage === 'spark' && !sparkModules.length }" @click="openSpark()" data-page-node-id="NavSparkItem">
+          <span class="nav-icon" data-page-node-id="NavSparkIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="NavSparkSvg"><path d="M13 2L4.09 12.97A1 1 0 0 0 4.86 14.6H11l-1 7.4 8.91-10.97A1 1 0 0 0 18.14 9.4H12z" data-page-node-id="NavSparkPath"/></svg></span>
+          <span v-if="sparkLoading || sparkBooting" style="opacity:.6">星火中台</span>
+          <span v-else>星火中台</span>
+        </a>
+        <!-- 星火模块子菜单：由星火按当前账号权限下发，父页只负责展示 -->
+        <div class="nav-sublist" :class="{ collapsed: !sparkModules.length }" data-page-node-id="NavSparkSublist">
+          <a class="nav-item nav-sub" v-for="m in sparkModules" :key="m.key"
+             :class="{ active: currentPage === 'spark' && sparkView === m.key }"
+             @click="sparkGo(m.key)" :data-page-node-id="'NavSparkMod-' + m.key">
+            <span>{{ m.label }}</span>
+            <span class="badge" v-if="m.badge">{{ m.badge }}</span>
+          </a>
+        </div>
         <div class="nav-section" data-page-node-id="Kum06zg2KJojKGaDD6PjHd"><div class="nav-section-title" data-page-node-id="GUM2geZgaSi5ah6GIXfOb8">产品管理</div></div>
         <div class="nav-parent" v-if="canModule('pc') || canModule('formula')" @click="pcMenuCollapsed = !pcMenuCollapsed"
           :class="{ active: currentPage === 'pc-list' || currentPage === 'pc-edit' || currentPage === 'formula-list' || currentPage === 'formula-edit' }" data-page-node-id="dwjXwpZK3ePISZH18Juu0R">
@@ -970,8 +985,7 @@ const QUILL_TOOLBAR = [
         <a class="nav-item" :class="{ active: currentPage === 'manual' }" @click="currentPage = 'manual'" data-page-node-id="NavManualItem">
           <span class="nav-icon" data-page-node-id="NavManualIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="NavManualSvg"><circle cx="12" cy="12" r="10" data-page-node-id="NavManualC"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" data-page-node-id="NavManualP"/><line x1="12" y1="17" x2="12.01" y2="17" data-page-node-id="NavManualL"/></svg></span>
           使用手册
-        </a>
-      </nav>
+        </a>      </nav>
       <div class="sidebar-footer" data-page-node-id="jDhtE4xwIYs6147pR3XisH" @click="currentPage = 'profile'" title="点击查看与编辑个人资料"><!-- ProfileStandalone20261012 -->
         <div class="avatar" data-page-node-id="Qe9SHBwkiBI7nK30FLNsrA" :style="userInfo && userInfo.avatar ? 'padding:0;overflow:hidden;' : ''"><img v-if="userInfo && userInfo.avatar" :src="'/admin/avatars/' + userInfo.avatar + '.png'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""><template v-else>{{ userInfo?.fullName ? userInfo.fullName.charAt(0).toUpperCase() : 'U' }}</template></div>
         <div class="user-info" data-page-node-id="kl6ne7gxPq77PKWPDeKlqs">
@@ -1007,7 +1021,7 @@ const QUILL_TOOLBAR = [
       <div class="content" data-page-node-id="wjtBdC1wtCmRiRy5jo3nIS">
 
         <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
-        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual' || currentPage === 'role-list' || currentPage === 'profile'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
+        <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual' || currentPage === 'role-list' || currentPage === 'profile' || currentPage === 'spark'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
           <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe>
         </div>
 
@@ -5205,6 +5219,14 @@ createApp({
       loggingIn: false,
       // Nav
       currentPage: 'dashboard',
+      // 星火中台 iframe（SSO ticket 换来的完整地址，120 秒有效）
+      sparkUrl: '',
+      sparkLoading: false,
+      // 星火下发的模块清单（按当前账号权限）+ 当前归属模块
+      sparkModules: [],
+      sparkView: '',
+      sparkBooting: false,
+      sparkOrigin: '',
       sidebarOpen: false,
       pcMenuCollapsed: false,
       getInspiredCollapsed: false,
@@ -5543,6 +5565,9 @@ createApp({
         'role-list': '/admin/roles-standalone.html',
         manual: '/admin/manual-standalone.html',
         profile: '/admin/profile-standalone.html',
+        spark: '星火中台',
+        // 星火中台：带 SSO ticket 的完整地址（由 openSpark 异步获取后填入）
+        spark: this.sparkUrl || 'about:blank',
       };
       return map[this.currentPage] || '';
     },
@@ -5715,6 +5740,72 @@ createApp({
       // 移动端抽屉：点击具体菜单项（非父级折叠）后自动收起
       if (e.target.closest('.nav-item')) this.sidebarOpen = false;
     },
+    // ★ 打开星火中台：先取 SSO ticket（120 秒一次性），再把带票据的地址交给 iframe
+    async openSpark() {
+      if (this.sparkLoading) return;
+      this.sparkLoading = true;
+      try {
+        // 与后台其余请求一致：走 safeStorage（localStorage 不可用时自动兜底 cookie）
+        const tk = safeStorage.getItem('admin_token') || this.token || '';
+        const resp = await fetch('/api/spark/sso-ticket', { headers: { Authorization: 'Bearer ' + tk } });
+        const data = await resp.json();
+        if (data && data.code === 0 && data.data && data.data.url) {
+          this.sparkUrl = data.data.url;
+          // 记下星火 origin 用于消息白名单
+          try { this.sparkOrigin = new URL(data.data.url).origin; } catch (e) {}
+          this.sparkView = '';
+          this.currentPage = 'spark';
+          // 主动握手：iframe 加载需要时间，两次兜底
+          this.sparkBooting = true;
+          const self = this;
+          setTimeout(function () { self.postToSpark('spark:hello', {}); }, 1500);
+          setTimeout(function () { self.postToSpark('spark:hello', {}); }, 4000);
+          // 侧栏较长（36 项），滚到星火分组，保证入口可见
+          setTimeout(function () {
+            const sec = document.querySelector('[data-page-node-id="NavSparkSection"]');
+            if (sec && sec.scrollIntoView) sec.scrollIntoView({ block: 'nearest' });
+          }, 900);
+        } else {
+          this.showAlert((data && data.message) || '无法获取星火中台访问凭证', 'error');
+        }
+      } catch (e) {
+        this.showAlert('连接星火中台失败：' + e.message, 'error');
+      } finally {
+        this.sparkLoading = false;
+      }
+    },
+
+    /** ★ 星火子菜单点击 → 让 iframe 内切视图（不重新加载 iframe） */
+    sparkGo(view) {
+      if (!view) return;
+      this.sparkView = view;
+      if (this.currentPage !== 'spark') this.currentPage = 'spark';
+      this.postToSpark('spark:navigate', { view: view });
+    },
+
+    /** 向星火 iframe 发消息 */
+    postToSpark(type, payload) {
+      const f = document.querySelector('iframe[data-page-node-id="2sBoORgIvTvSQI5GBgu052"]');
+      if (!f || !f.contentWindow) return;
+      try { f.contentWindow.postMessage({ type: type, payload: payload }, '*'); } catch (e) {}
+    },
+
+    /** ★ 接收星火消息：模块清单由星火按权限下发，父页只展示 */
+    onSparkMessage(msg) {
+      if (msg.type === 'spark:ready') {
+        const p = msg.payload || {};
+        this.sparkModules = p.modules || [];
+        this.sparkView = p.view || '';
+        this.sparkBooting = false;
+      } else if (msg.type === 'spark:modules') {
+        this.sparkModules = (msg.payload && msg.payload.modules) || [];
+      } else if (msg.type === 'spark:viewChanged') {
+        this.sparkView = (msg.payload && msg.payload.view) || '';
+      } else if (msg.type === 'spark:pending') {
+        this.sparkPending = (msg.payload && msg.payload.count) || 0;
+      }
+    },
+
     goPage(page) {
       if (!this.canAccessPage(page)) {
         this.showAlert('您的账号无权访问该模块，请联系管理员', 'error');
@@ -9936,7 +10027,10 @@ createApp({
   async mounted() {
     // 监听 iframe 子页面消息：复用本页出版物导入弹框（了解更多-出版物 经 iframe 嵌入，自身弹框无法全窗口居中）
     window.addEventListener('message', (ev) => {
-      if (ev.origin !== window.location.origin) return;
+      // 🔴 允许两个来源：本站 + 星火中台（跨域部署时星火在 4100，同源判断会误拒）
+      const okOrigin = ev.origin === window.location.origin
+        || (this.sparkOrigin && ev.origin === this.sparkOrigin);
+      if (!okOrigin) return;
       // 个人资料子页：同步本人姓名/头像（底栏即时刷新）
       if (ev.data && ev.data.type === 'profile-updated' && ev.data.user && this.userInfo) {
         this.userInfo.fullName = ev.data.user.fullName;
@@ -9945,6 +10039,10 @@ createApp({
       // 个人资料子页：登录过期 → 回登录页
       if (ev.data && ev.data.type === 'profile-auth-expired') {
         this.token = ''; this.userInfo = null; this.currentPage = 'dashboard';
+      }
+      // ★ 星火中台消息
+      if (ev.data && typeof ev.data.type === 'string' && ev.data.type.indexOf('spark:') === 0) {
+        this.onSparkMessage(ev.data);
       }
       if (ev.data && ev.data.type === 'lm-open-pub-import') {
         this.openPublicationImport();

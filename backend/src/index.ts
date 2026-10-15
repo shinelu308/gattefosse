@@ -30,6 +30,7 @@ import authorRoutes from './routes/authors.routes';
 import statsRoutes from './routes/stats.routes';
 import trackRoutes from './routes/track.routes';
 import systemRoutes from './routes/system.routes';
+import sparkRoutes from './routes/spark.routes';
 import manualRoutes from './routes/manual.routes';
 import { bumpVersionOnBoot } from './utils/version';
 import { pageViewTracker } from './middleware/tracker';
@@ -119,6 +120,7 @@ app.use('/api/authors', authorRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/track', trackRoutes);
 app.use('/api/system', systemRoutes);
+app.use('/api/spark', sparkRoutes);
 app.use('/api/manual', manualRoutes);
 
 // 404 处理
