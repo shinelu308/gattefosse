@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>_sample_stage · 星火演示样片</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#20272e}
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+
+/* ---------- 片头卡 ---------- */
+#scA{flex-direction:column;background:#20272e}
+#scA .brand{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:12px;margin-bottom:56px}
+#scA .brand i{display:block;border-radius:12px;background:#8EB73C;transform:scale(0);opacity:0}
+#scA .brand i.dim{background:#5f7d1f}
+#scA .brand i.dim2{background:#42561a}
+#scA h1{font-size:82px;font-weight:500;color:#fff;letter-spacing:6px;opacity:0}
+#scA .sub{font-size:27px;color:#8d979f;letter-spacing:2px;margin-top:22px;opacity:0}
+#scA .kws{display:flex;gap:18px;margin-top:74px}
+#scA .kws i{font-style:normal;font-size:24px;color:#d6e8a8;border:1px solid rgba(142,183,60,.55);background:rgba(142,183,60,.10);border-radius:26px;padding:11px 32px;opacity:0;transform:translateY(14px)}
+#scA .stamp{position:absolute;right:44px;bottom:38px;font-size:20px;color:#5a656e;letter-spacing:1px}
+
+/* ---------- 痛点卡 ---------- */
+#scB{flex-direction:column;background:#f5f6f7}
+#scB .lead{font-size:46px;color:#2b3138;font-weight:500;letter-spacing:2px;position:absolute;top:250px;opacity:0}
+#scB .pain{position:absolute;top:352px;left:50%;transform:translateX(-50%);width:1020px;display:flex;flex-direction:column;gap:26px}
+#scB .card{display:flex;align-items:center;gap:26px;background:#fff;border-radius:16px;padding:30px 40px;box-shadow:0 8px 28px rgba(30,40,50,.09);opacity:0;transform:translateY(46px)}
+#scB .card .dot{width:52px;height:52px;border-radius:14px;background:#f4f9e9;border:1px solid #dbe8bd;display:flex;align-items:center;justify-content:center;font-size:26px;color:#5f7d1f;flex:none}
+#scB .card .txt{font-size:38px;color:#2b3138;letter-spacing:1px}
+
+/* ---------- 字幕 ---------- */
+#sub{position:absolute;left:0;right:0;bottom:72px;display:flex;justify-content:center;opacity:0}
+#sub .line{background:rgba(24,31,38,.80);color:#fff;font-size:38px;line-height:1.5;padding:16px 40px;border-radius:12px;letter-spacing:1px;max-width:1500px;text-align:center}
+#fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="scene" id="scA">
+    <div class="brand" id="brand"></div>
+    <h1 id="ttl">星火</h1>
+    <div class="sub" id="sub2">面向品牌的多租户内容与分发中台</div>
+    <div class="kws" id="kws"><i>多租户</i><i>插件化</i><i>GEO 闭环</i></div>
+    <div class="stamp">演示样片 · 261014</div>
+  </div>
+
+  <div class="scene" id="scB">
+    <div class="lead" id="lead">做内容，到底难在哪？</div>
+    <div class="pain" id="pain">
+      <div class="card"><div class="dot">1</div><div class="txt">一个产品，五个平台</div></div>
+      <div class="card"><div class="dot">2</div><div class="txt">每句话都怕踩合规</div></div>
+      <div class="card"><div class="dot">3</div><div class="txt">做完了，不知道有没有用</div></div>
+    </div>
+  </div>
+
+  <div id="sub"><div class="line" id="subLine"></div></div>
+  <div id="fade"></div>
+</div>
+
+<script>
+var FPS = 30;
+var A0 = 0.0, A1 = 4.5;              // 片头卡
+var B0 = 4.5, B1 = 14.8;             // 痛点卡
+var TOTAL = 14.8;
+
+var cl  = function(x){ return x<0?0:(x>1?1:x); };
+var seg = function(t,a,b){ return cl((t-a)/(b-a)); };
+var es  = function(x){ return x<.5 ? 2*x*x : 1-Math.pow(-2*x+2,2)/2; };
+var eso = function(x){ return 1-Math.pow(1-x,3); };
+var ease = function(x){ return 1-Math.pow(1-x,2.6); };
+
+// 字幕段（按配音实测 9.12s / 46 字 比例分配）
+var SUBS = [
+  { t:'做一条内容不难。',            a:4.50, b:6.09 },
+  { t:'难的是每个产品都要发五个平台，', a:6.09, b:9.06 },
+  { t:'每句话都要过合规，',           a:9.06, b:10.84 },
+  { t:'做完了还不知道有没有人看见。',  a:10.84, b:13.62 }
+];
+// 卡片落入时刻（跟随旁白语义）
+var CARD_IN = [6.25, 9.25, 11.00];
+
+var LOGO = [1,1,1, 1,0,1, 0,0,1];    // 7 块（3×3 缺两角）
+
+function build(){
+  var b = document.getElementById('brand');
+  for (var i=0;i<9;i++){
+    var el = document.createElement('i');
+    if (!LOGO[i]) { el.style.visibility = 'hidden'; }
+    b.appendChild(el);
+  }
+}
+build();
+
+var brandCells = document.querySelectorAll('#brand i');
+
+function renderAt(t){
+  // ---- 转场淡黑（首尾）----
+  var fd = document.getElementById('fade');
+  var fadeIn  = 1 - seg(t, 0, 0.6);          // 开头：黑 → 透明
+  var fadeOut = seg(t, B1-0.7, B1);          // 结尾：透明 → 黑
+  fd.style.opacity = Math.max(fadeIn, fadeOut);
+
+  // ---- 片头卡 ----
+  var scA = document.getElementById('scA');
+  var inA  = eso(seg(t, A0, A0+0.45));
+  var outA = 1 - es(seg(t, A1-0.55, A1+0.1));
+  scA.style.opacity = t < A1 ? Math.min(inA, outA) : 0;
+  scA.style.transform = 'scale(' + (1 + 0.035*seg(t, A1-1.6, A1)) + ')';
+
+  // logo 方块逐个弹入 0.15 → 1.35
+  for (var i=0;i<brandCells.length;i++){
+    var cell = brandCells[i];
+    if (LOGO[i] === 0) continue;
+    var st = 0.15 + i*0.13;
+    var p = t < A1 ? es(seg(t, st, st+0.55)) : 0;
+    cell.style.transform = 'scale(' + (0.55 + 0.45*p) + ')';
+    cell.style.opacity = p;
+    cell.style.transition = 'none';
+  }
+  var ttl = document.getElementById('ttl');
+  ttl.style.opacity = es(seg(t, 1.15, 1.95));
+  ttl.style.transform = 'translateY(' + ((1-es(seg(t,1.15,1.95)))*22) + 'px)';
+  var s2 = document.getElementById('sub2');
+  s2.style.opacity = es(seg(t, 1.5, 2.3));
+  var kw = document.querySelectorAll('#kws i');
+  for (var k=0;k<kw.length;k++){
+    var kp = es(seg(t, 2.15 + k*0.42, 2.15 + k*0.42 + 0.5));
+    kw[k].style.opacity = kp;
+    kw[k].style.transform = 'translateY(' + ((1-kp)*14) + 'px)';
+  }
+  document.querySelector('#scA .stamp').style.opacity = 0.85*es(seg(t, 2.9, 3.5));
+
+  // ---- 痛点卡 ----
+  var scB = document.getElementById('scB');
+  scB.style.opacity = t >= A1 ? es(seg(t, B0, B0+0.5)) : 0;
+  var lead = document.getElementById('lead');
+  lead.style.opacity = es(seg(t, 4.65, 5.5)) * (1 - es(seg(t, 6.0, 6.5)));
+  var cards = document.querySelectorAll('#pain .card');
+  for (var c=0;c<cards.length;c++){
+    var cp = ease(seg(t, CARD_IN[c], CARD_IN[c]+0.6));
+    cards[c].style.opacity = cp;
+    cards[c].style.transform = 'translateY(' + ((1-cp)*46) + 'px)';
+  }
+  // 收尾轻微上移（呼吸感）
+  var lift = seg(t, 13.3, B1) * 14;
+  document.getElementById('pain').style.transform = 'translateX(-50%) translateY(-' + lift + 'px)';
+
+  // ---- 字幕 ----
+  var sub = document.getElementById('sub'), line = document.getElementById('subLine');
+  var cur = null;
+  for (var s=0;s<SUBS.length;s++){ if (t >= SUBS[s].a && t < SUBS[s].b) { cur = SUBS[s]; break; } }
+  if (cur){
+    if (line.textContent !== cur.t) line.textContent = cur.t;
+    var p = Math.min(eso(seg(t, cur.a, cur.a+0.22)), 1 - es(seg(t, cur.b-0.22, cur.b)));
+    sub.style.opacity = p;
+    sub.style.transform = 'translateY(' + ((1-p)*10) + 'px)';
+  } else {
+    sub.style.opacity = 0;
+  }
+}
+
+window.__renderAt = renderAt;
+window.__ready = true;
+window.__total = TOTAL;
+renderAt(0);
+</script>
+</body>
+</html>

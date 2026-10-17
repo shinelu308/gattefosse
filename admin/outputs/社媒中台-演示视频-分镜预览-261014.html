@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星火 · 演示视频 · 分镜预览</title>
+<style>
+:root{
+  --brand:#8EB73C; --brand-dark:#5f7d1f; --brand-light:#f4f9e9;
+  --ink:#2b3138; --ink2:#54616C; --ink3:#8a949d;
+  --line:#e4e7ea; --bg:#f5f6f7; --amber:#BA7517; --blue:#185FA5;
+  --radius:10px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",Roboto,sans-serif;
+  --mono:Consolas,Monaco,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.7;font-size:13.5px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:40px 24px 80px}
+
+.hero{background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px 32px;margin-bottom:20px;border-top:3px solid var(--brand)}
+.hero .k{font-size:11.5px;letter-spacing:1.5px;color:var(--brand-dark);font-weight:500;margin-bottom:8px}
+.hero h1{font-size:24px;font-weight:500;line-height:1.4;margin-bottom:7px}
+.hero .s{font-size:12.5px;color:var(--ink2)}
+.specs{display:flex;gap:22px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
+.specs div{font-size:12px;color:var(--ink3)}
+.specs b{display:block;font-size:15px;color:var(--ink);font-weight:500;font-family:var(--mono)}
+
+.tl{margin:22px 0 8px}
+.tl .bar{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.tl .seg{display:flex;align-items:center;justify-content:center;font-size:10.5px;color:#fff;position:relative;transition:flex-grow .2s;min-width:0}
+.tl .seg span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.tl-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:9px;font-size:11.5px;color:var(--ink3)}
+.tl-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+h2{font-size:17px;font-weight:500;margin:30px 0 12px;padding-left:11px;border-left:3px solid var(--brand)}
+
+.shot{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.shot .hd{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--line);background:#fbfcfb}
+.shot .no{width:26px;height:26px;border-radius:7px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;font-family:var(--mono);flex:none}
+.shot .nm{font-size:13.5px;font-weight:500}
+.shot .tm{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--ink3);background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 9px}
+.shot .bd{display:grid;grid-template-columns:400px 1fr;gap:0}
+@media (max-width:900px){.shot .bd{grid-template-columns:1fr}}
+.frame{background:#eef1f2;border-right:1px solid var(--line);padding:16px;display:flex;align-items:center;justify-content:center}
+.viewport{position:relative;width:100%;aspect-ratio:16/9;border-radius:7px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(20,30,40,.10)}
+.viewport img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.viewport .cap{position:absolute;left:0;right:0;bottom:0;background:rgba(30,38,45,.72);color:#fff;font-size:11px;padding:5px 9px;letter-spacing:.2px}
+.viewport .mk{position:absolute;top:8px;left:8px;background:var(--amber);color:#fff;font-size:10px;border-radius:4px;padding:1px 6px}
+.info{padding:16px 20px}
+.info .lab{font-size:10.5px;letter-spacing:1px;color:var(--ink3);margin-bottom:3px}
+.info .vo{font-size:13.5px;line-height:1.8;color:var(--ink);background:var(--brand-light);border-left:3px solid var(--brand);border-radius:0 7px 7px 0;padding:10px 14px;margin:8px 0 14px}
+.info .vo.none{background:#f2f4f5;border-left-color:#c3c9cd;color:var(--ink3)}
+.info p{font-size:12.5px;color:var(--ink2);margin:5px 0}
+.info p b{color:var(--ink);font-weight:500}
+.tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:9px;line-height:1.7}
+.t-b{background:var(--brand-light);color:var(--brand-dark)}
+.t-a{background:#fef9f0;color:var(--amber)}
+.t-bl{background:#eef5fc;color:var(--blue)}
+.t-g{background:#f0f1f2;color:var(--ink2)}
+
+.card-mock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#fff;text-align:center;padding:18px}
+.card-mock .ttl{font-size:17px;font-weight:500;letter-spacing:.5px}
+.card-mock .kw{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.card-mock .kw i{font-style:normal;font-size:11px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:11px;padding:2px 11px}
+.pain{display:flex;flex-direction:column;gap:8px;width:100%;padding:0 26px}
+.pain i{font-style:normal;font-size:12px;background:#fff;color:#2b3138;border-radius:7px;padding:7px 12px;text-align:left;box-shadow:0 2px 8px rgba(20,30,40,.10)}
+
+.note{border-left:3px solid var(--amber);background:#fef9f0;padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin:14px 0;font-size:12.5px}
+.note.ok{border-left-color:var(--brand);background:var(--brand-light)}
+.note b{font-weight:500}
+.q{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-top:12px}
+.q ol{margin:8px 0 0 20px;font-size:13px}
+.q li{margin:6px 0}
+.foot{margin-top:34px;padding-top:15px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="k">分镜预览 · 可点开逐幕核对</div>
+  <h1>星火 · 客户演示视频</h1>
+  <div class="s">下面每一幕都标了：画面取景示意、完整旁白、镜头动效、以及这一句在画面上要传达什么。看完全部十幕，就等于提前看了一遍成片。</div>
+  <div class="specs">
+    <div>成片时长<b>93.8 s</b></div>
+    <div>分镜<b>10 幕</b></div>
+    <div>画幅<b>1920×1080</b></div>
+    <div>帧率<b>30 fps</b></div>
+    <div>配音<b>zh-CN 女声</b></div>
+    <div>画面<b>真实界面</b></div>
+  </div>
+  <div style="margin-top:14px;padding:12px 15px;background:#fcfdf9;border:1px solid #dbe8bd;border-radius:9px;font-size:12.5px;color:#3f4a52">
+    <b style="color:#5f7d1f">主片已产出：</b><code style="background:#fff;border:1px solid #e4e7ea;border-radius:4px;padding:1px 6px;font-size:12px">admin/outputs/社媒中台-演示视频-261014.mp4</code>
+    —— 93.8 秒 / 1920×1080 / 30fps，十幕全片。画面为<b>真实中台界面逐帧渲染</b>（非合成示意），女声旁白 + 逐词对位字幕。下面各幕的「画面取景示意」即取自成片实际帧。
+  </div>
+</div>
+
+<div class="tl">
+  <div class="bar" id="tlBar"></div>
+  <div class="tl-legend">
+    <span><i style="background:#2f3b45"></i>片头 / 结尾</span>
+    <span><i style="background:#BA7517"></i>痛点</span>
+    <span><i style="background:#8EB73C"></i>多租户 / 插件</span>
+    <span><i style="background:#185FA5"></i>生产链路</span>
+    <span><i style="background:#0F6E56"></i>GEO 闭环</span>
+  </div>
+</div>
+
+<h2>十幕分镜</h2>
+<div id="shots"></div>
+
+<h2>后续可选版本</h2>
+<div class="q">
+  <ol>
+    <li><b>60 秒精华版</b>：主片已出。若要做社媒投放版，可从主片裁切 + 重配三句旁白。</li>
+    <li><b>口吻</b>：现在这版是<b>对客户说</b>（销售口吻）。要不要同时出一版对合作方说的（强调通道分账、零获客成本）？需要换三句旁白。</li>
+    <li><b>客户名</b>：分镜里「客户B / 客户C」是占位。要外发就保持占位，只在内部看可以换真名。</li>
+    <li><b>竖屏版</b>：要视频号 / 朋友圈版的话需重新适配画幅，多约 1 小时。</li>
+  </ol>
+</div>
+
+<div class="note ok" style="margin-top:20px">
+<b>确认方式：</b>你只要指出「第几幕改什么」即可，比如「s5 太快」「s3 旁白再短点」「不要 s1 痛点」。文案定稿后我才开始配音——因为配音时长决定每一幕的画面时长，顺序不能反。
+</div>
+
+<div class="foot">
+星火 · 演示视频分镜预览 261014 ｜ 画面示意取自真实运行的中台原型截图（非合成图）｜ 配套文档：docs/方案/社媒中台-客户演示视频-可行性报告-261014.html
+</div>
+
+</div>
+
+<script>
+var TOTAL = 93.8;   // 实测成片时长（秒）
+var SHOTS = [
+  { id:'s0', nm:'片头卡', from:0, to:6.5, kind:'card',
+    vo:'', voNote:'无旁白，纯画面 + 轻音效',
+    vis:'深色底：中台标识 + 「星火」主标题，下方三个关键词标签依次弹入',
+    fx:'关键词每隔 0.5 秒弹入一个（轻微上移 + 淡入）；第 5 秒整体轻微推近，为切场做准备',
+    aim:'3 秒内建立「这是一个平台产品」的第一印象，不解释功能',
+    tags:['逐帧渲染','纯 CSS 动画'] },
+
+  { id:'s1', nm:'三张痛点卡', from:6.5, to:16.8, kind:'pain',
+    vo:'做一条内容不难。难的是每个产品都要发五个平台，每句话都要过合规，做完了还不知道有没有人看见。',
+    vis:'浅底，三张白卡从下往上依次落入：「一个产品，五个平台」「每句话都怕踩合规」「做完了，不知道有没有用」',
+    fx:'卡片错峰进入（每条间隔 1.2 秒），配合旁白的三次停顿；最后一张停留时轻微放大',
+    aim:'让客户点头——这三句话就是他的日常',
+    tags:['逐帧渲染','错峰动效'] },
+
+  { id:'s2', nm:'切换租户', from:16.8, to:26.4, img:'mp-02-tenantC.png',
+    vis:'总览页，镜头从顶部租户切换器开始；依次点「嘉法狮 → 客户B → 客户C」，品牌色、套餐、侧栏菜单、Credit 余额同步改变',
+    vo:'这是一套可以服务很多客户的后台。切换租户，品牌、套餐、功能、额度，全部跟着变。',
+    fx:'每次切换后停留 3 秒，让颜色变化被看清；切换瞬间画面轻微收缩再回弹（强调「换了一整套」）',
+    aim:'一句话讲清多租户与白标——同一个后台，不同客户看到自己的品牌',
+    tags:['分段录屏','真实交互'] },
+
+  { id:'s3', nm:'插件市场启停', from:26.4, to:35.1, img:'mp-03-market.png',
+    vis:'插件市场页，七张功能插件卡 + 三张合作方生态卡；点「启用插件」后左侧菜单立即长出新条目，再点「停用」收起',
+    vo:'功能像积木。客户要什么就装什么，菜单立刻出现；不用了就停掉，钱也停下来。',
+    fx:'镜头先扫过插件卡栅格，再推近到被点击的那张；菜单变化时给左侧栏一个短促的高亮',
+    aim:'把「乐高积木」这个抽象说法变成一个看得见的动作',
+    tags:['分段录屏','真实交互','重点幕'] },
+
+  { id:'s4', nm:'选素材与通道', from:35.1, to:43.9, img:'mp-05-gen-ready.png',
+    vis:'内容工厂：勾选「产品资料库」→ 选形态「短视频」→ 生成通道列表自动过滤成一条（星辰影视 AI，8 Credit / 秒）',
+    vo:'回到运营的日常。选一个产品，选一种形态，系统只列出能干这活的生成通道。',
+    fx:'通道列表过滤时用高度收起动画（其余通道折叠消失），落定后轻微推近剩下的那一张',
+    aim:'说明「通道是按能力自动匹配的」，避免选错，这是傻瓜化的关键一步',
+    tags:['分段录屏','条件联动'] },
+
+  { id:'s5', nm:'生成过程', from:43.9, to:53.5, img:'mp-07-gen-done.png',
+    vis:'点「开始生成」：进度条推进，日志逐行滚动（解析素材 → 注入 GEO 要素 → 调用通道 → 素材回传 → 计费入账 → 生成完成），顶部 Credit 余额实时减少',
+    vo:'合作伙伴的 AI 影视、数字人平台就在这个列表里。生成按量计费，花了多少，看得见。',
+    fx:'日志逐行淡入并自动滚动；Credit 数字做一次跳动（96 → 128,400 变 128,496）；完成后产物卡滑入',
+    aim:'同时传达两件事——合作方能力已接入、成本是可感知可控制的',
+    tags:['分段录屏','异步动画','重点幕'] },
+
+  { id:'s6', nm:'合规闸门', from:53.5, to:62.0, img:'mp-08-compliance.png',
+    vis:'合规闸门：三项校验逐项打勾（AI 标识注入 / 敏感词 / 平台规则预检），数字人形态时多出一项「形象与声音授权留痕」；全绿后「确认通过」按钮才解锁',
+    vo:'每一句 AI 生成的内容都要过合规闸门。标识自动注入，违规词当场拦下。',
+    fx:'打勾逐个出现（每项间隔 0.6 秒），最后的按钮从灰变绿时给一个轻微脉冲',
+    aim:'这是 B 端客户最在意的点——合规不是承诺，是流程里的一道闸',
+    tags:['分段录屏','逐项动效'] },
+
+  { id:'s7', nm:'一键分发', from:62.0, to:71.9, img:'mp-09-publish.png',
+    vis:'发布中心点「一键分发到 5 个平台」：公众号 / 抖音 / B站 依次变成「已发布」，小红书 / 视频号 变成「粘贴包已生成」；表格里两类通道标签并存',
+    vo:'能直发的直接发出去。不能直发的，生成一份粘贴包，复制、扫码、发走，三十秒的事。',
+    fx:'状态标签自上而下逐行翻转（每行 0.6 秒）；「API 直发」与「人工粘贴」两种标签用不同色，切换时短暂高亮',
+    aim:'把「为什么有的能直发有的要手工」这个技术限制，讲成一个贴心的兜底',
+    tags:['分段录屏','状态流转','重点幕'] },
+
+  { id:'s8', nm:'GEO 闭环', from:71.9, to:82.2, img:'mp-13-probe.png',
+    vis:'AI 可见度监测：五个模型的提及情况与引用数、引用率数字、下方「回流建议」清单（被引用的加产、没被引用的改写）',
+    vo:'更重要的是让 AI 认识你。内容分发出去，AI 引用了多少，一目了然，再反过来指导下一轮选题。',
+    fx:'先给引用率大数字一个短暂的计数动画；再下移到回流建议清单，最后一条未打勾的建议做一个轻微呼吸效果',
+    aim:'讲清闭环——不是发完就结束，数据会回流到下一轮选题',
+    tags:['分段录屏','数据动效'] },
+
+  { id:'s9', nm:'结尾落版', from:82.2, to:93.8, kind:'end',
+    vis:'深色底：四个关键词依次点亮（多租户 · 插件化 · 合规闸门 · GEO 闭环），下方落出两种交付方式「按年订阅 / 私有化部署」，最后中台标识居中',
+    vo:'一套后台，管住内容、渠道、合规和 AI 可见度。可以按年订阅，也可以私有化部署。',
+    fx:'关键词逐个点亮（每次亮起伴随极短的光晕扩散）；交付方式两行文字从两侧合入；最后标识轻微放大定住',
+    aim:'留一个可记住的收尾，并把「私有化」这个高价值选项交代掉',
+    tags:['逐帧渲染','落版动画'] }
+];
+
+var COLORS = { s0:'#2f3b45', s1:'#BA7517', s2:'#8EB73C', s3:'#8EB73C', s4:'#185FA5', s5:'#185FA5', s6:'#185FA5', s7:'#185FA5', s8:'#0F6E56', s9:'#2f3b45' };
+
+function fmt(t){ return t.toFixed(1); }
+
+document.getElementById('tlBar').innerHTML = SHOTS.map(function(s){
+  var dur = s.to - s.from, pct = (dur/TOTAL*100).toFixed(2);
+  return '<div class="seg" style="flex:0 0 '+pct+'%;background:'+COLORS[s.id]+'" title="'+s.nm+' '+fmt(dur)+'s"><span>'+s.id+'</span></div>';
+}).join('');
+
+document.getElementById('shots').innerHTML = SHOTS.map(function(s, i){
+  var dur = s.to - s.from;
+  var frame;
+  if(s.img){
+    frame = '<div class="viewport"><img src="'+s.img+'" alt="'+s.nm+'"><div class="cap">成片取景示意 · 实际为动态录屏</div></div>';
+  } else if(s.kind === 'card'){
+    frame = '<div class="viewport"><div class="card-mock" style="background:linear-gradient(150deg,#2f3b45,#46545f)">'
+      + '<div class="ttl">星火</div>'
+      + '<div class="kw"><i>多租户</i><i>插件化</i><i>GEO 闭环</i></div></div>'
+      + '<div class="cap">片头卡示意 · 逐帧渲染</div></div>';
+  } else if(s.kind === 'pain'){
+    frame = '<div class="viewport" style="background:#f5f6f7">'
+      + '<div class="card-mock" style="gap:0;justify-content:center"><div class="pain">'
+      + '<i>一个产品，五个平台</i><i>每句话都怕踩合规</i><i>做完了，不知道有没有用</i></div></div>'
+      + '<div class="cap">痛点卡示意 · 逐帧渲染</div></div>';
+  } else {
+    frame = '<div class="viewport"><div class="card-mock" style="background:linear-gradient(150deg,#2f3b45,#46545f)">'
+      + '<div class="ttl" style="font-size:15px">多租户 · 插件化 · 合规闸门 · GEO 闭环</div>'
+      + '<div class="kw"><i>按年订阅</i><i>私有化部署</i></div></div>'
+      + '<div class="cap">结尾卡示意 · 逐帧渲染</div></div>';
+  }
+
+  return '<div class="shot">'
+    + '<div class="hd"><div class="no">'+s.id+'</div><div class="nm">'+s.nm+'</div>'
+    + '<div class="tm">'+fmt(s.from)+' – '+fmt(s.to)+'s ／ '+fmt(dur)+'s</div></div>'
+    + '<div class="bd"><div class="frame">'+frame+'</div><div class="info">'
+    + '<div class="lab">旁白</div>'
+    + (s.vo ? '<div class="vo">「'+s.vo+'」</div>' : '<div class="vo none">'+s.voNote+'</div>')
+    + '<div class="lab">画面</div><p>'+s.vis+'</p>'
+    + '<div class="lab" style="margin-top:11px">镜头与动效</div><p>'+s.fx+'</p>'
+    + '<div class="lab" style="margin-top:11px">这一幕要传达</div><p>'+s.aim+'</p>'
+    + '<div class="tags">'+s.tags.map(function(t){
+        var cls = /重点/.test(t) ? 't-a' : (/录屏/.test(t)?'t-bl':(/渲染/.test(t)?'t-b':'t-g'));
+        return '<span class="tag '+cls+'">'+t+'</span>';
+      }).join('')+'</div>'
+    + '</div></div></div>';
+}).join('');
+</script>
+</body>
+</html>

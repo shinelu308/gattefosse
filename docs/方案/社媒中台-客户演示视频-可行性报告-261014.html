@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星火 · 客户演示视频 · 可行性报告与分镜方案</title>
+<style>
+:root{
+  --green:#8EB73C; --green-dark:#5f7d1f; --green-light:#f4f9e9;
+  --ink:#2b3138; --ink2:#54616C; --ink3:#8a949d;
+  --line:#e4e7ea; --bg:#f6f7f8;
+  --amber:#BA7517; --amber-light:#fef9f0; --red:#A32D2D; --red-light:#fdf2f2;
+  --blue:#185FA5; --blue-light:#eef5fc; --purple:#534AB7; --purple-light:#f0eefc;
+  --radius:10px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",Roboto,sans-serif;
+  --mono:Consolas,Monaco,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.78;font-size:14px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:46px 26px 84px}
+.hero{background:#fff;border:1px solid var(--line);border-radius:14px;padding:30px 34px;margin-bottom:22px;border-top:3px solid var(--green)}
+.hero .kicker{font-size:11.5px;letter-spacing:1.6px;color:var(--green-dark);font-weight:500;margin-bottom:9px}
+.hero h1{font-size:25px;font-weight:500;line-height:1.42;margin-bottom:8px}
+.hero .sub{font-size:13px;color:var(--ink2)}
+.hero .meta{margin-top:16px;padding-top:15px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap}
+h2{font-size:18px;font-weight:500;margin:34px 0 13px;padding-left:11px;border-left:3px solid var(--green);line-height:1.45}
+h3{font-size:14.5px;font-weight:500;margin:22px 0 9px}
+h4{font-size:13.5px;font-weight:500;margin:15px 0 7px;color:var(--ink2)}
+p{margin:9px 0}
+ul,ol{margin:9px 0 9px 21px}
+li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:13px;background:#fff}
+th{background:#f3f5f3;text-align:left;font-weight:500;padding:10px 12px;border:1px solid var(--line);line-height:1.6;font-size:12.5px}
+td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;line-height:1.72}
+td.c,th.c{text-align:center}
+code{background:#f3f5f3;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12.5px;font-family:var(--mono);color:#3f4a52}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin:13px 0}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:9px;line-height:1.75;white-space:nowrap}
+.t-b{background:var(--green-light);color:var(--green-dark)}
+.t-a{background:var(--amber-light);color:var(--amber)}
+.t-r{background:var(--red-light);color:var(--red)}
+.t-bl{background:var(--blue-light);color:var(--blue)}
+.t-p{background:var(--purple-light);color:var(--purple)}
+.t-g{background:#f0f1f2;color:var(--ink2)}
+.note{border-left:3px solid var(--amber);background:var(--amber-light);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin:13px 0;font-size:13px}
+.note.danger{border-left-color:var(--red);background:var(--red-light)}
+.note.ok{border-left-color:var(--green);background:var(--green-light)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.kpi .l{font-size:11.5px;color:var(--ink3);margin-bottom:4px}
+.kpi .v{font-size:22px;font-weight:500;line-height:1.3}
+.kpi .v em{font-size:12px;font-style:normal;color:var(--ink3);font-weight:400}
+.kpi .d{font-size:11px;color:var(--ink3);margin-top:2px}
+@media (max-width:760px){.kpis{grid-template-columns:1fr 1fr}.wrap{padding:22px 14px 60px}.hero{padding:20px 18px}}
+.foot{margin-top:40px;padding-top:16px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="kicker">可行性报告与分镜方案 · v1.0</div>
+  <h1>星火 · 客户演示视频</h1>
+  <div class="sub">用真实界面演示「一个后台服务 N 个客户 + 插件乐高 + 合作方 AI 生成通道 + GEO 闭环」，面向潜在客户与合作机构</div>
+  <div class="meta">
+    <span>日期：2026-10-14</span>
+    <span>素材：星火可交互演示原型（真实界面，10 个视图）</span>
+    <span>建议成片：150 秒（另出 60 秒精华版）</span>
+  </div>
+</div>
+
+<h2>一、执行摘要</h2>
+
+<div class="note ok"><b>结论：可行，且已跑通。</b>链路在本项目验证过一次（260914 已交付 60 秒版），本次又用<b>片头 + 痛点两幕</b>真实渲染了一条 15 秒样片（含配音、字幕、混音），全流程无阻断。<b>报告撰写过程中发现的两个依赖缺口（ffmpeg 缺失、TTS 接口 403）均已解决并实测通过</b>，详见第五章。</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="l">建议成片时长</div><div class="v">150 <em>秒</em></div><div class="d">比上版长，因中台概念更复杂</div></div>
+  <div class="kpi"><div class="l">分镜数量</div><div class="v">10 <em>幕</em></div><div class="d">5 个章节，可裁成 60 秒版</div></div>
+  <div class="kpi"><div class="l">画面来源</div><div class="v">100% <em>真实界面</em></div><div class="d">不用 AI 生成假 UI</div></div>
+  <div class="kpi"><div class="l">预计制作工时</div><div class="v">4.5 <em>小时</em></div><div class="d">含渲染 25 分钟（跑后台）</div></div>
+</div>
+
+<div class="note"><b>可先看的样片：</b><code>admin/outputs/社媒中台-演示视频-样片-15s.mp4</code>（15 秒，1920×1080，含配音与字幕）。样片只做片头卡与痛点卡两幕，用来确认<b>画面质感、中文女声音色、字幕样式与节奏</b>；界面操作段落（s2–s8）尚未录制。</div>
+
+<h2>二、演示目标与受众</h2>
+
+<table>
+<tr><th style="width:16%">受众</th><th style="width:42%">他们看完要记住什么</th><th>对应的分镜</th></tr>
+<tr>
+  <td><b>潜在客户</b><br><span style="font-size:11.5px;color:var(--ink3)">品牌市场负责人</span></td>
+  <td>这套东西能把我从「一个人管五个平台」里解放出来，而且成本可控、能过合规、还能提升在 AI 里的存在感</td>
+  <td>第一、四、五、六章（问题 → 生产 → 合规分发 → GEO）</td>
+</tr>
+<tr>
+  <td><b>合作机构</b><br><span style="font-size:11.5px;color:var(--ink3)">AI 生成平台 / 影视公司</span></td>
+  <td>我的能力进他们的通道列表就能卖给所有客户，按量分账，不用自己找客户</td>
+  <td>第三章（插件市场）+ 第四章（生成通道）</td>
+</tr>
+<tr>
+  <td><b>大企业客户</b><br><span style="font-size:11.5px;color:var(--ink3)">要私有化部署</span></td>
+  <td>同一套东西可以搬到我们自己机房，数据不出门</td>
+  <td>第六章结尾（私有化版 + BYOK）</td>
+</tr>
+</table>
+
+<div class="note"><b>一句话定调：</b>这不是「产品功能罗列」，而是「一个运营人员的日常」。全片跟着一个人做事：选定产品 → 生成内容 → 过合规 → 发出去 → 看 AI 有没有引用。客户看到的不是菜单，是一条能跑完的流水线。</div>
+
+<h2>三、内容方案</h2>
+
+<h3>3.1 叙事结构（五章）</h3>
+<table>
+<tr><th class="c" style="width:8%">章</th><th style="width:20%">章节</th><th style="width:14%">时长</th><th>要传达的一件事</th></tr>
+<tr><td class="c"><b>一</b></td><td>痛点</td><td>0 – 16s</td><td>内容做一条不难，难的是持续做、还要合规、还要被 AI 看见</td></tr>
+<tr><td class="c"><b>二</b></td><td>一套后台，N 个客户</td><td>16 – 46s</td><td>多租户 + 白标：切换租户看品牌、套餐、功能全变</td></tr>
+<tr><td class="c"><b>三</b></td><td>功能像积木</td><td>46 – 64s</td><td>插件市场启停，菜单即时变化，只为用到的功能付费</td></tr>
+<tr><td class="c"><b>四</b></td><td>从素材到分发</td><td>64 – 118s</td><td>全片重心：生成（含合作方通道）→ 合规 → 一键分发 5 平台</td></tr>
+<tr><td class="c"><b>五</b></td><td>让 AI 认识你 + 交付方式</td><td>118 – 150s</td><td>GEO 闭环（分发 → 被引用 → 回流选题）+ SaaS / 私有化两种交付</td></tr>
+</table>
+
+<h3>3.2 完整分镜表</h3>
+<table>
+<tr><th class="c" style="width:7%">幕</th><th style="width:11%">时间</th><th style="width:30%">画面</th><th>旁白</th></tr>
+<tr>
+  <td class="c"><b>s0</b></td><td>0.0 – 6.0s</td>
+  <td>标题卡：中台标识 + 「星火」+ 三个关键词依次弹入（多租户 / 插件化 / GEO 闭环）</td>
+  <td><span style="color:var(--ink3)">（无旁白，纯画面 + 轻音效）</span></td>
+</tr>
+<tr>
+  <td class="c"><b>s1</b></td><td>6.0 – 16.0s</td>
+  <td>三张痛点卡逐条推入：一个产品要发五个平台 / 每句话都怕踩合规 / 做完了不知道有没有用</td>
+  <td>做一条内容不难。难的是每个产品都要发五个平台，每句话都要过合规，做完了还不知道有没有人看见。</td>
+</tr>
+<tr>
+  <td class="c"><b>s2</b></td><td>16.0 – 30.0s</td>
+  <td>总览页 → 顶部租户切换（嘉法狮 → 客户B → 客户C）：品牌色、套餐、侧栏菜单、Credit 余额同步变化</td>
+  <td>这是一套可以服务很多客户的后台。切换租户，品牌、套餐、功能、额度，全部跟着变。</td>
+</tr>
+<tr>
+  <td class="c"><b>s3</b></td><td>30.0 – 46.0s</td>
+  <td>插件市场：点「启用插件」→ 左侧菜单长出新功能；再点「停用」→ 收起。七张插件卡 + 三张合作方生态卡</td>
+  <td>功能像积木。客户要什么就装什么，菜单立刻出现；不用了就停掉，钱也停下来。</td>
+</tr>
+<tr>
+  <td class="c"><b>s4</b></td><td>46.0 – 64.0s</td>
+  <td>内容工厂：勾选产品资料 → 选「短视频」→ 通道列表自动过滤成一条（星辰影视 AI）</td>
+  <td>回到运营的日常。选一个产品，选一种形态，系统只列出能干这活的生成通道。</td>
+</tr>
+<tr>
+  <td class="c"><b>s5</b></td><td>64.0 – 84.0s</td>
+  <td>点「开始生成」：进度条推进 + 日志滚动（解析素材 → 注入结构化要素 → 调用通道 → 素材回传 → 计费入账），顶部 Credit 余额实时扣减</td>
+  <td>合作伙伴的 AI 影视、数字人平台就在这个列表里。生成按量计费，花了多少，看得见。</td>
+</tr>
+<tr>
+  <td class="c"><b>s6</b></td><td>84.0 – 100.0s</td>
+  <td>合规闸门：三项校验逐项打勾（AI 标识 / 敏感词 / 平台规则），数字人形态多出一项授权留痕</td>
+  <td>每一句 AI 生成的内容都要过合规闸门。标识自动注入，违规词当场拦下。</td>
+</tr>
+<tr>
+  <td class="c"><b>s7</b></td><td>100.0 – 118.0s</td>
+  <td>发布中心一键分发：公众号 / 抖音 / B站 状态转「已发布」，小红书 / 视频号 转「粘贴包已生成」</td>
+  <td>能直发的直接发出去。不能直发的，生成一份粘贴包，复制、扫码、发走，三十秒的事。</td>
+</tr>
+<tr>
+  <td class="c"><b>s8</b></td><td>118.0 – 138.0s</td>
+  <td>GEO 资产池 + AI 可见度监测：五个模型提及情况 + 引用率 + 回流建议（被引用的加产、没被引用的改写）</td>
+  <td>更重要的是让 AI 认识你。内容分发出去，AI 引用了多少，一目了然，再反过来指导下一轮选题。</td>
+</tr>
+<tr>
+  <td class="c"><b>s9</b></td><td>138.0 – 150.0s</td>
+  <td>结尾卡：四个关键词点亮（多租户 · 插件化 · 合规闸门 · GEO 闭环）+ 交付方式（SaaS / 私有化）落版</td>
+  <td>一套后台，管住内容、渠道、合规和 AI 可见度。可以按年订阅，也可以私有化部署。</td>
+</tr>
+</table>
+
+<h3>3.3 旁白全文（可直接用于配音，共 9 句）</h3>
+<div class="card">
+<p style="margin-top:0"><b>s1</b>　做一条内容不难。难的是每个产品都要发五个平台，每句话都要过合规，做完了还不知道有没有人看见。</p>
+<p><b>s2</b>　这是一套可以服务很多客户的后台。切换租户，品牌、套餐、功能、额度，全部跟着变。</p>
+<p><b>s3</b>　功能像积木。客户要什么就装什么，菜单立刻出现；不用了就停掉，钱也停下来。</p>
+<p><b>s4</b>　回到运营的日常。选一个产品，选一种形态，系统只列出能干这活的生成通道。</p>
+<p><b>s5</b>　合作伙伴的 AI 影视、数字人平台就在这个列表里。生成按量计费，花了多少，看得见。</p>
+<p><b>s6</b>　每一句 AI 生成的内容都要过合规闸门。标识自动注入，违规词当场拦下。</p>
+<p><b>s7</b>　能直发的直接发出去。不能直发的，生成一份粘贴包，复制、扫码、发走，三十秒的事。</p>
+<p><b>s8</b>　更重要的是让 AI 认识你。内容分发出去，AI 引用了多少，一目了然，再反过来指导下一轮选题。</p>
+<p style="margin-bottom:0"><b>s9</b>　一套后台，管住内容、渠道、合规和 AI 可见度。可以按年订阅，也可以私有化部署。</p>
+</div>
+<p style="font-size:12.5px;color:var(--ink2)">字数约 380 字，按 <code>edge-tts</code> 中文女声 <code>+8%</code> 语速（实测约 4.3 字/秒）估算旁白净时长约 88 秒，加上留白与纯画面段，成片约 150 秒。<b>最终时长以配音实测为准</b>——先定音、后定帧，顺序不反。</p>
+
+<div class="note"><b>数字读法注意：</b>旁白中刻意避开数字（不说「五个平台」「三个通道」的具体值，或写成中文数字），因为 TTS 读阿拉伯数字易出错。画面里可以出现精确数字（真值：5 个分发平台、3 条生成通道、7 个插件）。</div>
+
+<h2>四、技术路线</h2>
+
+<h3>4.1 三条路线对比</h3>
+<table>
+<tr><th style="width:14%">路线</th><th style="width:30%">做法</th><th style="width:24%">优点</th><th>缺点</th><th class="c" style="width:10%">结论</th></tr>
+<tr>
+  <td><b>A 逐帧渲染</b></td>
+  <td>舞台页写成纯函数 <code>renderAt(t)</code>，按 t 逐帧截图再编码（上一版用的）</td>
+  <td>帧精确、零抖动、可无损重录、任何一帧都能重出</td>
+  <td><b>与异步动画冲突</b>：中台原型里的进度条/下发状态由 <code>setTimeout</code> 驱动，不受时间轴控制，抓到的可能是中间态且每次不同</td>
+  <td class="c"><span class="tag t-g">部分适用</span></td>
+</tr>
+<tr>
+  <td><b>B 分段录屏</b></td>
+  <td>每一幕单独用 CDP 录屏（真实点击），按旁白实测时长后期配速，再拼接</td>
+  <td>异步动画自然播放；<b>单幕可重录</b>（改哪幕录哪幕）；贴合「分段分镜再集合」的思路</td>
+  <td>帧率不稳需重采样；需隐藏鼠标痕迹；配速靠后期变速</td>
+  <td class="c"><span class="tag t-b">推荐</span></td>
+</tr>
+<tr>
+  <td><b>C 混合</b></td>
+  <td>片头/结尾/数据卡（纯 CSS 动画）走 A 逐帧；界面操作段落走 B 录屏；统一 30fps 后拼接</td>
+  <td>兼顾画面干净度与异步动画的真实性；改动量最小</td>
+  <td>两套素材需统一色彩与节奏</td>
+  <td class="c"><span class="tag t-b">采用</span></td>
+</tr>
+</table>
+
+<p><b>推荐按路线 C 执行：</b>片头卡与结尾卡共 2 幕用逐帧渲染（这两幕无异步依赖，最能出质感）；其余 8 幕用分段录屏（真实操作，异步动画自然）。这样既不用为了配速去改造刚完成的原型，也保住了首尾的干净度。</p>
+
+<h3>4.2 制作流程图</h3>
+<div class="card" style="font-size:13px;line-height:2.1">
+<b>① 定文案</b> → storyboard.json（10 幕：旁白 + 画面说明）<br>
+<b>② 定音</b> → edge-tts 逐句合成 → 逐句量真实时长 → 回填分镜时长<br>
+<b>③ 录画面</b> → 起本地静态服务 → 逐幕录屏（真实点击，含异步动画）→ 得到 clips/sN.mp4<br>
+<b>④ 配速</b> → 每段按旁白时长变速（系数控制 0.9–1.1）→ 统一 1920×1080 / 30fps<br>
+<b>⑤ 拼接合成</b> → ffmpeg concat 10 段 → 混音（adelay + amix + loudnorm）→ 硬字幕<br>
+<b>⑥ 验收</b> → 抽帧对位（每一幕起点画面与分镜表一致）+ 逐段验电平（每句旁白都有声）+ 无黑帧白屏
+</div>
+
+<h3>4.3 关键技术点</h3>
+<ul>
+  <li><b>同源服务：</b>这次演示对象是<b>单文件自包含</b>的中台原型，起一个静态服务（<code>python -m http.server</code>）指向 <code>admin/outputs/</code> 即可，<b>不需要启动后端</b>——比上一版更简单。</li>
+  <li><b>录屏方式：</b>用 Puppeteer 的 CDP <code>Page.startScreencast</code> 抓帧（比整屏录制清晰、无窗口边框），或按 30fps 定时截图。中台原型的动画节奏是已知的（进度 420ms×8、校验 500ms×3、分发 620ms×5），可以据此预估每段原始时长。</li>
+  <li><b>隐藏演示痕迹：</b>原型底部的「交互演示」提示条与 toast 弹泡在录屏时需注入 CSS 隐藏（舞台层统一处理），避免成片里出现调试信息。</li>
+  <li><b>画面质感：</b>1920×1080 下原型是 1440 宽的布局，会用 <code>deviceScaleFactor</code> 缩放策略或视口调整保证不留大片空白；界面在 1080p 里保留安全边距，配合淡入淡出与轻微推近（transform: scale）避免「死画面」。</li>
+  <li><b>字幕：</b>中文硬字幕压底部安全区，每句不超过 20 字，与旁白同步。</li>
+</ul>
+
+<h2>五、技术依赖核验（已实测）</h2>
+
+<table>
+<tr><th style="width:26%">依赖</th><th style="width:14%">状态</th><th>说明</th></tr>
+<tr><td>Chrome（无头）</td><td><span class="tag t-b">已就绪</span></td><td>系统 Chrome 与 Puppeteer 版均可用，上一版渲染脚本已跑通</td></tr>
+<tr><td>edge-tts（配音）</td><td><span class="tag t-b">已就绪</span></td><td><code>envs/tts/Scripts/edge-tts.exe</code>，中文女声 <code>xiaoxiao</code> / <code>xiaoyi</code> 可选</td></tr>
+<tr><td>上一版全链路脚本</td><td><span class="tag t-b">可复用</span></td><td>storyboard / tts / 量时长 / 渲染 / 混音 / 编码 6 个脚本在 <code>.workbuddy/tmp/video-260914/</code>，60 秒版已成功交付</td></tr>
+<tr><td>素材页</td><td><span class="tag t-b">已就绪</span></td><td>中台可交互演示原型（261014），10 个视图，41 项交互断言全过，无 console 报错</td></tr>
+<tr><td><b>ffmpeg（编码/混音）</b></td><td><span class="tag t-b">已解决</span></td><td>本报告发现的缺口。<b>本机剪映自带 ffmpeg 不可用</b>（<code>--disable-ffprobe</code>、无 <code>libx264</code>）；<code>ffmpeg-static</code> 经 npm 下载时 GitHub 返回 502 失败三次。<b>改用 PyPI 的 <code>imageio-ffmpeg</code> 解决</b>：自带 ffmpeg 7.1-essentials（gyan.dev 构建，87 MB），实测含 <code>libx264</code> / <code>aac</code> / <code>adelay</code> / <code>amix</code> / <code>loudnorm</code> / <code>libass</code>，全部满足流程需要</td></tr>
+<tr><td>配音服务</td><td><span class="tag t-b">已解决</span></td><td>edge-tts 7.2.8 调用微软语音服务返回 <b>403</b>（token 算法过期）。升级到 7.3.1 后恢复正常，已实测合成成功</td></tr>
+</table>
+
+<div class="note ok">
+<b>样片已跑通，实测数据如下（全部为真实产出，非估算）：</b>
+<table style="margin-top:9px;background:transparent">
+<tr><th style="width:38%">项</th><th>实测结果</th></tr>
+<tr><td>样片时长 / 规格</td><td>14.80 秒 / 1920×1080 / 30fps / H.264 High / AAC 48kHz 立体声</td></tr>
+<tr><td>文件大小</td><td>0.81 MB（纯色卡面 + 文字动画，压缩率极高）</td></tr>
+<tr><td>渲染速度</td><td>444 帧 / 39 秒（约 11.4 fps）—— 150 秒成片约 4500 帧，预计渲染 6–7 分钟（上版估的 25 分钟含界面录屏，此处更快）</td></tr>
+<tr><td>配音</td><td>单句 46 字 → 9.12 秒（约 5.0 字/秒，含 +8% 语速）</td></tr>
+<tr><td>音频对位</td><td>0–4.5s 片头静音（实测 -91 dB）；5–6s 旁白 -18.8 dB；11–12s 旁白 -17.5 dB —— 声画对位正确</td></tr>
+<tr><td>抽帧对位</td><td>6 个时间点抽帧全部与分镜一致（片头淡入 / 关键词 / 痛点卡逐步落入 / 收尾）</td></tr>
+<tr><td>渲染期报错</td><td>0</td></tr>
+</table>
+</div>
+
+<div class="note danger">
+<b>为什么剪映的 ffmpeg 不能用：</b>实测其编译参数含 <code>--disable-ffprobe</code>（无法量取音频时长，而「先定音后定帧」整套流程依赖它）且编码器列表中没有 <code>libx264</code>（无法输出 H.264）。虽然它有 <code>adelay</code> / <code>amix</code> / <code>loudnorm</code> 滤镜，但缺前两项就不可用。<b>最终解法：</b>安装 PyPI 的 <code>imageio-ffmpeg</code>（自带完整静态构建），不污染系统环境，也不依赖 GitHub 下载。
+</div>
+
+<div class="note">
+<b>过程中修掉的一个真缺陷：</b>样片首帧渲染出来全黑。原因是淡入遮罩的归一化写反了（<code>seg(t,-0.6,0)</code> 在 t≥0 时恒等于 1，黑色遮罩一直盖在画面上）。修正为 <code>1 - seg(t,0,0.6)</code> 后正常。这类问题只有<b>抽帧亲眼核对</b>才能发现——码率从 17 kb/s 涨到 337 kb/s 就是最直接的证据。
+</div>
+
+<h2>六、交付规格</h2>
+
+<table>
+<tr><th style="width:24%">项</th><th>规格</th></tr>
+<tr><td>分辨率 / 帧率</td><td>1920×1080 / 30fps（另可出 1080×1920 竖屏版，供视频号 / 朋友圈）</td></tr>
+<tr><td>编码</td><td>H.264 High@4.1，CRF 18，<code>yuv420p</code>，AAC 192k / 48kHz，<code>+faststart</code></td></tr>
+<tr><td>时长</td><td>主片 150 秒（±5 秒）；另出 <b>60 秒精华版</b>（取 s0/s2/s4-s7/s9 六幕）</td></tr>
+<tr><td>配音</td><td>zh-CN 女声，语速 +8%，响度标准化 -16 LUFS（适配手机外放）</td></tr>
+<tr><td>字幕</td><td>中文硬字幕（底部安全区），可选外挂 SRT 以便二次剪辑</td></tr>
+<tr><td>附件</td><td>分镜稿（含逐句旁白与数据来源）、封面图 1 张</td></tr>
+</table>
+
+<h2>七、风险与对策</h2>
+
+<table>
+<tr><th class="c" style="width:7%">#</th><th style="width:30%">风险</th><th style="width:9%">等级</th><th>对策</th></tr>
+<tr><td class="c">1</td><td>原型的异步动画（进度条、状态流转）与逐帧渲染不兼容，易抓到中间态</td><td class="c"><span class="tag t-r">高</span></td><td>已通过路线 C 规避：这些段落走分段录屏，动画按真实节奏播放，不再逐帧抓取</td></tr>
+<tr><td class="c">2</td><td>录屏帧率不稳，成片可能有轻微顿挫</td><td class="c"><span class="tag t-a">中</span></td><td>统一重采样到 30fps；关键动作用「停留 + 轻微推近」替代快速运动</td></tr>
+<tr><td class="c">3</td><td>配音时长与画面不匹配（旁白长了画面不够、短了画面空转）</td><td class="c"><span class="tag t-a">中</span></td><td>严格「先定音后定帧」；每段按实测时长配速，系数限制在 0.9–1.1 防止变速痕迹</td></tr>
+<tr><td class="c">4</td><td>150 秒偏长，客户可能看不完</td><td class="c"><span class="tag t-a">中</span></td><td>同步产出 60 秒精华版用于微信传播；主片用于会议与官网</td></tr>
+<tr><td class="c">5</td><td>成片里露出调试信息（演示提示条、toast、Credit 数字跳变）</td><td class="c"><span class="tag t-b">低</span></td><td>舞台层注入 CSS 隐藏提示条；录制时避开 toast 弹出的瞬间</td></tr>
+<tr><td class="c">6</td><td>旁白数字被读错</td><td class="c"><span class="tag t-b">低</span></td><td>旁白稿一律用中文数字或不写具体数字；画面承担精确数字</td></tr>
+</table>
+
+<h2>八、工时估算</h2>
+
+<table>
+<tr><th style="width:44%">环节</th><th class="c" style="width:18%">工时</th><th>说明</th></tr>
+<tr><td>文案定稿与分镜微调</td><td class="c">0.5 h</td><td>本报告的分镜与旁白确认后即可用</td></tr>
+<tr><td>配音合成 + 时长回填</td><td class="c">0.3 h</td><td>9 句逐句合成，脚本自动量时长</td></tr>
+<tr><td>录屏（8 幕）</td><td class="c">1.5 h</td><td>含起服务、逐幕录制、失败重录</td></tr>
+<tr><td>片头/结尾逐帧渲染（2 幕）</td><td class="c">0.6 h</td><td>渲染约 10 分钟，可后台跑</td></tr>
+<tr><td>配速拼接 + 混音 + 字幕</td><td class="c">1.0 h</td><td>ffmpeg 批处理，含反复微调</td></tr>
+<tr><td>验收（抽帧对位 + 电平检查）</td><td class="c">0.6 h</td><td>逐幕核对，重点查声画同步</td></tr>
+<tr><td colspan="1"><b>合计</b></td><td class="c"><b>约 4.5 h</b></td><td>不含用户看片与改词往返</td></tr>
+</table>
+
+<h2>九、待确认项</h2>
+
+<div class="note">
+<b>开拍前需要你确认四件事：</b>
+<ol style="margin-bottom:0">
+  <li><b>时长</b>——按 150 秒主片 + 60 秒精华版出，还是只做其中一版？</li>
+  <li><b>旁白口吻</b>——现在这版是「对客户说话」（销售口吻）。如果要一版「对合作方说话」的（强调通道分账、零获客成本），需要换 s2/s3/s9 三句。</li>
+  <li><b>是否露出真实客户名</b>——分镜里用了「客户B / 客户C」占位。若视频要外发，建议保持占位；若只内部看，可换成真实名称。</li>
+  <li><b>要不要竖屏版</b>——竖屏版需要舞台页重新适配画幅，增加约 1 小时。</li>
+</ol>
+</div>
+
+<div class="foot">
+星火 · 客户演示视频 · 可行性报告与分镜方案 v1.0 ｜ 2026-10-14 ｜ 素材：中台可交互演示原型 261014 ｜ 配套：分镜预览页（同目录 images/…）
+</div>
+
+</div>
+</body>
+</html>
