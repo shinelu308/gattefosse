@@ -22,7 +22,7 @@ const puppeteer = require('puppeteer-core');
     return { cards: cards.length, btnText: btn ? btn.textContent.trim() : null, facetBtns, accTitles };
   });
   console.log('PC页:', JSON.stringify(pc, null, 1));
-  await page.screenshot({ path: 'E:/项目开发区/嘉法狮网站重建/.workbuddy/tmp-pc-pub.png', clip: { x: 0, y: 0, width: 1440, height: 1600 } });
+  await page.screenshot({ path: 'D://workbuddy//gattefosse/.workbuddy/tmp-pc-pub.png', clip: { x: 0, y: 0, width: 1440, height: 1600 } });
 
   // PC 类型过滤链接跳转
   await page.goto('http://localhost:3000/personal-care/get-inspired/publications.html?publicationType=' + encodeURIComponent('海报') + '&_t=' + Date.now(), { waitUntil: 'networkidle2', timeout: 30000 });
@@ -44,7 +44,7 @@ const puppeteer = require('puppeteer-core');
     return { cards: cards.length, btnText: btn ? btn.textContent.trim() : null, facetBtns, accTitles };
   });
   console.log('药用页:', JSON.stringify(ph, null, 1));
-  await page.screenshot({ path: 'E:/项目开发区/嘉法狮网站重建/.workbuddy/tmp-ph-pub.png', clip: { x: 0, y: 0, width: 1440, height: 1600 } });
+  await page.screenshot({ path: 'D://workbuddy//gattefosse/.workbuddy/tmp-ph-pub.png', clip: { x: 0, y: 0, width: 1440, height: 1600 } });
 
   // ===== 空态验证（过滤无结果） =====
   await page.goto('http://localhost:3000/personal-care/get-inspired/publications.html?tagId=' + encodeURIComponent('不存在的标签') + '&_t=' + Date.now(), { waitUntil: 'networkidle2', timeout: 30000 });

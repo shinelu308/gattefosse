@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>客户演示 · 作战手册｜嘉法狮中国</title>
+<style>
+  :root{
+    --ink:#10151c; --ink-2:#3d4855; --ink-3:#6b7785; --ink-4:#98a2ae;
+    --line:#e3e7ec; --line-2:#cdd5de;
+    --bg:#f4f6f8; --paper:#ffffff;
+    --accent:#1c5f8c; --accent-soft:#eaf2f8;
+    --gold:#a8741a; --gold-soft:#fdf6e8;
+    --red:#b4362f; --red-soft:#fdeeed;
+    --green:#2f7a4f; --green-soft:#ecf7f0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:14.5px; line-height:1.8; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+  /* ── 头部 ── */
+  header.top{
+    background:var(--paper);border-bottom:1px solid var(--line);
+    padding:26px 0 22px;margin-bottom:22px;
+  }
+  header.top .wrap{padding-bottom:0}
+  .eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+  h1{margin:0 0 10px;font-size:27px;line-height:1.35;letter-spacing:-.01em;font-weight:800}
+  .sub{margin:0;color:var(--ink-3);font-size:13.5px}
+  .sub code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12px;color:var(--ink-2)}
+
+  /* ── 卡片 ── */
+  section{
+    background:var(--paper);border:1px solid var(--line);border-radius:12px;
+    padding:24px 26px;margin-bottom:16px;
+  }
+  h2{
+    margin:0 0 16px;font-size:18px;font-weight:800;letter-spacing:-.005em;
+    padding-left:12px;border-left:4px solid var(--accent);line-height:1.5;
+  }
+  h3{margin:22px 0 10px;font-size:15px;font-weight:700;color:var(--ink)}
+  h3:first-of-type{margin-top:4px}
+  h4{margin:16px 0 8px;font-size:13.5px;font-weight:700;color:var(--ink-2)}
+  p{margin:0 0 10px}
+  ul,ol{margin:0 0 12px;padding-left:22px}
+  li{margin-bottom:6px}
+  strong{font-weight:700;color:var(--ink)}
+  em{font-style:normal;background:var(--gold-soft);color:var(--gold);font-weight:700;padding:1px 6px;border-radius:4px;font-size:.94em}
+
+  /* ── 结论卡 ── */
+  .verdict{
+    background:var(--accent-soft);border:1px solid #cfe0ee;border-left:4px solid var(--accent);
+    border-radius:10px;padding:18px 22px;margin:0;
+  }
+  .verdict .lead{font-size:16.5px;font-weight:800;color:var(--accent);margin:0 0 10px;line-height:1.6}
+  .verdict p:last-child{margin-bottom:0}
+
+  /* ── 表格 ── */
+  table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:13.5px}
+  thead th{
+    background:#f7f9fb;border:1px solid var(--line-2);border-bottom:2px solid var(--line-2);
+    padding:9px 11px;text-align:left;font-weight:700;font-size:12.5px;color:var(--ink-2);line-height:1.55;
+  }
+  tbody td{border:1px solid var(--line);padding:9px 11px;vertical-align:top;line-height:1.72}
+  tbody tr:nth-child(even) td{background:#fbfcfd}
+  .t-narrow{width:104px;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+  .t-mid{width:180px}
+  .num{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+
+  /* ── 徽标 ── */
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:5px;line-height:1.7;white-space:nowrap}
+  .tag-must{background:var(--red-soft);color:var(--red)}
+  .tag-good{background:var(--green-soft);color:var(--green)}
+  .tag-warn{background:var(--gold-soft);color:var(--gold)}
+  .tag-info{background:var(--accent-soft);color:var(--accent)}
+  .tag-off{background:#f0f2f5;color:var(--ink-4)}
+
+  /* ── 高光卡 ── */
+  .hl{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:12px}
+  .hl-h{background:#f7f9fb;border-bottom:1px solid var(--line);padding:10px 16px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .hl-h .n{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;
+    font-size:12px;font-weight:800;flex:none;
+  }
+  .hl-b{padding:13px 16px}
+  .hl-b p{margin:0 0 8px}
+  .hl-b p:last-child{margin-bottom:0}
+  .hl-b .do{color:var(--green);font-weight:700}
+  .hl-b .say{color:var(--accent);font-weight:700}
+
+  /* ── 三栏 ── */
+  .cols3{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .col3{flex:1 1 240px;border:1px solid var(--line);border-radius:9px;padding:14px 16px;background:#fbfcfd}
+  .col3 .k{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:6px;letter-spacing:.02em}
+  .col3 .v{font-size:14px;font-weight:700;margin-bottom:6px}
+  .col3 .d{font-size:12.5px;color:var(--ink-3);line-height:1.7}
+
+  /* ── 报价 ── */
+  .price{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+  .pcard{flex:1 1 200px;border:1px solid var(--line-2);border-radius:10px;padding:16px 18px;background:var(--paper)}
+  .pcard.hero{border:2px solid var(--accent);background:var(--accent-soft);position:relative}
+  .pcard .pn{font-size:14px;font-weight:800;margin-bottom:2px}
+  .pcard .pd{font-size:12px;color:var(--ink-3);margin-bottom:12px}
+  .pcard .pv{font-size:24px;font-weight:800;color:var(--accent);letter-spacing:-.02em;line-height:1.2;font-variant-numeric:tabular-nums}
+  .pcard .pm{font-size:12px;color:var(--ink-3);margin-bottom:10px;font-variant-numeric:tabular-nums}
+  .pcard .pl{font-size:12.5px;color:var(--ink-2);line-height:1.75;border-top:1px dashed var(--line-2);padding-top:10px}
+  .pcard .badge{position:absolute;top:-9px;right:14px;background:var(--accent);color:#fff;font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:4px;letter-spacing:.04em}
+
+  /* ── 检查清单 ── */
+  .check{list-style:none;padding:0;margin:0}
+  .check li{
+    position:relative;padding-left:28px;margin-bottom:8px;font-size:13.5px;line-height:1.75;
+  }
+  .check li::before{
+    content:"";position:absolute;left:0;top:7px;width:14px;height:14px;
+    border:1.5px solid var(--line-2);border-radius:4px;background:#fff;
+  }
+  .check li.urgent::before{border-color:var(--red)}
+  .check li.urgent{color:var(--red);font-weight:600}
+
+  /* ── 引用 ── */
+  .quote{
+    background:var(--gold-soft);border-left:4px solid #e0b862;border-radius:0 8px 8px 0;
+    padding:13px 18px;margin:0 0 14px;font-size:14.5px;font-weight:600;color:#7a5510;line-height:1.8;
+  }
+  .quote span{display:block;font-size:12px;font-weight:500;color:var(--gold);margin-top:6px;letter-spacing:.02em}
+
+  .note{font-size:12.5px;color:var(--ink-3);line-height:1.75;margin:10px 0 0;padding-left:2px}
+
+  .divider{height:1px;background:var(--line);margin:20px 0}
+
+  footer{text-align:center;font-size:12px;color:var(--ink-4);padding:8px 0 0;line-height:1.9}
+
+  @media print{
+    body{background:#fff;font-size:11.5px}
+    header.top{border-bottom:1px solid #ccc;padding:0 0 10px}
+    section{border:none;border-top:1px solid #ddd;border-radius:0;padding:12px 0;margin-bottom:0;break-inside:avoid}
+    h2{border-left:3px solid #333;font-size:14px}
+    .pcard.hero{border:1.5px solid #333}
+    .hl,table,.pcard,.col3{break-inside:avoid}
+    thead th{background:#f0f0f0}
+    .wrap{max-width:100%;padding:0}
+    @page{margin:12mm}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Client Demo · Battle Sheet</div>
+    <h1>客户演示 · 作战手册</h1>
+    <p class="sub">基于《嘉法狮中国 · 年度数字资产运营服务方案》（GF-CN-DO-2026-01）｜ 配套素材：60 秒演示视频 · 社媒模块可交互原型 · 真实前后台系统</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ═══════════ 0 ═══════════ -->
+<section>
+  <h2>零、先给一句话参谋结论</h2>
+  <div class="verdict">
+    <p class="lead">不要把演示做成「功能巡展」，要做成「承诺—证据对照」。</p>
+    <p>方案的每一层服务承诺，都在系统里有一处对应的<b>现场证据</b>。您演的不是菜单，是「您花的这笔钱，每天在系统里是什么样子」。</p>
+    <p><b>因此三条纪律：</b><br>
+      ① <b>按客户的一天走</b>，不按后台侧边栏顺序走；<br>
+      ② <b>PPT 只留 2 页</b>（开场定调 + 收口报价），中间全部用真实系统；<br>
+      ③ <b>留一个让客户自己动手的环节</b>——让他当场改掉前台一处文字，这是全场最有说服力的 30 秒。</p>
+  </div>
+  <p class="note">补充判断：本次演示的主角是<b>系统功能</b>，方案是收口。顺序上「先证明能干什么，再谈要花多少钱」，比反过来有效得多。</p>
+</section>
+
+<!-- ═══════════ 1 ═══════════ -->
+<section>
+  <h2>一、60 分钟流程表（Run of Show）</h2>
+  <table>
+    <thead>
+      <tr><th class="t-narrow">时间</th><th class="t-mid">环节</th><th>做什么 · 一句话目标</th><th class="t-mid">素材</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="t-narrow">00:00–00:04</td>
+        <td><b>开场定调</b></td>
+        <td>不介绍公司、不念目录。只说一件事：<b>「2.0 系统把舞台搭好了，今天想跟您聊的是台上有没有人」</b>。抛出主张句，然后立刻进入演示。</td>
+        <td>PPT 第 1 页</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:04–00:06</td>
+        <td><b>全景视频</b></td>
+        <td>播 60 秒演示视频。目的不是展示，是<b>让客户建立地图</b>——知道待会儿看到的这几块拼在哪里。播完一句话过渡：「这是概览，下面我一块一块拆给您看。」</td>
+        <td>60s 视频</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:06–00:22</td>
+        <td><b>主线① 内容生产闭环</b><br><span class="tag tag-must">核心 16 分钟</span></td>
+        <td>演「市场部同事的一天」：后台发一条活动 → 前台立刻可见 → 顺带展示页面预览原位编辑。<b>直击 1.0 最大的痛：内容更新要外包排期。</b></td>
+        <td>真实后台<br>+ 前台</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:22–00:36</td>
+        <td><b>主线② 产品资料中台</b><br><span class="tag tag-info">14 分钟</span></td>
+        <td>演 PC 产品 / 配方 / 药用辅料三套底库，加标签体系治理与前台筛选联动。<b>证明「结构化底库」不是概念，是能查能筛能改的实体。</b></td>
+        <td>真实后台<br>+ 前台</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:36–00:44</td>
+        <td><b>主线③ 数据与热度</b><br><span class="tag tag-info">8 分钟</span></td>
+        <td>演内容热度榜 + 访问统计。<b>回答老板的那个问题：「这个月数字投入带来了什么」。</b>顺势引出方案第三层的月度数据报告。</td>
+        <td>真实后台</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:44–00:52</td>
+        <td><b>前瞻能力</b><br><span class="tag tag-warn">8 分钟</span></td>
+        <td>社媒模块可交互原型 + GEO 能力。全程<b>明确声明「这是原型，不是已完成开发」</b>——诚实反而加分，且正好对应第三层的开发额度。</td>
+        <td>可交互原型</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:52–00:58</td>
+        <td><b>商务收口</b><br><span class="tag tag-must">6 分钟</span></td>
+        <td>三层结构 → 三档报价 → 比价参照 → <b>30 天确定性承诺</b>。最后落在「建议从成长版起步」。</td>
+        <td>PPT 第 2 页</td>
+      </tr>
+      <tr>
+        <td class="t-narrow">00:58–01:00</td>
+        <td><b>下一步</b></td>
+        <td>不要问「您觉得怎么样」，要问「需求对齐会放本周还是下周」。给一个具体到日期的动作。</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note"><b>弹性原则：</b>如果现场提问多、节奏拖了，<b>压缩主线③和前瞻能力</b>，绝不能压缩主线①和商务收口。主线①是全场的说服力来源，收口是唯一的成交动作。</p>
+</section>
+
+<!-- ═══════════ 2 ═══════════ -->
+<section>
+  <h2>二、演示的三条主线（按「客户的一天」走，不按菜单走）</h2>
+  <p>后台侧边栏有二十来个模块。如果您按菜单顺序一个个点，客户在第三个模块就会走神。<b>把它们重新编成三个真实工作场景</b>，客户全程都在「看自己」。</p>
+
+  <h3>主线① 内容生产闭环 ——「发一条新闻，不再需要外包排期」</h3>
+  <table>
+    <thead><tr><th class="t-narrow">步骤</th><th>动作</th><th class="t-mid">要说出的话</th></tr></thead>
+    <tbody>
+      <tr><td class="t-narrow">1</td><td>后台 → 内容/新闻管理 → 新建一条（用测试标题，如「测试 · 演示用」）</td><td>「这条我现在建，30 秒后前台就能看到。」</td></tr>
+      <tr><td class="t-narrow">2</td><td>填标题、摘要、正文、配图，保存</td><td>「字段是结构化的，不是一个大文本框——以后才能被搜索、被筛选、被统计。」</td></tr>
+      <tr><td class="t-narrow">3</td><td>切到前台对应列表页，Ctrl+F5 强刷</td><td>「出来了。以前这一步要走外包排期，现在是您的同事点两下。」</td></tr>
+      <tr><td class="t-narrow">4</td><td>后台 → 页面管理 → 打开某页 → 预览里直接点选一段文字改掉 → 保存</td><td>「页面版式不用动，改字改图直接在预览里点。所见即所得。」</td></tr>
+      <tr><td class="t-narrow">5</td><td>让客户自己试一次（或您代操作并念出他的意思）</td><td>「您说改哪句，我当场改给您看。」</td></tr>
+    </tbody>
+  </table>
+  <p class="note"><b>演完记得改回来</b>（或保持测试内容并在收尾时说明）。</p>
+
+  <h3>主线② 产品资料中台 ——「结构化底库不是概念」</h3>
+  <table>
+    <thead><tr><th class="t-narrow">步骤</th><th>动作</th><th class="t-mid">要说出的话</th></tr></thead>
+    <tbody>
+      <tr><td class="t-narrow">1</td><td>后台 → 个人护理产品列表（成分 / 原料）</td><td>「这是底库。每个原料有统一的字段集，不是散落在各个页面的文案。」</td></tr>
+      <tr><td class="t-narrow">2</td><td>打开一条产品的编辑抽屉，展示字段：INCI、功能宣称、应用领域、认证、用量建议</td><td>「字段对齐后，才能批量做搜索、做筛选、做合规检查。」</td></tr>
+      <tr><td class="t-narrow">3</td><td>配方（Formulation）模块 —— 展示配方案例的结构</td><td>「配方是 B2B 原料最有说服力的内容形态，现在可以一条条攒起来了。」</td></tr>
+      <tr><td class="t-narrow">4</td><td>药用辅料模块 —— 54 条记录</td><td>「药用是另一条业务线，共用同一套后台逻辑，不额外增加管理成本。」</td></tr>
+      <tr><td class="t-narrow">5</td><td>标签管理页 → 展示分类体系；再切前台演示按标签筛选</td><td>「标签是内容能被找到的索引。后台治理，前台立刻生效。」</td></tr>
+    </tbody>
+  </table>
+
+  <h3>主线③ 数据与热度 ——「回答老板的那个问题」</h3>
+  <table>
+    <thead><tr><th class="t-narrow">步骤</th><th>动作</th><th class="t-mid">要说出的话</th></tr></thead>
+    <tbody>
+      <tr><td class="t-narrow">1</td><td>后台 → 内容热度榜</td><td>「哪个产品、哪份资料被看得最多，这里排出来。不是流量，是业务对象的热度。」</td></tr>
+      <tr><td class="t-narrow">2</td><td>访问统计 —— 访问量 / 热门页面 / 来源渠道 / 地域</td><td>「这套数据现在是后台里现成的，不是让您再去装一个分析工具。」</td></tr>
+      <tr><td class="t-narrow">3</td><td>过渡到方案第三层</td><td>「数据能看，但要看懂、要变成行动，是另一件事——这就是第三层做的事。」</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ 3 ═══════════ -->
+<section>
+  <h2>三、⭐ 承诺 ↔ 证据 对照表（本场演示的灵魂）</h2>
+  <p>这是整份手册里<b>最该背下来的一张表</b>。方案的每一项服务承诺，都要在演示里落到一处看得见的系统证据。客户一旦建立这个对应关系，报价就从「要花多少钱」变成「买到了什么」。</p>
+  <table>
+    <thead><tr><th class="t-mid">方案里的承诺</th><th>演示时的系统证据</th></tr></thead>
+    <tbody>
+      <tr><td>「内容更新不再需要外包排期」</td><td>后台新建一条新闻/活动 → 前台立刻可见</td></tr>
+      <tr><td>「产品与配方资料有了统一的结构化底库」</td><td>PC 产品 / 配方 / 药用辅料三套列表 + 编辑抽屉的字段集</td></tr>
+      <tr><td>「标签体系的持续治理」</td><td>标签管理页 + 前台按标签筛选联动</td></tr>
+      <tr><td>「页面可以像搭积木一样预览、编辑、回填」</td><td>页面预览原位编辑：点选文字 → 改 → 保存 → 前台变</td></tr>
+      <tr><td>「每月网站数据报告、内容热度榜」</td><td>内容热度页 + 访问统计（访问量/热门页/渠道/地域）</td></tr>
+      <tr><td>「内容合规检查（广告法违禁词、医疗功效红线）」</td><td>社媒原型里的<b>可试合规预检</b>——输入「美白」当场被拦</td></tr>
+      <tr><td>「中文内容密度直接决定专业客户心智中的位置」</td><td>搜索 facet 多类型检索 + GEO/AI 搜索信源数据（元宝引公众号占比最高）</td></tr>
+      <tr><td>「每年 20 个工作日的定制开发额度」</td><td>社媒模块原型 —— 「这已经不是 PPT 上的构思，是能点的东西，20 天就能从这变成真的」</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ 4 ═══════════ -->
+<section>
+  <h2>四、五个必演高光时刻</h2>
+  <p>一小时里客户只会记住三到五个瞬间。这五个是设计好的，<b>其余环节都可以为它们让路</b>。</p>
+
+  <div class="hl">
+    <div class="hl-h"><span class="n">1</span> 预览里点一个字，前台就变了 <span class="tag tag-must">全场最强</span></div>
+    <div class="hl-b">
+      <p><span class="do">怎么做：</span>后台打开任意有正文的页面 → 进入预览编辑 → 直接点选一句文字改掉 → 保存 → 切前台强刷。</p>
+      <p><span class="say">怎么说：</span>「不用找开发、不用动版式、不用等排期。改字这件事，本来就不该是一件工程。」</p>
+      <p class="note">这一条替代了千言万语。如果时间只够演一件事，演这个。</p>
+    </div>
+  </div>
+
+  <div class="hl">
+    <div class="hl-h"><span class="n">2</span> 后台发一条，前台立刻有</div>
+    <div class="hl-b">
+      <p><span class="do">怎么做：</span>后台新建新闻/活动 → 前台列表页强刷。</p>
+      <p><span class="say">怎么说：</span>「这是 2.0 相对 1.0 最大的变化——内容更新的主动权回到了市场部手上。」</p>
+    </div>
+  </div>
+
+  <div class="hl">
+    <div class="hl-h"><span class="n">3</span> 标签治理，前台立刻生效</div>
+    <div class="hl-b">
+      <p><span class="do">怎么做：</span>后台标签管理页展示分类体系 → 切前台演示按标签筛选。</p>
+      <p><span class="say">怎么说：</span>「内容能被找到，靠的不是把关键词堆上去，是后面这套标签索引在起作用。」</p>
+    </div>
+  </div>
+
+  <div class="hl">
+    <div class="hl-h"><span class="n">4</span> 合规预检：输入「美白」当场被拦 <span class="tag tag-must">客户会追问</span></div>
+    <div class="hl-b">
+      <p><span class="do">怎么做：</span>打开社媒模块可交互原型 → 合规视图 → 在预检框输入一句带「美白」的文案 → 命中一级硬拦。</p>
+      <p><span class="say">怎么说：</span>「市场部写文案最怕的不是写得不好，是写得违规。这一层是替您兜底的。」</p>
+      <p class="note">这一条特别能打动市场部——因为它解决的是他们的<b>个人风险</b>，不只是公司风险。</p>
+    </div>
+  </div>
+
+  <div class="hl">
+    <div class="hl-h"><span class="n">5</span> 内容热度榜：谁在看我们的资料</div>
+    <div class="hl-b">
+      <p><span class="do">怎么做：</span>后台内容热度页 → 指出排名靠前的业务对象。</p>
+      <p><span class="say">怎么说：</span>「这些数字，就是您在年度汇报里能摆到桌面上的东西。」</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 5 ═══════════ -->
+<section>
+  <h2>五、讲稿关键点（按客户听得懂的顺序）</h2>
+  <p class="note">下面是方案的提炼，但<b>排序按客户的接受顺序重排了</b>——不是文档的章节顺序。</p>
+
+  <h3>锚点 0 · 定调的那句话（开场必须说，收尾可以再说一次）</h3>
+  <div class="quote">
+    「网站是资产，内容是复利，运营是让复利发生的那只手。<br>贵司需要买的不是更多的页面，而是让页面持续产生影响力的机制。」
+    <span>—— 方案第一性原理</span>
+  </div>
+
+  <h3>锚点 1 · 一个前提：交付之后，真正的工作才开始</h3>
+  <ul>
+    <li>2.0 系统的定位是<b>「弥补 1.0 中文站在使用体验上的不足」</b>——它是一次「补课」。</li>
+    <li>正因为是补课，它的价值<b>很难用一次性项目款衡量</b>。</li>
+    <li>关键判断句：<em>一套内容管理系统，如果没有人持续往里面生产和经营内容，它会在上线三个月后变成一个静止的档案柜。</em></li>
+  </ul>
+
+  <h3>锚点 2 · 项目制的三个天花板（痛点，必须让客户点头）</h3>
+  <table>
+    <thead><tr><th class="t-mid">天花板</th><th>怎么说</th></tr></thead>
+    <tbody>
+      <tr><td><b>需求密度不足</b></td><td>项目启动依赖「有人想到一件事」，而市场的注意力不等人。等需求攒够再立项，时间窗口已经过去了。</td></tr>
+      <tr><td><b>知识不沉淀</b></td><td>每个项目结束，语境就散了。今年做过的内容策略，明年换个人、换家供应商，要从零重来。</td></tr>
+      <tr><td><b>成本不可预期</b></td><td>市场部做预算时最头疼的就是「今年数字这块要花多少」——无法回答。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>锚点 3 · 客户真正买的是三件事</h3>
+  <div class="cols3">
+    <div class="col3">
+      <div class="k">一</div>
+      <div class="v">持续的本地表达能力</div>
+      <div class="d">把全球总部的原料科学、临床数据、配方灵感，翻译成中国客户读得懂、愿意看的内容。<b>这不是翻译，是再创作。</b></div>
+    </div>
+    <div class="col3">
+      <div class="k">二</div>
+      <div class="v">可被检索的专业存在感</div>
+      <div class="d">客户决策时会查：这个原料有没有中文资料？有没有人用过？有没有配方案例？<b>中文内容密度，直接决定嘉法狮在中国专业客户心智中的位置。</b>竞品（巴斯夫、亚什兰、禾大）在中文内容上布局并不激进——这是一个<b>可以低成本建立的差异化窗口</b>。</div>
+    </div>
+    <div class="col3">
+      <div class="k">三</div>
+      <div class="v">把内容变成线索的能力</div>
+      <div class="d">谁看了产品页、看了多久、从哪个渠道来、有没有下载资料——这些数据只有被读懂、被使用，才能变成销售线索。</div>
+    </div>
+  </div>
+
+  <h3>锚点 4 · 三层服务结构（递进关系，一句话一层）</h3>
+  <table>
+    <thead><tr><th class="t-mid">层次</th><th class="t-mid">定位</th><th>解决的焦虑</th></tr></thead>
+    <tbody>
+      <tr><td><b>第一层｜基础保障</b><br>系统健康年费</td><td>保险</td><td><b>停摆风险。</b>消化市场部最常见的三类突发：网站打不开了 / 这张图版权有问题 / 这句话好像不能这么写。</td></tr>
+      <tr><td><b>第二层｜内容运营</b><br>本地化内容工厂</td><td>内容工厂</td><td><b>资产闲置。</b>保证系统里持续有新的、专业的、中文的内容进来。<b>投入产出比最陡的一段。</b></td></tr>
+      <tr><td><b>第三层｜增长顾问</b><br>数据驱动的市场支持</td><td>增长顾问</td><td><b>有流量没结果。</b>让内容被看见、被使用、被转化为业务动作。</td></tr>
+    </tbody>
+  </table>
+  <div class="quote">
+    「没有第一层，第二三层无从谈起；只有第一层，系统只是个昂贵的展示柜。」
+    <span>—— 三层结构的递进关系，这句话要原样说出来</span>
+  </div>
+
+  <h3>锚点 5 · 一个人力成本的对比（第二层的价值账）</h3>
+  <ul>
+    <li>一名具备化妆品原料领域认知的内容营销专员，上海地区年薪约 <b class="num">18–26 万元</b>，含社保成本接近 <b class="num">25–32 万元</b>。</li>
+    <li>而且<b>单个人力无法同时具备科学理解力、中文写作能力与配方技术背景</b>。</li>
+    <li>结语：「本层服务以远低于单个人力的成本，交付一个具备『技术理解 + 营销表达』双能力的持续内容供给。」</li>
+  </ul>
+
+  <h3>锚点 6 · 30 天确定性承诺（全场最强的收口武器）</h3>
+  <p>如果贵司选择在 10 月内启动，<b>首月完成</b>：</p>
+  <ul>
+    <li>一次完整的中文站内容资产盘点报告（含缺口清单与优先级）</li>
+    <li>一份中文内容风格与术语指南</li>
+    <li>首批 <b>4 篇</b>可直接上线的高质量中文内容</li>
+    <li>一份未来 12 个月的内容运营路线图</li>
+  </ul>
+  <p style="padding:11px 16px;background:var(--red-soft);border-radius:8px;color:var(--red);font-weight:700;margin:0">若首月交付未达上述标准，贵司可无理由终止合作并退还已付费用。</p>
+  <p class="note">这句话把风险从客户端移到了自己这边。<b>一定要说，而且说完停顿两秒。</b></p>
+
+  <h3>锚点 7 · 结语：为什么是现在</h3>
+  <ul>
+    <li>嘉法狮在中国专业客户中的口碑，来自产品本身的技术说服力。但在中文互联网上，<b>技术说服力需要被翻译、被组织、被反复呈现，才能被客户感知到</b>。</li>
+    <li>2.0 系统已经把舞台搭好了。接下来要做的，是<em>持续有人在台上演出</em>。</li>
+    <li>数字资产的价值曲线是<b>累积型</b>的——第一年的内容会在第三年持续带来搜索流量和客户信任。<b>每推迟一个季度，就是少一个季度的复利。</b></li>
+  </ul>
+</section>
+
+<!-- ═══════════ 6 ═══════════ -->
+<section>
+  <h2>六、报价三档与比价参照（收口用）</h2>
+
+  <div class="price">
+    <div class="pcard">
+      <div class="pn">基础版</div>
+      <div class="pd">稳 · 系统别出事、资料别断档</div>
+      <div class="pv">¥48,000</div>
+      <div class="pm">含税 / 年 · 折合月均 ¥4,000</div>
+      <div class="pl">第一层完整；第二层每月 2 篇（7 小时维护）；无第三层</div>
+    </div>
+    <div class="pcard hero">
+      <div class="badge">建议主推</div>
+      <div class="pn">成长版</div>
+      <div class="pd">内容开始有节奏地积累</div>
+      <div class="pv">¥128,000</div>
+      <div class="pm">含税 / 年 · 折合月均 ¥10,667</div>
+      <div class="pl">第一层完整；第二层完整（每月 4–6 篇）；第三层含数据报告 + 基础 SEO</div>
+    </div>
+    <div class="pcard">
+      <div class="pn">领先版</div>
+      <div class="pd">有明确数字化 KPI 或要强化行业存在感</div>
+      <div class="pv">¥228,000</div>
+      <div class="pm">含税 / 年 · 折合月均 ¥19,000</div>
+      <div class="pl">三层完整 + 加急通道；含活动支持与 20 个工作日开发额度</div>
+    </div>
+  </div>
+
+  <h3>比价的三个参照物（客户一定会问「凭什么这个价」）</h3>
+  <table>
+    <thead><tr><th class="t-mid">参照物</th><th>价格 / 特点</th></tr></thead>
+    <tbody>
+      <tr><td>一名内容营销专员</td><td><b class="num">25–32 万元/年</b> —— 单人、单一技能、含管理成本</td></tr>
+      <tr><td>一家品牌代理公司的年度数字服务</td><td><b class="num">15–30 万元/年</b> —— 通常<b>不含</b>技术系统维护</td></tr>
+      <tr><td>零散外包 + 项目制</td><td>单次报价灵活，但<b>年度总额不可预期</b>，且没有连续性</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><b>基础版</b>的价格约等于一名专员<b>一个半月</b>的用工成本，覆盖一整年的系统保障。</li>
+    <li><b>领先版</b>约等于一名专员<b>十个月</b>的成本，但交付的是「系统运维 + 内容生产 + 数据分析 + 活动支持」四类角色的合力。</li>
+  </ul>
+
+  <h3>其他必须知道的商务条款</h3>
+  <table>
+    <thead><tr><th class="t-mid">项目</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><b>升级机制</b></td><td>三档之间支持<b>年度内升级</b>，已支付费用按剩余月份折算抵扣。</td></tr>
+      <tr><td><b>付款方式</b></td><td>建议 <b>40% / 30% / 30%</b> 分三期（签约、年中、年度验收）。</td></tr>
+      <tr><td><b>交付节奏</b></td><td>每月 5 个工作日内提交上月服务报告与本月内容计划；每季度一次线上复盘会。</td></tr>
+      <tr><td><b>知识产权</b></td><td>所有为本项目生产的内容、素材、代码，<b>知识产权归嘉法狮中国所有</b>。</td></tr>
+      <tr><td><b>超额开发</b></td><td>超出 20 个工作日额度的部分，按 <b>1,800 元/人日</b> 结算。</td></tr>
+      <tr><td><b>服务边界</b><br><span class="tag tag-warn">不在年费内</span></td><td>全站视觉重设计、多语言站点新建、与 ERP/CRM 等外部系统的深度集成、大规模付费投放的代理执行。</td></tr>
+      <tr><td><b>有效期</b></td><td>方案有效期 <b>60 天</b>；具体服务条款以正式合同为准。</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ 7 ═══════════ -->
+<section>
+  <h2>七、客户最可能问的十个问题（应答口径）</h2>
+  <table>
+    <thead><tr><th class="t-mid">客户会问</th><th>这样答</th></tr></thead>
+    <tbody>
+      <tr><td>「为什么不能继续按项目做？我们有需求再找你们不就完了。」</td><td>「可以，但项目制有三个天花板：需求攒够再立项，时间窗口已经过去了；每个项目结束语境就散了，明年换人要重来；还有最实际的——您每年做预算时答不出数字这块要花多少。」</td></tr>
+      <tr><td>「基础版够用吗？」</td><td>「基础版解决的是『系统别出事』。但只有第一层，系统就是个昂贵的展示柜——内容没有人往里放，它三个月后就是档案柜。」</td></tr>
+      <tr><td>「凭什么比外面的代理公司贵 / 便宜？」</td><td>「品牌代理公司的年度数字服务大概 15–30 万，但通常不含技术系统维护。我们是『系统运维 + 内容生产 + 数据分析』一体，出问题不用您在两拨人之间传话。」</td></tr>
+      <tr><td>「内容质量怎么保证？」</td><td>「所有交付内容执行三道工序：<b>事实核对 + 合规检查 + 语言润色</b>。而且首月有硬承诺——不达标可以无理由终止并退款。」</td></tr>
+      <tr><td>「AI 生成的内容会有合规风险吗？」</td><td>（如果谈到社媒模块）「这正是我们把合规预检做进系统的原因。广告法违禁词、医疗功效宣称红线都有一级硬拦，写的时候就被挡掉，不是发出去再删。」</td></tr>
+      <tr><td>「20 个工作日开发额度用完了怎么办？」</td><td>「超出部分按 1,800 元/人日结算，需求先评估再进排期，不会不打招呼就产生费用。」</td></tr>
+      <tr><td>「内容的知识产权归谁？」</td><td>「全部归嘉法狮中国所有——内容、素材、代码都是。」</td></tr>
+      <tr><td>「你们能保证排名 / 流量增长吗？」</td><td>不要承诺数字。答：「我们不承诺具体排名，但承诺每月给您一份能读懂的数据报告和明确的行动项。搜索表现按季度复盘，含排名变化与流量增量。」</td></tr>
+      <tr><td>「中文内容真的有人看吗？我们的客户都在线下。」</td><td>「客户决策前会上网查这一步跑不掉——这个原料有没有中文资料、有没有人用过、有没有配方案例。中文内容的密度，直接决定嘉法狮在专业客户心智中的位置。」</td></tr>
+      <tr><td>「如果效果不好，能提前终止吗？」</td><td>「首月未达承诺标准可以无理由终止并退款，这是写进方案的。之后按合同条款走。」</td></tr>
+    </tbody>
+  </table>
+  <p class="note"><b>一条通用纪律：</b>不知道的不要现场编。说「这个我回去确认后今天内给您答复」，比编一个数字安全一百倍。</p>
+</section>
+
+<!-- ═══════════ 8 ═══════════ -->
+<section>
+  <h2>八、讲什么 / 不讲什么</h2>
+  <div class="cols3">
+    <div class="col3" style="flex:1 1 300px">
+      <div class="k" style="color:var(--green)">✓ 一定要讲</div>
+      <ul style="margin:0;padding-left:20px;font-size:13px">
+        <li>「交付之后工作才开始」这个前提</li>
+        <li>项目制三个天花板</li>
+        <li>三层结构的递进关系（原话说出来）</li>
+        <li>30 天确定性承诺 + 退款条款</li>
+        <li>知识产权归客户</li>
+        <li>建议从成长版起步，并说明理由</li>
+      </ul>
+    </div>
+    <div class="col3" style="flex:1 1 300px">
+      <div class="k" style="color:var(--red)">✗ 不要讲 / 不要演</div>
+      <ul style="margin:0;padding-left:20px;font-size:13px">
+        <li>后台侧边栏的全量模块清单（客户记不住，也不关心）</li>
+        <li>技术实现细节：Vue / Prisma / 端口 / 部署流程</li>
+        <li>未完成或已知有缺陷的功能（如搜索栏的已知问题）</li>
+        <li>不要承诺具体排名、具体流量数字</li>
+        <li>不要用「我们做了 28 页预览编辑 / 82 个内容块」这类内部计数</li>
+        <li>社媒模块<b>不要</b>说成「已经做好了」</li>
+      </ul>
+    </div>
+    <div class="col3" style="flex:1 1 300px">
+      <div class="k" style="color:var(--gold)">△ 谨慎处理</div>
+      <ul style="margin:0;padding-left:20px;font-size:13px">
+        <li>涉及其它客户的案例 —— 未经许可不要提名字</li>
+        <li>竞品（巴斯夫 / 亚什兰 / 禾大）—— 只客观陈述「中文内容布局不激进」，不做贬损评价</li>
+        <li>客户现有痛点 —— 描述系统能力，不要当众复述他们过去的抱怨</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 9 ═══════════ -->
+<section>
+  <h2>九、开演前检查清单（按时间倒序执行）</h2>
+
+  <h4>T–30 分钟 · 环境</h4>
+  <ul class="check">
+    <li class="urgent">确认线上系统 gattefosse.loudaren.com 可访问、管理员账号能正常登录（这是最常见的翻车点）</li>
+    <li>浏览器打开并<b>预登录</b>后台，避免现场输密码</li>
+    <li>预先开好这些标签页：前台首页 / 前台新闻列表 / 后台内容管理 / 后台页面管理 / 后台内容热度 / 社媒原型</li>
+    <li>关闭所有无关标签页、通知、聊天窗口</li>
+    <li>浏览器缩放调至 100%，字号确认在投影上看得清</li>
+  </ul>
+
+  <h4>T–20 分钟 · 内容准备</h4>
+  <ul class="check">
+    <li>后台新建好一条<b>测试</b>内容（标题带「测试 · 演示用」，演示时再发布或保存）</li>
+    <li>确定要现场改的那一处前台文字，并想好改前 / 改后</li>
+    <li>社媒原型打开到「合规」视图，确认输入「美白」能命中硬拦</li>
+    <li>内容热度页确认有数据可看（不要当场出现空状态）</li>
+    <li>视频文件<b>下载到本地</b>并确认能离线播放</li>
+  </ul>
+
+  <h4>T–10 分钟 · 兜底</h4>
+  <ul class="check">
+    <li>准备好离线兜底：60 秒视频（本地文件）+ 社媒原型（本地 HTML）+ 关键页面截图</li>
+    <li>关闭录屏、代理、VPN（避免影响页面资源加载）</li>
+    <li>如有第二台设备 / 第二个浏览器，<b>预加载一次</b>做备用</li>
+    <li>把本手册在副屏或平板上打开，演示时扫一眼即可</li>
+  </ul>
+
+  <h4>T–2 分钟 · 桌面</h4>
+  <ul class="check">
+    <li>PPT 打开在第 1 页；视频文件在桌面可见位置</li>
+    <li>投屏已连接并测试；<b>确认投屏分辨率下页面不横向溢出</b></li>
+    <li>手机静音</li>
+  </ul>
+</section>
+
+<footer>
+  基于《嘉法狮中国 · 年度数字资产运营服务方案》GF-CN-DO-2026-01 提炼 ｜ 内部使用<br>
+  演示素材：60 秒演示视频 · 社媒模块可交互原型 · 真实前后台系统
+</footer>
+
+</div>
+</body>
+</html>

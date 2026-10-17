@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer-core');
-const jwt = require('E:/项目开发区/嘉法狮网站重建/backend/node_modules/jsonwebtoken');
+const jwt = require('D://workbuddy//gattefosse/backend/node_modules/jsonwebtoken');
 
 async function clickByText(page, text, scopeSel) {
   return page.evaluate((text, scopeSel) => {

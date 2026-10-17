@@ -7,7 +7,7 @@
 
 import sqlite3
 
-DB_PATH = 'E:/项目开发区/嘉法狮网站重建/backend/prisma/gattefosse.db'
+DB_PATH = 'D://workbuddy//gattefosse/backend/prisma/gattefosse.db'
 conn = sqlite3.connect(DB_PATH)
 conn.row_factory = sqlite3.Row
 cur = conn.cursor()

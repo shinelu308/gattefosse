@@ -4,7 +4,7 @@ const https = require('https');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const SITE = 'E:/项目开发区/嘉法狮网站重建/site';
+const SITE = 'D://workbuddy//gattefosse/site';
 function fileOf(slug, pageKey) {
   const raw = String(slug || pageKey || '').trim();
   const p = raw.replace(/^\/+/, '').replace(/\.html$/i, '');

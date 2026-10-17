@@ -1,12 +1,12 @@
 const path = require('path');
 const NODE_MODULES = "C:\\Users\\Shine Lu\\.workbuddy\\binaries\\node\\workspace\\node_modules";
-const BACKEND_NM = "E:\\项目开发区\\嘉法狮网站重建\\backend\\node_modules";
+const BACKEND_NM = "D:\\\\workbuddy\\\\gattefosse\\backend\\node_modules";
 require('module').Module._initPaths();
 const puppeteer = require(path.join(NODE_MODULES, 'puppeteer-core'));
 const jwt = require(path.join(BACKEND_NM, 'jsonwebtoken'));
 
 const BASE = 'http://127.0.0.1:3000';
-const OUT = 'E:\\项目开发区\\嘉法狮网站重建\\admin\\outputs';
+const OUT = 'D:\\\\workbuddy\\\\gattefosse\\admin\\outputs';
 const SECRET = 'Gattefosse_JWT_Secret_Key_2026_Change_In_Production';
 
 (async () => {

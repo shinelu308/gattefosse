@@ -1,6 +1,6 @@
 const path = require('path');
 const NODE_MODULES = "C:\\Users\\Shine Lu\\.workbuddy\\binaries\\node\\workspace\\node_modules";
-const BACKEND_NM = "E:\\项目开发区\\嘉法狮网站重建\\backend\\node_modules";
+const BACKEND_NM = "D:\\\\workbuddy\\\\gattefosse\\backend\\node_modules";
 process.env.NODE_PATH = NODE_MODULES + ';' + BACKEND_NM;
 require('module').Module._initPaths();
 const puppeteer = require(path.join(NODE_MODULES, 'puppeteer-core'));
@@ -69,7 +69,7 @@ const jwt = require(path.join(BACKEND_NM, 'jsonwebtoken'));
   // 截图存档
   await page.evaluate(() => { const t = Array.from(document.querySelectorAll('.tab')).find(x => x.textContent.includes('邮件通知')); if (t) t.click(); });
   await new Promise(r => setTimeout(r, 800));
-  const outDir = 'E:\\项目开发区\\嘉法狮网站重建\\admin\\outputs';
+  const outDir = 'D:\\\\workbuddy\\\\gattefosse\\admin\\outputs';
   await page.screenshot({ path: path.join(outDir, 'smtp-settings.png'), fullPage: false });
   await page.goto('http://127.0.0.1:3000/admin/careers-standalone.html', { waitUntil: 'networkidle2', timeout: 30000 });
   await new Promise(r => setTimeout(r, 800));

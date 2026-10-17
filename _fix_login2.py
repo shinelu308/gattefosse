@@ -2,7 +2,7 @@
 import os
 import re
 
-site_dir = r'E:\项目开发区\嘉法狮网站重建\site'
+site_dir = r'D:\\workbuddy\\gattefosse\site'
 
 count = 0
 for root, dirs, files in os.walk(site_dir):

@@ -42,3 +42,15 @@ backend/scripts/.*
 # PPT 项目缓存与 Office 锁文件
 docs/**/.cache/
 docs/**/~$*
+
+# ===== 261018 整理：截图 / 录屏 / 临时产物只留本地，不入库 =====
+admin/outputs/**/*.png
+admin/outputs/**/*.jpg
+.wbapp_*.genie
+.tmp_probe.json
+csr-o.html
+返回
+backend/scripts/tmp-*
+backend/scripts/diag-*
+scripts/shot-render-sync/report.json
+docs/**/*副本*

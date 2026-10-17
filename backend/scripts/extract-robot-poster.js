@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const puppeteer = require('puppeteer-core');
 
-const ROOT = 'E:/项目开发区/嘉法狮网站重建';
+const ROOT = 'D://workbuddy//gattefosse';
 const OUT = path.join(ROOT, 'admin/static/img/robots');
 const BASE = process.env.BASE || 'http://127.0.0.1:3000';
 const NAMES = ['importer', 'translator', 'editor', 'publisher'];

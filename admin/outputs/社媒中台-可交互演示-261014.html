@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星火 · 可交互演示 · 261014</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317564a'/%3E%3Cpath d='M9 11h14M9 16h10M9 21h13' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --brand:#8EB73C; --brand-dark:#5f7d1f; --brand-light:#f4f9e9;
+  --ink:#2b3138; --ink2:#5b6771; --ink3:#8d979f;
+  --line:#e4e7ea; --line2:#f0f1f2; --bg:#f5f6f7; --panel:#fff;
+  --amber:#BA7517; --amber-light:#fef9f0;
+  --blue:#185FA5; --blue-light:#eef5fc;
+  --red:#A32D2D; --red-light:#fdf2f2; --teal:#0F6E56; --teal-light:#e8f5f1;
+  --purple:#534AB7; --purple-light:#f0eefc;
+  --radius:10px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",Roboto,sans-serif;
+  --mono:Consolas,Monaco,"Courier New",monospace;
+  --tenant:#8EB73C;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:var(--font);font-size:13px;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+button{font-family:var(--font);cursor:pointer}
+[hidden]{display:none!important}
+
+#app{height:100%;display:flex;flex-direction:column;overflow:hidden}
+
+.topbar{height:58px;flex:none;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 20px;position:relative;z-index:20}
+.tb-logo{display:flex;align-items:center;gap:9px;flex:none}
+.tb-logo .nm{font-size:14px;font-weight:500;letter-spacing:.2px}
+.tb-logo .ver{font-size:10.5px;color:var(--ink3);border:1px solid var(--line);border-radius:5px;padding:0 5px;line-height:1.5}
+.tb-sep{width:1px;height:24px;background:var(--line);flex:none}
+.tb-label{font-size:11.5px;color:var(--ink3);flex:none}
+.tenant-sw{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px}
+.tenant-sw button{border:none;background:transparent;border-radius:6px;padding:5px 12px;font-size:12.5px;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.tenant-sw button .dot{width:7px;height:7px;border-radius:50%;background:#c3c9cd}
+.tenant-sw button.on{background:#fff;box-shadow:0 1px 3px rgba(20,30,40,.10);color:var(--ink);font-weight:500}
+.tenant-sw button.on .dot{background:var(--tenant)}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.credit{display:flex;flex-direction:column;gap:2px;min-width:150px}
+.credit .row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3)}
+.credit .row b{color:var(--ink);font-weight:500;font-size:11.5px}
+.credit .bar{height:4px;background:var(--line2);border-radius:3px;overflow:hidden}
+.credit .bar i{display:block;height:100%;background:var(--brand);transition:width .5s ease}
+.tb-user{display:flex;align-items:center;gap:8px}
+.tb-user .av{width:30px;height:30px;border-radius:50%;background:var(--tenant);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+.tb-user .nm{font-size:12.5px}
+.tb-user .rl{font-size:10.5px;color:var(--ink3)}
+
+.body{flex:1;min-height:0;display:flex}
+.sidebar{width:238px;flex:none;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:14px 0 20px}
+.tenant-card{margin:0 12px 14px;padding:12px 13px;border:1px solid var(--line);border-radius:var(--radius);border-left:3px solid var(--tenant);background:#fcfdfb}
+.tenant-card .nm{font-size:13px;font-weight:500;margin-bottom:3px}
+.tenant-card .mt{font-size:11px;color:var(--ink3);display:flex;justify-content:space-between}
+.tenant-card .tag{display:inline-block;font-size:10.5px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 6px;color:var(--ink2);margin-top:6px}
+.nav-grp{padding:0 12px;margin-bottom:10px}
+.nav-grp .t{font-size:10.5px;letter-spacing:1px;color:var(--ink3);padding:6px 8px 4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;color:var(--ink2);font-size:13px;margin-bottom:1px;user-select:none}
+.nav-item:hover{background:var(--bg);color:var(--ink);cursor:pointer}
+.nav-item.on{background:var(--brand-light);color:var(--brand-dark);font-weight:500}
+.nav-item.on svg *{stroke:var(--brand-dark)}
+.nav-item .bdg{margin-left:auto;font-size:10.5px;background:var(--line2);color:var(--ink2);border-radius:9px;padding:1px 7px}
+.nav-item.on .bdg{background:var(--brand);color:#fff}
+.nav-item svg{width:16px;height:16px;flex:none}
+.nav-item svg *{stroke:#98a2aa;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.side-add{margin:6px 12px 0;padding:9px 10px;border:1px dashed #cdd4d9;border-radius:8px;color:var(--ink2);font-size:12.5px;text-align:center}
+.side-add:hover{border-color:var(--brand);color:var(--brand-dark);cursor:pointer}
+
+.main{flex:1;min-width:0;overflow-y:auto;padding:22px 26px 70px}
+.view{max-width:1180px}
+.ph{margin-bottom:18px}
+.ph h1{font-size:19px;font-weight:500;margin-bottom:4px}
+.ph p{font-size:12.5px;color:var(--ink2);max-width:820px}
+.ph .acts{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;font-size:12.5px;font-weight:500;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:all .15s}
+.btn:hover{background:var(--bg);color:var(--ink)}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+.btn.pri:disabled{background:#dfe6d0;border-color:#dfe6d0;color:#fff;cursor:not-allowed}
+.btn.sm{padding:4px 10px;font-size:12px}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+.card>.hd{padding:13px 18px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:10px}
+.card>.hd h3{font-size:13.5px;font-weight:500}
+.card>.hd .sub{font-size:11.5px;color:var(--ink3)}
+.card>.hd .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.card>.bd{padding:18px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 17px}
+.kpi .l{font-size:11.5px;color:var(--ink3);margin-bottom:5px}
+.kpi .v{font-size:24px;font-weight:500;line-height:1.25}
+.kpi .v em{font-size:12px;font-style:normal;color:var(--ink3);font-weight:400}
+.kpi .d{font-size:11.5px;color:var(--ink3);margin-top:3px}
+.kpi .d.up{color:var(--brand-dark)}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cols.c3{grid-template-columns:1.35fr 1fr}
+@media (max-width:1100px){.cols,.cols.c3{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+
+.steps{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.steps .s{flex:1;padding:12px 16px;display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink3);border-right:1px solid var(--line2)}
+.steps .s:last-child{border-right:none}
+.steps .s .n{width:19px;height:19px;border-radius:50%;background:var(--line2);color:var(--ink2);font-size:11px;display:flex;align-items:center;justify-content:center;flex:none}
+.steps .s.on{color:var(--ink);background:#fbfdf8}
+.steps .s.on .n{background:var(--brand);color:#fff}
+.steps .s.done .n{background:var(--brand-light);color:var(--brand-dark)}
+
+.pick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pick.c3{grid-template-columns:repeat(3,1fr)}
+.pick.c2{grid-template-columns:repeat(2,1fr)}
+.pick .p{border:1px solid var(--line);border-radius:9px;padding:12px 13px;background:#fff;position:relative;transition:all .15s}
+.pick .p:hover{border-color:#c7d1b8}
+.pick .p.on{border-color:var(--brand);background:var(--brand-light);box-shadow:0 0 0 1px var(--brand) inset}
+.pick .p .t{font-size:12.5px;font-weight:500;margin-bottom:3px}
+.pick .p .s{font-size:11px;color:var(--ink3);line-height:1.55}
+.pick .p .pr{font-size:11px;color:var(--amber);margin-top:6px;font-family:var(--mono)}
+.pick .p .ck{position:absolute;top:9px;right:9px;width:15px;height:15px;border-radius:50%;border:1px solid #ccd3d8;background:#fff}
+.pick .p.on .ck{border-color:var(--brand);background:var(--brand)}
+.pick .p.on .ck::after{content:"";position:absolute;left:4.5px;top:2px;width:4px;height:7px;border:1.6px solid #fff;border-top:none;border-left:none;transform:rotate(42deg)}
+.pick .p.lock{opacity:.55}
+
+.tag{display:inline-block;font-size:10.5px;border-radius:9px;padding:1px 8px;line-height:1.7;white-space:nowrap}
+.t-b{background:var(--brand-light);color:var(--brand-dark)}
+.t-a{background:var(--amber-light);color:var(--amber)}
+.t-bl{background:var(--blue-light);color:var(--blue)}
+.t-r{background:var(--red-light);color:var(--red)}
+.t-g{background:#f0f1f2;color:var(--ink2)}
+.t-t{background:var(--teal-light);color:var(--teal)}
+.t-p{background:var(--purple-light);color:var(--purple)}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-weight:500;color:var(--ink2);background:#fafbfb;padding:9px 12px;border-bottom:1px solid var(--line);font-size:11.5px}
+td{padding:9px 12px;border-bottom:1px solid var(--line2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+
+.prog{height:6px;background:var(--line2);border-radius:4px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--brand);width:0;transition:width .35s linear}
+.log{font-family:var(--mono);font-size:11.5px;color:var(--ink2);background:#fafbfb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:132px;overflow-y:auto;line-height:1.85}
+.log b{color:var(--brand-dark);font-weight:500}
+.log .wa{color:var(--amber)}
+
+.item{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.item .h{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.item .h .t{font-size:13px;font-weight:500}
+.item .h .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.item .b{font-size:11.5px;color:var(--ink3);line-height:1.7}
+.chk{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:7px 0;color:var(--ink2)}
+.chk .bx{width:15px;height:15px;border-radius:4px;border:1px solid #ccd3d8;background:#fff;flex:none;position:relative}
+.chk.ok .bx{background:var(--brand);border-color:var(--brand)}
+.chk.ok .bx::after{content:"";position:absolute;left:4px;top:1.5px;width:4px;height:8px;border:1.8px solid #fff;border-top:none;border-left:none;transform:rotate(42deg)}
+.chk.ok{color:var(--ink)}
+.chk .wa{margin-left:auto;font-size:11px;color:var(--amber)}
+
+.bars{display:flex;flex-direction:column;gap:11px}
+.bars .b .top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.bars .b .top b{font-weight:500}
+.bars .b .top span{color:var(--ink3);font-family:var(--mono);font-size:11.5px}
+.bars .b .bar{height:7px;background:var(--line2);border-radius:4px;overflow:hidden}
+.bars .b .bar i{display:block;height:100%;border-radius:4px;transition:width .6s ease}
+
+.mkts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mkt{border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;background:#fff;display:flex;flex-direction:column}
+.mkt.on{border-color:var(--brand);background:#fcfdf9}
+.mkt .ic{width:34px;height:34px;border-radius:9px;background:var(--bg);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.mkt .ic svg{width:18px;height:18px}
+.mkt .ic svg *{stroke:var(--brand-dark);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mkt .t{font-size:13px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+.mkt .s{font-size:11.5px;color:var(--ink3);line-height:1.6;flex:1;margin-bottom:11px}
+.mkt .f{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line2);padding-top:11px}
+.mkt .f .p{font-size:12px;font-weight:500;color:var(--amber);font-family:var(--mono)}
+
+.stripec{position:fixed;left:0;right:0;bottom:0;background:#3b454e;color:#fff;font-size:11.5px;display:flex;align-items:center;gap:10px;padding:7px 18px;z-index:50}
+.stripec b{color:#d6e8a8;font-weight:500}
+.stripec .r{margin-left:auto;color:#b9c2c9}
+
+.toast{position:fixed;left:50%;bottom:52px;transform:translateX(-50%) translateY(10px);background:#2b3138;color:#fff;font-size:12.5px;border-radius:8px;padding:9px 16px;opacity:0;transition:all .25s;z-index:60;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.hint{font-size:11.5px;color:var(--ink3);margin-top:9px}
+.hint code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-family:var(--mono);font-size:11px}
+.empty{text-align:center;padding:30px 20px;color:var(--ink3);font-size:12.5px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="tb-logo">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="7" height="7" rx="1.8" fill="var(--tenant)"/>
+        <rect x="8.5" y="0.5" width="7" height="7" rx="1.8" fill="var(--tenant)" opacity=".62"/>
+        <rect x="16.5" y="0.5" width="7" height="7" rx="1.8" fill="var(--tenant)" opacity=".3"/>
+        <rect x="0.5" y="8.5" width="7" height="7" rx="1.8" fill="var(--tenant)" opacity=".62"/>
+        <rect x="8.5" y="8.5" width="7" height="7" rx="1.8" fill="var(--tenant)"/>
+        <rect x="0.5" y="16.5" width="7" height="7" rx="1.8" fill="var(--tenant)" opacity=".3"/>
+        <rect x="16.5" y="16.5" width="7" height="7" rx="1.8" fill="var(--tenant)" opacity=".62"/>
+      </svg>
+      <span class="nm">星火</span>
+      <span class="ver">演示 v0.1</span>
+    </div>
+    <div class="tb-sep"></div>
+    <span class="tb-label">当前租户</span>
+    <div class="tenant-sw" id="tenantSw"></div>
+    <div class="tb-right">
+      <div class="credit" id="creditBox"></div>
+      <div class="tb-user" id="tbUser"></div>
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<div class="stripec">
+  <b>交互演示</b>
+  <span>点租户切换看多租户 · 去「插件市场」启停插件看菜单变化 · 在「内容工厂」走一遍生成流程</span>
+  <span class="r">数据为模拟值 · 261014</span>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+var TENANTS = {
+  gattefosse:{ key:'gattefosse', name:'嘉法狮 Gattefossé', short:'嘉法狮', plan:'旗舰版', color:'#8EB73C',
+    industry:'化妆品原料', credits:128400, creditsTotal:200000,
+    plugins:['gen','publish','compliance','geo','probe','channels','calendar'],
+    revenue:486200, contacts:'王经理' },
+  clientB:{ key:'clientB', name:'碧研生物科技', short:'客户B', plan:'专业版', color:'#2F6FE4',
+    industry:'医美器械', credits:41600, creditsTotal:80000,
+    plugins:['gen','publish','compliance','channels'],
+    revenue:132400, contacts:'李总' },
+  clientC:{ key:'clientC', name:'优谷食品', short:'客户C', plan:'基础版', color:'#C4552E',
+    industry:'功能性食品', credits:7900, creditsTotal:20000,
+    plugins:['gen'],
+    revenue:19800, contacts:'张主管' }
+};
+
+var PLUGINS = {
+  gen:{ name:'内容工厂', grp:'生产', desc:'一键生成图⽂ / 短视频 / 数字人口播，走多家生成通道', price:'含在套餐内', icon:'grid' },
+  calendar:{ name:'内容日历', grp:'生产', desc:'一次排一个月的量，按各平台发布节奏自动排期', price:'¥299/月', icon:'cal' },
+  publish:{ name:'发布中心', grp:'分发', desc:'可直发平台进队列，不可直发生成人工粘贴包', price:'含在套餐内', icon:'up' },
+  compliance:{ name:'合规闸门', grp:'分发', desc:'AI 标识注入、敏感词、平台规则预检、数字人授权留痕', price:'含在套餐内', icon:'shield' },
+  channels:{ name:'渠道账号', grp:'分发', desc:'平台授权与生成通道账号、额度管理', price:'含在套餐内', icon:'link' },
+  geo:{ name:'GEO 资产', grp:'增长', desc:'把内容铺到可被 AI 引用的信源型平台', price:'¥599/月', icon:'star' },
+  probe:{ name:'AI 可见度', grp:'增长', desc:'多模型探测品牌被提及与引用率，回流选题', price:'¥399/月', icon:'eye' },
+  market:{ name:'插件市场', grp:'平台', desc:'安装 / 启停 / 升级插件，按需付费', price:'', icon:'puzzle' },
+  revenue:{ name:'收入与计量', grp:'平台', desc:'七条收入线、Credit 用量与账本', price:'', icon:'chart' }
+};
+
+var PROVIDERS = [
+  { id:'txt', name:'内置文本模型', cap:'图文', unit:'每千字', price:0.8, kind:'builtin', note:'中台自建通道' },
+  { id:'vid', name:'星辰影视 AI', cap:'短视频', unit:'每秒', price:8, kind:'partner', note:'合作方 · 付费通道' },
+  { id:'avatar', name:'数字人工场', cap:'数字人口播', unit:'每秒', price:12, kind:'partner', note:'合作方 · 付费通道' }
+];
+
+var SOURCES = [
+  { id:'s1', t:'产品资料库', s:'57 个 PC 原料 · 54 条药用辅料' },
+  { id:'s2', t:'成分白皮书', s:'12 份技术文档 PDF' },
+  { id:'s3', t:'客户案例', s:'8 个配方应用案例' },
+  { id:'s4', t:'历史内容', s:'已发布 236 条，可用于改写' }
+];
+
+var FORMATS = [
+  { id:'txt', cap:'图文', t:'图文', s:'公众号 / 知乎 / 小红书' },
+  { id:'vid', cap:'短视频', t:'短视频', s:'抖音 / B站 / 视频号' },
+  { id:'avatar', cap:'数字人口播', t:'数字人口播', s:'需形象与声音授权' }
+];
+
+var PLATFORMS = [
+  { n:'微信公众号', mode:'direct', lim:'服务号 4 次/月', eta:'约 3 分钟' },
+  { n:'抖音', mode:'direct', lim:'需先上传视频', eta:'约 8 分钟' },
+  { n:'B 站', mode:'direct', lim:'非正式会员 5 稿/天', eta:'排队约 12 分钟' },
+  { n:'小红书', mode:'manual', lim:'禁止站外导流', eta:'生成粘贴包' },
+  { n:'微信视频号', mode:'manual', lim:'无发布接口', eta:'生成粘贴包' }
+];
+
+var AI_PROBES = [
+  { m:'豆包', hit:1, ref:3, rank:'第 2 位' },
+  { m:'文心一言', hit:1, ref:1, rank:'第 5 位' },
+  { m:'通义千问', hit:0, ref:0, rank:'未提及' },
+  { m:'Kimi', hit:1, ref:2, rank:'第 3 位' },
+  { m:'DeepSeek', hit:0, ref:0, rank:'未提及' }
+];
+
+var state = {
+  tenant:'gattefosse',
+  view:'overview',
+  plugins:{},            // tenantKey -> [pluginKey]
+  gen:{ src:[], fmt:null, prov:null, running:false, progs:0, log:[], out:[] },
+  pass:[],               // 通过合规的产物
+  checks:{ identify:false, words:false, rule:false, avatar:false },
+  pub:{ running:false, rows:[] }
+};
+
+Object.keys(TENANTS).forEach(function(k){ state.plugins[k] = TENANTS[k].plugins.slice(); });
+
+var $ = function(s){ return document.querySelector(s); };
+var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); };
+var T = function(){ return TENANTS[state.tenant]; };
+var creditUsedPct = function(){ var t=T(); return Math.round(t.credits/t.creditsTotal*100); };
+
+var ICONS = {
+  home:'<svg viewBox="0 0 18 18"><path d="M2.6 7.6L9 2.6l6.4 5v7a1 1 0 01-1 1H3.6a1 1 0 01-1-1z"/><path d="M7 15.6v-4.2h4v4.2"/></svg>',
+  grid:'<svg viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1.4"/><rect x="10" y="2" width="6" height="6" rx="1.4"/><rect x="2" y="10" width="6" height="6" rx="1.4"/><rect x="10" y="10" width="6" height="6" rx="1.4"/></svg>',
+  cal:'<svg viewBox="0 0 18 18"><rect x="2.5" y="3.5" width="13" height="12" rx="2"/><path d="M2.5 7.5h13M6 2v3M12 2v3"/></svg>',
+  up:'<svg viewBox="0 0 18 18"><path d="M9 14.5V3.5M4.5 8L9 3.5 13.5 8M3 15.5h12"/></svg>',
+  shield:'<svg viewBox="0 0 18 18"><path d="M9 2l6 2.2v5c0 3.4-2.4 6.3-6 7.3-3.6-1-6-3.9-6-7.3v-5z"/><path d="M6.4 9l1.9 1.9 3.4-3.6"/></svg>',
+  link:'<svg viewBox="0 0 18 18"><path d="M7.4 10.6a3.2 3.2 0 004.6 0l2.4-2.4a3.2 3.2 0 00-4.6-4.6l-1 1"/><path d="M10.6 7.4a3.2 3.2 0 00-4.6 0l-2.4 2.4a3.2 3.2 0 004.6 4.6l1-1"/></svg>',
+  star:'<svg viewBox="0 0 18 18"><path d="M9 2.4l2 4.1 4.5.6-3.3 3.2.8 4.5L9 12.7l-4 2.1.8-4.5L2.5 7.1l4.5-.6z"/></svg>',
+  eye:'<svg viewBox="0 0 18 18"><path d="M1.8 9S4.4 4.6 9 4.6 16.2 9 16.2 9 13.6 13.4 9 13.4 1.8 9 1.8 9z"/><circle cx="9" cy="9" r="2.1"/></svg>',
+  puzzle:'<svg viewBox="0 0 18 18"><path d="M7 2.8a1.6 1.6 0 013.2 0v.9h2.4a1 1 0 011 1V7.4h-.9a1.6 1.6 0 000 3.2h.9v2.7a1 1 0 01-1 1H10v-.9a1.6 1.6 0 00-3.2 0v.9H4.4a1 1 0 01-1-1V10h.9a1.6 1.6 0 000-3.2H3.4V4.7a1 1 0 011-1H7z"/></svg>',
+  chart:'<svg viewBox="0 0 18 18"><path d="M3 15.2h12M5.4 15.2V9M9 15.2V4.6M12.6 15.2V7.2"/></svg>'
+};
+
+function toast(msg){
+  var el = $('#toast');
+  el.textContent = msg; el.classList.add('on');
+  clearTimeout(el._t);
+  el._t = setTimeout(function(){ el.classList.remove('on'); }, 2100);
+}
+function setTenant(k){
+  state.tenant = k;
+  state.view = 'overview';
+  state.gen = { src:[], fmt:null, prov:null, running:false, progs:0, log:[], out:[] };
+  state.pass = []; state.checks = { identify:false, words:false, rule:false, avatar:false };
+  state.pub = { running:false, rows:[] };
+  document.documentElement.style.setProperty('--tenant', T().color);
+  renderAll();
+  toast('已切换到 ' + T().short + '（' + T().plan + '）');
+}
+function setView(v){ state.view = v; renderAll(); }
+
+function renderAll(){ renderTenantSw(); renderCredit(); renderUser(); renderSidebar(); renderMain(); }
+
+function renderTenantSw(){
+  $('#tenantSw').innerHTML = Object.keys(TENANTS).map(function(k){
+    var t = TENANTS[k];
+    return '<button data-tenant="'+k+'" class="'+(k===state.tenant?'on':'')+'"><span class="dot"></span>'+esc(t.short)+'</button>';
+  }).join('');
+}
+function renderCredit(){
+  var t = T();
+  $('#creditBox').innerHTML =
+    '<div class="row"><span>Credit 余额</span><b>'+t.credits.toLocaleString()+' / '+t.creditsTotal.toLocaleString()+'</b></div>'+
+    '<div class="bar"><i style="width:'+creditUsedPct()+'%"></i></div>';
+}
+function renderUser(){
+  var t = T();
+  $('#tbUser').innerHTML = '<div class="av">'+esc(t.short.slice(0,1))+'</div><div><div class="nm">'+esc(t.contacts)+'</div><div class="rl">'+esc(t.plan)+' · 管理员</div></div>';
+}
+
+function renderSidebar(){
+  var t = T(), on = state.plugins[state.tenant] || [];
+  var order = ['gen','calendar','publish','compliance','channels','geo','probe','market','revenue'];
+  var groups = ['生产','分发','增长','平台'];
+  var html = '';
+  html += '<div class="tenant-card"><div class="nm">'+esc(t.name)+'</div>'+
+          '<div class="mt"><span>'+esc(t.industry)+'</span><span>'+esc(t.plan)+'</span></div>'+
+          '<span class="tag">已启用插件 '+on.length+' / 7</span></div>';
+  html += '<div class="nav-grp"><div class="t">概览</div>'+
+          navItem('overview','总览','') + '</div>';
+  groups.forEach(function(g){
+    var items = order.filter(function(k){ return PLUGINS[k].grp===g && (on.indexOf(k)>=0 || k==='market' || k==='revenue'); });
+    if(!items.length) return;
+    html += '<div class="nav-grp"><div class="t">'+g+'</div>';
+    items.forEach(function(k){
+      var bdg = '';
+      if(k==='publish' && state.pass.length) bdg = String(state.pass.length);
+      if(k==='compliance' && state.gen.out.length) bdg = String(state.gen.out.filter(function(o){ return !state.pass.some(function(p){return p.id===o.id;}); }).length);
+      html += navItem(k, PLUGINS[k].name, bdg);
+    });
+    html += '</div>';
+  });
+  var locked = 7 - on.length;
+  if(locked > 0) html += '<div class="side-add" data-go="market">+ 还有 '+locked+' 个插件未启用</div>';
+  $('#sidebar').innerHTML = html;
+}
+function navItem(k, name, bdg){
+  var active = state.view===k ? ' on' : '';
+  var icon = (k==='overview') ? ICONS.home : ICONS[PLUGINS[k].icon];
+  return '<div class="nav-item'+active+'" data-view="'+k+'">'+icon+'<span>'+esc(name)+'</span>'+(bdg?'<span class="bdg">'+bdg+'</span>':'')+'</div>';
+}
+
+function ph(title, sub, acts){
+  return '<div class="ph"><h1>'+esc(title)+'</h1><p>'+sub+'</p>'+(acts?'<div class="acts">'+acts+'</div>':'')+'</div>';
+}
+
+function renderMain(){
+  var v = state.view, on = state.plugins[state.tenant]||[];
+  if(v!=='overview' && v!=='market' && v!=='revenue' && on.indexOf(v)<0){
+    $('#main').innerHTML = ph('插件未启用','该插件在当前租户未启用，请到「插件市场」启用后再使用。',
+      '<button class="btn pri" data-go="market">前往插件市场</button>');
+    return;
+  }
+  var fn = { overview:viewOverview, gen:viewGen, calendar:viewCalendar, publish:viewPublish,
+             compliance:viewCompliance, channels:viewChannels, geo:viewGeo, probe:viewProbe,
+             market:viewMarket, revenue:viewRevenue }[v];
+  $('#main').innerHTML = fn ? fn() : ph('未找到视图','');
+}
+
+function viewOverview(){
+  var t = T(), on = state.plugins[state.tenant]||[];
+  var out = state.gen.out.length, pass = state.pass.length;
+  return ph('总览 · '+esc(t.short),
+    '当前租户以「'+esc(t.plan)+'」运行，启用插件 '+on.length+' 个。下面四个数字是本月的产出与增长情况。',
+    '<button class="btn pri" data-go="gen">开始生成内容</button><button class="btn" data-go="market">管理插件</button><button class="btn" data-go="revenue">查看收入</button>')
+  + '<div class="kpis">'
+  + kpi('本月产出内容', (236+out)+' <em>条</em>', '较上月 +18%', 1)
+  + kpi('已分发平台', '5 <em>个</em>', '公众号 / 抖音 / B站 / 小红书 / 视频号', 0)
+  + kpi('AI 引用率', '38 <em>%</em>', '较上月 +6 个百分点', 1)
+  + kpi('Credit 已用', Math.round(t.credits/1000)+'k <em>/ '+Math.round(t.creditsTotal/1000)+'k</em>', '用量 '+creditUsedPct()+'%', 0)
+  + '</div>'
+  + '<div class="cols c3">'
+  + '<div class="card"><div class="hd"><h3>生产流水线</h3><span class="sub">今日</span><div class="r"><span class="tag t-b">运行中</span></div></div><div class="bd">'
+    + pipeline()
+  + '</div></div>'
+  + '<div class="card"><div class="hd"><h3>收入概览</h3><span class="sub">本月</span></div><div class="bd">'
+    + '<div style="font-size:26px;font-weight:500;margin-bottom:2px">¥'+t.revenue.toLocaleString()+'</div>'
+    + '<div style="font-size:11.5px;color:var(--ink3);margin-bottom:14px">较上月 +12.4% · 七条收入线</div>'
+    + '<div class="bars">'
+    + bar('AI 用量 Credit', 42, 'var(--brand)')
+    + bar('插件订阅', 26, '#7F77DD')
+    + bar('租户订阅', 18, '#185FA5')
+    + bar('通道分账', 9, '#BA7517')
+    + bar('其他四条', 5, '#98a2aa')
+    + '</div>'
+    + '<button class="btn sm" style="margin-top:14px" data-go="revenue">收入明细 →</button>'
+  + '</div></div>'
+  + '</div>';
+}
+function kpi(l,v,d,up){ return '<div class="kpi"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="d'+(up?' up':'')+'">'+d+'</div></div>'; }
+function bar(name, pct, color){
+  return '<div class="b"><div class="top"><b>'+name+'</b><span>'+pct+'%</span></div><div class="bar"><i style="width:'+pct+'%;background:'+color+'"></i></div></div>';
+}
+function pipeline(){
+  var rows = [
+    ['素材入库','已完成','t-b'],
+    ['内容生成','18 条','t-b'],
+    ['合规校验','待人工确认 2 条','t-a'],
+    ['分发队列','公众号 · B站','t-bl'],
+    ['GEO 监测','本周 1 次','t-g']
+  ];
+  return '<table><tbody>'+rows.map(function(r){
+    return '<tr><td style="width:38%">'+r[0]+'</td><td><span class="tag '+r[2]+'">'+r[1]+'</span></td></tr>';
+  }).join('')+'</tbody></table>';
+}
+
+function viewGen(){
+  var g = state.gen;
+  var fmtItem = FORMATS.filter(function(x){ return x.id===g.fmt; })[0];
+  var usable = PROVIDERS.filter(function(p){ return !fmtItem || p.cap===fmtItem.cap; });
+  var needAvatar = g.fmt==='avatar';
+  var step3 = !!g.prov;
+  var canGen = g.src.length>0 && g.fmt && g.prov && !g.running;
+
+  var s = ph('内容工厂','选素材 → 选形态 → 选生成通道 → 生成。生成的内容自带 GEO 结构化要素与 AI 标识，可直接进入合规闸门。')
+    + '<div class="steps">'
+    + step(1,'选素材', g.src.length>0)
+    + step(2,'选形态', !!g.fmt)
+    + step(3,'选通道', !!g.prov)
+    + step(4,'生成', g.out.length>0)
+    + '</div>';
+
+  s += '<div class="card"><div class="hd"><h3>① 选择素材</h3><span class="sub">可多选，选中的产品/资料会作为事实来源</span><div class="r"><span class="tag t-g" id="srcCount">已选 '+g.src.length+' 项</span></div></div><div class="bd"><div class="pick">'
+    + SOURCES.map(function(x){
+        return '<div class="p'+(g.src.indexOf(x.id)>=0?' on':'')+'" data-src="'+x.id+'"><div class="ck"></div><div class="t">'+x.t+'</div><div class="s">'+x.s+'</div></div>';
+      }).join('')
+    + '</div></div></div>';
+
+  s += '<div class="card"><div class="hd"><h3>② 选择形态</h3><span class="sub">形态决定可用的生成通道</span></div><div class="bd"><div class="pick c3">'
+    + FORMATS.map(function(x){
+        return '<div class="p'+(g.fmt===x.id?' on':'')+'" data-fmt="'+x.id+'"><div class="ck"></div><div class="t">'+x.t+'</div><div class="s">'+x.s+'</div></div>';
+      }).join('')
+    + '</div></div></div>';
+
+  s += '<div class="card"><div class="hd"><h3>③ 选择生成通道</h3><span class="sub">'+(g.fmt?('当前形态可用 '+usable.length+' 条通道'):'请先选择形态')+'</span><div class="r"><span class="tag t-a">合作方通道按量计费</span></div></div><div class="bd">'
+    + (g.fmt ? '<div class="pick c3">'+usable.map(function(p){
+        return '<div class="p'+(g.prov===p.id?' on':'')+'" data-prov="'+p.id+'"><div class="ck"></div><div class="t">'+p.name+'</div><div class="s">'+p.note+'</div><div class="pr">'+p.price+' Credit / '+p.unit+'</div></div>';
+      }).join('')+'</div>'
+    : '<div class="empty">先在上一步选择形态，通道列表会按能力自动过滤（这就避免了"图文却选了视频通道"这类误操作）</div>')
+    + '</div></div>';
+
+  s += '<div class="card"><div class="hd"><h3>④ 生成</h3><span class="sub">长任务异步执行，可离开页面，完成后通知</span><div class="r">'
+    + '<span class="tag t-g">预计消耗 '+(canGen||g.running?estimateCredit():0)+' Credit</span>'
+    + '<button class="btn pri" id="btnGen" '+(canGen?'':'disabled')+'>'+(g.running?'生成中…':'开始生成')+'</button>'
+    + '</div></div><div class="bd">'
+    + (g.running || g.log.length ? '<div class="prog" style="margin-bottom:12px"><i id="progBar" style="width:'+g.progs+'%"></i></div><div class="log" id="genLog">'+g.log.join('')+'</div>' : '<div class="empty">选好素材、形态与通道后点「开始生成」</div>')
+    + (g.out.length?('<div style="margin-top:16px"><div style="font-size:12.5px;color:var(--ink2);margin-bottom:9px">本轮产物</div>'+g.out.map(function(o){ return outItem(o); }).join('')+'</div>'):'')
+    + (needAvatar?'<div class="hint">数字人口播需先在「合规闸门」完成形象与声音授权留痕，未授权不允许生成。</div>':'')
+    + '</div></div>';
+  return s;
+}
+function step(n, label, done){ return '<div class="s'+(done?' done':'')+'"><div class="n">'+(done?'✓':n)+'</div>'+label+'</div>'; }
+function estimateCredit(){
+  var g = state.gen, p = PROVIDERS.filter(function(x){return x.id===g.prov;})[0];
+  if(!p || !g.src.length) return 0;
+  var base = p.id==='txt'? 24 : (p.id==='vid'? 96 : 144);
+  return base * g.src.length;
+}
+function outItem(o){
+  var passed = state.pass.some(function(p){ return p.id===o.id; });
+  return '<div class="item"><div class="h"><span class="t">'+esc(o.title)+'</span>'
+    + '<span class="tag t-g">'+esc(o.fmt)+'</span><span class="tag t-t">GEO '+o.geo+'</span><span class="tag t-bl">AI 标识已注入</span>'
+    + '<div class="r">'+(passed?'<span class="tag t-b">已过闸门</span>':'<button class="btn sm pri" data-send="'+o.id+'">送合规闸门</button>')+'</div>'
+    + '</div><div class="b">事实来源：'+esc(o.src)+' · 通道：'+esc(o.prov)+' · 消耗 '+o.credit+' Credit<br>结构化要素：实体明确 / 问答式小标题 / 可独立引用断言 / 数据点 / 出处锚</div></div>';
+}
+
+function viewCalendar(){
+  var days = ['周一','周二','周三','周四','周五','周六','周日'];
+  var cells = [];
+  for(var i=0;i<28;i++){
+    var has = [1,3,5,8,10,12,15,17,19,22,24,26].indexOf(i)>=0;
+    var plat = ['公众号','抖音','B站','小红书','视频号'][i%5];
+    cells.push('<div style="border:1px solid var(--line);border-radius:8px;padding:8px 9px;min-height:76px;background:'+(has?'#fcfdf9':'#fff')+'">'
+      + '<div style="font-size:10.5px;color:var(--ink3)">'+(i+1)+' 日</div>'
+      + (has?('<div style="font-size:11.5px;margin-top:5px;line-height:1.5">'+plat+'<br><span style="color:var(--ink3)">已排 '+((i%3)+1)+' 条</span></div>'):'')
+      + '</div>');
+  }
+  return ph('内容日历','一次排一个月的量，按各平台发布节奏自动排期。服务号 4 次/月、B站 5 稿/天这类硬约束会内置到排期规则里。',
+      '<button class="btn pri" data-toast="已按最优节奏自动排期 12 条（避开平台限流）">自动排期</button><button class="btn" data-go="gen">去生成内容</button>')
+  + '<div class="card"><div class="hd"><h3>2026 年 11 月（示意）</h3><div class="r"><span class="tag t-g">双列 4 周</span></div></div><div class="bd">'
+  + '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:7px">'+days.map(function(d){return '<div style="font-size:11px;color:var(--ink3);text-align:center">'+d+'</div>';}).join('')+'</div>'
+  + '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:7px">'+cells.join('')+'</div>'
+  + '</div></div>';
+}
+
+function viewCompliance(){
+  var pending = state.gen.out.filter(function(o){ return !state.pass.some(function(p){return p.id===o.id;}); });
+  var c = state.checks;
+  var allOk = c.identify && c.words && c.rule && (c.avatar || state.gen.fmt!=='avatar');
+  var s = ph('合规闸门','AI 生成内容按 GB 45438-2025 需带显式标识与元数据；数字人口播还需形象与声音授权留痕。全部通过才能进入分发。');
+  if(!state.gen.out.length){
+    return s + '<div class="card"><div class="bd"><div class="empty">还没有待检内容。先去「内容工厂」生成一批。</div><div style="text-align:center"><button class="btn pri" data-go="gen">去内容工厂</button></div></div></div>';
+  }
+  s += '<div class="card"><div class="hd"><h3>待检内容 '+pending.length+' 条</h3><span class="sub">选一条逐项过检</span></div><div class="bd">';
+  if(!pending.length){ s += '<div class="empty">本轮内容已全部通过闸门，可前往发布中心。</div><div style="text-align:center"><button class="btn pri" data-go="publish">去发布中心</button></div>'; }
+  else {
+    pending.forEach(function(o){
+      s += '<div class="item"><div class="h"><span class="t">'+esc(o.title)+'</span><span class="tag t-g">'+esc(o.fmt)+'</span><div class="r"><button class="btn sm" data-check="'+o.id+'">开始校验</button></div></div><div class="b">来源：'+esc(o.src)+'</div></div>';
+    });
+  }
+  s += '</div></div>';
+  s += '<div class="card"><div class="hd"><h3>校验项</h3><div class="r"><button class="btn sm pri" id="btnPass" '+(allOk?'':'disabled')+'>确认通过，送往发布中心</button></div></div><div class="bd">'
+    + chkRow('identify','AI 标识注入（显式水印 + 隐式元数据）')
+    + chkRow('words','敏感词与夸大宣称检查')
+    + chkRow('rule','目标平台规则预检（禁站外导流 / 封面规范）')
+    + (state.gen.fmt==='avatar' ? chkRow('avatar','数字人形象与声音授权留痕') : '<div class="chk" style="opacity:.5"><div class="bx"></div>数字人授权留痕（本轮未使用数字人形态，无需）</div>')
+    + '<div class="hint">演示提示：点「开始校验」会依次自动打勾，全部为绿后「确认通过」按钮才可用。</div>'
+  + '</div></div>';
+  return s;
+}
+function chkRow(k, label){
+  var ok = state.checks[k];
+  return '<div class="chk'+(ok?' ok':'')+'"><div class="bx"></div>'+esc(label)+(ok?'<span style="margin-left:auto"><span class="tag t-b">通过</span></span>':'')+'</div>';
+}
+
+function viewPublish(){
+  var s = ph('发布中心','可直发平台进队列按限流排期；不可直发的平台生成「人工粘贴包」，含文案、图、视频与手机扫码直达。');
+  if(!state.pass.length){
+    return s + '<div class="card"><div class="bd"><div class="empty">还没有通过合规的内容。先去「合规闸门」过检。</div><div style="text-align:center"><button class="btn pri" data-go="compliance">去合规闸门</button></div></div></div>';
+  }
+  s += '<div class="card"><div class="hd"><h3>待分发 '+state.pass.length+' 条</h3><div class="r">'
+    + '<button class="btn pri" id="btnPub" '+(state.pub.running?'disabled':'')+'>'+(state.pub.running?'分发中…':'一键分发到 5 个平台')+'</button></div></div><div class="bd">'
+    + state.pass.map(function(o){ return '<div class="item"><div class="h"><span class="t">'+esc(o.title)+'</span><span class="tag t-t">GEO '+o.geo+'</span><span class="tag t-bl">合规通过</span></div></div>'; }).join('')
+    + '</div></div>';
+  s += '<div class="card"><div class="hd"><h3>分发状态</h3><span class="sub">同一内容 × 每个平台 = 一条记录</span></div><div class="bd">';
+  if(!state.pub.rows.length){ s += '<div class="empty">点上方「一键分发」开始，会看到两类平台的不同处理方式。</div>'; }
+  else {
+    s += '<table><thead><tr><th style="width:22%">平台</th><th style="width:16%">通道</th><th style="width:34%">限制</th><th style="width:14%">耗时</th><th>状态</th></tr></thead><tbody>'
+      + state.pub.rows.map(function(r){
+          var tag = r.st==='done' ? '<span class="tag t-b">已发布</span>'
+                  : r.st==='manual' ? '<span class="tag t-a">粘贴包已生成</span>'
+                  : r.st==='queue' ? '<span class="tag t-bl">排队中</span>'
+                  : '<span class="tag t-g">等待</span>';
+          return '<tr><td>'+r.n+'</td><td>'+(r.mode==='direct'?'<span class="tag t-t">API 直发</span>':'<span class="tag t-a">人工粘贴</span>')+'</td><td style="color:var(--ink3);font-size:11.5px">'+r.lim+'</td><td style="font-family:var(--mono);font-size:11.5px;color:var(--ink3)">'+r.eta+'</td><td>'+tag+'</td></tr>';
+        }).join('')+'</tbody></table>';
+    if(state.pub.rows.every(function(r){ return r.st==='done'||r.st==='manual'; })){
+      s += '<div class="hint" style="margin-top:12px">分发完成：3 个平台已直发，2 个平台生成粘贴包（含手机扫码直达）。发布记录已写入，失败可一键重试。</div>';
+    }
+  }
+  s += '</div></div>';
+  return s;
+}
+
+function viewChannels(){
+  var rows = [
+    ['微信公众号','服务号 · 已认证','已授权','2027-03-12','直发'],
+    ['抖音','企业号 · 已认证','已授权','2027-01-20','直发'],
+    ['B 站','开放平台应用','已授权','2026-12-05','直发'],
+    ['小红书','个人号','未授权','—','人工粘贴'],
+    ['微信视频号','无接口','不可授权','—','人工粘贴']
+  ];
+  var s = ph('渠道账号','平台发布账号与 AI 生成通道账号分开管理，凭证加密存储（OAuth 保险库），私有化部署时同样适用。');
+  s += '<div class="card"><div class="hd"><h3>平台发布账号</h3><div class="r"><button class="btn sm" data-toast="演示环境不执行真实 OAuth 授权">+ 添加账号</button></div></div><div class="bd">'
+    + '<table><thead><tr><th style="width:22%">平台</th><th style="width:22%">账号类型</th><th style="width:16%">授权状态</th><th style="width:18%">有效期至</th><th>分发方式</th></tr></thead><tbody>'
+    + rows.map(function(r){
+        return '<tr><td>'+r[0]+'</td><td style="color:var(--ink2)">'+r[1]+'</td><td>'+(r[2]==='已授权'?'<span class="tag t-b">'+r[2]+'</span>':r[2]==='未授权'?'<span class="tag t-a">'+r[2]+'</span>':'<span class="tag t-g">'+r[2]+'</span>')+'</td><td style="font-family:var(--mono);font-size:11.5px">'+r[3]+'</td><td>'+(r[4]==='直发'?'<span class="tag t-t">API 直发</span>':'<span class="tag t-a">'+r[4]+'</span>')+'</td></tr>';
+      }).join('')+'</tbody></table>'
+  + '</div></div>';
+  s += '<div class="card"><div class="hd"><h3>AI 生成通道</h3><span class="sub">合作方通道按量计费，额度实时显示</span></div><div class="bd">'
+    + '<table><thead><tr><th style="width:24%">通道</th><th style="width:14%">类型</th><th style="width:18%">能力</th><th style="width:18%">单价</th><th>剩余额度</th></tr></thead><tbody>'
+    + PROVIDERS.map(function(p){
+        return '<tr><td>'+p.name+'</td><td>'+(p.kind==='partner'?'<span class="tag t-a">合作方</span>':'<span class="tag t-t">自建</span>')+'</td><td style="color:var(--ink2)">'+p.cap+'</td><td style="font-family:var(--mono);font-size:11.5px">'+p.price+' Credit / '+p.unit+'</td><td style="font-family:var(--mono);font-size:11.5px">'+ (p.kind==='partner' ? (p.id==='vid'?'2,400 秒':'860 秒') : '不限') +'</td></tr>';
+      }).join('')+'</tbody></table>'
+    + '<div class="hint">探活状态：3 条通道全部可用。若主通道故障，会按 fallback 顺序自动切换，用户无感知。</div>'
+  + '</div></div>';
+  return s;
+}
+
+function viewGeo(){
+  var s = ph('GEO 资产','把内容铺到可被 AI 引用的第三方信源上。调研结论：AI 回答的引用中约 84% 来自 earned media，自有站点仅约 16%。');
+  var rows = [
+    ['行业媒体投稿','美妆头条 / 化妆品报','已投 8 篇','高'],
+    ['百科词条','品牌与成分词条','已建 6 条','高'],
+    ['白皮书 PDF','技术文档可被抓取','已发布 4 份','高'],
+    ['知乎问答','成分科普问答','已答 12 条','中'],
+    ['公众号 / B站','社媒内容','已发 236 条','中']
+  ];
+  s += '<div class="card"><div class="hd"><h3>信源型平台池</h3><span class="sub">优先级高于社媒曝光</span></div><div class="bd">'
+    + '<table><thead><tr><th style="width:22%">类型</th><th style="width:32%">示例</th><th style="width:22%">当前进度</th><th>AI 引用权重</th></tr></thead><tbody>'
+    + rows.map(function(r){
+        var w = r[3]==='高'?'<span class="tag t-b">高</span>':'<span class="tag t-a">中</span>';
+        return '<tr><td>'+r[0]+'</td><td style="color:var(--ink2)">'+r[1]+'</td><td>'+r[2]+'</td><td>'+w+'</td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  s += '<div class="card"><div class="hd"><h3>GEO 结构化要素（生成时自动注入）</h3></div><div class="bd"><div class="pick c3">'
+    + ['实体明确（全称 + 别名 + 化学名）','问答式小标题','可独立引用的断言句','数据点与认证','文末出处锚','去营销腔表达'].map(function(x){
+        return '<div class="p on" style="cursor:default"><div class="ck"></div><div class="t" style="font-size:12px">'+x+'</div></div>';
+      }).join('')
+  + '</div><div class="hint">用户在内容工厂不需要理解 GEO，套模板即自带以上结构。</div></div></div>';
+  return s;
+}
+
+function viewProbe(){
+  var hit = AI_PROBES.filter(function(p){ return p.hit; }).length;
+  var rate = Math.round(hit/AI_PROBES.length*100);
+  var s = ph('AI 可见度监测','定期向各 AI 平台发预设问题（品牌词 / 成分词 / 品类词），记录是否提及、是否引用我方链接、排在第几位。',
+      '<button class="btn pri" data-toast="已发起本轮探测（演示）">立即探测</button>');
+  s += '<div class="kpis">'
+    + kpi('被提及模型', hit+' <em>/ 5</em>', '覆盖率 '+rate+'%', 1)
+    + kpi('引用我方链接', '6 <em>处</em>', '较上周 +2', 1)
+    + kpi('最佳排名', '第 2 <em>位</em>', '豆包 · 成分词', 1)
+    + kpi('监测词表', '48 <em>个词</em>', '品牌 12 / 成分 24 / 品类 12', 0)
+    + '</div>';
+  s += '<div class="cols"><div class="card"><div class="hd"><h3>本轮探测结果</h3><span class="sub">按模型</span></div><div class="bd">'
+    + '<table><thead><tr><th style="width:30%">模型</th><th style="width:20%">是否提及</th><th style="width:20%">引用数</th><th>排名</th></tr></thead><tbody>'
+    + AI_PROBES.map(function(p){
+        return '<tr><td>'+p.m+'</td><td>'+(p.hit?'<span class="tag t-b">提及</span>':'<span class="tag t-g">未提及</span>')+'</td><td style="font-family:var(--mono);font-size:11.5px">'+p.ref+'</td><td style="color:var(--ink2)">'+p.rank+'</td></tr>';
+      }).join('')+'</tbody></table></div></div>'
+  + '<div class="card"><div class="hd"><h3>回流建议</h3><span class="sub">自动生成待办</span></div><div class="bd">'
+    + '<div class="chk ok"><div class="bx"></div><span>「成分科普 + 问答式标题」被 3 个模型引用 → 加产该类型</span></div>'
+    + '<div class="chk ok"><div class="bx"></div><span>白皮书 PDF 被引用 2 次 → 再发 2 份技术文档</span></div>'
+    + '<div class="chk"><div class="bx"></div><span>「配方应用案例」未被通义千问引用 → 改写为问答体后重投</span></div>'
+    + '<div class="hint">被引用的选题加产、没被引用的改写重投——这就是闭环的最后一环。</div>'
+  + '</div></div></div>';
+  return s;
+}
+
+function viewMarket(){
+  var on = state.plugins[state.tenant]||[];
+  var s = ph('插件市场','按需启用，启用后左侧菜单立刻出现，停用即隐藏。这就是「乐高积木」的接入方式 —— 每个插件可独立计费，也可打包进套餐。',
+      '<span class="tag t-g">当前租户已启用 '+on.length+' / 7</span>');
+  s += '<div class="mkts">';
+  ['gen','calendar','publish','compliance','channels','geo','probe'].forEach(function(k){
+    var p = PLUGINS[k], isOn = on.indexOf(k)>=0;
+    var base = k==='gen'||k==='publish'||k==='compliance'||k==='channels';
+    s += '<div class="mkt'+(isOn?' on':'')+'">'
+      + '<div class="ic">'+ICONS[p.icon]+'</div>'
+      + '<div class="t">'+p.name+(isOn?'<span class="tag t-b">已启用</span>':'')+'</div>'
+      + '<div class="s">'+p.desc+'</div>'
+      + '<div class="f"><span class="p">'+(base?'含在套餐':p.price)+'</span>'
+      + (isOn
+          ? (base?'<span class="tag t-g">基础插件</span>':'<button class="btn sm" data-plugin-off="'+k+'">停用</button>')
+          : '<button class="btn sm pri" data-plugin-on="'+k+'">启用插件</button>')
+      + '</div></div>';
+  });
+  s += '</div>';
+  s += '<div class="card" style="margin-top:16px"><div class="hd"><h3>生态插件（合作方接入）</h3><span class="sub">合作方按同一份契约上架</span></div><div class="bd">'
+    + '<div class="mkts">'
+    + ecoCard('星辰影视 AI','企业级短视频生成，支持分镜与配音','¥0.08 / 秒')
+    + ecoCard('数字人工场','形象与声音克隆，合规留痕内置','¥0.12 / 秒')
+    + ecoCard('行业媒体投稿通道','一键投稿 12 家美妆/医药行业媒体','¥280 / 篇')
+    + '</div><div class="hint">合作方插件走和生产插件同一套契约：声明能力位、异步任务、素材回传我方存储、计费钩子。上架需通过权限审批与安全审查。</div>'
+  + '</div></div>';
+  return s;
+}
+function ecoCard(name, desc, price){
+  return '<div class="mkt"><div class="ic"><svg viewBox="0 0 18 18"><path d="M9 2.4l2 4.1 4.5.6-3.3 3.2.8 4.5L9 12.7l-4 2.1.8-4.5L2.5 7.1l4.5-.6z"/></svg></div>'
+    + '<div class="t">'+name+'<span class="tag t-a">合作方</span></div><div class="s">'+desc+'</div>'
+    + '<div class="f"><span class="p">'+price+'</span><button class="btn sm" data-toast="已提交接入申请，商务跟进中">申请接入</button></div></div>';
+}
+
+function viewRevenue(){
+  var t = T();
+  var lines = [
+    ['AI 用量 Credit', 42, '¥'+Math.round(t.revenue*0.42).toLocaleString(), 'var(--brand)', '按 token / 秒 / 张折算 Credit'],
+    ['插件订阅', 26, '¥'+Math.round(t.revenue*0.26).toLocaleString(), '#7F77DD', '功能包按月/年订阅'],
+    ['租户订阅', 18, '¥'+Math.round(t.revenue*0.18).toLocaleString(), '#185FA5', '席位与套餐'],
+    ['通道分账', 9, '¥'+Math.round(t.revenue*0.09).toLocaleString(), '#BA7517', '合作方流水分成'],
+    ['私有化 license', 3, '¥'+Math.round(t.revenue*0.03).toLocaleString(), '#0F6E56', '年费 + 升级'],
+    ['生态分成', 1, '¥'+Math.round(t.revenue*0.01).toLocaleString(), '#8d979f', '第三方插件抽成 15–30%'],
+    ['增值服务', 1, '¥'+Math.round(t.revenue*0.01).toLocaleString(), '#c3c9cd', '代运营 / 定制']
+  ];
+  var s = ph('收入与计量','七条收入线叠加，全部过同一层计量与结算底座。所有 AI 调用折算成统一单位 Credit，客户看不懂 token，但看得懂 Credit。',
+      '<button class="btn pri" data-toast="演示环境不执行真实结算">生成对账单</button>');
+  s += '<div class="kpis">'
+    + kpi('本月总收入', '¥'+t.revenue.toLocaleString(), '较上月 +12.4%', 1)
+    + kpi('AI 用量收入', '¥'+Math.round(t.revenue*0.42).toLocaleString(), '占比 42% · 主收入线', 1)
+    + kpi('Credit 已用', Math.round(t.credits/1000)+'k <em>/ '+Math.round(t.creditsTotal/1000)+'k</em>', '用量 '+creditUsedPct()+'%', 0)
+    + kpi('通道成本', '¥'+Math.round(t.revenue*0.42*0.62).toLocaleString(), '毛利率约 38%', 0)
+    + '</div>';
+  s += '<div class="cols c3"><div class="card"><div class="hd"><h3>七条收入线</h3><span class="sub">本月构成</span></div><div class="bd"><div class="bars">'
+    + lines.map(function(l){
+        return '<div class="b"><div class="top"><b>'+l[0]+'</b><span>'+l[1]+'% · '+l[2]+'</span></div><div class="bar"><i style="width:'+l[1]+'%;background:'+l[3]+'"></i></div>'
+          + '<div style="font-size:11px;color:var(--ink3);margin-top:3px">'+l[4]+'</div></div>';
+      }).join('')
+    + '</div></div></div>'
+  + '<div class="card"><div class="hd"><h3>Credit 消耗明细</h3><span class="sub">按通道</span></div><div class="bd">'
+    + '<table><thead><tr><th style="width:34%">通道</th><th style="width:26%">消耗</th><th>成本</th></tr></thead><tbody>'
+    + PROVIDERS.map(function(p){
+        var used = p.id==='txt'? '52,400 Credit' : (p.id==='vid'? '38,600 Credit':'21,800 Credit');
+        var cost = p.id==='txt'? '¥186' : (p.id==='vid'? '¥2,310':'¥2,616');
+        return '<tr><td>'+p.name+(p.kind==='partner'?' <span class="tag t-a">合作方</span>':'')+'</td><td style="font-family:var(--mono);font-size:11.5px">'+used+'</td><td style="font-family:var(--mono);font-size:11.5px">'+cost+'</td></tr>';
+      }).join('')+'</tbody></table>'
+    + '<div style="margin-top:14px"><div style="font-size:11.5px;color:var(--ink2);margin-bottom:6px">成本三道闸门</div>'
+    + '<div class="chk ok"><div class="bx"></div><span>单次上限：单条视频 ≤ 200 Credit</span></div>'
+    + '<div class="chk ok"><div class="bx"></div><span>月度额度：达 80% 邮件告警</span></div>'
+    + '<div class="chk ok"><div class="bx"></div><span>异常熔断：高频调用 / 重试风暴自动切断</span></div>'
+    + '</div></div></div></div>';
+  return s;
+}
+
+function runGen(){
+  var g = state.gen;
+  if(g.running) return;
+  var p = PROVIDERS.filter(function(x){return x.id===g.prov;})[0];
+  var fmtName = FORMATS.filter(function(x){return x.id===g.fmt;})[0].t;
+  var credit = estimateCredit();
+  g.running = true; g.progs = 0; g.log = []; g.out = [];
+  renderMain();
+  var steps = [
+    [4,  '解析素材：'+g.src.length+' 个来源，抽取实体与数据点'],
+    [16, '注入 GEO 结构化要素（实体 / 问答标题 / 断言句 / 出处锚）'],
+    [34, '调用生成通道：<b>'+p.name+'</b>（'+p.cap+'）'],
+    [56, '通道排队中 · 预计 '+ (p.id==='txt'?'8':'260') +' 秒'],
+    [76, '素材回传中台存储（不回传合作方临时链接）'],
+    [88, '注入 AI 生成标识（显式水印 + 隐式元数据）'],
+    [96, '计费入账：'+credit+' Credit'],
+    [100,'生成完成，'+ (g.fmt==='txt'?'2':'1') +' 条产物入库']
+  ];
+  var i = 0;
+  var timer = setInterval(function(){
+    if(i >= steps.length){
+      clearInterval(timer);
+      g.running = false;
+      var title = (g.fmt==='txt' ? '嘉法狮 PC 原料科普：成分问答体' : (g.fmt==='vid'?'产品短视频：原料微距 + 字幕解说':'数字人口播：成分答疑 60 秒'));
+      g.out = [{
+        id:'o'+(Date.now()),
+        title:title,
+        fmt:fmtName, geo: g.fmt==='txt'? '92' : '86',
+        src: g.src.length+' 个来源', prov: p.name, credit: credit
+      }];
+      T().credits += credit;
+      renderCredit(); renderMain();
+      toast('生成完成，消耗 '+credit+' Credit');
+      return;
+    }
+    var st = steps[i];
+    g.progs = st[0];
+    g.log.push('· '+st[1]);
+    var bar = $('#progBar'), lg = $('#genLog');
+    if(bar) bar.style.width = g.progs+'%';
+    if(lg){ lg.innerHTML = g.log.join('<br>'); lg.scrollTop = lg.scrollHeight; }
+    i++;
+  }, 420);
+}
+
+document.addEventListener('click', function(e){
+  var el = e.target.closest('[data-tenant],[data-view],[data-go],[data-src],[data-fmt],[data-prov],[data-send],[data-check],[data-toast],[data-plugin-on],[data-plugin-off]');
+  if(!el) {
+    if(e.target && e.target.id==='btnGen') runGen();
+    if(e.target && e.target.id==='btnPass') doPass();
+    if(e.target && e.target.id==='btnPub') doPublish();
+    return;
+  }
+  if(el.dataset.tenant){ setTenant(el.dataset.tenant); return; }
+  if(el.dataset.view){ setView(el.dataset.view); return; }
+  if(el.dataset.go){ setView(el.dataset.go); return; }
+  if(el.dataset.toast){ toast(el.dataset.toast); return; }
+  if(el.dataset.src){
+    var i = state.gen.src.indexOf(el.dataset.src);
+    if(i>=0) state.gen.src.splice(i,1); else state.gen.src.push(el.dataset.src);
+    renderMain(); return;
+  }
+  if(el.dataset.fmt){
+    state.gen.fmt = (state.gen.fmt===el.dataset.fmt) ? null : el.dataset.fmt;
+    state.gen.prov = null; renderMain(); return;
+  }
+  if(el.dataset.prov){ state.gen.prov = el.dataset.prov; renderMain(); return; }
+  if(el.dataset.send){
+    var o = state.gen.out.filter(function(x){return x.id===el.dataset.send;})[0];
+    if(o && !state.pass.some(function(p){return p.id===o.id;})){
+      o.staged = true;
+      state.checks = { identify:false, words:false, rule:false, avatar:false };
+    }
+    setView('compliance'); toast('已送入合规闸门，请逐项校验'); return;
+  }
+  if(el.dataset.check){ runChecks(el.dataset.check); return; }
+  if(el.dataset.pluginOn){ togglePlugin(el.dataset.pluginOn, true); return; }
+  if(el.dataset.pluginOff){ togglePlugin(el.dataset.pluginOff, false); return; }
+});
+
+function togglePlugin(k, on){
+  var arr = state.plugins[state.tenant];
+  if(on){
+    if(arr.indexOf(k)<0) arr.push(k);
+    toast('已启用「'+PLUGINS[k].name+'」，左侧菜单已更新');
+  } else {
+    var i = arr.indexOf(k);
+    if(i>=0) arr.splice(i,1);
+    toast('已停用「'+PLUGINS[k].name+'」，菜单已隐藏');
+  }
+  renderAll();
+}
+
+function runChecks(id){
+  var seq = ['identify','words','rule'];
+  if(state.gen.fmt==='avatar') seq.push('avatar');
+  state.checks = { identify:false, words:false, rule:false, avatar:false };
+  renderMain();
+  var i = 0;
+  var t = setInterval(function(){
+    if(i>=seq.length){ clearInterval(t); toast('校验完成'); return; }
+    state.checks[seq[i]] = true;
+    $('#main').innerHTML = viewCompliance();
+    i++;
+  }, 500);
+}
+
+function doPass(){
+  var pending = state.gen.out.filter(function(o){ return !state.pass.some(function(p){return p.id===o.id;}); });
+  pending.forEach(function(o){ state.pass.push(o); });
+  state.pub = { running:false, rows:[] };
+  renderAll();
+  toast('已通过闸门，'+pending.length+' 条内容送往发布中心');
+  setView('publish');
+}
+
+function doPublish(){
+  if(state.pub.running) return;
+  state.pub.running = true;
+  state.pub.rows = PLATFORMS.map(function(p){ return { n:p.n, mode:p.mode, lim:p.lim, eta:p.eta, st:'wait' }; });
+  renderMain();
+  var i = 0;
+  var t = setInterval(function(){
+    if(i >= state.pub.rows.length){
+      clearInterval(t);
+      state.pub.running = false;
+      renderMain();
+      toast('分发完成：3 个平台直发，2 个平台生成粘贴包');
+      return;
+    }
+    var r = state.pub.rows[i];
+    r.st = r.mode==='direct' ? 'done' : 'manual';
+    renderMain();
+    i++;
+  }, 620);
+}
+
+document.documentElement.style.setProperty('--tenant', TENANTS[state.tenant].color);
+renderAll();
+})();
+</script>
+</body>
+</html>
