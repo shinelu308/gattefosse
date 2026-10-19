@@ -1346,9 +1346,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadProductImage($event)" style="font-size:13px;" data-page-node-id="eyPQyES3WIC6Xo3ydrwObL">
                   <span v-if="uploadingImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="zKC6CsHY2xRAzY9ymhFnHh">上传中...</span>
                 </div>
-                <div v-if="editingPc.imageUrl" style="margin-top:6px;" data-page-node-id="OErIq64hMRhLEe8e4FShLi">
-                  <img :src="editingPc.imageUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);" data-page-node-id="6JBpJCooJevcVNr5VNh2wC">
-                </div>
+                <div v-if="editingPc.imageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingPc.imageUrl, '产品图片')" title="点击查看大图">
+    <img :src="editingPc.imageUrl" style="max-width:120px;max-height:80px;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingPc.imageUrl" v-text="imgFileName(editingPc.imageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingPc.imageUrl, '产品图片')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingPc.imageUrl, '产品图片')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
               <div class="form-group" data-page-node-id="jGB5JXiQ2O4OhJcooQk1XA">
                 <label data-page-node-id="MNHqc0DZozsjav0Eb6C3XZ">详情大图 <span class="hint" data-page-node-id="5xdELjX4O8jimWAfMkWHBb">（用于详情页顶部横幅，建议高清大图）</span></label>
@@ -1357,9 +1366,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadDetailImage($event)" style="font-size:13px;" data-page-node-id="np0UfQk7UiSLl1Juvu7n8w">
                   <span v-if="uploadingDetailImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="NuYcS4HXwGuWFOkHiSBC4O">上传中...</span>
                 </div>
-                <div v-if="editingPc.detailImageUrl" style="margin-top:6px;" data-page-node-id="am7BmAms7DjzZWkk9WufOC">
-                  <img :src="editingPc.detailImageUrl" style="max-width:200px;max-height:100px;border-radius:4px;border:1px solid var(--border);" data-page-node-id="Q8vKvN8jnSxUHrUb9Adgez">
-                </div>
+                <div v-if="editingPc.detailImageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingPc.detailImageUrl, '详情大图')" title="点击查看大图">
+    <img :src="editingPc.detailImageUrl" style="max-width:200px;max-height:100px;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingPc.detailImageUrl" v-text="imgFileName(editingPc.detailImageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingPc.detailImageUrl, '详情大图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingPc.detailImageUrl, '详情大图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
               <div class="form-group" data-page-node-id="HzGuenuHmrTMo9pq4dtPE7">
                 <label data-page-node-id="kGjTKDNUKmPnWJ8mDR4Iv3">产品视频 <span class="hint" data-page-node-id="8kY1t9IkBunAW6pT6QdknS">（显示在规格区下方，嵌入链接 / iframe）</span></label>
@@ -1815,9 +1833,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadPharmaImage($event)" style="font-size:13px;" data-page-node-id="4CnS692GnvL4WxYGbqdvIL">
                   <span v-if="uploadingPharmaImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="m8D40TG5ptm6lgjYBC1jUF">上传中...</span>
                 </div>
-                <div v-if="editingPharma.imageUrl" style="margin-top:6px;" data-page-node-id="I8xFttsMe1lo1DkDXJP03h">
-                  <img :src="editingPharma.imageUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);" data-page-node-id="ri1pdnwOb4HF19IdwUTDZ0">
-                </div>
+                <div v-if="editingPharma.imageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingPharma.imageUrl, '产品图片')" title="点击查看大图">
+    <img :src="editingPharma.imageUrl" style="max-width:120px;max-height:80px;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingPharma.imageUrl" v-text="imgFileName(editingPharma.imageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingPharma.imageUrl, '产品图片')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingPharma.imageUrl, '产品图片')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
               <div class="form-group" data-page-node-id="D5nBFgFVeVcks69WuXViPm">
                 <label data-page-node-id="c422ntnlAM1obyOSL8zi1I">详情大图 <span class="hint" data-page-node-id="MrXzHMEfFzAIQ8i1ZCFryx">（用于详情页顶部横幅，建议高清大图）</span></label>
@@ -1826,9 +1853,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadPharmaDetailImage($event)" style="font-size:13px;" data-page-node-id="hanurR6faCYd1b8iQfJDQU">
                   <span v-if="uploadingPharmaDetailImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="sPaTQLcuNYttGDXpzGG5je">上传中...</span>
                 </div>
-                <div v-if="editingPharma.detailImageUrl" style="margin-top:6px;" data-page-node-id="lCSsoGpvlMu0xAA2GcDygS">
-                  <img :src="editingPharma.detailImageUrl" style="max-width:200px;max-height:100px;border-radius:4px;border:1px solid var(--border);" data-page-node-id="qTWlU4wLHYyO66XCmll89J">
-                </div>
+                <div v-if="editingPharma.detailImageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingPharma.detailImageUrl, '详情大图')" title="点击查看大图">
+    <img :src="editingPharma.detailImageUrl" style="max-width:200px;max-height:100px;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingPharma.detailImageUrl" v-text="imgFileName(editingPharma.detailImageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingPharma.detailImageUrl, '详情大图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingPharma.detailImageUrl, '详情大图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
               </div>
               <div class="form-group" data-page-node-id="dSD8EZIrYgqCfzOiNAQFmo">
@@ -2121,9 +2157,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadFormulaImage($event)" style="font-size:13px;" data-page-node-id="2IFvHuNsksNvzCqTuTnVuY">
                   <span v-if="uploadingFormulaImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="5pGvzNCF2zE83k0zyidJaV">上传中...</span>
                 </div>
-                <div v-if="editingFormula.imageUrl" style="margin-top:6px;" data-page-node-id="n8OgygpfVh6QpRMjFEPcgn">
-                  <img :src="editingFormula.imageUrl" style="max-width:120px;max-height:80px;border-radius:4px;border:1px solid var(--border);" data-page-node-id="aGXEbuD7EoOw2CZL6HnQ9a">
-                </div>
+                <div v-if="editingFormula.imageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingFormula.imageUrl, '配方图片')" title="点击查看大图">
+    <img :src="editingFormula.imageUrl" style="max-width:120px;max-height:80px;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingFormula.imageUrl" v-text="imgFileName(editingFormula.imageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingFormula.imageUrl, '配方图片')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingFormula.imageUrl, '配方图片')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
               <div class="form-group" data-page-node-id="uG3o3g1n0fHldwrgovPtBx">
                 <label data-page-node-id="RsMoM6bYDdZLCERktN88Ed">详情大图 <span class="hint" data-page-node-id="I604bFflcsDdHpGacZXFyL">（用于详情页顶部横幅，建议高清大图）</span></label>
@@ -2132,9 +2177,18 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadFormulaDetailImage($event)" style="font-size:13px;" data-page-node-id="NDGzWl5pezoRfAVKVI2Ykm">
                   <span v-if="uploadingFormulaDetailImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="ADW0BG39WsblFNp4tZspGM">上传中...</span>
                 </div>
-                <div v-if="editingFormula.detailImageUrl" style="margin-top:6px;" data-page-node-id="NsZZAhDkvrmKKdezz4bAh3">
-                  <img :src="editingFormula.detailImageUrl" style="max-width:200px;max-height:100px;border-radius:4px;border:1px solid var(--border);" data-page-node-id="KP0ve6ClIX6VZegzOgyg3f">
-                </div>
+                <div v-if="editingFormula.detailImageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingFormula.detailImageUrl, '详情大图')" title="点击查看大图">
+    <img :src="editingFormula.detailImageUrl" style="max-width:200px;max-height:100px;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingFormula.detailImageUrl" v-text="imgFileName(editingFormula.detailImageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingFormula.detailImageUrl, '详情大图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingFormula.detailImageUrl, '详情大图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
               <div class="form-group" data-page-node-id="2alFsHbUTCvHRK6Em0Fcdw">
                 <label data-page-node-id="esAmy80q78rIOmrSYkgYfk">产品视频 <span class="hint" data-page-node-id="lk4XZyAyQzkEHkip2XfGha">（嵌入链接 / iframe / B站视频页链接）</span></label>
@@ -2911,9 +2965,18 @@ const QUILL_TOOLBAR = [
                         <input type="file" accept="image/*" @change="uploadNewsCover($event)" style="font-size:13px;">
                         <span v-if="uploadingNewsCover" style="font-size:12px;color:var(--text-muted);">上传中...</span>
                       </div>
-                      <div v-if="editingNews.imageUrl" style="margin-top:6px;">
-                        <img :src="editingNews.imageUrl" style="max-width:200px;max-height:100px;border-radius:4px;border:1px solid var(--border);object-fit:cover;">
-                      </div>
+                      <div v-if="editingNews.imageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingNews.imageUrl, '封面图')" title="点击查看大图">
+    <img :src="editingNews.imageUrl" style="max-width:200px;max-height:100px;object-fit:cover;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingNews.imageUrl" v-text="imgFileName(editingNews.imageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingNews.imageUrl, '封面图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingNews.imageUrl, '封面图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
                     </div>
                   </div>
                   <div class="form-row">
@@ -2924,9 +2987,18 @@ const QUILL_TOOLBAR = [
                         <input type="file" accept="image/*" @change="uploadNewsImage($event, 'topBackground')" style="font-size:13px;">
                         <span v-if="uploadingNewsImage" style="font-size:12px;color:var(--text-muted);">上传中...</span>
                       </div>
-                      <div v-if="editingNews.topBackground" style="margin-top:6px;">
-                        <img :src="editingNews.topBackground" style="max-width:300px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;width:100%;">
-                      </div>
+                      <div v-if="editingNews.topBackground" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingNews.topBackground, '详情页大图')" title="点击查看大图">
+    <img :src="editingNews.topBackground" style="max-width:300px;max-height:90px;width:100%;object-fit:cover;">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingNews.topBackground" v-text="imgFileName(editingNews.topBackground)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingNews.topBackground, '详情页大图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingNews.topBackground, '详情大图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
                     </div>
                   </div>
                   <div class="form-row">
@@ -3646,6 +3718,18 @@ const QUILL_TOOLBAR = [
                 </select>
               </div>
               <div class="form-group" data-page-node-id="PBAlkX2o29Blz9alfTwknH"><label data-page-node-id="W1KsZxS1IotWD2r3lGuwzd">封面图 URL</label><input class="form-control" v-model="editingWebinar.imageUrl" placeholder="https://..." data-page-node-id="qe2EOoLWt8JMLtVFbIbJjI"></div>
+              <div v-if="editingWebinar.imageUrl" class="img-ops">
+                <div class="img-ops__thumb" @click="openImageLightbox(editingWebinar.imageUrl, '封面图')" title="点击查看大图">
+                  <img :src="editingWebinar.imageUrl" style="max-width:150px;max-height:90px;object-fit:cover;">
+                </div>
+                <div class="img-ops__side">
+                  <div class="img-ops__name" :title="editingWebinar.imageUrl" v-text="imgFileName(editingWebinar.imageUrl)"></div>
+                  <div class="img-ops__btns">
+                    <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingWebinar.imageUrl, '封面图')">🔍 查看大图</button>
+                    <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingWebinar.imageUrl, '封面图')">⬇ 下载到本地</button>
+                  </div>
+                </div>
+              </div>
               <div class="form-group" data-page-node-id="5mdGothMPotLqTFZjbHSiz"><label data-page-node-id="YCBlJBOweEEqEs95RDRxRe">视频回放 URL</label><input class="form-control" v-model="editingWebinar.videoUrl" placeholder="https://..." data-page-node-id="5dWV57PFZbwmiFdplDDdBE"></div>
               <div class="form-group" data-page-node-id="vzkBCHXWxeWGwSNCXqP4Dw"><label data-page-node-id="HuVu8hqcc0xAJCUuZ6VojS">发布日期 *</label><input type="date" class="form-control" v-model="editingWebinar.publishedDate" data-page-node-id="sbWbnTLkQAjp4rENnuqAnY"></div>
               <div class="form-group" data-page-node-id="2StaGDkFaWyZxUI6T3RomB"><label data-page-node-id="tzWBLM91vXA1ig4PKogITt">阅读时长(分钟)</label><input type="number" class="form-control" v-model="editingWebinar.readingTime" style="max-width:120px;" data-page-node-id="zpYaSmGOfa7D7pFcjCp7nu"></div>
@@ -4029,9 +4113,18 @@ const QUILL_TOOLBAR = [
               <div class="form-group">
                 <label>封面图 <span class="hint">（选填）</span></label>
                 <input class="form-control" v-model="editingPublication.imageUrl" placeholder="https://... 或 /uploads/...">
-                <div v-if="editingPublication.imageUrl" style="margin-top:6px;">
-                  <img :src="editingPublication.imageUrl" style="max-width:150px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;" @error="$event.target.style.display='none'">
-                </div>
+                <div v-if="editingPublication.imageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingPublication.imageUrl, '封面图')" title="点击查看大图">
+    <img :src="editingPublication.imageUrl" style="max-width:150px;max-height:90px;object-fit:cover;" @error="$event.target.style.display='none'">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingPublication.imageUrl" v-text="imgFileName(editingPublication.imageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingPublication.imageUrl, '封面图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingPublication.imageUrl, '封面图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
             </div>
           </div>
@@ -4281,9 +4374,18 @@ const QUILL_TOOLBAR = [
               <div class="form-group" data-page-node-id="f8li79JFOfGlSieDLKgh4p">
                 <label data-page-node-id="STmS8qbvfYJ2MZ8kptmr5e">封面图 <span class="hint" data-page-node-id="MgHintImg01">（选填）</span></label>
                 <input class="form-control" v-model="editingMagazine.imageUrl" placeholder="https://... 或 /uploads/..." data-page-node-id="YVFjEh7HTzAsk6pGmHXVr9">
-                <div v-if="editingMagazine.imageUrl" style="margin-top:6px;" data-page-node-id="MgImgPrevWrap01">
-                  <img :src="editingMagazine.imageUrl" style="max-width:150px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;" @error="$event.target.style.display='none'" data-page-node-id="MgImgPrev01">
-                </div>
+                <div v-if="editingMagazine.imageUrl" class="img-ops">
+  <div class="img-ops__thumb" @click="openImageLightbox(editingMagazine.imageUrl, '封面图')" title="点击查看大图">
+    <img :src="editingMagazine.imageUrl" style="max-width:150px;max-height:90px;object-fit:cover;" @error="$event.target.style.display='none'">
+  </div>
+  <div class="img-ops__side">
+    <div class="img-ops__name" :title="editingMagazine.imageUrl" v-text="imgFileName(editingMagazine.imageUrl)"></div>
+    <div class="img-ops__btns">
+      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingMagazine.imageUrl, '封面图')">🔍 查看大图</button>
+      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingMagazine.imageUrl, '封面图')">⬇ 下载到本地</button>
+    </div>
+  </div>
+</div>
               </div>
             </div>
           </div>
