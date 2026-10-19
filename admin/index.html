@@ -745,6 +745,24 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .pl-col .nm { font-size: 12.5px; font-weight: 500; color: var(--text); }
 .pl-col .ds { font-size: 11px; color: var(--text-muted); text-align: center; line-height: 1.55; }
 .pl-col .arw { position: absolute; right: -9px; top: 44px; color: #CFE2A6; font-size: 15px; }
+/* ===== 图片字段：查看大图 / 下载到本地（261020） ===== */
+.img-ops { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-top: 8px; }
+.img-ops__thumb { position: relative; display: inline-block; flex: none; cursor: zoom-in; line-height: 0; }
+.img-ops__thumb img { display: block; border-radius: 4px; border: 1px solid var(--border); object-fit: cover; }
+.img-ops__thumb::after { content: "🔍 看大图"; position: absolute; left: 4px; bottom: 4px; font-size: 11px; line-height: 1.6; padding: 1px 6px; border-radius: 4px; background: rgba(0,0,0,.55); color: #fff; opacity: 0; transition: opacity .15s; white-space: nowrap; }
+.img-ops__thumb:hover::after { opacity: 1; }
+.img-ops__side { display: flex; flex-direction: column; gap: 7px; min-width: 0; padding-top: 2px; }
+.img-ops__name { font-size: 12px; color: var(--text-muted); max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.img-ops__btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.img-ops__btns .btn { white-space: nowrap; }
+.img-lb { position: fixed; inset: 0; z-index: 9998; background: rgba(16,22,18,.72); display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+.img-lb__panel { background: #fff; border-radius: 10px; box-shadow: 0 24px 64px rgba(0,0,0,.34); display: flex; flex-direction: column; max-width: min(1240px, 94vw); max-height: 90vh; overflow: hidden; }
+.img-lb__head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.img-lb__title { font-size: 14px; font-weight: 600; color: var(--text); flex: none; }
+.img-lb__meta { font-size: 12px; color: var(--text-muted); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.img-lb__body { padding: 16px; background: #F4F6F3; overflow: auto; text-align: center; }
+.img-lb__body img { max-width: 100%; max-height: 66vh; object-fit: contain; border-radius: 4px; display: inline-block; }
+.img-lb__foot { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
 
 </style>
 
@@ -3090,8 +3108,17 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadArticleImage($event, 'imageUrl')" style="font-size:13px;" data-page-node-id="x4VZc1eqbOthiMfAdKfY8g">
                   <span v-if="uploadingArticleImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="B7n4kM9xJED9IkkuYvlKap">上传中...</span>
                 </div>
-                <div v-if="editingArticle.imageUrl" style="margin-top:6px;" data-page-node-id="2DdkP6VCpvm6sMEZ9lWzup">
-                  <img :src="editingArticle.imageUrl" style="max-width:150px;max-height:90px;border-radius:4px;border:1px solid var(--border);object-fit:cover;" data-page-node-id="LW3w0uZmA0cCEkHEGEwmjJ">
+                <div v-if="editingArticle.imageUrl" class="img-ops" data-page-node-id="2DdkP6VCpvm6sMEZ9lWzup">
+                  <div class="img-ops__thumb" @click="openImageLightbox(editingArticle.imageUrl, '缩略图')" title="点击查看大图" data-page-node-id="LW3w0uZmA0cCEkHEGEwmjJ">
+                    <img :src="editingArticle.imageUrl" style="max-width:150px;max-height:90px;">
+                  </div>
+                  <div class="img-ops__side">
+                    <div class="img-ops__name" :title="editingArticle.imageUrl" v-text="imgFileName(editingArticle.imageUrl)"></div>
+                    <div class="img-ops__btns">
+                      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingArticle.imageUrl, '缩略图')">🔍 查看大图</button>
+                      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingArticle.imageUrl, '缩略图')">⬇ 下载到本地</button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="form-group" data-page-node-id="AApVDbWuYNPGo2ze0WGDrI">
@@ -3101,8 +3128,17 @@ const QUILL_TOOLBAR = [
                   <input type="file" accept="image/*" @change="uploadArticleImage($event, 'topBackground')" style="font-size:13px;" data-page-node-id="SNIQUdHcmyH9uvaHfEAUph">
                   <span v-if="uploadingArticleImage" style="font-size:12px;color:var(--text-muted);" data-page-node-id="JaG8ihF7iqqwJGfUfomNZu">上传中...</span>
                 </div>
-                <div v-if="editingArticle.topBackground" style="margin-top:6px;" data-page-node-id="DmX5G6jGn80hDDc3D2cuQ4">
-                  <img :src="editingArticle.topBackground" style="max-width:300px;max-height:80px;border-radius:4px;border:1px solid var(--border);object-fit:cover;width:100%;" data-page-node-id="BvIK0FfR9WvMYnWGndr16k">
+                <div v-if="editingArticle.topBackground" class="img-ops" data-page-node-id="DmX5G6jGn80hDDc3D2cuQ4">
+                  <div class="img-ops__thumb" style="max-width:300px;" @click="openImageLightbox(editingArticle.topBackground, '头图 / Hero')" title="点击查看大图" data-page-node-id="BvIK0FfR9WvMYnWGndr16k">
+                    <img :src="editingArticle.topBackground" style="max-width:300px;max-height:80px;width:100%;">
+                  </div>
+                  <div class="img-ops__side">
+                    <div class="img-ops__name" :title="editingArticle.topBackground" v-text="imgFileName(editingArticle.topBackground)"></div>
+                    <div class="img-ops__btns">
+                      <button type="button" class="btn btn-sm btn-outline" @click="openImageLightbox(editingArticle.topBackground, '头图 / Hero')">🔍 查看大图</button>
+                      <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(editingArticle.topBackground, '头图')">⬇ 下载到本地</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -5147,6 +5183,20 @@ const QUILL_TOOLBAR = [
         </div>
       </div>
     </div>
+    <!-- 图片大图查看 / 下载到本地（261020） -->
+    <div v-if="imageLightbox" class="img-lb" @mousedown.self="lbMaskDown()" @mouseup.self="lbMaskUp()">
+      <div class="img-lb__panel">
+        <div class="img-lb__head">
+          <span class="img-lb__title" v-text="imageLightbox.label"></span>
+          <span class="img-lb__meta" v-text="imageLightbox.meta"></span>
+          <button type="button" class="btn btn-sm btn-outline" @click="closeImageLightbox()">关闭</button>
+        </div>
+        <div class="img-lb__body"><img :src="imageLightbox.url" :alt="imageLightbox.label"></div>
+        <div class="img-lb__foot">
+          <button type="button" class="btn btn-sm btn-outline" @click="downloadImage(imageLightbox.url, imageLightbox.label)">⬇ 下载到本地</button>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -5320,6 +5370,8 @@ createApp({
       articleTagList: [],
       authorList: [],
       uploadingArticleImage: false,
+      imageLightbox: null,   // 图片大图查看层（261020）
+      lbMaskArmed: false,
       articleQuill: null,
       builderBlocks: [],   // 块搭建器块序列（2026-10-10）
       builderSel: -1,
@@ -9190,6 +9242,73 @@ createApp({
         this.editingArticle[field] = r.data?.url || r.url || r.path;
       } catch (e) { this.showAlert('上传失败：' + e.message); }
       finally { this.uploadingArticleImage = false; }
+    },
+    /* ===== 图片：查看大图 / 下载到本地（261020） ===== */
+    imgFileName(url) {
+      if (!url) return '';
+      if (url.indexOf('data:') === 0) return '内嵌图片（base64）';
+      if (url.indexOf('blob:') === 0) return '本地临时图片';
+      try {
+        const clean = String(url).split('?')[0].split('#')[0];
+        const seg = clean.substring(clean.lastIndexOf('/') + 1);
+        return seg ? decodeURIComponent(seg) : String(url);
+      } catch (e) { return String(url); }
+    },
+    imgDownloadName(url, label) {
+      const seg = this.imgFileName(url);
+      if (/^(内嵌图片|本地临时图片)/.test(seg)) return (label || '图片') + '.png';
+      return /\.[A-Za-z0-9]{2,5}$/.test(seg) ? seg : seg + '.png';
+    },
+    _fmtBytes(n) {
+      if (!n && n !== 0) return '';
+      if (n < 1024) return n + ' B';
+      if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+      return (n / 1024 / 1024).toFixed(2) + ' MB';
+    },
+    openImageLightbox(url, label) {
+      if (!url) return;
+      const self = this;
+      this.imageLightbox = { url: url, label: label || '图片', meta: self.imgFileName(url) };
+      // ⚠️ this.imageLightbox 是 Vue 响应式 Proxy，不能用 === 与原始对象比较，改比 url
+      const isCur = function () { return !!self.imageLightbox && self.imageLightbox.url === url; };
+      const probe = new Image();
+      probe.onload = function () {
+        if (isCur()) {
+          self.imageLightbox.meta = self.imgFileName(url) + ' · ' + probe.naturalWidth + ' × ' + probe.naturalHeight + ' px';
+        }
+      };
+      probe.src = url;
+      const sameOrigin = url.indexOf('data:') !== 0 && url.indexOf('blob:') !== 0;
+      (sameOrigin ? fetch(url, { credentials: 'same-origin' }) : Promise.reject(new Error('skip'))).then(function (r) {
+        return r.ok ? r.blob() : null;
+      }).then(function (b) {
+        if (b && isCur()) self.imageLightbox.meta += ' · ' + self._fmtBytes(b.size);
+      }).catch(function () {});
+    },
+    closeImageLightbox() { this.imageLightbox = null; this.lbMaskArmed = false; },
+    lbMaskDown() { this.lbMaskArmed = true; },
+    lbMaskUp() { if (this.lbMaskArmed) this.closeImageLightbox(); this.lbMaskArmed = false; },
+    async downloadImage(url, label) {
+      if (!url) return;
+      const filename = this.imgDownloadName(url, label);
+      const save = function (href, name, revoke) {
+        const a = document.createElement('a');
+        a.href = href; a.download = name; a.rel = 'noopener';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        if (revoke) setTimeout(function () { URL.revokeObjectURL(href); }, 4000);
+      };
+      if (url.indexOf('data:') === 0 || url.indexOf('blob:') === 0) { save(url, filename, false); return; }
+      try {
+        const res = await fetch(url, { credentials: 'same-origin' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        save(URL.createObjectURL(await res.blob()), filename, true);
+      } catch (e) {
+        // 跨域 / 防盗链 / 离线：退回浏览器原生方式，新窗口打开后右键另存
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.target = '_blank'; a.rel = 'noopener';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        this.showAlert('该图片不能直接抓取（可能来自其他站点或已失效），已在新窗口打开原图，请右键「图片另存为」。');
+      }
     },
     // 作者 CRUD
     async loadAuthorList() {
