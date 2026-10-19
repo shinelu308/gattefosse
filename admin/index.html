@@ -2864,7 +2864,7 @@ const QUILL_TOOLBAR = [
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
                   <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
                     <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
-                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网真实版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
                     <span style="flex:1;"></span>
                     <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
                   </div>
@@ -3393,7 +3393,7 @@ const QUILL_TOOLBAR = [
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
                   <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
                     <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
-                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网真实版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
                     <span style="flex:1;"></span>
                     <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
                   </div>
@@ -3853,7 +3853,7 @@ const QUILL_TOOLBAR = [
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
                   <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
                     <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
-                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网真实版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
                     <span style="flex:1;"></span>
                     <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
                   </div>
@@ -8694,7 +8694,7 @@ createApp({
       var doc = '<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
         + '<base href="' + window.location.origin + '/">'
         + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
-        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}</style></head><body>'
+        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}' + this.previewDesktopLockCss() + '</style></head><body>'
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content">' + html + '</div>'
         + '</article></main>'
@@ -8901,6 +8901,30 @@ createApp({
     // ==================== 预览式原位编辑（2026-09-11） ====================
     // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-261010.js）只产出
     // 四类受限补丁（文本节点/img src/视频播放地址/链接 href），保存时后端 jsdom 原位回填，版式 100% 保真。
+    // ==================== 预览锁定官网「桌面版式」（2026-10-19） ====================
+    // Drupal 打包 CSS 中有 `.paragraph{grid-column:1/13!important}` @media(max-width:767.98px)，
+    // 后台预览面板一旦窄于 768px，图文两列等分栏会被整块压成单栏（上下堆叠），
+    // 看起来像「预览没还原块搭建的结构」。这里用更高优先级的 12 列规则还原桌面分栏。
+    // 前台真实页面仍按官网响应式降级，本规则只作用于后台预览 iframe。
+    previewDesktopLockCss() {
+      return [
+        '.adp-content.node__content{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:3.2rem!important;padding-left:0!important}',
+        '.adp-content.node__content>.paragraph--zone-25{grid-column:1/4!important}',
+        '.adp-content.node__content>.paragraph--zone-25.paragraph--zone-center-left{grid-column:4/7!important}',
+        '.adp-content.node__content>.paragraph--zone-25.paragraph--zone-center-right{grid-column:7/10!important}',
+        '.adp-content.node__content>.paragraph--zone-25.paragraph--zone-right{grid-column:10/13!important}',
+        '.adp-content.node__content>.paragraph--zone-33{grid-column:1/5!important}',
+        '.adp-content.node__content>.paragraph--zone-33.paragraph--zone-center{grid-column:5/9!important}',
+        '.adp-content.node__content>.paragraph--zone-33.paragraph--zone-right{grid-column:9/13!important}',
+        '.adp-content.node__content>.paragraph--zone-50{grid-column:1/7!important}',
+        '.adp-content.node__content>.paragraph--zone-50.paragraph--zone-right{grid-column:7/13!important}',
+        '.adp-content.node__content>.paragraph--zone-66{grid-column:1/9!important}',
+        '.adp-content.node__content>.paragraph--zone-66.paragraph--zone-right{grid-column:5/13!important}',
+        '.adp-content.node__content>.paragraph--zone-75{grid-column:1/10!important}',
+        '.adp-content.node__content>.paragraph--zone-75.paragraph--zone-right{grid-column:4/13!important}',
+        '.adp-content.node__content>.paragraph--zone-100{grid-column:1/13!important}',
+      ].join('');
+    },
     buildPreviewDoc() {
       var theme = this.editingArticle.themeClass || 'theme-cosm';
       var content = this.editingArticle.contentHtml || '';
@@ -8916,7 +8940,7 @@ createApp({
         + '<base href="' + window.location.origin + '/">'
         + '<meta name="viewport" content="width=device-width, initial-scale=1">'
         + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
-        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}</style></head><body>'
+        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}' + this.previewDesktopLockCss() + '</style></head><body>'
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content" id="cp-root">' + content + '</div>'
         + '</article></main>'
