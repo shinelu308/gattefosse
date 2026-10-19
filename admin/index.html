@@ -2864,11 +2864,11 @@ const QUILL_TOOLBAR = [
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
                   <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
                     <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
-                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式（1200px 基准等比缩放）· 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
                     <span style="flex:1;"></span>
                     <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
                   </div>
-                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;min-height:520px;" title="实时预览"></iframe>
+                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;" title="实时预览"></iframe>
                 </div>
                 </div>
                 <div style="padding:6px 12px;background:#fafafa;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);">🔒 保存即拼成官网原版式 HTML（前台渲染零改动）· 保存后可切「预览编辑」查看真实效果并点选精修</div>
@@ -3393,11 +3393,11 @@ const QUILL_TOOLBAR = [
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
                   <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
                     <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
-                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式（1200px 基准等比缩放）· 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
                     <span style="flex:1;"></span>
                     <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
                   </div>
-                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;min-height:520px;" title="实时预览"></iframe>
+                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;" title="实时预览"></iframe>
                 </div>
                 </div>
                 <div style="padding:6px 12px;background:#fafafa;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);">🔒 保存即拼成官网原版式 HTML（前台渲染零改动）· 保存后可切「预览编辑」查看真实效果并点选精修</div>
@@ -3853,11 +3853,11 @@ const QUILL_TOOLBAR = [
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#f7f9f7;">
                   <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);background:#f4f7ee;flex:none;">
                     <span style="font-size:12.5px;font-weight:700;color:#3B6D11;">👁 实时预览</span>
-                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式 · 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
+                    <span style="font-size:11.5px;color:var(--text-tertiary);">官网桌面版式（1200px 基准等比缩放）· 随左侧编辑自动刷新（约半秒）· 轮播可直接滑动</span>
                     <span style="flex:1;"></span>
                     <button class="btn btn-sm btn-outline" style="font-size:11.5px;padding:2px 10px;" @click="refreshBuilderPreview">刷新</button>
                   </div>
-                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;min-height:520px;" title="实时预览"></iframe>
+                  <iframe id="builder-preview-frame" :srcdoc="builderPreviewDoc" style="flex:1;border:0;background:#fff;" title="实时预览"></iframe>
                 </div>
                 </div>
                 <div style="padding:6px 12px;background:#fafafa;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);">🔒 保存即拼成官网原版式 HTML（前台渲染零改动）· 保存后可切「预览编辑」查看真实效果并点选精修</div>
@@ -8694,14 +8694,18 @@ createApp({
       var doc = '<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
         + '<base href="' + window.location.origin + '/">'
         + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
-        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}' + this.previewDesktopLockCss() + '</style></head><body>'
+        + '<style>' + this.previewStageCss() + this.previewDesktopLockCss() + '</style></head><body><div id="gfpv-stage">'
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content">' + html + '</div>'
-        + '</article></main>'
+        + '</article></main></div>'
         + '<script src="/static/js/jquery-3.7.1.min.js"><\/script>'
         + '<script src="/static/js/article-slick-260913.js"><\/script>'
-        + '<script>window.addEventListener("load",function(){ if(window.initArticleSlider) window.initArticleSlider(); });<\/script></body></html>';
+        + '<script>window.addEventListener("load",function(){ if(window.initArticleSlider) window.initArticleSlider(); });<\/script>'
+        + '</body></html>';
       this.builderPreviewDoc = doc;
+      // 预览缩放首帧即时生效（2026-10-20）：srcdoc 更新后立即按面板尺寸定宽缩放，避免等兜底定时
+      var _pvSelf = this;
+      this.$nextTick(function () { _pvSelf.applyPreviewFrameScale(); });
     },
     addArticleTag(tag) {
       const t = (tag || '').trim();
@@ -8901,11 +8905,68 @@ createApp({
     // ==================== 预览式原位编辑（2026-09-11） ====================
     // 预览 iframe 加载正文 + 前台文章样式；iframe 内脚本（preview-inline-261010.js）只产出
     // 四类受限补丁（文本节点/img src/视频播放地址/链接 href），保存时后端 jsdom 原位回填，版式 100% 保真。
+    // ==================== 预览等比缩放（2026-10-20） ====================
+    // 前台正文基准：html 根字号 10px + .main max-width:1200px（Drupal 主题包 css_XQDl2…）。
+    // 后台预览面板通常只有 500~800px，若直接按面板宽渲染，字号相对版面会显大，跟源站观感不一致。
+    // 做法：预览舞台固定 1200px 设计宽（= 源站桌面正文宽），再整体 zoom 到面板宽，
+    // 等效「源站桌面页等比缩小」，版式比例与字号比例同时保真。前台真实页面不受影响。
+    previewStageCss() {
+      return [
+        'html{font-size:10px!important}',
+        'body{margin:0;padding:0;background:#fff;overflow-x:hidden}',
+        '#gfpv-stage{width:100%;box-sizing:border-box;padding:28px 0 64px;background:#fff}',
+      ].join('');
+    },
+
     // ==================== 预览锁定官网「桌面版式」（2026-10-19） ====================
     // Drupal 打包 CSS 中有 `.paragraph{grid-column:1/13!important}` @media(max-width:767.98px)，
     // 后台预览面板一旦窄于 768px，图文两列等分栏会被整块压成单栏（上下堆叠），
     // 看起来像「预览没还原块搭建的结构」。这里用更高优先级的 12 列规则还原桌面分栏。
     // 前台真实页面仍按官网响应式降级，本规则只作用于后台预览 iframe。
+    // 预览 iframe 定宽 + 等比缩放（2026-10-20）：让 iframe 内部视口恒等于官网桌面正文宽 1200px，
+    // 媒体查询全部按桌面评估（字号 16px、间距、分栏都不降级），再把 iframe 整体 zoom 到面板实际尺寸，
+    // 效果等于「源站桌面页等比缩小」。缩放只在这一层做（内层若再缩放会与滚动条宽度打架、二次叠乘）。
+    applyPreviewFrameScale() {
+      var BASE = 1200;
+      var ids = ['builder-preview-frame', 'article-preview-iframe', 'page-preview-iframe'];
+      for (var k = 0; k < ids.length; k++) {
+        var list = document.querySelectorAll('#' + ids[k]);
+        for (var i = 0; i < list.length; i++) {
+          var f = list[i];
+          var host = f.parentElement;
+          if (!host) continue;
+          var w = host.clientWidth, h = host.clientHeight;
+          // 面板折叠 / v-show 隐藏时尺寸为 0，跳过，等下次可见再算
+          if (!w || !h) continue;
+          if (f._gfbFlex === undefined) f._gfbFlex = /flex\s*:\s*1/.test(f.getAttribute('style') || '');
+          if (f._gfbBaseH === undefined) f._gfbBaseH = f.offsetHeight || 640;
+          var availH;
+          if (f._gfbFlex) {
+            // 撑满型预览（块搭建）：可用高 = 面板高 - 工具条等兄弟节点高度
+            var sibs = 0;
+            for (var c = 0; c < host.children.length; c++) {
+              if (host.children[c] !== f) sibs += host.children[c].offsetHeight;
+            }
+            availH = h - sibs;
+            if (availH < 120) availH = h;
+          } else {
+            // 固定高预览（正文预览编辑 / 页面预览编辑）：沿用自身基础高
+            availH = f._gfbBaseH;
+          }
+          var sc = Math.min(1, w / BASE);
+          if (!(sc > 0)) continue;
+          var key = w + 'x' + Math.round(availH) + 'x' + sc.toFixed(3);
+          if (f._gfbKey === key) continue;
+          f._gfbKey = key;
+          f.style.flex = '0 0 auto';
+          f.style.width = BASE + 'px';
+          f.style.height = Math.round(availH / sc) + 'px';
+          f.style.minHeight = '0';
+          f.style.zoom = sc;
+          f.style.transformOrigin = '0 0';
+        }
+      }
+    },
     previewDesktopLockCss() {
       return [
         '.adp-content.node__content{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:3.2rem!important;padding-left:0!important}',
@@ -8940,11 +9001,12 @@ createApp({
         + '<base href="' + window.location.origin + '/">'
         + '<meta name="viewport" content="width=device-width, initial-scale=1">'
         + cssList.map(function (c) { return '<link rel="stylesheet" href="' + c + '">'; }).join('')
-        + '<style>html{font-size:10px!important}body{margin:0;padding:20px;background:#fff}' + this.previewDesktopLockCss() + '</style></head><body>'
+        + '<style>' + this.previewStageCss() + this.previewDesktopLockCss() + '</style></head><body><div id="gfpv-stage">'
         + '<main class="s-page--inner main ' + theme + '"><article class="s-article">'
         + '<div class="adp-content node__content" id="cp-root">' + content + '</div>'
-        + '</article></main>'
-        + '<script src="/admin/preview-inline-261010.js"><\/script></body></html>';
+        + '</article></main></div>'
+        + '<script src="/admin/preview-inline-261010.js"><\/script>'
+        + '</body></html>';
     },
     openArticlePreview() {
       var iframe = document.getElementById('article-preview-iframe');
@@ -10049,6 +10111,10 @@ createApp({
     }
   },
   async mounted() {
+    // 预览等比缩放：窗口尺寸变化 / 视图切换后重算（v-if 新建的 iframe 靠定时兜底）
+    window.addEventListener('resize', () => { this.applyPreviewFrameScale(); });
+    setInterval(() => { this.applyPreviewFrameScale(); }, 1200);
+    setTimeout(() => { this.applyPreviewFrameScale(); }, 300);
     // 监听 iframe 子页面消息：复用本页出版物导入弹框（了解更多-出版物 经 iframe 嵌入，自身弹框无法全窗口居中）
     window.addEventListener('message', (ev) => {
       // 🔴 允许两个来源：本站 + 星火中台（跨域部署时星火在 4100，同源判断会误拒）
