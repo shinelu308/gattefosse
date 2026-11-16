@@ -106,6 +106,64 @@ body {
 }
 .login-card input:focus { border-color: var(--green); }
 .login-card .login-error { color: var(--red); font-size: 13px; line-height: 20px; }
+.login-card .login-notice {
+  margin-bottom: 18px;
+  padding: 9px 12px;
+  background: var(--amber-light);
+  border: 1px solid #f0e0c4;
+  border-radius: var(--radius);
+  color: var(--amber);
+  font-size: 12.5px;
+  line-height: 18px;
+  text-align: center;
+}
+/* 登录态校验中 / 连接异常：不再直接露出空白后台骨架（2026-11-16） */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 24px;
+}
+.boot-card {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 34px 28px 30px;
+  box-shadow: 0 10px 34px rgba(15, 23, 42, .07);
+}
+.boot-spin {
+  width: 26px;
+  height: 26px;
+  margin: 0 auto 16px;
+  border: 2px solid var(--slate-lighter);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: bootspin .8s linear infinite;
+}
+@keyframes bootspin { to { transform: rotate(360deg); } }
+.boot-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.boot-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 20px; }
+.boot-card .boot-btn {
+  margin-top: 18px;
+  padding: 8px 22px;
+  border: none;
+  cursor: pointer;
+  background: var(--green);
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: var(--font);
+}
+.boot-card .boot-btn:hover { background: var(--green-hover); }
+.boot-card .boot-link { display: inline-block; margin-top: 14px; font-size: 12.5px; color: var(--slate-light); cursor: pointer; }
+.boot-card .boot-link:hover { color: var(--green); }
 .login-card .login-btn {
   width: 100%;
   padding: 11px;
@@ -834,12 +892,32 @@ const QUILL_TOOLBAR = [
     <div class="login-card" data-page-node-id="xSO9CCK3bEpTV2DwEmaJx0">
       <h1 data-page-node-id="cAm1lC0wqoTiw59UuKHJ85">Gattefossé</h1>
       <div class="login-sub" data-page-node-id="8LAicv4E4TgJhOdCSbbrIF">中国数字营销自动化平台</div>
+      <div class="login-notice" v-if="loginNotice" v-text="loginNotice" data-page-node-id="loginNoticeBox"></div>
       <div style="display:flex;flex-direction:column;gap:14px;" data-page-node-id="qJbBc4kduqCZ5DwNvbMCKp">
         <input v-model="loginForm.email" placeholder="邮箱" @keyup.enter="doLogin" data-page-node-id="HebK2iRc2xrNraLK2NXzLS">
         <input v-model="loginForm.password" type="password" placeholder="密码" @keyup.enter="doLogin" data-page-node-id="S8dO2qasLlfPpaEXBpBFAf">
         <div class="login-error" v-if="loginError" v-text="loginError" data-page-node-id="BlduqrLXWihSGQWFZ4vd78"></div>
         <button class="login-btn" @click="doLogin" :disabled="loggingIn" data-page-node-id="s3xIDsA3khdGEkeMhaST3f">{{ loggingIn ? '登录中...' : '登 录' }}</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== 登录态校验中 ==================== -->
+  <div v-else-if="booting" class="boot-screen" data-page-node-id="bootChecking">
+    <div class="boot-card">
+      <div class="boot-spin"></div>
+      <h3>正在验证登录状态</h3>
+      <p>请稍候，正在载入后台数据…</p>
+    </div>
+  </div>
+
+  <!-- ==================== 连接异常（保留登录态，可重试） ==================== -->
+  <div v-else-if="bootError" class="boot-screen" data-page-node-id="bootOffline">
+    <div class="boot-card">
+      <h3>无法载入后台数据</h3>
+      <p v-text="bootError"></p>
+      <button class="boot-btn" @click="retryBoot">重 试</button>
+      <div><span class="boot-link" @click="clearAuth('已退出，请重新登录')">退出并重新登录</span></div>
     </div>
   </div>
 
@@ -5368,6 +5446,9 @@ createApp({
       roleNames: {},               // 角色 key → 名称字典（/admin/roles，侧栏底栏与徽章渲染用）
       loginForm: { email: '', password: '' },
       loginError: '',
+      loginNotice: '',            // 登录页顶部提示（登录态过期 / 会员账号等）
+      booting: !!safeStorage.getItem('admin_token'),             // 有 token 时先校验再放行，避免露出空白后台骨架
+      bootError: '',              // 连接异常：保留登录态并给出重试入口
       loggingIn: false,
       // Nav
       currentPage: 'dashboard',
@@ -5842,10 +5923,8 @@ createApp({
         throw new Error('服务器返回格式异常');
       }
       if (res.status === 401) {
-        console.error('[401] 路径:', path, '| 完整token:', this.token);
-        this.token = '';                     // 当前 session 失效
-        this.userInfo = null;
-        this.currentPage = 'dashboard';      // 跳回登录页
+        console.warn('[401] 路径:', path);
+        this.clearAuth('登录状态已过期，请重新登录');
         throw new Error('认证过期，请重新登录');
       }
       if (data.code !== 0) throw new Error(data.message || '请求失败');
@@ -5884,12 +5963,73 @@ createApp({
           return;
         }
         this.token = data.token; this.userInfo = data.user;
+        this.loginNotice = ''; this.bootError = ''; this.booting = false;
         safeStorage.setItem('admin_token', this.token);
         await this.initData();
       } catch (e) { this.loginError = e.message; }
       finally { this.loggingIn = false; }
     },
-    doLogout() { this.token = ''; this.userInfo = null; safeStorage.removeItem('admin_token'); this.currentPage = 'dashboard'; },
+    doLogout() { this.clearAuth(''); },
+    // 清登录态：三种入口（主动退出 / 过期 / 会员账号）共用，登录页可带一句提示
+    clearAuth(notice) {
+      this.token = ''; this.userInfo = null; this.rolePermissions = null;
+      safeStorage.removeItem('admin_token');
+      this.currentPage = 'dashboard';
+      this.booting = false; this.bootError = '';
+      this.loginNotice = notice || '';
+    },
+    // 登录态校验：ok / expired / member / offline（2026-11-16）
+    // · 401/403、code≠0 一律视为真失效 → 回登录页，不再静默停在空白后台
+    // · 只有 fetch 抛错或 5xx 才按「连接异常」处理，重试一次后给重试入口
+    async validateSession(retried) {
+      let resp;
+      try {
+        resp = await fetch(API + '/auth/me', {
+          headers: { 'Authorization': 'Bearer ' + this.token, 'Content-Type': 'application/json' },
+          cache: 'no-store'
+        });
+      } catch (e) {
+        if (!retried) {
+          await new Promise(function (r) { setTimeout(r, 800); });
+          return this.validateSession(true);
+        }
+        this.bootError = '无法连接服务器（' + ((e && e.message) || '网络错误') + '）。请确认服务已启动，然后点击重试。';
+        return 'offline';
+      }
+      if (resp.status === 401 || resp.status === 403) return 'expired';
+      if (!resp.ok) {
+        if (!retried) {
+          await new Promise(function (r) { setTimeout(r, 800); });
+          return this.validateSession(true);
+        }
+        this.bootError = '服务器返回异常（HTTP ' + resp.status + '），请稍后重试。';
+        return 'offline';
+      }
+      let body = null;
+      try { body = await resp.json(); } catch (e) { body = null; }
+      if (!body || body.code !== 0 || !body.data) return 'expired';
+      const role = body.data.role;
+      // 后台仅企业员工可用：C 端会员 token 直接回登录页
+      if (!role || role === 'user') return 'member';
+      this.userInfo = body.data;
+      return 'ok';
+    },
+    // 引导：校验 token → 载权限 → 载数据；校验失败绝不渲染后台骨架
+    async bootstrapAuth() {
+      if (!this.token) { this.booting = false; return; }
+      this.booting = true; this.bootError = '';
+      try {
+        const verdict = await this.validateSession(false);
+        if (verdict === 'expired') { this.clearAuth('登录状态已过期，请重新登录'); return; }
+        if (verdict === 'member') { this.clearAuth('该账号为网站会员账号，请使用企业员工账号登录后台'); return; }
+        if (verdict === 'offline') { return; }
+        try { await this.refreshRolePermissions(); } catch (e) { console.warn('权限配置加载失败:', e.message); }
+        try { await this.initData(); } catch (e) { console.warn('数据加载失败:', e.message); }
+      } finally {
+        this.booting = false;
+      }
+    },
+    retryBoot() { this.bootError = ''; this.booting = true; this.bootstrapAuth(); },
     onSidebarNavClick(e) {
       // 移动端抽屉：点击具体菜单项（非父级折叠）后自动收起
       if (e.target.closest('.nav-item')) this.sidebarOpen = false;
@@ -10347,9 +10487,9 @@ createApp({
         this.userInfo.fullName = ev.data.user.fullName;
         this.userInfo.avatar = ev.data.user.avatar;
       }
-      // 个人资料子页：登录过期 → 回登录页
+      // 个人资料子页：登录过期 → 清干净登录态并回登录页
       if (ev.data && ev.data.type === 'profile-auth-expired') {
-        this.token = ''; this.userInfo = null; this.currentPage = 'dashboard';
+        this.clearAuth('登录状态已过期，请重新登录');
       }
       // ★ 星火中台消息
       if (ev.data && typeof ev.data.type === 'string' && ev.data.type.indexOf('spark:') === 0) {
@@ -10377,47 +10517,8 @@ createApp({
     console.log('[Admin] Token exists:', !!this.token, '|前20位:', this.token ? this.token.substring(0,20) : '(空)');
     // 系统版本（公开接口，后端按构建自动递增）
     fetch(API + '/system/version').then(r => r.json()).then(d => { if (d && d.code === 0 && d.data && d.data.version) this.systemVersion = d.data.version; }).catch(function () {});
-    if (this.token) {
-      // 先用 /auth/me 校验 token 有效性（独立 fetch，不走 api() 避免误清）
-      try {
-        const meResp = await fetch(API + '/auth/me', {
-          headers: { 'Authorization': 'Bearer ' + this.token, 'Content-Type': 'application/json' }
-        });
-        if (meResp.status === 200) {
-          const meData = await meResp.json();
-          if (meData.code === 0) {
-            // 后台仅企业员工可用：C 端会员 token 直接清除回登录页
-            if (!meData.data.role || meData.data.role === 'user') {
-              this.doLogout();
-              console.warn('检测到会员账号 token，已退出后台');
-              return;
-            }
-            this.userInfo = meData.data;
-          } else {
-            throw new Error('token 无效');
-          }
-        } else {
-          throw new Error('token 校验失败');
-        }
-      } catch (e) {
-        // 校验失败时不清空 token，让用户能继续使用；
-        // 因为 Edge 跟踪防护可能临时拦截了 /auth/me 请求
-        console.warn('Token 校验失败（可能 Edge 拦截），保留 token 让用户继续使用:', e.message);
-        // 不清空 this.token，不重置 currentPage
-        return;
-      }
-      // token 有效，加载权限配置（系统设置 → 功能权限）
-      await this.refreshRolePermissions();
-      // token 有效，加载数据
-      try {
-        await this.initData();
-      } catch (e) {
-        console.warn('数据加载失败:', e.message);
-        if (!this.token) {
-          this.currentPage = 'dashboard';
-        }
-      }
-    }
+    // 登录态引导：token 无效/过期 → 直接回登录页并说明原因；绝不渲染空白后台骨架
+    this.bootstrapAuth();
   }
 }).mount('#app');
 </script>
