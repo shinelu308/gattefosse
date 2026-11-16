@@ -813,6 +813,7 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 .img-ops__name { font-size: 12px; color: var(--text-muted); max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .img-ops__btns { display: flex; gap: 6px; flex-wrap: wrap; }
 .img-ops__btns .btn { white-space: nowrap; }
+.spark-boot{position:absolute;inset:0;background:#F4F6F3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:5;animation:sparkFadeIn .16s ease both}.spark-boot__ring{width:34px;height:34px;border-radius:50%;border:3px solid #DFE7DA;border-top-color:#6C9457;animation:sparkSpin .8s linear infinite}.spark-boot__text{font-size:13px;color:#6B7A6B;letter-spacing:.02em}@keyframes sparkSpin{to{transform:rotate(360deg)}}@keyframes sparkFadeIn{from{opacity:0}to{opacity:1}}
 .img-lb { position: fixed; inset: 0; z-index: 9998; background: rgba(16,22,18,.72); display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
 .img-lb__panel { background: #fff; border-radius: 10px; box-shadow: 0 24px 64px rgba(0,0,0,.34); display: flex; flex-direction: column; max-width: min(1240px, 94vw); max-height: 90vh; overflow: hidden; }
 .img-lb__head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
@@ -1118,7 +1119,7 @@ const QUILL_TOOLBAR = [
 
         <!-- iframe 子页面占位：作者管理/系统设置/标签管理/了解更多 用独立子页面渲染 -->
         <div v-if="currentPage === 'author-list' || currentPage === 'author-edit' || currentPage === 'settings' || currentPage === 'tag-manage' || currentPage === 'career-list' || currentPage === 'lm-hot-topics' || currentPage === 'lm-webinar' || currentPage === 'lm-publications' || currentPage === 'lm-brochures' || currentPage === 'lm-journees' || currentPage === 'content-heat' || currentPage === 'manual' || currentPage === 'role-list' || currentPage === 'profile' || currentPage === 'spark'" data-page-node-id="LZJpVLN5vzNY5FEmUN6CeO">
-          <iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe>
+          <div style="position:relative;"><iframe :src="iframeUrl" style="width:100%;min-height:calc(100vh - 120px);border:0;background:white;display:block;" @load="onIframeLoad" data-page-node-id="2sBoORgIvTvSQI5GBgu052"></iframe><div v-if="currentPage === 'spark' && sparkBooting" class="spark-boot" data-page-node-id="SparkBootLayer"><div class="spark-boot__ring"></div><div class="spark-boot__text">正在进入星火中台…</div></div></div>
         </div>
 
         <!-- ==================== 总览 ==================== -->
@@ -6037,7 +6038,7 @@ createApp({
     // ★ 打开星火中台：先取 SSO ticket（120 秒一次性），再把带票据的地址交给 iframe
     async openSpark() {
       if (this.sparkLoading) return;
-      this.sparkLoading = true;
+      this.sparkLoading = true; this.sparkBooting = true; clearTimeout(this._sparkBootT); this._sparkBootT = setTimeout(() => { this.sparkBooting = false; }, 8000);
       try {
         // 与后台其余请求一致：走 safeStorage（localStorage 不可用时自动兜底 cookie）
         const tk = safeStorage.getItem('admin_token') || this.token || '';
@@ -6060,10 +6061,10 @@ createApp({
             if (sec && sec.scrollIntoView) sec.scrollIntoView({ block: 'nearest' });
           }, 900);
         } else {
-          this.showAlert((data && data.message) || '无法获取星火中台访问凭证', 'error');
+          this.sparkBooting = false; clearTimeout(this._sparkBootT); this.showAlert((data && data.message) || '无法获取星火中台访问凭证', 'error');
         }
       } catch (e) {
-        this.showAlert('连接星火中台失败：' + e.message, 'error');
+        this.sparkBooting = false; clearTimeout(this._sparkBootT); this.showAlert('连接星火中台失败：' + e.message, 'error');
       } finally {
         this.sparkLoading = false;
       }
@@ -6090,7 +6091,7 @@ createApp({
         const p = msg.payload || {};
         this.sparkModules = p.modules || [];
         this.sparkView = p.view || '';
-        this.sparkBooting = false;
+        const bootSelf = this; setTimeout(function () { bootSelf.sparkBooting = false; }, 260);
       } else if (msg.type === 'spark:modules') {
         this.sparkModules = (msg.payload && msg.payload.modules) || [];
       } else if (msg.type === 'spark:viewChanged') {
