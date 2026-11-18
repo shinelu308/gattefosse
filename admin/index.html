@@ -1716,7 +1716,7 @@ const QUILL_TOOLBAR = [
                           </div>
                           <div style="display:flex;gap:16px;" data-page-node-id="MAbVTNGUm3BLBMd0xV9uCN">
                             <!-- 左列 -->
-                            <div style="flex:1;" data-page-node-id="9ATagAQahfthLLrhu4PL34">
+                            <div style="flex:1;min-width:0;" data-page-node-id="9ATagAQahfthLLrhu4PL34">
                               <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;" data-page-node-id="AYJlWrVgpP5fsOIwytC0rR">左列类型</label>
                               <select v-model="slide.leftType" @change="onSliderTypeChange(bi, si, 'left')" class="form-control" style="width:100%;margin-bottom:6px;font-size:13px;" data-page-node-id="WHnOTie6LkxqvCqzLFKec0">
                                 <option value="richtext" data-page-node-id="aL3Ld14k7uMhs3OiPIBc9W">富文本</option>
@@ -1748,14 +1748,19 @@ const QUILL_TOOLBAR = [
                               </div>
                             </div>
                             <!-- 右列 -->
-                            <div style="flex:1;" data-page-node-id="AKsYRlc2nn4FEvjvJ4jLgs">
+                            <div :style="{ flex: slide.rightType === 'none' ? '0 0 220px' : '1', minWidth: 0 }" data-page-node-id="AKsYRlc2nn4FEvjvJ4jLgs">
                               <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;" data-page-node-id="wse13WMf0iejY7hac5fi4O">右列类型</label>
                               <select v-model="slide.rightType" @change="onSliderTypeChange(bi, si, 'right')" class="form-control" style="width:100%;margin-bottom:6px;font-size:13px;" data-page-node-id="5zAQmpEHnsMLZFj1t9jZtc">
                                 <option value="richtext" data-page-node-id="pEUxSZhTpjgYY0X3PHEFIS">富文本</option>
                                 <option value="text" data-page-node-id="C4sHCa907iYHXsHjOkd1qP">文字</option>
                                 <option value="image" data-page-node-id="XqNhWzSQrMBsWZHxlYrDwX">图片</option>
                                 <option value="video" data-page-node-id="pY0RNDsLEVgJMqyAO0g1Ec">视频</option>
+                                <option value="none" data-page-node-id="RnT4WpQ2noneOption2611">无（右列不显示）</option>
                               </select>
+                              <!-- 右列：无 → 不显示内容，左列独占整行 -->
+                              <div v-if="slide.rightType === 'none'" style="font-size:12px;line-height:1.6;color:var(--text-muted);padding:10px;border:1px dashed var(--border);border-radius:4px;background:#fff;">
+                                已选「无」：该幻灯片不显示右列，左列内容将占满整行
+                              </div>
                               <!-- 右列：富文本 -->
                               <div v-if="slide.rightType === 'richtext'" data-page-node-id="H37uSHGxBFKRDTLPu6blbT">
                                 <div :id="'qled-slider-right-' + block._key + '-' + si" class="quill-editor" style="min-height:100px;" data-page-node-id="2FkNMAQBvDfvi3LjD9f1A2"></div>

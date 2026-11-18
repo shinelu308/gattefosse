@@ -165,6 +165,14 @@
     .s-product-content__col {
       flex: 1 1 0;
     }
+    /* 右列类型选「无」时：左列独占整行，图片也撑满整行 */
+    .s-product-content__col--full {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+    .s-product-content__col--full img {
+      width: 100%;
+    }
     .s-product-content__col img {
       width: auto;
       max-width: 100%;
@@ -613,21 +621,21 @@
                       <div class="s-product-slider js-product-slider">
                         <div class="s-product-slider__slide js-product-slide" v-for="(slide, si) in block.content.slides" :key="si">
                           <div class="s-product-content__cols">
-                            <div class="s-product-content__col">
+                            <div class="s-product-content__col" :class="{ 's-product-content__col--full': slide.rightType === 'none' }">
                               <!-- 左：富文本 -->
                               <div v-if="slide.leftType === 'richtext' && slide.leftHtml" v-html="slide.leftHtml" class="block-content"></div>
                               <!-- 左：文字 -->
                               <div v-if="slide.leftType === 'text' && slide.leftText" style="white-space:pre-line;font-size:1.6rem;line-height:1.7;color:#3C4248;">{{ slide.leftText }}</div>
                               <!-- 左：图片 -->
                               <div v-if="slide.leftType === 'image' && slide.leftUrl">
-                                <img :src="slide.leftUrl" :alt="block.title || ''" style="width:auto;max-width:100%;height:auto;display:block;">
+                                <img :src="slide.leftUrl" :alt="block.title || ''" :style="{ width: slide.rightType === 'none' ? '100%' : 'auto', maxWidth: '100%', height: 'auto', display: 'block' }">
                               </div>
                               <!-- 左：视频 -->
                               <div v-if="slide.leftType === 'video' && slide.leftUrl" class="video__container" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
                                 <iframe :src="convertVideoUrl(slide.leftUrl)" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
                               </div>
                             </div>
-                            <div class="s-product-content__col">
+                            <div class="s-product-content__col" v-if="slide.rightType !== 'none'">
                               <!-- 右：富文本 -->
                               <div v-if="slide.rightType === 'richtext' && slide.rightHtml" v-html="slide.rightHtml" class="block-content"></div>
                               <!-- 右：文字 -->

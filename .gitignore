@@ -54,3 +54,4 @@ backend/scripts/tmp-*
 backend/scripts/diag-*
 scripts/shot-render-sync/report.json
 docs/**/*副本*
+.tmp/
