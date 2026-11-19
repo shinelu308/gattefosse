@@ -7034,6 +7034,11 @@ createApp({
         // richtext — content 在 Quill 实例中管理
       }
     },
+    // 「相关资料」（files 类型文档下载块）在前台详情页永远排最后：
+    // 新增区块时插到它前面，免得每次都要手工往上挪
+    _isPinnedLastBlock(b) {
+      return !!b && b.blockType === 'files' && String(b.title || '').trim() === '相关资料';
+    },
     addPcBlock() {
       const cnt = this.editingPc._blockIdCounter++;
       const block = {
@@ -7062,9 +7067,15 @@ createApp({
           rightType: 'text', rightUrl: '', rightText: '', rightHtml: ''
         }],
       };
-      this.editingPc.blocks.push(block);
+      const blocks = this.editingPc.blocks;
+      const pinAt = blocks.findIndex(b => this._isPinnedLastBlock(b));
+      if (pinAt >= 0) blocks.splice(pinAt, 0, block); else blocks.push(block);
+      // 数组顺序即最终顺序：内存里的 sortOrder 一并按新下标重排，避免与「相关资料」撞号
+      blocks.forEach((b, i) => { b.sortOrder = i; });
       this.$nextTick(() => {
         this.initQuillEditors();
+        // 若插在了「相关资料」前面，把已存区块的 sortOrder 一并重排，避免与新区块撞号
+        if (pinAt >= 0) this.saveBlockOrder();
         // 滚动到新添加的区块
         const el = document.querySelector('#qled-' + block._key);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -7095,7 +7106,10 @@ createApp({
       this.$nextTick(() => this.saveBlockOrder());
     },
     async saveBlockOrder() {
-      const items = this.editingPc.blocks.filter(b => b.id).map((b, i) => ({ id: b.id, sortOrder: i }));
+      // 取「在整个 blocks 数组里的下标」，不能用 filter 后的序：
+      // 数组中间夹着未保存的新区块时，过滤后重排会与新区块 saveBlockContent 里的 sortOrder 撞号
+      const items = [];
+      this.editingPc.blocks.forEach((b, i) => { if (b.id) items.push({ id: b.id, sortOrder: i }); });
       if (items.length > 0) {
         try { await this.api('/blocks/reorder', { method: 'PUT', body: JSON.stringify({ items }) }); } catch (e) { console.error(e); }
       }
