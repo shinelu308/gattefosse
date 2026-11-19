@@ -639,6 +639,7 @@ code { background: var(--slate-lightest); padding: 2px 6px; border-radius: 3px; 
 }
 .confirm-icon.error { background: #FFEBEE; color: #c62828; }
 .confirm-icon.info { background: #E3F2FD; color: #1565C0; }
+.confirm-icon.success { background: #E8F5E9; color: #2e7d32; }
 .confirm-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
 .confirm-msg { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; white-space: pre-line; }
 .confirm-btns { display: flex; gap: 10px; justify-content: center; }
@@ -5357,7 +5358,7 @@ const QUILL_TOOLBAR = [
     <!-- 确认弹框 -->
     <div class="modal-overlay" :class="{'is-open': confirmDialog.show}" @mousedown="overlayDown = $event.target === $event.currentTarget ? 'confirm' : ''" @click="onOverlayClick($event, 'confirm')" data-page-node-id="SDvC7M1IUUfMBY4hkiNpvx">
       <div class="confirm-dialog" data-page-node-id="uEGZq3AmwtEa8fCxTabNrd">
-        <div class="confirm-icon" data-page-node-id="z8ximDfhGZEf1aI0XawyaO">⚠</div>
+        <div class="confirm-icon" :class="confirmDialog.tone || ''" v-text="confirmDialog.icon || '⚠'" data-page-node-id="z8ximDfhGZEf1aI0XawyaO"></div>
         <h3 class="confirm-title" v-text="confirmDialog.title" data-page-node-id="ESj6ihndi0bSw82mQA44nW"></h3>
         <p class="confirm-msg" v-text="confirmDialog.message" data-page-node-id="zu1HhfSmlfse3vG6jHpAPB"></p>
         <div class="confirm-btns" data-page-node-id="avnJYAsgRqD8BGNTAIefiE">
@@ -5647,6 +5648,7 @@ createApp({
       savingSpecs: false,
       specSavedTip: '',
       specSavedTipTimer: null,
+      savingAllBlocks: false,
       uploadingNewsCover: false,
       uploadingNewsImage: false,
       uploadingDetailImage: false,
@@ -5963,7 +5965,7 @@ createApp({
         const o = onConfirm; onConfirm = opts; opts = o;
       }
       const o = opts || {};
-      this.confirmDialog = { show: true, title, message, onConfirm, confirmText: o.confirmText || '', danger: o.danger !== false };
+      this.confirmDialog = { show: true, title, message, onConfirm, confirmText: o.confirmText || '', danger: o.danger !== false, icon: o.icon || '', tone: o.tone || '' };
     },
     showAlert(msg, type) {
       const title = type === 'error' ? '错误' : '提示';
@@ -7039,9 +7041,10 @@ createApp({
     _isPinnedLastBlock(b) {
       return !!b && b.blockType === 'files' && String(b.title || '').trim() === '相关资料';
     },
-    addPcBlock() {
+    // 生成一个空白区块对象（仅内存，不落库）
+    _newPcBlock() {
       const cnt = this.editingPc._blockIdCounter++;
-      const block = {
+      return {
         id: null, productId: this.editingPc.id, productType: 'pc',
         blockType: 'richtext', title: '', content: null, sortOrder: this.editingPc.blocks.length,
         isPublished: true,
@@ -7067,19 +7070,44 @@ createApp({
           rightType: 'text', rightUrl: '', rightText: '', rightHtml: ''
         }],
       };
+    },
+    // 在指定下标插入空白区块（null = 末尾）；「相关资料」永远最后，越界位置一律夹到它前面
+    _insertPcBlock(block, wantIdx) {
       const blocks = this.editingPc.blocks;
+      let at = (typeof wantIdx === 'number' && wantIdx >= 0) ? Math.min(wantIdx, blocks.length) : blocks.length;
       const pinAt = blocks.findIndex(b => this._isPinnedLastBlock(b));
-      if (pinAt >= 0) blocks.splice(pinAt, 0, block); else blocks.push(block);
-      // 数组顺序即最终顺序：内存里的 sortOrder 一并按新下标重排，避免与「相关资料」撞号
+      if (pinAt >= 0 && at > pinAt) at = pinAt;
+      blocks.splice(at, 0, block);
+      // 数组顺序即最终顺序：内存里的 sortOrder 一并按新下标重排，避免撞号
       blocks.forEach((b, i) => { b.sortOrder = i; });
+      const self = this;
       this.$nextTick(() => {
-        this.initQuillEditors();
-        // 若插在了「相关资料」前面，把已存区块的 sortOrder 一并重排，避免与新区块撞号
-        if (pinAt >= 0) this.saveBlockOrder();
-        // 滚动到新添加的区块
+        self.initQuillEditors();
+        self.saveBlockOrder();
         const el = document.querySelector('#qled-' + block._key);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
+      return at;
+    },
+    addPcBlock() {
+      this._insertPcBlock(this._newPcBlock(), null);
+    },
+    // 在某个区块「下面」新增（保存内容后的连续录入用）
+    addPcBlockAfter(bi) {
+      this._insertPcBlock(this._newPcBlock(), bi + 1);
+    },
+    // 单个区块保存完成后的追问：要不要接着加下一个
+    _askAddNextBlock(bi) {
+      const b = this.editingPc.blocks[bi];
+      if (!b) return;
+      const label = String(b.title || '').trim();
+      const self = this;
+      this.showConfirm(
+        '区块已保存',
+        '是否在' + (label ? '「' + label + '」' : '这一区块') + '下方再新增一个内容区块？',
+        function () { self.addPcBlockAfter(bi); },
+        { confirmText: '新增区块', danger: false, icon: '✓', tone: 'success' }
+      );
     },
     deleteBlock(bi) {
       const block = this.editingPc.blocks[bi];
@@ -7300,18 +7328,23 @@ createApp({
         }
         block._saved = true;
         block.content = content;
+        // 手动点「保存内容」才追问是否接着加下一块；整页保存（savePc）不追问
+        if (!this.savingAllBlocks) this._askAddNextBlock(bi);
       } catch (e) { this.showAlert('保存区块失败：' + e.message); }
     },
     async saveAllBlocks() {
-      for (let i = 0; i < this.editingPc.blocks.length; i++) {
-        const block = this.editingPc.blocks[i];
-        // 保存所有有 Quill 实例的富文本区块（用户可能已编辑但未点单个保存）
-        // 以及所有未保存的区块（新添加的非富文本区块）
-        var hasQuill = block._quill || block._quillL || block._quillR || (block._quillSlides && block._quillSlides.length > 0);
-        if (hasQuill || !block._saved) {
-          await this.saveBlockContent(i);
+      this.savingAllBlocks = true;
+      try {
+        for (let i = 0; i < this.editingPc.blocks.length; i++) {
+          const block = this.editingPc.blocks[i];
+          // 保存所有有 Quill 实例的富文本区块（用户可能已编辑但未点单个保存）
+          // 以及所有未保存的区块（新添加的非富文本区块）
+          var hasQuill = block._quill || block._quillL || block._quillR || (block._quillSlides && block._quillSlides.length > 0);
+          if (hasQuill || !block._saved) {
+            await this.saveBlockContent(i);
+          }
         }
-      }
+      } finally { this.savingAllBlocks = false; }
     },
     initQuillEditors() {
       this.editingPc.blocks.forEach((block, bi) => {
