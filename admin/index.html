@@ -7036,10 +7036,81 @@ createApp({
         // richtext — content 在 Quill 实例中管理
       }
     },
-    // 「相关资料」（files 类型文档下载块）在前台详情页永远排最后：
-    // 新增区块时插到它前面，免得每次都要手工往上挪
+    // ===== 详情页底部固定区块（成分产品 / 配方 / 药用辅料共用）=====
+    // rank 越大越靠后，0 = 普通内容区块：
+    //   1 = 「相关资料」（files 文件下载块，标题为「相关资料」）
+    //   2 = 「相关产品」（related 块）—— 永远排在整页最后一个区块
+    _pinRank(b) {
+      if (!b) return 0;
+      if (b.blockType === 'related') return 2;
+      if (b.blockType === 'files' && String(b.title || '').trim() === '相关资料') return 1;
+      return 0;
+    },
     _isPinnedLastBlock(b) {
-      return !!b && b.blockType === 'files' && String(b.title || '').trim() === '相关资料';
+      return this._pinRank(b) > 0;
+    },
+    // 新块该插到哪：不许越过 rank 比自己大的置底块（普通块一律落在所有置底块之前）
+    _pinInsertIndex(blocks, wantIdx, block) {
+      const myRank = this._pinRank(block);
+      let at = (typeof wantIdx === 'number' && wantIdx >= 0) ? Math.min(wantIdx, blocks.length) : blocks.length;
+      for (let i = 0; i < blocks.length; i++) {
+        if (this._pinRank(blocks[i]) > myRank) { if (at > i) at = i; break; }
+      }
+      return Math.max(0, Math.min(at, blocks.length));
+    },
+    // 把置底块整体压到末尾并按 rank 稳定排序；返回是否真的移动过
+    _normalizePinnedOrder(blocks) {
+      if (!blocks || !blocks.length) return false;
+      const pinned = [];
+      const rest = [];
+      blocks.forEach((b, i) => {
+        const r = this._pinRank(b);
+        if (r > 0) pinned.push({ b, r, i }); else rest.push(b);
+      });
+      if (!pinned.length) return false;
+      pinned.sort((x, y) => (x.r - y.r) || (x.i - y.i));
+      const next = rest.concat(pinned.map(x => x.b));
+      let changed = false;
+      for (let i = 0; i < next.length; i++) { if (next[i] !== blocks[i]) { changed = true; break; } }
+      if (changed) {
+        blocks.splice(0, blocks.length);
+        next.forEach(b => blocks.push(b));
+        blocks.forEach((b, i) => { b.sortOrder = i; });
+      }
+      return changed;
+    },
+    // 当前编辑中的区块数组
+    _blocksOf(scope) {
+      if (scope === 'formula') return this.editingFormula.blocks || [];
+      if (scope === 'pharma') return this.editingPharma.blocks || [];
+      return this.editingPc.blocks || [];
+    },
+    // 上/下移：普通块不能落到置底块后面，「相关资料」「相关产品」之间也不许对调
+    _swapBlocks(scope, bi, dir) {
+      const blocks = this._blocksOf(scope);
+      const target = bi + dir;
+      if (target < 0 || target >= blocks.length) return false;
+      const a = blocks[bi], b = blocks[target];
+      const ra = this._pinRank(a), rb = this._pinRank(b);
+      if (ra !== rb && (ra > 0 || rb > 0)) {
+        const pinned = rb > 0 ? b : a;
+        const name = this._pinRank(pinned) === 2 ? '「相关产品」' : '「相关资料」';
+        this.showAlert(name + '固定排在页面最后，不能越过它调整顺序。');
+        return false;
+      }
+      blocks[bi] = b;
+      blocks[target] = a;
+      blocks.forEach((x, i) => { x.sortOrder = i; });
+      this._normalizePinnedOrder(blocks);
+      return true;
+    },
+    // 把内存顺序落库（配方 / 药用辅料手动排序后要立刻生效）
+    async saveBlockOrderFor(scope) {
+      const items = [];
+      this._blocksOf(scope).forEach((b, i) => { if (b.id) items.push({ id: b.id, sortOrder: i }); });
+      if (!items.length) return;
+      try { await this.api('/blocks/reorder', { method: 'PUT', body: JSON.stringify({ items }) }); }
+      catch (e) { console.error(e); }
     },
     // 生成一个空白区块对象（仅内存，不落库）
     _newPcBlock() {
@@ -7071,12 +7142,10 @@ createApp({
         }],
       };
     },
-    // 在指定下标插入空白区块（null = 末尾）；「相关资料」永远最后，越界位置一律夹到它前面
+    // 在指定下标插入空白区块（null = 末尾）；「相关资料」「相关产品」永远靠后，越界位置一律夹到它们前面
     _insertPcBlock(block, wantIdx) {
       const blocks = this.editingPc.blocks;
-      let at = (typeof wantIdx === 'number' && wantIdx >= 0) ? Math.min(wantIdx, blocks.length) : blocks.length;
-      const pinAt = blocks.findIndex(b => this._isPinnedLastBlock(b));
-      if (pinAt >= 0 && at > pinAt) at = pinAt;
+      const at = this._pinInsertIndex(blocks, wantIdx, block);
       blocks.splice(at, 0, block);
       // 数组顺序即最终顺序：内存里的 sortOrder 一并按新下标重排，避免撞号
       blocks.forEach((b, i) => { b.sortOrder = i; });
@@ -7096,16 +7165,22 @@ createApp({
     addPcBlockAfter(bi) {
       this._insertPcBlock(this._newPcBlock(), bi + 1);
     },
-    // 单个区块保存完成后的追问：要不要接着加下一个
-    _askAddNextBlock(bi) {
-      const b = this.editingPc.blocks[bi];
+    // 单个区块保存完成后的追问：要不要接着加下一个（scope: pc / formula / pharma）
+    _askAddNextBlock(bi, scope) {
+      scope = scope || 'pc';
+      const b = this._blocksOf(scope)[bi];
       if (!b) return;
       const label = String(b.title || '').trim();
       const self = this;
+      const addNext = function () {
+        if (scope === 'formula') self.addFormulaBlockAfter(bi);
+        else if (scope === 'pharma') self.addPharmaBlockAfter(bi);
+        else self.addPcBlockAfter(bi);
+      };
       this.showConfirm(
         '区块已保存',
         '是否在' + (label ? '「' + label + '」' : '这一区块') + '下方再新增一个内容区块？',
-        function () { self.addPcBlockAfter(bi); },
+        addNext,
         { confirmText: '新增区块', danger: false, icon: '✓', tone: 'success' }
       );
     },
@@ -7123,13 +7198,7 @@ createApp({
       });
     },
     movePcBlock(bi, dir) {
-      const blocks = this.editingPc.blocks;
-      const target = bi + dir;
-      if (target < 0 || target >= blocks.length) return;
-      // 交换 sortOrder
-      const tmp = blocks[bi];
-      blocks[bi] = blocks[target];
-      blocks[target] = tmp;
+      if (!this._swapBlocks('pc', bi, dir)) return;
       // 自动保存排序
       this.$nextTick(() => this.saveBlockOrder());
     },
@@ -7274,6 +7343,8 @@ createApp({
       this._initBlockViewData(block);
       // 切换后补齐新类型需要的 Quill（已存在 .ql-editor 的会被跳过，不会重建）
       setTimeout(function() { self.initQuillEditors(); }, 100);
+      // 切成「文件下载」且标题是「相关资料」时立即沉底
+      if (this._normalizePinnedOrder(this.editingPc.blocks)) this.saveBlockOrder();
     },
     async saveBlockContent(bi) {
       const block = this.editingPc.blocks[bi];
@@ -7584,9 +7655,10 @@ createApp({
         });
       }).catch(function(e) { console.error('加载辅料区块失败:', e); });
     },
-    addPharmaBlock() {
+    // 生成一个空白辅料区块（仅内存，不落库）
+    _newPharmaBlock() {
       var cnt = Date.now() + '_' + Math.random().toString(36).slice(2,6);
-      var block = {
+      return {
         id: null, productId: this.editingPharma.id, productType: 'pharma',
         blockType: 'richtext', title: '', content: null, sortOrder: this.editingPharma.blocks.length,
         isPublished: true,
@@ -7604,7 +7676,23 @@ createApp({
         _rightUrl: '',
         _specRows: [{ label: '', value: '' }],
       };
-      this.editingPharma.blocks.push(block);
+    },
+    // 在指定下标插入（null = 末尾），置底块受 _pinInsertIndex 约束
+    _insertPharmaBlock(block, wantIdx) {
+      var blocks = this.editingPharma.blocks;
+      var at = this._pinInsertIndex(blocks, wantIdx, block);
+      blocks.splice(at, 0, block);
+      blocks.forEach(function(b, i) { b.sortOrder = i; });
+      var self = this;
+      this.$nextTick(function() { self.saveBlockOrderFor('pharma'); });
+      return at;
+    },
+    addPharmaBlock() {
+      this._insertPharmaBlock(this._newPharmaBlock(), null);
+    },
+    // 保存内容后的连续录入：插在当前块下面
+    addPharmaBlockAfter(bi) {
+      this._insertPharmaBlock(this._newPharmaBlock(), bi + 1);
     },
     deletePharmaBlock(bi) {
       var block = this.editingPharma.blocks[bi];
@@ -7618,13 +7706,9 @@ createApp({
       }
     },
     movePharmaBlock(bi, dir) {
-      var blocks = this.editingPharma.blocks;
-      var target = bi + dir;
-      if (target < 0 || target >= blocks.length) return;
-      var tmp = blocks[bi];
-      blocks[bi] = blocks[target];
-      blocks[target] = tmp;
-      blocks.forEach(function(b, i) { b.sortOrder = i; });
+      if (!this._swapBlocks('pharma', bi, dir)) return;
+      // 顺序落库，否则刷新后恢复旧序
+      this.saveBlockOrderFor('pharma');
     },
     onPharmaBlockTypeChange(bi) {
       var block = this.editingPharma.blocks[bi];
@@ -7650,6 +7734,8 @@ createApp({
     },
     async savePharmaBlock(bi) {
       var block = this.editingPharma.blocks[bi];
+      // 只有「新建后第一次保存」才追问要不要接着加下一块
+      var wasNew = !block.id;
       var content = {};
       if (block.blockType === 'richtext') {
         content = { html: block._richtextContent || '' };
@@ -7683,6 +7769,7 @@ createApp({
           var d = res.data || res;
           block.id = d.id || d._id;
           block._saved = true;
+          if (wasNew) this._askAddNextBlock(bi, 'pharma');
         } catch (e) { this.showAlert('保存失败：' + e.message); }
       }
     },
@@ -7872,10 +7959,10 @@ createApp({
         self.editingFormula._blockIdCounter = list.length;
       } catch (e) { console.error('加载配方区块失败:', e); }
     },
-    addFormulaBlock() {
+    // 生成一个空白配方区块（仅内存，不落库）
+    _newFormulaBlock() {
       var cnt = this.editingFormula._blockIdCounter++;
-      var self = this;
-      var block = {
+      return {
         id: null, productId: this.editingFormula.id, productType: 'formula',
         blockType: 'richtext', title: '', content: null, sortOrder: this.editingFormula.blocks.length,
         isPublished: true,
@@ -7897,8 +7984,28 @@ createApp({
         _searchResults: [],
         _productList: [],
       };
-      this.editingFormula.blocks.push(block);
-      this.$nextTick(function() { self.initFormulaQuillEditors(); });
+    },
+    // 在指定下标插入（null = 末尾）；「相关资料」「相关产品」永远靠后，新块一律落在它们之前
+    _insertFormulaBlock(block, wantIdx) {
+      var blocks = this.editingFormula.blocks;
+      var self = this;
+      var at = this._pinInsertIndex(blocks, wantIdx, block);
+      blocks.splice(at, 0, block);
+      blocks.forEach(function(b, i) { b.sortOrder = i; });
+      this.$nextTick(function() {
+        self.initFormulaQuillEditors();
+        self.saveBlockOrderFor('formula');
+        var el = document.getElementById('qled-' + block._key);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      return at;
+    },
+    addFormulaBlock() {
+      this._insertFormulaBlock(this._newFormulaBlock(), null);
+    },
+    // 保存内容后的连续录入：插在当前块下面
+    addFormulaBlockAfter(bi) {
+      this._insertFormulaBlock(this._newFormulaBlock(), bi + 1);
     },
     deleteFormulaBlock(bi) {
       var block = this.editingFormula.blocks[bi];
@@ -7924,13 +8031,9 @@ createApp({
       }
     },
     moveFormulaBlock(bi, dir) {
-      var blocks = this.editingFormula.blocks;
-      var target = bi + dir;
-      if (target < 0 || target >= blocks.length) return;
-      var tmp = blocks[bi];
-      blocks[bi] = blocks[target];
-      blocks[target] = tmp;
-      blocks.forEach(function(b, i) { b.sortOrder = i; });
+      if (!this._swapBlocks('formula', bi, dir)) return;
+      // 顺序落库，否则刷新后恢复旧序
+      this.saveBlockOrderFor('formula');
     },
     onFormulaBlockTypeChange(bi) {
       var block = this.editingFormula.blocks[bi];
@@ -7943,6 +8046,8 @@ createApp({
       block._quillR = null;
       this._initFormulaBlockViewData(block);
       setTimeout(function() { self.initFormulaQuillEditors(); }, 100);
+      // 切成「相关产品」/「相关资料」时立即沉底，避免它停在页面中间
+      if (this._normalizePinnedOrder(this.editingFormula.blocks)) this.saveBlockOrderFor('formula');
     },
     onFormulaImagetextTypeChange(bi, side) {
       var block = this.editingFormula.blocks[bi];
@@ -8064,6 +8169,8 @@ createApp({
     },
     async saveFormulaBlock(bi) {
       var block = this.editingFormula.blocks[bi];
+      // 只有「新建后第一次保存」才追问要不要接着加下一块
+      var wasNew = !block.id;
       var content = {};
       if (block.blockType === 'richtext') {
         var ql = block._quill;
@@ -8103,6 +8210,7 @@ createApp({
           var d = res.data || res;
           block.id = d.id || d._id;
           block._saved = true;
+          if (wasNew) this._askAddNextBlock(bi, 'formula');
         } catch (e) { this.showAlert('保存失败：' + e.message); }
       }
     },

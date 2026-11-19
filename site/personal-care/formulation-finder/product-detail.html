@@ -785,6 +785,31 @@
                     return '';
                 }
 
+                // 底部固定区块：相关资料（files）→ 相关产品（related），后者永远是最后一个区块
+                // 后台保存时已保证顺序，这里再做一层渲染兜底，老数据/异常数据也不会把相关产品顶到中间
+                function pinBlocksLast(arr) {
+                    if (!arr || !arr.length) return arr;
+                    var rankOf = function (b) {
+                        if (!b) return 0;
+                        if (b.blockType === 'related') return 2;
+                        if (b.blockType === 'files' && String(b.title || '').trim() === '相关资料') return 1;
+                        return 0;
+                    };
+                    var normal = [], pinned = [];
+                    for (var i = 0; i < arr.length; i++) {
+                        var r = rankOf(arr[i]);
+                        if (r > 0) pinned.push({ b: arr[i], r: r, i: i });
+                        else normal.push(arr[i]);
+                    }
+                    if (!pinned.length) return arr;
+                    pinned.sort(function (x, y) { return (x.r - y.r) || (x.i - y.i); });
+                    var sorted = normal.concat(pinned.map(function (x) { return x.b; }));
+                    arr.splice(0, arr.length);
+                    for (var k = 0; k < sorted.length; k++) arr.push(sorted[k]);
+                    return arr;
+                }
+                window.__pinBlocksLast = pinBlocksLast;
+
                 // 加载内容区块
                 const loadContentBlocks = function (productId) {
                     GatteAPI.Blocks.list({ productId: productId, productType: 'formula' }).then(function (res) {
@@ -844,6 +869,9 @@
                                 }
                             }
                         }
+                        // 兜底：不管库里顺序怎么存，「相关资料」与「相关产品」都固定排在页面最后
+                        // （相关产品永远是整页最后一个区块，相关资料紧随其前）
+                        pinBlocksLast(blocks);
                         // 卡片渲染完再启用相关产品滑块（4 个以上产品时原站是 3 卡一屏 + 圆点）
                         nextTick(function () {
                             initRelatedProductsSlider();
