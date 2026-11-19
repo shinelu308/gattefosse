@@ -2307,9 +2307,11 @@ const QUILL_TOOLBAR = [
                       <img :src="'/static/icons/picto/' + pi.iconType + '.svg'" :alt="pi.label" style="width:36px;height:36px;" data-page-node-id="CdMSCpx38aadyEem9PN6Gp">
                     </div>
                     <select class="form-control" v-model="pi.iconType" style="flex:1;min-width:120px;font-size:13px;" @change="onPictoTypeChange(pii)" data-page-node-id="zP7DA7q9VbaJVsmYYzsorB">
-                      <option value="plante" data-page-node-id="bWFgpRKn9WXYjPr3o8t7A0">🌿 植物（天然/护发/防晒）</option>
+                      <option value="plante" data-page-node-id="bWFgpRKn9WXYjPr3o8t7A0">🌿 植物（天然）</option>
                       <option value="pot" data-page-node-id="JIkalMb1Z62pzB2g7bDUqw">🫙 罐子（护肤）</option>
-                      <option value="baume_1" data-page-node-id="qDKH4xpURUcwOHPt1z9cGB">💄 膏体（彩妆/天然）</option>
+                      <option value="baume_1" data-page-node-id="qDKH4xpURUcwOHPt1z9cGB">💄 膏体（彩妆）</option>
+                      <option value="soleil" data-page-node-id="SoLeIl261120a">☀️ 太阳（防晒）</option>
+                      <option value="cheveux" data-page-node-id="CheVeUx261120a">💇 头发（护发）</option>
                       <option value="wow3" data-page-node-id="1WcujmMiAFT9mvxSptD3ud">✨ 惊叹（质地转变）</option>
                     </select>
                     <input type="text" class="form-control" v-model="pi.label" placeholder="标签文字" style="width:100px;font-size:13px;" data-page-node-id="vVO7HtaDmszRI4NzFX5WLM">
@@ -7845,7 +7847,17 @@ createApp({
       if (!this.editingFormula.name) { this.showAlert('配方名称为必填项'); return; }
       this.destroyFormulaQuills();
       // 序列化 picto 图标列表为 JSON
-      this.editingFormula.pictos = JSON.stringify(this.editingFormula._pictoList || []);
+      // 顺手自愈：早期只有「植物」一个图标，护发/防晒被存成 plante 会显示成同一片叶子，
+      // 保存时按标签纠正为专属图标（只在用户没改图标类型时生效）
+      const PICTO_LABEL_ICON = { '护发': 'cheveux', '头发养护': 'cheveux', '洗发护发': 'cheveux', '防晒': 'soleil', '紫外线防护': 'soleil', 'UV防护': 'soleil' };
+      const pictoList = (this.editingFormula._pictoList || []).map(function (pi) {
+        if (pi && pi.iconType === 'plante') {
+          const hit = PICTO_LABEL_ICON[String(pi.label || '').trim()];
+          if (hit) return { iconType: hit, label: pi.label };
+        }
+        return pi;
+      });
+      this.editingFormula.pictos = JSON.stringify(pictoList);
       // 天然指数：数组转单值字符串（后端只存一个值）
       const niArr = this.editingFormula.naturalityIndex;
       const niValue = niArr.length > 0 ? niArr[0] : '';
@@ -7913,9 +7925,13 @@ createApp({
     },
     onPictoTypeChange(pii) {
       // 根据图标类型自动填充默认标签
-      var typeLabels = { plante: '天然', pot: '护肤', baume_1: '彩妆', wow3: '质地转变' };
+      // 只在标签为空、或标签仍是某个图标类型的默认值时替换，避免「刚加的块标签还是天然」这种错配
+      var typeLabels = { plante: '天然', pot: '护肤', baume_1: '彩妆', soleil: '防晒', cheveux: '护发', wow3: '质地转变' };
+      var defaults = ['天然', '护肤', '彩妆', '防晒', '护发', '质地转变'];
       var item = this.editingFormula._pictoList[pii];
-      if (item && typeLabels[item.iconType] && !item.label) {
+      if (!item) return;
+      var cur = String(item.label || '').trim();
+      if (typeLabels[item.iconType] && (!cur || defaults.indexOf(cur) >= 0)) {
         item.label = typeLabels[item.iconType];
       }
     },

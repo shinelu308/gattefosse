@@ -764,6 +764,16 @@
                         // 解析特点图标（pictos）
                         try { data.pictoList = JSON.parse(f.pictos || '[]'); } catch(e) { data.pictoList = []; }
                         if (!Array.isArray(data.pictoList)) data.pictoList = [];
+                        // 兜底：早期只有「植物」一种图标，护发/防晒都被存成 plante，这里按标签纠正为专属图标
+                        data.pictoList = data.pictoList.map(function (pi) {
+                            var item = pi || {};
+                            if (item.iconType === 'plante') {
+                                var lb = String(item.label || '').trim();
+                                if (lb === '护发' || lb === '头发养护' || lb === '洗发护发') return { iconType: 'cheveux', label: item.label };
+                                if (lb === '防晒' || lb === '紫外线防护' || lb === 'UV防护') return { iconType: 'soleil', label: item.label };
+                            }
+                            return item;
+                        });
                         // 内容热度埋点：应用配方（对象身份只有前端知道，page_views 只记得到页面路径）
                         if (window.GatteTrack) GatteTrack.view('formulation', f.id, f.name, 'personal_care');
                         data.loading = false;
