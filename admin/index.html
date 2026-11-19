@@ -7866,7 +7866,7 @@ createApp({
             _rightUrl: (b.blockType === 'imagetext' && (content.rightType === 'video' || content.rightType === 'image')) ? (content.rightUrl || '') : '',
             _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
             _rightRichtext: (b.blockType === 'imagetext' && content.rightType === 'richtext') ? (content.rightHtml || '') : '',
-            _productList: (b.blockType === 'related' && content.products) ? content.products.map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) : [],
+            _productList: (b.blockType === 'related' && content.products) ? content.products.map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) : [],
           };
         });
         self.editingFormula._blockIdCounter = list.length;
@@ -8031,6 +8031,7 @@ createApp({
       block._productList.push({
         id: product.id,
         name: product.name,
+        tagline: product.tagline || '',
         inciName: product.inciName || '',
         imageUrl: product.imageUrl || '',
         description: product.description || ''
@@ -8085,7 +8086,7 @@ createApp({
       } else if (block.blockType === 'files') {
         content = { files: (block._fileList || []).filter(function(f) { return f.url; }).map(function(f) { return { title: f.title, url: f.url, fileId: f.fileId || null, isPublic: f.isPublic, type: f.type || '' }; }) };
       } else if (block.blockType === 'related') {
-        content = { products: (block._productList || []).map(function(p) { return { id: p.id, name: p.name, inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) };
+        content = { products: (block._productList || []).map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) };
       }
       var payload = { blockType: block.blockType, title: block.title, content: content, sortOrder: block.sortOrder || 0, isPublished: true, productType: 'formula' };
       if (block.id) {

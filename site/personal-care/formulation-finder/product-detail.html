@@ -304,21 +304,28 @@
                                     <div v-if="block.blockType === 'related' && block.content && block.content.products && block.content.products.length > 0" class="s-product-content__item">
                                         <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
                                         <div class="s-product-related js-related-product">
-                                            <div class="s-product-slider js-product-slider">
                                             <div class="s-product-related__slider js-related-product-slider">
                                                 <div class="c-card c-card--bordered" v-for="item in block.content.products" :key="item.id">
                                                     <div class="c-card__content">
                                                         <h3 class="c-card__title">
                                                             <a :href="'/personal-care/product-finder/product-detail.html?id=' + item.id" class="c-card__title-link">{{ item.name }}</a>
                                                         </h3>
-                                                        <p class="c-card__baseline">{{ item.inciName || '' }}</p>
-                                                        <p class="c-card__summary" v-html="item.description"></p>
+                                                        <p class="c-card__baseline" v-if="item.tagline">{{ item.tagline }}</p>
+                                                        <p class="c-card__code" v-if="item.inciName">
+                                                            <span class="ingredient-type">INCI</span>
+                                                            <span class="ingredient-name">{{ item.inciName }}</span>
+                                                        </p>
+                                                        <p class="c-card__summary" v-if="item.description" v-html="item.description"></p>
                                                     </div>
                                                     <div class="c-card__image">
-                                                        <img :src="item.imageUrl || '/static/images/default-thumb.jpg'" alt="" width="369" height="208" class="card__image img-fluid" loading="lazy">
+                                                        <img :src="item.imageUrl || '/static/images/default-thumb.jpg'" alt="" width="369" height="277" class="card__image img-fluid" loading="lazy">
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="slick-controls">
+                                                <button type="button" aria-label="Previous" class="slick-prev js-slick-prev"></button>
+                                                <div class="slick-dots-wrapper js-slick-dots-wrapper"></div>
+                                                <button type="button" aria-label="Next" class="slick-next js-slick-next"></button>
                                             </div>
                                         </div>
                                     </div>
@@ -530,6 +537,65 @@
       .s-product-content__inside {
         margin-bottom: 6rem !important;
       }
+
+      /* ============ 相关产品卡片：对齐英文原站版式 ============ */
+      /* 1) 卡片定宽 30.4rem（=原站 c-card 宽度），不足 3 个时居中、不被压缩 */
+      .s-product-related .c-card {
+        flex: 0 0 30.4rem;
+        max-width: 30.4rem;
+      }
+      /* 2) 图片统一 4:3 比例（原站产品图 369x208 / 我方 268x201 均为横图），
+            避免不同源图比例导致卡片高低不齐 */
+      .s-product-related .c-card__image {
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+      }
+      .s-product-related .c-card__image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      /* 3) INCI 行：标签加粗、正文最多 3 行 */
+      .s-product-related .c-card__code {
+        align-items: flex-start;
+        margin-top: 0;
+      }
+      .s-product-related .c-card__code .ingredient-type {
+        white-space: nowrap;
+        line-height: 1.5;
+      }
+      .s-product-related .c-card__code .ingredient-name {
+        line-height: 1.5;
+        -webkit-line-clamp: 3;
+      }
+      /* 4) 摘要固定 3 行，卡片高度才对得齐 */
+      .s-product-related .c-card__summary {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 0;
+      }
+      /* 5) 未启用滑块时（≤3 个产品）允许换行，避免窄屏撑破 */
+      .s-product-related__slider {
+        flex-wrap: wrap;
+      }
+      /* 6) 滑块态：可视窗口按 3 张卡宽度居中（原站也是三卡居中，右侧不留大片空白） */
+      .s-product-related .slick-list {
+        max-width: 100rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      @media (max-width: 767.98px) {
+        /* 只有「未启用滑块」（≤3 个产品）时才让卡片占满一行；
+           启用滑块后宽度交给 slick 计算，否则 width:100% 会算成溢出的超大卡 */
+        .s-product-related__slider:not(.slick-slider) .c-card {
+          flex: 1 1 100%;
+          max-width: 100%;
+          width: 100%;
+        }
+      }
     </style>
     <script>
       // ★ 与参考页一致：全局变量和函数
@@ -568,6 +634,39 @@
             id = 1;
         }
         const { createApp, reactive, ref, nextTick } = Vue;
+
+        // 相关产品：对齐英文原站的 3 卡滑块（产品超过 3 个才启用，带圆点与左右箭头）。
+        // 原站用 Drupal behaviors 在 DOM ready 时初始化，但我们这批卡片是 Vue 异步渲染的，
+        // 那时卡片数为 0 → 永远不初始化，4 张卡就挤成一行、高度还各不相同。
+        function initRelatedProductsSlider() {
+            var tries = 0;
+            (function run() {
+                var $ = window.jQuery;
+                if (!$ || !$.fn || !$.fn.slick) {
+                    if (tries++ < 20) return setTimeout(run, 150);
+                    return;
+                }
+                $('.js-related-product').each(function () {
+                    var $wrap = $(this);
+                    var $track = $wrap.find('.js-related-product-slider');
+                    if (!$track.length) return;
+                    if ($track.hasClass('slick-initialized')) { $track.slick('refresh'); return; }
+                    if ($track.children('.c-card').length <= 3) return;
+                    $track.slick({
+                        accessibility: true, infinite: false, centerMode: false,
+                        variableWidth: true, slidesToShow: 3, slidesToScroll: 1, dots: true,
+                        nextArrow: $wrap.find('.js-slick-next'),
+                        prevArrow: $wrap.find('.js-slick-prev'),
+                        appendDots: $wrap.find('.js-slick-dots-wrapper'),
+                        responsive: [
+                            { breakpoint: 1220, settings: { slidesToShow: 2, variableWidth: false } },
+                            { breakpoint: 576, settings: { slidesToShow: 1, variableWidth: false } }
+                        ]
+                    });
+                });
+            })();
+        }
+
         const app = createApp({
             data() {
                 return { productDetail: null }
@@ -712,6 +811,8 @@
                                 }
                             }
                         }
+                        // 卡片渲染完再启用相关产品滑块（4 个以上产品时原站是 3 卡一屏 + 圆点）
+                        nextTick(function () { initRelatedProductsSlider(); });
                     }).catch(function (err) {
                         console.error('加载内容区块失败:', err);
                     });
