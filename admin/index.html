@@ -1536,7 +1536,16 @@ const QUILL_TOOLBAR = [
               <div v-if="editingPc.id" data-page-node-id="qg9APHKC2iDoYrXDpJoqNK">
                 <!-- 产品规格编辑 -->
                 <div class="card" style="margin-bottom:20px;border:1px solid var(--border);border-radius:8px;" data-page-node-id="r9xsBjt09jC27UCGXcVCp6">
-                  <div class="card-header" data-page-node-id="vKLTDDPAMNrofUqHWXWi04"><h3 data-page-node-id="fVd6vQbHYzqaJrfW1TXjTD">产品规格（图标固定，文字可编辑）</h3></div>
+                  <div class="card-header" data-page-node-id="vKLTDDPAMNrofUqHWXWi04">
+                    <h3 data-page-node-id="fVd6vQbHYzqaJrfW1TXjTD">产品规格（图标固定，文字可编辑）</h3>
+                    <!-- 规格单独保存：不用滚到底部点「保存草稿」 -->
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span v-if="specSavedTip" style="font-size:12px;color:#2e7d32;">✓ {{ specSavedTip }}</span>
+                      <button class="btn btn-primary btn-sm" @click="savePcSpecs" :disabled="savingSpecs">
+                        {{ savingSpecs ? '保存中…' : '保存产品规格' }}
+                      </button>
+                    </div>
+                  </div>
                   <div class="card-body" data-page-node-id="FoFXqOtvoVG1gZoalE68IC">
                     <div class="form-row" data-page-node-id="wUDzEOlEA87qtw84JW4S4w">
                       <div class="form-group" data-page-node-id="05Vpgr4jO4pv5Dswn1ulqN">
@@ -1552,7 +1561,7 @@ const QUILL_TOOLBAR = [
                       <label data-page-node-id="7zADG80bcBcZwkyadGXPFW">INCI/法规信息 <span class="hint" data-page-node-id="DHgNMbEpS10kZ5yCWRMCwh">（多行用 / 分隔）</span></label>
                       <textarea class="form-control" rows="3" v-model="editingPc.specInci" placeholder="Propanediol (and) Hippophae Rhamnoides Extract / China NMPA notified"></textarea>
                     </div>
-                    <div style="font-size:12px;color:var(--text-muted);" data-page-node-id="9jlGZUc3UTGPC6AfHJkHn7">每个字段对应一个图标卡片，保存产品时自动更新。</div>
+                    <div style="font-size:12px;color:var(--text-muted);" data-page-node-id="9jlGZUc3UTGPC6AfHJkHn7">每个字段对应一个图标卡片，保存产品时自动更新；也可点右上角「保存产品规格」单独保存本区块。</div>
                   </div>
                 </div>
                 <div class="block-list" ref="blockList" data-page-node-id="oFSkZJXQ83ffbLhgvgxqei">
@@ -5635,6 +5644,9 @@ createApp({
       confirmDialog: { show: false, title: '', message: '', onConfirm: null },
       alertDialog: { show: false, title: '', message: '', type: 'info' },
       uploadingImage: false,
+      savingSpecs: false,
+      specSavedTip: '',
+      specSavedTipTimer: null,
       uploadingNewsCover: false,
       uploadingNewsImage: false,
       uploadingDetailImage: false,
@@ -6428,6 +6440,28 @@ createApp({
       const arr = this.editingPc[field];
       const idx = arr.indexOf(value);
       if (idx >= 0) arr.splice(idx, 1); else arr.push(value);
+    },
+    // 产品规格单独保存：只 PUT specInfo，不离开当前页、不触碰区块内容
+    // （后端 update 只在字段 !== undefined 时才写，故不会清空其它字段）
+    async savePcSpecs() {
+      if (!this.editingPc.id) { this.showAlert('请先保存产品基本信息，再保存产品规格'); return; }
+      this.savingSpecs = true; this.specSavedTip = '';
+      try {
+        const spec = {
+          dosage: this.editingPc.specDosage || '',
+          certification: this.editingPc.specCertification || '',
+          inci: this.editingPc.specInci || '',
+        };
+        const hasAny = !!(spec.dosage || spec.certification || spec.inci);
+        await this.api('/pc-ingredients/' + this.editingPc.id, {
+          method: 'PUT',
+          body: JSON.stringify({ specInfo: hasAny ? spec : null }),
+        });
+        this.specSavedTip = '已保存 ' + new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        if (this.specSavedTipTimer) clearTimeout(this.specSavedTipTimer);
+        this.specSavedTipTimer = setTimeout(() => { this.specSavedTip = ''; }, 4000);
+      } catch (e) { this.showAlert('保存失败：' + e.message); }
+      finally { this.savingSpecs = false; }
     },
     async savePc() {
       if (!this.editingPc.name || !this.editingPc.inciName) { this.showAlert('产品名称和INCI名称为必填项'); return; }
