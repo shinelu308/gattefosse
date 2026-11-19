@@ -6967,6 +6967,8 @@ createApp({
         const blocks = resp || [];
         this.editingPc.blocks = blocks.map(b => this._deserializeBlock(b));
         this.editingPc._blockIdCounter = blocks.length;
+        // 历史数据归位：「相关资料」必须在最后（旧版后台曾把新块 push 到它后面）
+        if (this._normalizePinnedOrder(this.editingPc.blocks)) this.saveBlockOrder();
       } catch (e) { console.error('加载区块失败:', e); }
     },
     _deserializeBlock(b) {
@@ -7145,6 +7147,8 @@ createApp({
     // 在指定下标插入空白区块（null = 末尾）；「相关资料」「相关产品」永远靠后，越界位置一律夹到它们前面
     _insertPcBlock(block, wantIdx) {
       const blocks = this.editingPc.blocks;
+      // 先归位（历史数据可能把置底块留在中间），再算插入点
+      this._normalizePinnedOrder(blocks);
       const at = this._pinInsertIndex(blocks, wantIdx, block);
       blocks.splice(at, 0, block);
       // 数组顺序即最终顺序：内存里的 sortOrder 一并按新下标重排，避免撞号
@@ -7653,6 +7657,8 @@ createApp({
           };
           return block;
         });
+        // 历史数据归位（辅料目前没有置底类区块，留着保持一致行为）
+        if (self._normalizePinnedOrder(self.editingPharma.blocks)) self.saveBlockOrderFor('pharma');
       }).catch(function(e) { console.error('加载辅料区块失败:', e); });
     },
     // 生成一个空白辅料区块（仅内存，不落库）
@@ -7680,6 +7686,8 @@ createApp({
     // 在指定下标插入（null = 末尾），置底块受 _pinInsertIndex 约束
     _insertPharmaBlock(block, wantIdx) {
       var blocks = this.editingPharma.blocks;
+      // 先归位（历史数据可能把置底块留在中间），再算插入点
+      this._normalizePinnedOrder(blocks);
       var at = this._pinInsertIndex(blocks, wantIdx, block);
       blocks.splice(at, 0, block);
       blocks.forEach(function(b, i) { b.sortOrder = i; });
@@ -7957,6 +7965,8 @@ createApp({
           };
         });
         self.editingFormula._blockIdCounter = list.length;
+        // 历史数据归位：「相关产品」「相关资料」必须在最后
+        if (self._normalizePinnedOrder(self.editingFormula.blocks)) self.saveBlockOrderFor('formula');
       } catch (e) { console.error('加载配方区块失败:', e); }
     },
     // 生成一个空白配方区块（仅内存，不落库）
@@ -7989,6 +7999,8 @@ createApp({
     _insertFormulaBlock(block, wantIdx) {
       var blocks = this.editingFormula.blocks;
       var self = this;
+      // 先归位（历史数据可能把相关产品留在中间），再算插入点
+      this._normalizePinnedOrder(blocks);
       var at = this._pinInsertIndex(blocks, wantIdx, block);
       blocks.splice(at, 0, block);
       blocks.forEach(function(b, i) { b.sortOrder = i; });
