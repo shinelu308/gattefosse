@@ -7268,6 +7268,8 @@ createApp({
     async saveBlockContent(bi) {
       const block = this.editingPc.blocks[bi];
       block._saved = false;
+      // 是否「新建后第一次保存」——只有这种情况才追问要不要接着加下一块，老区块改改字保存不打扰
+      const wasNew = !block.id;
       try {
         // 根据类型构建 content
         let content = null;
@@ -7328,8 +7330,8 @@ createApp({
         }
         block._saved = true;
         block.content = content;
-        // 手动点「保存内容」才追问是否接着加下一块；整页保存（savePc）不追问
-        if (!this.savingAllBlocks) this._askAddNextBlock(bi);
+        // 仅「新建后第一次保存」且是手动点「保存内容」时才追问是否接着加下一块；整页保存（savePc）不追问
+        if (wasNew && !this.savingAllBlocks) this._askAddNextBlock(bi);
       } catch (e) { this.showAlert('保存区块失败：' + e.message); }
     },
     async saveAllBlocks() {
