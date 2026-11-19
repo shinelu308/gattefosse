@@ -112,6 +112,7 @@ export async function createFormulation(req: Request, res: Response) {
       code,
       description,
       imageUrl,
+      detailImageUrl,
       pdfPath,
       applicationTag,
       formTag,
@@ -137,6 +138,7 @@ export async function createFormulation(req: Request, res: Response) {
         code: code || null,
         description: description || null,
         imageUrl: imageUrl || null,
+        detailImageUrl: detailImageUrl || null,
         pdfPath: pdfPath || null,
         applicationTag: Array.isArray(applicationTag) ? applicationTag.join(',') : (applicationTag || ''),
         formTag: Array.isArray(formTag) ? formTag.join(',') : (formTag || ''),
@@ -178,6 +180,7 @@ export async function updateFormulation(req: Request, res: Response) {
       code,
       description,
       imageUrl,
+      detailImageUrl,
       pdfPath,
       applicationTag,
       formTag,
@@ -198,6 +201,7 @@ export async function updateFormulation(req: Request, res: Response) {
     if (code !== undefined) updateData.code = code || null;
     if (description !== undefined) updateData.description = description || null;
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl || null;
+    if (detailImageUrl !== undefined) updateData.detailImageUrl = detailImageUrl || null;
     if (pdfPath !== undefined) updateData.pdfPath = pdfPath || null;
     if (applicationTag !== undefined) updateData.applicationTag = Array.isArray(applicationTag) ? applicationTag.join(',') : applicationTag;
     if (formTag !== undefined) updateData.formTag = Array.isArray(formTag) ? formTag.join(',') : formTag;
