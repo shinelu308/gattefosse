@@ -8039,10 +8039,12 @@ createApp({
       block._searchResults = [];
       block._productSearch = '';
     },
-    removeRelatedProduct(bi, product) {
+    removeRelatedProduct(bi, productOrIndex) {
+      // 模板传的是数组下标（spi），旧代码按对象 indexOf → 恒 -1，「×」点了没反应。
+      // 两种都兼容：数字当下标，对象走 indexOf。
       var list = this.editingFormula.blocks[bi]._productList || [];
-      var idx = list.indexOf(product);
-      if (idx >= 0) list.splice(idx, 1);
+      var idx = typeof productOrIndex === 'number' ? productOrIndex : list.indexOf(productOrIndex);
+      if (idx >= 0 && idx < list.length) list.splice(idx, 1);
     },
     onFormulaDocSelect(bi, fi, event) {
       var docId = parseInt(event.target.value);

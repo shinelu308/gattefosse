@@ -20,10 +20,40 @@ export async function listBlocks(req: Request, res: Response) {
       orderBy: { sortOrder: 'asc' },
     });
     // content 字段是 JSON 字符串，自动解析
-    const parsed = blocks.map((b) => ({
+    const parsed: any[] = blocks.map((b) => ({
       ...b,
       content: b.content ? JSON.parse(b.content) : null,
     }));
+
+    // 「相关产品」区块存的是 PC 成分的字段快照，早期后台版本保存时没有 tagline 字段，
+    // 前台卡片就会缺「标语」那一行。这里读取时按 id 兜底补齐（只补空值，不覆盖已存快照）。
+    const needTagline = new Set<number>();
+    parsed.forEach((b) => {
+      if (b.blockType !== 'related' || !b.content || !Array.isArray(b.content.products)) return;
+      b.content.products.forEach((p: any) => {
+        if (!p || (!p.tagline && p.id)) needTagline.add(Number(p.id));
+      });
+    });
+    if (needTagline.size > 0) {
+      try {
+        const pcs = await prisma.pcIngredient.findMany({
+          where: { id: { in: Array.from(needTagline) } },
+          select: { id: true, tagline: true },
+        });
+        const taglineById = new Map(pcs.map((p) => [p.id, p.tagline || '']));
+        parsed.forEach((b) => {
+          if (b.blockType !== 'related' || !b.content || !Array.isArray(b.content.products)) return;
+          b.content.products.forEach((p: any) => {
+            if (p && !p.tagline && p.id && taglineById.get(Number(p.id))) {
+              p.tagline = taglineById.get(Number(p.id));
+            }
+          });
+        });
+      } catch (e: any) {
+        // 兜底失败不影响主流程（卡片只是少一行标语）
+        console.error('related 区块 tagline 兜底失败:', e.message);
+      }
+    }
     return res.json(success(parsed));
   } catch (e: any) {
     return res.status(500).json(fail('获取区块失败: ' + e.message, 500));

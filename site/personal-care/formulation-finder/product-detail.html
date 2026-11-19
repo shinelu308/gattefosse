@@ -577,11 +577,31 @@
         overflow: hidden;
         margin-bottom: 0;
       }
-      /* 5) 未启用滑块时（≤3 个产品）允许换行，避免窄屏撑破 */
-      .s-product-related__slider {
-        flex-wrap: wrap;
+      /* 5) 未启用滑块时（≤3 个产品）：一行铺开、等高居中，绝不换行。
+            🔴 原写法 flex:0 0 30.4rem + gap 32px，3 张就是 304*3+64=976px > 容器 970px
+            → 第 3 张被挤到第二行单独居中，且各卡高度随 INCI 行数长短不一（426/468）。
+            改成 flex:1 1 0（基准 0 可压缩）+ 上限 30.4rem，并把交叉轴拉到 stretch 等高。 */
+      .s-product-related__slider:not(.slick-slider) {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: stretch;
       }
-      /* 6) 滑块态：可视窗口按 3 张卡宽度居中（原站也是三卡居中，右侧不留大片空白） */
+      .s-product-related__slider:not(.slick-slider) .c-card {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 30.4rem;
+        height: auto;
+      }
+      /* 6) 卡片内部：图片不参与拉伸（always 顶部、固定 4:3），文本区吃掉多余高度 */
+      .s-product-related .c-card__content {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+      .s-product-related .c-card__image {
+        flex: 0 0 auto;
+      }
+      /* 7) 滑块态：可视窗口按 3 张卡宽度居中（原站也是三卡居中，右侧不留大片空白） */
       .s-product-related .slick-list {
         max-width: 100rem;
         margin-left: auto;
@@ -590,6 +610,9 @@
       @media (max-width: 767.98px) {
         /* 只有「未启用滑块」（≤3 个产品）时才让卡片占满一行；
            启用滑块后宽度交给 slick 计算，否则 width:100% 会算成溢出的超大卡 */
+        .s-product-related__slider:not(.slick-slider) {
+          flex-wrap: wrap;
+        }
         .s-product-related__slider:not(.slick-slider) .c-card {
           flex: 1 1 100%;
           max-width: 100%;
@@ -638,6 +661,9 @@
         // 相关产品：对齐英文原站的 3 卡滑块（产品超过 3 个才启用，带圆点与左右箭头）。
         // 原站用 Drupal behaviors 在 DOM ready 时初始化，但我们这批卡片是 Vue 异步渲染的，
         // 那时卡片数为 0 → 永远不初始化，4 张卡就挤成一行、高度还各不相同。
+        // 🔴 另外 Drupal bundle 会绑 window.load/resize，有时抢先按「>576 且 >2」把 3 张卡
+        //    也初始化成滑块，线上又抢不到 → 同一份数据两种渲染。这里以本函数为准：
+        //    ≤3 强制 unslick 走静态 flex（CSS 保证一行等高），>3 才启滑块，两头都确定性。
         function initRelatedProductsSlider() {
             var tries = 0;
             (function run() {
@@ -650,8 +676,15 @@
                     var $wrap = $(this);
                     var $track = $wrap.find('.js-related-product-slider');
                     if (!$track.length) return;
+                    var count = $track.find('.c-card').length;
+                    if (count <= 3) {
+                        // 退回静态布局（bundle 若抢先初始化过，这里拆掉）
+                        if ($track.hasClass('slick-initialized')) {
+                            try { $track.slick('unslick'); } catch (e) {}
+                        }
+                        return;
+                    }
                     if ($track.hasClass('slick-initialized')) { $track.slick('refresh'); return; }
-                    if ($track.children('.c-card').length <= 3) return;
                     $track.slick({
                         accessibility: true, infinite: false, centerMode: false,
                         variableWidth: true, slidesToShow: 3, slidesToScroll: 1, dots: true,
@@ -812,7 +845,13 @@
                             }
                         }
                         // 卡片渲染完再启用相关产品滑块（4 个以上产品时原站是 3 卡一屏 + 圆点）
-                        nextTick(function () { initRelatedProductsSlider(); });
+                        nextTick(function () {
+                            initRelatedProductsSlider();
+                            // 兜底：bundle 的 window.load/resize 可能在之后再插一手（3 张卡会被
+                            // 它误判成滑块），延迟再裁决一次，保证最终状态由我们决定
+                            setTimeout(initRelatedProductsSlider, 800);
+                            setTimeout(initRelatedProductsSlider, 1800);
+                        });
                     }).catch(function (err) {
                         console.error('加载内容区块失败:', err);
                     });
