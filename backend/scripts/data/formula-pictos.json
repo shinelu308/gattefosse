@@ -1,0 +1,1575 @@
+{
+  "source": "https://www.gattefossechina.cn/api/mallGoodsInfo/findMallGoodsInfo?ID=<id>  (picto 字段，按 subtitle=配方编号 对齐，抓取于 2026-11-19)",
+  "note": "inferred:true 表示原站该配方无 picto，按品类推断补全，可在后台人工复核",
+  "total": 99,
+  "items": [
+    {
+      "code": "2972-5.20",
+      "name": "Caramelt Lollipop",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        },
+        {
+          "iconType": "wow3",
+          "label": "质地转变"
+        }
+      ],
+      "sourceId": 11128
+    },
+    {
+      "code": "2712-1.38",
+      "name": "亮泽液体口红",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 11127
+    },
+    {
+      "code": "2906-1.22",
+      "name": "精华粉底液",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 11126
+    },
+    {
+      "code": "2909-1.17",
+      "name": "压制宝石粉",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        }
+      ],
+      "sourceId": 11125
+    },
+    {
+      "code": "2925-3.07",
+      "name": "Orange Candy Bi-gel",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 11124
+    },
+    {
+      "code": "2985-1.14",
+      "name": "Matt'cha Cream",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 11123
+    },
+    {
+      "code": "2940-1.10",
+      "name": "浓郁液体腮红",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 11122
+    },
+    {
+      "code": "2944-1.01",
+      "name": "经典缎光口红",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 11121
+    },
+    {
+      "code": "2997-1.06",
+      "name": "Hair Pudding Mask",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "cheveux",
+          "label": "护发"
+        }
+      ],
+      "sourceId": 11120
+    },
+    {
+      "code": "2930-1.08",
+      "name": "光泽润色霜",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "soleil",
+          "label": "防晒"
+        }
+      ],
+      "sourceId": 11119
+    },
+    {
+      "code": "2614-3.01",
+      "name": "玩趣修复凝霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 11001
+    },
+    {
+      "code": "2528-1.13",
+      "name": "反重力精华",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 11000
+    },
+    {
+      "code": "2587-1.07",
+      "name": "抗斑身体喷雾",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10999
+    },
+    {
+      "code": "2469-2.11",
+      "name": "香蕉奶油冰淇淋",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10998
+    },
+    {
+      "code": "2031-1.08",
+      "name": "胡须梳理霜",
+      "pictos": [
+        {
+          "iconType": "barbe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10997
+    },
+    {
+      "code": "2891-1.19",
+      "name": "弹力眼霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 11113,
+      "inferred": true
+    },
+    {
+      "code": "2373-1.24",
+      "name": "焦糖面膜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10996
+    },
+    {
+      "code": "2694-3.03",
+      "name": "佛手瓜奇异果绵绵冰面霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10995
+    },
+    {
+      "code": "2787-1.07",
+      "name": "CICA屏障霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10994
+    },
+    {
+      "code": "2657-1.12",
+      "name": "舒缓身体乳膏",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "jambe",
+          "label": ""
+        }
+      ],
+      "sourceId": 10993
+    },
+    {
+      "code": "2865-7.05",
+      "name": "宇宙变色眼影",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10992
+    },
+    {
+      "code": "2748-1.11",
+      "name": "松软酪酪面霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10991
+    },
+    {
+      "code": "1925-1.16",
+      "name": "疯狂哑光发蜡",
+      "pictos": [
+        {
+          "iconType": "wow",
+          "label": ""
+        },
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "barbe",
+          "label": ""
+        }
+      ],
+      "sourceId": 10990
+    },
+    {
+      "code": "2892-2.13",
+      "name": "奶油遮瑕棒",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        }
+      ],
+      "sourceId": 11112,
+      "inferred": true
+    },
+    {
+      "code": "2466-1.01",
+      "name": "卷发护发乳",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10989
+    },
+    {
+      "code": "2595-1.04",
+      "name": "日用轻盈保湿霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10988
+    },
+    {
+      "code": "2670-1.12",
+      "name": "日用防晒霜 SPF20",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10987
+    },
+    {
+      "code": "2849-2.06",
+      "name": "纤长睫毛膏",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10986
+    },
+    {
+      "code": "2853-1.10",
+      "name": "梦幻云霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "jambe",
+          "label": ""
+        }
+      ],
+      "sourceId": 10985
+    },
+    {
+      "code": "2746-1.17",
+      "name": "干爽防晒乳 SPF50",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10984
+    },
+    {
+      "code": "1304-1.01",
+      "name": "母婴修护膏",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "bebe",
+          "label": ""
+        },
+        {
+          "iconType": "plume",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10983
+    },
+    {
+      "code": "2822-1.07",
+      "name": "活力焕肤底霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10982
+    },
+    {
+      "code": "2653-2.16",
+      "name": "轻盈滋润日用面霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10981
+    },
+    {
+      "code": "2620-1.02",
+      "name": "万用润肤霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10980
+    },
+    {
+      "code": "2397-2.25",
+      "name": "极致柔软防晒霜 SPF30",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10979
+    },
+    {
+      "code": "2681-2.06",
+      "name": "柔滑润肤露 SPF50",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        }
+      ],
+      "sourceId": 10978
+    },
+    {
+      "code": "2097-1.29",
+      "name": "全面防护粉底液",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10977
+    },
+    {
+      "code": "2859-1.15",
+      "name": "粉色果冻乳液",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10976
+    },
+    {
+      "code": "2745-3.04",
+      "name": "闪光软糖固体高光",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10975
+    },
+    {
+      "code": "2133-1.06",
+      "name": "薄荷玩趣足部护理霜",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        }
+      ],
+      "sourceId": 10974
+    },
+    {
+      "code": "2441-1.03",
+      "name": "头部护理泥膜",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10973
+    },
+    {
+      "code": "2790-1.03",
+      "name": "高遮瑕粉底液",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10972
+    },
+    {
+      "code": "2532-2.01",
+      "name": "高效防护乳 SPF50",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10971
+    },
+    {
+      "code": "2758-1.11",
+      "name": "细致柔滑长效防水眼线笔",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10970
+    },
+    {
+      "code": "2860-1.19",
+      "name": "保湿润色润唇膏",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10969
+    },
+    {
+      "code": "1982-1.13",
+      "name": "冰霜焕肤日霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "wow",
+          "label": ""
+        }
+      ],
+      "sourceId": 10968
+    },
+    {
+      "code": "2908-1.19",
+      "name": "冰爽眼霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 11111,
+      "inferred": true
+    },
+    {
+      "code": "2899-1.06",
+      "name": "亮眼精华液",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 11110,
+      "inferred": true
+    },
+    {
+      "code": "2656-2.20",
+      "name": "瞬亮有色霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10967
+    },
+    {
+      "code": "2435-1.02",
+      "name": "强效营养护发膏",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10966
+    },
+    {
+      "code": "2578-1.16",
+      "name": "高效防护防晒霜 SPF50",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10965
+    },
+    {
+      "code": "2583-1.20",
+      "name": "柠檬凝乳面膜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "wow",
+          "label": ""
+        }
+      ],
+      "sourceId": 10964
+    },
+    {
+      "code": "2618-2.52",
+      "name": "岩浆面膜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10963
+    },
+    {
+      "code": "2861-1.02",
+      "name": "纤长睫毛打底膏",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10962
+    },
+    {
+      "code": "2177-7.05",
+      "name": "矿物防晒霜 SPF50",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10961
+    },
+    {
+      "code": "2367-2.07",
+      "name": "极简柔肤霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10960
+    },
+    {
+      "code": "2655-3.16",
+      "name": "保湿身体喷雾",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10959
+    },
+    {
+      "code": "2714-1.07",
+      "name": "多功能眼影",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10958
+    },
+    {
+      "code": "2398-1.06",
+      "name": "维生素唤能柔肤乳",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10957
+    },
+    {
+      "code": "1936-1.01",
+      "name": "天然贴肤粉底液",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        },
+        {
+          "iconType": "plume",
+          "label": ""
+        }
+      ],
+      "sourceId": 10956
+    },
+    {
+      "code": "2023-3.06",
+      "name": "天然无暇粉底液",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10955
+    },
+    {
+      "code": "2358-1.21",
+      "name": "颈部&法令纹嫩肤霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10954
+    },
+    {
+      "code": "2658-2.07",
+      "name": "安睡固体护理油",
+      "pictos": [
+        {
+          "iconType": "plume",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "wow3",
+          "label": ""
+        }
+      ],
+      "sourceId": 10953
+    },
+    {
+      "code": "2436-1.02",
+      "name": "营养头皮乳",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10952
+    },
+    {
+      "code": "1823-3.13",
+      "name": "户外热身防晒霜SPF50+",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "soleil",
+          "label": ""
+        }
+      ],
+      "sourceId": 10951
+    },
+    {
+      "code": "2585-2.08",
+      "name": "完美肌肤晚霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10950
+    },
+    {
+      "code": "2494-1.13",
+      "name": "防晒粉棒SPF50+",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10949
+    },
+    {
+      "code": "2479-2.04",
+      "name": "妆前转换霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        },
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        }
+      ],
+      "sourceId": 10948
+    },
+    {
+      "code": "2456-1.05",
+      "name": "纯净液晶乳",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10947
+    },
+    {
+      "code": "2390-2.03",
+      "name": "高保湿孔雀石精华",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10946
+    },
+    {
+      "code": "2470-1.25",
+      "name": "焕彩亮肤霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10945
+    },
+    {
+      "code": "2371-1.22",
+      "name": "重塑身体霜",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10944
+    },
+    {
+      "code": "2862-3.07",
+      "name": "泛红急救霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 10943,
+      "inferred": true
+    },
+    {
+      "code": "2708-1.08",
+      "name": "清爽保护双凝胶防晒SPF30",
+      "pictos": [
+        {
+          "iconType": "soleil",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10942
+    },
+    {
+      "code": "2319-1.15",
+      "name": "焕新卸妆膏",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10941
+    },
+    {
+      "code": "2666-1.04",
+      "name": "重置肌肤晚霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10940
+    },
+    {
+      "code": "2372-2.06",
+      "name": "乳转油修复乳",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "wow",
+          "label": ""
+        }
+      ],
+      "sourceId": 10939
+    },
+    {
+      "code": "2886-1.04",
+      "name": "重焕光彩遮瑕膏",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "baume_1",
+          "label": "彩妆"
+        }
+      ],
+      "sourceId": 11109,
+      "inferred": true
+    },
+    {
+      "code": "2433-1.02",
+      "name": "焕活护发修复乳",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10938
+    },
+    {
+      "code": "2829-1.06",
+      "name": "发根再生精华液",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "cheveux",
+          "label": ""
+        }
+      ],
+      "sourceId": 10937
+    },
+    {
+      "code": "2628-1.07",
+      "name": "头皮&身体磨砂膏",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "jambe",
+          "label": ""
+        }
+      ],
+      "sourceId": 10936
+    },
+    {
+      "code": "2654-2.06",
+      "name": "丝滑面部精华液",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10935
+    },
+    {
+      "code": "2073-3.14",
+      "name": "丝感粉底液",
+      "pictos": [
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10934
+    },
+    {
+      "code": "2463-1.01",
+      "name": "抗污染面霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "plume",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10933
+    },
+    {
+      "code": "2621-2.09",
+      "name": "柔肤棒",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10932
+    },
+    {
+      "code": "2493-1.08",
+      "name": "柔顺防护护发乳",
+      "pictos": [
+        {
+          "iconType": "cheveux",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10931
+    },
+    {
+      "code": "2613-1.17",
+      "name": "柔肤棒",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 10930
+    },
+    {
+      "code": "2748-2.04",
+      "name": "墨汁精华",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10929
+    },
+    {
+      "code": "2855-3.02",
+      "name": "星光亮泽精华",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10928
+    },
+    {
+      "code": "2588-3.07",
+      "name": "定向护理凝胶",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "acne",
+          "label": ""
+        }
+      ],
+      "sourceId": 10927
+    },
+    {
+      "code": "2464-1.01",
+      "name": "补水身体乳",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10926
+    },
+    {
+      "code": "2421-1.01",
+      "name": "紧致弹润身体黄油",
+      "pictos": [
+        {
+          "iconType": "jambe",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10925
+    },
+    {
+      "code": "2739-1.08",
+      "name": "超哑光遮瑕",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "baume_1",
+          "label": ""
+        }
+      ],
+      "sourceId": 10924
+    },
+    {
+      "code": "2719-1.02",
+      "name": "超平滑眼周眼霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plume",
+          "label": ""
+        }
+      ],
+      "sourceId": 10923
+    },
+    {
+      "code": "2406-1.01",
+      "name": "多用途面霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": "天然"
+        },
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        }
+      ],
+      "sourceId": 11114,
+      "inferred": true
+    },
+    {
+      "code": "2584-1.05",
+      "name": "洁净精华",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 10922
+    },
+    {
+      "code": "2495-1.25",
+      "name": "抗衰老日霜",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": "护肤"
+        },
+        {
+          "iconType": "plante",
+          "label": "天然"
+        }
+      ],
+      "sourceId": 10921
+    },
+    {
+      "code": "2671-2.05",
+      "name": "青春守护精华液",
+      "pictos": [
+        {
+          "iconType": "pot",
+          "label": ""
+        },
+        {
+          "iconType": "plante",
+          "label": ""
+        }
+      ],
+      "sourceId": 10920
+    },
+    {
+      "code": "2590-1.08",
+      "name": "零油光面霜",
+      "pictos": [
+        {
+          "iconType": "plante",
+          "label": ""
+        },
+        {
+          "iconType": "pot",
+          "label": ""
+        }
+      ],
+      "sourceId": 10919
+    }
+  ]
+}

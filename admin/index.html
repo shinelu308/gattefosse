@@ -2312,6 +2312,12 @@ const QUILL_TOOLBAR = [
                       <option value="baume_1" data-page-node-id="qDKH4xpURUcwOHPt1z9cGB">💄 膏体（彩妆）</option>
                       <option value="soleil" data-page-node-id="SoLeIl261120a">☀️ 太阳（防晒）</option>
                       <option value="cheveux" data-page-node-id="CheVeUx261120a">💇 头发（护发）</option>
+                      <option value="plume">🪶 羽毛（轻盈）</option>
+                      <option value="jambe">🦵 腿部（身体）</option>
+                      <option value="barbe">🧔 胡须（剃须）</option>
+                      <option value="bebe">🍼 婴儿（母婴）</option>
+                      <option value="acne">🩹 痘痘（祛痘）</option>
+                      <option value="wow">💥 惊喜（质地）</option>
                       <option value="wow3" data-page-node-id="1WcujmMiAFT9mvxSptD3ud">✨ 惊叹（质地转变）</option>
                     </select>
                     <input type="text" class="form-control" v-model="pi.label" placeholder="标签文字" style="width:100px;font-size:13px;" data-page-node-id="vVO7HtaDmszRI4NzFX5WLM">
@@ -7926,8 +7932,8 @@ createApp({
     onPictoTypeChange(pii) {
       // 根据图标类型自动填充默认标签
       // 只在标签为空、或标签仍是某个图标类型的默认值时替换，避免「刚加的块标签还是天然」这种错配
-      var typeLabels = { plante: '天然', pot: '护肤', baume_1: '彩妆', soleil: '防晒', cheveux: '护发', wow3: '质地转变' };
-      var defaults = ['天然', '护肤', '彩妆', '防晒', '护发', '质地转变'];
+      var typeLabels = { plante: '天然', pot: '护肤', baume_1: '彩妆', soleil: '防晒', cheveux: '护发', plume: '轻盈', jambe: '身体', barbe: '剃须', bebe: '母婴', acne: '祛痘', wow: '质地', wow3: '质地转变' };
+      var defaults = ['天然', '护肤', '彩妆', '防晒', '护发', '轻盈', '身体', '剃须', '母婴', '祛痘', '质地', '质地转变'];
       var item = this.editingFormula._pictoList[pii];
       if (!item) return;
       var cur = String(item.label || '').trim();
