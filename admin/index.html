@@ -6717,7 +6717,7 @@ createApp({
       var block = this.editingPc.blocks[bi];
       var self = this;
       if (side === 'left') {
-        if (block._quillL) { block._quillL.container.remove(); block._quillL = null; }
+        if (block._quillL) { this._disposeQuill(block._quillL); block._quillL = null; }
         this.$nextTick(function() {
           if (block._leftType === 'richtext') {
             self._initSingleQuill(block, 'qled-imagetext-left-' + block._key, function(ql, blk) {
@@ -6732,7 +6732,7 @@ createApp({
           }
         });
       } else {
-        if (block._quillR) { block._quillR.container.remove(); block._quillR = null; }
+        if (block._quillR) { this._disposeQuill(block._quillR); block._quillR = null; }
         this.$nextTick(function() {
           if (block._rightType === 'richtext') {
             self._initSingleQuill(block, 'qled-imagetext-right-' + block._key, function(ql, blk) {
@@ -6754,9 +6754,9 @@ createApp({
       if (!block._quillSlides) block._quillSlides = [];
       if (!block._quillSlides[si]) block._quillSlides[si] = { left: null, right: null };
       if (side === 'left') {
-        if (block._quillSlides[si].left) { block._quillSlides[si].left.container.remove(); block._quillSlides[si].left = null; }
+        if (block._quillSlides[si].left) { this._disposeQuill(block._quillSlides[si].left); block._quillSlides[si].left = null; }
       } else {
-        if (block._quillSlides[si].right) { block._quillSlides[si].right.container.remove(); block._quillSlides[si].right = null; }
+        if (block._quillSlides[si].right) { this._disposeQuill(block._quillSlides[si].right); block._quillSlides[si].right = null; }
       }
       this.$nextTick(function() {
         self.initQuillEditors();
@@ -7113,7 +7113,7 @@ createApp({
       const block = this.editingPc.blocks[bi];
       this.showConfirm('确认删除', '确定删除区块「' + (block.title || '未命名') + '」？', async () => {
         if (block._quill) {
-          block._quill.container.remove();
+          this._disposeQuill(block._quill);
           block._quill = null;
         }
         if (block.id) {
@@ -7239,30 +7239,40 @@ createApp({
         this.pickerDocsLoaded = true;
       } catch (e) { console.error('加载文档库失败:', e); }
     },
+    // 安全销毁一个 Quill 实例：只清空编辑器内容、摘掉 snow 主题插在宿主前面的工具栏，
+    // 🔴 绝不 remove() 宿主 div（#qled-xxx 是 Vue 渲染的节点）—— 一旦摘掉，Vue 的 v-show
+    //    再也无法把它放回 DOM，「富文本切走再切回，输入框不见」就是这个原因
+    _disposeQuill(q) {
+      if (!q) return;
+      try {
+        var host = q.container;
+        if (!host || !host.isConnected) return;
+        var sib = host.previousElementSibling;
+        if (sib && sib.classList && sib.classList.contains('ql-toolbar')) sib.remove();
+        host.innerHTML = '';
+        host.classList.remove('ql-container', 'ql-snow', 'ql-focused');
+      } catch (e) {}
+    },
     onPcBlockTypeChange(bi) {
       const block = this.editingPc.blocks[bi];
-      // 彻底销毁旧 Quill（含 imagetext 左列、右列、滑块）
-      if (block._quill) {
-        block._quill.container.remove();
-        block._quill = null;
-      }
-      if (block._quillL) {
-        block._quillL.container.remove();
-        block._quillL = null;
-      }
-      if (block._quillR) {
-        block._quillR.container.remove();
-        block._quillR = null;
-      }
+      const self = this;
+      // 主富文本编辑器不销毁：它的宿主在 v-show 面板里常驻 DOM，保留实例切回来内容原样还在
+      // （含未保存的编辑），也不会重复插入工具栏。左列 / 右列 / 滑块的宿主在 v-if 分支里，
+      // 会被 Vue 整块重建，用安全销毁清干净即可。
+      this._disposeQuill(block._quillL);
+      block._quillL = null;
+      this._disposeQuill(block._quillR);
+      block._quillR = null;
       if (block._quillSlides) {
-        block._quillSlides.forEach(function(ql) {
-          if (ql && ql.container) ql.container.remove();
+        block._quillSlides.forEach(function(pair) {
+          if (!pair) return;
+          self._disposeQuill(pair.left);
+          self._disposeQuill(pair.right);
         });
         block._quillSlides = [];
       }
       this._initBlockViewData(block);
-      // 切换后重新初始化 Quill
-      var self = this;
+      // 切换后补齐新类型需要的 Quill（已存在 .ql-editor 的会被跳过，不会重建）
       setTimeout(function() { self.initQuillEditors(); }, 100);
     },
     async saveBlockContent(bi) {
@@ -7437,6 +7447,9 @@ createApp({
         if (elem && elem.offsetHeight > 0) {
           // 再次检查避免并发重复创建
           if (elem.querySelector('.ql-editor')) return;
+          // 清掉可能残留的 snow 工具栏，避免重复创建时出现两条工具栏
+          var staleBar = elem.previousElementSibling;
+          if (staleBar && staleBar.classList && staleBar.classList.contains('ql-toolbar')) staleBar.remove();
           var ql = new Quill(elem, {
             theme: 'snow',
             modules: { toolbar: QUILL_TOOLBAR },
@@ -7891,15 +7904,15 @@ createApp({
       var block = this.editingFormula.blocks[bi];
       var self = this;
       if (block._quill) {
-        block._quill.container.remove();
+        this._disposeQuill(block._quill);
         block._quill = null;
       }
       if (block._quillL) {
-        block._quillL.container.remove();
+        this._disposeQuill(block._quillL);
         block._quillL = null;
       }
       if (block._quillR) {
-        block._quillR.container.remove();
+        this._disposeQuill(block._quillR);
         block._quillR = null;
       }
       if (block.id) {
@@ -7921,29 +7934,21 @@ createApp({
     },
     onFormulaBlockTypeChange(bi) {
       var block = this.editingFormula.blocks[bi];
-      block._saved = false;
-      // 彻底销毁旧 Quill
-      if (block._quill) {
-        block._quill.container.remove();
-        block._quill = null;
-      }
-      if (block._quillL) {
-        block._quillL.container.remove();
-        block._quillL = null;
-      }
-      if (block._quillR) {
-        block._quillR.container.remove();
-        block._quillR = null;
-      }
-      this._initFormulaBlockViewData(block);
       var self = this;
+      block._saved = false;
+      // 主富文本编辑器保留实例（宿主在 v-show 面板里，remove 会让它再也回不来）
+      this._disposeQuill(block._quillL);
+      block._quillL = null;
+      this._disposeQuill(block._quillR);
+      block._quillR = null;
+      this._initFormulaBlockViewData(block);
       setTimeout(function() { self.initFormulaQuillEditors(); }, 100);
     },
     onFormulaImagetextTypeChange(bi, side) {
       var block = this.editingFormula.blocks[bi];
       var self = this;
       if (side === 'left') {
-        if (block._quillL) { block._quillL.container.remove(); block._quillL = null; }
+        if (block._quillL) { this._disposeQuill(block._quillL); block._quillL = null; }
         this.$nextTick(function() {
           if (block._leftType === 'richtext') {
             self._initFormulaSingleQuill(block, 'qled-imagetext-left-' + block._key, function(ql, blk) {
@@ -7958,7 +7963,7 @@ createApp({
           }
         });
       } else {
-        if (block._quillR) { block._quillR.container.remove(); block._quillR = null; }
+        if (block._quillR) { this._disposeQuill(block._quillR); block._quillR = null; }
         this.$nextTick(function() {
           if (block._rightType === 'richtext') {
             self._initFormulaSingleQuill(block, 'qled-imagetext-right-' + block._key, function(ql, blk) {
@@ -8147,6 +8152,8 @@ createApp({
         var elem = document.getElementById(elId);
         if (elem && elem.offsetHeight > 0) {
           if (elem.querySelector('.ql-editor')) return;
+          var staleBar = elem.previousElementSibling;
+          if (staleBar && staleBar.classList && staleBar.classList.contains('ql-toolbar')) staleBar.remove();
           var ql = new Quill(elem, {
             theme: 'snow',
             modules: { toolbar: QUILL_TOOLBAR },
