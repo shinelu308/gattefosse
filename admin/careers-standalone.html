@@ -74,6 +74,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .required { color: #e74c3c; }
 .hint { color: #999; font-size: 12px; font-weight: normal; margin-left: 4px; }
 .empty-tip { color: #ccc; }
+.legacy-tag { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 8px; background: #eef1f5; color: #6b7280; font-size: 10px; font-weight: 500; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -122,11 +123,11 @@ tbody tr:last-child td { border-bottom: 0; }
       <tbody>
         <tr v-for="item in list" :key="item.id">
           <td>
-            <div class="name-cell">{{ item.fullName }}</div>
+            <div class="name-cell">{{ item.fullName }}<span v-if="item.legacyId" class="legacy-tag">老系统</span></div>
             <div class="sub-cell" v-if="item.country">{{ item.country }}</div>
           </td>
           <td>
-            <div>{{ item.email }}</div>
+            <div :style="item.email ? '' : 'color:#bbb;'">{{ item.email || '未填写邮箱' }}</div>
             <div class="sub-cell">{{ item.phone || '未填写电话' }}</div>
           </td>
           <td>
@@ -168,11 +169,15 @@ tbody tr:last-child td { border-bottom: 0; }
       </div>
       <div class="card-body">
         <dl class="detail-grid">
-          <dt>申请编号</dt><dd>#{{ detail.id }}</dd>
+          <dt>申请编号</dt><dd>#{{ detail.id }}<span v-if="detail.legacyId" class="legacy-tag">老系统 ID {{ detail.legacyId }}</span></dd>
           <dt>姓名</dt><dd>{{ detail.fullName }}</dd>
           <dt v-if="detail.firstName || detail.lastName">名 / 姓</dt>
           <dd v-if="detail.firstName || detail.lastName">{{ detail.firstName || '-' }} / {{ detail.lastName || '-' }}</dd>
-          <dt>邮箱</dt><dd><a :href="'mailto:' + detail.email" style="color:#003CC5;">{{ detail.email }}</a></dd>
+          <dt>邮箱</dt>
+          <dd>
+            <a v-if="detail.email" :href="'mailto:' + detail.email" style="color:#003CC5;">{{ detail.email }}</a>
+            <span v-else class="empty-tip">未填写</span>
+          </dd>
           <dt>电话</dt><dd>{{ detail.phone || '-' }}</dd>
           <dt>期望国家</dt><dd>{{ detail.country || '-' }}</dd>
           <dt>期望岗位</dt><dd>{{ detail.position || '-' }}</dd>

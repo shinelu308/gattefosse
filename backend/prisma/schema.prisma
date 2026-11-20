@@ -421,6 +421,7 @@ model CareerApplication {
   // new 新申请 / contacting 沟通中 / interview 面试 / hired 录用 / rejected 不合适 / archived 归档
   status          String    @default("new")
   notes           String?   // HR 内部备注
+  legacyId        Int?      @unique @map("legacy_id") // 老系统「加入我们 / webCareer」原始 ID，迁移去重用
   reviewedAt      DateTime? @map("reviewed_at")
   ip              String?
   userAgent       String?   @map("user_agent")
