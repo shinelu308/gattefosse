@@ -208,6 +208,40 @@
                                                 <span class="s-spec-value" v-html="row.value"></span>
                                             </div>
                                         </div>
+                                        <!-- 成分配方表区块 -->
+                                        <div v-if="block.blockType === 'formula' && block.content && block.content.rows && block.content.rows.length" class="block-formula">
+                                            <div class="s-formula-inner">
+                                                <table class="s-formula-table">
+                                                    <colgroup>
+                                                        <col class="s-formula-col-phase">
+                                                        <col class="s-formula-col-name">
+                                                        <col class="s-formula-col-inci">
+                                                        <col class="s-formula-col-sup">
+                                                        <col class="s-formula-col-pct">
+                                                    </colgroup>
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Phase</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">INCI</th>
+                                                            <th scope="col">Supplier</th>
+                                                            <th scope="col">%</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template v-for="(g, gi) in groupFormulaRows(block.content.rows)" :key="'fg-' + gi">
+                                                            <tr v-for="(row, ri) in g.rows" :key="'fr-' + gi + '-' + ri">
+                                                                <td v-if="ri === 0" :rowspan="g.rows.length" class="s-formula-phase">{{ g.phase }}</td>
+                                                                <td class="s-formula-name">{{ row.name }}</td>
+                                                                <td class="s-formula-inci">{{ row.inci }}</td>
+                                                                <td class="s-formula-supplier">{{ row.supplier || '-' }}</td>
+                                                                <td class="s-formula-pct">{{ row.percent }}</td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                         <!-- 视频区块 -->
                                         <div v-if="block.blockType === 'video' && block.content && block.content.url" class="block-video">
                                             <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
@@ -584,6 +618,103 @@
         .s-spec-value {
           display: block;
           font-size: 15px;
+        }
+      }
+
+      /* ============ 鎴愬垎閰嶆柟琛紙formula 鍖哄潡锛夛細Phase / Name / INCI / Supplier / % ============ */
+      /* 鐢?<table> + rowspan锛氬悓 Phase 杩炵画琛屽ぉ鐒跺悎骞讹紝鍒嗛殧绾胯嚜鍔ㄦí璺ㄥ叏瀹姐€?         Drupal 鍏ㄥ眬鏈?`table th, table td { width: 25% }`锛岃繖閲岄潬鏇撮珮鐗瑰紓鎬?+ !important 鍘嬪洖鍘汇€?*/
+      .block-formula {
+        margin: 0;
+        overflow-x: auto;
+      }
+      .s-formula-inner {
+        min-width: 720px;
+      }
+      .block-formula table.s-formula-table {
+        width: 100% !important;
+        table-layout: fixed;
+        border-collapse: collapse;
+        margin: 0;
+      }
+      .block-formula table.s-formula-table col.s-formula-col-phase { width: 96px; }
+      .block-formula table.s-formula-table col.s-formula-col-name { width: 27%; }
+      .block-formula table.s-formula-table col.s-formula-col-inci { width: 36%; }
+      .block-formula table.s-formula-table col.s-formula-col-sup { width: 20%; }
+      .block-formula table.s-formula-table col.s-formula-col-pct { width: 88px; }
+      .block-formula table.s-formula-table th,
+      .block-formula table.s-formula-table td {
+        width: auto !important;
+        padding: 18px 24px 18px 0;
+        vertical-align: middle;
+        border: none;
+        font-weight: 400;
+        text-align: left;
+        background: transparent;
+      }
+      .block-formula table.s-formula-table th:last-child,
+      .block-formula table.s-formula-table td:last-child {
+        padding-right: 0;
+      }
+      .block-formula table.s-formula-table thead th {
+        padding-top: 14px;
+        padding-bottom: 12px;
+        border-top: 1px solid #E6E2E0;
+        border-bottom: 1px solid #E6E2E0;
+        font-size: 14px;
+        color: #3E3E3E;
+      }
+      .block-formula table.s-formula-table tbody tr {
+        border-bottom: 1px solid #F2F0EE;
+      }
+      .block-formula table.s-formula-table tbody tr:last-child {
+        border-bottom: none;
+      }
+      .s-formula-phase {
+        font-size: 14px;
+        color: #333;
+        white-space: nowrap;
+      }
+      .s-formula-name {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #333;
+        font-weight: 400;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      .s-formula-inci {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #6B6B6B;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      .s-formula-supplier {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #6B6B6B;
+      }
+      .s-formula-pct {
+        font-size: 15px;
+        color: #333;
+      }
+      @media (max-width: 767.98px) {
+        .s-formula-inner {
+          min-width: 640px;
+        }
+        .block-formula table.s-formula-table th,
+        .block-formula table.s-formula-table td {
+          padding: 14px 14px 14px 0;
+        }
+        .block-formula table.s-formula-table col.s-formula-col-phase { width: 56px; }
+        .block-formula table.s-formula-table col.s-formula-col-pct { width: 56px; }
+        .s-formula-name,
+        .s-formula-pct {
+          font-size: 14px;
+        }
+        .s-formula-inci,
+        .s-formula-supplier {
+          font-size: 13px;
         }
       }
 
@@ -970,6 +1101,21 @@
                 function hasBrochureDocs(files) { return files.some(function(f) { return isBrochureDoc(f); }); }
                 function hasFormulaDocs(files) { return files.some(function(f) { return isFormulaDoc(f); }); }
 
+                // 成分配方表：把扁平的成分行按「连续相同 Phase」分组，好让 Phase 单元格纵向合并
+                function groupFormulaRows(rows) {
+                    var out = [];
+                    (rows || []).forEach(function (r) {
+                        var ph = (r && r.phase ? String(r.phase) : '').trim();
+                        var last = out[out.length - 1];
+                        if (last && last.phase === ph) {
+                            last.rows.push(r);
+                        } else {
+                            out.push({ phase: ph, rows: [r] });
+                        }
+                    });
+                    return out;
+                }
+
                 // 视频 URL 转换：将各种视频链接转为可嵌入的 iframe 地址
                 function convertVideoUrl(url) {
                     if (!url) return '';
@@ -1008,6 +1154,7 @@
                     hasTdsDocs,
                     hasBrochureDocs,
                     hasFormulaDocs,
+                    groupFormulaRows,
                     convertVideoUrl
                 };
             },

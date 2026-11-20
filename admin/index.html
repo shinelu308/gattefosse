@@ -2395,6 +2395,7 @@ const QUILL_TOOLBAR = [
                         <select v-model="block.blockType" @change="onFormulaBlockTypeChange(bi)" class="form-control" style="width:140px;" data-page-node-id="4HcX5nZFuNV2zwUG9E0glm">
                           <option value="richtext" data-page-node-id="MATnCJ7BfR6l3fZ9bLXZ3H">富文本</option>
                           <option value="spec" data-page-node-id="SpEcForMuLa261119">规格表格</option>
+                          <option value="formula" data-page-node-id="FoRmUlAOpt261120">成分配方表</option>
                           <option value="imagetext" data-page-node-id="R9fQVdCi8MXw8U5hiAcJQw">图文并排</option>
                           <option value="video" data-page-node-id="SD6GpiqIG9oihtGP7yYiEN">视频</option>
                           <option value="images" data-page-node-id="G2AxB91Sx2eLAXZE38mHeX">图片集</option>
@@ -2426,6 +2427,29 @@ const QUILL_TOOLBAR = [
                           <button class="btn btn-sm btn-outline" @click="addFormulaSpecRow(bi)" data-page-node-id="SpEcFormulaAdd261119">+ 添加行</button>
                           <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)" data-page-node-id="SpEcFormulaSave261119">保存内容</button>
                           <span class="block-saved-msg" v-if="block._saved" data-page-node-id="SpEcFormulaSaved261119">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <!-- formula: 成分配方表（Phase / Name / INCI / Supplier / %，同 Phase 连续行合并） -->
+                      <div v-show="block.blockType === 'formula'" data-page-node-id="FoRmUlAPanel261120">
+                        <div style="font-size:13px;color:#666;margin-bottom:10px;" data-page-node-id="FoRmUlAHint261120">
+                          Phase 相同的<strong>连续</strong>行会在前台自动合并成一格；Supplier 留空或填 <code>-</code> 表示不适用。顺序即展示顺序。
+                        </div>
+                        <div v-for="(row, ri) in block._formulaRows" :key="ri" style="border:1px solid #e8e4e1;border-radius:8px;padding:10px 10px 8px;margin-bottom:8px;background:#fcfcfb;" data-page-node-id="FoRmUlARow261120">
+                          <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;" data-page-node-id="FoRmUlARow1">
+                            <input type="text" class="form-control" v-model="row.phase" placeholder="Phase" style="flex:0 0 84px;text-align:center;font-weight:600;" data-page-node-id="FoRmUlAPhase">
+                            <input type="text" class="form-control" v-model="row.name" placeholder="成分名 / Name" data-page-node-id="FoRmUlAName">
+                            <input type="text" class="form-control" v-model="row.percent" placeholder="%" style="flex:0 0 84px;text-align:right;" data-page-node-id="FoRmUlAPct">
+                            <button class="btn btn-sm btn-danger" @click="removeFormulaIngredientRow(bi, ri)" title="删除此行" data-page-node-id="FoRmUlADel">×</button>
+                          </div>
+                          <div style="display:flex;gap:8px;align-items:center;" data-page-node-id="FoRmUlARow2">
+                            <input type="text" class="form-control" v-model="row.inci" placeholder="INCI 名称" data-page-node-id="FoRmUlAInci">
+                            <input type="text" class="form-control" v-model="row.supplier" placeholder="供应商 / Supplier" style="flex:0 0 200px;" data-page-node-id="FoRmUlASup">
+                          </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;" data-page-node-id="FoRmUlABtns261120">
+                          <button class="btn btn-sm btn-outline" @click="addFormulaIngredientRow(bi)" data-page-node-id="FoRmUlAAdd261120">+ 添加成分行</button>
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)" data-page-node-id="FoRmUlASave261120">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved" data-page-node-id="FoRmUlASaved261120">✓ 已保存</span>
                         </div>
                       </div>
                       <div v-show="block.blockType === 'video'" data-page-node-id="AxtQxEME5LL3jurYeDbc4p">
@@ -8002,6 +8026,7 @@ createApp({
             _rightRichtext: (b.blockType === 'imagetext' && content.rightType === 'richtext') ? (content.rightHtml || '') : '',
             _productList: (b.blockType === 'related' && content.products) ? content.products.map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) : [],
             _specRows: (b.blockType === 'spec' && content.rows) ? content.rows.map(function(r) { return { label: r.label || '', value: r.value || '' }; }) : [{ label: '', value: '' }],
+            _formulaRows: (b.blockType === 'formula' && content.rows) ? content.rows.map(function(r) { return { phase: r.phase || '', name: r.name || '', inci: r.inci || '', supplier: r.supplier || '', percent: r.percent || '' }; }) : [],
           };
         });
         self.editingFormula._blockIdCounter = list.length;
@@ -8034,6 +8059,7 @@ createApp({
         _searchResults: [],
         _productList: [],
         _specRows: [{ label: '', value: '' }],
+        _formulaRows: [],
       };
     },
     // 在指定下标插入（null = 末尾）；「相关资料」「相关产品」永远靠后，新块一律落在它们之前
@@ -8154,7 +8180,24 @@ createApp({
       } else if (block.blockType === 'spec') {
         var srows = (block.content && block.content.rows) ? block.content.rows : null;
         block._specRows = (srows && srows.length) ? srows.map(function(r) { return { label: r.label || '', value: r.value || '' }; }) : [{ label: '', value: '' }];
+      } else if (block.blockType === 'formula') {
+        var frows = (block.content && block.content.rows) ? block.content.rows : null;
+        block._formulaRows = (frows && frows.length) ? frows.map(function(r) { return { phase: r.phase || '', name: r.name || '', inci: r.inci || '', supplier: r.supplier || '', percent: r.percent || '' }; }) : [{ phase: '', name: '', inci: '', supplier: '', percent: '' }];
       }
+    },
+    addFormulaIngredientRow(bi) {
+      var block = this.editingFormula.blocks[bi];
+      if (!block._formulaRows) block._formulaRows = [];
+      var prev = block._formulaRows[block._formulaRows.length - 1];
+      block._formulaRows.push({ phase: prev ? (prev.phase || '') : '', name: '', inci: '', supplier: '', percent: '' });
+      block._saved = false;
+    },
+    removeFormulaIngredientRow(bi, ri) {
+      var block = this.editingFormula.blocks[bi];
+      if (!block._formulaRows) return;
+      block._formulaRows.splice(ri, 1);
+      if (block._formulaRows.length === 0) block._formulaRows.push({ phase: '', name: '', inci: '', supplier: '', percent: '' });
+      block._saved = false;
     },
     addFormulaSpecRow(bi) {
       var block = this.editingFormula.blocks[bi];
@@ -8267,6 +8310,16 @@ createApp({
         content = { products: (block._productList || []).map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) };
       } else if (block.blockType === 'spec') {
         content = { rows: (block._specRows || []).filter(function(r) { return String(r.label || '').trim(); }).map(function(r) { return { label: String(r.label).trim(), value: r.value || '' }; }) };
+      } else if (block.blockType === 'formula') {
+        content = { rows: (block._formulaRows || []).filter(function(r) { return String(r.name || '').trim() || String(r.inci || '').trim(); }).map(function(r) {
+          return {
+            phase: String(r.phase || '').trim(),
+            name: String(r.name || '').trim(),
+            inci: String(r.inci || '').trim(),
+            supplier: String(r.supplier || '').trim(),
+            percent: String(r.percent || '').trim(),
+          };
+        }) };
       }
       var payload = { blockType: block.blockType, title: block.title, content: content, sortOrder: block.sortOrder || 0, isPublished: true, productType: 'formula' };
       if (block.id) {
