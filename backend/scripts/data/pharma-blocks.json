@@ -1,0 +1,4954 @@
+[
+ {
+  "id": 11053,
+  "zhId": 11053,
+  "name": "Capryol® 90",
+  "slug": "capryol-90",
+  "subtitle": "单辛酸丙二醇酯（II型）",
+  "introText": "Capryol® 90是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，在外用制剂中作为助表面活性剂和增溶剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "美国药典",
+       "value": "Propylene Glycol Monocaprylate NF,<br>2026年12月1日前也可以描述为Propylene Glycol Monocaprylate (type II)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "/"
+      },
+      {
+       "label": "UNII号(FDA)",
+       "value": "RT9P9S09QI"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PROPYLENE GLYCOL CAPRYLATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Propylene glycol monocaprylate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由辛酸(C<sub>8</sub>)的丙二醇酯组成，主要由单酯和少量二酯组成。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "油状液体"
+      },
+      {
+       "label": "粘度(mPa.s)",
+       "value": "20 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "5"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/oil_molecule_0.png"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gattefosse_intestinal_permeation_enhancers.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>难溶性药物的增溶剂和<a href=\"/formulation-technologies-detail.html?id=139/excipients-solubility-and-bioavailability-enhancement\">生物利用度促进剂</a>。在II型和III型脂质处方中作为助表面活性剂。</p>\n<p>外用<a href=\"/formulation-technologies-detail.html?id=139/solubilizing-drugs-skin-delivery-decisive-step\">增溶剂</a>和<a href=\"/formulation-technologies-detail.html?id=139/selecting-penetration-enhancers-transdermal-delivery\">透皮促进剂</a>。在外用微乳处方中作为增溶剂和助表面活性剂。</p>\n<p>在已批准上市药品中使用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<ul>\n<li>口服：自乳化<a href=\"/formulation-technologies-detail.html?id=139/lipid-based-formulations\">脂质处方</a></li>\n<li>外用：<a href=\"/formulation-technologies-detail.html?id=139/emulgel-combining-emulsion-and-gel-benefits\">乳胶剂</a>， <a href=\"/formulation-technologies-detail.html?id=139/microemulsion-stunning-potential\">微乳</a></li>\n</ul>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11052,
+  "zhId": 11052,
+  "name": "Capryol® PGMC",
+  "slug": "capryol-pgmc",
+  "subtitle": "单辛酸丙二醇酯（I型）",
+  "introText": "Capryol® PGMC 是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，在外用制剂中作为助表面活性剂和增溶剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "美国药典",
+       "value": "Propylene Glycol Mono and Dicaprylate NF, 2026年12月1日前也可以描述为Propylene Glycol Monocaprylate (type I)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "/"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "RT9P9S09QI"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PROPYLENE GLYCOL CAPRYLATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Propylene glycol monocaprylate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由辛酸(C<sub>8</sub>)的丙二醇酯组成，由单酯和二酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "油状液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "20 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "6"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/patch.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>难溶性药物的增溶剂和<a href=\"/formulation-technologies-detail.html?id=139/excipients-solubility-and-bioavailability-enhancement\">生物利用度促进剂</a>。在II型和III型脂质处方中作为助表面活性剂。</p>\n<p>外用<a href=\"/formulation-technologies-detail.html?id=139/solubilizing-drugs-skin-delivery-decisive-step\">增溶剂</a>和<a href=\"/formulation-technologies-detail.html?id=139/selecting-penetration-enhancers-transdermal-delivery\">透皮促进剂</a>。在外用微乳处方中作为增溶剂和助表面活性剂。</p>\n<p>在已批准上市药品中使用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<ul>\n<li>口服：自乳化<a href=\"/formulation-technologies-detail.html?id=139/lipid-based-formulations\">脂质处方</a></li>\n<li>外用：<a href=\"/formulation-technologies-detail.html?id=139/emulgel-combining-emulsion-and-gel-benefits\">乳胶剂</a>， <a href=\"/formulation-technologies-detail.html?id=139/microemulsion-stunning-potential\">微乳</a>和<a href=\"/formulation-technologies-detail.html?id=139/patch-controlled-skin-drug-delivery\">贴剂</a></li>\n</ul>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11051,
+  "zhId": 11051,
+  "name": "Compritol® 888 ATO",
+  "slug": "compritol-888-ato",
+  "subtitle": "山嵛酸甘油酯",
+  "introText": "Compritol® 888 ATO是一种高熔点的甘油酯，在片剂用作释放调节剂或润滑剂。也可用于脂质包衣技术或者作为脂质纳米粒的载体。",
+  "headImage": "/uploads/pharma/head-606e392c1044555bfcaa566bc7affe5f_20240411121300.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "山嵛酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Glyceryl dibehenate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol dibehenate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "R8WTH25YS2"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL DIBEHENATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl Behenate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由山嵛酸(C<sub>22</sub>)的甘油单酯、二酯和三酯组成，以二酯为主。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "粉末"
+      },
+      {
+       "label": "熔点 (°C)",
+       "value": "65 - 77"
+      },
+      {
+       "label": "HLB",
+       "value": "2"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/compritol_888_ato_dsc.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>片剂的<a href=\"/formulation-technologies-detail.html?id=139/excipients-modified-release\">缓释骨架材料</a>。片剂的<a href=\"/formulation-technologies-detail.html?id=139/excipients-lubrication\">润滑剂</a>，不受混合时间和混合速度影响。固体脂质纳米粒子(SLN)和纳米脂质载体(NLC)的载体。<a href=\"/formulation-technologies-detail.html?id=139/excipients-taste-masking-and-api-protection\">药物掩味</a>的包裹材料及敏感药物保护剂。</p>\n<p>收录于欧洲STEP辅料数据库，可用于儿童药物。</p>\n<p>公认安全(GRAS)，且在已批准药品的应用先例证实了使用的安全性。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gattefosse_tablets.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>压片工艺（<a href=\"/formulation-technologies-detail.html?id=139/direct-compression\">直接压片</a>和湿法制粒）。</p>\n<p>热熔工艺：<a href=\"/formulation-technologies-detail.html?id=139/granulation\">热熔制粒</a>， <a href=\"/formulation-technologies-detail.html?id=139/hot-melt-extrusion\">热熔挤出</a>， <a href=\"/formulation-technologies-detail.html?id=139/hot-melt-coating\">热熔包衣</a>，喷雾冷凝。</p>\n<p>脂质纳米粒，纳米载体处方。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11050,
+  "zhId": 11050,
+  "name": "Compritol® 888 Pellets",
+  "slug": "compritol-888-pellets",
+  "subtitle": "山嵛酸甘油酯（颗粒）",
+  "introText": "Compritol® 888 Pellets是一种高熔点的甘油酯，外用制剂中的增稠剂。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121339.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "山嵛酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Glyceryl dibehenate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol dibehenate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "R8WTH25YS2"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL DIBEHENATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl Behenate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由山嵛酸(C<sub>22</sub>)的甘油单酯、二酯和三酯组成，以二酯为主。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔点 (°C)",
+       "value": "65 - 77"
+      },
+      {
+       "label": "HLB",
+       "value": "2"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/compritol_888_dsc.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>外用制剂油相中的<a href=\"/formulation-technologies-detail.html?id=139/adjusting-consistency-topical-dosage-forms\">增稠剂</a>。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用<a href=\"/formulation-technologies-detail.html?id=139/cream-most-popular-topical-dosage-form\">乳膏剂</a>，软膏剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11102,
+  "zhId": 11102,
+  "name": "Compritol® E ATO",
+  "slug": "compritol-e-ato-0",
+  "subtitle": "双山嵛酸甘油酯，用于膳食补充剂",
+  "introText": "Compritol® E ATO是一种高熔点的甘油酯，在低用量时作为润滑剂使用。Compritol® E ATO在高用量时也可以作为释放调节剂，是一天一次膳食补充剂的理想辅料。",
+  "headImage": "/uploads/pharma/head-606e392c1044555bfcaa566bc7affe5f_20240517144823.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": ""
+      },
+      {
+       "label": "INCI名",
+       "value": "Glyceryl behenate"
+      },
+      {
+       "label": "化学名和别称",
+       "value": "• Docosanoic acid, ester with 1,2,3-propanetriol<br>• Glycerides, C16-22 mono-, di- and tri-<br>• Docosanoic acid, monoester with 1,2,3-propanetriol<br>• 2-hydroxypropane-1,3-diyl didocasanoate<br>• Docosanoic acid, 1,2,3-propanetriyl ester"
+      },
+      {
+       "label": "食品法规状态",
+       "value": "• Mono- and diglycerides of fatty acids （单双脂肪酸甘油酯）E 471<br>• Mono- and diglycerides GRAS (21 CFR §184.1505)"
+      },
+      {
+       "label": "CAS号",
+       "value": "77538-19-3"
+      },
+      {
+       "label": "EINECS号",
+       "value": "278-717-5"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "雾化粉末"
+      },
+      {
+       "label": "熔点",
+       "value": "75&deg;C"
+      },
+      {
+       "label": "质量符合性",
+       "value": "按HACCP要求生产"
+      },
+      {
+       "label": "法规符合性",
+       "value": "• E 471<br>• FCC (Food Chemical Codex)<br>• GRAS (Generally Recognized As Safe)"
+      },
+      {
+       "label": "资质",
+       "value": "• Kosher<br>• RSPO （可持续棕榈油圆桌会议组织） Mass Balance认证"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/56917.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>Compritol&reg; E ATO在低用量时（1-3%）可以作为片剂和胶囊的<a href=\"/formulation-technologies-detail.html?id=139/excipients-lubrication\">润滑剂</a>。</p>\n<p>Compritol&reg; E ATO在高用量时（10-2%）可以作为<a href=\"/formulation-technologies-detail.html?id=139/excipients-modified-release\">释放调节剂</a>，以达到一天一次补充膳食的目的，提高顺应性和产品效能。</p>\n<p>可用Compritol&reg; E ATO制备的膳食成分包括：亲水性维生素、矿物质、植物提取物和益生菌等。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>作为润滑剂，Compritol&reg; E ATO在<a href=\"/formulation-technologies-detail.html?id=139/direct-compression\">压片</a>前的总混步骤加入处方。</p>\n<img src=\"/uploads/pharma/direct-compression.jpg\" alt=\"\" style=\"max-width:100%;height:auto;\">\n<p>作为缓释材料，Compritol&reg; E ATO在前期阶段加入处方，如<a href=\"/formulation-technologies-detail.html?id=139/granulation\">制粒</a>或<a href=\"/formulation-technologies-detail.html?id=139/hot-melt-extrusion\">热熔挤出</a>工艺阶段。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11049,
+  "zhId": 11049,
+  "name": "Compritol® HD5 ATO",
+  "slug": "compritol-hd5-ato",
+  "subtitle": "聚氧乙烯-8 山嵛酸甘油酯",
+  "introText": "Compritol® HD5 ATO是一种熔点适中的、含聚乙二醇酯的甘油酯。一种用于泡腾片和速溶片的润湿剂和润滑剂。",
+  "headImage": "/uploads/pharma/head-606e392c1044555bfcaa566bc7affe5f_20240411121420.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学描述",
+       "value": "聚氧乙烯-8 山嵛酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Behenoyl polyoxyl-8 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "/"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "/"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "/"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "由山嵛酸（C<sub>22</sub>）的甘油一酯、甘油二酯和甘油三酯以及山嵛酸的聚乙二醇-8单酯和二酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "粉末"
+      },
+      {
+       "label": "熔点 (°C)",
+       "value": "60 - 67"
+      },
+      {
+       "label": "HLB",
+       "value": "5"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/compritol_hd5_sem.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>速溶片和泡腾片的润滑剂和润湿剂。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/effervescent_tablets.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>压片（直接压片和湿法制粒）。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11048,
+  "zhId": 11048,
+  "name": "Emulfree® Duo",
+  "slug": "emulfree-duo",
+  "subtitle": "月桂酸丙二醇酯和乙基纤维素和异硬脂酸丙二醇酯混合物",
+  "introText": "即用型双凝胶稳定剂。",
+  "headImage": "/uploads/pharma/head-ab304a0f443cfb9c65c579518aa4b042_20240411121446.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "月桂酸丙二醇酯和乙基纤维素和异硬脂酸丙二醇酯混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of Propylene glycol monolaurate NF, Ethylcellulose NF and Propylene glycol isostearate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of Propylene glycol monolaurate EP, Ethylcellulose EP and Propylene glycol isostearate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "668Z5835Z3<br>7Z8S9VYZ4B<br>/"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Propylene glycol monolaurate<br>Ethylcellulose<br>/"
+      },
+      {
+       "label": "化学描述",
+       "value": "月桂酸丙二醇酯和乙基纤维素和异硬脂酸丙二醇酯混合物"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "约1200 mPa.s, 20&deg;C"
+      }
+     ],
+     "rightType": "video",
+     "rightText": "",
+     "rightUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112771932948738&bvid=BV1eebseZEy6&cid=500001612822944&p=1&autoplay=0"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gel_formulation.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>双凝胶中作为稳定剂使用。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "video",
+    "title": "主要制剂技术",
+    "content": {
+     "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771949661286&bvid=BV174bseYEtt&cid=500001612828134&p=1&autoplay=0"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11047,
+  "zhId": 11047,
+  "name": "Geleol™ Mono and Diglycerides NF",
+  "slug": "geleol-mono-and-diglycerides-nf",
+  "subtitle": "单双硬脂酸甘油酯",
+  "introText": "Geleol™ Mono and Diglycerides NF是一种具有中等熔点的甘油酯，用作脂质载体和释放调节剂。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121512.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "单双硬脂酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mono and Diglycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol Monostearate 40-55 (Type I)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "KC98RO82HJ"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Glyceryl Monostearate"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl Monostearate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由棕榈酸(C<sub>16</sub>) 和硬脂酸(C<sub>18</sub>) 的单酯、二酯和三酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "54 - 64"
+      },
+      {
+       "label": "HLB",
+       "value": "3"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>外用乳膏、软膏剂中作为增稠剂。</p>\n<p>胶囊中作为缓释材料。</p>\n<p>掩味包衣材料。</p>\n<p>公认安全(GRAS)，且在已批准药品的应用先例证实了使用的安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>热熔工艺：<a href=\"/formulation-technologies-detail.html?id=203-content/granulation\">热熔制粒</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/hot-melt-coating\">热熔包衣</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/hot-melt-coating\">胶囊灌注</a>。</p>\n<p>外用制剂中作为增稠剂使用。 </p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11103,
+  "zhId": 11103,
+  "name": "Geleol™ N MB",
+  "slug": "geleol-n-mb",
+  "subtitle": "单双硬脂酸甘油酯，用于膳食补充剂",
+  "introText": "一种具有中等熔点的甘油酯，用作脂质载体和释放调节剂。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240517144650.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "INCI名",
+       "value": "Glyceryl stearate"
+      },
+      {
+       "label": "化学名",
+       "value": "单双硬脂酸甘油酯"
+      },
+      {
+       "label": "食品添加剂名称",
+       "value": "• Mono- and diglycerides of fatty acids E 471<br>• Mono- and diglycerides GRAS (21 CFR § 184.1505)<br>• Glyceryl palmitostearate GRAS (21 CFR § 184.1329)"
+      },
+      {
+       "label": "CAS号",
+       "value": "85251-77-0"
+      },
+      {
+       "label": "EINECS号",
+       "value": "286-490-9"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔点",
+       "value": "56-60&deg;C"
+      },
+      {
+       "label": "质量符合性",
+       "value": "按HACCP要求生产"
+      },
+      {
+       "label": "法规符合性",
+       "value": "• E 471<br>• FCC (Food Chemical Codex)<br>• GRAS (Generally Recognized As Safe)"
+      },
+      {
+       "label": "资质",
+       "value": "• Kosher<br>• RSPO （可持续棕榈油圆桌会议组织） Mass Balance认证"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/functionalities_geleol-n-mb.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>Geleol&trade; N MB单酯和双酯含量高，在<a href=\"/formulation-technologies-detail.html?id=139/capsule-filling-and-molding\">胶囊灌注</a>技术中作为理想的粘度调节剂，制备从半液体到半固体的混悬剂。</p>\n<p>可用Geleol&trade; N MB制备的膳食成分包括：维生素类、植物提取物、白藜芦醇、叶黄素、姜黄素、辅酶Q10和多不饱和脂肪酸（鱼油，欧米伽-3）。 </p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p><a href=\"/formulation-technologies-detail.html?id=154\">胶囊灌注</a>，<a href=\"/formulation-technologies-detail.html?id=139/granulation\">热熔制粒</a>，<a href=\"/formulation-technologies-detail.html?id=139/hot-melt-coating\">热熔包衣</a>。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11046,
+  "zhId": 11046,
+  "name": "Geloil™ SC",
+  "slug": "geloil-sc",
+  "subtitle": "大豆油混合脂肪酸甘油酯",
+  "introText": "Geloil™ SC是一种触变性的药物油性载体。冷工艺即可使用的即用型载体，保护软胶囊中热敏感的活性成分。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "大豆油混合脂肪酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of refined soybean oil USP-NF, glyceryl distearate USP-NF and polyglyceryl-3 dioleate USP-NF"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of refined soybean oil EP, glyceryl distearate EP and polyglyceryl-3 dioleate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "241ATL177A 73071MW2KM XRQ165498B"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Soybean oil Glyceryl distearate Polyglyceryl-3 oleate"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Soybean oil Glyceryl palmitostearate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由三个成分组成，精制大豆油、双硬脂酸甘油酯(C<sub>18</sub>) 和聚甘油-3二油酸酯(C<sub>18:1</sub>)"
+      },
+      {
+       "label": "食品法规状态",
+       "value": "大豆油：食品级。双硬脂酸甘油酯：FCC，GRAS 21 CFR &sect;184.1329, JSFA. 聚甘油-3二油酸酯：E475，FCC，GRAS 21 CFR&sect;172.854, JSFA"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "粘稠的胶状液体"
+      },
+      {
+       "label": "HLB",
+       "value": "5"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/soft_capsules.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>活性药物的油性载体，使药物悬浮于软胶囊中。在水性体系中具有良好的分散性。载药量高。</p>\n<p>具有触变性：仅简单搅拌工艺即可实现生产 - 非常适合热敏感的活性成分。</p>\n<p>可作为食品添加剂，在药物中有应用历史，安全性好。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112771916105777&bvid=BV1Vibse4EtZ&cid=500001612819839&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>软胶囊填充。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11045,
+  "zhId": 11045,
+  "name": "Gelot™ 64",
+  "slug": "gelot-64",
+  "subtitle": "单双硬脂酸甘油酯和聚氧乙烯-75 硬脂酸酯混合物",
+  "introText": "Gelot™ 64是一种用于外用乳剂的非离子型水包油乳化剂。它的乳化能力极佳，制备的乳剂稳定性好，尤其是对于难以制备的处方以及含多种药物的处方。制备的乳剂热稳定性佳，耐受的pH范围宽。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121512.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "单双硬脂酸甘油酯和聚氧乙烯-75 硬脂酸酯混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mono and Diglycerides and Polyoxyl stearate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol monostearate and macrogol-75 stearate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "230OU9XXE4 OT38R0N74H"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL MONOSTEARATE PEG-75 STEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl monostearate Polyoxylethylene stearates"
+      },
+      {
+       "label": "化学描述",
+       "value": "由两个组分组成，分别是单双硬脂酸甘油酯和聚乙二醇-75硬脂酸酯(C<sub>18</sub>)"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "55.5 - 62.5"
+      },
+      {
+       "label": "HLB",
+       "value": "10"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/sensorial_map_challenge_2_gelot_64.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>乳化剂，适用于难以制备的处方、含多种药物的处方及无水乳膏处方。</p>\n<p>与Emulcire&trade; 61 WL2659 联合使用，可提升肤感和质感。</p>\n<p>在已批准上市药品中使用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用乳膏、乳胶剂和<a href=\"/formulation-technologies-detail.html?id=203-content/pharmaceutical-foams\">泡沫剂</a>。</p>\n<p>可用一罐法工艺，为生产工艺带来便利。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11044,
+  "zhId": 11044,
+  "name": "Gelucire® 43/01",
+  "slug": "gelucire-4301",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "Gelucire® 43/01是一种熔点中等的甘油酯，用作敏感药物的基质，以及口服和外用制剂的增稠剂。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121512.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "FAT, HARD"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>8</sub> - C<sub>18</sub>)的单、双、三甘油酯组成，其中三酯含量最高"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "42 - 46"
+      },
+      {
+       "label": "HLB",
+       "value": "1"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>用作对氧气、湿度和光敏感药物的基质。</p>\n<p>在口服和外用制剂中作增稠剂。</p>\n<p>在已批准上市药品中的应用历史，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>热熔工艺：热熔制粒和胶囊灌注。</p>\n<p>外用乳剂和软膏剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11043,
+  "zhId": 11043,
+  "name": "Gelucire® 44/14",
+  "slug": "gelucire-4414",
+  "subtitle": "月桂酰聚氧乙烯(32)甘油酯",
+  "introText": "Gelucire® 44/14是一种用于脂质处方的非离子型水分散性表面活性剂，用于增溶和提高难溶性药物的口服生物利用度。在水性体系中自乳化形成细小的乳滴，即微乳(SMEDDS)。",
+  "headImage": "/uploads/pharma/head-d82c0bb9a46a21215360dea6be79f95c_20240411121842.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "月桂酰聚氧乙烯(32)甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Lauroyl Polyoxyl-32 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Lauroyl Macrogol-32 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "H5ZC52369M"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "LAUROYL PEG-32 GLYCERIDES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由一小部分甘油一酯、甘油二酯和甘油三酯组成，主要是月桂酸(C<sub>12</sub>)的聚乙二醇-32单酯和二酯"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "蜡状固体"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "42.5 - 47.5"
+      },
+      {
+       "label": "HLB",
+       "value": "11"
+      },
+      {
+       "label": "临界胶束浓度 (mg/L, 25°C)",
+       "value": "72 &plusmn; 53"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/gelucire_44-14_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>提高难溶性药物的溶解度和生物利用度。单一辅料即可在水相中自乳化成微乳&mdash;III型脂质处方(SMEDDS)。</p>\n<p>润湿剂。</p>\n<p>熔融工艺中的脂质粘合剂。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112771999992244&bvid=BV17bbsewEKa&cid=500001612841133&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。</p>\n<p>热熔工艺：热熔制粒和胶囊灌注。</p>\n<p>湿法制粒和压片。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11042,
+  "zhId": 11042,
+  "name": "Gelucire® 48/16 ",
+  "slug": "gelucire-4816",
+  "subtitle": "聚氧乙烯（32）硬脂酸酯",
+  "introText": "一种用于脂质处方的非离子型纯表面活性剂，增溶和提高难溶性药物的口服生物利用度。在水性介质中形成胶束溶液。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121512.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "聚氧乙烯（32）硬脂酸酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Polyoxyl-32 stearate (type I) NF"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Macrogol-32 stearate (type I) EP"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "33GX5WQC0M"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PEG-32 STEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylethylene stearates"
+      },
+      {
+       "label": "化学描述",
+       "value": "由聚乙二醇-32(分子量1500)棕榈酸酯(C<sub>16</sub>) 和硬脂酸酯(C<sub>18</sub>) 组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "46 - 50"
+      },
+      {
+       "label": "HLB",
+       "value": "12"
+      },
+      {
+       "label": "临界胶束浓度(mg/L, 25°C)",
+       "value": "153 &plusmn; 31"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/gelucire_48-16_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>低Log P值药物增溶剂和生物利用度增强剂。单一辅料即可在水溶液中自乳化成胶束溶液 - IV型脂质处方。</p>\n<p>用于热熔工艺（热熔制粒和热熔挤出）、制粒和压片。</p>\n<p>润湿剂。</p>\n<p>在已批准上市药品中的应用历史，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。</p>\n<p>热熔工艺：热熔制粒, 热熔挤出, 胶囊灌注。</p>\n<p>湿法制粒和压片。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11041,
+  "zhId": 11041,
+  "name": "Gelucire® 50/13",
+  "slug": "gelucire-5013",
+  "subtitle": "硬脂酰聚氧乙烯(32)甘油酯",
+  "introText": "一种用于脂质处方的非离子型水分散性表面活性剂，用于增溶和提高难溶性药物的口服生物利用度。在水相中自乳化，形成粒径较小的分散体，即微乳(SMEDDS)。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121512.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学描述",
+       "value": "硬脂酰聚氧乙烯(32)甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Stearoyl polyoxyl-32 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Stearoyl macrogol-32 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "G6EP177239"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PEG-32 HYDROGENATED PALM GLYCERIDES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由棕榈酸(C16) 和硬脂酸 (C18) 的单、双、三甘油酯以及聚乙二醇-32单双酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "46 - 51"
+      },
+      {
+       "label": "HLB",
+       "value": "11"
+      },
+      {
+       "label": "临界胶束浓度 (mg/L, 25°C)",
+       "value": "100"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/gelucire_50-13_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>提高难溶性药物的溶解度和生物利用度。</p>\n<p>单一辅料即可在水相中自乳化成粗乳液 - III型脂质处方(SMEDDS)。</p>\n<p>调解药物释放。</p>\n<p>热熔工艺中的脂质粘合剂。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。</p>\n<p>热熔工艺：热熔制粒和胶囊灌注。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11040,
+  "zhId": 11040,
+  "name": "Gelucire® 59/14",
+  "slug": "gelucire-5914",
+  "subtitle": "月桂酰聚氧乙烯(32)甘油酯与聚乙二醇6000混合物",
+  "introText": "一种可用于脂质处方的非离子型水分散表面活性剂，可以提高难溶性药物的溶解度和生物利用度。在水中可以自乳化形成良好的分散体系，即微乳(SMEDDS)。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411121512.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "月桂酰聚氧乙烯(32)甘油酯与聚乙二醇6000混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of Lauroyl Polyoxyl-32 glycerides and PEG 6000"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of Lauroyl Macrogol-32 glycerides and PEG 6000"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "H5ZC52369M<br>30IQX730WE"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "LAUROYL PEG-32 GLYCERIDES<br>POLYETHYLENE GLYCOL 6000"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides<br>Polyethylene glycol"
+      },
+      {
+       "label": "化学描述",
+       "value": "含有少量单、双、三甘油酯，主要成分为PEG-32（分子量1500）单、双月桂酸（C12）酯和PEG-150（分子量6000）"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "57 - 62"
+      },
+      {
+       "label": "HLB",
+       "value": "14 &plusmn; 1"
+      },
+      {
+       "label": "临界胶束浓度 (mg/L, 25°C)",
+       "value": "40"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/gelucire_59-14_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>提高难溶性药物的溶解度和生物利用度。</p>\n<p>单辅料处方体系：在水相中自乳化形成微乳 -Type III型脂质处方(SMEDDS)。</p>\n<p>通过广泛的毒理学评估推断了安全性，且在已上市药品中有使用历史。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11039,
+  "zhId": 11039,
+  "name": "Labrafac™ Lipophile WL 1349",
+  "slug": "labrafac-lipophile-wl-1349",
+  "subtitle": "中链甘油三酸酯",
+  "introText": "亲脂性药物的油相和增溶剂，用于口服和外用脂质处方。兽药注射剂中的油相。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "中链甘油三酸酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Medium chain triglycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Triglycerides medium chain"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "C9H2L21V7U"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "MEDIUM-CHAIN TRIGLYCERIDES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "MEDIUM-CHAIN TRIGLYCERIDES"
+      },
+      {
+       "label": "化学描述",
+       "value": "由辛酸 (C<sub>8</sub>) 和癸酸 (C<sub>10</sub>) 的甘油三酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "25 - 33 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "1"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/oil_molecule_0.png"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>I型、II型（SEDDS） 和 III型 (SMEDDS)脂质处方的油相。</p>\n<p>外用制剂的油相。</p>\n<p>溶液中的油相和增溶剂。</p>\n<p>可作为食品添加剂，且在已批准药品中的应用历史，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>用于口服的<a href=\"/formulation-technologies-detail.html?id=203-content/lipid-based-drug-delivery-systems\">油性处方和自乳化脂质处方</a>。</p>\n<p>外用<a href=\"/formulation-technologies-detail.html?id=203-content/emulsions\">软膏剂</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/emulsions\">乳膏</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/microemulsion\">微乳</a>和<a href=\"/formulation-technologies-detail.html?id=203-content/pharmaceutical-foams\">泡沫剂</a>。</p>\n<p>兽药注射剂中的油相。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11038,
+  "zhId": 11038,
+  "name": "Labrafac™ MC60",
+  "slug": "labrafac-mc60",
+  "subtitle": "单双辛酸癸酸甘油酯",
+  "introText": "Labrafac™ MC60是一种水不溶性表面活性剂，在脂质处方中有广泛的应用。它可作为一种增溶剂和吸收促进剂，提高药物的体内口服生物利用度。",
+  "headImage": "/uploads/pharma/head-181a313015cd538428cf24938e357f54_20240411122338.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "单双辛酸癸酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Glyceryl Mono and Dicaprylocaprate<br>[NOTE &ndash; May also be labeled as USP Glyceryl Monocaprylocaprate (Type I) until May 1, 2025]"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol monocaprylocaprate (type I)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "U72Q2I8C85"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL MONO AND DICAPRYLOCAPRATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "含辛酸（C8）和癸酸（C10）的单双甘油酯，单酯含量占多数，主要由单酯和少量二酯组成。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "120 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "5"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gattefosse_intestinal_permeation_enhancers.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>难溶性药物的增溶剂，渗透性差药物的肠道促透剂。</p>\n<p>作为是一种水不溶性表面活性剂，在脂质处方中有广泛的应用，可设计I型脂质处方（油性溶液）、II型脂质处方（自乳化配方）和III型脂质处方（自微乳配方）。</p>\n<p>在已上市药品中的使用可证明其具有良好的安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11104,
+  "zhId": 11104,
+  "name": "Labrafac™ N MB",
+  "slug": "labrafac-n-mb",
+  "subtitle": "中链甘油三酯",
+  "introText": "",
+  "headImage": "/uploads/pharma/head-dfce959bb049cbece35eaf2907233fd8_20240517144751.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "中链甘油三酸酯"
+      },
+      {
+       "label": "化学名和别称",
+       "value": "• Glycerides, mixed decanoyl and octanoyl<br>• Glycerides, C8-10<br>• Triglycerides, Medium Chain"
+      },
+      {
+       "label": "CAS号",
+       "value": "73398-61-5"
+      },
+      {
+       "label": "EINECS号",
+       "value": "277-452-2"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "质量符合性",
+       "value": "按HACCP要求生产"
+      },
+      {
+       "label": "资质",
+       "value": "• Kosher<br>• RSPO （可持续棕榈油圆桌会议组织） Mass Balance认证"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/oil_molecule.png"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/labrafac-n-mb_resized.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>Labrafac&trade; N MB是难溶性膳食成分的油相，提高其<a href=\"/formulation-technologies-detail.html?id=139/excipients-solubility-and-bioavailability-enhancement\">溶解度和生物利用度</a>。</p>\n<p>Labrafac&trade; N MB可以增溶的成分包括：脂溶性维生素、植物提取物、白藜芦醇、叶黄素、姜黄素、辅酶Q10和多不饱和脂肪酸（鱼油，欧米伽-3）。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>胶囊灌装，适用于软胶囊和硬胶囊。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11037,
+  "zhId": 11037,
+  "name": "Labrafac™ PG",
+  "slug": "labrafac-pg",
+  "subtitle": "二辛酸癸酸丙二醇酯",
+  "introText": "外用制剂中亲脂性药物的油相和增溶剂。广泛用于兽用注射制剂作为油相。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "二辛酸癸酸丙二醇酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Propylene glycol dicaprolate/dicaprate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Propylene glycol dicaprylocaprate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "O4446S9CRA"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PROPYLENE GLYCOL DICAPRYLATE/DICAPRATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Pending"
+      },
+      {
+       "label": "化学描述",
+       "value": "由辛酸 (C<sub>8</sub>) 和癸酸 (C<sub>10</sub>) 的丙二醇酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "9 - 12 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "1"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/oil_molecule_0.png"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>外用制剂的油相。</p>\n<p>溶液中的油相和增溶剂。</p>\n<p>该辅料已有大量的安全性数据，并在已批准人用和兽用药品中应用，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用软膏剂，<a href=\"/formulation-technologies-detail.html?id=203-content/emulsions\">乳膏剂</a>， <a href=\"/formulation-technologies-detail.html?id=203-content/microemulsion\">微乳</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/pharmaceutical-foams\">泡沫剂</a>。</p>\n<p>兽药注射剂中作为油相。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11036,
+  "zhId": 11036,
+  "name": "Labrafil® M 1944 CS",
+  "slug": "labrafil-m-1944-cs",
+  "subtitle": "油酰聚氧乙烯甘油酯",
+  "introText": "Labrafil® M 1944 CS是一种用于脂质处方的非离子型水分散性表面活性剂，用于增溶和提高难溶性药物的口服生物利用度。在水性介质中自乳化，形成粗分散体，即乳剂（自乳化系统）。外用制剂中的助乳化剂，用于提高乳剂的稳定性。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "油酰聚氧乙烯甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Oleoyl polyoxyl-6 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Oleoyl macrogol-6 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "DRG3KJZ1TJ"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "APRICOT KERNEL OIL PEG-6 ESTERS"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由油酸 (C<sub>18:1</sub>) 的单，双，三甘油酯以及PEG-6 (分子量300)单，双酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "75 - 95 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "9"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112772100654769&bvid=BV1VqbsedEgv&cid=500001612864463&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>提高难溶性药物的溶解度和口服物利用度的提高。</p>\n<p>单一辅料即可在水性介质中自乳化成乳液 - II型脂质处方(SEDDS)。与Labrasol&reg; ALF或Gelucire&reg; 44/14配合用于III型脂质处方(SMEDDS)。</p>\n<p>外用制剂中的助乳化剂，抗真菌乳膏中常与Tefose&reg; 63联合使用。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p><a href=\"/formulation-technologies-detail.html?id=203-content/lipid-based-drug-delivery-systems\">口服自乳化脂质处方</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/capsule-filling-and-molding\">软胶囊和硬胶囊填充</a>和口服液。</p>\n<p>外用乳膏剂，乳胶剂，<a href=\"/formulation-technologies-detail.html?id=203-content/microemulsion\">微乳剂</a>和<a href=\"/formulation-technologies-detail.html?id=203-content/pharmaceutical-foams\">泡沫剂</a>。</p>\n<p>兽药注射剂中的助表面活性剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11035,
+  "zhId": 11035,
+  "name": "Labrafil® M 2125 CS",
+  "slug": "labrafil-m-2125-cs",
+  "subtitle": "亚油酰聚氧乙烯(6)甘油酯",
+  "introText": "Labrafil® M 2125 CS是一种用于脂质处方的液体非离子型水分散性表面活性剂，用于增溶和提高难溶性药物的口服生物利用度。在水性介质中自乳化，形成粗分散体，即乳剂（自乳化系统）。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "亚油酰聚氧乙烯(6)甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Linoleoyl Polyoxyl-6 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Linoleoyl Macrogol-6 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "1U4409FY0P"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "CORN OIL PEG-6 ESTERS"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由亚油酸 (C<sub>18:2</sub>) 的单，双，三甘油酯以及 PEG-6 (分子量300)单，双酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "70 - 90 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "9"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://www.youtube.com/embed/h75kYAj_078",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>提高难溶性药物的溶解度和生物利用度。</p>\n<p>单一辅料即可在水性介质中自乳化成乳液 - II型脂质处方(SEDDS)。</p>\n<p>与Labrasol&reg; ALF 或 Gelucire&reg; 44/14 组合可制备III型脂质处方(SMEDDS)。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p><a href=\"/formulation-technologies-detail.html?id=203-content/lipid-based-drug-delivery-systems\">口服自乳化脂质处方</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/capsule-filling-and-molding\">软胶囊和硬胶囊灌装</a>。</p>\n<p>外用贴剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11034,
+  "zhId": 11034,
+  "name": "Labrafil® M 2130 CS",
+  "slug": "labrafil-m-2130-cs",
+  "subtitle": "月桂酰聚氧乙烯(6)甘油酯",
+  "introText": "外用制剂中的固体助乳化剂，用于提高乳剂的稳定性。 一种用于脂质处方的非离子型水分散性表面活性剂，用于增溶和提高难溶性原料药的口服生物利用度。在水性介质中自乳化，形成粗分散体，即乳剂（自乳化系统）。",
+  "headImage": "/uploads/pharma/head-d82c0bb9a46a21215360dea6be79f95c_20240411121842.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "月桂酰聚氧乙烯(6)甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Lauroyl polyoxyl-6 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Lauroyl macrogol-6 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8EPU9MJ01K"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "HYDROGENATED PALM/PALM KERNEL OIL PEG-6 ESTERS"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "主要由月桂酸 (C<sub>12</sub>) 和硬脂酸((C<sub>18</sub>) 的单，双，三甘油酯以及PEG-6 (分子量300) 的单，双酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "蜡状固体"
+      },
+      {
+       "label": "熔点 (°C)",
+       "value": "33 - 38"
+      },
+      {
+       "label": "HLB",
+       "value": "9"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/co-emulsifier-effect_2.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>外用制剂中的助乳化剂，通常与Tefose&reg; 1500联用。</p>\n<p>提高难溶性药物的溶解度和生物利用度。单一辅料即可在水性介质中自乳化成乳液 - II型脂质处方(SEDDS)。与Labrasol&reg; ALF 或 Gelucire&reg; 44/14 组合可制备III型脂质处方（自微乳体系）。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112772117432941&bvid=BV1gkbsepEyj&cid=500001612867741&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>外用乳膏和乳液。</p>\n<p>口服自乳化体系。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11033,
+  "zhId": 11033,
+  "name": "Labrasol®",
+  "slug": "labrasol",
+  "subtitle": "辛酸癸酸聚乙二醇甘油酯",
+  "introText": "Labrasol®是一种非离子型水包油表面活性剂，在外用制剂中用作增溶剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "辛酸癸酸聚乙二醇甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Caprylocaproyl Polyoxyl-8 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Caprylocaproyl macrogol-8 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "00BT03FSO2"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PEG-8 CAPRYLIC/CAPRIC GLYCERIDES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由一小部分辛酸 (C<sub>8</sub>) 和癸酸(C<sub>10</sub>) 的单，双，三甘油酯和绝大多数 PEG-8 (分子量400) 单，双酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "80 - 110 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "12"
+      },
+      {
+       "label": "临界胶束浓度 (mg/L, 25°C)",
+       "value": "42 &plusmn;24"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/labrasol_ternary_diagram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/microemulsion-components.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>增溶剂和透皮吸收促进剂。</p>\n<p>微乳制剂中作为水包油型表面活性剂。能够用泵液装置形成轻质泡沫(不需要抛射剂)。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gattefosse_foam_microemulsion_1.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>外用<a href=\"/formulation-technologies-detail.html?id=203-content/gel\">凝胶</a>，<a href=\"/formulation-technologies-detail.html?id=203-content/microemulsion\">微乳</a>和<a href=\"/formulation-technologies-detail.html?id=203-content/pharmaceutical-foams\">泡沫剂</a>。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11032,
+  "zhId": 11032,
+  "name": "Labrasol® ALF",
+  "slug": "labrasol-alf",
+  "subtitle": "辛酸癸酸聚乙二醇甘油酯",
+  "introText": "Labrasol® ALF是一种用于脂质处方的非离子型水分散性表面活性剂，用于增溶和提高难溶性药物的口服生物利用度。在水相中自乳化，形成细分散体，即微乳（自微乳化体系）。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "辛酸癸酸聚乙二醇甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Caprylocaproyl Polyoxyl-8 glycerides"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Caprylocaproyl macrogol-8 glycerides"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "00BT03FSO2"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PEG-8 CAPRYLIC/CAPRIC GLYCERIDES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylglycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由一小部分辛酸(C<sub>8</sub>) 和癸酸(C<sub>10</sub>) 的单，双，三甘油酯和大部分的 PEG-8 (分子量400) 单，双酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "80 - 110 (20&deg;C)"
+      },
+      {
+       "label": "临界胶束浓度 (mg/L, 25°C)",
+       "value": "42 &plusmn;24"
+      },
+      {
+       "label": "HLB",
+       "value": "12"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/labrasol_ternary_diagram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gattefosse_intestinal_permeation_enhancers.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>提高难溶性药物的溶解度和生物利用度。</p>\n<p>单一辅料即可在水相中自乳化成微乳 - III型脂质处方（自微乳化体系）。纯度高，保证稳定性及与胶囊壳的相容性。</p>\n<p>该辅料已有大量的安全性数据，并在已批准上市药品中应用，证实其安全性。  </p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112772134274672&bvid=BV1a6bse9E5J&cid=500001612872012&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。 </p>\n<p>软胶囊和硬胶囊填充。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11031,
+  "zhId": 11031,
+  "name": "Lauroglycol™ 90",
+  "slug": "lauroglycol-90",
+  "subtitle": "月桂酸丙二醇酯（II）",
+  "introText": "Lauroglycol™ 90是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，在外用制剂中作为助表面活性剂和增溶剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "月桂酸丙二醇酯（II）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Propylene glycol monolaurate (type II)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Propylene glycol monolaurate (type II)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "40KT317HGP"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PROPYLENE GLYCOL LAURATES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Propylene glycol monolaurate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由月桂酸(C<sub>12</sub>) 的丙二醇单、双酯组成，主要成分为单酯和少量的二酯"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "25 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "3"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>提高难溶性药物的溶解度和生物利用度。在II型脂质处方（自乳化体系）和III型脂质处方（自微乳化体系）中作为助表面活性剂。</p>\n<p>外用增溶剂和透皮吸收促进剂。在外用微乳处方中作为增溶剂和助表面活性剂。</p>\n<p>在已批准上市药品中使用，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p><a href=\"/formulation-technologies-detail.html?id=203-content/lipid-based-drug-delivery-systems\">口服自乳化脂质处方</a>。</p>\n<p>外用乳胶剂，<a href=\"/formulation-technologies-detail.html?id=203-content/microemulsion\">微乳</a>。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11030,
+  "zhId": 11030,
+  "name": "Lauroglycol™ FCC",
+  "slug": "lauroglycol-fcc",
+  "subtitle": "月桂酸丙二醇酯（I）",
+  "introText": "Lauroglycol™ FCC是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，外用制剂中作为增溶剂和透皮吸收促进剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "月桂酸丙二醇酯（I）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Propylene glycol monolaurate (type I)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Propylene glycol monolaurate (type I)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "40KT317HGP"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PROPYLENE GLYCOL LAURATES"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Propylene glycol monolaurate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由月桂酸(C<sub>12</sub>) 的丙二醇单酯和二酯组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "15 - 40 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "5"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>提高难溶性药物的溶解度和生物利用度。在II型脂质处方（自乳化体系）和III型脂质处方（自微乳化体系）中作为助表面活性剂。</p>\n<p>外用增溶剂和透皮吸收促进剂。在外用微乳处方中作为增溶剂和助表面活性剂。</p>\n<p>在已批准上市药品中使用，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p><a href=\"/formulation-technologies-detail.html?id=203-content/lipid-based-drug-delivery-systems\">口服自乳化脂质处方</a>。</p>\n<p>外用乳胶剂，<a href=\"/formulation-technologies-detail.html?id=203-content/microemulsion\">微乳</a>。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11029,
+  "zhId": 11029,
+  "name": "Maisine® CC",
+  "slug": "maisine-cc",
+  "subtitle": "单亚油酸甘油酯",
+  "introText": "Maisine® CC是一种由长链脂肪酸甘油单酯、二酯和三酯组成的油状液体，常用于脂质处方中，提高难溶性亲脂药物的溶解度和口服生物利用度。在自乳化脂质处方（SEDDS和SMEDDS）中用作油相。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "单亚油酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Glyceryl monolinoleate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol monolinoleate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "4763AXI84L"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL MONOLINOLEATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl monolinoleate"
+      },
+      {
+       "label": "化学描述",
+       "value": "主要由含亚油酸(C18:2) 和油酸(C18:1) 的甘油一酯、甘油二酯和甘油三酯组成，其中二酯含量最高"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "120 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "1"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/oil_molecule_0.png"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://www.youtube.com/embed/W1UmFjNwH68",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>亲脂型药物的增溶剂和生物利用度促进剂。</p>\n<p>在I型脂质处方（油性配方）、II型脂质处方（自乳化体系）和III型脂质处方（自微乳化体系）中作为油相，可促进药物淋巴吸收。</p>\n<p>公认安全(GRAS)且在已批准药品的应用先例证实了其使用的安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://www.youtube.com/embed/NNqZ4UxEMSM",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服油性或自乳化脂质处方。</p>\n<p>软/硬明胶胶囊填充。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11028,
+  "zhId": 11028,
+  "name": "Monosteol™",
+  "slug": "monosteol",
+  "subtitle": "棕榈酸硬脂酸丙二醇酯",
+  "introText": "Monosteol™是一种脂质载体，在外用制剂中用作增稠剂。通过防止相分离和油滴聚集提高稳定性。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "棕榈酸硬脂酸丙二醇酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "/"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Propylene glycol monopalmitostearate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "F76354LMGR"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PROPYLENE GLYCOL MONOPALMITOSTEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "由棕榈酸(C<sub>16</sub>)和硬脂酸(C<sub>18</sub>)的丙二醇酯组成，单酯含量较高"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "蜡状固体"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "33 - 40"
+      },
+      {
+       "label": "HLB",
+       "value": "4"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/monosteol_dsc.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>外用制剂中油相的增稠剂，提高乳膏的稳定性。</p>\n<p>公认安全(GRAS)且在已批准药品的应用先例证实了使用的安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用乳膏剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11027,
+  "zhId": 11027,
+  "name": "Ovucire® 3460",
+  "slug": "ovucire-3460",
+  "subtitle": "硬脂、蓖麻酸甘油酯和乙氧基化脂肪醇的混合物",
+  "introText": "栓剂基质，提高栓剂在阴道内的铺展性，并提高栓剂硬度。粘膜耐受性好，无刺激性。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "硬脂、蓖麻酸甘油酯和乙氧基化脂肪醇的混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of hard fat, glyceryl ricinoleate and ethoxylated fatty alcohols"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of hard fat, glyceryl ricinoleate and ethoxylated fatty alcohols"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21 ZUE0CEL42O YRC528SWUY"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Hard fat glyceryl ricinoleate Polyoxyl 20 cetostearyl ether"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "含C8-C10混合脂肪酸甘油单酯、二酯和三酯，以三酯为主。并含有蓖麻酸甘油酯和乙氧基化脂肪醇。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "31.5 - 33.0"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "60 - 70"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/ovucire_3460_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>栓剂机制，机械耐受性高（硬度高），提高栓剂在阴道内的铺展性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>阴道栓。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11026,
+  "zhId": 11026,
+  "name": "Ovucire® WL 3264",
+  "slug": "ovucire-wl-3264",
+  "subtitle": "硬脂和乙氧基化脂肪醇的混合物",
+  "introText": "含乳化剂的硬脂，作为阴道栓基质，提高疏水性药物栓剂在阴道内的分散性和润湿性。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "硬脂和乙氧基化脂肪醇混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of hard fat and ethoxylated fatty alcohols"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of hard fat and ethoxylated fatty alcohols"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21 YRC528SWUY"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Hard fat Polyoxyl 20 cetostearyl ether"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "混合脂肪酸甘油单酯、二酯和三酯，以三酯为主。并含有乙氧基化脂肪醇。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "32 - 35"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "40 - 60"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/ovucirewl_3264_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>可使得栓剂在阴道正常体温下能快速融化释放药物。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>阴道栓</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11025,
+  "zhId": 11025,
+  "name": "Peceol™",
+  "slug": "peceol",
+  "subtitle": "单油酸甘油酯",
+  "introText": "油相，在口服和外用制剂中用作亲脂型药物的增溶剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "单油酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Glyceryl monooleate (Type 40)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol mono-oleates (Type 40)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "4PC054V79P"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL OLEATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl monooleate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由油酸(C<sub>18:1</sub>) 的单、双和三甘油酯组成，单酯含量最高"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "220 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "1"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/oil_molecule_0.png"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112772150987238&bvid=BV14Mbse1Ex3&cid=500001612878305&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>亲脂型药物增溶剂和生物利用度增强剂。</p>\n<p>作为含有长链脂肪酸(C18:1)的油相，适用于I型脂质处方（油性配方）、II型脂质处方（自乳化体系）和III型脂质处方（自微乳化体系），可促进药物的淋巴吸收。</p>\n<p>在外用制剂中用作油相。</p>\n<p>公认安全(GRAS)且在已批准药品的应用先例证实了使用的安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112772134274672&bvid=BV1a6bse9E5J&cid=500001612872012&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>软胶囊和硬胶囊填充。 </p>\n<p>外用乳膏剂和软膏 剂。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11024,
+  "zhId": 11024,
+  "name": "Plurol® Diisostearique",
+  "slug": "plurol-diisostearique",
+  "subtitle": " 聚甘油-3 双异硬脂酸酯",
+  "introText": "Plurol® Diisostearique是一种用于外用乳剂的非离子型W/O乳化剂。不含PEG的液体乳化剂，热敏感药物需低温制备时的理想乳化剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "聚甘油-3 双异硬脂酸酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Polyglyceryl-3 diisostearate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Triglycerol diisostearate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "46P231IQ"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "POLYGLYCERYL-3 DIISOSTEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "硬脂酸(C<sub>18</sub>) 的聚甘油-3酯，二酯含量较高"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "HLB",
+       "value": "4.5"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/sensorial-map-winohot-plus-plurol-diisostearique.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>不含PEG的外用W/O型乳化剂，热敏感型药物的理想乳化剂。性质稳定并能改善质感。</p>\n<p>使用安全，在已批准药品中有应用历史。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用乳膏剂，可在低温制备。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11023,
+  "zhId": 11023,
+  "name": "Plurol® Oleique CC 497",
+  "slug": "plurol-oleique-cc-497",
+  "subtitle": "聚甘油脂肪酸酯",
+  "introText": "Plurol® Oleique CC 497是一种非离子型水不溶性表面活性剂，在口服脂质处方（自乳化体系和自微乳化体系）中用作助表面活性剂，在外用制剂中作为助表面活性剂、增溶剂和透皮吸收促进剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411121116.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "聚甘油脂肪酸酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Polyglyceryl-3 dioleate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "/"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "XRQ165498B"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Polyglyceryl-3 oleate"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "/"
+      },
+      {
+       "label": "化学描述",
+       "value": "由油酸(C<sub>18:1</sub>)的聚甘油-3酯组成，二酯部分含量最高。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "油状液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "3000 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "3"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>提高难溶性药物的溶解度和生物利用度。</p>\n<p>在II型脂质处方（自乳化体系）和III型脂质处方（自微乳化体系）中作为助表面活性剂。</p>\n<p>外用制剂中的增溶剂和透皮吸收促进剂。</p>\n<p>在已批准药品中有应用先例，证实其安全性。</p>"
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>口服自乳化脂质处方。</p>\n<p>外用乳膏剂，微乳和泡沫剂。</p>\n<p>贴剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11022,
+  "zhId": 11022,
+  "name": "Precirol® ATO 5",
+  "slug": "precirol-ato-5",
+  "subtitle": "双硬脂酸甘油酯",
+  "introText": "Precirol® ATO 5是一种中等熔点的甘油酯，在胶囊填充的粉末混合物中可作润滑剂和助流剂，也可用作掩味的包衣材料。",
+  "headImage": "/uploads/pharma/head-606e392c1044555bfcaa566bc7affe5f_20240411121300.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "双硬脂酸甘油酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Glyceryl distearate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Glycerol distearate (type I)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "73071MW2KM"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCERYL DISTEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Glyceryl palmitostearate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由棕榈酸(C<sub>16</sub>) 和硬脂酸(C<sub>18</sub>) 的甘油酯组成，其中二酯含量最高"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "粉末"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "50 - 60"
+      },
+      {
+       "label": "HLB",
+       "value": "2"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>掩味包衣材料。</p>\n<p>可用作胶囊粉末填充的润滑剂和助流剂。</p>\n<p>片剂的缓控释骨架材料。</p>\n<p>公认安全(GRAS)，且在已批准药品的应用先例证实了使用的安全性。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112772184539873&bvid=BV1x3bseCE6Y&cid=500001612886393&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>压片 (直接压片和湿法制粒)。</p>\n<p>胶囊粉末填充。</p>\n<p>热熔工艺：热熔制粒，热熔挤出，热熔包衣和喷雾冷凝。</p>\n<p>固体脂质纳米粒处方。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11021,
+  "zhId": 11021,
+  "name": "Sedefos™ 75",
+  "slug": "sedefos-75",
+  "subtitle": "三鲸蜡硬脂醇聚醚-4 磷酸盐、乙二醇硬脂酸酯及二乙二醇硬脂酸酯混合物",
+  "introText": "Sedefos™ 75是一个部分阴离子型O/W乳化剂，用于外用制剂。它能够制备无水乳剂，适用于为水敏感性药物和含有溶剂或大量油相的乳剂。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "三鲸蜡硬脂醇聚醚-4 磷酸盐、乙二醇硬脂酸酯及二乙二醇硬脂酸酯混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of Triceteareth-4 phosphate and Ethylene glycol palmitostearate and Diethylene glycol palmitostearate"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of Triceteareth-4 phosphate and Ethylene glycol palmitostearate and Diethylene glycol palmitostearate"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "/ 0324G66D0E 94YQ11Y95F"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "/ GLYCOL STEARATE PEG-2 STEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Ethylene Glycol Palmitostearate"
+      },
+      {
+       "label": "化学描述",
+       "value": "由三(鲸蜡硬脂醇聚醚-4)磷酸酯和棕榈酸(C<sub>16</sub>) 和硬脂酸(C<sub>18</sub>) 的乙二醇酯以及棕榈酸(C<sub>16</sub>) 和硬脂酸(C<sub>18</sub>) 的二乙二醇酯的混合物组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "47 - 52"
+      },
+      {
+       "label": "HLB",
+       "value": "10"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/sensorial-map-anhydro-plus-with-sedefos-75.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>无水外用配方的乳化剂。</p>\n<p>用于乳化困难的乳液体系（溶剂和大油相）。性质稳定及改善质感。</p>\n<p>使用安全，在已批准药品中有应用历史。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用乳膏剂和泡沫剂（带雾化器）。</p>\n<p>一罐法工艺，方便生产。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11020,
+  "zhId": 11020,
+  "name": "Suppocire® A",
+  "slug": "suppocire",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "混合脂肪酸甘油酯（硬脂），具有优良相容性的通用型栓剂基质，在广泛的药物中有应用历史。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "34 - 38"
+      },
+      {
+       "label": "羟值e (mg KOH/g)",
+       "value": "20 - 30"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_a_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>通用型基质，处方简单直接。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11019,
+  "zhId": 11019,
+  "name": "Suppocire® A-64",
+  "slug": "suppocire-agp",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，可改善亲水性原料药的分散性，推荐用于中药栓剂和甘油栓剂等处方。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat EP/NF/JPE"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat EP/NF/JPE"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21 230OU9XXE4 OT38R0N74H"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "FAT, HARD"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "34.5 - 37.5"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "40 - 50"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>亲水性药物（如甘油）、植物提取物、中药栓剂的优选基质。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11018,
+  "zhId": 11018,
+  "name": "Suppocire® AM",
+  "slug": "suppocire-am",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，与酸性药物具有良好的化学稳定性，再结晶（固化）速率快。通用型基质，在广泛的药物中有应用历史。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "34 - 36"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "&lt;10"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_am_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>通用型基质，处方工艺简单直接，推荐用于酸性药物。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11017,
+  "zhId": 11017,
+  "name": "Suppocire® AML",
+  "slug": "suppocire-aml",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，重结晶（固化）速率快，含磷脂成分，可以提高栓剂载药量。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat with additive (lecithin)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat with additive"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "Not applicable"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主，且含有磷脂"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "34 - 38"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "&lt;10"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_aml_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>帮助高载药量药物的分散，快速重结晶（固化）。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11016,
+  "zhId": 11016,
+  "name": "Suppocire® AP",
+  "slug": "suppocire-ap",
+  "subtitle": "含添加剂混合脂肪酸甘油酯（硬脂）",
+  "introText": "含添加剂混合脂肪酸甘油酯（硬脂），添加剂为聚乙二醇酯，提高药物的溶解度和生物利用度。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "含添加剂混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": ""
+      },
+      {
+       "label": "欧洲药典",
+       "value": ""
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": ""
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": ""
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Saturated polyglycolysed glycerides"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主，并含聚乙二醇化的饱和脂肪酸酯。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "33 - 35"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "30 - 60"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_ap_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>适用于难溶性药物制备栓剂，提高其溶解度和生物利用度。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11015,
+  "zhId": 11015,
+  "name": "Suppocire® AS2",
+  "slug": "suppocire-as2",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，甘油单酯含量经改良，适用于需要快速释放的亲水性药物。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "34 - 38"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "15 - 25"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_as2_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>适用于亲水性药物栓剂。也适用于水溶液或醇提取的药物，防止药物渗出。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11014,
+  "zhId": 11014,
+  "name": "Suppocire® BM",
+  "slug": "suppocire-bm",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，与药物具有良好的相容性，再结晶（固化）速率快。通用型基质，在广泛的药物中有应用历史。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "35 - 39"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "&lt;10"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_bm_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>通用型基质，处方工艺简单直接，推荐用于酸性药物。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11013,
+  "zhId": 11013,
+  "name": "Suppocire® BS2X",
+  "slug": "suppocire-bs2x",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，含有聚山梨酯添加剂，以改善亲水性药物、水溶液或醇提取物在栓剂基质中的分散。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat with additive (polysorbate)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat with additive"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "14BGY2Y3MJ"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": ""
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主，并含有聚山梨酯添加剂。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "35 - 39"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "15 - 25"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_bs2x_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p> 有助于亲水性药物的分散，防止药物渗出。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11012,
+  "zhId": 11012,
+  "name": "Suppocire® CM",
+  "slug": "suppocire-cm",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "高熔点硬脂，栓剂基质，适用于降低基质熔点的药物，如液体亲脂性药物。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C10 至 C18)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "35.6 - 39.6"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "&lt;10"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_cm_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p> 通用型基质，处方工艺简单直接，推荐用于酸性药物。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11011,
+  "zhId": 11011,
+  "name": "Suppocire® NA 15",
+  "slug": "suppocire-na-15",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "硬脂，再结晶速率高的栓剂基质。具有较高的机械强度，提升栓剂硬度。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸 (C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "33.5 &ndash; 35.5"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "5 &ndash; 15"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_na15_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>基质再结晶（固化）迅速，所生产的栓剂硬度较大，机械强度高。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11010,
+  "zhId": 11010,
+  "name": "Suppocire® NAI 25A",
+  "slug": "suppocire-nai-25a",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "硬脂，解热镇痛类药物的理想栓剂基质。具有较高的机械强度，提升栓剂硬度。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸(C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "33 - 35"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "20 - 30"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>基质再结晶（固化）迅速，所生产的栓剂硬度较大，机械强度高。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 11009,
+  "zhId": 11009,
+  "name": "Suppocire® NAS 50",
+  "slug": "suppocire-nas-50",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "栓剂基质，甘油单酯含量经改良，以增加栓剂的亲水性。具有较高的机械强度，提升栓剂硬度。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸(C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "33.5 - 35.5"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "40 - 50"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_nas50_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>基质再结晶（固化）迅速，所生产的栓剂硬度较大，机械强度高。可作为多种药物的阴道栓基质。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 10918,
+  "zhId": 10918,
+  "name": "Suppocire® NB",
+  "slug": "suppocire-nb",
+  "subtitle": "混合脂肪酸甘油酯（硬脂）",
+  "introText": "中等熔点硬脂，栓剂基质。具有较高的机械强度，提升栓剂硬度。",
+  "headImage": "/uploads/pharma/head-0152f2ee7db36c48ca4cc889b2d530cc_20240411055756.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "混合脂肪酸甘油酯（硬脂）"
+      },
+      {
+       "label": "美国药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Hard fat"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8334LX7S21"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "Fat, hard"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Suppository bases, hard fat"
+      },
+      {
+       "label": "化学描述",
+       "value": "由混合脂肪酸(C<sub>10</sub> 至 C<sub>18</sub>)的单、双、三甘油酯组成，以三酯为主"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "颗粒"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "35 - 39"
+      },
+      {
+       "label": "羟值 (mg KOH/g)",
+       "value": "20 - 30"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/suppocire_nb_thermorheogram.jpg"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715226024749&bvid=BV1KGhNeFEqp&cid=500001602457650&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>基质再结晶（固化）迅速，所生产的栓剂硬度较大，机械强度高</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/suppository_molding.png",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>栓剂灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 10914,
+  "zhId": 10914,
+  "name": "Tefose® 63",
+  "slug": "tefose-63",
+  "subtitle": "聚乙二醇-7硬脂酸酯",
+  "introText": "非离子型O/W外用制剂乳化剂。 适用于多种活性药物，提高乳剂稳定性。具有良好的粘膜耐受性，广泛用于阴道乳膏配方中。",
+  "headImage": "/uploads/pharma/head-d82c0bb9a46a21215360dea6be79f95c_20240411053656.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "聚乙二醇-7硬脂酸酯"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of PEG-6 stearate (type I), Ethylene glycol palmitostearate and PEG-32 stearate (type I)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Mixture of Macrogol-6 stearate type I (pending), Ethylene glycol palmitostearate and Macrogol-32 stearate type I (pending)"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8LQC57C6B0 0324G66D0E 33GX5WQC0M"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "GLYCOL STEARATE PEG-6 STEARATE PEG-32 STEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylethylene stearates"
+      },
+      {
+       "label": "化学描述",
+       "value": "由硬脂酸(C<sub>18</sub>) 的PEG-6 (MW 300)酯和棕榈酸(C<sub>16</sub>) 及硬脂酸 (C<sub>18</sub>) 的乙二醇酯和PEG-32 (MW 1500)的硬脂酸(C<sub>18</sub>) 酯的混合物组成。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "蜡状固体"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "46 - 53"
+      },
+      {
+       "label": "HLB",
+       "value": "9.5"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/sensorial-map-creamgel-3-with-tefose-63.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>通用型乳化剂，可用于有挑战的外用配方。广泛用于抗菌类药物（唑类）的外用乳膏。</p>\n<p>常与助乳化剂Labrafil&reg; M 1944 CS配合使用，能极大提高乳膏的稳定性。</p>\n<p>能改善乳膏的质地和涂抹时的肤感。</p>\n<p>在众多已批准药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用乳膏剂和泡沫剂 （含推进剂）。</p>\n<p>可用一罐法，极大简化生产工艺。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 10917,
+  "zhId": 10917,
+  "name": "Tefose® 1500",
+  "slug": "tefose-1500",
+  "subtitle": "聚乙二醇-6 硬脂酸酯（和）聚乙二醇-32 硬脂酸酯的混合物",
+  "introText": "非离子型O/W乳化剂。用于外用制剂处方开发，特别适合乳液、稀薄型乳膏剂。pH值耐受范围宽。",
+  "headImage": "/uploads/pharma/head-d82c0bb9a46a21215360dea6be79f95c_20240411055247.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "聚乙二醇-6 硬脂酸酯（和）聚乙二醇-32 硬脂酸酯的混合物"
+      },
+      {
+       "label": "美国药典",
+       "value": "Mixture of PEG-6 stearate (type I) and PEG-32 stearate (type I)"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Pending"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "8LQC57C6B0 33GX5WQC0M"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "PEG-6 STEARATE PEG-32 STEARATE"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Polyoxylethylene stearates"
+      },
+      {
+       "label": "化学描述",
+       "value": "由硬脂酸(C<sub>18</sub>) 的PEG-6 (MW 300)酯和硬脂酸(C<sub>18</sub>) 的PEG- 32 (MW 1500)酯的混合物组成。"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "蜡状固体"
+      },
+      {
+       "label": "熔程 (°C)",
+       "value": "40.4 - 44.4"
+      },
+      {
+       "label": "HLB",
+       "value": "10"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/sensorial-map-tefose-1500.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>多功能乳化剂，可与所有类型的油相兼容，尤其适用于外用乳液相关产品。</p>\n<p>制剂稳定，同时改善涂抹时的质地和肤感。</p>\n<p>在众多已批准药品中应用，证实其安全性。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用乳液和轻薄型乳膏剂。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 10916,
+  "zhId": 10916,
+  "name": "Transcutol® HP",
+  "slug": "transcutol-hp",
+  "subtitle": "二乙二醇单乙醚",
+  "introText": "高纯度的溶剂和增溶剂，在口服和其他途径中可提高药物的溶解度和生物利用度。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411054702.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "二乙二醇单乙醚"
+      },
+      {
+       "label": "美国药典",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "A1A1I8X02B"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "DIETHYLENE GLYCOL MONOETHYL ETHER"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "化学描述",
+       "value": "由高纯度二乙二醇单乙醚组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "4.8 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "不适用"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/degee_solubility_data.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>溶剂和强效增溶剂。</p>\n<p>在III型脂质处方（自微乳化体系）和IV型脂质处方（胶束）作为助溶剂。</p>\n<p>可作为肠外、鼻用、眼用等制剂中的溶媒。</p>\n<p>已有大量毒理学相关研究和在批准上市药品中使用的历史，安全性高、刺激性低。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112715225892511&bvid=BV1x3hNefESr&cid=500001602459743&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>口服自乳化脂质处方。</p>\n<p>软胶囊和硬胶囊灌装。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ },
+ {
+  "id": 10915,
+  "zhId": 10915,
+  "name": "Transcutol® P",
+  "slug": "transcutol-p",
+  "subtitle": "二乙二醇单乙醚",
+  "introText": "高纯度溶剂和强效增溶剂，亦可在外用制剂中作为透皮吸收促进剂。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411054523.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "二乙二醇单乙醚"
+      },
+      {
+       "label": "美国药典",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "A1A1I8X02B"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "DIETHYLENE GLYCOL MONOETHYL ETHER"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "化学描述",
+       "value": "由高纯度二乙二醇单乙醚组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "产品特性",
+    "content": {
+     "leftType": "spec",
+     "leftUrl": "",
+     "leftHtml": "",
+     "leftSpecRows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "4.8 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "不适用"
+      }
+     ],
+     "rightType": "image",
+     "rightText": "",
+     "rightUrl": "/uploads/pharma/degee_molecular_structure.png"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要应用",
+    "content": {
+     "leftType": "video",
+     "leftUrl": "https://player.bilibili.com/player.html?isOutside=true&aid=112787921569502&bvid=BV1kJbmeiEWi&cid=500001615656874&p=1&autoplay=0",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>溶剂和强效增溶剂。</p>\n<p>外用制剂的透皮吸收促进剂。</p>\n<p>已有大量毒理学相关研究和在批准上市药品中使用的历史，安全性高、刺激性低。</p>",
+     "rightUrl": ""
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要制剂技术",
+    "content": {
+     "html": "<p>外用凝胶剂，乳膏剂，乳胶剂，<a href=\"/formulation-technologies-detail.html?id=139/foam-emerging-topical-dosage-form\">泡沫剂</a>，<a href=\"/formulation-technologies-detail.html?id=139/microemulsion-stunning-potential\">微乳</a>和软膏。</p>"
+    }
+   }
+  ]
+ },
+ {
+  "id": 10913,
+  "zhId": 10913,
+  "name": "Transcutol® V",
+  "slug": "transcutol-v",
+  "subtitle": "二乙二醇单乙醚 - 兽药",
+  "introText": "高纯度溶剂，在兽药产品中用于口服、外用（滴剂，浇泼剂）和注射剂。在食品动物上没有最大残留量(MRL)限制。",
+  "headImage": "/uploads/pharma/head-89dbf3808986cb2a1b563a11ef9fc27d_20240411054342.jpg",
+  "blocks": [
+   {
+    "blockType": "spec",
+    "title": "名称和别称",
+    "content": {
+     "rows": [
+      {
+       "label": "化学名称",
+       "value": "二乙二醇单乙醚"
+      },
+      {
+       "label": "美国药典",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "欧洲药典",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "UNII号 (FDA)",
+       "value": "A1A1I8X02B"
+      },
+      {
+       "label": "FDA IID数据库",
+       "value": "DIETHYLENE GLYCOL MONOETHYL ETHER"
+      },
+      {
+       "label": "药用辅料手册",
+       "value": "Diethylene glycol monoethyl ether"
+      },
+      {
+       "label": "化学描述",
+       "value": "由高纯度二乙二醇单乙醚组成"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "spec",
+    "title": "产品特性",
+    "content": {
+     "rows": [
+      {
+       "label": "形态",
+       "value": "液体"
+      },
+      {
+       "label": "粘度 (mPa.s)",
+       "value": "4.8 (20&deg;C)"
+      },
+      {
+       "label": "HLB",
+       "value": "不适用"
+      }
+     ]
+    }
+   },
+   {
+    "blockType": "richtext",
+    "title": "主要应用",
+    "content": {
+     "html": "<p>溶剂和强效增溶剂。</p>\n<p>外用制剂的透皮吸收促进剂。</p>\n<p>外用、注射剂和滴耳剂中的溶媒。</p>\n<p>已有大量毒理学相关研究和在批准上市的兽药产品中使用的历史，安全性高。</p>"
+    }
+   },
+   {
+    "blockType": "imagetext",
+    "title": "主要制剂技术",
+    "content": {
+     "leftType": "image",
+     "leftUrl": "/uploads/pharma/gattefosse_spot_on.jpg",
+     "leftHtml": "",
+     "leftSpecRows": [],
+     "rightType": "html",
+     "rightText": "<p>滴剂、浇泼剂、滴耳剂。</p>\n<p>口服液和糊剂。</p>\n<p>注射剂。</p>",
+     "rightUrl": ""
+    }
+   }
+  ]
+ }
+]

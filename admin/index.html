@@ -2082,10 +2082,12 @@ const QUILL_TOOLBAR = [
                             <label data-page-node-id="YUAPILhmLyOuqrpXkIvRMO">右侧内容</label>
                             <select v-model="block._rightType" class="form-control" style="margin-bottom:6px;" data-page-node-id="VGnDqTb4uVgv3xw0hxFuPA">
                               <option value="text" data-page-node-id="AONWAQ0Ovb4rOWaKIYITbZ">文字</option>
+                              <option value="html">HTML 富文本</option>
                               <option value="image" data-page-node-id="FXZlJzFOjyTTY4owREFTh9">图片</option>
                               <option value="video" data-page-node-id="bkferyH5Wp09RQzdINddE7">视频</option>
                             </select>
                             <textarea v-if="block._rightType === 'text'" class="form-control" rows="4" v-model="block._rightText" placeholder="右侧文字内容"></textarea>
+                            <textarea v-if="block._rightType === 'html'" class="form-control" :rows="8" v-model="block._rightText" placeholder="右侧 HTML（支持 p / ul / li / strong / a / br）" style="font-family:monospace;font-size:12px;"></textarea>
                             <div v-if="block._rightType === 'image'" data-page-node-id="NtbC2Rzk1ZKi6A5WiowfAM">
                               <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;" data-page-node-id="0DdyHc16kxnhzPnprbf4Vv">
                                 <input type="text" class="form-control" v-model="block._rightUrl" placeholder="图片 URL 或上传" style="flex:1;min-width:160px;" data-page-node-id="dFBKBu8XCqc5IJ5lGxdnM2">
@@ -7699,7 +7701,7 @@ createApp({
             _leftUrl: (b.blockType === 'imagetext') ? (content.leftUrl || '') : '',
             _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
             _rightType: (b.blockType === 'imagetext') ? (content.rightType || 'text') : 'text',
-            _rightText: (b.blockType === 'imagetext' && content.rightType === 'text') ? (content.rightText || '') : '',
+            _rightText: (b.blockType === 'imagetext' && (content.rightType === 'text' || content.rightType === 'html')) ? (content.rightText || '') : '',
             _rightUrl: (b.blockType === 'imagetext' && (content.rightType === 'video' || content.rightType === 'image')) ? (content.rightUrl || '') : '',
             _leftSpecRows: (b.blockType === 'imagetext' && content.leftType === 'spec' && content.leftSpecRows) ? content.leftSpecRows.map(function(r) { return { label: r.label, value: r.value }; }) : [{ label: '', value: '' }],
             _specRows: (b.blockType === 'spec' && content.rows) ? content.rows : [{ label: '', value: '' }],
