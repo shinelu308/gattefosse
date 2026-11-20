@@ -4745,8 +4745,14 @@ const QUILL_TOOLBAR = [
                 <div data-page-node-id="3SMYeJSVoBlJqFIFse1t4v"><span style="color:var(--text-muted);" data-page-node-id="GFxTXLMFfkEdPTNtXjWKoQ">联系人：</span>{{ viewingOrder.contactName || '-' }}</div>
                 <div data-page-node-id="HgcPmX20Fo2qmdUYbfZniK"><span style="color:var(--text-muted);" data-page-node-id="BvKNcRBCx82O4rDGHqTCr9">邮箱：</span>{{ viewingOrder.email || '-' }}</div>
                 <div data-page-node-id="XbZy0rabLPpljkE3hftOmc"><span style="color:var(--text-muted);" data-page-node-id="RnPFhPyA7eQyMwAP8GEHte">电话：</span>{{ viewingOrder.phone || '-' }}</div>
+                <div data-page-node-id="orderFieldMarket01"><span style="color:var(--text-muted);" data-page-node-id="orderFieldMarketLb">行业：</span>{{ orderMarketText(viewingOrder.market) }}</div>
+                <div data-page-node-id="orderFieldDept01"><span style="color:var(--text-muted);" data-page-node-id="orderFieldDeptLb">部门：</span>{{ viewingOrder.department || '-' }}</div>
+                <div data-page-node-id="orderFieldPos01"><span style="color:var(--text-muted);" data-page-node-id="orderFieldPosLb">职位：</span>{{ viewingOrder.position || '-' }}</div>
+                <div data-page-node-id="orderFieldZip01"><span style="color:var(--text-muted);" data-page-node-id="orderFieldZipLb">邮编：</span>{{ viewingOrder.zipcode || '-' }}</div>
+                <div style="grid-column:1/-1;" data-page-node-id="orderFieldRegion01"><span style="color:var(--text-muted);" data-page-node-id="orderFieldRegionLb">省 / 市 / 区：</span>{{ [viewingOrder.province, viewingOrder.city, viewingOrder.district].filter(Boolean).join(' / ') || '-' }}</div>
                 <div style="grid-column:1/-1;" data-page-node-id="HX6fkxBR6DNTxWR2nMTAb0"><span style="color:var(--text-muted);" data-page-node-id="HRz8k2E9XfsUDiFHbuc538">收货地址：</span>{{ viewingOrder.address || '-' }}</div>
                 <div style="grid-column:1/-1;" data-page-node-id="EI81poDEAtV3Ju7vT5NWVL"><span style="color:var(--text-muted);" data-page-node-id="mF11FXVoAJ8rVvBa1Rqfgw">备注：</span>{{ viewingOrder.notes || '-' }}</div>
+                <div v-if="viewingOrder.sampleListRaw" style="grid-column:1/-1;color:var(--text-tertiary);font-size:12px;" data-page-node-id="orderFieldRaw01"><span style="color:var(--text-muted);" data-page-node-id="orderFieldRawLb">原始样品需求：</span>{{ viewingOrder.sampleListRaw }}</div>
               </div>
             </div>
           </div>
@@ -10495,6 +10501,10 @@ createApp({
     orderStatusText(status) {
       const m = { draft:'草稿', submitted:'已提交', processing:'处理中', shipped:'已发货', completed:'已完成', cancelled:'已取消' };
       return m[status] || status;
+    },
+    orderMarketText(market) {
+      if (!market) return '-';
+      return market === '个人护理;药用辅料' ? '个人护理 + 药用辅料' : market;
     },
     // User Management（仅前台注册会员，员工在企业组织架构内管理）
     async loadUserList() {

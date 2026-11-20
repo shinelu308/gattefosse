@@ -400,7 +400,8 @@
             contactName: formData.value.name,
             phone: formData.value.phone || formData.value.mobile,
             address: formData.value.address,
-            notes: formData.value.comment
+            notes: formData.value.comment,
+            sampleListRaw: simpleList
           };
           
           GatteAPI.Order.create(orderData).then((res) => {

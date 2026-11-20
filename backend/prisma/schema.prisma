@@ -285,6 +285,15 @@ model SampleOrder {
   email        String?
   phone        String?
   address      String?
+  // 与前台「会员注册 / 样品申请」表单一致的申请人快照（261121 新增）
+  market        String?  // 行业（个人护理 / 药用辅料）
+  department    String?  // 会员所在公司部门
+  position      String?  // 职位
+  province      String?  // 省 / 直辖市
+  city          String?  // 市
+  district      String?  // 区 / 县
+  zipcode       String?  // 邮编
+  sampleListRaw String?  @map("sample_list_raw") // 前台提交的样品串原样留档（老系统迁移用）
   notes        String?
   adminNote    String?   @map("admin_note") // 后台审批意见：随状态变更邮件发给会员，并在订单详情留痕
   submittedAt  DateTime? @map("submitted_at")

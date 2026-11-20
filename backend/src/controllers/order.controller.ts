@@ -98,6 +98,8 @@ export async function listAllOrders(req: Request, res: Response) {
         { companyName: { contains: kw } },
         { contactName: { contains: kw } },
         { email: { contains: kw } },
+        { phone: { contains: kw } },
+        { market: { contains: kw } },
       ];
     }
 
@@ -226,7 +228,7 @@ export async function updateOrderStatus(req: Request, res: Response) {
 export async function createOrder(req: Request, res: Response) {
   try {
     const userId = req.user!.userId;
-    const { companyName, contactName, phone, address, notes } = req.body;
+    const { companyName, contactName, phone, address, notes, market, department, position, province, city, district, zipcode, sampleListRaw } = req.body;
 
     // 获取购物车商品
     const cartItems = await prisma.cartItem.findMany({ where: { userId } });
@@ -234,27 +236,42 @@ export async function createOrder(req: Request, res: Response) {
       return res.status(400).json(fail('购物车为空'));
     }
 
+    // 申请人档案快照：订单表与前台「会员注册 / 样品申请」表单字段保持一致
+    const profile = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        email: true, company: true, fullName: true, phone: true,
+        market: true, department: true, jobFunction: true,
+        address: true, province: true, city: true, district: true, zipcode: true,
+      },
+    });
+
     // 会员邮箱：优先 token 内邮箱，回退用户表（订单邮件通知必需）
     let email: string | null = (req.user as { email?: string } | undefined)?.email || null;
-    if (!email) {
-      const u = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
-      email = u?.email || null;
-    }
+    if (!email) email = profile?.email || null;
 
     // 生成订单号
     const orderNumber = 'SO' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
 
-    // 创建订单
+    // 创建订单（body 显式传入优先，缺省回填会员档案）
     const order = await prisma.sampleOrder.create({
       data: {
         userId,
         orderNumber,
         status: 'submitted',
-        companyName: companyName || null,
-        contactName: contactName || null,
+        companyName: companyName || profile?.company || null,
+        contactName: contactName || profile?.fullName || null,
         email,
-        phone: phone || null,
-        address: address || null,
+        phone: phone || profile?.phone || null,
+        address: address || profile?.address || null,
+        market: market || profile?.market || null,
+        department: department || profile?.department || null,
+        position: position || profile?.jobFunction || null,
+        province: province || profile?.province || null,
+        city: city || profile?.city || null,
+        district: district || profile?.district || null,
+        zipcode: zipcode || profile?.zipcode || null,
+        sampleListRaw: sampleListRaw || null,
         notes: notes || null,
         submittedAt: new Date(),
         items: {
