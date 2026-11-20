@@ -1061,7 +1061,7 @@ const QUILL_TOOLBAR = [
         </a>
         <a class="nav-item" v-if="canModule('users')" :class="{ active: currentPage === 'user-list' }" @click="goPage('user-list')" data-page-node-id="ERFEQwp2PKD6hHd4Vz8dps">
           <span class="nav-icon" data-page-node-id="3oU3Eo6srhTBbTtnkahd5r"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="444GgTQXQ7BjkVH1WD9XoC"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" data-page-node-id="vQG5QXKsLDzYXQqiEVnMMm"/><circle cx="9" cy="7" r="4" data-page-node-id="G7BJQDhWRyK0E7GXh5sS45"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" data-page-node-id="QS9wi3vJfOAyh4iVwMk73f"/><path d="M16 3.13a4 4 0 0 1 0 7.75" data-page-node-id="HWC06XxfpYS2Mfn2nnEX6G"/></svg></span>
-          用户管理
+          会员管理
         </a>
         <a class="nav-item" v-if="canModule('roles')" :class="{ active: currentPage === 'role-list' }" @click="currentPage = 'role-list'" data-page-node-id="RolesNavItem0001">
           <span class="nav-icon" data-page-node-id="RolesNavIcon0001"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" data-page-node-id="RolesNavSvg0001"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" data-page-node-id="RolesNavPath0001"/></svg></span>
@@ -4773,7 +4773,7 @@ const QUILL_TOOLBAR = [
 
         <!-- ==================== 用户列表（前台注册会员） ==================== -->
         <div v-if="currentPage === 'user-list'" data-page-node-id="JqyWo2h92Dqt98WcGbVkce">
-          <h1 class="page-title" data-page-node-id="ggQlfWp0fBgY9HMd0o42WW">用户管理</h1>
+          <h1 class="page-title" data-page-node-id="ggQlfWp0fBgY9HMd0o42WW">会员管理</h1>
           <p class="page-subtitle" data-page-node-id="gMmLNVfdFEPugOPD1jQkgH">管理前台注册会员，审核账号 · 公司员工与系统操作人员请在「系统设置 → 企业组织架构」中管理</p>
           <div class="card" data-page-node-id="3hjJWK0bUX0sIBbc0QurqF">
             <div class="card-header" data-page-node-id="EBiXgSYaP7npONVACANJRh">
@@ -5968,8 +5968,8 @@ createApp({
         'doc-edit': '内容管理 / 文档资源 / 编辑',
         'order-list': '运营 / 样品订单',
         'order-detail': '运营 / 样品订单 / 详情',
-        'user-list': '运营 / 用户管理',
-        'user-edit': '运营 / 用户管理 / 编辑',
+        'user-list': '运营 / 会员管理',
+        'user-edit': '运营 / 会员管理 / 编辑',
         'settings': '运营 / 系统设置',
         'content-list': '内容管理 / 站点内容',
         'content-edit': '内容管理 / 站点内容 / 编辑',
