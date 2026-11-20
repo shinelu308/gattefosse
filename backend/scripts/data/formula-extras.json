@@ -1,0 +1,4416 @@
+[
+ {
+  "code": "2972-5.20",
+  "ID": 11128,
+  "name": "Caramelt Lollipop",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": "天然"
+   },
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   },
+   {
+    "iconType": "wow3",
+    "label": "质地转变"
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "棕色立方体（需在热水中溶解）。"
+   },
+   {
+    "label": "天然成分比例",
+    "value": "天然来源成分占比 >98.9%（依据ISO 16128标准）。"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2712-1.38",
+  "ID": 11127,
+  "name": "亮泽液体口红",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176722732607&bvid=BV1HCQBYUE2z&cid=28911206413&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "玫瑰木色液体奶油质地口红"
+   },
+   {
+    "label": "粘度（Brookfield RV，转子D，转速5）",
+    "value": "约200,000 mPa·s（24小时后）"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">99%（符合ISO 16128标准）"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2906-1.22",
+  "ID": 11126,
+  "name": "精华粉底液",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176722800456&bvid=BV1rCQBYUEk7&cid=28911206468&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "液体米色乳液"
+   },
+   {
+    "label": "粘度（Brookfield RV，转子A，转速5）",
+    "value": "约6200 mPa·s（24小时后）"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">97%（符合ISO 16128标准）"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2909-1.17",
+  "ID": 11125,
+  "name": "压制宝石粉",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176722798928&bvid=BV1rCQBYUEDf&cid=28911206666&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "闪耀的米白色粉末"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">80%（符合ISO 16128标准）"
+   },
+   {
+    "label": "",
+    "value": "如使用天然珍珠成分，可达到100%天然。"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2925-3.07",
+  "ID": 11124,
+  "name": "Orange Candy Bi-gel",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": "天然"
+   },
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176622069380&bvid=BV1n2QBY2EEA&cid=28910751280&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "橙色虹彩双凝胶 pH值：6.1 ± 0.3"
+   },
+   {
+    "label": "粘度（Brookfield RV，转子B，转速5）",
+    "value": "约52,000 mPa·s（24小时后）"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">93%（符合ISO 16128标准）"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2985-1.14",
+  "ID": 11123,
+  "name": "Matt'cha Cream",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": "天然"
+   },
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   }
+  ],
+  "video": null,
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "浓稠的哑光绿色乳霜"
+   },
+   {
+    "label": "pH值",
+    "value": "5.2 ± 0.3"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">99%（符合ISO 16128标准）"
+   },
+   {
+    "label": "粘度（Brookfield RV，转子C，转速5）",
+    "value": "约65,000 mPa·s（初始） 粘度（Brookfield RV，转子D，转速5）： 约170,000 mPa·s（24小时后） 随后保持稳定"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2940-1.10",
+  "ID": 11122,
+  "name": "浓郁液体腮红",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176538248589&bvid=BV1sEQzYREqz&cid=28910422834&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "粉色奶油质地"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">96%（符合ISO 16128标准）"
+   },
+   {
+    "label": "粘度（Brookfield RV，转子C，转速5）",
+    "value": "约120,000 mPa·s（24小时后）"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2944-1.01",
+  "ID": 11121,
+  "name": "经典缎光口红",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176504629978&bvid=BV1FtQzYUEvN&cid=28910292871&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "红色口红"
+   },
+   {
+    "label": "滴点",
+    "value": "68°C ±2°C"
+   },
+   {
+    "label": "天然成分占比",
+    "value": ">90%（符合 ISO 16128 标准）"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2997-1.06",
+  "ID": 11120,
+  "name": "Hair Pudding Mask",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": "天然"
+   },
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": "护发"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=114176471073582&bvid=BV1wsQzYDE2J&cid=28910158591&p=1&autoplay=0",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "米白色乳霜。"
+   },
+   {
+    "label": "pH 值",
+    "value": "4.9 ± 0.3"
+   },
+   {
+    "label": "粘度",
+    "value": "使用Brookfield RV粘度计（B型转子，转速5）测量，24小时后约为50000 mPa.s。"
+   },
+   {
+    "label": "天然成分比例",
+    "value": "天然来源成分占比 >94.9% （依据 ISO 16128 标准）。"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2930-1.08",
+  "ID": 11119,
+  "name": "光泽润色霜",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   },
+   {
+    "iconType": "soleil",
+    "label": "防晒"
+   }
+  ],
+  "video": null,
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "米色乳霜。"
+   },
+   {
+    "label": "粘度",
+    "value": "使用Brookfield RV粘度计（C型转子，转速5）测量，24小时后约为50000 mPa.s，1个月后约为90000 mPa.s，1个月后粘度稳定。"
+   },
+   {
+    "label": "防晒指数",
+    "value": "依据ISO 24444:2019标准，体外测试SPF值为22.5（5%体积比）。 关键波长：380nm。 法规符合性：符合全球法规要求。"
+   },
+   {
+    "label": "天然成分比例",
+    "value": "天然来源成分占比>96%（依据ISO 16128标准）。"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2614-3.01",
+  "ID": 11001,
+  "name": "玩趣修复凝霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112770842362499&bvid=BV1wZbpeeEuh&cid=500001612580487&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Green translucent gel cream"
+   },
+   {
+    "label": "pH",
+    "value": "7,5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 35 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Wet Kelco-care™ into Glycerin of phase A2, add it to phase A1, stir gently and heat to 70°C.",
+   "In a separate beaker, prepare ingredients of phase B and heat it to 70°C.",
+   "Add phase B to phase A while homogenizing.",
+   "Cool down to 35°C under moderate stirring.",
+   "Add ingredients of phase C, D and E under gentle stirring."
+  ]
+ },
+ {
+  "code": "2528-1.13",
+  "ID": 11000,
+  "name": "反重力精华",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771077308965&bvid=BV1v8bpeXEqK&cid=500001612626770&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid pink pearlescent emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 20 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of A1 to 75°C and disperse Jaguar HP-105 under high shear (2000-2500 rpm) for 15 min.",
+   "Prepare premix A2 and add to A1 under moderate mixing for 10 min.",
+   "Prepare A3 by dispersing Pullulan into water heated to 75°C.",
+   "When A3 is homogeneous, add to A1+A2 and mix slowly for 10 min.",
+   "Add A4 to A1+A2+A3 (N.B. phase A is not translucent) at 70°C and mix under high shear (2000-2500 rpm) until homogenization, then cool to 50°C.",
+   "Prepare B and add to A at 50°C under high shear (2000-2500 rpm) for 15 min.",
+   "Cool under moderate mixing, then below 40°C add C.",
+   "Add D."
+  ]
+ },
+ {
+  "code": "2587-1.07",
+  "ID": 10999,
+  "name": "抗斑身体喷雾",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771077246813&bvid=BV158bpeXELY&cid=500001612627873&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid white emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.4 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 2 500 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water to 75°C, add slowly Kelco-Care™ Diutan Gum under rapid mixing and let the gel swells for 5 min.",
+   "Prepare B1 and heat at 55°C. Add B2 to B1.",
+   "Add B (50°C) to A (50°C) under rapid mixing (2500 rpm). Mix for 5 min.",
+   "Add C under mixing. Mix for 1 min.",
+   "Cool to 35°C and add D and E under mixing.",
+   "Cool to 25°C under mixing."
+  ]
+ },
+ {
+  "code": "2469-2.11",
+  "ID": 10998,
+  "name": "香蕉奶油冰淇淋",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771077245080&bvid=BV158bpeXEEU&cid=500001612628469&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Thick yellow emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 90 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water and propanediol of A1 to 75°C and disperse Maisita 9040 under mixing until homogenization.",
+   "Prepare premix A2 and add to A1. Mix for 5 min.",
+   "Disperse Eumulgin® SG in water of A3 and add to A1+A2 under mixing.",
+   "Prepare B and heat to 75°C.",
+   "Emulsification: add B to A under high shear (2500 rpm) for 10 min.",
+   "Cool under moderate shear and add C.",
+   "Continue cooling under mixing until 35°C then add D.",
+   "Adjust pH with E."
+  ]
+ },
+ {
+  "code": "2031-1.08",
+  "ID": 10997,
+  "name": "胡须梳理霜",
+  "pictos": [
+   {
+    "iconType": "barbe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White bright emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "6.1 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield (spindle B, speed 5)",
+    "value": "approx. 27 000 mPa.s after 24H."
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water and glycerin to 75°C and add Avicel® PC 591 under mixing.",
+   "Continue mixing for about 15 minutes.",
+   "Add Satiaxane™ CX91 under mixing.",
+   "Prepare A and heat to 75°C.",
+   "Under rapid mixing (Rotor/Stator 3000rpm), add A to B.",
+   "Mix for about 10 minutes.",
+   "Cool under mixing and at about 35°C, add C."
+  ]
+ },
+ {
+  "code": "2891-1.19",
+  "ID": 11113,
+  "name": "弹力眼霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://www.youtube.com/embed/OvCa3lhRJ4Q?",
+   "title": "Upon application"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light pink cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.3 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 130000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99.6% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "In the main vessel, heat the water of phase A1 between 50-60°C in order to better disperse STÄRKINA NATURAL. Disperse with high shear for 10 minutes (TIP: if the water is too hot, Stärkina creates agglomerates that are difficult to disperse. In case it happens one can disperse with rotor stator to break the agglomerates).",
+   "Prepare the premix of phase A2, add to A1 and disperse with high shear for 5 minutes. Then heat phase A1+A2 at 70°C.",
+   "Prepare oil phase B and heat at 70°C. Check that everything is well melted.",
+   "Proceed with the emulsion of oil phase B into water phase A1+A2 at 70°C under high shear (rotor stator at 2500-3000 rpm) for 10 minutes.",
+   "Cool down under moderate mixing until reaching 40°C.",
+   "Below 40°C, add ingredients of phase C one by one and stir under medium shear, until everything is completely incorporated.",
+   "Finish to cool down, check pH and adjust with phase D."
+  ]
+ },
+ {
+  "code": "2373-1.24",
+  "ID": 10996,
+  "name": "焦糖面膜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Golden brown emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.2 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 130 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare B: heat water and glycerin to 60°C and disperse Jaguar HP-105 using a deflocculating turbine.",
+   "Mix for 10 min.",
+   "Prepare A and heat to 75°C.",
+   "Add A heated to 75°C to B+C heated to 60°C without mixing, then under moderate shear with a deflocculating turbine.",
+   "Cool under mixing and at about 35°C, add the other ingredients.",
+   "Mix under moderate shear for about 5 min."
+  ]
+ },
+ {
+  "code": "2694-3.03",
+  "ID": 10995,
+  "name": "佛手瓜奇异果绵绵冰面霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771077245122&bvid=BV158bpeXEEN&cid=500001612629614&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Thick translucent green emulsion gel"
+   },
+   {
+    "label": "pH",
+    "value": "5,5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 104 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99,4% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Weigh phase A1 and heat to 70°C.",
+   "Disperse phase A2 into phase A1 under moderate mixing.",
+   "Prepare phase A3 by dispersing Kelcogel into water.",
+   "Add phase A3 to A1+A2 under moderate mixing.",
+   "Heat phase B to 70°C and emulsify. Add B into A and mix under high shear for 5 minutes.",
+   "Cool down until 35°C and add one by one phase C.",
+   "Adjust pH with phase D."
+  ]
+ },
+ {
+  "code": "2787-1.07",
+  "ID": 10994,
+  "name": "CICA屏障霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light lilac color cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 125000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare phase A1 into the main vessel and heat at 65-70°C.",
+   "Add phase A2 and disperse Avicel® PC 591 with rotor stator (3000rpm) until homogeneous.",
+   "Add phase A3 and disperse Eumulgin® SG with rotor stator (3000rpm) until homogeneous. Then heat at 70-72°C",
+   "In the melter, prepare phase B and heat at 70-72°C.",
+   "Proceed with the emulsion at 70-72°C: under rapid mixing (rotor stator 3000rpm) and add slowly phase B into Phase A1+A2+A3.",
+   "Homogenize for 10 minutes with rotor stator at 3000rpm.",
+   "Cool under normal stirring and at about 25°C, add Phase C, D, and E."
+  ]
+ },
+ {
+  "code": "2657-1.12",
+  "ID": 10993,
+  "name": "舒缓身体乳膏",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "jambe",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "I vory butter cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.6 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle D, speed 5)",
+    "value": "approx. 200000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water to 70-75°C and disperse phase A2 under mixing.",
+   "Prepare and heat phase B to 80°C.",
+   "Under rapid mixing, at 70°C, add slowly phase B to phase A1+A2 to create the emulsion.",
+   "Cool under rapid mixing (dispersing mixer) and at about 25°C, add C, D and E.",
+   "Complete cooling under rapid mixing (dispersing mixer 5 min)"
+  ]
+ },
+ {
+  "code": "2865-7.05",
+  "ID": 10992,
+  "name": "宇宙变色眼影",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Silver cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.4 ± 0.3"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 90% (ISO 16128)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 52000 mPa.s at t0 approx. 125000 mPa.s after 24h Viscosity is stabilized after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat phase B at 75-80°C. Check that all ingredients are melted (could present some turbidity due to Emulium® Dolcea MB) and maintain at 75°C.",
+   "Heat water of phase A1 at 75°C, add Avicel® PC 591 and disperse under high shear with rotor stator for 10 minutes. Check homogeneity.",
+   "Add premix A2 into A1 and disperse under high shear with rotor stator for 15 minutes. Check homogeneity.",
+   "Proceed with the emulsion of phase B into phase A at 75°C under medium shear, and then increase to high shear (3000 rpm) for 10 minutes.",
+   "Cool down under moderate shear and below 40°C add phase C. Mix under moderate shear for 10-15 minutes (do not use rotor stator, only mixing tools).",
+   "Below 30°C add phase D under very slow mixing until it is homogeneous. Do not use rotor stator : the beads of incapsulated pigments are very fragile, it requires slow mixing.",
+   "Finish to cool down until reaching 25°C. Check the pH and adjust if necessary."
+  ]
+ },
+ {
+  "code": "2748-1.11",
+  "ID": 10991,
+  "name": "松软酪酪面霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771077310690&bvid=BV1e8bpeXEme&cid=500001612630075&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Smooth white cream"
+   },
+   {
+    "label": "pH",
+    "value": "5,5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 117 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99,5% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of phase A1 to 55°C and disperse Starkina with high shear using a turbine stirrer.",
+   "Prepare premix A2 and add it into phase A1.",
+   "Weigh ingredients of phase B and heat it to 75°C.",
+   "Heat A1+A2 to 75°C.",
+   "Add phase B to phase A1+A2 and homogenize under high shear.",
+   "Cool under moderate shear.",
+   "Add ingredients of phase C one by one.",
+   "Adjust pH with phase D."
+  ]
+ },
+ {
+  "code": "1925-1.16",
+  "ID": 10990,
+  "name": "疯狂哑光发蜡",
+  "pictos": [
+   {
+    "iconType": "wow",
+    "label": ""
+   },
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "barbe",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Off white thick cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.9 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle F, speed 5)",
+    "value": "approx. 490 000 mPa.s after 24H"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Add A2 into A1 under rapid mixing for 10 minutes.",
+   "Add A3 into A1+A2 under mixing for 10 minutes.",
+   "Heat A and B to 70°C.",
+   "Add B into A at 70°C, under rapid mixing, for 10 minutes.",
+   "Cool.",
+   "Add C at 30°C under mixing.",
+   "Complete cooling."
+  ]
+ },
+ {
+  "code": "2892-2.13",
+  "ID": 11112,
+  "name": "奶油遮瑕棒",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://www.youtube.com/embed/1iwVx3uS2_s?",
+   "title": "Upon application"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Beige stick"
+   },
+   {
+    "label": "Drop point",
+    "value": "65°C"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare phase A in the main vessel and heat at 85°C. Control that everything is melted and that the phase is homogeneous.",
+   "In another vessel prepare the pigment phase B: wet pigments with the other ingredients and use a three-roll mill to get a homogeneous paste. Add phase B into phase A at 85°C and disperse with rotor stator. Control that everything is well dispersed.",
+   "Add powder phase C into phase A+B at 85°C and disperse with rotor stator. Control that everything is well dispersed.",
+   "Add phase D under stirring and mix until everything is homogeneous.",
+   "Pour at 80°C ± 2°C in a mold previously heated at 40°C.",
+   "Let cool down at room temperature and then freeze for 15-20 minutes."
+  ]
+ },
+ {
+  "code": "2466-1.01",
+  "ID": 10989,
+  "name": "卷发护发乳",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.9 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 31 400 mPa.s after 24H"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of A1 to 75°C, prepare premix Glycerin + Solagum Tara and add to water under mixing (1000 rpm) during 15 min.",
+   "Heat water of A2 to 75°C and disperse Tapioca Starch under moderate shear (1000-1200 rpm) during 15 min.",
+   "Add A2 to A1 under moderate shear.",
+   "Add A3 to A1+A2 and heat to 70-75°C.",
+   "Prepare B, heat to 70-75°C and add to A. Then mix under moderate shear (800-1000 rpm) in order to homogeneize.",
+   "Cool down to 50°C and add C, increase the speed for 5 min (1500 rpm).",
+   "Cool and at 35°C adjust the pH with E."
+  ]
+ },
+ {
+  "code": "2595-1.04",
+  "ID": 10988,
+  "name": "日用轻盈保湿霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White glossy emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.8 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 28000 ± 3000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water at 70°C and disperse Avicel® PC 591 under mixing. Homogenize for 10 minutes under high speed.",
+   "Premix xanthan gum and glycerin, add it to A1, and maintain mixing for 10 minutes.",
+   "Heat B up to 70°C and stir until complete solubilization.",
+   "Under high shear, add B (70°C) to A (70°C), and homogenize for 10 minutes.",
+   "Cool under mixing up to 35°C, then add C and stir for 5 minutes.",
+   "Complete cooling to 25°C under mixing"
+  ]
+ },
+ {
+  "code": "2670-1.12",
+  "ID": 10987,
+  "name": "日用防晒霜 SPF20",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771094020647&bvid=BV1LbbpeWEDm&cid=500001612631032&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light pink fluid cream"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 7 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A1 to 80°C.",
+   "Prepare A2, add A3 and grind it 3 times with the three roll mill.",
+   "Add A2+A3 to A1.",
+   "Prepare B and add to A under mixing (deflocculator, 3000 rpm) for 10 minutes.",
+   "Reduce mixing to 1000 rpm and add C, mix until homogenization.",
+   "Add D and mix until homogenization."
+  ]
+ },
+ {
+  "code": "2849-2.06",
+  "ID": 10986,
+  "name": "纤长睫毛膏",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Soft but compact black cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.4 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle D, speed 5)",
+    "value": "approx. 370000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat B1 at 80°C. Check that all ingredients are well melted and maintain the phase at 80°C.",
+   "Heat the water of phase A1 at 80°C and add phase A2 by dispersing it with medium/high shear for 10 minutes.",
+   "Add A3 into A1+A2 with medium shear for 30 minutes.",
+   "Add A4 into A1+A2+A3 with medium shear. Disperse under Ultra Turrax for 10 minutes to properly disperse the pigment and homogenize all the A phases.",
+   "Check that everything is dispersed homogeneously. Keep temperature at 80°C.",
+   "Add B2 into B1.",
+   "Proceed with the emulsion of Phases B (B1+B2) into Phases A (A1+A2+A3+A4) at 80°C under medium shear, and then increase to high shear (3000 rpm) for 15 minutes. Be careful not to exceed 80°C because of the high shear.",
+   "Cool down by stages of 5-10°C with moderate stirring.",
+   "Below 35-30°C add ingredient of phase C, D and E one by one under moderate stirring.",
+   "Finish to cool down the product at 25°C."
+  ]
+ },
+ {
+  "code": "2853-1.10",
+  "ID": 10985,
+  "name": "梦幻云霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "jambe",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Pink mousse cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.7 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 50000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 97% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water and glycerin of phase A1 at 75°C, add Avicel® PC 591 and disperse under high shear (rotor stator 3000rpm) during 15 minutes until complete homogeneity.",
+   "Add phase A2 into A1 at 75°C. Disperse under high shear for 10 minutes. Check that everything is homogeneous.",
+   "Heat the oil phase B at 75°C.",
+   "Proceed with the emulsion of phase B into phase A at 75°C under high shear (3000 rpm) in order to add as much air as possible and maintain the high shear for 10 minutes.",
+   "Cool down under low shear in order not to break air bubbles. The cool down process could take up to 90 minutes, but this is a very important step.",
+   "Under 30°C, add phases C, D, E and F one by one, always under low shear.",
+   "Check pH and adjust if necessary."
+  ]
+ },
+ {
+  "code": "2746-1.17",
+  "ID": 10984,
+  "name": "干爽防晒乳 SPF50",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771094022485&bvid=BV1LbbpeWEMg&cid=500001612631399&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and slightly yellow lotion"
+   },
+   {
+    "label": "pH",
+    "value": "7.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 3 500 mPa.s after 24h"
+   },
+   {
+    "label": "SPF in vivo (ISO 24444",
+    "value": "2019): 55 (5 vol.)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443",
+    "value": "2021): 23.6"
+   },
+   {
+    "label": "Photostability",
+    "value": "93%"
+   },
+   {
+    "label": "Critical wavelength (ISO 24443",
+    "value": "2021): 378 nm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water at 75°C and add under mixing Kelco-Care™ Diutan Gum, let the gel swell for 5 min, then add A2.",
+   "Heat B at 80°C under mixing until complete solubilization of UV filters.",
+   "Add B (75°C) slowly to A (75°C) under rapid mixing (2000 rpm) for 15 min.",
+   "Add C at 60°C and mix for 5 min at 2000 rpm.",
+   "Cool to 40-45°C, add premix D to the emulsion and homogenize with rotor stator for 2 min.",
+   "Prepare E and add to the emulsion under moderate mixing.",
+   "Cool to 30°C, add F and G and mix for 5 min."
+  ]
+ },
+ {
+  "code": "1304-1.01",
+  "ID": 10983,
+  "name": "母婴修护膏",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "bebe",
+    "label": ""
+   },
+   {
+    "iconType": "plume",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White thick balm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A to 85 °C, maintain for 10 minutes and cool slowly under normal mixing.",
+   "At about 45 °C increase the mixing speed (Rotor/Stator 2 500 rpm).",
+   "At 35 °C add B then mix until completely cooled."
+  ]
+ },
+ {
+  "code": "2822-1.07",
+  "ID": 10982,
+  "name": "活力焕肤底霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Off white soft cream"
+   },
+   {
+    "label": "+ pH",
+    "value": "5.45 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 50000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat the water of phase A1 at 75°C and disperse with high shear Avicel® PC 611 for 15 minutes.",
+   "Prepare the premix of phase A2 and add into A1 with moderate shear for 5-10 minutes until homogeneous. Maintain phase A1+A2 at 70°C.",
+   "Heat phase B at 70°C.",
+   "Proceed with the emulsion at 70°C: add phase B into A and mix under high shear (3000 rpm) for 10 minutes.",
+   "Cool down under moderate shear and below 35-40°C add the ingredients of phase C one by one.",
+   "Adjust pH with phase D."
+  ]
+ },
+ {
+  "code": "2653-2.16",
+  "ID": 10981,
+  "name": "轻盈滋润日用面霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Soft white emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 21000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A1 at 75°C.",
+   "Pour under moderate shear with a dispersing mixer A2 into A1 for 10 minutes.",
+   "Solubilize A3 by heating to 60°C and add it into A1+A2.",
+   "Heat B to 75°C.",
+   "Make the emulsion : Add B into A under high shear for 10 minutes.",
+   "Cool and below 40°C add ingredients of C one by one.",
+   "Ajust pH with D."
+  ]
+ },
+ {
+  "code": "2620-1.02",
+  "ID": 10980,
+  "name": "万用润肤霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771094022528&bvid=BV1LbbpeWET7&cid=500001612632303&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Thick green balm"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A to 85°C for 15 min.",
+   "Cool A under moderate mixing until 50°C.",
+   "Heat B1 to 50°C and mix until homogenization.",
+   "Add B2 into B1 under mixing.",
+   "Under rapid mixing (rotor stator 3 000 rpm), add B to A at 50°C for 10 min.",
+   "Cool by steps under rapid mixing (2 500 rpm).",
+   "At about 35°C, add C.",
+   "Complete cooling under rapid mixing."
+  ]
+ },
+ {
+  "code": "2397-2.25",
+  "ID": 10979,
+  "name": "极致柔软防晒霜 SPF30",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771094088094&bvid=BV1vbbpeWEvD&cid=500001612632868&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and slightly yellow cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 35 000 mPa.s after 24h"
+   },
+   {
+    "label": "SPF in vivo (ISO 24444",
+    "value": "2019): 38 (5 subjects)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443",
+    "value": "2021): 14"
+   },
+   {
+    "label": "Water resistance (ISO 16217",
+    "value": "2020 and ISO 18861:2020): 54.7%"
+   },
+   {
+    "label": "Critical wavelength (ISO 24443",
+    "value": "2021): 373nm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water to 75°C, then add slowly Kelco-Care™ Diutan Gum under stirring and let the gel swell for 5 min.",
+   "Heat B to 82°C under stirring until complete solubilisation of UV filters and polymer.",
+   "Add slowly B to A at 75°C under rapid mixing (2000 rpm) for 15 min.",
+   "Cool to 45°C under moderate mixing (1000 rpm).",
+   "Prepare C (thick paste) and then add to A+B under rapid mixing. Homogenize with ultra turrax for 2 min to make sure to properly disperse Sunhancer™ Eco SPF Booster.",
+   "Cool to 30°C under moderate mixing and add D then E.",
+   "Complete cooling."
+  ]
+ },
+ {
+  "code": "2681-2.06",
+  "ID": 10978,
+  "name": "柔滑润肤露 SPF50",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and slighty yellow lotion"
+   },
+   {
+    "label": "pH",
+    "value": "5.4 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 6000 mPa.s after 24h"
+   },
+   {
+    "label": "Photostability",
+    "value": "92%"
+   },
+   {
+    "label": "",
+    "value": "Conform to Australian, EU, Japan, UK, MERCOSUR, and China regulations"
+   },
+   {
+    "label": "SPF in vivo (ISO 24 444:2019 5 subjects)",
+    "value": "50"
+   },
+   {
+    "label": "UVA in vitro (ISO 24 443)",
+    "value": "23.7"
+   },
+   {
+    "label": "Critical wavelength",
+    "value": "378nm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat demineralized water at 75°C and add Kelco-Care™ diutan gum under stirring then let the gel swell under mixing for 10min.",
+   "Add A2.",
+   "Heat phase B2 at 78°C under stirring until complete solubilization of the UV filters, then let it cool to 70-75°C.",
+   "Then add B1 into B2 and stir until complete solubilization.",
+   "Add B (70°C) to A (70°C) under stirring and homogenize for 10 min at 2000rpm.",
+   "Then cool to 50°C under mixing 1000rpm.",
+   "Add phase C premixed to emulsion under stirring and homogenize for 2min at 2000rpm.",
+   "Cool to 35°C and add one by one under mixing phases D, E, and F.",
+   "Complete cooling to 25°C under mixing."
+  ]
+ },
+ {
+  "code": "2097-1.29",
+  "ID": 10977,
+  "name": "全面防护粉底液",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Tinted fluid emulsion"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 6 000 mPa.s after 24h"
+   },
+   {
+    "label": "Photostability",
+    "value": "90%"
+   },
+   {
+    "label": "SPF in vivo (ISO 24 444)",
+    "value": "26.5 (5 subjects)"
+   },
+   {
+    "label": "Critical wavelength",
+    "value": "380 nm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A1 up to 60°C and homogenize under stirring (1000 rpm) for 5 min.",
+   "Disperse A2 under stirring and then homogenize with ultra turrax (10 000 rpm) for 2 min, then add to A1.",
+   "Prepare A3: heat DPPG at 60°C, add slowly pigments under stirring and stir for 10 min. Then use a three roll mill to smooth the dispersion.",
+   "Add A3 to A1+ A2 and homogenize with rotor stator (2500 rpm) for 5 min.",
+   "Heat B up to 50°C.",
+   "Add B (50°C) to A (60°C) under mixing and homogenize with rotor stator (3000 rpm) for 5 min.",
+   "Prepare C: premix and homogenize with ultra turrax (10 000 rpm) for 2 min.",
+   "Cool A+B to 40°C and add C. Then homogenize with rotor stator (3000 rpm) for 2 min.",
+   "Cool under moderate mixing."
+  ]
+ },
+ {
+  "code": "2859-1.15",
+  "ID": 10976,
+  "name": "粉色果冻乳液",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid pink bi-gel"
+   },
+   {
+    "label": "pH",
+    "value": "6.0 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 5700 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 90% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Weight Original Extract™ Cranberry Bio of phase A1 and add Carbopol® Ultrez 10 under stirring.",
+   "Add premix A2 into A1 and mix under medium shear for 10 minutes. Check that everything is homogeneous.",
+   "Pre-neutralize the carbomer before emulsification by adding A3 into A1+A2.",
+   "Mix oil phase B until homogeneous.",
+   "Proceed with the emulsion. Add slowly B into A under medium shear and then increase to high shear (3000 rpm) for 10-15 minutes.",
+   "Finalize neutralization of the carbomer by adding phase C under moderate mixing.",
+   "Finally add D, E and F. Check that everything is well dispersed."
+  ]
+ },
+ {
+  "code": "2745-3.04",
+  "ID": 10975,
+  "name": "闪光软糖固体高光",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771094087877&bvid=BV1vbbpeWE81&cid=500001612633322&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "glittery purple jelly cube"
+   },
+   {
+    "label": "pH",
+    "value": "6.5 ± 0.5"
+   },
+   {
+    "label": "Natural origin",
+    "value": "97,4% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of phase A1 to 80°C.",
+   "Disperse Pemupur™ Start Polymer into phase A1 for 10 minutes under rapid mixing (2000 rpm), maintain heating to 80°C.",
+   "Under rapid mixing (2000 rpm), add Kelcogel to the water+dyes of phase A2, heat to 80°C, mix until homogenous.",
+   "Add phase A1 into phase A2 and heat up to 85°C.",
+   "Prepare phase B and heat to 85°C.",
+   "Under rapid mixing (Rotor/Stator 3000 rpm), add phase B to phase A, maintain rapid mixing for about 5 min until homogenous, add phase C and mix again.",
+   "Then pour into the mold/stick at minimum 60°C and let cool down for 30 minutes."
+  ]
+ },
+ {
+  "code": "2133-1.06",
+  "ID": 10974,
+  "name": "薄荷玩趣足部护理霜",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Green cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.2 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 180 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse A2 into A1 and mixing 5 minutes.",
+   "Heat A1+A2 and B to 90°C.",
+   "Add B slowly to A1+A2 and maintain under rapid mixing for 5 minutes.",
+   "Add C and maintain under rapid mixing for 5 minutes, at 85°C.",
+   "Cooling slowly and at 55°C, add D, E and F under mixing.",
+   "At 50°C, put quickly in the pack."
+  ]
+ },
+ {
+  "code": "2441-1.03",
+  "ID": 10973,
+  "name": "头部护理泥膜",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771094021863&bvid=BV1LbbpeWEbS&cid=500001612633795&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Thick green emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "7.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 100 000 mPa.s after 24H"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   },
+   {
+    "label": "Biodegradable",
+    "value": "88% (OECD 301F)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Under mixing, disperse Avicel® PC 591 into water of B1 heated to 75°C.",
+   "Continue mixing for about 10 min.",
+   "Prepare B2 and homogenize, then under mixing add to B1 and continue mixing for about 5 min.",
+   "Add B3 to B1+B2 under mixing.",
+   "Prepare A and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add A heated to 75°C to B heated to 75°C.",
+   "Maintain rapid mixing for about 10 min.",
+   "Cool under mixing and at about 35°C, add C and D.",
+   "Complete cooling."
+  ]
+ },
+ {
+  "code": "2790-1.03",
+  "ID": 10972,
+  "name": "高遮瑕粉底液",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Liquid beige emulsion"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">94% (ISO 16128)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 51500 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "In the main vessel, mix phase A.",
+   "Add ingredients of phase B one by one and disperse with Ultra Turrax for 5 minutes. Check that everything is dispersed homogeneously.",
+   "Prepare the pigment phase C: wet pigments with Labrafac™ CC MB and Emulium® Illustro, and use a three roll mill to get a homogeneous paste. Add to phase A+B and disperse the pigment paste with high shear or Ultra Turrax.",
+   "Check that everything is dispersed homogeneously.",
+   "Prepare water phase D and solubilize the electrolytes.",
+   "Proceed with the emulsion of phase D into phase A+B+C at room temperature under medium shear, and then increase to high shear (3000 rpm) for 10 minutes.",
+   "Under moderate shear add the powder of phase E. Mix under moderate shear for 5 minutes.",
+   "Add then phase F and phase G one by one."
+  ]
+ },
+ {
+  "code": "2532-2.01",
+  "ID": 10971,
+  "name": "高效防护乳 SPF50",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and slightly yellow lotion"
+   },
+   {
+    "label": "pH",
+    "value": "5.8 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 6 500 mPa.s after 24h"
+   },
+   {
+    "label": "SPF in vivo (ISO 24444)",
+    "value": "56 (5 subjects)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443)",
+    "value": "19"
+   },
+   {
+    "label": "Water resistance",
+    "value": "56%"
+   },
+   {
+    "label": "Critical wavelength",
+    "value": "377 nm Tests performed on formula 2532-1.26"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water to 75°C and add under stirring Kelco Care Diutan, let the gel swell for 5 min, then add A2 and A3",
+   "under stirring.",
+   "Heat B1 to 80°C under stirring until complete solubilization of UV filters.",
+   "Heat B2 to 70°C, add TiO 2 slowly under mixing and homogenize for 5 min.",
+   "Add B2 to B1.",
+   "Add B (75°C) slowly to A (75°C) under mixing (2000 rpm) for 15 min.",
+   "Add C and mix for 5 min at 2000 rpm.",
+   "Cool to 35°C under medium speed mixing (1000 rpm).",
+   "Add D under mixing and homogenize for 2 min.",
+   "Complete cooling to 25°C under stirring."
+  ]
+ },
+ {
+  "code": "2758-1.11",
+  "ID": 10970,
+  "name": "细致柔滑长效防水眼线笔",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771110865558&bvid=BV1YYbpeDEhx&cid=500001612636019&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Purple thick cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "107 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "92% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Weight ingredients of phase A and heat at 75°C.",
+   "In a separate beaker, disperse Avicel® PC 591 of phase B into water, previously heated to 75°C, mix under high shear (rotor stator/ ultra turrax) for about 10 min.",
+   "Under rapid mixing, add Vanatural of phase B and maintain mixing with high shear for about 10 min. Then, add xanthan gum of phase B with moderate speed.",
+   "Under rapid mixing (Rotor/Stator 3000 rpm), slowly add phase A to phase B until homogenous.",
+   "Cool under moderate mixing to 35°C, add phase C and control the color.",
+   "Adjust pH with phase D if necessary (pH value 7.3-8.3)."
+  ]
+ },
+ {
+  "code": "2860-1.19",
+  "ID": 10969,
+  "name": "保湿润色润唇膏",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Pink lipstick"
+   },
+   {
+    "label": "Drop point",
+    "value": "76°C"
+   },
+   {
+    "label": "Rupture test",
+    "value": "500 g/F"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat phase A at 85°C, mix slowly and control that everything is melted and homogeneous.",
+   "Add the powder of phase B and disperse with Ultra Turrax (2000rpm) for 5 minutes.",
+   "Prepare the premix C, by wetting the pigment, and grind with a 3 roll mill. Control that the dispersion is homogeneous.",
+   "Add premix C into A+B (85°C) and disperse with Ultra Turrax (2000rpm) for 5 minutes.",
+   "Prepare the premix D at 65°C. It will form a homogenous paste.",
+   "Add premix D (65°C) into A+B+C (85°C) and disperse with Ultra Turrax (2000rpm) for 5 minutes.",
+   "Add phase E into A+B+C+D at 85°C. Mix slowly.",
+   "Pour at 82°C ±2°C in a lipstick mold previously heated at 40°C. No need to use silicone spray into the mold.",
+   "Let cool down 30 minutes at room temperature and then freeze for 20 minutes."
+  ]
+ },
+ {
+  "code": "1982-1.13",
+  "ID": 10968,
+  "name": "冰霜焕肤日霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "wow",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Blue jelly emulsion"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 130 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 90% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A.",
+   "Under mixing, add Novemer™ EC-2 to water of phase B, then under rapid mixing, add Cosmedia® SP.",
+   "Continue rapid mixing until homogeneity of phase B.",
+   "Prepare C and D, then add to B.",
+   "Add A on top of B+C+D before mixing then mix quickly (Rotor/Stator 3000 rpm).",
+   "Continue rapid mixing for about 15 minutes.",
+   "Cool if necessary."
+  ]
+ },
+ {
+  "code": "2908-1.19",
+  "ID": 11111,
+  "name": "冰爽眼霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "wow",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://www.youtube.com/embed/mHuqqdQUSkk?",
+   "title": "Upon application"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Turquoise blue stick"
+   },
+   {
+    "label": "Drop point",
+    "value": "64.6°C"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare in the main vessel the oil phase A, heat at 80°C and disperse Bentone Gel® under medium to high shear. Control homogeneity of the phase.",
+   "Prepare water phase B and heat at 80°C.",
+   "Proceed with the emulsion of phase B into phase A at 80°C under rapid mixing, then maintain high shear (Rotor/Stator 3000 rpm) during 10 min.",
+   "Prepare phase C and add to phase A+B at 80°C. Mix until homogeneous.",
+   "Add phase D and mix under medium shear until everything is incorporated.",
+   "Cool down under medium shear and at 74°C+/-2°C pour directly into the bottom filled packaging or into the mold."
+  ]
+ },
+ {
+  "code": "2899-1.06",
+  "ID": 11110,
+  "name": "亮眼精华液",
+  "pictos": [],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Soft white emulsion with slight pink iridescence"
+   },
+   {
+    "label": "pH",
+    "value": "5.3 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 20000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99.7% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "In the main vessel, weight phase A1 and heat at 75°C. Disperse Structure® XL under high shear for 10 minutes. Check that everything is well dispersed.",
+   "Prepare the premix of phase A2 and add it into A1. Disperse for 5 minutes until homogeneous. Set the temperature at 70°C.",
+   "Add oil phase A3 (not necessarily previously heated) into A1+A2 and heat at 70°C. Once melted, proceed with the emulsion under high shear (2000-3000rpm) for 10 minutes.",
+   "Cool down until reaching 40°C under moderate mixing.",
+   "Add Jeechem® NDA-LC (volatile oil) of phase B and mix under high shear for 10 minutes. Check that everything is homogenous. This specific process permits to use a low flashpoint oil without taking the risk to evaporate it.",
+   "Continue to cool down and below 30°C, add the ingredients of phase C, D, E, one by one and disperse under medium shear. Check that everything is well incorporated.",
+   "Finish to cool down, check pH and adjust with phase F."
+  ]
+ },
+ {
+  "code": "2656-2.20",
+  "ID": 10967,
+  "name": "瞬亮有色霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Beige tinted cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.3 ± 0.2 (due to the preservative, pH of aqueous phase is adjusted under 5.5)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 65000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare phase A: Disperse Avicel into water heated to 80°C and mix for about 15 min and add slowly under stirring premix of xanthan gum and glycerin, stir for 5min then add Amphisol® K at 70°C under mixing, mix for 2 min.",
+   "Prepare phase B and heat to 70°C.",
+   "Under rapid mixing (Rotor/Stator 3000 rpm), add B to A slowly.",
+   "Continue rapid mixing for about 10 min then let it cool under mixing.",
+   "At about 40°C, add phase C and phase D.",
+   "Prepare G by grinding it 3 times with a three-roll mill.",
+   "Complete cooling and at about 30°C, add E, F, G and H. Mix for 15 min."
+  ]
+ },
+ {
+  "code": "2435-1.02",
+  "ID": 10966,
+  "name": "强效营养护发膏",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771110864588&bvid=BV1YYbpeDEUu&cid=500001612636658&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Translucent white gel-cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.6 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 25 000 mPa.s after 24H."
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A1 and heat to 75°C.",
+   "Prepare A2: under mixing, add Actigum CS 11 QD, then the premix Glycerin + Satiaxane VPC 911 to water and heat to 75°C.",
+   "Under slow mixing, add A3 to A1+A2. - Prepare B and heat to 75°C.",
+   "Without mixing, add B to A, then mix slowly (around 400 rpm) with a defloculent (no rotor stator).",
+   "Continue mixing at around 400 rpm for about 10 min. - Cool under slow mixing and at about 35°C, add C."
+  ]
+ },
+ {
+  "code": "2578-1.16",
+  "ID": 10965,
+  "name": "高效防护防晒霜 SPF50",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and sightly peach cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.2 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 14000 ± 2000 mPa.s after 24h"
+   },
+   {
+    "label": "Photostability",
+    "value": "92%"
+   },
+   {
+    "label": "",
+    "value": "Conform to Australian, EU, Japan, UK, MERCOSUR, and China regulations"
+   },
+   {
+    "label": "SPF in vivo (ISO 24444:2010)",
+    "value": "53.6* (4 vol.)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443:2021)",
+    "value": "29.7*"
+   },
+   {
+    "label": "",
+    "value": "* Tests conducted on a similar formula (1704-1.23). In vitro measurement highlights same absorbance curve."
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Mix A1.",
+   "Premix A2, add to A1 and stir until complete dispersion of xanthan gum. Then heat at 60°C and add A3.",
+   "Add A4 under high shear (Ultra Turrax is possible to make sure there are no lumps of gel), then add A5 and stir until complete solubilization of EDTA.",
+   "Mix A6 until complete solubilization of Parsol® HS and then add to batch.",
+   "Heat B1 at 80°C until complete solubilization of UV filters, then let it cool to 60°C and add B2, stir until complete solubilization then add B3 and homogenize.",
+   "Add slowly B (60°C) into A (60°C) under mixing and homogeneize for 15min at 2000rpm.",
+   "Cool down to 35°C under moderate mixing (about 800rpm) and add premix C under stirring.",
+   "Add D to adjust final pH at 7.2 and stir for 10min. If needed to have a thinner emulsion, adding 1min of high shear is possible."
+  ]
+ },
+ {
+  "code": "2583-1.20",
+  "ID": 10964,
+  "name": "柠檬凝乳面膜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "wow",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771110800634&bvid=BV1GYbpeDEeL&cid=500001612637608&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Yellow cream gel"
+   },
+   {
+    "label": "pH",
+    "value": "3.1 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 110 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Add glycerin to water of A and heat to 75°C under mixing.",
+   "Add Structure XL and mix for about 10 min, then add Natrosol Plus and mix for about 10 min.",
+   "Add B to A. - Prepare C and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm) add C to A+B, maintain rapid mixing for about 10 min.",
+   "At about 50°C, add D under rapid mixing (rotor stator 3000 rpm).",
+   "Maintain mixing for about 5 min then cool under slow mixing.",
+   "At about 35°C, add other ingredients of E."
+  ]
+ },
+ {
+  "code": "2618-2.52",
+  "ID": 10963,
+  "name": "岩浆面膜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771127708443&bvid=BV19abpeHESs&cid=500001612638502&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Black pellets"
+   },
+   {
+    "label": "Natural origin",
+    "value": "98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A and heat to 85°C.",
+   "Prepare B: weigh Surfhope C-1616 and add Hydramol TGL, mix until homogenization, then add water and heat to 75°C.",
+   "Prepare C and heat to 75°C under mixing for about 20-25 min until homogenization.",
+   "Add C to A.",
+   "Under rapid mixing (3000 rpm), add B to A+C and mix for about 10 min.",
+   "Add D, E and F and pour at around 50°C."
+  ]
+ },
+ {
+  "code": "2861-1.02",
+  "ID": 10962,
+  "name": "纤长睫毛打底膏",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Soft white cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.6 ± 0.3"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 40000 mPa.s at t0 approx. 70000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat B at 85°C. Check that all ingredients are melted (could present some turbidity due to Emulium® Dolcea MB) and maintain the phase at 85°C.",
+   "Heat the water of phase A1 at 70°C. Add Avicel® PC591 and Satiaxane™ VPC 911 one by one and disperse under medium/high shear for 15 minutes each. Check that everything is dispersed homogeneously.",
+   "Add phase A2 to phase A1 and disperse with Ultra Turrax for 10 minutes. Check that everything is dispersed homogeneously. Heat the water phase A1+A2 at 85°C.",
+   "Proceed with the emulsion of phase B into phase A (A1+A2) at 85°C under medium shear, and then increase to high shear (3000 rpm) for 10-15 minutes.",
+   "Cool down by stages of 5-10°C with moderate stirring, and below 45°C add phase C.",
+   "Finish to cool down until reaching 25°C. Adjust pH if necessary (phase D)."
+  ]
+ },
+ {
+  "code": "2177-7.05",
+  "ID": 10961,
+  "name": "矿物防晒霜 SPF50",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771127708250&bvid=BV19abpeHECR&cid=500001612639273&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and white cream"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 9 000 mPa.s after 24h"
+   },
+   {
+    "label": "Conform to worldwide regulations SPF in vivo (ISO 24444)",
+    "value": "52 (3 subjects)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443)",
+    "value": "16.75 Critical wavelenght: 376 nm"
+   },
+   {
+    "label": "Natural origin",
+    "value": "98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "",
+  "opItems": []
+ },
+ {
+  "code": "2367-2.07",
+  "ID": 10960,
+  "name": "极简柔肤霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White fluid cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.0 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 16 200 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">95% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare oily phase A and heat to 75°C.",
+   "In the main vessel, prepare phase B adding structure Solanace to water at room temperature, then heat at about 75°C under mixing until homogeneous.",
+   "Add C into B with high shear. Check the homogeneity.",
+   "Emulsify A into B+C at about 75°C under mixing (deflocculating turbine 3000 rpm), and mix for about 10 min.",
+   "Cool down under mixing.",
+   "Adjust the pH if necessary."
+  ]
+ },
+ {
+  "code": "2655-3.16",
+  "ID": 10959,
+  "name": "保湿身体喷雾",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid ivory emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 9600 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat phase A1 at 70-75°C.",
+   "Phase A2: Disperse gellan and xanthan gums into glycerin and then add into Phase A1, previously heated at 70-75°C.",
+   "Phase A3: Heat water at 70°C and solubilize Amphisol® K. When A3 is homogeneous, add into A1+A2.",
+   "In the melter, prepare phase B and heat at 70-75°C.",
+   "Proceed with the emulsion at 70-75°C: under stirring (2000 rpm), add phase B into Phase A1+A2+A3.",
+   "Homogenize for 5 min with rotor stator at 3000rpm.",
+   "Cool under normal stirring and at about 45°C, add Phase C.",
+   "Adjust pH with D.",
+   "Cool under normal stirring until 25°C."
+  ]
+ },
+ {
+  "code": "2714-1.07",
+  "ID": 10958,
+  "name": "多功能眼影",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Gold brown cream"
+   },
+   {
+    "label": "pH",
+    "value": "7.3 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 95000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat phase B at 75°C. Check that all ingredients are melted and maintain at 75°C.",
+   "In the main vessel, prepare phase A. Heat water at 75°C and add AVICEL® PC 591 and SATIAXANE™ VPC 911 one by one and disperse with high shear for 15-20 minutes each. Add the VANATURAL® under Ultra Turrax for 5 min at 75°C. Maintain the water phase A at 75°C.",
+   "Proceed with the emulsion of phase B into phase A at 75°C under medium shear, and then increase to high shear (3000 rpm) for 10 minutes.",
+   "Cool down under moderate shear and below 40°C add phase C. Mix under moderate shear for 10-15 minutes.",
+   "Finish to cool down until reaching 25°C. Check the pH and adjust if necessary."
+  ]
+ },
+ {
+  "code": "2398-1.06",
+  "ID": 10957,
+  "name": "维生素唤能柔肤乳",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Ivory fluid emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.4 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 6 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128), 89% organic"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Under mixing, disperse A2 into A1 heated to 80°C, maintain mixing for about 20 min.",
+   "Prepare premix A3 and add to A1+A2, maintain mixing for about 10 min.",
+   "Heat A4 to 80°C and add to A1+A2+A3.",
+   "Prepare B and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add B to A1+A2+A3+A4 at about 70°C.",
+   "Maintain rapid mixing for about 10 min.",
+   "Cool under mixing and at about 30°C, add C, D and E.",
+   "Complete cooling."
+  ]
+ },
+ {
+  "code": "1936-1.01",
+  "ID": 10956,
+  "name": "天然贴肤粉底液",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   },
+   {
+    "iconType": "plume",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Beige cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.2 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 37 000 mPa.s after 24H"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Under rapid mixing disperse A2 into the water for 10 minutes, then A3 for another 10 minutes.",
+   "Add B to A then heat to 70°C maximum.",
+   "Under rapid mixing, add C heated to 70°C to A+B.",
+   "Maintain rapid mixing for 15 minutes.",
+   "Cool under mixing and add D, E then F at 40°C.",
+   "Complete cooling."
+  ]
+ },
+ {
+  "code": "2023-3.06",
+  "ID": 10955,
+  "name": "天然无暇粉底液",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light brown bright cream"
+   },
+   {
+    "label": "",
+    "value": "Due to the preservative system, pH of the aqueous phase is adjusted under 5.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 13 400 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "COLD PROCESS (except preparation of A)",
+   "Prepare A in advance: heat A to 93-95°C and mix at the same time.",
+   "Prepare C and pass it through a three roll mill 3 times.",
+   "Prepare D: add Aerosil 200 to the ingredients of D, mix until homogenization.",
+   "Add B to A.",
+   "Add C to A+B.",
+   "Add D to A+B+C.",
+   "Prepare E, then under rapid mixing (rotor stator 3000 rpm) add E to A+B+C+D.",
+   "Continue rapid mixing for about 10 min.",
+   "If necessary, cool under mixing and add the others components."
+  ]
+ },
+ {
+  "code": "2358-1.21",
+  "ID": 10954,
+  "name": "颈部&法令纹嫩肤霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771127576711&bvid=BV1VabpeHEiv&cid=500001612640025&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Pink cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 12 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of A1 to 75°C and disperse Actigum CS 11 QD under high shear (2000 rpm) for 15 min.",
+   "Prepare premix A2 and add to A1.",
+   "Heat B to 75°C.",
+   "Add B to A under high shear (2500 rpm) for 10 min.",
+   "Cool under moderate shear and at 35°C, add C.",
+   "Add D to ajust pH."
+  ]
+ },
+ {
+  "code": "2658-2.07",
+  "ID": 10953,
+  "name": "安睡固体护理油",
+  "pictos": [
+   {
+    "iconType": "plume",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "wow3",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Translucent and shiny cream gel, purple color."
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 150000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare phase A: mix very slowly and heat to 75°C until Amphisol® K is solubilized.",
+   "Prepare phase B and heat to 75°C.",
+   "At 70°C, add phase B to phase A without mixing at first, then mix slowly (dispersing mixer max 1000 rpm).",
+   "Cool under slow mixing and at about 40°C, add phase C and phase D",
+   "Adjust pH with phase E.",
+   "Complete cooling at about 30°C."
+  ]
+ },
+ {
+  "code": "2436-1.02",
+  "ID": 10952,
+  "name": "营养头皮乳",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid white emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "6.0 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 8 000 mPa.s after 24H."
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse Avicel PC 611 into water of A1 heated to 75°C.",
+   "Prepare premix Glycerin + Satiaxane VPC 911 and add to A1.",
+   "Prepare B and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rmp), add B to A.",
+   "Continue rapid mixing for about 10 min.",
+   "Cool under mixing and at about 35°C, add the others ingredients."
+  ]
+ },
+ {
+  "code": "1823-3.13",
+  "ID": 10951,
+  "name": "户外热身防晒霜SPF50+",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "soleil",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light yellow cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.2 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 30 000 mPa.s after 24h"
+   },
+   {
+    "label": "SPF in vivo (ISO 24 444)",
+    "value": "65.8 (5 subjects)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24 443)",
+    "value": "15.97"
+   },
+   {
+    "label": "Photostability",
+    "value": "91%"
+   },
+   {
+    "label": "Critical wavelength (ISO 24 443)",
+    "value": "374 nm"
+   },
+   {
+    "label": "Water-Resistance in vivo (Colipa 2005)",
+    "value": "75.2% (5 subjects)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A1.",
+   "Premix A2 and add to A1. Mix until the Xanthan Gum swells.",
+   "Heat A1+A2 up to 78°C.",
+   "Prepare A3 and heat up to 78°C to perfectly solubilize Amphisol® K; then add to A1+A2.",
+   "Add A4 and mix for a few minutes until complete solubilization of EDTA.",
+   "Add A5.",
+   "Prepare B1 and heat up to 81°C under mixing until perfect solubilization of UV filters.",
+   "Add B2 to B1 and homogenize with Ultra-Turrax for 2 minutes.",
+   "Add slowly B to A at 78°C and mix for 10-15 minutes at 1500 rpm.",
+   "Cool to 35°C under mixing (about 800 rpm) a d add C.",
+   "Complete cooling to 25-27°C under mixing."
+  ]
+ },
+ {
+  "code": "2585-2.08",
+  "ID": 10950,
+  "name": "完美肌肤晚霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771127576765&bvid=BV1VabpeHEi1&cid=500001612640805&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Soft white cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 63 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A1 to 75°C and disperse A2 with a propeller (2000 rpm) for 20 min.",
+   "Prepare premix A3, heat to 70°C and add to A1+A2 under slow mixing to avoid foam.",
+   "Heat B to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add B to A and mix for 10 min.",
+   "Cool to 35°C and add ingredients of C one by one.",
+   "Adjust pH with D.",
+   "Cool under mixing"
+  ]
+ },
+ {
+  "code": "2494-1.13",
+  "ID": 10949,
+  "name": "防晒粉棒SPF50+",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771127706344&bvid=BV1RabpeHEEX&cid=500001612641454&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Pink mat stick"
+   },
+   {
+    "label": "Natural origin",
+    "value": "98% (ISO 16128)"
+   },
+   {
+    "label": "SPF in vivo (ISO 24444",
+    "value": "2019): 60.6 (5 vol.)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443",
+    "value": "2021): 16.3 Critical wavelengh (ISO 24443:2021) : 378nm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A to 75°C until complete solubilization.",
+   "Prepare B1 and heat to 60°C at least (for dispersion) and homogenize with ultra turrax for 6 min*.",
+   "Add B2 and homogeneize with ultra turrax for 6 min*.",
+   "Add B (at least 60°C) to A (75°C) and homogenize with ultra turrax for 2 min*.",
+   "Add C and homogenize with ultra turrax for 2 min*.",
+   "Pour at about 60°C."
+  ]
+ },
+ {
+  "code": "2479-2.04",
+  "ID": 10948,
+  "name": "妆前转换霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": "天然"
+   },
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   },
+   {
+    "iconType": "baume_1",
+    "label": "彩妆"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144354316&bvid=BV17WbpeoEpU&cid=500001612642010&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White thick fluid"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 60 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99,6% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat ingredient of phase A to 80°C while stirring with moderate speed.",
+   "Solubilize ingredients of phase B and adjust pH below 5.5 with citric acid (10%). Heat it to 70°C.",
+   "Emulsify phase B into phase A at 70°C under rapid stirring",
+   "Cool down to 35°C with moderate mixing.",
+   "Add ingredients of phase C, D, E, one by one, with rapid stirring, especially for phase D."
+  ]
+ },
+ {
+  "code": "2456-1.05",
+  "ID": 10947,
+  "name": "纯净液晶乳",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144548920&bvid=BV1EWbpeZE4T&cid=500001612642399&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White bright cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 40 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A and heat to 75°C.",
+   "Mix slowly (700 rpm) for about 10 min.",
+   "Increase the speed to 1000 rpm to homogenize then add B."
+  ]
+ },
+ {
+  "code": "2390-2.03",
+  "ID": 10946,
+  "name": "高保湿孔雀石精华",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light blue translucid serum"
+   },
+   {
+    "label": "pH",
+    "value": "6.1 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 9500 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">95% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water and propanediol of A1 to 75°C then disperse bentonite under high shear for 15 min.",
+   "Prepare premix A2 and add to A1 under moderate mixing.",
+   "Add A3 to A1+A2 (it is not limpid, it is normal), let it melt at around 70°C.",
+   "Mix A under high shear then cool.",
+   "Prepare B and add it to A1+A2+A3 at 50°C under high shear for 5 min.",
+   "Cool under moderate shear then under 40°C add C.",
+   "Adjust pH with D."
+  ]
+ },
+ {
+  "code": "2470-1.25",
+  "ID": 10945,
+  "name": "焕彩亮肤霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Slightly pink fluid cream"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 9400 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Solubilize phase A1.",
+   "In another vessel prepare phase A2, making the premix with glycerin and xanthan gum. Once homogeneous, add into A1 and disperse with rotor stator (2000 RPM) for 5-10 minutes. Check the homogeneity.",
+   "In the main vessel, weigh phase B. Disperse the Bentone gel® with rotor stator (2000 RPM) for 5-10 minutes. Check the homogeneity.",
+   "Proceed with the emulsion: Add slowly (A1+A2) into B and increase step by step the mixing speed until reaching 3000 RPM, for 10-15 minutes.",
+   "Under moderate stirring add ingredients of phase C one by one."
+  ]
+ },
+ {
+  "code": "2371-1.22",
+  "ID": 10944,
+  "name": "重塑身体霜",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144485985&bvid=BV1oWbpeoEXr&cid=500001612643129&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Thick white emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.4 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 40 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">97% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse C into water of B heated to 60°C, mix for about 10 min.",
+   "Add D and mix for about 10 min. - Heat B+C+D to 75°C.",
+   "Prepare A and heat to 75°C.",
+   "Under rapid mixing (3000 rpm), add A to B+C+D and mix for about 10 min.",
+   "Cool under mixing and at about 35°C, add E, F and G."
+  ]
+ },
+ {
+  "code": "2862-3.07",
+  "ID": 10943,
+  "name": "泛红急救霜",
+  "pictos": [],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light green paste"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 96% (ISO 16128)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle D, speed 5)",
+    "value": "approx. 100000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat phase A1 at 93-95°C to solubilize Magnesium Stearate and to obtain an homogenous gel (could take up to 45 minutes depending on mixing rate).",
+   "Add emollients of Phase A2 into Phase A1 and maintain at 93-95°C. Sprinkle Rheopearl MKL2 under high sheer during 10-20 minutes, until phase creates an homogenous gel.",
+   "Cool down to 85°C and add A3 to A1+A2. Mix until waxes are melted and phase is uniform.",
+   "Prepare premix A4 by wetting out pigments and run through the three roll mill 3 times.",
+   "Add A4 to Phase A1/A2/A3 at 75°C and mix under high sheer with rotor stator for 10-15 minutes until uniform.",
+   "Prepare water phase B by dissolving magnesium sulfate and heat to 75°C.",
+   "Proceed with the emulsion of water phase B1 into oil phase A at 75°C under rapid mixing and then increase to high shear (3000 rpm) for 15 minutes.",
+   "Cool down under medium speed (1000 rpm) until reaching 45°C and add Phase C. Continue to cool down until 30-35°C and add Phase D.",
+   "Under 30°C, add phase E under VERY SLOW mixing until it is homogeneous. DO NOT USE ROTOR STATOR: the beads of incapsulated pigments are highly shear sensitive so it requires slow mixing.",
+   "Check conformity of the bulk at 25°C, then unload the bulk at 25°C."
+  ]
+ },
+ {
+  "code": "2708-1.08",
+  "ID": 10942,
+  "name": "清爽保护双凝胶防晒SPF30",
+  "pictos": [
+   {
+    "iconType": "soleil",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144354690&bvid=BV17WbpeoExA&cid=500001612643621&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Glossy and slightly yellow fluid emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "7.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 5 000 mPa.s after 24h"
+   },
+   {
+    "label": "",
+    "value": "Conform to Australian, EU, Japan, UK and China regulations"
+   },
+   {
+    "label": "SPF in vivo (ISO 24444:2019)",
+    "value": "31 (5 subjects)"
+   },
+   {
+    "label": "UVA in vitro (ISO 24443:2021)",
+    "value": "13.1"
+   },
+   {
+    "label": "Photostability",
+    "value": "89%"
+   },
+   {
+    "label": "Critical wavelength (ISO 24443:2021)",
+    "value": "373nm"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water at 75°C, add slowly under stirring premix of xanthan gum and butylene glycol, then stirr for 5 min.",
+   "Add A2 and A3 to A and mix for 5 min.",
+   "Prepare B and heat at 82°C under stirring until complete solubilization of UV filters.",
+   "Add slowly B (75°C) to A (75°C) under rapid mixing (2000 rpm) for 15 min.",
+   "Cool to 45°C under moderate mixing (1000 rpm).",
+   "Premix C and add to the emulsion under rapid mixing.",
+   "Cool to 30°C under moderate mixing, premix D and add to the emulsion. If Corn PO4 is added at a too high temperature, it swells and increases emulsion viscosity.",
+   "Complete cooling to 25°C."
+  ]
+ },
+ {
+  "code": "2319-1.15",
+  "ID": 10941,
+  "name": "焕新卸妆膏",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Light blue emulsion"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle D, speed 5)",
+    "value": "approx. 44 300 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A1 and heat to 85°C for about 15 min.",
+   "Disperse A2 into A1 with ultra-turrax for about 5 min.",
+   "Prepare B1 and heat to 70°C, then add B2 in B1.",
+   "Under rapid mixing (rotor stator 3000 rpm), add B to A.",
+   "Maintain rapid mixing for about 10 min.",
+   "Cool under moderate mixing.",
+   "Complete cooling."
+  ]
+ },
+ {
+  "code": "2666-1.04",
+  "ID": 10940,
+  "name": "重置肌肤晚霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144353957&bvid=BV17WbpeoEG4&cid=500001612644062&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Soft white bouncy cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.4 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 26 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse Natrosol Plus 330 CS into water of B1 heated to 60°C, mix for about 10 minutes.",
+   "Add Satiaxane VPC 911 and mix for about 10 minutes.",
+   "Heat B1+B2 at 55°C.",
+   "Prepare A and heat to 65°C.",
+   "Under mixing (defloculator 3000 rpm), add A to B1+B2 and mix for 10 minutes.",
+   "Add C below 50°C and mix for 5 minutes under high shear.",
+   "Cool under mixing until 35°C, then add D and E."
+  ]
+ },
+ {
+  "code": "2372-2.06",
+  "ID": 10939,
+  "name": "乳转油修复乳",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "wow",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.7 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 17 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of A1 to 75°C and disperse Avicel PC 591 under high shear (2000-2500 rpm) for 15 min.",
+   "Prepare premix A2 and add to A1. Mix for 5 min.",
+   "Prepare B and heat to 75°C.",
+   "Add B to A (75°C) under high shear (rotor stator 2500) for 10 min.",
+   "Cool under moderate shear until 50°C then add C.",
+   "Increase agitation for 5 min then cool under moderate shear until 35°C.",
+   "Add D.",
+   "Adjust pH with E."
+  ]
+ },
+ {
+  "code": "2886-1.04",
+  "ID": 11109,
+  "name": "重焕光彩遮瑕膏",
+  "pictos": [],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Liquid beige emulsion"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">97% (ISO 16128)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 16500 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "In the main vessel, weight and heat phase A at 40°C to melt Lipocire™ A SG.",
+   "Add phase B and disperse with rotor stator until the phase is homogeneous.",
+   "Prepare the pigment phase C: wet pigments with Labrafac™ CC MB and Emulium® Illustro and use a three-roll mill to get a homogeneous paste with no undispersed particles. Add it to phase A+B and disperse the pigment paste with high shear or rotor stator. Check that everything is well dispersed.",
+   "Prepare water phase D, heat at 40°C and solubilize the electrolytes.",
+   "Proceed with the emulsion of phase D into phase A+B+C at 40°C under medium shear, and then increase to high shear (2500/3000 rpm) for 10 minutes.",
+   "Cool down under moderate shear and below 30°C add phase E and the powders of phase F. Mix under moderate shear for 5-10 minutes, until complete incorporation.",
+   "Add then phases G and H one by one, under low shear and check that the final product is homogeneous."
+  ]
+ },
+ {
+  "code": "2433-1.02",
+  "ID": 10938,
+  "name": "焕活护发修复乳",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144551377&bvid=BV17WbpeZEDb&cid=500001612644579&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid and white emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.0 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 13 500 mPa.s after 24H."
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A: dissolve Inutec H25P into water and glycerin heated to 70°C.",
+   "Under mixing, add Actigum CS 11 QD to A1.",
+   "Prepare B and heat to 70°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add B to A1+A2.",
+   "Continue rapid mixing for about 10 min.",
+   "Cool under mixing and at about 35°C, add the ingredients of C.",
+   "Add perfume and regulate pH with D."
+  ]
+ },
+ {
+  "code": "2829-1.06",
+  "ID": 10937,
+  "name": "发根再生精华液",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "cheveux-gatefosse-icone",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Ivory fluid serum"
+   },
+   {
+    "label": "pH",
+    "value": "4.8 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 4000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 98% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat phase A1 at 75°C.",
+   "Prepare the premix A2 by wetting Solagum™ AX in propanediol. Add into A1 under medium shear until the gel is formed. Check that everything is homogeneous.",
+   "Prepare phase A3 by solubilizing Amphisol® K into water heated at 80°C. Then, add A3 into A1+A2, disperse under medium shear and maintain phase A at 75°C.",
+   "Heat phase B at 75°C.",
+   "Proceed with the emulsion of phase B into phase A at 75°C under high shear (3000 rpm) for 10 minutes.",
+   "Cool down under slow mixing (50 rpm).",
+   "Below 30°C, add phases C, D, E and F one by one until homogeneous.",
+   "Check pH and adjust if necessary."
+  ]
+ },
+ {
+  "code": "2628-1.07",
+  "ID": 10936,
+  "name": "头皮&身体磨砂膏",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "jambe",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771144484588&bvid=BV1ZWbpeoEie&cid=500001612645228&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Off-white wax with grains"
+   },
+   {
+    "label": "Natural origin",
+    "value": "94% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A to 85°C, maintain at 85°C for 10 min.",
+   "Heat B to 75°C under mixing.",
+   "Add A to B and mix with a defloculent at 300 rpm for about 3 min.",
+   "Heat C to 50°C and add to A+B under mixing.",
+   "At 70°C, add D and mix with a defloculent at 400 rpm for about 4 min.",
+   "At 65°C, add E and mix at 400 rpm for about 5 min.",
+   "At 45°C, add F and mix at 500 rpm. - At 38°C, increase speed mixing at about 600 rpm.",
+   "At 35°C, pour the product in a jar."
+  ]
+ },
+ {
+  "code": "2654-2.06",
+  "ID": 10935,
+  "name": "丝滑面部精华液",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid white emulsion"
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 8000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A1 to 75°C and disperse Structure XL for 15 minutes under high shear.",
+   "Prepare premix A2. - Add A2 into A1 under moderate shear.",
+   "Heat B1 to 70°C.",
+   "Add B1 into A under high shear (2500 rpm) at 70°C for 10 minutes.",
+   "Cool under moderate shear.",
+   "At 50°C add B2 under high shear for 5 minutes, then cool.",
+   "Add C bellow 40°C.",
+   "Adjust pH with D."
+  ]
+ },
+ {
+  "code": "2073-3.14",
+  "ID": 10934,
+  "name": "丝感粉底液",
+  "pictos": [
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Tinted fluid emulsion"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 6000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A1 to 50°C and homogenize under stirring (1000 rpm) for 5 min.",
+   "Prepare A2: heat Lexfeel Natural and Emulium® Illustro to 60°C and add slowly pigments under stirring, then stir for 10 min. Then use a three roll mill to smooth the dispersion. Add to A1 and homogenize with ultra-turrax for 2 min (10 000 rpm).",
+   "Prepare B: heat water to 50°C and add salts under stirring. Mix until complete solubilization.",
+   "Add B (50°C) to A (50°C) under mixing and homogenize for 10 min at 1500 rpm.",
+   "Cool to 40°C under moderate mixing.",
+   "Prepare C and homogenize with ultra-turrax at 10 000 rpm for 2 min.",
+   "Add C under mixing.",
+   "Then cool under moderate mixing to 27°C and add D, mix for a few minutes."
+  ]
+ },
+ {
+  "code": "2463-1.01",
+  "ID": 10933,
+  "name": "抗污染面霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "plume",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.8 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield (spindle B, speed 5)",
+    "value": "approx. 31 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse Avicel® PC 591 in water under mixing during 10 min.",
+   "Then add Satiaxane CX91 + Glycerin, and maintain mixing during 10 min.",
+   "Heat A and B to 70-75°C.",
+   "Under high shear, add A to B.",
+   "Cool under mixing and around 35°C, add C.",
+   "Complete cooling under mixing."
+  ]
+ },
+ {
+  "code": "2621-2.09",
+  "ID": 10932,
+  "name": "柔肤棒",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "规格",
+  "specRows": [
+   {
+    "label": "外观",
+    "value": "灰白色固体形态"
+   },
+   {
+    "label": "天然来源",
+    "value": "92% （ISO 16128标准）"
+   }
+  ],
+  "opTitle": "作业指导书",
+  "opItems": [
+   "将A1加热到85°C，用抹刀混合，直到获得柔软的白色纹理。",
+   "将A2加入A1，用刮刀搅拌，然后在去絮凝器下搅拌2分钟，直至均质。",
+   "在 85 ° C 加热 A1 + A2",
+   "85°C加热B至少15分钟。",
+   "在 分散 器下，将 B 加到 A1 + A2 （ 2000 转/分）中 5 分钟，直到形成柔软的淡黄色糊状物。",
+   "在 减压 器下冷却至 65 ℃。",
+   "用滚边袋（约66°C）将糊状物放入模具中。",
+   "在模具中冷却（至少1小时），然后放入冰箱（2小时）以使脱模。"
+  ]
+ },
+ {
+  "code": "2493-1.08",
+  "ID": 10931,
+  "name": "柔顺防护护发乳",
+  "pictos": [
+   {
+    "iconType": "cheveux-gatefosse-icone_1",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771161130643&bvid=BV1EpbpetEHz&cid=500001612647710&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White supple cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.0 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 63 000 mPa.s after 24H."
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Solubilize Sodium Benzoate into the water of A1 heated to 75°C.",
+   "Disperse Jaguar HP-105 into A1 for 10 min under high shear.",
+   "Prepare premix A3 and add it to A1+A2 under slow mixing.",
+   "Prepare B and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add B to A.",
+   "Continue rapid mixing for about 10 min.",
+   "Cool under mixing and at about 35°C, add the others ingredients."
+  ]
+ },
+ {
+  "code": "2613-1.17",
+  "ID": 10930,
+  "name": "柔肤棒",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771161132003&bvid=BV1EpbpetEMM&cid=500001612648497&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Beige stick with brown grains"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat A to 85°C until complete homogenization.",
+   "Let the temperature go down to 70°C.",
+   "Add B, C and D under moderate mixing for 5 min.",
+   "Pour at 55°C into a stick mould."
+  ]
+ },
+ {
+  "code": "2748-2.04",
+  "ID": 10929,
+  "name": "墨汁精华",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771077310690&bvid=BV1e8bpeXEme&cid=500001612630075&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid black gel"
+   },
+   {
+    "label": "pH",
+    "value": "5,5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "Approx. 2440 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99,8% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse Exilva of phase A at room temperature into water under high shear (Ultra turrax 10 000 rpm for 10 minutes).",
+   "Prepare premix B by wetting xanthan gum with glycerin.",
+   "Add phase B into phase A, using a defloculator (moderate shear) for 10 minutes / or Ultra Turrax for 5 min.",
+   "Disperse phase C into phase A+B using ultra turrax for 10 minutes until homogenous.",
+   "Add phase D under moderate mixing.",
+   "Adjust pH with phase E."
+  ]
+ },
+ {
+  "code": "2855-3.02",
+  "ID": 10928,
+  "name": "星光亮泽精华",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Golden brown sparkling fluid cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.6 ± 0.3"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 11500 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 97% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat the water of phase A1 at 70°C and disperse Structure® XL for 15 minutes under high shear.",
+   "Add premix A2 into A1 under moderate shear for 10 minutes and check that everything is homogeneous. Maintain the temperature at 70°C.",
+   "Heat the oil phase B at 70°C. Check that everything is homogeneous.",
+   "Proceed with the emulsion of phase B into phase A (A1+A2) at 70°C, under moderate shear, and then increase to high shear (2500 rpm) for 10 minutes.",
+   "Cool down under moderate shear and below 35°C add the phase C, D and E one by one.",
+   "Add finally the pearls of phase F and mix slowly for 10 minutes.",
+   "Finish to cool down until reaching 25°C. Check the pH and adjust if necessary."
+  ]
+ },
+ {
+  "code": "2588-3.07",
+  "ID": 10927,
+  "name": "定向护理凝胶",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "acne",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771177910022&bvid=BV1L4bpeRECH&cid=500001612649473&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Yellow gel"
+   },
+   {
+    "label": "pH",
+    "value": "5.6 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 1 600 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare premix A2.",
+   "Add A2 to A1 heated to 45°C, mix for about 10 min.",
+   "Cool under mixing and at about 25°C, add B and C.",
+   "Complete cooling and add D.",
+   "Mix for about 5 min and adjust pH with E."
+  ]
+ },
+ {
+  "code": "2464-1.01",
+  "ID": 10926,
+  "name": "补水身体乳",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Ivory cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.2 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 71 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse Naviance Tapioca into A at room temperature.",
+   "Heat while mixing until 75°C, maintain for 30 min.",
+   "Add B and continue mixing.",
+   "Prepare C and heat to 65°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add C at 65°C to A+B at 65°C.",
+   "Maintain rapid mixing for about 10 min.",
+   "Cool under mixing and, at about 35°C, add the other ingredients."
+  ]
+ },
+ {
+  "code": "2421-1.01",
+  "ID": 10925,
+  "name": "紧致弹润身体黄油",
+  "pictos": [
+   {
+    "iconType": "jambe",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White thick cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.1 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 101 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water of A1 to 75°C and disperse Avicel PC 591 using a propeller (2000 rpm) for 20 min.",
+   "Prepare premix A2 and add to A1 under moderate mixing for 5 min.",
+   "Heat B1 to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm) add B1 to A and maintain mixing for 5 min.",
+   "Cool and add B2 at 50°C. Maintain mixing for 5 min (1500 rpm).",
+   "Cool and add C at 30°C.",
+   "Complete cooling under mixing."
+  ]
+ },
+ {
+  "code": "2739-1.08",
+  "ID": 10924,
+  "name": "超哑光遮瑕",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "baume_1",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Liquid beige emulsion"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">97% (ISO 16128)"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 39000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "In the main vessel, heat phase A at around 45°C to melt Lipocire™ A SG.",
+   "Add ingredients of phase B one by one and disperse with Ultra Turrax for 5 minutes. Check that everything is dispersed homogeneously.",
+   "Prepare the pigment phase C: wet pigments with Cetiol® CC and Emulium® Illustro and use a three roll mill to get a homogeneous paste. Add then to phase A+B and disperse the pigment paste with high shear or Ultra Turrax.",
+   "Prepare water phase D and solubilize the electrolytes. Heat at 45°C.",
+   "Proceed with the emulsion of phase D into phase A+B+C at 45°C under medium shear, and then increase to high shear (3000 rpm) for 10 minutes.",
+   "Cool down under moderate shear and below 35°C add the powders of phase E. Mix under moderate shear for 5-10 minutes.",
+   "Add then phase F."
+  ]
+ },
+ {
+  "code": "2719-1.02",
+  "ID": 10923,
+  "name": "超平滑眼周眼霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plume",
+    "label": ""
+   }
+  ],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Smooth white cream with a foamy texture"
+   },
+   {
+    "label": "pH",
+    "value": "5.4 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 120000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "> 99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A1, heat water at 60°C and add the starch under mixing, mix for about 10 min then add A2 and mix quickly for about 10 minutes more.",
+   "Prepare A3: Solubilize SSG into water by heating (60°C).",
+   "Add phase A3 to A1+A2 and heat to 75°C.",
+   "Prepare phase B and heat to 75°C.",
+   "Under rapid mixing (3000 rpm), add B to A, mix for about 10 min.",
+   "Cool under moderate mixing and at 35°C add C.",
+   "Adjust pH with D"
+  ]
+ },
+ {
+  "code": "2406-1.01",
+  "ID": 11114,
+  "name": "多用途面霜",
+  "pictos": [],
+  "video": null,
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White bright cream"
+   },
+   {
+    "label": "pH",
+    "value": "6.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 76 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": ">95% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Under mixing, disperse Avicel® PC 591 for about 15 min, then Satiaxane CX91 for about 10 min into water of B heated to 75-80°C.",
+   "Prepare A and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add A to B at 75°C and maintain rapid mixing for about 10 min.",
+   "Cool under mixing and at about 35°C, add C.",
+   "Complete cooling"
+  ]
+ },
+ {
+  "code": "2584-1.05",
+  "ID": 10922,
+  "name": "洁净精华",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771177910068&bvid=BV1L4bpeREC6&cid=500001612650123&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Fluid yellow serum"
+   },
+   {
+    "label": "pH",
+    "value": "5.3 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle B, speed 5)",
+    "value": "approx. 5800 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Heat water and Original Extract™ Lemon Bio to 75°C and disperse Actigum under high shear for 15 min.",
+   "Prepare premix A2 and add into A1 under medium shear.",
+   "Add A3 to A1+A2 (not transparent) at 70°C.",
+   "Mix A under medium shear (1500 rpm) and cool to 50°C.",
+   "Add B to A1+A2+A3 at 50°C under high shear for 5 min (3000 rpm).",
+   "Cool under medium shear and below 40°C add C and D. - Adjust pH with E."
+  ]
+ },
+ {
+  "code": "2495-1.25",
+  "ID": 10921,
+  "name": "抗衰老日霜",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": "护肤"
+   },
+   {
+    "iconType": "plante",
+    "label": "天然"
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771177910099&bvid=BV1L4bpeREr9&cid=500001612650535&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "Pink cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.5 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 120 000 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "99% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare A and heat to 75°C.",
+   "Predisperse Solagum AX into glycerin and add to water of B heated to 75°C, mix for about 10 min.",
+   "Under vacuum and rapid mixing (2500 rpm), add A heated (75°C) to B (75°C).",
+   "Mix for about 10 min at 2500 rpm and cool under moderate mixing (1500 rpm).",
+   "Add C at about 35°C, then add the other ingredients one by one."
+  ]
+ },
+ {
+  "code": "2671-2.05",
+  "ID": 10920,
+  "name": "青春守护精华液",
+  "pictos": [
+   {
+    "iconType": "pot",
+    "label": ""
+   },
+   {
+    "iconType": "plante",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771177909105&bvid=BV1j4bpeREcM&cid=500001612651165&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White fluid"
+   },
+   {
+    "label": "pH",
+    "value": "6.7 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle A, speed 5)",
+    "value": "approx. 3 200 mPa.s after 24h"
+   },
+   {
+    "label": "Natural origin",
+    "value": "97% (ISO 16128)"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Disperse Kelco-Care™ Diutan Gum into A2.",
+   "Add A2 in A1 heated to 65°C under mixing and maintain for 20 min. Then add A3 and mix for 5 min.",
+   "Heat B to 65°C and add to A under mixing.",
+   "Cool under mixing and at about 25°C, add C.",
+   "Complete cooling under mixing."
+  ]
+ },
+ {
+  "code": "2590-1.08",
+  "ID": 10919,
+  "name": "零油光面霜",
+  "pictos": [
+   {
+    "iconType": "plante",
+    "label": ""
+   },
+   {
+    "iconType": "pot",
+    "label": ""
+   }
+  ],
+  "video": {
+   "url": "https://player.bilibili.com/player.html?isOutside=true&aid=112771177909140&bvid=BV1L4bpeREfe&cid=500001612651632&p=1",
+   "title": "视频"
+  },
+  "specTitle": "Specifications",
+  "specRows": [
+   {
+    "label": "Aspect",
+    "value": "White cream"
+   },
+   {
+    "label": "pH",
+    "value": "5.6 ± 0.5"
+   },
+   {
+    "label": "Viscosity Brookfield RV (spindle C, speed 5)",
+    "value": "approx. 115 000 mPa.s after 24h"
+   }
+  ],
+  "opTitle": "Operating instruction",
+  "opItems": [
+   "Prepare phase A and heat to 75°C.",
+   "Disperse C into B heated to 75°C under mixing, mix for about 10 min under high shear.",
+   "Add D to B+C and mix for about 10 min under high shear.",
+   "Prepare F: add Eumulgin® SG to water under slow mixing until complete dissolution (heat if necessary).",
+   "Add E then F to B+C+D and heat to 75°C.",
+   "Under rapid mixing (rotor stator 3000 rpm), add A to B+C+D+E+F and maintain rapid mixing for about 10 min.",
+   "Cool to 35°C then add G, H, I and J.",
+   "Complete cooling."
+  ]
+ }
+]

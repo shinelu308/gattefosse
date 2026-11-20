@@ -7811,7 +7811,7 @@ createApp({
           rightUrl: block._rightUrl || '',
         };
       } else if (block.blockType === 'spec') {
-        content = { rows: (block._specRows || []).filter(function(r) { return r.label; }) };
+        content = { rows: (block._specRows || []).filter(function(r) { return String(r.label || '').trim() || String(r.value || '').trim(); }) };
       }
       var payload = { blockType: block.blockType, title: block.title, content: JSON.stringify(content), sortOrder: block.sortOrder || 0, isPublished: true, productType: 'pharma' };
       if (block.id) {
@@ -8309,7 +8309,7 @@ createApp({
       } else if (block.blockType === 'related') {
         content = { products: (block._productList || []).map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) };
       } else if (block.blockType === 'spec') {
-        content = { rows: (block._specRows || []).filter(function(r) { return String(r.label || '').trim(); }).map(function(r) { return { label: String(r.label).trim(), value: r.value || '' }; }) };
+        content = { rows: (block._specRows || []).filter(function(r) { return String(r.label || '').trim() || String(r.value || '').trim(); }).map(function(r) { return { label: String(r.label || '').trim(), value: r.value || '' }; }) };
       } else if (block.blockType === 'formula') {
         content = { rows: (block._formulaRows || []).filter(function(r) { return String(r.name || '').trim() || String(r.inci || '').trim(); }).map(function(r) {
           return {
