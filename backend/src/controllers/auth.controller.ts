@@ -18,6 +18,9 @@ const registerSchema = z.object({
   fullName: z.string().min(1, '姓名不能为空'),
   company: z.string().optional(),
   phone: z.string().optional(),
+  market: z.string().optional(), // 行业（个人护理 / 药用辅料）
+  department: z.string().optional(), // 工作职能
+  address: z.string().optional(), // 联系地址
 });
 
 /**
@@ -89,7 +92,7 @@ export async function register(req: Request, res: Response) {
       return res.status(400).json(fail(parsed.error.errors[0].message));
     }
 
-    const { email, password, fullName, company, phone } = parsed.data;
+    const { email, password, fullName, company, phone, market, department, address } = parsed.data;
 
     // 检查邮箱是否已存在
     const existing = await prisma.user.findUnique({ where: { email } });
@@ -108,6 +111,9 @@ export async function register(req: Request, res: Response) {
         fullName,
         company,
         phone,
+        market: market || null, // 行业
+        department: department || null, // 工作职能
+        address: address || null, // 联系地址
         role: 'user',
         status: 'pending', // 需要管理员审核
       },

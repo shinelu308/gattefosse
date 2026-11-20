@@ -4790,7 +4790,7 @@ const QUILL_TOOLBAR = [
             </div>
             <div class="card-body" style="padding:0;" data-page-node-id="gIkqBGioOQIBkrPE88EURQ">
               <table class="table" data-page-node-id="CgXdG1Z64kCi8I92DCG9y2">
-                <thead data-page-node-id="jSMfGhxuIO4EbtrRBD5dBn"><tr data-page-node-id="3r22WolC4LgHh0BP8IiIkt"><th data-page-node-id="sAEvWND0PnVi5HHVcig92h">姓名</th><th data-page-node-id="zbEam3gBTG3E8CXfH1BWDu">邮箱</th><th data-page-node-id="K7vpZISiqT9Io9h1CivSK5">公司</th><th style="white-space:nowrap;" data-page-node-id="MemThMarket01">关注市场</th><th style="white-space:nowrap;" data-page-node-id="X8lncDLo7bEHNLVqErWRHD">状态</th><th data-page-node-id="3HyZ4tFk3i3uXoPFYtNvLD">注册时间</th><th style="white-space:nowrap;" data-page-node-id="cWy61HgF96xdEuaqZVyulf">操作</th></tr></thead>
+                <thead data-page-node-id="jSMfGhxuIO4EbtrRBD5dBn"><tr data-page-node-id="3r22WolC4LgHh0BP8IiIkt"><th data-page-node-id="sAEvWND0PnVi5HHVcig92h">姓名</th><th data-page-node-id="zbEam3gBTG3E8CXfH1BWDu">工作邮箱</th><th data-page-node-id="K7vpZISiqT9Io9h1CivSK5">公司/机构</th><th style="white-space:nowrap;" data-page-node-id="MemThMarket01">行业</th><th style="white-space:nowrap;" data-page-node-id="X8lncDLo7bEHNLVqErWRHD">状态</th><th data-page-node-id="3HyZ4tFk3i3uXoPFYtNvLD">注册时间</th><th style="white-space:nowrap;" data-page-node-id="cWy61HgF96xdEuaqZVyulf">操作</th></tr></thead>
                 <tbody data-page-node-id="8aXVsHgweVTaZcy5fgKBEW">
                   <tr v-if="userList.length===0" data-page-node-id="ABgMZXhyBuwCgGFp836yak"><td colspan="7" class="cell-center" data-page-node-id="0rprz4zmtmt11WLwiuZWxf">暂无会员数据</td></tr>
                   <tr v-for="item in userList" :key="item.id" data-page-node-id="36LAhmNsc4X5KK8bWAnH9E">
@@ -4835,36 +4835,54 @@ const QUILL_TOOLBAR = [
               </div>
               <div class="form-row" data-page-node-id="oljeL6xJrtIDozLHhciU2p">
                 <div class="form-group" data-page-node-id="iAPwViaBU5HxGRTZkbsULZ">
-                  <label data-page-node-id="L8wG5u8yq54MnBN2clCrcC">公司</label>
+                  <label data-page-node-id="L8wG5u8yq54MnBN2clCrcC">公司/机构名称</label>
                   <input type="text" class="form-control" v-model="editingUser.company" data-page-node-id="R5ruCDFXjRYLHFZ0Ztk9TE">
                 </div>
                 <div class="form-group" data-page-node-id="4ORqoJaLFZtFpdePZD0fRg">
-                  <label data-page-node-id="g0RTIOxfG6qbapOswXmsu3">关注市场 <span class="hint" data-page-node-id="MemMarketHint01">（会员关注的嘉法狮业务线）</span></label>
+                  <label data-page-node-id="g0RTIOxfG6qbapOswXmsu3">行业</label>
                   <select class="form-control" v-model="editingUser.market" data-page-node-id="MemMarketSel001">
                     <option value="" data-page-node-id="MemMarketOpt0">未填写</option>
                     <option value="个人护理" data-page-node-id="MemMarketOpt1">个人护理</option>
                     <option value="药用辅料" data-page-node-id="MemMarketOpt2">药用辅料</option>
-                    <option value="个人护理;药用辅料" data-page-node-id="MemMarketOpt3">个人护理 + 药用辅料</option>
+                    <option value="个人护理;药用辅料" data-page-node-id="MemMarketOpt3">全选两者</option>
                   </select>
                 </div>
               </div>
               <div class="form-row" data-page-node-id="MemRowDeptJob01">
                 <div class="form-group" data-page-node-id="MemDeptGrp01">
-                  <label data-page-node-id="MemDeptLbl01">部门 <span class="hint" data-page-node-id="MemDeptHint01">（会员所在公司的部门）</span></label>
-                  <input type="text" class="form-control" v-model="editingUser.department" data-page-node-id="MemDeptInp01">
+                  <label data-page-node-id="MemDeptLbl01">工作职能</label>
+                  <input type="text" class="form-control" list="memDeptOptions" v-model="editingUser.department" placeholder="与前台注册表一致，可自由填写" data-page-node-id="MemDeptInp01">
+                  <datalist id="memDeptOptions" data-page-node-id="MemDeptOpts01">
+                    <option value="研发" data-page-node-id="MemDeptOpt01"></option>
+                    <option value="生产" data-page-node-id="MemDeptOpt02"></option>
+                    <option value="采购" data-page-node-id="MemDeptOpt03"></option>
+                    <option value="质量保证" data-page-node-id="MemDeptOpt04"></option>
+                    <option value="质量控制" data-page-node-id="MemDeptOpt05"></option>
+                    <option value="业务拓展" data-page-node-id="MemDeptOpt06"></option>
+                    <option value="销售" data-page-node-id="MemDeptOpt07"></option>
+                    <option value="财务" data-page-node-id="MemDeptOpt08"></option>
+                    <option value="法务" data-page-node-id="MemDeptOpt09"></option>
+                    <option value="物流" data-page-node-id="MemDeptOpt10"></option>
+                    <option value="市场营销" data-page-node-id="MemDeptOpt11"></option>
+                    <option value="运营" data-page-node-id="MemDeptOpt12"></option>
+                    <option value="法规事务" data-page-node-id="MemDeptOpt13"></option>
+                    <option value="安全管理" data-page-node-id="MemDeptOpt14"></option>
+                    <option value="企业社会责任" data-page-node-id="MemDeptOpt15"></option>
+                    <option value="其他" data-page-node-id="MemDeptOpt16"></option>
+                  </datalist>
                 </div>
                 <div class="form-group" data-page-node-id="MemJobGrp01">
-                  <label data-page-node-id="MemJobLbl01">职位</label>
+                  <label data-page-node-id="MemJobLbl01">职位 <span class="hint" data-page-node-id="MemJobHint01">（老系统迁移，前台注册不采集）</span></label>
                   <input type="text" class="form-control" v-model="editingUser.jobFunction" data-page-node-id="MemJobInp01">
                 </div>
               </div>
               <div class="form-row" data-page-node-id="f5Dw8kPzlHPiZzEHw6tEIv">
                 <div class="form-group" data-page-node-id="3whPKiOfGPHMRFO77uA9fh">
-                  <label data-page-node-id="u0TImKkCP2SRtW1FgKsvG4">电话</label>
+                  <label data-page-node-id="u0TImKkCP2SRtW1FgKsvG4">联系电话</label>
                   <input type="text" class="form-control" v-model="editingUser.phone" data-page-node-id="ogixU1avs8EeEh0KfiMRaR">
                 </div>
                 <div class="form-group" data-page-node-id="MemZipGrp01">
-                  <label data-page-node-id="MemZipLbl01">邮编</label>
+                  <label data-page-node-id="MemZipLbl01">邮编 <span class="hint" data-page-node-id="MemZipHint01">（老系统迁移）</span></label>
                   <input type="text" class="form-control" v-model="editingUser.zipcode" data-page-node-id="MemZipInp01">
                 </div>
               </div>
@@ -4883,7 +4901,7 @@ const QUILL_TOOLBAR = [
                 </div>
               </div>
               <div class="form-group" data-page-node-id="MemAddrGrp01">
-                <label data-page-node-id="MemAddrLbl01">地址</label>
+                <label data-page-node-id="MemAddrLbl01">联系地址</label>
                 <input type="text" class="form-control" v-model="editingUser.address" placeholder="街道、门牌号" data-page-node-id="MemAddrInp01">
               </div>
               <div class="form-row" data-page-node-id="BJcR32x381ZeTpLHv1LaT0">
