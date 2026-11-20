@@ -75,7 +75,7 @@
             </button>
             <a class="btn btn-primary btn-icon--r btn-see-cart" href="/cart.html" id="seeCartBt"
               :style="data.inCart ? 'display:block' :'display:none;'">查看购物车</a>
-            <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document">
+            <a class="s-product-header__btn-document btn btn-tertiary" href="#product-document" v-show="data.docHtml">
               <i aria-hidden="true" class="o-icon --document"></i>访问文档和技术信息
             </a>
           </div>
@@ -446,15 +446,21 @@
               var docs = resp.data;
               if (!Array.isArray(docs) || docs.length === 0) { console.log('[DIAG] 文档为空'); return; }
 
+              // 库里 type 用既有枚举（TDS/Brochure/Publication …），这里映射成原站的
+              // 中文分组名「技术文件 / 产品手册 / 科学文献」并按固定顺序输出
+              var GROUP_LABEL = { TDS: '\u6280\u672f\u6587\u4ef6', SDS: '\u6280\u672f\u6587\u4ef6', Brochure: '\u4ea7\u54c1\u624b\u518c', Formula: '\u914d\u65b9\u8d44\u6599', Publication: '\u79d1\u5b66\u6587\u732e', Magazine: '\u6742\u5fd7', Other: '\u5176\u4ed6' };
+              var GROUP_ORDER = ['\u6280\u672f\u6587\u4ef6', '\u4ea7\u54c1\u624b\u518c', '\u79d1\u5b66\u6587\u732e', '\u914d\u65b9\u8d44\u6599', '\u6742\u5fd7', '\u5176\u4ed6'];
               var groups = {};
               docs.forEach(function (d) {
-                var t = d.type || '\u5176\u4ed6';
+                var t = GROUP_LABEL[d.type] || d.type || '\u5176\u4ed6';
                 if (!groups[t]) groups[t] = [];
                 groups[t].push(d);
               });
 
-              var html = '<h2 class="s-product-content__title">相关资料</h2><div class="s-product-document">';
-              Object.keys(groups).forEach(function (tn) {
+              var html = '<h2 class="s-product-content__title">\u76f8\u5173\u8d44\u6599</h2><div class="s-product-document">';
+              var keys = GROUP_ORDER.filter(function (k) { return groups[k]; });
+              Object.keys(groups).forEach(function (k) { if (keys.indexOf(k) < 0) keys.push(k); });
+              keys.forEach(function (tn) {
                 var items = groups[tn];
                 html += '<div class="s-product-document__type"><h3 class="s-product-document__title">' + _escape(tn) + '</h3><ul class="s-product-document__list">';
                 items.forEach(function (doc) {

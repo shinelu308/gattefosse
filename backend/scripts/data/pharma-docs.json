@@ -1,0 +1,3733 @@
+[
+ {
+  "id": 11053,
+  "name": "Capryol® 90",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "SDS UE_EN_CAPRYOL 90_3254_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma CAPRYOL 90 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_CAPRYOL_90.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240717024227.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "Gattefosse brochure topical drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1005_gattefosse_brochure_topical_drug_delivery_with_lipid_excipients_2018.pdf",
+      "size": 386427
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240717022201.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240717024217.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240717024224.pdf",
+      "size": 3268373
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster Pharmsci 2019: In vitro evaluation of leuprolide-containing solid lipid-based nanosuspensions",
+      "locked": false,
+      "file": "1077_poster_pharmsci_2019_in_vitro_evaluation_of_leuprolide-containing_solid_lipid-based_nanosuspensions.pdf",
+      "size": 483403
+     },
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     },
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     },
+     {
+      "title": "Poster CRS 2019: In Vitro Studies Indicate Promising Properties Of Solid Lipid Nanosuspensions for oral peptide delivery",
+      "locked": false,
+      "file": "1057_poster_crs_2019_in_vitro_studies_indicate_promising_properties_of_solid_lipid_nanosuspensions_for_oral_peptide_delivery.pdf",
+      "size": 1587083
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11052,
+  "name": "Capryol® PGMC",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "TDS_CAPRYOL_PGMC.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_CAPRYOL PGMC_3241_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma CAPRYOL PGMC (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010115.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010121.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11051,
+  "name": "Compritol® 888 ATO",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "SDS EU_EN_COMPRITOL 888 ATO_3123_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma COMPRITOL 888 ATO (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_COMPRITOL 888 ATO_3123_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010137.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010139.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Compritol 888 ATO a smart solution to sustain drug release (En)",
+      "locked": false,
+      "file": "1087_gattefosse_brochure_sustained-drug_release_with_compritol_888_ato_2023_4t.pdf",
+      "size": 1447200
+     },
+     {
+      "title": "Gattefosse brochure Compritol 888 ATO The lubricant for challenging pharmaceutical tablets (En)",
+      "locked": false,
+      "file": "1088_gattefosse_brochure_compritol_888_ato_lubricant_2023_8x.pdf",
+      "size": 494169
+     },
+     {
+      "title": "Gattefosse brochure Gattefosse products in pediatric dosage forms",
+      "locked": false,
+      "file": "995_brochure_gattefosse_lipid_excipients_in_pediatric_dosage_form.pdf",
+      "size": 2101447
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2013: High Drug Load Lipid Matrix Tablets Prepared by Wet Granulation Part I Formulation Parameters",
+      "locked": false,
+      "file": "1020_poster_aaps_2013_high_drug_load_lipid_matrix_tablets_prepared_by_wet_granulation_part_i_formulation_parameters.pdf",
+      "size": 1124710
+     },
+     {
+      "title": "Poster AAPS 2013: High Drug Load Lipid Matrix Tablets Prepared by Wet Granulation Part II Process Parameters",
+      "locked": false,
+      "file": "1021_poster_aaps_2013_high_drug_load_lipid_matrix_tablets_prepared_by_wet_granulation_part_ii_process_parameters.pdf",
+      "size": 669692
+     },
+     {
+      "title": "Poster AAPS 2013: Percolation threshold of Compritol 888 in matrix tablet",
+      "locked": false,
+      "file": "1024_poster_aaps_2013_percolation_threshold_of_compritol_888_in_matrix_tablet.pdf",
+      "size": 945047
+     },
+     {
+      "title": "Poster AAPS 2014: Ethanol Resistant Extended Release Matrix Tablets with Compritol 888 Ato",
+      "locked": false,
+      "file": "1033_poster_aaps_2014_ethanol_resistant_extended_release_matrix_tablets_with_compritol_888_ato.pdf",
+      "size": 557410
+     },
+     {
+      "title": "Poster AAPS 2014: Is Compritol 888 Ato Chemically Stable in Hot Melt Extrusion Processed at High Temperature",
+      "locked": false,
+      "file": "1035_poster_aaps_2014_is_compritol_888_ato_chemically_stable_in_hot_melt_extrusion_processed_at_high_temperature.pdf",
+      "size": 705560
+     },
+     {
+      "title": "Poster AAPS 2016: Compritol 888 ATO A Sustained Release Lipid Matrix for Once a Day Aceclofenac Tablets",
+      "locked": false,
+      "file": "1036_poster_aaps_2016_compritol_888_ato_a_sustained_release_lipid_matrix_for_once_a_day_aceclofenac_tablets.pdf",
+      "size": 917842
+     },
+     {
+      "title": "Poster AAPS 2017 QbD: How particle size and glyceryde composition affect performance of sustained release tablets with Compritol 888 ATO",
+      "locked": false,
+      "file": "1040_poster_aaps_2017_qbd_how_particle_size_and_glyceryde_composition_affect_performance_of_sustained_release_tablets_with_compritol_888ato.pdf",
+      "size": 2576666
+     },
+     {
+      "title": "Poster CRS 2014: Estimating in vivo drug release from a new theophylline Compritol matrix using biorelevant methods",
+      "locked": false,
+      "file": "1050_poster_crs_2014_estimating_in_vivo_drug_release_from_a_new_theophylline_compritol_matrix_using_biorelevant_methods.pdf",
+      "size": 541448
+     },
+     {
+      "title": "Poster CRS 2014: Streamlining the design of sustained release matrix tablets using mathematical modeling for drug release optimization",
+      "locked": false,
+      "file": "1052_poster_crs_2014_streamlining_the_design_of_sustained_release_matrix_tablets_using_mathematical_modeling_for_drug_release_optimization.pdf",
+      "size": 666546
+     },
+     {
+      "title": "Poster CRS 2015: New Insights into Stability of SR lipid matrix Tablets",
+      "locked": false,
+      "file": "1053_poster_crs_2015_new_insights_into_stability_of_sr_lipid_matrix_tablets_1.pdf",
+      "size": 787810
+     },
+     {
+      "title": "Poster CRS 2016: Impact of hot and wet granulation on Compritol 888 ATO lipid matrices for extended release of highly water soluble high dose API",
+      "locked": false,
+      "file": "1054_poster_crs_2016_impact_of_hot_and_wet_granulation_on_compritol_888_ato_lipid_matrices_for_extended_release_of_highly_water_soluble_high_dose_api.pdf",
+      "size": 3165443
+     },
+     {
+      "title": "Poster CRS 2021: Selecting efficient pharmaceutical binder for developing robust extended-release matrices of Compritol 888ATO prepared using wet granulation technique: Part 2",
+      "locked": false,
+      "file": "1058_selecting_efficient_pharmaceutical_binder_for_developing_robust_extended-release_matrices_of_compritol_888_ato_part_2_5f.pdf",
+      "size": 814545
+     },
+     {
+      "title": "Poster CRS 2021: Selecting efficient pharmaceutical binder for developing robust extended-release matrices of Compritol®888ATO prepared using wet granulation technique: Part 1",
+      "locked": false,
+      "file": "1059_selecting_efficient_pharmaceutical_binder_for_developing_robust_extended-release_matrices_of_compritol888ato-part_1_3y.pdf",
+      "size": 852919
+     },
+     {
+      "title": "Poster CRS 2022 Abuse deterrent SR tablets with Compritol 888 ATO",
+      "locked": false,
+      "file": "1061_poster_crs_2022_abuse_deterrent_sr_tablets_with_compritol_888_ato_7x.pdf",
+      "size": 874362
+     },
+     {
+      "title": "2022 AAPS Poster_Impact of Granulation Solvent on Release Performance of Dual sustained release Matrix",
+      "locked": false,
+      "file": "1080_2022_aaps_poster_impact_of_granulation_solvent_on_release_performance_of_dual_sustained_release_matrix_3u.pdf",
+      "size": 2454779
+     },
+     {
+      "title": "Poster AAPS 2014: Compritol 888 Ato Vs Precirol Ato 5 in Hot Melt Extrusion Investigation of Operating Window Limits",
+      "locked": false,
+      "file": "1030_poster_aaps_2014_compritol_888_ato_vs_precirol_ato_5_in_hot_melt_extrusion_investigation_of_operating_window_limits.pdf",
+      "size": 988322
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11050,
+  "name": "Compritol® 888 Pellets",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS pharma Compritol 888 Pellets (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_COMPRITOL_888_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_COMPRITOL 888 PASTILLES_3306_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010150.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11102,
+  "name": "Compritol® E ATO",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "SDS EU_EN_COMPRITOL E ATO_7101_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Nutra COMPRITOL E ATO (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_COMPRITOL E ATO_7101_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010207.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010210.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11049,
+  "name": "Compritol® HD5 ATO",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma COMPRITOL HD5 ATO (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_COMPRITOL_HD5_ATO.PDF",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma COMPRITOL HD5 ATO (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010222.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010225.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster Indian congress 2015: Evaluating the lubricant capacity of Compritol HD5 ATO a water dispersible pharmaceutical lubricant",
+      "locked": false,
+      "file": "1084_poster_indian_congress_2015_evaluating_the_lubricant_capacity_of_compritol_hd5_ato_a_water_dispersible_pharmaceutical_lubricant.pdf",
+      "size": 2750827
+     },
+     {
+      "title": "Poster AAPS 2017: Macrogol esters influence of in vitro and in vivo dissolution of a poorly soluble drug (En)",
+      "locked": false,
+      "file": "1043_poster_aaps_2017_macrogol_esters_influence_of_in_vitro_and_in_vivo_dissolution_of_a_poorly_soluble_drug.pdf",
+      "size": 1693507
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11048,
+  "name": "Emulfree® Duo",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma EMULFREE DUO",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_EMULFREE_DUO.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma EMULFREE DUO",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010247.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010254.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "嘉法狮重点产品目录.pdf",
+      "locked": false,
+      "file": "bf8354efb68d25e83d9a8301f3e1b40e_20240722010301.pdf",
+      "size": 28094304
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure innovate in bi-gel with Emulfree Duo",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11047,
+  "name": "Geleol™ Mono and Diglycerides NF",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma GELEOL MONO and DI NF (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_GELEOL MONO AND DIGLYCERIDES NF_5749_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELEOL_MONO_AND_DIGLYCERIDES_NF.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010315.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010323.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722010329.pdf",
+      "size": 632445
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11103,
+  "name": "Geleol™ N MB",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "TDS_GELEOL_N_MB.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_GELEOL N MB_7114_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELEOL_N_MB.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010358.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11046,
+  "name": "Geloil™ SC",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma GELOIL SC (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELOIL_SC.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma GELOIL SC (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010415.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010419.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11045,
+  "name": "Gelot™ 64",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Gelot 64 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELOT_64.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_GELOT 64 _3174_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010457.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010501.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11044,
+  "name": "Gelucire® 43/01",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Gelucire 43 01 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELUCIRE_43_01_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_GELUCIRE 4301 PASTILLES_3050_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010510.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010513.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11043,
+  "name": "Gelucire® 44/14",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma GELUCIRE 44-14 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_GELUCIRE 4414_3051_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma GELUCIRE 44-14 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240717005749.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240717005753.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240717021107.pdf",
+      "size": 1881799
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2016: Solid State Structural Aspects of Solid Self-microemulsifying Drug Delivery Systems during Digestion",
+      "locked": false,
+      "file": "1039_poster_aaps_2016_solid_state_structural_aspects_of_solid_self-microemulsifying_drug_delivery_systems_during_digestion.pdf",
+      "size": 908182
+     },
+     {
+      "title": "Poster AAPS 2021: GELUCIRE 44/14® FOR TYPE-IV LIPID BASED FORMULATIONS AND THEIR IN VITRO IN VIVO PERFORMANCE EVALUATION",
+      "locked": false,
+      "file": "1045_poster_aaps_2021_gelucire_4414_for_type_iv_lipid_based_formulations_and_their_in_vitro_in_vivo_performance_evaluation_7n.pdf",
+      "size": 941795
+     },
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     },
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     },
+     {
+      "title": "Poster AAPS 2014: Formulation of a Self Emulsifying Lipid Formulation of Curcumin",
+      "locked": false,
+      "file": "1034_poster_aaps_2014_formulation_of_a_self_emulsifying_lipid_formulation_of_curcumin.pdf",
+      "size": 364373
+     },
+     {
+      "title": "Poster AAPS 2017: Macrogol esters influence of in vitro and in vivo dissolution of a poorly soluble drug (En)",
+      "locked": false,
+      "file": "1043_poster_aaps_2017_macrogol_esters_influence_of_in_vitro_and_in_vivo_dissolution_of_a_poorly_soluble_drug.pdf",
+      "size": 1693507
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11042,
+  "name": "Gelucire® 48/16 ",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Gelucire 48 16 PELLETS (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELUCIRE_48_16_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma Gelucire 48 16 PELLETS (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240717021201.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240717021217.pdf",
+      "size": 1391047
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster CRS 2018 : Bioavailable Curcumin A Type 4 Lipid Based Drug Delivery System using Gelucire 48 16 As Solid Solubilizer",
+      "locked": false,
+      "file": "1055_poster_crs_2018_bioavailable_curcumin_a_type_4_lipid_based_drug_delivery_system_using_gelucire_48_16_as_solid_solubilizer_6z.pdf",
+      "size": 5680150
+     },
+     {
+      "title": "Poster CRS 2019 : Understanding The Role Of In Vitro And In Vivo Evaluation Techniques In determining the performance of LBF",
+      "locked": false,
+      "file": "1056_poster_crs_2019_understanding_the_role_of_in_vitro_and_in_vivo_evaluation_techniques_in_determining_the_performance_of_lbf_2y.pdf",
+      "size": 7902346
+     },
+     {
+      "title": "Poster CRS 2022 Gelucire® 4816 a safe wetting agent for fenofibrate tablet",
+      "locked": false,
+      "file": "1063_poster_crs_2022_gelucire_ae_4816_a_safe_wetting_agent_for_fenofibrate_tablet_1d.pdf",
+      "size": 191277
+     },
+     {
+      "title": "Poster PharmSci 2019: Gelucire 4816 for type IV LBF and their in vitro in vivo performance evaluation",
+      "locked": false,
+      "file": "1076_poster_pharmsci_2019_gelucire_4816_for_type_iv_lbf_and_their_in_vitro_in_vivo_performance_evaluation.pdf",
+      "size": 919814
+     },
+     {
+      "title": "Poster_AAPS 2012_Characterization of new self excipient GELUCIRE 4816 to expand formulation options for poorly soluble drugs",
+      "locked": false,
+      "file": "1079_poster_aaps_2012_characterization_of_new_self_excipient_gelucire_4816_to_expand_formulation_options_for_poorly_soluble_drugs.pdf",
+      "size": 388774
+     },
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     },
+     {
+      "title": "Poster AAPS 2014: Formulation of a Self Emulsifying Lipid Formulation of Curcumin",
+      "locked": false,
+      "file": "1034_poster_aaps_2014_formulation_of_a_self_emulsifying_lipid_formulation_of_curcumin.pdf",
+      "size": 364373
+     },
+     {
+      "title": "Poster AAPS 2017: Macrogol esters influence of in vitro and in vivo dissolution of a poorly soluble drug (En)",
+      "locked": false,
+      "file": "1043_poster_aaps_2017_macrogol_esters_influence_of_in_vitro_and_in_vivo_dissolution_of_a_poorly_soluble_drug.pdf",
+      "size": 1693507
+     },
+     {
+      "title": "Introducing Gelucire® 48/16 A solid solution for solubility enhancement (En)",
+      "locked": false,
+      "file": "1091_gelucire_48_16_pellets_oct_2015.pptx",
+      "size": 0
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11041,
+  "name": "Gelucire® 50/13",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Gelucire 50 13 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELUCIRE_50_13_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_GELUCIRE 5013 PASTILLES_3055_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722010533.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010536.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11040,
+  "name": "Gelucire® 59/14",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma GELUCIRE 59/14",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_GELUCIRE_59_14.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_GELUCIRE 5914_3449_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010550.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11039,
+  "name": "Labrafac™ Lipophile WL 1349",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma LABRAFAC LIPOPHILE WL1349 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFAC_LIPOPHILE_WL_1349.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_LABRAFAC LIPOPHILE WL 1349_3139_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010630.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240717021239.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240717021243.pdf",
+      "size": 2182229
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11038,
+  "name": "Labrafac™ MC60",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "SDS EU_EN_LABRAFAC MC60_3407_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma LABRAFAC MC60",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFAC_MC60.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "Poster AAPS 2023 In vivo confirmation of the permeation enhancement capacity of Labrafac MC60",
+      "locked": false,
+      "file": "2330_poster_aaps_2023_in_vivo_confirmation_of_the_permeation_enhancement_capacity_of_labrafac_mc60_4u.pdf",
+      "size": 2066900
+     },
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240717021303.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240717021306.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240717021309.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Boost your drug bioavailability with Labrafac MC60",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster CRS 2022 Labrafac™ MC60 acts as an intestinal permeation enhancer in isolated rat colonic and jejunal mucosae in the Ussing chambers",
+      "locked": false,
+      "file": "1065_poster_crs_2022_labrafac_mc60_acts_as_an_intestinal_permeation_enhancer_5b.pdf",
+      "size": 1492462
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11104,
+  "name": "Labrafac™ N MB",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Nutra_LABRAFAC N MB",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFAC_N_MB.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_LABRAFAC N MB_7672_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010652.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11037,
+  "name": "Labrafac™ PG",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma LABRAFAC PG(En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFAC_PG.PDF",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_LABRAFAC PG_3230_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010709.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010712.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11036,
+  "name": "Labrafil® M 1944 CS",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Labrafil M 1944 C (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_LABRAFIL M 1944 CS_3063_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFIL_M_1944_CS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722010741.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010744.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Gattefosse products in pediatric dosage forms",
+      "locked": false,
+      "file": "995_brochure_gattefosse_lipid_excipients_in_pediatric_dosage_form.pdf",
+      "size": 2101447
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     },
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11035,
+  "name": "Labrafil® M 2125 CS",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Labrafil M 2125 CS (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFIL_M_2125_CS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_LABRAFIL M 2125 CS_3066_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722010802.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010805.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11034,
+  "name": "Labrafil® M 2130 CS",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma LABRAFIL M 2130 CS (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_LABRAFIL M 2130 CS _3069_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRAFIL_M_2130_CS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2016: Converting simple microemulsion into attractive foam for topical treatment case study with Lidocaine",
+      "locked": false,
+      "file": "1038_poster_aaps_2016_converting_simple_microemulsion_into_attractive_foam_for_topical_treatment_case_study_with_lidocaine.pdf",
+      "size": 1006337
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11033,
+  "name": "Labrasol®",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma LABRASOL (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRASOL.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_LABRASOL_3074 _1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010819.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010822.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11032,
+  "name": "Labrasol® ALF",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma LABRASOL ALF (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LABRASOL_ALF.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_LABRASOL ALF_3405_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722010839.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "嘉法狮重点产品目录.pdf",
+      "locked": false,
+      "file": "bf8354efb68d25e83d9a8301f3e1b40e_20240722010850.pdf",
+      "size": 28094304
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Gattefosse products in pediatric dosage forms",
+      "locked": false,
+      "file": "995_brochure_gattefosse_lipid_excipients_in_pediatric_dosage_form.pdf",
+      "size": 2101447
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster Dublin 2019 :Investigation of Labrasol ALF as an intestinal permeation enhancer Ussing chambers and intestinal instillations",
+      "locked": false,
+      "file": "1067_poster_dublin_2019_investigation_of_labrasol_alf_as_an_intestinal_permeation_enhancer_ussing_chambers_and_intestinal_instillations.pdf",
+      "size": 307645
+     },
+     {
+      "title": "Poster PBP 2016: Solidification of liquid self-emulsifying lipid formulations by loading on solid mesoporous carriers",
+      "locked": false,
+      "file": "1073_poster_pbp_2016_solidification_of_liquid_self-emulsifying_lipid_formulations_by_loading_on_solid_mesoporous_carriers.pdf",
+      "size": 752251
+     },
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     },
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11031,
+  "name": "Lauroglycol™ 90",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Lauroglycol 90 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_LAUROGLYCOL 90_3244_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LAUROGLYCOL_90.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010924.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722010927.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722010930.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11030,
+  "name": "Lauroglycol™ FCC",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma LAUROGLYCOL FCC (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_LAUROGLYCOL FCC_3219_1.2.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_LAUROGLYCOL_FCC.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722010947.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722010952.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11029,
+  "name": "Maisine® CC",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma MAISINE CC (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_MAISINE CC_3431_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_MAISINE_CC.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722011008.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722011011.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "Gattefosse brochure Maisine CC a pharmaceutical oil for solubility and oral bioavailability enhancement (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "WHITE PAPER: New Maisine CC a unique pharmaceutical oil for solubility and oral bioavailability (En)",
+      "locked": false,
+      "file": "1085_gattefoss_c_new_maisine_ae_cc_a_unique_pharmaceutical_oil_for_solubility_and_oral_bioavailability_enhancement_oct_2016.pdf",
+      "size": 453970
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11028,
+  "name": "Monosteol™",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Monosteol (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_MONOSTEOL.PDF",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_MONOSTEOL_3079_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011019.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11027,
+  "name": "Ovucire® 3460",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Ovucire 3460 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_OVUCIRE_3460_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_OVUCIRE 3460 PASTILLES_3215_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011027.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11026,
+  "name": "Ovucire® WL 3264",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Ovucire WL 3264 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_OVUCIRE_WL_3264_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_OVUCIRE WL 3264 PASTILLES_3085_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011035.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11025,
+  "name": "Peceol™",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma PECEOL (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_PECEOL.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_PECEOL_3088_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722011057.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722011059.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol II Excipient selection diagram design and selection of prototype formulations",
+      "locked": false,
+      "file": "1026_poster_aaps_2013_self_formulation_protocol_ii_excipient_selection_diagram_design_and_selection_of_prototype_formulations.pdf",
+      "size": 804505
+     },
+     {
+      "title": "Poster AAPS 2013: SELF formulation protocol III Impact of lipolysis on prototype formulations",
+      "locked": false,
+      "file": "1027_poster_aaps_2013_self_formulation_protocol_iii_impact_of_lipolysis_on_prototype_formulations.pdf",
+      "size": 1526014
+     },
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     },
+     {
+      "title": "Poster AAPS 2013: Self formulation protocol I Solubiity determination in liquid and solid excipient",
+      "locked": false,
+      "file": "1025_poster_aaps_2013_self_formulation_protocol_i_solubiity_determination_in_liquid_and_solid_excipient.pdf",
+      "size": 410564
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11024,
+  "name": "Plurol® Diisostearique",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Plurol diisostearique (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_PLUROL_DIISOSTEARIQUE.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_PLUROL DIISOSTEARIQUE_5277_1.2.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011109.pdf",
+      "size": 2182229
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11023,
+  "name": "Plurol® Oleique CC 497",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma PLUROL OLEIQUE CC 497 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_PLUROL_OLEIQUE_CC_497.PDF",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_PLUROL OLEIQUE CC 497_3212_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma PLUROL OLEIQUE CC 497 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722011121.pdf",
+      "size": 1881799
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722011124.pdf",
+      "size": 1391047
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2014: Establishment of a Binary Phase Diagrams Database for the Development of Self Emulsifying Lipid Based Formulations",
+      "locked": false,
+      "file": "1032_poster_aaps_2014_establishment_of_a_binary_phase_diagrams_database_for_the_development_of_self_emulsifying_lipid_based_formulations.pdf",
+      "size": 570191
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11022,
+  "name": "Precirol® ATO 5",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma PRECIROL ATO 5 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_PRECIROL_ATO_5.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_PRECIROL ATO 5_3092_1.3.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Gattefosse products in pediatric dosage forms",
+      "locked": false,
+      "file": "995_brochure_gattefosse_lipid_excipients_in_pediatric_dosage_form.pdf",
+      "size": 2101447
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     },
+     {
+      "title": "用于口服制剂的脂质辅料.pdf",
+      "locked": false,
+      "file": "fc33a7ae15e2f2f2f5fe5fc5e16ab4a2_20240722011134.pdf",
+      "size": 3268373
+     },
+     {
+      "title": "嘉法狮重点产品目录.pdf",
+      "locked": false,
+      "file": "bf8354efb68d25e83d9a8301f3e1b40e_20240722011144.pdf",
+      "size": 28094304
+     }
+    ]
+   },
+   {
+    "title": "科学文献",
+    "docs": [
+     {
+      "title": "Poster AAPS 2017: Taste Masked Drugs For Pediatric Medicines Through Lipid Coating",
+      "locked": false,
+      "file": "1044_poster_aaps_2017_taste_masked_drugs_for_pediatric_medicines_through_lipid_coating.pdf",
+      "size": 1239847
+     },
+     {
+      "title": "Poster EUPFI 2017PRECIROL_ATO_5_Efficient taste masking through high shear coating",
+      "locked": false,
+      "file": "1068_poster_eupfi_2017_precirol_ato_5_efficient_taste_masking_through_high_shear_coating.pdf",
+      "size": 1067919
+     },
+     {
+      "title": "Poster AAPS 2014: Compritol 888 Ato Vs Precirol Ato 5 in Hot Melt Extrusion Investigation of Operating Window Limits",
+      "locked": false,
+      "file": "1030_poster_aaps_2014_compritol_888_ato_vs_precirol_ato_5_in_hot_melt_extrusion_investigation_of_operating_window_limits.pdf",
+      "size": 988322
+     },
+     {
+      "title": "Poster CRS 2019: In Vitro Studies Indicate Promising Properties Of Solid Lipid Nanosuspensions for oral peptide delivery",
+      "locked": false,
+      "file": "1057_poster_crs_2019_in_vitro_studies_indicate_promising_properties_of_solid_lipid_nanosuspensions_for_oral_peptide_delivery.pdf",
+      "size": 1587083
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11021,
+  "name": "Sedefos™ 75",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma SEDEFOS 75 PELLETS(En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_SEDEFOS 75 PASTILLES_3099_1.1.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_SEDEFOS_75_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011155.pdf",
+      "size": 2182229
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11020,
+  "name": "Suppocire® A",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire Standard Type (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011202.pdf",
+      "size": 2182229
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11019,
+  "name": "Suppocire® A-64",
+  "groups": [
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011213.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11018,
+  "name": "Suppocire® AM",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire Standard Type (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011221.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11017,
+  "name": "Suppocire® AML",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire standard Grade L (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011228.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11016,
+  "name": "Suppocire® AP",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma SUPPOCIRE TYPE P and L (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011303.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11015,
+  "name": "Suppocire® AS2",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma SUPPOCIRE STANDARD TYPE Grade S2(En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011311.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11014,
+  "name": "Suppocire® BM",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire Standard Type (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011319.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11013,
+  "name": "Suppocire® BS2X",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire standard Grade S2X (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011330.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11012,
+  "name": "Suppocire® CM",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire Standard Type (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011336.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11011,
+  "name": "Suppocire® NA 15",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma Suppocire N type(En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011344.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11010,
+  "name": "Suppocire® NAI 25A",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "TDS_SUPPOCIRE_NAI_25_A_PELLETS.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_SUPPOCIRE_NAI_25_A_PELLETS_SINGAPORE.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma Suppocire N type(En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011351.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 11009,
+  "name": "Suppocire® NAS 50",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma SUPPOCIRE N TYPE Grade S (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011400.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 10918,
+  "name": "Suppocire® NB",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma APIFIL (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "RDS Pharma Suppocire N type(En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure rectal drug delivery with Lipid excipients",
+      "locked": false,
+      "file": "1003_brochure_rectal_drug_delivery_2020.pdf",
+      "size": 4025567
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011408.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 10914,
+  "name": "Tefose® 63",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma TEFOSE 63 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_TEFOSE 63_3177_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_TEFOSE_63.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Gattefosse products in pediatric dosage forms",
+      "locked": false,
+      "file": "995_brochure_gattefosse_lipid_excipients_in_pediatric_dosage_form.pdf",
+      "size": 2101447
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722011451.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011455.pdf",
+      "size": 2182229
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 10917,
+  "name": "Tefose® 1500",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma TEFOSE 1500 (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS UE_EN_TEFOSE 1500_5225_1.0.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_TEFOSE_1500.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines with Lipid excipients",
+      "locked": false,
+      "file": "1006_gattefosse_brochure_veterinary_medicines_with_lipid_excipients.pdf",
+      "size": 4792846
+     },
+     {
+      "title": "直肠和阴道给药的脂质辅料.pdf",
+      "locked": false,
+      "file": "912d4670c258c8543401f0924c2b19d0_20240722011414.pdf",
+      "size": 632445
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 10916,
+  "name": "Transcutol® HP",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma TRANSCUTOL HP (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_TRANSCUTOL_HP.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_TRANSCUTOL HP_3265_1.2.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Oral drug delivery with lipid excipients",
+      "locked": false,
+      "file": "1002_gattefosse-brochure-oral-drug-delivery-602cf291578a8620959799.pdf",
+      "size": 2244198
+     },
+     {
+      "title": "Brochure Gattefosse Lipid-based formulations Bio-enhancers by nature",
+      "locked": false,
+      "file": "1007_gattefosse_brochure_lipid-based_formulations_bioenhancers_by_nature_6d_0.pdf",
+      "size": 1466690
+     },
+     {
+      "title": "外用皮肤给药制剂设计思路.pdf",
+      "locked": false,
+      "file": "3b5f84dc0530078a8b9bf87820c5d31d_20240722011433.pdf",
+      "size": 1391047
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722011439.pdf",
+      "size": 1881799
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 10915,
+  "name": "Transcutol® P",
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma TRANSCUTOL P (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_TRANSCUTOL_P.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_TRANSCUTOL P_3260_1.2.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6i.pdf",
+      "size": 2184777
+     },
+     {
+      "title": "Gattefosse brochure Lipid excipients for cannabinoid drug products",
+      "locked": false,
+      "file": "1000_brochure_gattefosse_lipid_excipients_for_cannabinoid_drug_products.pdf",
+      "size": 14382798
+     },
+     {
+      "title": "Gattefosse Brochure Skin-Friendly Textures",
+      "locked": false,
+      "file": "1004_gattefosse_brochure_skin-friendly_textures_2d.pdf",
+      "size": 1880534
+     },
+     {
+      "title": "嘉法狮药用辅料产品目录.pdf",
+      "locked": false,
+      "file": "30da5c93235e644416fa87de8140d75d_20240722011528.pdf",
+      "size": 2182229
+     },
+     {
+      "title": "脂质处方-改善口服生物利用度的制胜策略.pdf",
+      "locked": false,
+      "file": "26c7ba913c7d4833470b21cf0171e027_20240722011530.pdf",
+      "size": 1881799
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": 10913,
+  "name": "Transcutol® V",
+  "groups": []
+ }
+]

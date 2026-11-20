@@ -235,7 +235,9 @@ export async function getPharmaDocuments(req: Request, res: Response) {
         language: doc.language,
         fileUrl: doc.filePath,
         fileName: doc.filePath ? doc.filePath.split('/').pop() || doc.filePath : '',
-        fileSize: doc.fileSize,
+        // 🔴 fileSize 是 Prisma BigInt，直接放进 res.json 会抛 TypeError → 接口 500/400，
+        //    前台「相关资料」整块静默不渲染。必须转 Number。
+        fileSize: doc.fileSize != null ? Number(doc.fileSize) : 0,
         isPublic: doc.isPublic,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
