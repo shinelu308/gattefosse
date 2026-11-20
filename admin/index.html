@@ -2394,6 +2394,7 @@ const QUILL_TOOLBAR = [
                       <div class="block-actions" data-page-node-id="APWf8luwPIZ07f1BGOf2Dx">
                         <select v-model="block.blockType" @change="onFormulaBlockTypeChange(bi)" class="form-control" style="width:140px;" data-page-node-id="4HcX5nZFuNV2zwUG9E0glm">
                           <option value="richtext" data-page-node-id="MATnCJ7BfR6l3fZ9bLXZ3H">富文本</option>
+                          <option value="spec" data-page-node-id="SpEcForMuLa261119">规格表格</option>
                           <option value="imagetext" data-page-node-id="R9fQVdCi8MXw8U5hiAcJQw">图文并排</option>
                           <option value="video" data-page-node-id="SD6GpiqIG9oihtGP7yYiEN">视频</option>
                           <option value="images" data-page-node-id="G2AxB91Sx2eLAXZE38mHeX">图片集</option>
@@ -2409,6 +2410,22 @@ const QUILL_TOOLBAR = [
                         <div style="margin-top:8px;display:flex;gap:8px;align-items:center;" data-page-node-id="3wq6CJ9ZqHlnM3CLXwflQD">
                           <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)" data-page-node-id="FzAE3wx1DL35xghkDqBPUQ">保存内容</button>
                           <span class="block-saved-msg" v-if="block._saved" data-page-node-id="h8DdjMZRYC3xNezCNM1jYH">✓ 已保存</span>
+                        </div>
+                      </div>
+                      <!-- spec: 规格表格（配方，标签-值配对，带横线） -->
+                      <div v-show="block.blockType === 'spec'" data-page-node-id="SpEcFormulaPanel261119">
+                        <div style="font-size:13px;color:#666;margin-bottom:10px;" data-page-node-id="SpEcFormulaHint261119">
+                          每行输入 <strong>标签</strong>（左，加粗显示）和 <strong>值</strong>（右），前台以带分隔线的表格形式展示。
+                        </div>
+                        <div v-for="(row, ri) in block._specRows" :key="ri" class="block-entry-row" style="margin-bottom:6px;" data-page-node-id="SpEcFormulaRow261119">
+                          <input type="text" class="form-control" v-model="row.label" placeholder="标签（如：外观）" style="flex:0 0 200px;font-weight:600;" data-page-node-id="SpEcFormulaLabel261119">
+                          <input type="text" class="form-control" v-model="row.value" placeholder="对应值（如：米白色乳霜）" data-page-node-id="SpEcFormulaValue261119">
+                          <button class="btn btn-sm btn-danger" @click="removeFormulaSpecRow(bi, ri)" title="删除此行" data-page-node-id="SpEcFormulaDel261119">×</button>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;" data-page-node-id="SpEcFormulaBtns261119">
+                          <button class="btn btn-sm btn-outline" @click="addFormulaSpecRow(bi)" data-page-node-id="SpEcFormulaAdd261119">+ 添加行</button>
+                          <button class="btn btn-sm btn-primary" @click="saveFormulaBlock(bi)" data-page-node-id="SpEcFormulaSave261119">保存内容</button>
+                          <span class="block-saved-msg" v-if="block._saved" data-page-node-id="SpEcFormulaSaved261119">✓ 已保存</span>
                         </div>
                       </div>
                       <div v-show="block.blockType === 'video'" data-page-node-id="AxtQxEME5LL3jurYeDbc4p">
@@ -7984,6 +8001,7 @@ createApp({
             _leftRichtext: (b.blockType === 'imagetext' && content.leftType === 'richtext') ? (content.leftHtml || '') : '',
             _rightRichtext: (b.blockType === 'imagetext' && content.rightType === 'richtext') ? (content.rightHtml || '') : '',
             _productList: (b.blockType === 'related' && content.products) ? content.products.map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) : [],
+            _specRows: (b.blockType === 'spec' && content.rows) ? content.rows.map(function(r) { return { label: r.label || '', value: r.value || '' }; }) : [{ label: '', value: '' }],
           };
         });
         self.editingFormula._blockIdCounter = list.length;
@@ -8015,6 +8033,7 @@ createApp({
         _productSearch: '',
         _searchResults: [],
         _productList: [],
+        _specRows: [{ label: '', value: '' }],
       };
     },
     // 在指定下标插入（null = 末尾）；「相关资料」「相关产品」永远靠后，新块一律落在它们之前
@@ -8132,7 +8151,23 @@ createApp({
         block._rightType = (block.content && block.content.rightType) ? block.content.rightType : 'text';
         block._rightText = (block.content && block.content.rightText) ? block.content.rightText : '';
         block._rightUrl = (block.content && block.content.rightUrl) ? block.content.rightUrl : '';
+      } else if (block.blockType === 'spec') {
+        var srows = (block.content && block.content.rows) ? block.content.rows : null;
+        block._specRows = (srows && srows.length) ? srows.map(function(r) { return { label: r.label || '', value: r.value || '' }; }) : [{ label: '', value: '' }];
       }
+    },
+    addFormulaSpecRow(bi) {
+      var block = this.editingFormula.blocks[bi];
+      if (!block._specRows) block._specRows = [];
+      block._specRows.push({ label: '', value: '' });
+      block._saved = false;
+    },
+    removeFormulaSpecRow(bi, ri) {
+      var block = this.editingFormula.blocks[bi];
+      if (!block._specRows) return;
+      block._specRows.splice(ri, 1);
+      if (block._specRows.length === 0) block._specRows.push({ label: '', value: '' });
+      block._saved = false;
     },
     addFormulaImage(bi) {
       this.editingFormula.blocks[bi]._imageList.push({ url: '', caption: '' });
@@ -8230,6 +8265,8 @@ createApp({
         content = { files: (block._fileList || []).filter(function(f) { return f.url; }).map(function(f) { return { title: f.title, url: f.url, fileId: f.fileId || null, isPublic: f.isPublic, type: f.type || '' }; }) };
       } else if (block.blockType === 'related') {
         content = { products: (block._productList || []).map(function(p) { return { id: p.id, name: p.name, tagline: p.tagline || '', inciName: p.inciName || '', imageUrl: p.imageUrl || '', description: p.description || '' }; }) };
+      } else if (block.blockType === 'spec') {
+        content = { rows: (block._specRows || []).filter(function(r) { return String(r.label || '').trim(); }).map(function(r) { return { label: String(r.label).trim(), value: r.value || '' }; }) };
       }
       var payload = { blockType: block.blockType, title: block.title, content: content, sortOrder: block.sortOrder || 0, isPublished: true, productType: 'formula' };
       if (block.id) {

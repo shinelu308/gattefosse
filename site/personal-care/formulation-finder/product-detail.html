@@ -201,6 +201,13 @@
                                         <h2 v-if="block.title" class="s-product-content__title">{{ block.title }}</h2>
                                         <!-- 富文本区块 -->
                                         <div v-if="block.blockType === 'richtext' && block.content" v-html="block.content.html" class="block-content"></div>
+                                        <!-- 规格表格区块 -->
+                                        <div v-if="block.blockType === 'spec' && block.content && block.content.rows && block.content.rows.length" class="block-spec">
+                                            <div class="s-spec-row" v-for="(row, ri) in block.content.rows" :key="'sp-'+ri">
+                                                <span class="s-spec-label">{{ row.label }}</span>
+                                                <span class="s-spec-value" v-html="row.value"></span>
+                                            </div>
+                                        </div>
                                         <!-- 视频区块 -->
                                         <div v-if="block.blockType === 'video' && block.content && block.content.url" class="block-video">
                                             <div class="video-wrapper" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
@@ -528,6 +535,60 @@
         }
       }
       
+      /* ============ 规格表格（spec 区块）：标签-值两列，行间分隔线 ============ */
+      /* 用 flex 行而非 <table>：Drupal 全局有 `table th, table td { width: 25% }`，表格列宽不可控 */
+      .block-spec {
+        margin: 0;
+      }
+      .s-spec-row {
+        display: flex;
+        align-items: baseline;
+        padding: 18px 0;
+        border-bottom: 1px solid #E0E0E0;
+        line-height: 1.6;
+      }
+      .s-spec-row:last-child {
+        border-bottom: none;
+      }
+      .s-spec-label {
+        flex: 0 0 260px;
+        width: 260px;
+        min-width: 260px;
+        padding-right: 24px;
+        font-weight: 700;
+        color: #3E3E3E;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      .s-spec-value {
+        flex: 1 1 auto;
+        min-width: 0;
+        color: #555;
+        font-size: 16px;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      @media (max-width: 767.98px) {
+        .s-spec-row {
+          display: block;
+          padding: 12px 0;
+        }
+        .s-spec-label {
+          display: block;
+          flex: none;
+          width: auto;
+          min-width: 0;
+          padding: 0 0 4px;
+          font-size: 15px;
+        }
+        .s-spec-value {
+          display: block;
+          font-size: 15px;
+        }
+      }
+
+      /* ============ 内容区块标题不加粗 ============ */
+
       /* ============ 内容区块标题不加粗 ============ */
       .s-product-content__title {
         font-weight: 400 !important;
