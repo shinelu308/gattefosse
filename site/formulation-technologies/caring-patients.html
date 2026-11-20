@@ -466,145 +466,61 @@
         });
     </script>
 
-    <script setup>
-    const params = new URLSearchParams(window.location.search);
-    const tokenStr = params.get('_token');
-    const id = 165; // "文章ID"
-    var isLogin = checkLoginStatus();    
-    let userEnabled = localStorage.getItem("userEnabled");
-    const { createApp, reactive, getCurrentInstance, ref, router, nextTick } = Vue;
-    const app = createApp({
-      data() {
-        return { formData: [] }
-      },
-      setup() {
-        let randomNum = Math.floor(Math.random() * 100);
-        const data = reactive({
-          formData: [],
-          userEnabled: userEnabled
-        });
-        // 查询
-        const getTableData = () => {
-          var api = "/api/webNewsEvents/findWebNewsEventsForView";
-          var personalCareId = 1;
-          var phamId = 117;
-          //2.使用axios 进行get请求
-          console.log("API call disabled");
-              for (var i = 0; i < data.formData.relatedWebinars.length; i++) {
-                if (data.formData.relatedWebinars[i].thumb.substring(1) != "/") {
-                    data.formData.relatedWebinars[i].thumb = "/" + data.formData.relatedWebinars[i].thumb;
-                }
-                data.formData.relatedWebinars[i].CreatedAt = data.formData.relatedWebinars[i].CreatedAt.substring(0, 10);
-                if (data.formData.relatedWebinars[i].eventTime != null) {
-                    data.formData.relatedWebinars[i].eventTimeYear = data.formData.relatedWebinars[i].eventTime.substring(0, 4);
-                    data.formData.relatedWebinars[i].eventTimeDate = data.formData.relatedWebinars[i].eventTime.substring(5, 10).replace('-', '月');
-                }
-                if (data.formData.relatedWebinars[i].eventEndTime != null) {
-                    data.formData.relatedWebinars[i].eventEndTimeDate = data.formData.relatedWebinars[i].eventEndTime.substring(5, 10).replace('-', '月');
-                }
-                if (data.formData.relatedWebinars[i].eventAddress != '') { // 活动
-                    data.formData.relatedWebinars[i].class = "c-card c-card--horizontal" + " c-card--bordered c-card--event";
-                } else { // 资讯
-                    data.formData.relatedWebinars[i].class = "c-card c-card--horizontal";
-                }
-                let tmp = data.formData.relatedWebinars[i];    
-                data.formData.relatedWebinars[i].tagList = []
-                var jsonArray = JSON.parse(data.formData.relatedWebinars[i].tag);
-                for (var m = 0; m < jsonArray.length; m++) {
-                    for (var k = 0; k < data.webinarsTagList.length; k++) {
-                    if (jsonArray[m][0] == data.webinarsTagList[k].ID) {
-                        for (var j = 0; j < data.webinarsTagList[k].children.length; j++) {                      
-                        if (jsonArray[m][1] == data.webinarsTagList[k].children[j].ID) {
-                            data.formData.relatedWebinars[i].tagList.push(data.webinarsTagList[k].children[j].tagName);
-                        }
-                        }
-                    }
-                    }
-                }
-
-                // related  brochures
-                for (var i = 0; i < data.formData.relatedBrochures.length; i++) {
-                    if (data.formData.relatedBrochures[i].thumb.substring(1) != "/") {
-                        data.formData.relatedBrochures[i].thumb = "/" + data.formData.relatedBrochures[i].thumb;
-                    }
-                    data.formData.relatedBrochures[i].CreatedAt = data.formData.relatedBrochures[i].CreatedAt.substring(0, 10);
-                    if (data.formData.relatedBrochures[i].eventTime != null) {
-                        data.formData.relatedBrochures[i].eventTimeYear = data.formData.relatedBrochures[i].eventTime.substring(0, 4);
-                        data.formData.relatedBrochures[i].eventTimeDate = data.formData.relatedBrochures[i].eventTime.substring(5, 10).replace('-', '月');
-                    }
-                    if (data.formData.relatedBrochures[i].eventEndTime != null) {
-                        data.formData.relatedBrochures[i].eventEndTimeDate = data.formData.relatedBrochures[i].eventEndTime.substring(5, 10).replace('-', '月');
-                    }
-                    if (data.formData.relatedBrochures[i].eventAddress != '') { // 活动
-                        data.formData.relatedBrochures[i].class = "c-card c-card--horizontal" + " c-card--bordered c-card--event";
-                    } else { // 资讯
-                        data.formData.relatedBrochures[i].class = "c-card c-card--horizontal";
-                    }
-                    let tmp = data.formData.relatedBrochures[i];
-                    data.formData.relatedBrochures[i].tagList = []
-                    var jsonArray = JSON.parse(data.formData.relatedBrochures[i].tag);
-                    for (var m = 0; m < jsonArray.length; m++) {
-                        for (var k = 0; k < data.brochuresTagList.length; k++) {
-                        if (jsonArray[m][0] == data.brochuresTagList[k].ID) {
-                            for (var j = 0; j < data.brochuresTagList[k].children.length; j++) {                      
-                            if (jsonArray[m][1] == data.brochuresTagList[k].children[j].ID) {
-                                data.formData.relatedBrochures[i].tagList.push(data.brochuresTagList[k].children[j].tagName);
-                            }
-                            }
-                        }
-                        }
-                    }
-                }
-            }
-              /*api = "api/webContents/findWebContents";
-              console.log("API call disabled");*/
-            }).catch((err, res) => {
-              console.log(err)
-            })
-        }      
-        const getWebinarsTagList = () => {
-          var api = "/api/webWebniarsTag/getWebWebniarsTagList";
-          var personalCareId = 1;
-          var phamId = 117;
-          api += "?goodsCategoryId=" + phamId;
-          console.log("API call disabled");                
-                nextTick(() => {
-                    getTableData();
-                });
-            });
-        }
-        
-        const getBrochuresTagList = () => {
-          var api = "/api/webBrochuresTag/getWebBrochuresTagList";
-          var personalCareId = 1;
-          var phamId = 117;
-          api += "?goodsCategoryId=" + phamId;
-          console.log("API call disabled");
-            nextTick(() => {
-                getWebinarsTagList();
-            });
-          }).catch((err, res) => {
-            console.log(err)
-          })
-        }
-        getBrochuresTagList();
-        return {
-          data,
-        };
-      },
-    });
-    let result = app.mount("#app");
-    
+    <script>
+    // 「以患者为中心的外用制剂」专题页
+    // 原脚本依赖已停用的原站接口，删改后残留孤立 .catch(...) 造成整段语法错误，
+    // 导致 Vue 未挂载、页面把 {{item.title}} 原样输出。此处改为最小可用逻辑：
+    // 保留登录态判断与挂载；「相关内容」两组卡片在无数据时由模板 v-if 自动隐藏。
     function checkLoginStatus() {
-      if (localStorage.getItem('isLoggedIn') === 'true') {
-        return true;
-        // 执行进入首页的逻辑
-      } else {
-        // 执行未登录的逻辑，比如跳转到登录页面
-        return false;
-      }
+      return localStorage.getItem('isLoggedIn') === 'true';
     }
-  </script>
+
+    (function () {
+      const { createApp, reactive } = Vue;
+      const app = createApp({
+        setup() {
+          // 「相关内容」为原站两条静态数据（原接口已停用，此处内置，字段与模板一一对应）
+          const data = reactive({
+            formData: {
+              relatedWebinars: [
+                        {
+                                  "ID": 154,
+                                  "title": "Introduction to Skin Delivery with Lipid Excipients",
+                                  "summary": "Delivering drug molecules to and through the skin results from the complex interplay between active pharmaceutical ingredient, skin condition and vehicle. This webinar aims at giving an overview of the key factors to consider when developing a topical or transdermal formulation.",
+                                  "lock": true,
+                                  "url": "https://register.gotowebinar.com/recording/6996352330859474691",
+                                  "eventTime": "2024-05-17T11:08:48.221Z",
+                                  "eventTimeYear": "2024",
+                                  "eventTimeDate": "05月17",
+                                  "tagList": [
+                                            "皮肤给药"
+                                  ],
+                                  "thumb": "/uploads/file/cdb8c80e0b4f0dfc6804d22129c2713f_20240517110921.jpg"
+                        }
+              ],
+              relatedBrochures: [
+                        {
+                                  "ID": 174,
+                                  "title": "Skin-friendly textures",
+                                  "summary": "We have a solution for all topical dosage forms, from traditional to innovative! Discover our full range of functional excipients to develop exciting topical dosage forms aiming at encouraging patient adherence to topical treatments.",
+                                  "lock": false,
+                                  "url": "/files/1004/gattefosse_brochure_skin-friendly_textures_2d.pdf",
+                                  "tagList": [
+                                            "外用/透皮给药"
+                                  ]
+                        }
+              ]
+            },
+            userEnabled: localStorage.getItem('userEnabled'),
+            webinarsTagList: [],
+            brochuresTagList: []
+          });
+          return { data };
+        }
+      });
+      app.mount('#app');
+    })();
+    </script>
     <script type="application/json"
         data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/512","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"bootstrap5\/bootstrap5-js-latest,bootstrap5\/global-styling,classy\/base,classy\/messages,classy\/node,core\/normalize,eolas_core\/cookie,eolas_core\/custom_css,eolas_core\/custom_js,extlink\/drupal.extlink,gattefosse\/global-styling,gattefosse\/paragraph-video-remote,gattefosse_cartography\/mapping,miniorange_saml\/miniorange_saml.admin,paragraphs\/drupal.paragraphs.unpublished,system\/base","theme":"gattefosse","theme_token":null},"ajaxTrustedUrl":[],"data":{"extlink":{"extTarget":true,"extTargetNoOverride":true,"extNofollow":false,"extNoreferrer":true,"extFollowNoOverride":false,"extClass":"0","extLabel":"(link is external)","extImgClass":false,"extSubdomains":true,"extExclude":"","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":false,"extAlertText":"This link will take you to an external web site. We are not responsible for their content.","mailtoClass":"0","mailtoLabel":"(link sends email)","extUseFontAwesome":false,"extIconPlacement":"append","extFaLinkClasses":"fa fa-external-link","extFaMailtoClasses":"fa fa-envelope-o","whitelistedDomains":[]}},"cartography":{"markers":{"3299":{"x":"45","y":"104"},"3301":{"x":"45","y":"154"},"3302":{"x":"105","y":"167"},"3303":{"x":"145","y":"134"},"3993":{"x":"75","y":"-54"},"3994":{"x":"105","y":"-95"},"4151":{"x":"195","y":"-75"},"4152":{"x":"250","y":"-42"},"4153":{"x":"312","y":"0"},"4154":{"x":"391","y":"256"},"4155":{"x":"444","y":"249"},"4156":{"x":"498","y":"-318"},"4157":{"x":"496","y":"-303"},"4158":{"x":"493","y":"119"}}},"domain_host":"matomo.eolas-services.com","matomo_tag_manager_id":"iB2UuiIw","user":{"uid":0,"permissionsHash":"a60b7506b39bcbb4f6258d25c37d24ce9be3caf126bc235874c3028aa6769123"}}</script>
 

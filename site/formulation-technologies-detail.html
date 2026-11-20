@@ -61,6 +61,26 @@
   <link rel="stylesheet" media="all"
     href="sites/default/files/css/css_LOEta1EWPP03WWB9W1oc6XQDrBhzvU3zh_QtcpORiwI.css" />
 <style>[v-cloak]{display:none!important}</style>
+<style>
+  /* 配方技术详情：加载/空态与正文容器（页面自带 Drupal 段落样式，仅补状态与宽度） */
+  #app .tech-state { padding: 96px 16px 120px; text-align: center; color: #5b6470; }
+  #app .tech-state p { margin: 12px 0; }
+  #app .tech-state .btn { margin-top: 12px; }
+  #app .tech-spinner {
+    width: 34px; height: 34px; margin: 0 auto 18px;
+    border: 3px solid #e2e6ea; border-top-color: #8eb73c; border-radius: 50%;
+    animation: techspin .9s linear infinite;
+  }
+  @keyframes techspin { to { transform: rotate(360deg); } }
+  #app .tech-content { padding-bottom: 8px; }
+  #app .tech-content img { max-width: 100%; height: auto; }
+  #app .tech-content iframe { max-width: 100%; }
+  #app .tech-content .c-highlighted-text { margin: 24px 0; }
+  #app .tech-docs { margin-top: 8px; padding-bottom: 48px; }
+  @media (max-width: 767.98px) {
+    #app .tech-state { padding: 64px 16px 80px; }
+  }
+</style>
 </head>
 
 <body class="path-node page-node-type-page    bg- d-flex flex-column">
@@ -117,31 +137,47 @@
           <article role="article" about="/formulation-technologies" typeof="schema:WebPage"
             class="node node--type-page node--view-mode-full">
             <div class="container">
-              <div class="node__wrapper">
-                <div class="node__content-wrapper">
-                  <div class="block-title" v-if="data.formData">
-                    <h1 class="page-title u-title-styled">{{data.formData.title}}</h1>
+
+              <div v-if="data.loading" class="tech-state tech-state--loading">
+                <div class="tech-spinner" aria-hidden="true"></div>
+                <p>正在加载页面内容…</p>
+              </div>
+
+              <div v-else-if="data.notFound" class="tech-state tech-state--empty">
+                <h1 class="page-title u-title-styled">页面不存在</h1>
+                <p>没有找到对应的配方技术页面，可能是链接已过期或页面已下线。</p>
+                <p><a class="btn btn-tertiary" href="formulation-technologies.html">返回配方技术列表</a></p>
+              </div>
+
+              <template v-else>
+                <div class="node__wrapper">
+                  <div class="node__content-wrapper">
+                    <div class="block-title">
+                      <h1 class="page-title u-title-styled">{{data.page.title}}</h1>
+                    </div>
+                    <!-- 与原站一致：正文用 span 包，contentHtml 自带 .block-accroche 与 .node__content，
+                         再套一层 .node__content 会触发 12 列栅格嵌套导致内容被挤成窄列 -->
+                    <span class="tech-content" v-html="data.page.contentHtml"></span>
                   </div>
-                  <span v-html="data.formData.content">
-                  </span>
                 </div>
-              </div>
-              <div class="c-liste-document paragraph paragraph--type--liste-documents paragraph--view-mode--default"
-                id="p3548">
-                <h3 class="c-links__title"></h3>
-                <ul class="c-liste-document__list">
-                  <li v-for="item in data.targetFileList"
-                    :class="(!data.isLoginedAndEnabled && item.lock == true)?  'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
-                    <a class="c-link__link" :href="item.url" target="_blank">
-                      <div class="c-link__params">
-                        <span class="c-link__name">{{item.name}}</span>
-                        <span class="c-link__format">pdf</span>
-                        <time class="c-link__date" datetime="22-06-2023">22/06/2023</time>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+
+                <div v-if="data.docs.length"
+                  class="c-liste-document paragraph paragraph--type--liste-documents paragraph--view-mode--default tech-docs">
+                  <h3 class="c-links__title">相关资料</h3>
+                  <ul class="c-liste-document__list">
+                    <li v-for="item in data.docs" :key="item.id"
+                      :class="item.locked ? 'c-link c-link--document c-link--locked' : 'c-link c-link--document'">
+                      <a class="c-link__link" :href="item.url" target="_blank" rel="noopener">
+                        <div class="c-link__params">
+                          <span class="c-link__name">{{item.title}}</span>
+                          <span class="c-link__format">pdf</span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </template>
+
             </div>
           </article>
         </div>
@@ -204,16 +240,139 @@
   </script>
   <script>
   function checkLoginStatus() { return false; }
-  const { createApp, reactive } = Vue;
-  const app = createApp({
-    setup() {
-      const data = reactive({
-        formData: { title: '配方技术 ⋅ 嘉法狮', summary: '配方技术 ⋅ 嘉法狮 - 嘉法狮（Gattefossé）致力于提供高品质的脂质辅料和天然化妆品成分。', content: '<p>配方技术 ⋅ 嘉法狮。嘉法狮（Gattefossé）成立于1880年，总部位于法国里昂附近的Saint-Priest，是一家拥有超过140年历史的家族企业。</p>' }
-      });
-      return { data };
+  (function () {
+    // ===== 配方技术 slug → id 映射（由原站数据生成，勿手改） =====
+    var SLUG_ID = {
+        "excipients-solubility-and-bioavailability-enhancement": 146,
+        "excipients-lubrication": 148,
+        "excipients-modified-release": 149,
+        "excipients-taste-masking-and-api-protection": 150,
+        "lipid-based-formulations": 151,
+        "direct-compression": 152,
+        "granulation": 153,
+        "capsule-filling-and-molding": 154,
+        "hot-melt-extrusion": 155,
+        "hot-melt-coating": 156,
+        "high-shear-coating": 157,
+        "3d-printing": 158,
+        "solubilizing-drugs-skin-delivery-decisive-step": 159,
+        "selecting-penetration-enhancers-transdermal-delivery": 160,
+        "opting-best-emulsifier-function-formulation": 161,
+        "adjusting-consistency-topical-dosage-forms": 162,
+        "providing-emolliency-oily-vehicles": 163,
+        "developing-patient-friendly-textures": 164,
+        "caring-patients": 165,
+        "bi-gel-opening-innovation-potential": 166,
+        "cream-most-popular-topical-dosage-form": 167,
+        "emulgel-combining-emulsion-and-gel-benefits": 168,
+        "foam-emerging-topical-dosage-form": 169,
+        "hydrogel-full-transparency": 170,
+        "lotion-low-viscosity-high-sprayability": 171,
+        "microemulsion-stunning-potential": 172,
+        "ointment-damaged-skins": 173,
+        "patch-controlled-skin-drug-delivery": 174,
+        "stick-spotting-difference": 175,
+        "hard-fats-suppositories": 176,
+        "hard-fats-pessaries": 177,
+        "alternatives-dosage-forms-rectal-and-vaginal-drug-delivery": 178,
+        "measuring-saturation-solubility-lipid-excipients": 179,
+        "miscibility-and-dispersability-test": 180,
+        "vitro-lipolysis-test": 181,
+        "taylor-dispersion-analysis": 182,
+        "pit-deviation-fast-and-accurate-measure-hlb": 183,
+        "sensorial-analysis-topical-drugs": 184,
+        "suppository-and-pessary-molding": 209
+    };
+    // 老站 slug（203-content/*）：依据原站锚文本核定
+    var LEGACY_SLUG = {
+        "pharmaceutical-foams": 169,
+        "lipid-based-drug-delivery-systems": 151,
+        "emulsions": 167,
+        "microemulsion": 172,
+        "gel": 170
+    };
+
+    /**
+     * 解析 URL 的 id 参数，支持三种形态：
+     *   146                  → 146
+     *   139/granulation      → granulation 的 id
+     *   203-content/gel      → 老 slug，走 LEGACY_SLUG
+     */
+    function resolveId(raw) {
+      if (!raw) return null;
+      var s = String(raw).trim();
+      if (/^\d+$/.test(s)) return parseInt(s, 10);
+      var m = s.match(/^\d+(?:-content)?\/(.+)$/);
+      var slug = m ? m[1] : s;
+      if (LEGACY_SLUG[slug]) return LEGACY_SLUG[slug];
+      if (SLUG_ID[slug]) return SLUG_ID[slug];
+      return null;
     }
-  });
-  app.mount("#app");
+
+    var { createApp, reactive } = Vue;
+    var app = createApp({
+      setup() {
+        var data = reactive({
+          loading: true,
+          notFound: false,
+          page: { title: '', contentHtml: '' },
+          docs: []
+        });
+        return { data };
+      }
+    });
+    var vm = app.mount("#app");
+    var data = vm.data;
+
+    var mm = window.location.search.match(/[?&]id=([^&#]*)/);
+    var raw = mm ? decodeURIComponent(mm[1]) : '';
+    var id = resolveId(raw);
+
+    if (!id) {
+      data.loading = false;
+      data.notFound = true;
+      return;
+    }
+
+    // 「以患者为中心的外用制剂」原站正文残缺（只有一句「由于排版特殊…不启用了」），
+    // 但站内已有完整专题页，直接跳转，避免用户看到空页
+    if (id === 165) {
+      window.location.replace('/formulation-technologies/caring-patients.html');
+      return;
+    }
+
+    var url = '/api/content/pages/ft-' + id;
+    fetch(url, { headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res || res.code !== 0 || !res.data || !res.data.contentHtml) {
+          console.warn('[tech] 页面无内容:', url, res && res.message);
+          data.loading = false;
+          data.notFound = true;
+          return;
+        }
+        var page = res.data;
+        data.page.title = page.title || '';
+        data.page.contentHtml = page.contentHtml || '';
+        data.loading = false;
+
+        document.title = (page.title || '配方技术') + ' ⋅ 嘉法狮';
+
+        // 面包屑补当前页（面包屑在 #app 外，用原生 DOM 追加）
+        var ol = document.querySelector('nav[aria-label="breadcrumb"] .breadcrumb');
+        if (ol && page.title && !ol.querySelector('.tech-crumb')) {
+          var li = document.createElement('li');
+          li.className = 'breadcrumb-item active tech-crumb';
+          li.textContent = page.title;
+          ol.appendChild(li);
+        }
+      })
+      .catch(function (e) {
+        console.error('[tech] 加载失败', url, e);
+        data.loading = false;
+        data.notFound = true;
+      });
+  })();
 </script>
   <script defer src="https://umami.onlystyle.com.cn/script.js"
     data-website-id="8dfca0a5-98e6-4037-b4ed-c6db16dd7ccf"></script>
