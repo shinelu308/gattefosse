@@ -17,10 +17,15 @@ const USER_SELECT = {
   fullName: true,
   avatar: true,
   company: true,
-  industry: true,
-  jobFunction: true,
-  department: true,
+  market: true, // 关注市场（个人护理 / 药用辅料）
+  jobFunction: true, // 职位
+  department: true, // 会员所在公司部门
   phone: true,
+  address: true,
+  province: true,
+  city: true,
+  district: true,
+  zipcode: true,
   role: true,
   status: true,
   samlEnabled: true,
@@ -132,10 +137,15 @@ export async function updateUser(req: Request, res: Response) {
     const {
       fullName,
       company,
-      industry,
+      market,
       jobFunction,
       department,
       phone,
+      address,
+      province,
+      city,
+      district,
+      zipcode,
       role,
       status,
     } = req.body;
@@ -143,10 +153,15 @@ export async function updateUser(req: Request, res: Response) {
     const updateData: Record<string, unknown> = {};
     if (fullName !== undefined) updateData.fullName = fullName;
     if (company !== undefined) updateData.company = company;
-    if (industry !== undefined) updateData.industry = industry;
+    if (market !== undefined) updateData.market = market || null;
     if (jobFunction !== undefined) updateData.jobFunction = jobFunction;
     if (department !== undefined) updateData.department = department || null;
     if (phone !== undefined) updateData.phone = phone;
+    if (address !== undefined) updateData.address = address || null;
+    if (province !== undefined) updateData.province = province || null;
+    if (city !== undefined) updateData.city = city || null;
+    if (district !== undefined) updateData.district = district || null;
+    if (zipcode !== undefined) updateData.zipcode = zipcode || null;
     if (role !== undefined) {
       // 角色白名单：必须是 roles 表里登记的角色 key（防止越权写入任意字符串）
       const roleKey = String(role);

@@ -53,10 +53,15 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const data = {
       fullName: r.fullName || email.split('@')[0],
       company: r.company || null,
-      industry: r.industry || null,
-      jobFunction: r.jobFunction || null,
-      department: r.department || null,
+      market: r.market || null,              // 关注市场（个人护理 / 药用辅料）
+      jobFunction: r.jobFunction || null,    // 职位
+      department: r.department || null,      // 会员所在公司部门
       phone: r.phone || null,
+      address: r.address || null,
+      province: r.province || null,
+      city: r.city || null,
+      district: r.district || null,
+      zipcode: r.zipcode || null,
       status: r.status || 'active',
       role: 'user',
     };
