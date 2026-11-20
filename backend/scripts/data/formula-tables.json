@@ -3,12 +3,13 @@
   "code": "2972-5.20",
   "name": "Caramelt Lollipop",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2972-5.20_caramelt_lollipop_5a.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A",
     "name": "EMULIUM® KAPPA MB",
     "inci": "CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS, GLYCERYL STEARATE, CETEARYL ALCOHOL, SODIUM STEAROYL LACTYLATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "44.00"
    },
    {
@@ -22,7 +23,7 @@
     "phase": "A",
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "18.00"
    },
    {
@@ -43,21 +44,21 @@
     "phase": "A",
     "name": "DC RED 17 K7007 (0.2% SOL. IN LIPEX® SHEASOLVE)",
     "inci": "SHEA BUTTER ETHYL ESTERS, RED 17",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.25"
    },
    {
     "phase": "A",
     "name": "UNICERT® GREEN K7016-J (0.2% SOL. IN LIPEX® SHEASOLVE)",
     "inci": "SHEA BUTTER ETHYL ESTERS, GREEN 6",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.90"
    },
    {
     "phase": "A",
     "name": "UNICERT® YELLOW K7064-J (0.2% SOL. IN LIPEX® SHEASOLVE)",
     "inci": "SHEA BUTTER ETHYL ESTERS, YELLOW 11",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "4.80"
    },
    {
@@ -101,26 +102,27 @@
   "code": "2712-1.38",
   "name": "亮泽液体口红",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2712-1.38_shiny_liquid_lipstick_rosewood_3h.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.0"
    },
    {
     "phase": "A",
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "A",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
@@ -134,14 +136,14 @@
     "phase": "A",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "10.0"
    },
    {
     "phase": "A",
     "name": "UNIFILMA™ HVY",
     "inci": "DEXTRIN ISOSTEARATE",
-    "supplier": "MIYOSHI",
+    "supplier": "Miyoshi",
     "percent": "3.0"
    },
    {
@@ -162,49 +164,49 @@
     "phase": "B",
     "name": "AEROSIL® 200",
     "inci": "SILICA",
-    "supplier": "EVONIK",
+    "supplier": "Evonik",
     "percent": "1.0"
    },
    {
     "phase": "C",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.0"
    },
    {
     "phase": "C",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "23.1"
    },
    {
     "phase": "C",
     "name": "UNIPURE® WHITE LC 981",
     "inci": "TITANIUM DIOXIDE",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.7"
    },
    {
     "phase": "C",
     "name": "UNIPURE® RED LC 381",
     "inci": "IRON OXIDES",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.4"
    },
    {
     "phase": "C",
     "name": "UNIPURE® PINK LC583",
     "inci": "MANGANESE VIOLET",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "15.4"
    },
    {
     "phase": "D",
     "name": "SERICA 5",
     "inci": "MICA",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "14.0"
    },
    {
@@ -227,19 +229,20 @@
   "code": "2906-1.22",
   "name": "精华粉底液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2906-1.22_serum_foundation_3p.pdf",
+  "src": "pdf3",
   "rows": [
    {
     "phase": "A",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.50"
    },
    {
     "phase": "A",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "8.00"
    },
    {
@@ -262,6 +265,48 @@
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE, STEARALKONIUM HECTORITE, PROPYLENE CARBONATE",
     "supplier": "ELEMENTIS",
     "percent": "7.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE® WHITE LC 981 HLC",
+    "inci": "TITANIUM DIOXIDE, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "9.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE® YELLOW LC 182 HLC",
+    "inci": "CI 77492, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "1.25"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE® RED LC 381 HLC",
+    "inci": "CI 77491, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.20"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE® BLACK LC 989 HLC",
+    "inci": "CI 77499, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.08"
+   },
+   {
+    "phase": "C",
+    "name": "CETIOL® CC",
+    "inci": "DICAPRYLYL CARBONATE",
+    "supplier": "BASF",
+    "percent": "7.00"
+   },
+   {
+    "phase": "C",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "0.50"
    },
    {
     "phase": "D",
@@ -292,11 +337,32 @@
     "percent": "2.00"
    },
    {
+    "phase": "E",
+    "name": "JEECHEM® NDA-LC",
+    "inci": "C9-12 ALKANE",
+    "supplier": "VANTAGE",
+    "percent": "5.00"
+   },
+   {
+    "phase": "E",
+    "name": "PERFUME FRESH BLOSSOM RS45193",
+    "inci": "PARFUM",
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.20"
+   },
+   {
     "phase": "F",
     "name": "AMIHOPE® LL",
     "inci": "LAUROYL LYSINE",
     "supplier": "AJINOMOTO",
     "percent": "1.00"
+   },
+   {
+    "phase": "G",
+    "name": "GATULINE® RADIANCE",
+    "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "3.00"
    }
   ]
  },
@@ -304,33 +370,34 @@
   "code": "2909-1.17",
   "name": "压制宝石粉",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2909-1.17_pressed_gemstone_1t.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.0"
    },
    {
     "phase": "A",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "22.0"
    },
    {
     "phase": "A",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.0"
    },
    {
     "phase": "A",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "10.0"
    },
    {
@@ -344,7 +411,7 @@
     "phase": "B",
     "name": "SILICA BEAD SB-700",
     "inci": "SILICA",
-    "supplier": "MIYOSHI",
+    "supplier": "Miyoshi",
     "percent": "20.0"
    },
    {
@@ -374,6 +441,7 @@
   "code": "2925-3.07",
   "name": "Orange Candy Bi-gel",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2925-3.07_orange_candy_bi-gel_9p.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A1",
@@ -386,7 +454,7 @@
     "phase": "A1",
     "name": "ORIGINAL EXTRACT™ ORANGE BIO",
     "inci": "CITRUS AURANTIUM DULCIS (ORANGE) FRUIT WATER",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "10.00"
    },
    {
@@ -407,7 +475,7 @@
     "phase": "A2",
     "name": "CARBOPOL® ULTREZ 21",
     "inci": "ACRYLATES/C10-30 ALKYL ACRYLATE CROSSPOLYMER",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "0.30"
    },
    {
@@ -421,28 +489,28 @@
     "phase": "B",
     "name": "EMULFREE® CBG MB",
     "inci": "ISOSTEARYL ALCOHOL, BUTYLENE GLYCOL COCOATE, ETHYLCELLULOSE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "8.00"
    },
    {
@@ -463,8 +531,29 @@
     "phase": "D",
     "name": "ENERGINIUS®",
     "inci": "FRUCTOSE, GLYCERIN, WATER, WITHANIA SOMNIFERA ROOT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
+   },
+   {
+    "phase": "D",
+    "name": "UNICERT® YELLOW 08006-J (1.0% SOL.)",
+    "inci": "WATER, YELLOW 6",
+    "supplier": "Sensient",
+    "percent": "0.34"
+   },
+   {
+    "phase": "D",
+    "name": "UNICERT® RED 07004 J (1.0% SOL.)",
+    "inci": "WATER, RED 4",
+    "supplier": "Sensient",
+    "percent": "0.08"
+   },
+   {
+    "phase": "D",
+    "name": "UNICERT® YELLOW 08005-J (1.0% SOL.)",
+    "inci": "WATER, YELLOW 5",
+    "supplier": "Sensient",
+    "percent": "0.19"
    },
    {
     "phase": "D",
@@ -477,7 +566,7 @@
     "phase": "E",
     "name": "PERFUME ORANGE 2 ITM0632082",
     "inci": "PARFUM",
-    "supplier": "DOMAINE D'ARGEVILLE",
+    "supplier": "DOMAINE D'ARGEVILLEE",
     "percent": "0.20"
    }
   ]
@@ -486,6 +575,7 @@
   "code": "2985-1.14",
   "name": "Matt'cha Cream",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2985-1.14_matt_cha_cream_7l.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A1",
@@ -512,21 +602,21 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.15"
    },
    {
     "phase": "B",
     "name": "EMULIUM® MELLIFERA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, JOJOBA ESTERS, CETYL ALCOHOL, POLYGLYCERYL-3 BEESWAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -547,28 +637,28 @@
     "phase": "C",
     "name": "SOLASTEMIS®",
     "inci": "FRUCTOSE, GLYCERIN, WATER, SECHIUM EDULE FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.50"
    },
    {
     "phase": "C",
     "name": "UNICERT® BLUE 05601-J (1.0% SOL)",
     "inci": "WATER, BLUE 1",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.09"
    },
    {
     "phase": "C",
     "name": "UNICERT® YELLOW 08005-J (1.0% SOL.)",
     "inci": "WATER, YELLOW 5",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.61"
    },
    {
@@ -582,14 +672,14 @@
     "phase": "D",
     "name": "EYEGLORIUS™",
     "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "PERFUME THE VERT MATCHA 2ITM0623141",
     "inci": "PARFUM",
-    "supplier": "DOMAINE D'ARGEVILLE",
+    "supplier": "DOMAINE D'ARGEVILLEE",
     "percent": "0.20"
    },
    {
@@ -605,26 +695,27 @@
   "code": "2940-1.10",
   "name": "浓郁液体腮红",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2940-1.10_intense_liquid_blush_4k.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A1",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.50"
    },
    {
     "phase": "A1",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "A1",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
@@ -645,7 +736,7 @@
     "phase": "A1",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
@@ -659,7 +750,7 @@
     "phase": "A2",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "0.50"
    },
    {
@@ -708,7 +799,7 @@
     "phase": "B",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.00"
    },
    {
@@ -738,6 +829,20 @@
     "inci": "UNDECANE, TRIDECANE",
     "supplier": "BASF",
     "percent": "5.00"
+   },
+   {
+    "phase": "D",
+    "name": "SUNSIL-LUX150H",
+    "inci": "SILICA",
+    "supplier": "SUNJIN CHEMICAL",
+    "percent": "5.00"
+   },
+   {
+    "phase": "D",
+    "name": "AMIHOPE® LL",
+    "inci": "LAUROYL LYSINE",
+    "supplier": "AJINOMOTO",
+    "percent": "5.00"
    }
   ]
  },
@@ -745,6 +850,7 @@
   "code": "2944-1.01",
   "name": "经典缎光口红",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2944-1.01_iconic_satin_lipstick_red_8g.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A",
@@ -771,21 +877,21 @@
     "phase": "A",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
     "phase": "A",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "18.20"
    },
    {
@@ -799,14 +905,14 @@
     "phase": "B",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.50"
    },
    {
@@ -827,21 +933,21 @@
     "phase": "B",
     "name": "UNIPURE® RED LC 3075",
     "inci": "RED 7 LAKE, ALUMINUM HYDROXIDE",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "3.70"
    },
    {
     "phase": "B",
     "name": "UNIPURE® YELLOW LC125",
     "inci": "YELLOW 5 LAKE (CI 19140)",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.90"
    },
    {
     "phase": "B",
     "name": "UNIPURE® RED LC 3071",
     "inci": "RED 7 LAKE (CI 15850), ALUMINUM HYDROXIDE",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "3.70"
    },
    {
@@ -855,7 +961,7 @@
     "phase": "C",
     "name": "SERICA 5",
     "inci": "MICA",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "5.00"
    },
    {
@@ -878,6 +984,7 @@
   "code": "2997-1.06",
   "name": "Hair Pudding Mask",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2997-1.06_hair_pudding_mask_5m.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A1",
@@ -925,7 +1032,7 @@
     "phase": "A3",
     "name": "GENAMIN® KDMP",
     "inci": "BEHENTRIMONIUM CHLORIDE",
-    "supplier": "CLARIANT",
+    "supplier": "Clariant",
     "percent": "2.00"
    },
    {
@@ -946,21 +1053,21 @@
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "DEFINICIRE®",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -988,28 +1095,28 @@
     "phase": "C",
     "name": "GATULINE® AGE DEFENSE NP",
     "inci": "WATER, JUGLANS REGIA (WALNUT) SEED EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "PHYLDERM® VEGETAL",
     "inci": "HYDROLYZED SOY PROTEIN",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.00"
    },
    {
     "phase": "C",
     "name": "PERFUME NIU VAI MILK ITM0603157",
     "inci": "PARFUM",
-    "supplier": "DOMAINE D'ARGEVILLE",
+    "supplier": "DOMAINE D'ARGEVILLEE",
     "percent": "0.80"
    },
    {
@@ -1025,61 +1132,62 @@
   "code": "2930-1.08",
   "name": "光泽润色霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2930-1.08_dewy_tinted_cream_spf20_1s.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A1",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "A1",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.0"
    },
    {
     "phase": "A1",
     "name": "EYEGLORIUS™",
     "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "A1",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.0"
    },
    {
     "phase": "A2",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "A2",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "8.0"
    },
    {
     "phase": "A2",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "8.0"
    },
    {
     "phase": "A2",
     "name": "HALLBRITE® BHB",
     "inci": "BUTYLOCTYL SALYCILATE",
-    "supplier": "HALLSTAR",
+    "supplier": "Hallstar",
     "percent": "3.0"
    },
    {
@@ -1130,6 +1238,168 @@
     "inci": "TITANIUM DIOXIDE, SILICA, JOJOBA ESTERS",
     "supplier": "KOBO",
     "percent": "6.0"
+   },
+   {
+    "phase": "B",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "32.9"
+   },
+   {
+    "phase": "B",
+    "name": "MAGNESIUM SULFATE (99%)",
+    "inci": "MAGNESIUM SULFATE",
+    "supplier": "",
+    "percent": "2.0"
+   },
+   {
+    "phase": "B",
+    "name": "SODIUM HYDROXIDE (10 % SOL.)",
+    "inci": "WATER, SODIUM HYDROXIDE",
+    "supplier": "",
+    "percent": "0.1"
+   },
+   {
+    "phase": "B",
+    "name": "GEOGARD ULTRA™",
+    "inci": "GLUCONOLACTONE, SODIUM BENZOATE, CALCIUM GLUCONATE",
+    "supplier": "Lonza",
+    "percent": "0.5"
+   },
+   {
+    "phase": "B",
+    "name": "PROPANEDIOL",
+    "inci": "PROPANEDIOL",
+    "supplier": "",
+    "percent": "3.0"
+   },
+   {
+    "phase": "C",
+    "name": "CETIOL® ULTIMATE",
+    "inci": "UNDECANE, TRIDECANE",
+    "supplier": "BASF",
+    "percent": "4.0"
+   },
+   {
+    "phase": "D",
+    "name": "SOLASTEMIS®",
+    "inci": "FRUCTOSE, GLYCERIN, WATER, SECHIUM EDULE FRUIT EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.0"
+   }
+  ]
+ },
+ {
+  "code": "2614-3.01",
+  "name": "玩趣修复凝霜",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A1",
+    "name": "ORIGINAL EXTRACT® LOTUS",
+    "inci": "NELUMBO NUCIFERA ROOT WATER",
+    "supplier": "Gattefossé",
+    "percent": "12.00"
+   },
+   {
+    "phase": "A2",
+    "name": "KELCO-CARE DIUTAN GUM",
+    "inci": "SPHINGOMONAS FERMENT EXTRACT",
+    "supplier": "Lubrizol",
+    "percent": "0.03"
+   },
+   {
+    "phase": "A2",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "25.00"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® DOLCEA MB",
+    "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
+    "supplier": "Gattefossé",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "LEXFEEL NATURAL",
+    "inci": "HEPTYL UNDECYLENATE",
+    "supplier": "Inolex",
+    "percent": "22.17"
+   },
+   {
+    "phase": "B",
+    "name": "ACTICIRE® MB",
+    "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
+    "supplier": "Gattefossé",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "LABRAFAC® CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "6.00"
+   },
+   {
+    "phase": "B",
+    "name": "CETEARYL ALCOHOL",
+    "inci": "CETEARYL ALCOHOL",
+    "supplier": "",
+    "percent": "2.00"
+   },
+   {
+    "phase": "B",
+    "name": "MOD MB",
+    "inci": "OCTYLDODECYL MYRISTATE",
+    "supplier": "Gattefossé",
+    "percent": "8.00"
+   },
+   {
+    "phase": "B",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "0.50"
+   },
+   {
+    "phase": "C",
+    "name": "CETIOL® ULTIMATE",
+    "inci": "UNDECANE, TRIDECANE",
+    "supplier": "BASF",
+    "percent": "15.00"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME FASHION SOIN ARX/32906",
+    "inci": "PARFUM",
+    "supplier": "AROMAX",
+    "percent": "0.30"
+   },
+   {
+    "phase": "D",
+    "name": "GATULINE® SKIN REPAIR AF",
+    "inci": "PROPANEDIOL, ONOPORDUM ACANTHIUM FLOWER/LEAF/STEM EXTRACT, WATER",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "E",
+    "name": "UNICERT BLUE 05601-J (0.1% SOL.)",
+    "inci": "WATER, BLUE 1",
+    "supplier": "Sensient",
+    "percent": "0.50"
+   },
+   {
+    "phase": "E",
+    "name": "UNICERT YELLOW 08005-J (1.0% SOL.)",
+    "inci": "WATER, YELLOW 5",
+    "supplier": "Sensient",
+    "percent": "0.50"
    }
   ]
  },
@@ -1137,6 +1407,7 @@
   "code": "2528-1.13",
   "name": "反重力精华",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2528-1.13_anti-gravity_serum_4b.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -1212,7 +1483,7 @@
     "phase": "C",
     "name": "COVAPEARL® FIRE RED 333",
     "inci": "MICA, IRON OXIDES",
-    "supplier": "Sensient",
+    "supplier": "",
     "percent": "0.03"
    },
    {
@@ -1235,6 +1506,7 @@
   "code": "2587-1.07",
   "name": "抗斑身体喷雾",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2587-1.07_anti-spot_body_spray_9a.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -1261,7 +1533,7 @@
     "phase": "B1",
     "name": "SENSIVA PA 40",
     "inci": "PHENYLPROPANOL, PROPANEDIOL, CAPRYLYL GLYCOL, TOCOPHEROL",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "0.5"
    },
    {
@@ -1269,7 +1541,7 @@
     "name": "EMULFREE® CBG MB",
     "inci": "ISOSTEARYL ALCOHOL, BUTYLENE GLYCOL COCOATE, ETHYLCELLULOSE",
     "supplier": "Gattefossé",
-    "percent": "3.0"
+    "percent": "3.5"
    },
    {
     "phase": "B1",
@@ -1296,7 +1568,7 @@
     "phase": "B2",
     "name": "PERFUME TAXI SUNRISE RS 15014",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.2"
    },
    {
@@ -1322,7 +1594,7 @@
    },
    {
     "phase": "E",
-    "name": "CYTOBIOL™ IRIS A²",
+    "name": "CYTOBIOL™ IRIS A&sup2;",
     "inci": "PROPANEDIOL, WATER, ALCOHOL, IRIS FLORENTINA ROOT EXTRACT, ZINC SULFATE, RETINYL PALMITATE",
     "supplier": "Gattefossé",
     "percent": "5.0"
@@ -1333,6 +1605,7 @@
   "code": "2469-2.11",
   "name": "香蕉奶油冰淇淋",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2469-2-11-banana-buttercream-602a92ba582b8307017264.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -1436,7 +1709,7 @@
     "phase": "D",
     "name": "PERFUME BANANA RS 79317",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.20"
    },
    {
@@ -1466,6 +1739,7 @@
   "code": "2031-1.08",
   "name": "胡须梳理霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2031-1.08_beard_groomer.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -1497,6 +1771,27 @@
    },
    {
     "phase": "A",
+    "name": "DEFINICIRE™",
+    "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
+    "supplier": "Gatefossé",
+    "percent": "3.50"
+   },
+   {
+    "phase": "A",
+    "name": "CETYL ALCOHOL",
+    "inci": "CETYL ALCOHOL",
+    "supplier": "",
+    "percent": "1.50"
+   },
+   {
+    "phase": "A",
+    "name": "TOCOPHEROL",
+    "inci": "TOCOPHEROL",
+    "supplier": "",
+    "percent": "0.05"
+   },
+   {
+    "phase": "A",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
@@ -1520,7 +1815,7 @@
     "phase": "B",
     "name": "AVICEL® PC 591",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
-    "supplier": "Dupont",
+    "supplier": "DUPONT",
     "percent": "1.00"
    },
    {
@@ -1531,7 +1826,7 @@
     "percent": "0.20"
    },
    {
-    "phase": "C",
+    "phase": "B",
     "name": "PERFUME WILD MEN 1737583",
     "inci": "PARFUM",
     "supplier": "Expressions Parfumées",
@@ -1540,9 +1835,130 @@
   ]
  },
  {
+  "code": "2891-1.19",
+  "name": "弹力眼霜",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A1",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "67.6"
+   },
+   {
+    "phase": "A1",
+    "name": "STÄRKINA NATURAL",
+    "inci": "SOLANUM TUBEROSUM (POTATO) STARCH",
+    "supplier": "Agrana",
+    "percent": "1.5"
+   },
+   {
+    "phase": "A2",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "3.0"
+   },
+   {
+    "phase": "A2",
+    "name": "NATROSOL™ PLUS 330 CS",
+    "inci": "CETYL HYDROXYETHYLCELLULOSE",
+    "supplier": "Ashland",
+    "percent": "0.4"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® DERMOLEA MB",
+    "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
+    "supplier": "Gattefossé",
+    "percent": "5.0"
+   },
+   {
+    "phase": "B",
+    "name": "ACTICIRE® MB",
+    "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
+    "supplier": "Gattefossé",
+    "percent": "2.0"
+   },
+   {
+    "phase": "B",
+    "name": "LIPOCIRE™ A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "5.0"
+   },
+   {
+    "phase": "B",
+    "name": "LEXFEEL™ N5 MB",
+    "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
+    "supplier": "Inolex",
+    "percent": "8.0"
+   },
+   {
+    "phase": "B",
+    "name": "TOCOPHERYL ACETATE",
+    "inci": "TOCOPHERYL ACETATE",
+    "supplier": "",
+    "percent": "0.5"
+   },
+   {
+    "phase": "B",
+    "name": "SENSIVA® SC 50",
+    "inci": "ETHYLHEXYLGLYCERIN",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "0.1"
+   },
+   {
+    "phase": "C",
+    "name": "EYEGLORIUS™",
+    "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.0"
+   },
+   {
+    "phase": "C",
+    "name": "EUXYL™ K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.5"
+   },
+   {
+    "phase": "C",
+    "name": "CELLULOBEADS USF",
+    "inci": "CELLULOSE",
+    "supplier": "DAITO KASEI",
+    "percent": "2.0"
+   },
+   {
+    "phase": "C",
+    "name": "RED DYE (1.0% SOL.)",
+    "inci": "WATER, DYE",
+    "supplier": "",
+    "percent": "0.1"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME BOURRACHE ET POUDRE DE RIZ NATFLOR MKT 1114",
+    "inci": "PARFUM",
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.2"
+   },
+   {
+    "phase": "D",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "1.1"
+   }
+  ]
+ },
+ {
   "code": "2373-1.24",
   "name": "焦糖面膜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2373-1.24_caramask.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -1610,9 +2026,116 @@
   ]
  },
  {
+  "code": "2694-3.03",
+  "name": "佛手瓜奇异果绵绵冰面霜",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A1",
+    "name": "ORIGINAL EXTRACT™ KIWI",
+    "inci": "ACTINIDIA CHINENSIS (KIWI) FRUIT WATER",
+    "supplier": "Gattefossé",
+    "percent": "12.00"
+   },
+   {
+    "phase": "A1",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "15.00"
+   },
+   {
+    "phase": "A1",
+    "name": "1,3-PROPANEDIOL",
+    "inci": "PROPANEDIOL",
+    "supplier": "Connect Chemicals",
+    "percent": "25.00"
+   },
+   {
+    "phase": "A2",
+    "name": "BEAUTE BY ROQUETTE® ST 118",
+    "inci": "SODIUM CARBOXYMETHYL STARCH",
+    "supplier": "ROQUETTE",
+    "percent": "3.00"
+   },
+   {
+    "phase": "A3",
+    "name": "ORIGINAL EXTRACT™ KIWI",
+    "inci": "ACTINIDIA CHINENSIS (KIWI) FRUIT WATER",
+    "supplier": "Gattefossé",
+    "percent": "33.5"
+   },
+   {
+    "phase": "A3",
+    "name": "KELCOGEL CG-HA",
+    "inci": "GELLAN GUM",
+    "supplier": "CP KELCO",
+    "percent": "0.70"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® MELLIFERA MB",
+    "inci": "POLYGLYCERYL-6 DISTEARATE, JOJOBA ESTERS, CETYL ALCOHOL, POLYGLYCERYL-3 BEESWAX",
+    "supplier": "Gattefossé",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "3.00"
+   },
+   {
+    "phase": "C",
+    "name": "EUXYL K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.00"
+   },
+   {
+    "phase": "C",
+    "name": "SOLASTEMIS™",
+    "inci": "FRUCTOSE, WATER, GLYCERIN, SECHIUM EDULE FRUIT EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNICERT BLUE 05601-J (1.0% SOL)",
+    "inci": "WATER, BLUE 1",
+    "supplier": "Sensient",
+    "percent": "0.035"
+   },
+   {
+    "phase": "C",
+    "name": "UNICERT YELLOW 08005-J (1.0% SOL.)",
+    "inci": "WATER, YELLOW 5",
+    "supplier": "Sensient",
+    "percent": "0.14"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME KIWI",
+    "inci": "PARFUM",
+    "supplier": "MLW",
+    "percent": "0.20"
+   },
+   {
+    "phase": "D",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "1.40"
+   }
+  ]
+ },
+ {
   "code": "2787-1.07",
   "name": "CICA屏障霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/2023-09/2787-1.07-cica-barrier-cream.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -1643,38 +2166,80 @@
     "percent": "0.40"
    },
    {
-    "phase": "A3",
+    "phase": "B",
+    "name": "EMULIUM® DERMOLEA MB",
+    "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
+    "supplier": "Gattefossé",
+    "percent": "4.00"
+   },
+   {
+    "phase": "B",
+    "name": "LIPOCIRE™ A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "10.00"
+   },
+   {
+    "phase": "B",
+    "name": "SHEA BUTTER",
+    "inci": "BUTYROSPERMUM PARKII BUTTER",
+    "supplier": "",
+    "percent": "5.00"
+   },
+   {
+    "phase": "B",
+    "name": "TOCOPHEROL",
+    "inci": "TOCOPHEROL",
+    "supplier": "",
+    "percent": "0.10"
+   },
+   {
+    "phase": "B",
+    "name": "SCHERCEMOL™ DIS ESTER",
+    "inci": "DIISOPROPYL SEBACATE",
+    "supplier": "Lubrizol",
+    "percent": "20.00"
+   },
+   {
+    "phase": "B",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "1.00"
+   },
+   {
+    "phase": "B",
     "name": "LEXFEEL™ N350",
     "inci": "CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER, DIHEPTYL SUCCINATE",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "7.00"
    },
    {
     "phase": "C",
     "name": "GATULINE® SKIN REPAIR AF",
     "inci": "PROPANEDIOL, ONOPORDUM ACANTHIUM FLOWER/LEAF/STEM EXTRACT, WATER",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "GATULINE® RC BIO",
     "inci": "WATER, FAGUS SYLVATICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "UNICERT BLUE 05601-J (0.1% SOL.)",
     "inci": "AQUA, CI 42090",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.15"
    },
    {
     "phase": "C",
     "name": "UNICERT RED K7057-J (0.5% SOL.)",
     "inci": "AQUA, RED 33",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.14"
    },
    {
@@ -1686,7 +2251,7 @@
    },
    {
     "phase": "E",
-    "name": "PERFUME ARGANORANGER MIEL RS35850",
+    "name": "PERFUME ARGAN ORANGER MIEL RS35850",
     "inci": "PARFUM",
     "supplier": "TECHNICO-FLOR",
     "percent": "0.30"
@@ -1697,6 +2262,7 @@
   "code": "2657-1.12",
   "name": "舒缓身体乳膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2657-1-12_comforting_body_balm_2n.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -1716,21 +2282,21 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.80"
    },
    {
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "COMPRITOL® 888 CG PELLETS MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.50"
    },
    {
@@ -1744,21 +2310,21 @@
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "15.00"
    },
    {
     "phase": "B",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "LEXFEEL™ N5",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "5.00"
    },
    {
@@ -1779,14 +2345,14 @@
     "phase": "D",
     "name": "GATULINE® RC BIO",
     "inci": "WATER, FAGUS SYLVATICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "GATULINE® RENEW",
     "inci": "BUTYLENE GLYCOL, WATER, CRYPTOMERIA JAPONICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
@@ -1802,16 +2368,17 @@
   "code": "2865-7.05",
   "name": "宇宙变色眼影",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2865-7.05_cosmic_chromorphing_shadow_4s.pdf",
+  "src": "zh",
   "rows": [
    {
-    "phase": "A1",
+    "phase": "A",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
     "percent": "54.15"
    },
    {
-    "phase": "A1",
+    "phase": "A",
     "name": "AVICEL® PC 591",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
     "supplier": "DUPONT",
@@ -1821,7 +2388,7 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.25"
    },
    {
@@ -1842,15 +2409,15 @@
     "phase": "B",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.50"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
-    "percent": "3.00"
+    "supplier": "Gattefossé",
+    "percent": "3"
    },
    {
     "phase": "B",
@@ -1877,7 +2444,7 @@
     "phase": "C",
     "name": "COVAPEARL® SATIN 931",
     "inci": "TITANIUM DIOXIDE, MICA",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "5.00"
    },
    {
@@ -1905,7 +2472,7 @@
     "phase": "C",
     "name": "REFLECKS™ MUTLIDIMENSION CHANGING CHERRY",
     "inci": "CALCIUM SODIUM BOROSILICATE, TITANIUM DIOXIDE, SILICA",
-    "supplier": "SUN CHEMICAL",
+    "supplier": "Sensient",
     "percent": "2.00"
    },
    {
@@ -1918,9 +2485,116 @@
   ]
  },
  {
+  "code": "2748-1.11",
+  "name": "松软酪酪面霜",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A1",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "60.8"
+   },
+   {
+    "phase": "A1",
+    "name": "STARKINA NATURAL",
+    "inci": "SOLANUM TUBEROSUM (POTATO) STARCH",
+    "supplier": "Agrana",
+    "percent": "4.0"
+   },
+   {
+    "phase": "A2",
+    "name": "PEMUPUR™ START POLYMER",
+    "inci": "MICROCRYSTALLINE CELLULOSE, SPHINGOMONAS FERMENT EXTRACT, CELLULOSE GUM",
+    "supplier": "Lubrizol",
+    "percent": "0.5"
+   },
+   {
+    "phase": "A2",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "5.0"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® DOLCEA MB",
+    "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
+    "supplier": "Gattefossé",
+    "percent": "4.0"
+   },
+   {
+    "phase": "B",
+    "name": "ACTICIRE® MB",
+    "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
+    "supplier": "Gattefossé",
+    "percent": "5.0"
+   },
+   {
+    "phase": "B",
+    "name": "CETIOL® OE",
+    "inci": "DICAPRYLYL ETHER",
+    "supplier": "BASF",
+    "percent": "11.5"
+   },
+   {
+    "phase": "B",
+    "name": "GELEOL® MB",
+    "inci": "GLYCERYL STEARATE",
+    "supplier": "Gattefossé",
+    "percent": "2.5"
+   },
+   {
+    "phase": "",
+    "name": "BENTONE GEL EUG V",
+    "inci": "OCTYLDODECANOL, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
+    "supplier": "ELEMENTIS",
+    "percent": "2.0"
+   },
+   {
+    "phase": "C",
+    "name": "EUXYL K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.0"
+   },
+   {
+    "phase": "C",
+    "name": "ENERGINIUS®",
+    "inci": "FRUCTOSE, GLYCERIN, WATER, WITHANIA SOMNIFERA ROOT EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "1.0"
+   },
+   {
+    "phase": "C",
+    "name": "OLI&acute;VINE™",
+    "inci": "WATER, OLIVINE EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "1.0"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME THE TONIC 2247554",
+    "inci": "PARFUM",
+    "supplier": "EXPRESSIONS PARFUMEES",
+    "percent": "0.4"
+   },
+   {
+    "phase": "D",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "1.3"
+   }
+  ]
+ },
+ {
   "code": "1925-1.16",
   "name": "疯狂哑光发蜡",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/1925-1.16_crazy_matte_wax.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -1966,7 +2640,7 @@
    },
    {
     "phase": "B",
-    "name": "DEFINICIRE™",
+    "name": "DEFINICIRE®",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
     "percent": "5.50"
@@ -1982,8 +2656,149 @@
     "phase": "C",
     "name": "PERFUME FRESH BLOSSOM RS45193",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.50"
+   }
+  ]
+ },
+ {
+  "code": "2892-2.13",
+  "name": "奶油遮瑕棒",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A",
+    "name": "PHYTO WAX 2225",
+    "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, OLEA EUROPAEA (OLIVE) OIL UNSAPONIFIABLES, RHUS SUCCEDANEA FRUIT WAX, SHOREA ROBUSTA RESIN",
+    "supplier": "KAHL",
+    "percent": "2.50"
+   },
+   {
+    "phase": "A",
+    "name": "CANDELILLA WAX",
+    "inci": "EUPHORBIA CERIFERA (CANDELILLA) WAX",
+    "supplier": "",
+    "percent": "7.00"
+   },
+   {
+    "phase": "A",
+    "name": "KAHLWAX 6607L",
+    "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ASCORBYL PALMITATE, TOCOPHEROL",
+    "supplier": "KAHL",
+    "percent": "6.00"
+   },
+   {
+    "phase": "A",
+    "name": "LIPOCIRE™ A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A",
+    "name": "EUTANOL® G",
+    "inci": "OCTYLDODECANOL",
+    "supplier": "BASF",
+    "percent": "14.90"
+   },
+   {
+    "phase": "A",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "14.30"
+   },
+   {
+    "phase": "A",
+    "name": "JOJOBA OIL",
+    "inci": "SIMMONDSIA CHINENSIS (JOJOBA) SEED OIL",
+    "supplier": "",
+    "percent": "2.00"
+   },
+   {
+    "phase": "B",
+    "name": "BENTONE GEL® EUG V",
+    "inci": "OCTYLDODECANOL, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
+    "supplier": "ELEMENTIS",
+    "percent": "2.50"
+   },
+   {
+    "phase": "B",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "6.00"
+   },
+   {
+    "phase": "B",
+    "name": "EUTANOL® G",
+    "inci": "OCTYLDODECANOL",
+    "supplier": "BASF",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "UNIPURE® WHITE LC 981 EM",
+    "inci": "TITANIUM DIOXIDE",
+    "supplier": "Sensient",
+    "percent": "14.00"
+   },
+   {
+    "phase": "B",
+    "name": "UNIPURE® YELLOW LC 182 EM",
+    "inci": "IRON OXIDES",
+    "supplier": "Sensient",
+    "percent": "1.98"
+   },
+   {
+    "phase": "B",
+    "name": "UNIPURE® RED LC 381 EM",
+    "inci": "IRON OXIDES",
+    "supplier": "Sensient",
+    "percent": "0.44"
+   },
+   {
+    "phase": "B",
+    "name": "UNIPURE® BLACK LC 989 EM",
+    "inci": "IRON OXIDES",
+    "supplier": "Sensient",
+    "percent": "0.08"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "1.00"
+   },
+   {
+    "phase": "C",
+    "name": "SERICA 5",
+    "inci": "MICA",
+    "supplier": "Sensient",
+    "percent": "3.50"
+   },
+   {
+    "phase": "C",
+    "name": "SILICA BEADS SB-300",
+    "inci": "SILICA",
+    "supplier": "Miyoshi",
+    "percent": "5.30"
+   },
+   {
+    "phase": "C",
+    "name": "IMERCARE® MATTE",
+    "inci": "KAOLIN",
+    "supplier": "IMERYS",
+    "percent": "3.50"
+   },
+   {
+    "phase": "D",
+    "name": "EYEGLORIUS™",
+    "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
    }
   ]
  },
@@ -1991,6 +2806,7 @@
   "code": "2466-1.01",
   "name": "卷发护发乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2466-1.01_curls_protector.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2051,8 +2867,8 @@
    {
     "phase": "B",
     "name": "KAHLRESIN 6720",
-    "inci": "SHOREA ROBUSTA RESIN, HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL, TOCOPHEROL",
-    "supplier": "Kahl",
+    "inci": "SHOREA ROBUSTA RESIN, HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL, TOCOPHERO",
+    "supplier": "KAHL",
     "percent": "2.00"
    },
    {
@@ -2103,6 +2919,7 @@
   "code": "2595-1.04",
   "name": "日用轻盈保湿霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2595-1.04_daily_lightweight_moisturizer_8n_0.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2129,8 +2946,50 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.20"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® DERMOLEA MB",
+    "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
+    "supplier": "Gattefossé",
+    "percent": "4.00"
+   },
+   {
+    "phase": "B",
+    "name": "CETYL ALCOHOL",
+    "inci": "CETYL ALCOHOL",
+    "supplier": "",
+    "percent": "1.50"
+   },
+   {
+    "phase": "B",
+    "name": "MOD MB",
+    "inci": "OCTYLDODECYL MYRISTATE",
+    "supplier": "Gattefossé",
+    "percent": "8.00"
+   },
+   {
+    "phase": "B",
+    "name": "CETIOL® OE",
+    "inci": "DICAPRYLYL ETHER",
+    "supplier": "BASF",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "5.00"
+   },
+   {
+    "phase": "B",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "0.80"
    },
    {
     "phase": "C",
@@ -2145,6 +3004,7 @@
   "code": "2670-1.12",
   "name": "日用防晒霜 SPF20",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2670-1.12_daily_shield_spf20_7u.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2192,14 +3052,14 @@
     "phase": "A2",
     "name": "A10-TiO2-SA-ASG8",
     "inci": "TITANIUM DIOXIDE, ALUMINUM HYDROXIDE, STEAROYL GLUTAMIC ACID, HYDRATED SILICA",
-    "supplier": "Kobo",
+    "supplier": "KOBO",
     "percent": "7.0"
    },
    {
     "phase": "A3",
     "name": "ZNO-750-ASG5",
     "inci": "ZINC OXIDE, STEAROYL GLUTAMIC ACID",
-    "supplier": "Kobo",
+    "supplier": "KOBO",
     "percent": "10.0"
    },
    {
@@ -2278,6 +3138,7 @@
   "code": "2849-2.06",
   "name": "纤长睫毛膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2849-2.06_definilash_mascara_7s.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2304,48 +3165,48 @@
     "phase": "A3",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.30"
    },
    {
     "phase": "A4",
     "name": "UNIPURE TRIPLE BLACK LC990",
     "inci": "CI 77499",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "15.00"
    },
    {
     "phase": "B1",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B1",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B1",
     "name": "DEFINICIRE®",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B1",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B1",
     "name": "KAHLWAX 2442L",
-    "inci": "CORPENICIA CERIFERA (CARNAUBA) WAX",
+    "inci": "COPERNICIA CERIFERA (CARNAUBA) WAX",
     "supplier": "KAHL",
     "percent": "3.00"
    },
@@ -2360,7 +3221,7 @@
     "phase": "B1",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
@@ -2373,8 +3234,8 @@
    {
     "phase": "C",
     "name": "NATPURE FILM AP",
-    "inci": "PULLULAN, SORBITOL, ACACIA SENEGAL GUM , TREHALOSE",
-    "supplier": "SENSIENT",
+    "inci": "PULLULAN, SORBITOL, ACACIA SENEGAL GUM, TREHALOSE",
+    "supplier": "Sensient",
     "percent": "2.50"
    },
    {
@@ -2397,6 +3258,7 @@
   "code": "2853-1.10",
   "name": "梦幻云霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2853-1.10_dreamy_cloud_cream_1s.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2413,13 +3275,6 @@
     "percent": "0.63"
    },
    {
-    "phase": "A1",
-    "name": "GLYCERIN",
-    "inci": "GLYCERIN",
-    "supplier": "",
-    "percent": "5.00"
-   },
-   {
     "phase": "A2",
     "name": "BEAUTE BY ROQUETTE® ST 118",
     "inci": "SODIUM CARBOXYMETHYL STARCH",
@@ -2427,31 +3282,38 @@
     "percent": "2.50"
    },
    {
+    "phase": "A2",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "5.00"
+   },
+   {
     "phase": "B",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
-    "percent": "3.50"
+    "supplier": "Gattefossé",
+    "percent": "3.5"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "LEXFEEL™ N5 MB",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "5.00"
    },
    {
@@ -2465,14 +3327,14 @@
     "phase": "C",
     "name": "UNICERT® RED 07004 J (0.1% SOL.)",
     "inci": "WATER, RED 4",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.30"
    },
    {
     "phase": "C",
     "name": "ELEVASTIN™",
     "inci": "PROPANEDIOL, BETAINE, WATER, MURRAYA KOENIGII STEM EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
@@ -2502,160 +3364,161 @@
   "code": "2746-1.17",
   "name": "干爽防晒乳 SPF50",
   "pdf": "https://www.gattefosse.com/sites/default/files/2023-09/2746-1.17-dry-touch-lotion-spf50.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "36.2"
+    "percent": "36.20"
    },
    {
     "phase": "A1",
     "name": "KELCO-CARE™ DIUTAN GUM",
     "inci": "SPHINGOMONAS FERMENT EXTRACT",
     "supplier": "Lubrizol",
-    "percent": "0.0"
+    "percent": "0.05"
    },
    {
     "phase": "A2",
     "name": "AMPHISOL K",
     "inci": "POTASSIUM CETYL PHOSPHATE",
     "supplier": "DSM",
-    "percent": "0.2"
+    "percent": "0.20"
    },
    {
     "phase": "B",
     "name": "EMULIUM® MELLIFERA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, JOJOBA ESTERS, CETYL ALCOHOL, POLYGLYCERYL-3 BEESWAX",
     "supplier": "Gattefossé",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "COSMOSURF CE-140",
     "inci": "STEARYL/OCTADODECYL CITRATE CROSSPOLYMER",
     "supplier": "Masso",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "UVASORB HEB",
     "inci": "DIETHYLHEXYL BUTAMIDO TRIAZONE",
     "supplier": "3 V Sigma",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "B",
     "name": "UVINUL A PLUS",
     "inci": "DIETHYLAMINO HYDROXYBENZOYL HEXYL BENZOATE",
     "supplier": "BASF",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "TINOSORB S",
     "inci": "BIS-ETHYLHEXYLOXYPHENOL METHOXYPHENYL TRIAZINE",
     "supplier": "BASF",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "B",
     "name": "PARSOL EHS",
     "inci": "ETHYLHEXYL SALICYLATE",
     "supplier": "DSM",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
-    "name": "C12-15 ALKYL BENZOATE (68233)",
+    "name": "C12-15 ALKYL BENZOATE",
     "inci": "C12-15 ALKYL BENZOATE",
     "supplier": "",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.7"
+    "percent": "0.70"
    },
    {
     "phase": "B",
     "name": "SCHERCEMOL DIS ESTER",
     "inci": "DIISOPROPYL SEBACATE",
     "supplier": "Lubrizol",
-    "percent": "8.0"
+    "percent": "8.00"
    },
    {
     "phase": "B",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "TINOSORB M",
     "inci": "METHYLENE BIS-BENZOTRIAZOLYL TETRAMETHYLBUTYLPHENOL, WATER, DECYL GLUCOSIDE, PROPYLENE GLYCOL, XANTHAN GUM",
     "supplier": "BASF",
-    "percent": "8.0"
+    "percent": "8.00"
    },
    {
     "phase": "C",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "BUTYLENE GLYCOL",
     "inci": "BUTYLENE GLYCOL",
     "supplier": "",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "D",
     "name": "SUNHANCER™ ECO SPF BOOSTER",
     "inci": "COPERNICIA CERIFERA (CARNAUBA) WAX, ORYZA SATIVA (RICE) BRAN WAX",
     "supplier": "Lubrizol",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "E",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "E",
     "name": "SODIUM HYDROXIDE (10 % SOL.)",
     "inci": "WATER, SODIUM HYDROXIDE",
     "supplier": "",
-    "percent": "2.6"
+    "percent": "2.65"
    },
    {
     "phase": "E",
     "name": "PARSOL HS",
     "inci": "PHENYLBENZIMIDAZOLE SULFONIC ACID",
     "supplier": "DSM",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "F",
     "name": "SODIUM HYDROXIDE (10 % SOL.)",
     "inci": "WATER, SODIUM HYDROXIDE",
     "supplier": "",
-    "percent": "0.1"
+    "percent": "0.10"
    },
    {
     "phase": "G",
     "name": "PERFUME DOME RELAX RS59716",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
-    "percent": "0.1"
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.10"
    }
   ]
  },
@@ -2663,6 +3526,7 @@
   "code": "1304-1.01",
   "name": "母婴修护膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/1304-1.01_edible_mum_and_baby_balm.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -2694,7 +3558,7 @@
    },
    {
     "phase": "A",
-    "name": "LABRAFAC™ CC",
+    "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
     "supplier": "Gattefossé",
     "percent": "72.50"
@@ -2712,6 +3576,7 @@
   "code": "2822-1.07",
   "name": "活力焕肤底霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2822-1.07_energizing_primer_2t.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2738,21 +3603,21 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.20"
    },
    {
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.50"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "20.00"
    },
    {
@@ -2766,7 +3631,7 @@
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.20"
    },
    {
@@ -2794,14 +3659,14 @@
     "phase": "C",
     "name": "SOLASTEMIS™",
     "inci": "FRUCTOSE, WATER, GLYCERIN, SECHIUM EDULE FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "ENERGINIUS®",
     "inci": "FRUCTOSE, GLYCERIN, WATER, WITHANIA SOMNIFERA ROOT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
@@ -2824,6 +3689,7 @@
   "code": "2653-2.16",
   "name": "轻盈滋润日用面霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2653-2.16_everyday_face_cream_9n.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -2864,19 +3730,19 @@
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.0"
    },
    {
     "phase": "B",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "6.0"
    },
    {
     "phase": "B",
-    "name": "LIPEX® SHEASOLVE™ (FORMERLY SHEALIGHT)",
+    "name": "LIPEX® SHEASOLVE™",
     "inci": "SHEA BUTTER ETHYL ESTERS",
     "supplier": "AAK",
     "percent": "6.0"
@@ -2885,7 +3751,7 @@
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "8.0"
    },
    {
@@ -2899,14 +3765,14 @@
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.0"
    },
    {
     "phase": "C",
     "name": "ELEVASTIN™",
     "inci": "PROPANEDIOL, BETAINE, WATER, MURRAYA KOENIGII STEM EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.0"
    },
    {
@@ -2929,90 +3795,91 @@
   "code": "2620-1.02",
   "name": "万用润肤霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2620-1.02_everything_balm_3a.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "KAHLWAX 2442L",
     "inci": "CARNAUBA (CORPENICIA CERIFERA) WAX",
-    "supplier": "Kahl",
-    "percent": "2.5"
+    "supplier": "KAHL",
+    "percent": "2.50"
    },
    {
     "phase": "A",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
     "supplier": "Gattefossé",
-    "percent": "39.9"
+    "percent": "39.95"
    },
    {
     "phase": "A",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
     "supplier": "Gattefossé",
-    "percent": "10.0"
+    "percent": "10.00"
    },
    {
     "phase": "A",
     "name": "CETIOL® C5",
     "inci": "COCO-CAPRYLATE",
     "supplier": "BASF",
-    "percent": "15.0"
+    "percent": "15.00"
    },
    {
     "phase": "A",
     "name": "JOJOBA OIL",
     "inci": "SIMMONDSIA CHINENSIS (JOJOBA) SEED OIL",
-    "supplier": "Huilerie Emile Noël",
-    "percent": "15.0"
+    "supplier": "Huilerie Emile No&euml;l",
+    "percent": "15.00"
    },
    {
     "phase": "B1",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B1",
     "name": "UNICERT BLUE 05601-J (0.1% SOL.)",
     "inci": "WATER, BLUE 1",
     "supplier": "Sensient",
-    "percent": "0.1"
+    "percent": "0.15"
    },
    {
     "phase": "B1",
     "name": "UNICERT YELLOW 08005-J (0.1% SOL.)",
     "inci": "WATER, YELLOW 5",
     "supplier": "Sensient",
-    "percent": "0.1"
+    "percent": "0.15"
    },
    {
     "phase": "B2",
     "name": "GATULINE® SKIN REPAIR AF",
     "inci": "PROPANEDIOL, ONOPORDUM ACANTHIUM FLOWER/LEAF/STEM EXTRACT, WATER",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "PERFUME FLEUR MINERALE RS89695",
     "inci": "",
-    "supplier": "Technico-Flor",
-    "percent": "0.2"
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.25"
    }
   ]
  },
@@ -3020,27 +3887,28 @@
   "code": "2397-2.25",
   "name": "极致柔软防晒霜 SPF30",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2397-2.25_extremely_soft_protection_spf30_8k.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "47.5"
+    "percent": "47.55"
    },
    {
     "phase": "A",
     "name": "KELCO-CARE™ DIUTAN GUM",
     "inci": "SPHINGOMONAS FERMENT EXTRACT",
     "supplier": "Lubrizol",
-    "percent": "0.1"
+    "percent": "0.15"
    },
    {
     "phase": "B",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "GLYCERYL STEARATES, JOJOBA ESTERS, CETYL ALCOHOL, STEARYL ALCOHOL, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
@@ -3054,98 +3922,98 @@
     "name": "UVINUL T 150",
     "inci": "ETHYLHEXYL TRIAZONE",
     "supplier": "BASF",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "B",
     "name": "UVINUL A PLUS",
     "inci": "DIETHYLAMINO HYDROXYBENZOYL HEXYL BENZOATE",
     "supplier": "BASF",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "TINOSORB S",
     "inci": "BIS-ETHYLHEXYLOXYPHENOL METHOXYPHENYL TRIAZINE",
     "supplier": "BASF",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "PARSOL EHS",
     "inci": "ETHYLHEXYL SALICYLATE",
     "supplier": "DSM",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "ANTARON™ ECO GEL",
     "inci": "DIISOPROPYL ADIPATE, ETHYLCELLULOSE",
     "supplier": "Ashland",
-    "percent": "1.5"
+    "percent": "1.50"
    },
    {
     "phase": "B",
     "name": "CETIOL® B",
     "inci": "DIBUTYL ADIPATE",
     "supplier": "BASF",
-    "percent": "6.0"
+    "percent": "6.00"
    },
    {
     "phase": "B",
     "name": "SCHERCEMOL DIS ESTER",
     "inci": "DIISOPROPYL SEBACATE",
     "supplier": "Lubrizol",
-    "percent": "9.0"
+    "percent": "9.00"
    },
    {
     "phase": "B",
     "name": "HALLBRITE BHB",
     "inci": "BUTYL OCTYL SALYCILATE",
     "supplier": "Hallstar",
-    "percent": "2.5"
+    "percent": "2.50"
    },
    {
     "phase": "B",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.7"
+    "percent": "0.70"
    },
    {
     "phase": "B",
     "name": "SCHERCEMOL PDD",
     "inci": "DIISOSTEAROYL POLYGLYCERYL-3 DIMER DILINOLEATE",
     "supplier": "Lubrizol",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "SUNHANCER™ ECO SPF BOOSTER",
     "inci": "COPERNICIA CERIFERA (CARNAUBA) WAX, ORYZA SATIVA (RICE) BRAN WAX",
     "supplier": "Lubrizol",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "C",
     "name": "BUTYLENE GLYCOL",
     "inci": "BUTYLENE GLYCOL",
     "supplier": "",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "D",
     "name": "SOLASTEMIS™",
     "inci": "FRUCTOSE, WATER, GLYCERIN, SECHIUM EDULE FRUIT EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
-    "phase": "E",
+    "phase": "D",
     "name": "CITRIC ACID (30% SOL.)",
     "inci": "WATER, CITRIC ACID",
     "supplier": "",
-    "percent": "0.1"
+    "percent": "0.10"
    }
   ]
  },
@@ -3153,6 +4021,7 @@
   "code": "2681-2.06",
   "name": "柔滑润肤露 SPF50",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2681-2.06_fluid_body_lotion_spf50_5q.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -3165,7 +4034,7 @@
     "phase": "A1",
     "name": "KELCO-CARE™ DIUTAN GUM",
     "inci": "SPHINGOMONAS FERMENT EXTRACT",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "0.08"
    },
    {
@@ -3179,7 +4048,7 @@
     "phase": "B1",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
@@ -3235,14 +4104,14 @@
     "phase": "B2",
     "name": "SCHERCEMOL™ DIS ESTER",
     "inci": "DIISOPROPYL SEBACATE",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "8.00"
    },
    {
     "phase": "B2",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
@@ -3277,14 +4146,14 @@
     "phase": "F",
     "name": "GATULINE® IN-TENSE MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE, ACMELLA OLERACEA EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
     "phase": "F",
     "name": "SOLASTEMIS™",
     "inci": "FRUCTOSE, WATER, GLYCERIN, SECHIUM EDULE FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    }
   ]
@@ -3293,167 +4162,168 @@
   "code": "2097-1.29",
   "name": "全面防护粉底液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2097-1.29_full_protection_foundation_1l.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "3.50"
+    "percent": "3.500"
    },
    {
     "phase": "A1",
     "name": "HALLBRITE EZ-FLO TDX",
     "inci": "TITANIUM DIOXIDE, BUTYLOCTYL SALICYLATE, DIMETHICONE CROSSPOLYMER, SILICA, TRICETEARETH-4 PHOSPHATE",
     "supplier": "Hallstar",
-    "percent": "12.00"
+    "percent": "12.000"
    },
    {
     "phase": "A1",
     "name": "PARSOL MCX",
     "inci": "ETHYLHEXYL METHOXYCINNAMATE",
     "supplier": "DSM",
-    "percent": "3.00"
+    "percent": "3.000"
    },
    {
     "phase": "A1",
     "name": "PARSOL 340",
     "inci": "OCTOCRYLENE",
     "supplier": "DSM",
-    "percent": "2.00"
+    "percent": "2.000"
    },
    {
     "phase": "A1",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.70"
+    "percent": "0.700"
    },
    {
     "phase": "A1",
     "name": "BENTONE GEL EUG V",
     "inci": "OCTYLDODECANOL, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
-    "supplier": "Elementis",
-    "percent": "3.50"
+    "supplier": "ELEMENTIS",
+    "percent": "3.500"
    },
    {
     "phase": "A1",
     "name": "KF-96A-6CS",
     "inci": "DIMETHICONE",
     "supplier": "Shin-Etsu",
-    "percent": "4.00"
+    "percent": "4.000"
    },
    {
     "phase": "A2",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
     "supplier": "Gattefossé",
-    "percent": "2.50"
+    "percent": "2.500"
    },
    {
     "phase": "A2",
     "name": "ZINCLEAR-IM®55L7",
     "inci": "ZINC OXIDE, NEOPENTYL GLYCOL DIHEPTANOATE, GLYCERYL ISOSTEARATE, POLYHYDROXYSTEARIC ACID, CETYL PEG / PPG-10/1 DIMETHI",
     "supplier": "Antaria",
-    "percent": "9.00"
+    "percent": "9.000"
    },
    {
     "phase": "A2",
     "name": "ZANO M PLUS",
     "inci": "ZINC OXIDE, TRIETHOXYCAPRYLYLSILANE",
     "supplier": "Everzinc Belgium",
-    "percent": "7.00"
+    "percent": "7.000"
    },
    {
     "phase": "A3",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
     "supplier": "Gattefossé",
-    "percent": "3.50"
+    "percent": "3.500"
    },
    {
     "phase": "A3",
     "name": "UNIPURE WHITE LC 987 AS-EM",
     "inci": "TITANIUM DIOXIDE, TRIETHOXYCAPRYLYLSILANE",
     "supplier": "Sensient",
-    "percent": "4.00"
+    "percent": "4.000"
    },
    {
     "phase": "A3",
     "name": "UNIPURE YELLOW 182 AS-EM",
     "inci": "IRON OXIDES, TRIETHOXYCAPRYLYLSILANE",
     "supplier": "Sensient",
-    "percent": "0.70"
+    "percent": "0.700"
    },
    {
     "phase": "A3",
     "name": "UNIPURE RED LC 381 AS-EM",
     "inci": "IRON OXIDES, TRIETHOXYCAPRYLYLSILANE",
     "supplier": "Sensient",
-    "percent": "0.12"
+    "percent": "0.125"
    },
    {
     "phase": "A3",
     "name": "UNIPURE BLACK LC 989 AS-EM",
     "inci": "IRON OXIDES, TRIETHOXYCAPRYLYLSILANE",
     "supplier": "Sensient",
-    "percent": "0.06"
+    "percent": "0.065"
    },
    {
     "phase": "B",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "35.51"
+    "percent": "35.510"
    },
    {
     "phase": "B",
     "name": "ENERGINIUS®",
     "inci": "FRUCTOSE, GLYCERIN, WATER, WITHANIA SOMNIFERA ROOT EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "1.00"
+    "percent": "1.000"
    },
    {
     "phase": "B",
     "name": "GATULINE® RENEW",
     "inci": "BUTYLENE GLYCOL, WATER, CRYPTOMERIA JAPONICA BUD EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "1.00"
+    "percent": "1.000"
    },
    {
     "phase": "B",
     "name": "MAGNESIUM SULFATE (99%)",
     "inci": "MAGNESIUM SULFATE",
-    "supplier": "Merck",
-    "percent": "0.70"
+    "supplier": "MERCK",
+    "percent": "0.700"
    },
    {
     "phase": "B",
     "name": "SODIUM CHLORIDE, CODEX",
     "inci": "SODIUM CHLORIDE",
     "supplier": "",
-    "percent": "0.70"
+    "percent": "0.700"
    },
    {
     "phase": "C",
     "name": "ARLAMOL HD",
     "inci": "ISOHEXADECANE",
     "supplier": "Croda",
-    "percent": "3.00"
+    "percent": "3.000"
    },
    {
     "phase": "C",
     "name": "SOFTOUCH CC6058",
     "inci": "BORON NITRIDE",
     "supplier": "Momentive",
-    "percent": "2.00"
+    "percent": "2.000"
    },
    {
     "phase": "C",
     "name": "COVABEAD PMMA 2 MUSI",
     "inci": "METHYL METHACRYLATE CROSSPOLYMER, SILICA",
     "supplier": "Sensient",
-    "percent": "0.50"
+    "percent": "0.500"
    }
   ]
  },
@@ -3461,19 +4331,20 @@
   "code": "2859-1.15",
   "name": "粉色果冻乳液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2859-1.15_gelly_pink_potion_7q.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "ORIGINAL EXTRACT™ CRANBERRY BIO",
     "inci": "VACCINIUM MACROCARPON (CRANBERRY) FRUIT WATER",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "70.44"
    },
    {
     "phase": "A1",
     "name": "CARBOPOL® ULTREZ 10",
     "inci": "CARBOMER",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "0.20"
    },
    {
@@ -3487,7 +4358,7 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.20"
    },
    {
@@ -3501,28 +4372,28 @@
     "phase": "B",
     "name": "EMULFREE® CBG MB",
     "inci": "ISOSTEARYL ALCOHOL, BUTYLENE GLYCOL COCOATE, ETHYLCELLULOSE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
     "phase": "B",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "LEXFEEL™ N5 MB",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "4.00"
    },
    {
@@ -3543,35 +4414,35 @@
     "phase": "D",
     "name": "FRESH CELLS™ STRAWBERRY",
     "inci": "WATER, FRAGARIA VESCA (STRAWBERRY) FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "D",
     "name": "SOLASTEMIS™",
     "inci": "FRUCTOSE, GLYCERIN, WATER, SECHIUM EDULE FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "E",
     "name": "UNICERT® RED K7057-J (0.5% SOL.)",
     "inci": "WATER, RED 33",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.83"
    },
    {
     "phase": "E",
     "name": "UNICERT® BLUE 05601-J (0.1% SOL.)",
     "inci": "WATER, BLUE 1",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.05"
    },
    {
     "phase": "E",
     "name": "UNICERT® RED 07004 J (1.0% SOL.)",
     "inci": "WATER, RED 4",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.08"
    },
    {
@@ -3584,9 +4455,116 @@
   ]
  },
  {
+  "code": "2745-3.04",
+  "name": "闪光软糖固体高光",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A1",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "26.71"
+   },
+   {
+    "phase": "A1",
+    "name": "PEMUPUR™ START POLYMER",
+    "inci": "MICROCRYSTALLINE CELLULOSE, SPHINGOMONAS FERMENT EXTRACT, CELLULOSE GUM",
+    "supplier": "Lubrizol",
+    "percent": "0.50"
+   },
+   {
+    "phase": "A2",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "32.79"
+   },
+   {
+    "phase": "A2",
+    "name": "KELCOGEL CG-LA",
+    "inci": "GELLAN GUM",
+    "supplier": "CP KELCO",
+    "percent": "2.00"
+   },
+   {
+    "phase": "A2",
+    "name": "UNICERT BLUE 05601-J (1.0% SOL)",
+    "inci": "WATER, BLUE 1",
+    "supplier": "Sensient",
+    "percent": "1.80"
+   },
+   {
+    "phase": "A2",
+    "name": "UNICERT RED 07004 J (1.0% SOL.)",
+    "inci": "WATER, RED 4",
+    "supplier": "Sensient",
+    "percent": "2.70"
+   },
+   {
+    "phase": "B",
+    "name": "EMULIUM® KAPPA MB",
+    "inci": "CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS, GLYCERYL STEARATE, CETEARYL ALCOHOL, SODIUM STEAROYL LACTYLATE",
+    "supplier": "Gattefossé",
+    "percent": "5.00"
+   },
+   {
+    "phase": "B",
+    "name": "LIPOCIRE® A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "12.50"
+   },
+   {
+    "phase": "B",
+    "name": "CETYL ALCOHOL",
+    "inci": "CETYL ALCOHOL",
+    "supplier": "",
+    "percent": "5.00"
+   },
+   {
+    "phase": "B",
+    "name": "GELEOL® MB",
+    "inci": "GLYCERYL STEARATE",
+    "supplier": "Gattefossé",
+    "percent": "6.00"
+   },
+   {
+    "phase": "B",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "1.00"
+   },
+   {
+    "phase": "C",
+    "name": "REFLECKS DIMENSIONS GLITTERING GOLD",
+    "inci": "CALCIUM SODIUM BOROSILICATE, TITANIUM DIOXIDE",
+    "supplier": "MERCK",
+    "percent": "1.50"
+   },
+   {
+    "phase": "C",
+    "name": "SUNSHINE SUPER GLITTER VIOLET C81-3740",
+    "inci": "SYNTHETIC FLUORPHLOGOPITE, TITANIUM DIOXIDE",
+    "supplier": "SUN CHEMICAL",
+    "percent": "1.50"
+   },
+   {
+    "phase": "C",
+    "name": "XIRONA NORDIC SUNSET",
+    "inci": "SILICA, TITANIUM DIOXIDE, TIN OXIDE",
+    "supplier": "MERCK",
+    "percent": "1.00"
+   }
+  ]
+ },
+ {
   "code": "2133-1.06",
   "name": "薄荷玩趣足部护理霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2133-1.06_gummy_mint.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -3690,7 +4668,7 @@
     "phase": "F",
     "name": "PERFUME MENTHE RS89690",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.40"
    }
   ]
@@ -3699,6 +4677,7 @@
   "code": "2441-1.03",
   "name": "头部护理泥膜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2441-1-03-hair-scalp-mud-mask-602a953a5c376906001091.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -3760,7 +4739,7 @@
     "phase": "B1",
     "name": "AVICEL® PC 591",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
-    "supplier": "Dupont",
+    "supplier": "DUPONT",
     "percent": "3.0"
    },
    {
@@ -3804,83 +4783,140 @@
   "code": "2790-1.03",
   "name": "高遮瑕粉底液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2790-1.03_high_coverage_foundation_medium_shade_9c.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "3.5"
+    "percent": "3.50"
    },
    {
     "phase": "A",
     "name": "LEXFEEL™ N5 MB",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
     "supplier": "Inolex",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "A",
     "name": "CETIOL® SENSOFT",
     "inci": "PROPYLHEPTYL CAPRYLATE",
     "supplier": "BASF",
-    "percent": "7.0"
+    "percent": "7.00"
    },
    {
     "phase": "A",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "BENTONE GEL GTCC V",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE, STEARALKONIUM HECTORITE, PROPYLENE CARBONATE",
-    "supplier": "Elementis",
-    "percent": "5.0"
+    "supplier": "ELEMENTIS",
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "AEROSIL 200",
     "inci": "SILICA",
     "supplier": "Evonik",
-    "percent": "1.0"
+    "percent": "1.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE WHITE LC 981 HLC",
+    "inci": "TITANIUM DIOXIDE, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "21.53"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE YELLOW LC 182 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "2.73"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE RED LC 381 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.55"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE BLACK LC 989 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.19"
+   },
+   {
+    "phase": "C",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "13.00"
+   },
+   {
+    "phase": "C",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "0.50"
    },
    {
     "phase": "D",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "34.8"
+    "percent": "34.85"
    },
    {
     "phase": "D",
     "name": "MAGNESIUM SULFATE (99%)",
     "inci": "MAGNESIUM SULFATE",
     "supplier": "",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "SODIUM CHLORIDE, CODEX",
     "inci": "SODIUM CHLORIDE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "D",
     "name": "GLYCERIN",
     "inci": "GLYCERIN",
     "supplier": "",
-    "percent": "2.0"
+    "percent": "2.00"
+   },
+   {
+    "phase": "E",
+    "name": "SOFTOUCH CC6058",
+    "inci": "BORON NITRIDE",
+    "supplier": "Momentive",
+    "percent": "1.00"
    },
    {
     "phase": "F",
     "name": "GATULINE® RADIANCE",
     "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "1.0"
+    "percent": "1.00"
+   },
+   {
+    "phase": "G",
+    "name": "PERFUME FRESH BLOSSOM RS45193",
+    "inci": "PARFUM",
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.30"
    }
   ]
  },
@@ -3888,146 +4924,253 @@
   "code": "2532-2.01",
   "name": "高效防护乳 SPF50",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2532-2.01_high_protection_lotion_spf50_2s.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "48.1"
+    "percent": "48.10"
    },
    {
     "phase": "A1",
     "name": "KELCO-CARE™ DIUTAN GUM",
     "inci": "SPHINGOMONAS FERMENT EXTRACT",
     "supplier": "Lubrizol",
-    "percent": "0.0"
+    "percent": "0.08"
    },
    {
     "phase": "A2",
     "name": "GEOGARD ULTRA™",
     "inci": "GLUCONOLACTONE, SODIUM BENZOATE, CALCIUM GLUCONATE",
     "supplier": "Lonza",
-    "percent": "0.4"
+    "percent": "0.40"
    },
    {
     "phase": "A3",
     "name": "BUTYLENE GLYCOL",
     "inci": "BUTYLENE GLYCOL",
     "supplier": "",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "A4",
     "name": "HYDRAMOL TGL",
     "inci": "POLYGLYCERYL-3 LAURATE",
     "supplier": "Lubrizol",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B1",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "GLYCERYL STEARATES, JOJOBA ESTERS, CETYL ALCOHOL, STEARYL ALCOHOL, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
-    "percent": "4.5"
+    "percent": "4.50"
    },
    {
     "phase": "B1",
     "name": "UVASORB HEB",
     "inci": "DIETHYLHEXYL BUTAMIDO TRIAZONE",
     "supplier": "3 V Sigma",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "B1",
     "name": "UVINUL A PLUS",
     "inci": "DIETHYLAMINO HYDROXYBENZOYL HEXYL BENZOATE",
     "supplier": "BASF",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B1",
     "name": "TINOSORB S",
     "inci": "BIS-ETHYLHEXYLOXYPHENOL METHOXYPHENYL TRIAZINE",
     "supplier": "BASF",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B1",
     "name": "PARSOL EHS",
     "inci": "ETHYLHEXYL SALICYLATE",
     "supplier": "DSM",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B1",
     "name": "CETIOL® B",
     "inci": "DIBUTYL ADIPATE",
     "supplier": "BASF",
-    "percent": "4.5"
+    "percent": "4.50"
    },
    {
     "phase": "B1",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.7"
+    "percent": "0.70"
    },
    {
     "phase": "B1",
     "name": "HALLBRITE BHB",
     "inci": "BUTYL OCTYL SALYCILATE",
     "supplier": "Hallstar",
-    "percent": "2.5"
+    "percent": "2.50"
    },
    {
     "phase": "B1",
     "name": "SCHERCEMOL DIS ESTER",
     "inci": "DIISOPROPYL SEBACATE",
     "supplier": "Lubrizol",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B2",
     "name": "SOLAVEIL HTP1 MBAL-PW-(MV)",
     "inci": "TITANIUM DIOXIDE, STEARIC ACID, ALUMINA",
     "supplier": "Croda",
-    "percent": "6.0"
+    "percent": "6.00"
    },
    {
     "phase": "B2",
     "name": "PECEOL® ISOSTEARIQUE",
     "inci": "GLYCERYL ISOSTEARATE",
     "supplier": "Gattefossé",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "B2",
     "name": "MATRIFUSE™ S-1 DISPERSANT",
     "inci": "POLYHYDROXYSTEARIC ACID, NEOPENTYL GLYCOL DIETHYLHEXANOATE",
     "supplier": "Lubrizol",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B2",
     "name": "SCHERCEMOL PDD",
     "inci": "DIISOSTEAROYL POLYGLYCERYL-3 DIMER DILINOLEATE",
     "supplier": "Lubrizol",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "PLANTACARE 2000 UP",
     "inci": "DECYL GLUCOSIDE, WATER",
     "supplier": "BASF",
-    "percent": "1.1"
+    "percent": "1.12"
    },
    {
     "phase": "D",
     "name": "PERFUME DOME RELAX RS59716",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
-    "percent": "0.1"
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.10"
+   }
+  ]
+ },
+ {
+  "code": "2758-1.11",
+  "name": "细致柔滑长效防水眼线笔",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A",
+    "name": "EMULIUM® DOLCEA MB",
+    "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
+    "supplier": "Gattefossé",
+    "percent": "4.5"
+   },
+   {
+    "phase": "A",
+    "name": "CETYL ALCOHOL",
+    "inci": "CETYL ALCOHOL",
+    "supplier": "",
+    "percent": "1.5"
+   },
+   {
+    "phase": "A",
+    "name": "DEFINICIRE®",
+    "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
+    "supplier": "Gattefossé",
+    "percent": "1.0"
+   },
+   {
+    "phase": "A",
+    "name": "LIPOCIRE® A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "5.0"
+   },
+   {
+    "phase": "A",
+    "name": "CETIOL® C5",
+    "inci": "COCO-CAPRYLATE",
+    "supplier": "BASF",
+    "percent": "5.0"
+   },
+   {
+    "phase": "A",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "1.0"
+   },
+   {
+    "phase": "B",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "60.025"
+   },
+   {
+    "phase": "B",
+    "name": "AVICEL® PC 591",
+    "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
+    "supplier": "DUPONT",
+    "percent": "0.6"
+   },
+   {
+    "phase": "B",
+    "name": "VANATURAL",
+    "inci": "BENTONITE",
+    "supplier": "R.T. VANDERBILT",
+    "percent": "1.0"
+   },
+   {
+    "phase": "B",
+    "name": "SATIAXANE VPC 911",
+    "inci": "XANTHAN GUM",
+    "supplier": "Cargill",
+    "percent": "0.25"
+   },
+   {
+    "phase": "C",
+    "name": "XIRONA CARRIBEAN BLUE",
+    "inci": "MICA, TITANIUM DIOXIDE, SILICA, TIN OXIDE",
+    "supplier": "MERK",
+    "percent": "6.5"
+   },
+   {
+    "phase": "C",
+    "name": "INTENZA PURPLE REIGN",
+    "inci": "SYNTHETIC FLUORPHLOGOPITE, TITANIUM DIOXIDE, RED 6 LAKE, BLUE 1 LAKE",
+    "supplier": "SUN CHEMICAL",
+    "percent": "7.0"
+   },
+   {
+    "phase": "C",
+    "name": "XIRONA KIWI ROSE",
+    "inci": "SILICA, TITANIUM DIOXIDE, TIN OXIDE",
+    "supplier": "MERCK",
+    "percent": "6.5"
+   },
+   {
+    "phase": "D",
+    "name": "SODIUM HYDROXIDE (10 % SOL.)",
+    "inci": "WATER, SODIUM HYDROXIDE",
+    "supplier": "",
+    "percent": "0.125"
    }
   ]
  },
@@ -4035,6 +5178,7 @@
   "code": "2860-1.19",
   "name": "保湿润色润唇膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2860-1.19_hydraboost_tinted_lip_balm_2.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -4068,21 +5212,21 @@
     "phase": "A",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
     "phase": "A",
     "name": "LIPFEEL™ NATURAL MB",
     "inci": "CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "23.00"
    },
    {
@@ -4096,21 +5240,21 @@
     "phase": "A",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "SERICA 5",
     "inci": "MICA",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "5.00"
    },
    {
     "phase": "C",
     "name": "UNIPURE RED LC 3075",
     "inci": "RED 7 LAKE, ALUMINUM HYDROXIDE",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.00"
    },
    {
@@ -4124,19 +5268,19 @@
     "phase": "D",
     "name": "GATULINE® EXPRESSION AF",
     "inci": "PROPANEDIOL, WATER, ACMELLA OLERACEA EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "E",
-    "name": "PERFUME INFUSION D´HAMAMELIS Natflor MKT1131",
+    "name": "PERFUME INFUSION D&acute;HAMAMELIS Natflor MKT1131",
     "inci": "PARFUM",
     "supplier": "TECHNICO-FLOR",
     "percent": "0.40"
@@ -4154,6 +5298,7 @@
   "code": "1982-1.13",
   "name": "冰霜焕肤日霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/1982-1.13_ice_ice_baby.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -4198,18 +5343,272 @@
     "percent": "2.00"
    },
    {
-    "phase": "D",
-    "name": "PERFUME MARINE OCEAN BG/441",
-    "inci": "PARFUM",
-    "supplier": "MLW",
-    "percent": "0.40"
+    "phase": "B",
+    "name": "UNICERT BLUE 05601-J (1.0% SOL)",
+    "inci": "WATER, BLUE 1",
+    "supplier": "Sensient",
+    "percent": "0.09"
    },
    {
-    "phase": "D",
+    "phase": "B",
+    "name": "UNICERT RED 07004 J (0.1% SOL.)",
+    "inci": "WATER, RED 4",
+    "supplier": "Sensient",
+    "percent": "0.53"
+   },
+   {
+    "phase": "C",
     "name": "PHYLDERM® VEGETAL",
     "inci": "HYDROLYZED SOY PROTEIN",
     "supplier": "Gattefossé",
     "percent": "0.50"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME MARINE OCEAN BG/441",
+    "inci": "PARFUM",
+    "supplier": "MLW",
+    "percent": "0.40"
+   }
+  ]
+ },
+ {
+  "code": "2908-1.19",
+  "name": "冰爽眼霜",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "4.00"
+   },
+   {
+    "phase": "A",
+    "name": "CETYL PALMITATE",
+    "inci": "CETYL PALMITATE",
+    "supplier": "",
+    "percent": "9.00"
+   },
+   {
+    "phase": "A",
+    "name": "LIPOCIRE™ A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "8.50"
+   },
+   {
+    "phase": "A",
+    "name": "HYDROGENATED CASTOR OIL",
+    "inci": "HYDROGENATED CASTOR OIL",
+    "supplier": "",
+    "percent": "1.50"
+   },
+   {
+    "phase": "A",
+    "name": "KAHLWAX 6607H",
+    "inci": "HYDROLYZED SUNFLOWER SEED WAX",
+    "supplier": "KAHL",
+    "percent": "3.00"
+   },
+   {
+    "phase": "A",
+    "name": "KAHLWAX 6607L",
+    "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ASCORBYL PALMITATE, TOCOPHEROL",
+    "supplier": "KAHL",
+    "percent": "6.00"
+   },
+   {
+    "phase": "A",
+    "name": "CETIOL® OE",
+    "inci": "DICAPRYLYL ETHER",
+    "supplier": "BASF",
+    "percent": "4.00"
+   },
+   {
+    "phase": "A",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "9.00"
+   },
+   {
+    "phase": "A",
+    "name": "SENSIVA® SC 50",
+    "inci": "ETHYLHEXYLGLYCERIN",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "0.20"
+   },
+   {
+    "phase": "A",
+    "name": "BENTONE GEL® EUG V",
+    "inci": "OCTYLDODECANOL, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
+    "supplier": "ELEMENTIS",
+    "percent": "5.50"
+   },
+   {
+    "phase": "B",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "40.75"
+   },
+   {
+    "phase": "B",
+    "name": "MAGNESIUM SULFATE (99%)",
+    "inci": "MAGNESIUM SULFATE",
+    "supplier": "",
+    "percent": "1.50"
+   },
+   {
+    "phase": "B",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "EUXYL™ K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.00"
+   },
+   {
+    "phase": "B",
+    "name": "UNICERT® BLUE 05601-J (0.1% SOL.)",
+    "inci": "WATER, BLUE 1",
+    "supplier": "Sensient",
+    "percent": "0.70"
+   },
+   {
+    "phase": "B",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "0.10"
+   },
+   {
+    "phase": "C",
+    "name": "EYEGLORIUS™",
+    "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME DEGIVRE MOI ITM0562182",
+    "inci": "PARFUM",
+    "supplier": "DOMAINE D’ARGEVILLE",
+    "percent": "0.15"
+   },
+   {
+    "phase": "D",
+    "name": "TIMIRON® ICE CRYSTAL",
+    "inci": "SYNTHETIC FLUORPHLOGOPITE, TITANIUM DIOXIDE, TIN OXIDE",
+    "supplier": "MERCK",
+    "percent": "0.10"
+   }
+  ]
+ },
+ {
+  "code": "2899-1.06",
+  "name": "亮眼精华液",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A1",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "66.95"
+   },
+   {
+    "phase": "A1",
+    "name": "PROPANEDIOL",
+    "inci": "PROPANEDIOL",
+    "supplier": "",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A1",
+    "name": "STRUCTURE® XL",
+    "inci": "STARCH HYDROXYPROPYL STARCH PHOSPHATE",
+    "supplier": "NOURYON",
+    "percent": "3.00"
+   },
+   {
+    "phase": "A2",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A2",
+    "name": "SATIAXANE™ VPC 911",
+    "inci": "XANTHAN GUM",
+    "supplier": "Cargill",
+    "percent": "0.20"
+   },
+   {
+    "phase": "A3",
+    "name": "EMULIUM® DERMOLEA MB",
+    "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
+    "supplier": "Gattefossé",
+    "percent": "3.00"
+   },
+   {
+    "phase": "A3",
+    "name": "EYEGLORIUS™",
+    "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "B",
+    "name": "JEECHEM® NDA-LC",
+    "inci": "C9-12 ALKANE",
+    "supplier": "VANTAGE",
+    "percent": "8.00"
+   },
+   {
+    "phase": "C",
+    "name": "EUXYL™ K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.00"
+   },
+   {
+    "phase": "D",
+    "name": "AMIHOPE® LL",
+    "inci": "LAUROYL LYSINE",
+    "supplier": "AJINOMOTO",
+    "percent": "2.00"
+   },
+   {
+    "phase": "D",
+    "name": "RONAFLAIR® BALANCE RED",
+    "inci": "TITANIUM DIOXIDE, MICA, TIN OXIDE",
+    "supplier": "MERCK",
+    "percent": "3.00"
+   },
+   {
+    "phase": "E",
+    "name": "PERFUME BOURRACHE ET POUDRE DE RIZ NATFLOR MKT 1114",
+    "inci": "PARFUM",
+    "supplier": "TECHNICO-FLOR",
+    "percent": "0.20"
+   },
+   {
+    "phase": "D",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "0.65"
    }
   ]
  },
@@ -4217,6 +5616,7 @@
   "code": "2656-2.20",
   "name": "瞬亮有色霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2656-2.20_instant_radiance_tinted_cream_medium_shade_1i.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -4243,7 +5643,7 @@
     "phase": "A3",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.20"
    },
    {
@@ -4257,28 +5657,28 @@
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.50"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "8.00"
    },
    {
     "phase": "B",
     "name": "LEXFEEL™ N5",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "SCHERCEMOL™ DIS ESTER",
     "inci": "DIISOPROPYL SEBACATE",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "8.00"
    },
    {
@@ -4292,49 +5692,49 @@
     "phase": "D",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.00"
    },
    {
     "phase": "E",
     "name": "GATULINE® RADIANCE",
-    "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "inci": "GATULINE® RADIANCE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "F",
     "name": "SERICA 5",
     "inci": "MICA",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "2.50"
    },
    {
     "phase": "G",
     "name": "MIYOAQUA WHITE TSR",
     "inci": "TITANIUM DIOXIDE, ALUMINUM HYDROXIDE, ALGIN",
-    "supplier": "MIYOSHI",
+    "supplier": "Miyoshi",
     "percent": "5.70"
    },
    {
     "phase": "G",
     "name": "MIYOAQUA YELLOW",
     "inci": "IRON OXIDES, ALGIN",
-    "supplier": "MIYOSHI",
+    "supplier": "Miyoshi",
     "percent": "1.72"
    },
    {
     "phase": "G",
     "name": "MIYOAQUA RED",
     "inci": "IRON OXIDES, ALGIN",
-    "supplier": "MIYOSHI",
+    "supplier": "Miyoshi",
     "percent": "0.65"
    },
    {
     "phase": "G",
     "name": "MIYOAQUA BLACK NH",
     "inci": "IRON OXIDES, ALGIN",
-    "supplier": "MIYOSHI",
+    "supplier": "Miyoshi",
     "percent": "0.10"
    },
    {
@@ -4364,6 +5764,7 @@
   "code": "2435-1.02",
   "name": "强效营养护发膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2435-1.02_intense_nutrition_hair_balm_9q.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -4376,7 +5777,7 @@
     "phase": "A1",
     "name": "CARBOPOL® AQUA SF-1 OS POLYMER",
     "inci": "WATER, ACRYLATES COPOLYMER",
-    "supplier": "Lubrizol",
+    "supplier": "Lubrizo",
     "percent": "0.90"
    },
    {
@@ -4439,7 +5840,7 @@
     "phase": "B",
     "name": "KAHLWAX 6240",
     "inci": "HYDROGENATED VEGETABLE OIL",
-    "supplier": "Kahl",
+    "supplier": "KAHL",
     "percent": "6.30"
    },
    {
@@ -4462,6 +5863,7 @@
   "code": "2578-1.16",
   "name": "高效防护防晒霜 SPF50",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2578-1.16_invisible_radiant_shield_spf50_5a.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -4474,7 +5876,7 @@
     "phase": "A1",
     "name": "CARBOPOL® AQUA SF-1 OS POLYMER",
     "inci": "WATER, ACRYLATES COPOLYMER",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "3.50"
    },
    {
@@ -4488,7 +5890,7 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.30"
    },
    {
@@ -4502,7 +5904,7 @@
     "phase": "A4",
     "name": "HYDRAMOL™ TGL",
     "inci": "POLYGLYCERYL-3 LAURATE",
-    "supplier": "LUBRIZOL",
+    "supplier": "Lubrizol",
     "percent": "1.00"
    },
    {
@@ -4570,13 +5972,6 @@
    },
    {
     "phase": "B1",
-    "name": "PRESERVATIVE",
-    "inci": "PRESERVATIVE",
-    "supplier": "",
-    "percent": "0.70"
-   },
-   {
-    "phase": "B1",
     "name": "PARSOL® 1789",
     "inci": "BUTYL METHOXYDIBENZOYLMETHANE",
     "supplier": "DSM",
@@ -4586,14 +5981,21 @@
     "phase": "B1",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.50"
+   },
+   {
+    "phase": "B1",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "0.70"
    },
    {
     "phase": "B2",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
@@ -4607,14 +6009,14 @@
     "phase": "C",
     "name": "GATULINE® RADIANCE",
     "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "GATULINE® RC BIO",
     "inci": "WATER, FAGUS SYLVATICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -4626,28 +6028,28 @@
    },
    {
     "phase": "C",
-    "name": "UNICERT YELLOW 08005-J (1.0% SOL.)",
-    "inci": "WATER, YELLOW 5",
-    "supplier": "SENSIENT",
+    "name": "UNICERT RED 07004 J (1.0% SOL.)",
+    "inci": "WATER, RED 4",
+    "supplier": "Sensient",
     "percent": "0.06"
    },
    {
     "phase": "C",
-    "name": "UNICERT RED 07004 J (1.0% SOL.)",
-    "inci": "WATER, RED 4",
-    "supplier": "SENSIENT",
+    "name": "UNICERT YELLOW 08005-J (1.0% SOL.)",
+    "inci": "WATER, YELLOW 5",
+    "supplier": "Sensient",
     "percent": "0.06"
    },
    {
     "phase": "C",
     "name": "CORN PO4 PH B 9042",
     "inci": "DISTARCH PHOSPHATE",
-    "supplier": "AGRANA",
+    "supplier": "Agrana",
     "percent": "2.00"
    },
    {
     "phase": "C",
-    "name": "PERFUME ARGANORANGER MIEL RS35850",
+    "name": "PERFUME ARGAN ORANGER MIEL RS35850",
     "inci": "PARFUM",
     "supplier": "TECHNICO-FLOR",
     "percent": "0.20"
@@ -4665,6 +6067,7 @@
   "code": "2583-1.20",
   "name": "柠檬凝乳面膜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2583-1.20_lemon_curd_mask_2h.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -4684,7 +6087,7 @@
     "phase": "A",
     "name": "STRUCTURE XL",
     "inci": "HYDROXYPROPYL STARCH PHOSPHATE",
-    "supplier": "Nouryon",
+    "supplier": "NOURYON",
     "percent": "1.4"
    },
    {
@@ -4747,14 +6150,14 @@
     "phase": "E",
     "name": "PERFUME TAXI SUNRISE RS 15014",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.2"
    },
    {
     "phase": "E",
     "name": "EUXYL K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.0"
    },
    {
@@ -4770,6 +6173,7 @@
   "code": "2618-2.52",
   "name": "岩浆面膜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2618-2.52_magma_mask_2n.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -4783,13 +6187,13 @@
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
     "supplier": "Gattefossé",
-    "percent": "21.0"
+    "percent": "21.5"
    },
    {
     "phase": "A",
     "name": "KAHLWAX 6607L",
     "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ASCORBYL PALMITATE, TOCOPHEROL",
-    "supplier": "Kahl",
+    "supplier": "KAHL",
     "percent": "2.5"
    },
    {
@@ -4859,12 +6263,12 @@
     "phase": "E",
     "name": "MICA BLACK",
     "inci": "MICA, IRON OXIDES, TITANIUM DIOXIDE",
-    "supplier": "Merck",
+    "supplier": "MERCK",
     "percent": "2.0"
    },
    {
     "phase": "F",
-    "name": "HEMA´TÎTE™",
+    "name": "HEMA&acute;TÎTE™",
     "inci": "HEMATITE EXTRACT",
     "supplier": "Gattefossé",
     "percent": "2.0"
@@ -4875,6 +6279,7 @@
   "code": "2861-1.02",
   "name": "纤长睫毛打底膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2861-1.02_mas_caring_primer_1a.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -4885,17 +6290,17 @@
    },
    {
     "phase": "A1",
+    "name": "SATIAXANE™ VPC 911",
+    "inci": "XANTHAN GUM",
+    "supplier": "Cargill",
+    "percent": "0.30"
+   },
+   {
+    "phase": "A1",
     "name": "AVICEL® PC 591",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
     "supplier": "DUPONT",
     "percent": "0.60"
-   },
-   {
-    "phase": "A1",
-    "name": "SATIAXANE™ VPC 911",
-    "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
-    "percent": "0.30"
    },
    {
     "phase": "A2",
@@ -4908,34 +6313,34 @@
     "phase": "B",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "DEFINICIRE®",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
-    "percent": "5.00"
+    "supplier": "Gattefossé",
+    "percent": "5"
    },
    {
     "phase": "B",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "KAHLWAX 2442L",
-    "inci": "CORPENICIA CERIFERA (CARNAUBA) WAX",
+    "inci": "COPERNICIA CERIFERA (CARNAUBA) WAX",
     "supplier": "KAHL",
     "percent": "2.00"
    },
@@ -4950,7 +6355,7 @@
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
@@ -4962,13 +6367,13 @@
    },
    {
     "phase": "C",
-    "name": "NATPURE® FILM AP",
+    "name": "NATPURE FILM AP",
     "inci": "PULLULAN, SORBITOL, ACACIA SENEGAL GUM, TREHALOSE",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.00"
    },
    {
-    "phase": "D",
+    "phase": "E",
     "name": "SODIUM HYDROXIDE (10% SOL.)",
     "inci": "WATER, SODIUM HYDROXIDE",
     "supplier": "",
@@ -4980,6 +6385,7 @@
   "code": "2177-7.05",
   "name": "矿物防晒霜 SPF50",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2177-7.05_mineral_shield_spf50_1d.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -5078,6 +6484,7 @@
   "code": "2367-2.07",
   "name": "极简柔肤霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2367-2.07_minimalist_soft_cream.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -5134,20 +6541,21 @@
   "code": "2655-3.16",
   "name": "保湿身体喷雾",
   "pdf": "https://www.gattefosse.com/sites/default/files/2023-09/2655-3.16-moisturizing-body-spray.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "55.2310.00"
+    "percent": "55.23"
    },
    {
     "phase": "A1",
     "name": "ORIGINAL EXTRACT™ ORANGE BIO",
     "inci": "CITRUS AURANTIUM DULCIS FRUIT WATER",
-    "supplier": "GATTEFOSSE",
-    "percent": ""
+    "supplier": "Gattefossé",
+    "percent": "10.00"
    },
    {
     "phase": "A2",
@@ -5160,7 +6568,7 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.08"
    },
    {
@@ -5171,31 +6579,45 @@
     "percent": "0.08"
    },
    {
+    "phase": "A3",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "10.00"
+   },
+   {
+    "phase": "A3",
+    "name": "AMPHISOL® K",
+    "inci": "POTASSIUM CETYL PHOSPHATE",
+    "supplier": "DSM",
+    "percent": "0.20"
+   },
+   {
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
     "phase": "B",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS SEED CERA, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER CERA",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.00"
    },
    {
@@ -5209,19 +6631,19 @@
     "phase": "C",
     "name": "GATULINE® RC BIO",
     "inci": "WATER, FAGUS SYLVATICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "GATULINE® SKIN-REPAIR AF",
     "inci": "PROPANEDIOL, ONOPORDUM ACANTHIUM FLOWER/LEAF/STEM EXTRACT, WATER",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
-    "name": "PERFUME ARGANORANGER MIEL RS35850",
+    "name": "PERFUME ARGAN ORANGER MIEL RS35850",
     "inci": "PARFUM",
     "supplier": "TECHNICO-FLOR",
     "percent": "0.30"
@@ -5230,13 +6652,13 @@
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.50"
    },
    {
     "phase": "D",
     "name": "CITRIC ACID (10% SOL.)",
-    "inci": "AQUA, CITRIC ACID",
+    "inci": "WATER, CITRIC ACID",
     "supplier": "",
     "percent": "0.71"
    }
@@ -5246,6 +6668,7 @@
   "code": "2714-1.07",
   "name": "多功能眼影",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2714-1.07_multi-purpose_eyeshadow_7v.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -5265,7 +6688,7 @@
     "phase": "A",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.30"
    },
    {
@@ -5279,14 +6702,14 @@
     "phase": "B",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.50"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
@@ -5314,21 +6737,21 @@
     "phase": "C",
     "name": "COVAPEARL ANTIQUE SILVER 239",
     "inci": "CI 77491, TITANIUM DIOXIDE, MICA",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "12.50"
    },
    {
     "phase": "C",
     "name": "COVAPEARL SILVER 939",
     "inci": "MICA, TITANIUM DIOXIDE",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "3.50"
    },
    {
     "phase": "C",
     "name": "COVAPEARL LIGHT BROWN 830",
     "inci": "MICA, CI 77491",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "6.00"
    }
   ]
@@ -5337,6 +6760,7 @@
   "code": "2398-1.06",
   "name": "维生素唤能柔肤乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2398-1.06_multi-vitamins_skin_cocktail_6m.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -5363,7 +6787,7 @@
     "phase": "A2",
     "name": "VANATURAL",
     "inci": "BENTONITE",
-    "supplier": "R.T. Vanderbilt",
+    "supplier": "R.T. VANDERBILT",
     "percent": "1.2"
    },
    {
@@ -5377,7 +6801,7 @@
     "phase": "A3",
     "name": "KELTROL CG-T",
     "inci": "XANTHAN GUM",
-    "supplier": "CP Kelco",
+    "supplier": "CP KELCO",
     "percent": "0.3"
    },
    {
@@ -5389,7 +6813,7 @@
    },
    {
     "phase": "B",
-    "name": "HUILE DE NOYAUX D´ABRICOTS BIO",
+    "name": "ORGANIC APRICOT KERNEL OIL",
     "inci": "PRUNUS ARMENIACA (APRICOT) KERNEL OIL",
     "supplier": "",
     "percent": "4.0"
@@ -5403,14 +6827,14 @@
    },
    {
     "phase": "B",
-    "name": "COSM´OIL SUNFLOWER",
+    "name": "COSM&acute;OIL SUNFLOWER",
     "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL",
     "supplier": "Cosmact",
     "percent": "8.0"
    },
    {
     "phase": "B",
-    "name": "TOCOPHEROL",
+    "name": "COSM&acute;OIL SUNFLOWER",
     "inci": "TOCOPHEROL",
     "supplier": "",
     "percent": "0.1"
@@ -5449,6 +6873,7 @@
   "code": "1936-1.01",
   "name": "天然贴肤粉底液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/1936-1.01_natural_second-skin_foundation.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -5515,14 +6940,14 @@
    },
    {
     "phase": "C",
-    "name": "MOD",
+    "name": "MOD MB",
     "inci": "OCTYLDODECYL MYRISTATE",
     "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
-    "name": "LABRAFAC™ CC",
+    "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
     "supplier": "Gattefossé",
     "percent": "6.00"
@@ -5573,7 +6998,7 @@
     "phase": "E",
     "name": "AMIHOPE® LL",
     "inci": "LAUROYL LYSINE",
-    "supplier": "Ajinomoto",
+    "supplier": "AJINOMOTO",
     "percent": "1.00"
    },
    {
@@ -5589,125 +7014,126 @@
   "code": "2023-3.06",
   "name": "天然无暇粉底液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2023-3.06_naturally_flawless_foundation_3q.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "CETIOL® C5",
     "inci": "COCO-CAPRYLATE",
     "supplier": "BASF",
-    "percent": "9.0"
+    "percent": "9.00"
    },
    {
     "phase": "A",
     "name": "MAGNESIUM STEARATE",
     "inci": "MAGNESIUM STEARATE",
     "supplier": "Sigma Chimie",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "Gattefosse",
-    "percent": "5.0"
+    "supplier": "Gattefossé",
+    "percent": "5.00"
    },
    {
     "phase": "C",
     "name": "UNIPURE WHITE LC 981 HLC",
     "inci": "TITANIUM DIOXIDE, HYDROGENATED LECITHIN",
     "supplier": "Sensient",
-    "percent": "10.7"
+    "percent": "10.77"
    },
    {
     "phase": "C",
     "name": "UNIPURE YELLOW LC 182 HLC",
     "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
     "supplier": "Sensient",
-    "percent": "2.1"
+    "percent": "2.10"
    },
    {
     "phase": "C",
     "name": "UNIPURE RED LC 381 HLC",
     "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
     "supplier": "Sensient",
-    "percent": "0.5"
+    "percent": "0.58"
    },
    {
     "phase": "C",
     "name": "UNIPURE BLACK LC 989 HLC",
     "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
     "supplier": "Sensient",
-    "percent": "0.2"
+    "percent": "0.25"
    },
    {
     "phase": "C",
     "name": "CETIOL® OE",
     "inci": "DICAPRYLYL ETHER",
     "supplier": "BASF",
-    "percent": "4.4"
+    "percent": "4.44"
    },
    {
     "phase": "D",
     "name": "NEOSSANCE HEMISQUALANE",
     "inci": "C13-15 ALKANE",
     "supplier": "Safic Alcan",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "D",
     "name": "LIPEX SHEA LIGHT",
     "inci": "SHEA BUTTER ETHYL ESTERS",
     "supplier": "Lipo",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "D",
     "name": "AEROSIL 200",
     "inci": "SILICA",
     "supplier": "Evonik",
-    "percent": "0.7"
+    "percent": "0.75"
    },
    {
     "phase": "E",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "51.4"
+    "percent": "51.41"
    },
    {
     "phase": "E",
     "name": "MAGNESIUM SULFATE (99%)",
     "inci": "MAGNESIUM SULFATE",
-    "supplier": "Merck",
-    "percent": "1.0"
+    "supplier": "MERCK",
+    "percent": "1.00"
    },
    {
     "phase": "E",
     "name": "SODIUM CHLORIDE, CODEX",
     "inci": "SODIUM CHLORIDE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "F",
     "name": "CITRIC ACID (10% SOL.)",
     "inci": "WATER, CITRIC ACID",
     "supplier": "",
-    "percent": "0.4"
+    "percent": "0.40"
    },
    {
     "phase": "G",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
-    "supplier": "Schulke & Mayr",
-    "percent": "1.0"
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.00"
    },
    {
     "phase": "H",
     "name": "PERFUME SILLAGE NEW 1502839",
     "inci": "PARFUM",
-    "supplier": "Expressions Parfumees",
-    "percent": "0.3"
+    "supplier": "EXPRESSIONS PARFUMEES",
+    "percent": "0.30"
    }
   ]
  },
@@ -5715,97 +7141,98 @@
   "code": "2358-1.21",
   "name": "颈部&法令纹嫩肤霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2358-1.21_neck_d_c_collet_c_rejuvenator_3b.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "58.6"
+    "percent": "58.68"
    },
    {
     "phase": "A1",
     "name": "ACTIGUM CS 11 QD",
     "inci": "SCLEROTIUM GUM",
     "supplier": "Cargill",
-    "percent": "0.6"
+    "percent": "0.60"
    },
    {
     "phase": "A2",
     "name": "SATIAXANE VPC 911",
     "inci": "XANTHAN GUM",
     "supplier": "Cargill",
-    "percent": "0.2"
+    "percent": "0.20"
    },
    {
     "phase": "A2",
     "name": "GLYCERIN",
     "inci": "GLYCERIN",
     "supplier": "",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "B",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
     "supplier": "Gattefossé",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "CETIOL® OE",
     "inci": "DICAPRYLYL ETHER",
     "supplier": "BASF",
-    "percent": "30.0"
+    "percent": "30.00"
    },
    {
     "phase": "B",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.7"
+    "percent": "0.70"
    },
    {
     "phase": "C",
     "name": "ELEVASTIN™",
     "inci": "BETAINE, WATER, PROPANEDIOL, MURRAYA KOENIGII STEM EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "C",
     "name": "UNICERT RED 07004 J (0.1% SOL.)",
     "inci": "WATER, RED 4",
     "supplier": "",
-    "percent": "0.3"
+    "percent": "0.35"
    },
    {
     "phase": "C",
     "name": "PERFUME FLEUR DE RIZ",
     "inci": "PARFUM",
     "supplier": "MLW",
-    "percent": "0.2"
+    "percent": "0.20"
    },
    {
     "phase": "D",
     "name": "CITRIC ACID (10% SOL.)",
     "inci": "WATER, CITRIC ACID",
     "supplier": "",
-    "percent": "0.2"
+    "percent": "0.27"
    }
   ]
  },
@@ -5813,6 +7240,7 @@
   "code": "2658-2.07",
   "name": "安睡固体护理油",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2658-2-07_nighty-night_solid_oil_1o.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -5839,21 +7267,21 @@
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.50"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "37.04"
    },
    {
     "phase": "B",
     "name": "GELEOL™ MB",
     "inci": "GLYCERYL STEARATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
@@ -5874,28 +7302,28 @@
     "phase": "C",
     "name": "UNICERT BLUE 05601-J (0.1% SOL.)",
     "inci": "WATER, BLUE 1",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.16"
    },
    {
     "phase": "C",
     "name": "UNICERT RED K7057-J (0.1% SOL.)",
     "inci": "WATER, RED 33",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.42"
    },
    {
     "phase": "C",
     "name": "GATULINE® SKIN REPAIR AF",
     "inci": "PROPANEDIOL, ONOPORDUM ACANTHIUM FLOWER/LEAF/STEM EXTRACT, WATER",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "GATULINE® RC BIO",
     "inci": "WATER, FAGUS SYLVATICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -5918,6 +7346,7 @@
   "code": "2436-1.02",
   "name": "营养头皮乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2436-1.02_nutritive_scalp_lotion_7a.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -5930,7 +7359,7 @@
     "phase": "A1",
     "name": "AVICEL PC 611",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
-    "supplier": "Dupont",
+    "supplier": "DUPONT",
     "percent": "2.0"
    },
    {
@@ -6023,6 +7452,7 @@
   "code": "1823-3.13",
   "name": "户外热身防晒霜SPF50+",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/1823-3.13_outdoor_warm-up_spf50_v2_4h.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -6067,22 +7497,8 @@
     "percent": "6.00"
    },
    {
-    "phase": "A4",
-    "name": "E.D.T.A. DISODIUM SALT",
-    "inci": "DISODIUM EDTA",
-    "supplier": "",
-    "percent": "0.10"
-   },
-   {
-    "phase": "A5",
-    "name": "SODIUM HYDROXIDE (10 % SOL.)",
-    "inci": "WATER, SODIUM HYDROXIDE",
-    "supplier": "",
-    "percent": "0.40"
-   },
-   {
     "phase": "B1",
-    "name": "EMULIUM® 22",
+    "name": "EMULIUM® 22 MB",
     "inci": "TRIBEHENIN PEG-20 ESTERS",
     "supplier": "Gattefossé",
     "percent": "4.00"
@@ -6170,6 +7586,7 @@
   "code": "2585-2.08",
   "name": "完美肌肤晚霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2585-2.08_perfect_skin_night_cream_1t.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -6196,7 +7613,7 @@
     "phase": "A2",
     "name": "STRUCTURE SOLANACE",
     "inci": "POTATO STARCH MODIFIED",
-    "supplier": "Nouryon",
+    "supplier": "NOURYON",
     "percent": "2.0"
    },
    {
@@ -6245,12 +7662,12 @@
     "phase": "C",
     "name": "EUXYL K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.2"
    },
    {
     "phase": "C",
-    "name": "CYTOBIOL™ IRIS A²",
+    "name": "CYTOBIOL™ IRIS A&sup2;",
     "inci": "PROPANEDIOL, WATER, ALCOHOL, IRIS FLORENTINA ROOT EXTRACT, ZINC SULFATE, RETINYL PALMITATE",
     "supplier": "Gattefossé",
     "percent": "5.0"
@@ -6266,7 +7683,7 @@
     "phase": "C",
     "name": "PERFUME TAXI SUNRISE RS 15014",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.2"
    },
    {
@@ -6282,125 +7699,246 @@
   "code": "2494-1.13",
   "name": "防晒粉棒SPF50+",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2494-1.13_powdery_stick_spf50_1l.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "CETIOL® C5",
     "inci": "COCO-CAPRYLATE",
     "supplier": "BASF",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "LIPEX 102",
     "inci": "BUTYROSPERMUM PARKII (SHEA) BUTTER",
     "supplier": "AAK",
-    "percent": "3.5"
+    "percent": "3.50"
    },
    {
     "phase": "A",
     "name": "CETYL ALCOHOL",
     "inci": "CETYL ALCOHOL",
     "supplier": "",
-    "percent": "1.5"
+    "percent": "1.50"
    },
    {
     "phase": "A",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
     "supplier": "Gattefossé",
-    "percent": "12.0"
+    "percent": "12.00"
    },
    {
     "phase": "A",
     "name": "NOMCORT HKG",
     "inci": "GLYCERYL BEHENATE/EICOSADIOATE",
     "supplier": "Nisshin Oillio",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "SISTERNA A10E-C",
     "inci": "SUCROSE TETRASTEARATE TRIACETATE",
     "supplier": "Sisterna",
-    "percent": "7.0"
+    "percent": "7.00"
    },
    {
     "phase": "A",
     "name": "KAHLWAX 6279L",
     "inci": "MYRICA CERIFERA (BAYBERRY) FRUIT WAX",
-    "supplier": "Kahl",
-    "percent": "5.0"
+    "supplier": "KAHL",
+    "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B1",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B1",
     "name": "CETIOL® C5",
     "inci": "COCO-CAPRYLATE",
     "supplier": "BASF",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B1",
     "name": "ZINCLEAR® XP65 COCO",
     "inci": "ZINC OXIDE, COCO-CAPRYLATE/CAPRATE, POLYGLYCERYL-3 POLYRICINOLEATE, ISOSTEARIC ACID",
     "supplier": "Antaria",
-    "percent": "14.0"
+    "percent": "14.00"
    },
    {
     "phase": "B1",
-    "name": "ZnO-C-NJE3",
+    "name": "ZINCLEAR® XP65 COCO",
     "inci": "ZINC OXIDE, JOJOBA ESTERS",
-    "supplier": "Kobo",
-    "percent": "4.0"
+    "supplier": "KOBO",
+    "percent": "4.00"
    },
    {
     "phase": "B2",
     "name": "CETIOL® C5",
     "inci": "COCO-CAPRYLATE",
     "supplier": "BASF",
-    "percent": "8.1"
+    "percent": "8.13"
    },
    {
     "phase": "B2",
     "name": "SOLAVEIL HTP1 MBAL-PW-(MV)",
     "inci": "TITANIUM DIOXIDE, STEARIC ACID, ALUMINA",
     "supplier": "Croda",
-    "percent": "18.0"
+    "percent": "18.00"
    },
    {
     "phase": "B3",
     "name": "UNIPURE YELLOW LC 182 HLC",
     "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
     "supplier": "Sensient",
-    "percent": "0.2"
+    "percent": "0.25"
    },
    {
     "phase": "B3",
     "name": "UNIPURE RED LC 381 HLC",
     "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
     "supplier": "Sensient",
-    "percent": "0.1"
+    "percent": "0.12"
    },
    {
     "phase": "C",
     "name": "VALVANCE TOUCH 210",
     "inci": "SILICA",
     "supplier": "DSM",
-    "percent": "7.5"
+    "percent": "7.50"
+   }
+  ]
+ },
+ {
+  "code": "2479-2.04",
+  "name": "妆前转换霜",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A",
+    "name": "COMPRITOL® 888 CG MB",
+    "inci": "GLYCERYL BEHENATE",
+    "supplier": "Gattefossé",
+    "percent": "1.50"
+   },
+   {
+    "phase": "A",
+    "name": "LIPOCIRE® A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "4.00"
+   },
+   {
+    "phase": "A",
+    "name": "ACTICIRE® MB",
+    "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "A",
+    "name": "BENTONE GEL EUG V",
+    "inci": "OCTYLDODECANOL, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
+    "supplier": "CARBONATE ELEMENTIS",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A",
+    "name": "MOD MB",
+    "inci": "OCTYLDODECYL MYRISTATE",
+    "supplier": "Gattefossé",
+    "percent": "8.00"
+   },
+   {
+    "phase": "B",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "44.15"
+   },
+   {
+    "phase": "B",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "0.10"
+   },
+   {
+    "phase": "B",
+    "name": "EUXYL K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.00"
+   },
+   {
+    "phase": "B",
+    "name": "MAGNESIUM SULFATE 99%",
+    "inci": "MAGNESIUM SULFATE",
+    "supplier": "",
+    "percent": "2.00"
+   },
+   {
+    "phase": "C",
+    "name": "CETIOL® ULTIMATE",
+    "inci": "UNDECANE, TRIDECANE",
+    "supplier": "BASF",
+    "percent": "6.00"
+   },
+   {
+    "phase": "C",
+    "name": "PERFUME PRECIEUSE NEW MOD 1937084",
+    "inci": "PARFUM",
+    "supplier": "EXPRESSIONS PARFUMEES",
+    "percent": "0.25"
+   },
+   {
+    "phase": "D",
+    "name": "SILICA BEADS SB-700",
+    "inci": "SILICA",
+    "supplier": "Miyoshi",
+    "percent": "5.00"
+   },
+   {
+    "phase": "D",
+    "name": "REISITA NATURAL 9094",
+    "inci": "ORYZA SATIVA STARCH",
+    "supplier": "Agrana",
+    "percent": "12.00"
+   },
+   {
+    "phase": "D",
+    "name": "AMIHOPE® LL",
+    "inci": "LAUROYL LYSINE",
+    "supplier": "AJINOMOTO",
+    "percent": "3.00"
+   },
+   {
+    "phase": "E",
+    "name": "GATULINE® RENEW",
+    "inci": "BUTYLENE GLYCOL, WATER, CRYPTOMERIA JAPONICA BUD EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "1.00"
    }
   ]
  },
@@ -6408,55 +7946,56 @@
   "code": "2456-1.05",
   "name": "纯净液晶乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2456-1-05-pure-crystal-cream-602a92d8084d6005799274.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "62.8"
+    "percent": "62.86"
    },
    {
     "phase": "A",
     "name": "GLYCERIN",
     "inci": "GLYCERIN",
     "supplier": "",
-    "percent": "10.0"
+    "percent": "10.00"
    },
    {
     "phase": "A",
     "name": "EMULIUM® DOLCEA MB",
     "inci": "CETEARYL ALCOHOL, GLYCERYL STEARATE, JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, SODIUM STEAROYL GLUTAMATE, WATER, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
-    "percent": "6.0"
+    "percent": "6.00"
    },
    {
     "phase": "A",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
     "supplier": "Gattefossé",
-    "percent": "15.0"
+    "percent": "15.00"
    },
    {
     "phase": "A",
     "name": "CETOSTEARYL ALCOHOL",
     "inci": "CETEARYL ALCOHOL",
     "supplier": "BASF",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "A",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "CITRIC ACID (10% SOL.)",
     "inci": "WATER, CITRIC ACID",
     "supplier": "",
-    "percent": "0.1"
+    "percent": "0.14"
    }
   ]
  },
@@ -6464,6 +8003,7 @@
   "code": "2390-2.03",
   "name": "高保湿孔雀石精华",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2390-2.03_quenching_blue_serum_1n.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -6483,7 +8023,7 @@
     "phase": "A1",
     "name": "VANATURAL",
     "inci": "BENTONITE",
-    "supplier": "R.T. Vanderbilt",
+    "supplier": "R.T. VANDERBILT",
     "percent": "2.00"
    },
    {
@@ -6523,7 +8063,7 @@
    },
    {
     "phase": "C",
-    "name": "MALA´KITE™",
+    "name": "MALA&acute;KITE™",
     "inci": "WATER, MALACHITE EXTRACT",
     "supplier": "Gattefossé",
     "percent": "2.00"
@@ -6548,6 +8088,7 @@
   "code": "2470-1.25",
   "name": "焕彩亮肤霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2470-1.25_radiance_and_glowy_cream_4u.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -6574,21 +8115,35 @@
     "phase": "A1",
     "name": "UNICERT RED 07004 J (1.0% SOL.)",
     "inci": "AQUA, CI 14700",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "0.14"
+   },
+   {
+    "phase": "A2",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "10.00"
+   },
+   {
+    "phase": "A2",
+    "name": "SATIAXANE™ VPC 911",
+    "inci": "XANTHAN GUM",
+    "supplier": "Cargill",
+    "percent": "0.15"
    },
    {
     "phase": "B",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "10.00"
    },
    {
@@ -6610,7 +8165,14 @@
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.70"
+    "percent": "1.00"
+   },
+   {
+    "phase": "C",
+    "name": "GATULINE® RADIANCE",
+    "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
    },
    {
     "phase": "C",
@@ -6618,13 +8180,6 @@
     "inci": "MICA, TITANIUM DIOXIDE, TIN OXIDE, MAGNESIUM STEARATE",
     "supplier": "DAITO KASEI",
     "percent": "0.50"
-   },
-   {
-    "phase": "C",
-    "name": "GATULINE® RADIANCE",
-    "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
-    "percent": "2.00"
    }
   ]
  },
@@ -6632,6 +8187,7 @@
   "code": "2371-1.22",
   "name": "重塑身体霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2371-1.22_redefining_body_butter_8b.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -6651,7 +8207,7 @@
     "phase": "A",
     "name": "MAKIGREEN GF",
     "inci": "METHYL RICINOLEATE, ETHYLCELLULOSE",
-    "supplier": "Daito Kasei",
+    "supplier": "DAITO KASEI",
     "percent": "5.0"
    },
    {
@@ -6709,6 +8265,7 @@
   "code": "2862-3.07",
   "name": "泛红急救霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2862-3.07_redness_rescue_paste_6j.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -6725,17 +8282,38 @@
     "percent": "2.00"
    },
    {
+    "phase": "A2",
+    "name": "CETIOL® C5",
+    "inci": "COCO-CAPRYLATE",
+    "supplier": "BASF",
+    "percent": "4.00"
+   },
+   {
+    "phase": "A2",
+    "name": "RHEOPEARL MKL2",
+    "inci": "DEXTRIN MYRISTATE",
+    "supplier": "Miyoshi",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A2",
+    "name": "TECHNOL® LTO-R",
+    "inci": "SIMMONDSIA CHINENSIS (JOJOBA) SEED OIL, C10-18 TRIGLYCERIDES",
+    "supplier": "IKEDA",
+    "percent": "9.00"
+   },
+   {
     "phase": "A3",
     "name": "EMULIUM® ILLUSTRO",
-    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
-    "supplier": "GATTEFOSSE",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-",
+    "supplier": "Gattefossé",
     "percent": "3.00"
    },
    {
     "phase": "A3",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -6749,7 +8327,7 @@
     "phase": "A3",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "10.00"
    },
    {
@@ -6763,7 +8341,7 @@
     "phase": "A3",
     "name": "REISITA NATURAL 9094",
     "inci": "ORYZA SATIVA STARCH",
-    "supplier": "AGRANA",
+    "supplier": "Agrana",
     "percent": "1.00"
    },
    {
@@ -6772,6 +8350,27 @@
     "inci": "PRESERVATIVE",
     "supplier": "",
     "percent": "1.00"
+   },
+   {
+    "phase": "A4",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "A4",
+    "name": "TECHNOL® LTO-R",
+    "inci": "SIMMONDSIA CHINENSIS (JOJOBA) SEED OIL, C10-18 TRIGLYCERIDES",
+    "supplier": "IKEDA",
+    "percent": "2.00"
+   },
+   {
+    "phase": "A4",
+    "name": "UNIPURE® WHITE LC 981 HLC",
+    "inci": "TITANIUM DIOXIDE, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "5.00"
    },
    {
     "phase": "B",
@@ -6788,11 +8387,46 @@
     "percent": "2.00"
    },
    {
+    "phase": "C",
+    "name": "INBP50Y5A",
+    "inci": "YELLOW 5 LAKE, ISONONYL ISONONANOATE, ISOPROPYL MYRISTATE, STEARALKONIUM HECTORITE, ISOPROPYL TITANIUM TRIISOSTEARATE, PROPYLENE CARBONATE, POLYHYDROXYSTEARIC ACID",
+    "supplier": "KOBO",
+    "percent": "0.15"
+   },
+   {
+    "phase": "C",
+    "name": "INBP40B1A",
+    "inci": "ISONONYL ISONONANOATE, BLUE 1 LAKE, ISOPROPYL MYRISTATE, ISOPROPYL TITANIUM TRIISOSTEARATE, STEARALKONIUM HECTORITE, PROPYLENE CARBONATE, POLYHYDROXYSTEARIC ACID",
+    "supplier": "KOBO",
+    "percent": "0.10"
+   },
+   {
     "phase": "D",
     "name": "GATULINE® RADIANCE",
     "inci": "PROPANEDIOL, EVODIA RUTAECARPA FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.00"
+   },
+   {
+    "phase": "E",
+    "name": "BIOGENIC™ MAGICOLOR 140Y ECO",
+    "inci": "IRON OXIDES, TITANIUM DIOXIDE, MICA, ZEIN",
+    "supplier": "BIOGENIC INC.",
+    "percent": "2.20"
+   },
+   {
+    "phase": "E",
+    "name": "BIOGENIC™ MAGICOLOR 140R ECO",
+    "inci": "IRON OXIDES, TITANIUM DIOXIDE, MICA, ZEIN",
+    "supplier": "BIOGENIC INC.",
+    "percent": "0.55"
+   },
+   {
+    "phase": "E",
+    "name": "BIOGENIC™ MAGICOLOR 140B ECO",
+    "inci": "IRON OXIDES, TITANIUM DIOXIDE, MICA, ZEIN",
+    "supplier": "BIOGENIC INC.",
+    "percent": "0.11"
    }
   ]
  },
@@ -6800,160 +8434,161 @@
   "code": "2708-1.08",
   "name": "清爽保护双凝胶防晒SPF30",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2708-1.08_refresh_protect_bigel_spf30_8e.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "43.0"
+    "percent": "43.05"
    },
    {
     "phase": "A1",
     "name": "BUTYLENE GLYCOL",
     "inci": "BUTYLENE GLYCOL",
     "supplier": "",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "A1",
     "name": "SATIAXANE VPC 911",
     "inci": "XANTHAN GUM",
     "supplier": "Cargill",
-    "percent": "0.1"
+    "percent": "0.10"
    },
    {
     "phase": "A2",
     "name": "CARBOPOL® AQUA SF-1 OS POLYMER",
     "inci": "WATER, ACRYLATES COPOLYMER",
     "supplier": "Lubrizol",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "A3",
     "name": "SODIUM HYDROXIDE (10 % SOL.)",
     "inci": "WATER, SODIUM HYDROXIDE",
     "supplier": "",
-    "percent": "0.2"
+    "percent": "0.25"
    },
    {
     "phase": "B",
     "name": "EMULFREE® CBG MB",
     "inci": "ISOSTEARYL ALCOHOL, BUTYLENE GLYCOL COCOATE, ETHYLCELLULOSE",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
     "supplier": "Gattefossé",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "UVINUL T 150",
     "inci": "ETHYLHEXYL TRIAZONE",
     "supplier": "BASF",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "UVINUL A PLUS",
     "inci": "DIETHYLAMINO HYDROXYBENZOYL HEXYL BENZOATE",
     "supplier": "BASF",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "TINOSORB S",
     "inci": "BIS-ETHYLHEXYLOXYPHENOL METHOXYPHENYL TRIAZINE",
     "supplier": "BASF",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "PARSOL EHS",
     "inci": "ETHYLHEXYL SALICYLATE",
     "supplier": "DSM",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "C12-15 ALKYL BENZOATE (68233)",
     "inci": "C12-15 ALKYL BENZOATE",
     "supplier": "",
-    "percent": "6.0"
+    "percent": "6.00"
    },
    {
     "phase": "B",
     "name": "SCHERCEMOL DIS ESTER",
     "inci": "DIISOPROPYL SEBACATE",
     "supplier": "Lubrizol",
-    "percent": "4.0"
+    "percent": "4.00"
    },
    {
     "phase": "B",
     "name": "DPPG CG",
     "inci": "PROPYLENE GLYCOL DIPELARGONATE",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "HALLBRITE BHB",
     "inci": "BUTYL OCTYL SALYCILATE",
     "supplier": "Hallstar",
-    "percent": "2.5"
+    "percent": "2.50"
    },
    {
     "phase": "B",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.7"
+    "percent": "0.70"
    },
    {
     "phase": "B",
     "name": "SCHERCEMOL PDD",
     "inci": "DIISOSTEAROYL POLYGLYCERYL-3 DIMER DILINOLEATE",
     "supplier": "Lubrizol",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "C",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "C",
     "name": "SODIUM HYDROXIDE (10 % SOL.)",
     "inci": "WATER, SODIUM HYDROXIDE",
     "supplier": "",
-    "percent": "3.4"
+    "percent": "3.40"
    },
    {
     "phase": "C",
     "name": "PARSOL HS",
     "inci": "PHENYLBENZIMIDAZOLE SULFONIC ACID",
     "supplier": "DSM",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "CORN PO4 PH B 9042",
     "inci": "DISTARCH PHOSPHATE",
     "supplier": "Agrana",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "4.0"
+    "percent": "4.00"
    }
   ]
  },
@@ -6961,90 +8596,91 @@
   "code": "2319-1.15",
   "name": "焕新卸妆膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2319-1.15_reinvented_cleansing_balm_2d.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "A1",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ACACIA DECURRENS FLOWER WAX, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "A1",
     "name": "COMPRITOL® 888 CG MB",
     "inci": "GLYCERYL BEHENATE",
     "supplier": "Gattefossé",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "A1",
     "name": "HYDROGENATED CASTOR OIL",
     "inci": "HYDROGENATED CASTOR OIL",
     "supplier": "",
-    "percent": "2.2"
+    "percent": "2.25"
    },
    {
     "phase": "A1",
     "name": "CETIOL® CC",
     "inci": "DICAPRYLYL CARBONATE",
     "supplier": "BASF",
-    "percent": "22.0"
+    "percent": "22.00"
    },
    {
     "phase": "A1",
     "name": "VEGETABLE SQUALANE",
     "inci": "SQUALANE",
     "supplier": "",
-    "percent": "3.0"
+    "percent": "3.00"
    },
    {
     "phase": "A1",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "A2",
     "name": "MST MAKIGREEN CORN S",
     "inci": "ZEA MAYS CORN STARCH & MAGNESIUM STEARATE",
-    "supplier": "Daito Kasei",
-    "percent": "2.5"
+    "supplier": "DAITO KASEI",
+    "percent": "2.50"
    },
    {
     "phase": "B1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "55.2"
+    "percent": "55.25"
    },
    {
     "phase": "B1",
     "name": "MAGNESIUM SULFATE (99%)",
     "inci": "MAGNESIUM SULFATE",
-    "supplier": "Merck",
-    "percent": "1.5"
+    "supplier": "MERCK",
+    "percent": "1.50"
    },
    {
     "phase": "B1",
     "name": "SODIUM CHLORIDE, CODEX",
     "inci": "SODIUM CHLORIDE",
     "supplier": "",
-    "percent": "1.5"
+    "percent": "1.50"
    },
    {
     "phase": "B2",
-    "name": "MALA´KÎTE™",
+    "name": "MALA&acute;KÎTE™",
     "inci": "WATER, MALACHITE EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    }
   ]
  },
@@ -7052,6 +8688,7 @@
   "code": "2666-1.04",
   "name": "重置肌肤晚霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2666-1.04_reset_night_cream_3s.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -7064,7 +8701,7 @@
     "phase": "A",
     "name": "BENTONE GEL EUG V",
     "inci": "OCTYLDODECANOL, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
-    "supplier": "Elementis",
+    "supplier": "ELEMENTIS",
     "percent": "5.0"
    },
    {
@@ -7099,7 +8736,7 @@
     "phase": "D",
     "name": "EUXYL K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.5"
    },
    {
@@ -7129,6 +8766,7 @@
   "code": "2372-2.06",
   "name": "乳转油修复乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2372-2-06-restoring-cream-to-oil-604622d3e6855365282241.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -7204,7 +8842,7 @@
     "phase": "D",
     "name": "PERFUME SELENE RS89695",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.20"
    },
    {
@@ -7217,9 +8855,179 @@
   ]
  },
  {
+  "code": "2886-1.04",
+  "name": "重焕光彩遮瑕膏",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "4.50"
+   },
+   {
+    "phase": "A",
+    "name": "LEXFEEL™ NATURAL",
+    "inci": "HEPTYL UNDECYLENATE",
+    "supplier": "Inolex",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A",
+    "name": "EYEGLORIUS™",
+    "inci": "OCTYLDODECYL MYRISTATE, HIPPOPHAE RHAMNOIDES EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "A",
+    "name": "LIPOCIRE™ A SG",
+    "inci": "C10-18 TRIGLYCERIDES",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   },
+   {
+    "phase": "A",
+    "name": "CETIOL® CC",
+    "inci": "DICAPRYLYL CARBONATE",
+    "supplier": "BASF",
+    "percent": "5.00"
+   },
+   {
+    "phase": "A",
+    "name": "PRESERVATIVE",
+    "inci": "PRESERVATIVE",
+    "supplier": "",
+    "percent": "1.00"
+   },
+   {
+    "phase": "B",
+    "name": "BENTONE GEL GTCC V",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE, STEARALKONIUM HECTORITE, PROPYLENE CARBONATE",
+    "supplier": "ELEMENTIS",
+    "percent": "5.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE WHITE LC 981 HLC",
+    "inci": "TITANIUM DIOXIDE, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "7.17"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE YELLOW LC 182 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.90"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE RED LC 381 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.15"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE BLACK LC 989 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.03"
+   },
+   {
+    "phase": "C",
+    "name": "LABRAFAC™ CC MB",
+    "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+    "supplier": "Gattefossé",
+    "percent": "5.00"
+   },
+   {
+    "phase": "C",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "0.50"
+   },
+   {
+    "phase": "D",
+    "name": "DEMINERALIZED WATER",
+    "inci": "WATER",
+    "supplier": "",
+    "percent": "37.75"
+   },
+   {
+    "phase": "D",
+    "name": "MAGNESIUM SULFATE (99%)",
+    "inci": "MAGNESIUM SULFATE",
+    "supplier": "",
+    "percent": "2.00"
+   },
+   {
+    "phase": "D",
+    "name": "SODIUM CHLORIDE, CODEX",
+    "inci": "SODIUM CHLORIDE",
+    "supplier": "",
+    "percent": "1.00"
+   },
+   {
+    "phase": "D",
+    "name": "PROPANEDIOL",
+    "inci": "PROPANEDIOL",
+    "supplier": "",
+    "percent": "3.00"
+   },
+   {
+    "phase": "E",
+    "name": "CETIOL® ULTIMATE",
+    "inci": "UNDECANE, TRIDECANE",
+    "supplier": "BASF",
+    "percent": "4.00"
+   },
+   {
+    "phase": "F",
+    "name": "SERICA 5",
+    "inci": "MICA",
+    "supplier": "Sensient",
+    "percent": "2.00"
+   },
+   {
+    "phase": "F",
+    "name": "SILICA BEADS SB-700",
+    "inci": "SILICA",
+    "supplier": "Miyoshi",
+    "percent": "4.00"
+   },
+   {
+    "phase": "F",
+    "name": "AMIHOPE® LL",
+    "inci": "LAUROYL LYSINE",
+    "supplier": "AJINOMOTO",
+    "percent": "5.00"
+   },
+   {
+    "phase": "G",
+    "name": "SYNCRYSTAL® IVORY",
+    "inci": "SYNTHETIC FLUORPHLOGOPITE, TITANIUM DIOXIDE, IRON OXIDE, TIN OXIDE",
+    "supplier": "ECKART",
+    "percent": "1.00"
+   },
+   {
+    "phase": "H",
+    "name": "GATULINE® LINK'N'LIFT",
+    "inci": "FRUCTOSE, GLYCERIN, WATER, AESCULUS HIPPOCASTANUM (HORSE CHESTNUT) EXTRACT",
+    "supplier": "Gattefossé",
+    "percent": "2.00"
+   }
+  ]
+ },
+ {
   "code": "2433-1.02",
   "name": "焕活护发修复乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2433-1.02_revitalizing_hair_lotion_2f.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -7323,7 +9131,7 @@
     "phase": "E",
     "name": "PERFUME NUTRI ELIXIR",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "1.00"
    }
   ]
@@ -7332,6 +9140,7 @@
   "code": "2829-1.06",
   "name": "发根再生精华液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2829-1.06_root_renewal_essence_4u.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -7344,7 +9153,7 @@
     "phase": "A1",
     "name": "ORIGINAL EXTRACT™ RICE",
     "inci": "ORYZA SATIVA (RICE) BRAN WATER",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "10.00"
    },
    {
@@ -7358,7 +9167,7 @@
     "phase": "A2",
     "name": "SOLAGUM™ AX",
     "inci": "ACACIA SENEGAL GUM, XANTHAN GUM",
-    "supplier": "SEPPIC",
+    "supplier": "Seppic",
     "percent": "0.85"
    },
    {
@@ -7379,21 +9188,21 @@
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
-    "percent": "2.50"
+    "supplier": "Gattefossé",
+    "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "B",
     "name": "DEFINICIRE®",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -7407,7 +9216,7 @@
     "phase": "B",
     "name": "ROSEMARY OILY EXTRACT",
     "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL, DATEM, SUNFLOWER SEED OIL GLYCERIDES, ROSMARINUS OFFICINALIS (ROSEMARY) LEAF EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "0.10"
    },
    {
@@ -7428,14 +9237,14 @@
     "phase": "C",
     "name": "GATULINE® AGE DEFENSE NP",
     "inci": "JUGLANS REGIA (WALNUT) SEED EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "GATULINE® RENEW",
     "inci": "BUTYLENE GLYCOL, WATER, CRYPTOMERIA JAPONICA BUD EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.00"
    },
    {
@@ -7458,12 +9267,13 @@
   "code": "2628-1.07",
   "name": "头皮&身体磨砂膏",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2628-1.07_scalp_body_scrub_4l.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "KAHLWAX 6607L",
     "inci": "HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ASCORBYL PALMITATE, TOCOPHEROL",
-    "supplier": "Kahl",
+    "supplier": "KAHL",
     "percent": "3.0"
    },
    {
@@ -7540,7 +9350,7 @@
     "phase": "F",
     "name": "PERFUME FRESH BLOSSOM RS45193",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.4"
    }
   ]
@@ -7549,6 +9359,7 @@
   "code": "2654-2.06",
   "name": "丝滑面部精华液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2654-2.06_silky_face_serum_5x.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -7575,14 +9386,14 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.2"
    },
    {
     "phase": "B1",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
@@ -7596,35 +9407,35 @@
     "phase": "B1",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "B2",
     "name": "LEXFEEL™ WOW-A-DT",
     "inci": "C13-16 ISOPARAFFIN, HEPTYL UNDECYLENATE",
-    "supplier": "INOLEX",
+    "supplier": "Inolex",
     "percent": "2.0"
    },
    {
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.0"
    },
    {
     "phase": "C",
     "name": "SOLASTEMIS™",
     "inci": "FRUCTOSE, WATER, GLYCERIN, SECHIUM EDULE FRUIT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "C",
     "name": "ENERGINIUS®",
     "inci": "FRUCTOSE, GLYCERIN, WATER, WITHANIA SOMNIFERA ROOT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.0"
    },
    {
@@ -7640,167 +9451,168 @@
   "code": "2073-3.14",
   "name": "丝感粉底液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2073-3.14_silky_touch_foundation_8j.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "2.90"
+    "percent": "2.900"
    },
    {
     "phase": "A1",
     "name": "LEXFEEL N5",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
     "supplier": "Inolex",
-    "percent": "9.50"
+    "percent": "9.500"
    },
    {
     "phase": "A1",
     "name": "LEXFILM® SUN NATURAL",
     "inci": "CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
     "supplier": "Inolex",
-    "percent": "2.50"
+    "percent": "2.500"
    },
    {
     "phase": "A1",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ACACIA DECURRENS FLOWER WAX, POLYGLYCERIN-3",
     "supplier": "Gattefossé",
-    "percent": "2.00"
+    "percent": "2.000"
    },
    {
     "phase": "A1",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "0.70"
+    "percent": "0.700"
    },
    {
     "phase": "A1",
     "name": "BENTONE GEL NGD V",
     "inci": "NEOPENTYL GLYCOL DIHEPTANOATE, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
-    "supplier": "Elementis",
-    "percent": "3.00"
+    "supplier": "ELEMENTIS",
+    "percent": "3.000"
    },
    {
     "phase": "A1",
     "name": "LEXFEEL NATURAL",
     "inci": "HEPTYL UNDECYLENATE",
     "supplier": "Inolex",
-    "percent": "1.50"
+    "percent": "1.500"
    },
    {
     "phase": "A2",
     "name": "LEXFEEL NATURAL",
     "inci": "HEPTYL UNDECYLENATE",
     "supplier": "Inolex",
-    "percent": "4.00"
+    "percent": "4.000"
    },
    {
     "phase": "A2",
     "name": "NAI-TAO-77891",
     "inci": "TITANIUM DIOXIDE, DISODIUM STEAROYL GLUTAMATE, ALUMINUM HYDROXIDE",
     "supplier": "Miyoshi",
-    "percent": "10.53"
+    "percent": "10.530"
    },
    {
     "phase": "A2",
     "name": "NAI-C339001-10",
     "inci": "IRON OXIDES, DISODIUM STEAROYL GLUTAMATE, ALUMINUM HYDROXIDE",
     "supplier": "Miyoshi",
-    "percent": "2.20"
+    "percent": "2.200"
    },
    {
     "phase": "A2",
     "name": "NAI-C338001-10",
     "inci": "IRON OXIDES, DISODIUM STEAROYL GLUTAMATE, ALUMINUM HYDROXIDE",
     "supplier": "Miyoshi",
-    "percent": "0.41"
+    "percent": "0.410"
    },
    {
     "phase": "A2",
     "name": "NAI-C337001-10",
     "inci": "IRON OXIDES, DISODIUM STEAROYL GLUTAMATE, ALUMINUM HYDROXIDE",
     "supplier": "Miyoshi",
-    "percent": "0.15"
+    "percent": "0.158"
    },
    {
     "phase": "A2",
     "name": "RONAFLAIR® B-50",
     "inci": "BISMUTH OXYCHLORIDE",
-    "supplier": "Merck",
-    "percent": "2.00"
+    "supplier": "MERCK",
+    "percent": "2.000"
    },
    {
     "phase": "A2",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "0.10"
+    "percent": "0.100"
    },
    {
     "phase": "B",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "42.35"
+    "percent": "42.352"
    },
    {
     "phase": "B",
     "name": "MAGNESIUM SULFATE (99%)",
     "inci": "MAGNESIUM SULFATE",
-    "supplier": "Merck",
-    "percent": "0.75"
+    "supplier": "MERCK",
+    "percent": "0.750"
    },
    {
     "phase": "B",
     "name": "SODIUM CHLORIDE, CODEX",
     "inci": "SODIUM CHLORIDE",
     "supplier": "",
-    "percent": "0.75"
+    "percent": "0.750"
    },
    {
     "phase": "C",
     "name": "CETIOL® ULTIMATE",
     "inci": "UNDECANE, TRIDECANE",
     "supplier": "BASF",
-    "percent": "3.00"
+    "percent": "3.000"
    },
    {
     "phase": "C",
     "name": "LEXFEEL WOW-A-DT",
     "inci": "HEPTYL UNDECYLENATE, C13-15 ALKANE",
     "supplier": "Inolex",
-    "percent": "6.00"
+    "percent": "6.000"
    },
    {
     "phase": "C",
     "name": "SILICA BEADS SB-300",
     "inci": "SILICA",
     "supplier": "Miyoshi",
-    "percent": "1.50"
+    "percent": "1.500"
    },
    {
     "phase": "C",
     "name": "SILICA BEADS SBNP-810",
     "inci": "SILICA",
     "supplier": "Miyoshi",
-    "percent": "2.25"
+    "percent": "2.250"
    },
    {
     "phase": "C",
     "name": "SOFTOUCH CC6058",
     "inci": "BORON NITRIDE",
     "supplier": "Momentive",
-    "percent": "1.75"
+    "percent": "1.750"
    },
    {
     "phase": "D",
     "name": "PERFUME PRECIEUSE NEW 1510985",
     "inci": "PARFUM",
     "supplier": "Expressions Parfumées",
-    "percent": "0.15"
+    "percent": "0.150"
    }
   ]
  },
@@ -7808,6 +9620,7 @@
   "code": "2463-1.01",
   "name": "抗污染面霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2463-1.01_skin_the_city.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -7862,7 +9675,7 @@
     "phase": "B",
     "name": "AVICEL® PC 591",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
-    "supplier": "FMC Biopolymer",
+    "supplier": "Fmc Biopolymer",
     "percent": "1.5"
    },
    {
@@ -7899,6 +9712,7 @@
   "code": "2621-2.09",
   "name": "柔肤棒",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2621-2.09_slide_n_foam_4n.pdf",
+  "src": "pdf",
   "rows": [
    {
     "phase": "A1",
@@ -7939,7 +9753,7 @@
     "phase": "B",
     "name": "KAHLWAX 2442L",
     "inci": "CARNAUBA (CORPENICIA CERIFERA) WAX",
-    "supplier": "Kahl",
+    "supplier": "KAHL",
     "percent": "6.0"
    },
    {
@@ -7969,6 +9783,7 @@
   "code": "2493-1.08",
   "name": "柔顺防护护发乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2493-1.08_smoothing_protective_hair_cream_3.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -8081,6 +9896,7 @@
   "code": "2613-1.17",
   "name": "柔肤棒",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2613-1.17_softer_skin_stick_6h.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -8100,7 +9916,7 @@
     "phase": "A",
     "name": "KAHLWAX 6607H",
     "inci": "HYDROLYZED SUNFLOWER SEED WAX",
-    "supplier": "Kahl",
+    "supplier": "KAHL",
     "percent": "20.0"
    },
    {
@@ -8135,7 +9951,7 @@
     "phase": "A",
     "name": "AMIHOPE® LL",
     "inci": "LAUROYL LYSINE",
-    "supplier": "Ajinomoto",
+    "supplier": "AJINOMOTO",
     "percent": "8.0"
    },
    {
@@ -8183,9 +9999,67 @@
   ]
  },
  {
+  "code": "2748-2.04",
+  "name": "墨汁精华",
+  "pdf": "",
+  "src": "zh",
+  "rows": [
+   {
+    "phase": "A",
+    "name": "ORIGINAL EXTRACT® GINGER",
+    "inci": "ZINGIBER OFFICINALE (GINGER) WATER",
+    "supplier": "Gattefossé",
+    "percent": "65.75"
+   },
+   {
+    "phase": "A",
+    "name": "EXILVA FM 05-L",
+    "inci": "WATER, CELLULOSE, ETHYLHEXYLGLYCERIN, CAPRYLYL GLYCOL",
+    "supplier": "BORREGAARD",
+    "percent": "25.00"
+   },
+   {
+    "phase": "B",
+    "name": "GLYCERIN",
+    "inci": "GLYCERIN",
+    "supplier": "",
+    "percent": "3.00"
+   },
+   {
+    "phase": "B",
+    "name": "SATIAXANE VPC 911",
+    "inci": "XANTHAN GUM",
+    "supplier": "Cargill",
+    "percent": "0.20"
+   },
+   {
+    "phase": "C",
+    "name": "VEGETABLE CHARCOAL",
+    "inci": "CHARCOAL POWDER",
+    "supplier": "Sensient",
+    "percent": "2.50"
+   },
+   {
+    "phase": "D",
+    "name": "EUXYL K 712",
+    "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.20"
+   },
+   {
+    "phase": "E",
+    "name": "CITRIC ACID (10% SOL.)",
+    "inci": "WATER, CITRIC ACID",
+    "supplier": "",
+    "percent": "2.35"
+   }
+  ]
+ },
+ {
   "code": "2855-3.02",
   "name": "星光亮泽精华",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2855-3.02_starlight_luminizer_serum_7d.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -8219,42 +10093,42 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.2"
    },
    {
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.0"
    },
    {
     "phase": "B",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, ACACIA DECURRENS FLOWER WAX, POLYGLYCERIN-3",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.0"
    },
    {
-    "phase": "C",
+    "phase": "",
     "name": "ENERGINIUS®",
     "inci": "FRUCTOSE, GLYCERIN, WATER, WITHANIA SOMNIFERA ROOT EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "1.0"
    },
    {
@@ -8282,7 +10156,7 @@
     "phase": "F",
     "name": "COVAPEARL® ANTIQUE SILVER 239",
     "inci": "MICA, TITANIUM DIOXIDE, IRON OXIDES",
-    "supplier": "SENSIENT",
+    "supplier": "Sensient",
     "percent": "1.0"
    },
    {
@@ -8312,76 +10186,77 @@
   "code": "2588-3.07",
   "name": "定向护理凝胶",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2588-3.07_targeted_treatment_4e.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "57.5"
+    "percent": "57.55"
    },
    {
     "phase": "A2",
     "name": "GLYCERIN",
     "inci": "GLYCERIN",
     "supplier": "",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "A2",
     "name": "KELCO-CARE™ DIUTAN GUM",
     "inci": "SPHINGOMONAS FERMENT EXTRACT",
     "supplier": "Lubrizol",
-    "percent": "0.1"
+    "percent": "0.15"
    },
    {
     "phase": "B",
     "name": "ORIGINAL EXTRACT™ LEMON BIO",
     "inci": "CITRUS LIMON (LEMON) FRUIT WATER",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
-    "name": "CYTOBIOL™ IRIS A²",
+    "name": "CYTOBIOL™ IRIS A&sup2;",
     "inci": "PROPANEDIOL, WATER, ALCOHOL, IRIS FLORENTINA ROOT EXTRACT, ZINC SULFATE, RETINYL PALMITATE",
     "supplier": "Gattefossé",
-    "percent": "5.0"
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "UNICERT YELLOW 08005-J (0.1% SOL.)",
     "inci": "WATER, YELLOW 5",
     "supplier": "Sensient",
-    "percent": "0.5"
+    "percent": "0.50"
    },
    {
     "phase": "B",
     "name": "UNICERT YELLOW 08006-J (0,1% SOL)",
     "inci": "WATER, YELLOW 6",
     "supplier": "Sensient",
-    "percent": "0.3"
+    "percent": "0.30"
    },
    {
     "phase": "C",
     "name": "EUXYL K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "Schulke & Mayr",
-    "percent": "1.0"
+    "supplier": "SCHÜLKE & MAYR",
+    "percent": "1.00"
    },
    {
     "phase": "D",
     "name": "ETHANOL 96 %",
     "inci": "ALCOHOL",
     "supplier": "",
-    "percent": "25.0"
+    "percent": "25.00"
    },
    {
     "phase": "E",
     "name": "CITRIC ACID (10% SOL.)",
     "inci": "WATER, CITRIC ACID",
     "supplier": "",
-    "percent": "0.5"
+    "percent": "0.50"
    }
   ]
  },
@@ -8389,6 +10264,7 @@
   "code": "2464-1.01",
   "name": "补水身体乳",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2464-1.01_thirst_quencher_body_cream.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -8457,14 +10333,14 @@
     "phase": "C",
     "name": "ORGANIC SWEET ALMOND OIL",
     "inci": "PRUNUS AMYGDALUS DULCIS (SWEET ALMOND) OIL",
-    "supplier": "Huilerie Emile Noël",
+    "supplier": "Huilerie Emile No&euml;l",
     "percent": "3.0"
    },
    {
     "phase": "C",
     "name": "ORGANIC JOJOBA OIL",
     "inci": "SIMMONDSIA CHINENSIS (JOJOBA) SEED OIL",
-    "supplier": "Huilerie Emile Noël",
+    "supplier": "Huilerie Emile No&euml;l",
     "percent": "5.0"
    },
    {
@@ -8494,6 +10370,7 @@
   "code": "2421-1.01",
   "name": "紧致弹润身体黄油",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2421-1-01-tone-up-body-butter-60796bf6ee4e8308452225.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -8576,7 +10453,7 @@
     "phase": "C",
     "name": "PERFUME ARGANORANGER MIEL RS35850",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.20"
    },
    {
@@ -8592,83 +10469,140 @@
   "code": "2739-1.08",
   "name": "超哑光遮瑕",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2739-1.08_ulti-matte_concealer_medium_shade_9q.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
     "name": "EMULIUM® ILLUSTRO",
     "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
     "supplier": "Gattefossé",
-    "percent": "3.5"
+    "percent": "3.50"
    },
    {
     "phase": "A",
     "name": "LEXFEEL™ N5 MB",
     "inci": "DIHEPTYL SUCCINATE, CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER",
     "supplier": "Inolex",
-    "percent": "7.0"
+    "percent": "7.00"
    },
    {
     "phase": "A",
     "name": "LIPOCIRE™ A SG",
     "inci": "C10-18 TRIGLYCERIDES",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "A",
     "name": "PRESERVATIVE",
     "inci": "PRESERVATIVE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "B",
     "name": "BENTONE GEL NGD V",
     "inci": "NEOPENTYL GLYCOL DIHEPTANOATE, DISTEARDIMONIUM HECTORITE, PROPYLENE CARBONATE",
-    "supplier": "Elementis",
-    "percent": "5.0"
+    "supplier": "ELEMENTIS",
+    "percent": "5.00"
    },
    {
     "phase": "B",
     "name": "AEROSIL 200",
     "inci": "SILICA",
     "supplier": "Evonik",
-    "percent": "1.0"
+    "percent": "1.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE WHITE LC 981 HLC",
+    "inci": "TITANIUM DIOXIDE, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "21.21"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE YELLOW LC 182 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "3.00"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE RED LC 381 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.67"
+   },
+   {
+    "phase": "C",
+    "name": "UNIPURE BLACK LC 989 HLC",
+    "inci": "IRON OXIDES, HYDROGENATED LECITHIN",
+    "supplier": "Sensient",
+    "percent": "0.12"
+   },
+   {
+    "phase": "C",
+    "name": "CETIOL® CC",
+    "inci": "DICAPRYLYL CARBONATE",
+    "supplier": "BASF",
+    "percent": "14.00"
+   },
+   {
+    "phase": "C",
+    "name": "EMULIUM® ILLUSTRO",
+    "inci": "POLYGLYCERYL-6 POLYHYDROXYSTEARATE, POLYGLYCERYL-6 POLYRICINOLEATE, POLYGLYCERIN-6",
+    "supplier": "Gattefossé",
+    "percent": "0.50"
    },
    {
     "phase": "D",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "32.0"
+    "percent": "32.00"
    },
    {
     "phase": "D",
     "name": "MAGNESIUM SULFATE (99%)",
     "inci": "MAGNESIUM SULFATE",
     "supplier": "",
-    "percent": "2.0"
+    "percent": "2.00"
    },
    {
     "phase": "D",
     "name": "SODIUM CHLORIDE, CODEX",
     "inci": "SODIUM CHLORIDE",
     "supplier": "",
-    "percent": "1.0"
+    "percent": "1.00"
    },
    {
     "phase": "D",
     "name": "GLYCERIN",
     "inci": "GLYCERIN",
     "supplier": "",
-    "percent": "2.0"
+    "percent": "2.00"
+   },
+   {
+    "phase": "E",
+    "name": "SERICA 5",
+    "inci": "MICA",
+    "supplier": "Sensient",
+    "percent": "1.00"
+   },
+   {
+    "phase": "E",
+    "name": "AMIHOPE® LL",
+    "inci": "LAUROYL LYSINE",
+    "supplier": "AJINOMOTO",
+    "percent": "1.00"
    },
    {
     "phase": "F",
     "name": "GATULINE® LINK'N'LIFT",
     "inci": "FRUCTOSE, GLYCERIN, WATER, AESCULUS HIPPOCASTANUM (HORSE CHESTNUT) EXTRACT",
     "supplier": "Gattefossé",
-    "percent": "2.0"
+    "percent": "2.00"
    }
   ]
  },
@@ -8676,6 +10610,7 @@
   "code": "2719-1.02",
   "name": "超平滑眼周眼霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2719-1.02_ultra_smooth_eye_contour_3l.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -8695,7 +10630,7 @@
     "phase": "A2",
     "name": "SATIAXANE™ VPC 911",
     "inci": "XANTHAN GUM",
-    "supplier": "CARGILL",
+    "supplier": "Cargill",
     "percent": "0.2"
    },
    {
@@ -8716,35 +10651,35 @@
     "phase": "B",
     "name": "EMULIUM® DERMOLEA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, CANDELILLA/JOJOBA/RICE BRAN POLYGLYCERYL-3 ESTERS",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "4.0"
    },
    {
     "phase": "B",
     "name": "ACTICIRE® MB",
     "inci": "JOJOBA ESTERS, HELIANTHUS ANNUUS (SUNFLOWER) SEED WAX, POLYGLYCERIN-3, ACACIA DECURRENS FLOWER WAX",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "3.0"
    },
    {
     "phase": "B",
     "name": "LABRAFAC™ CC MB",
     "inci": "CAPRYLIC/CAPRIC TRIGLYCERIDE",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "17.0"
    },
    {
     "phase": "C",
     "name": "EUXYL™ K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "SCHULKE & MAYR",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.0"
    },
    {
     "phase": "C",
     "name": "GATULINE® EXPRESSION AF",
     "inci": "PROPANEDIOL, WATER, ACMELLA OLERACEA EXTRACT",
-    "supplier": "GATTEFOSSE",
+    "supplier": "Gattefossé",
     "percent": "2.0"
    },
    {
@@ -8760,6 +10695,7 @@
   "code": "2406-1.01",
   "name": "多用途面霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2406-1.01_universal_cream_9g.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -8793,7 +10729,7 @@
     "phase": "B",
     "name": "AVICEL® PC 591",
     "inci": "MICROCRYSTALLINE CELLULOSE, CELLULOSE GUM",
-    "supplier": "Dupont",
+    "supplier": "DUPONT",
     "percent": "3.0"
    },
    {
@@ -8823,12 +10759,13 @@
   "code": "2584-1.05",
   "name": "洁净精华",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2584-1.05_visibly_clean_serum_4d.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
-    "supplier": "",
+    "supplier": "Cell input",
     "percent": "65.02"
    },
    {
@@ -8877,12 +10814,12 @@
     "phase": "C",
     "name": "EUXYL K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.20"
    },
    {
     "phase": "D",
-    "name": "CYTOBIOL™ IRIS A²",
+    "name": "CYTOBIOL™ IRIS A&sup2;",
     "inci": "PROPANEDIOL, WATER, ALCOHOL, IRIS FLORENTINA ROOT EXTRACT, ZINC SULFATE, RETINYL PALMITATE",
     "supplier": "Gattefossé",
     "percent": "5.00"
@@ -8914,6 +10851,7 @@
   "code": "2495-1.25",
   "name": "抗衰老日霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2495-1.25_well-aging_day_cream_8w.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -8954,7 +10892,7 @@
     "phase": "A",
     "name": "KAHLWAX 6240",
     "inci": "HYDROGENATED VEGETABLE OIL",
-    "supplier": "Kahl",
+    "supplier": "KAHL",
     "percent": "5.0"
    },
    {
@@ -9015,9 +10953,9 @@
    },
    {
     "phase": "G",
-    "name": "KOBOBLUR 100 NATURAL",
+    "name": "KOBOBLUR 100 NATURA",
     "inci": "SILICA, CELLULOSE, MICA, BARIUM SULFATE, TITANIUM DIOXIDE, JOJOBA ESTERS",
-    "supplier": "Kobo",
+    "supplier": "KOBO",
     "percent": "2.0"
    }
   ]
@@ -9026,6 +10964,7 @@
   "code": "2671-2.05",
   "name": "青春守护精华液",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2671-2.05_youth_protector_serum_1s.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A1",
@@ -9080,12 +11019,12 @@
     "phase": "A3",
     "name": "KLEPTOSE",
     "inci": "CYCLODEXTRIN",
-    "supplier": "Roquette",
+    "supplier": "ROQUETTE",
     "percent": "0.50"
    },
    {
     "phase": "B",
-    "name": "EMULIUM® MELLIFERA MB",
+    "name": "B EMULIUM® MELLIFERA MB",
     "inci": "POLYGLYCERYL-6 DISTEARATE, JOJOBA ESTERS, CETYL ALCOHOL, POLYGLYCERYL-3 BEESWAX",
     "supplier": "Gattefossé",
     "percent": "2.00"
@@ -9108,7 +11047,7 @@
     "phase": "B",
     "name": "SENSIVA SC 50",
     "inci": "ETHYLHEXYLGLYCERIN",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.00"
    },
    {
@@ -9124,6 +11063,7 @@
   "code": "2590-1.08",
   "name": "零油光面霜",
   "pdf": "https://www.gattefosse.com/sites/default/files/intuitive/2590-1.08_zero_shine_cream_2g.pdf",
+  "src": "zh",
   "rows": [
    {
     "phase": "A",
@@ -9158,14 +11098,14 @@
     "name": "DEMINERALIZED WATER",
     "inci": "WATER",
     "supplier": "",
-    "percent": "53.90"
+    "percent": "53.9"
    },
    {
     "phase": "B",
     "name": "GLYCERIN",
     "inci": "GLYCERIN",
-    "supplier": "",
-    "percent": "5.00"
+    "supplier": "BASF",
+    "percent": "5"
    },
    {
     "phase": "C",
@@ -9178,7 +11118,7 @@
     "phase": "D",
     "name": "VANATURAL",
     "inci": "BENTONITE",
-    "supplier": "R.T. Vanderbilt",
+    "supplier": "R.T. VANDERBILT",
     "percent": "0.75"
    },
    {
@@ -9211,7 +11151,7 @@
    },
    {
     "phase": "H",
-    "name": "CYTOBIOL™ IRIS A²",
+    "name": "CYTOBIOL™ IRIS A&sup2;",
     "inci": "PROPANEDIOL, WATER, ALCOHOL, IRIS FLORENTINA ROOT EXTRACT, ZINC SULFATE, RETINYL PALMITATE",
     "supplier": "Gattefossé",
     "percent": "5.00"
@@ -9220,7 +11160,7 @@
     "phase": "H",
     "name": "PERFUME TAXI SUNRISE RS 15014",
     "inci": "PARFUM",
-    "supplier": "Technico-Flor",
+    "supplier": "TECHNICO-FLOR",
     "percent": "0.30"
    },
    {
@@ -9234,7 +11174,7 @@
     "phase": "J",
     "name": "EUXYL K 712",
     "inci": "WATER, SODIUM BENZOATE, POTASSIUM SORBATE",
-    "supplier": "Schulke & Mayr",
+    "supplier": "SCHÜLKE & MAYR",
     "percent": "1.00"
    }
   ]
