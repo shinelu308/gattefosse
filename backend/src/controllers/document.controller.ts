@@ -303,8 +303,16 @@ export async function linkDocToProduct(req: Request, res: Response) {
       return res.status(400).json(fail('productId 和 productType 不能为空'));
     }
 
+    // 幂等：同一文档重复挂到同一产品时直接返回已有关系，避免产生重复行
+    // （前台「相关资料」按关联行渲染，重复行会同一份资料出现两次）
+    const pid = parseInt(String(productId));
+    const dup = await prisma.docProduct.findFirst({
+      where: { documentId, productId: pid, productType },
+    });
+    if (dup) return res.json(success(dup, '已关联'));
+
     const link = await prisma.docProduct.create({
-      data: { documentId, productId: parseInt(String(productId)), productType },
+      data: { documentId, productId: pid, productType },
     });
 
     return res.json(success(link, '关联成功'));

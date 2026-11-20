@@ -229,6 +229,8 @@ export async function getPharmaDocuments(req: Request, res: Response) {
     const documents = (docProducts || []).map(function(dp) {
       const doc = dp.document;
       return {
+        // linkId = doc_products.id，后台「相关资料」取消关联要用它定位关联行
+        linkId: dp.id,
         id: doc.id,
         title: doc.title,
         type: doc.type,

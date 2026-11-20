@@ -2129,6 +2129,77 @@ const QUILL_TOOLBAR = [
               </div>
             </div>
           </div>
+          <!-- ===== 相关资料（doc_products 关联，前台详情页底部「相关资料」区块） ===== -->
+          <div v-show="pharmaEditTab === 'blocks'" class="card" style="margin-top:16px;" data-page-node-id="PharmaRelDocsCard01">
+            <div class="card-header" data-page-node-id="PharmaRelDocsHead01">
+              <h3 data-page-node-id="PharmaRelDocsTitle01">相关资料</h3>
+              <span style="font-size:12px;color:var(--text-muted);" data-page-node-id="PharmaRelDocsHint01">取自「文档资源」库，前台详情页底部按 技术文件 / 产品手册 / 科学文献 分组展示</span>
+            </div>
+            <div class="card-body" data-page-node-id="PharmaRelDocsBody01">
+              <div v-if="!editingPharma.id" class="alert-info" data-page-node-id="PharmaRelDocsNoId01">请先保存产品基本信息，然后可以管理相关资料。</div>
+              <div v-else data-page-node-id="PharmaRelDocsWrap01">
+                <table class="table" v-if="pharmaDocs.length" data-page-node-id="PharmaRelDocsTable01">
+                  <thead>
+                    <tr>
+                      <th>文档标题</th>
+                      <th style="width:130px;">类型</th>
+                      <th style="width:90px;">权限</th>
+                      <th style="width:100px;">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="d in pharmaDocs" :key="d.linkId">
+                      <td>{{ d.title }}</td>
+                      <td><span class="tag" :class="d.type==='TDS'||d.type==='SDS'?'tag-blue':(d.type==='Publication'?'tag-amber':(d.type==='Magazine'?'tag-green':'tag-slate'))">{{ docLabel(d.type) }}</span></td>
+                      <td><span class="tag" :class="d.isPublic ? 'tag-green' : 'tag-slate'">{{ d.isPublic ? '公开' : '需登录' }}</span></td>
+                      <td><button class="btn btn-sm btn-danger" @click="unlinkPharmaDoc(d)" data-page-node-id="PharmaRelDocsDel01">× 移除</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div v-else class="alert-info" data-page-node-id="PharmaRelDocsEmpty01">还没有关联任何资料 —— 点下方「从文档库添加资料」挑选。</div>
+
+                <div style="display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;" data-page-node-id="PharmaRelDocsBar01">
+                  <button class="btn btn-outline btn-sm" @click="openPharmaDocPicker" data-page-node-id="PharmaRelDocsOpen01">+ 从文档库添加资料</button>
+                  <span v-if="pharmaDocSaving" style="font-size:12px;color:var(--text-muted);">保存中...</span>
+                  <span v-if="pharmaDocSaved" class="block-saved-msg">✓ 已保存</span>
+                  <button class="btn btn-sm btn-outline" style="margin-left:auto;" @click="goPage('doc-list')" data-page-node-id="PharmaRelDocsGotoDoc01">打开文档资源</button>
+                </div>
+
+                <div v-if="pharmaDocPicker.show" style="margin-top:12px;border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--bg-subtle, #fafbfc);" data-page-node-id="PharmaRelDocsPicker01">
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;" data-page-node-id="PharmaRelDocsPickerBar01">
+                    <input class="form-control" style="max-width:240px;" placeholder="搜索文档标题..." v-model="pharmaDocPicker.keyword" @keyup.enter="loadPharmaDocPicker">
+                    <select class="form-control" style="width:160px;" v-model="pharmaDocPicker.type" @change="loadPharmaDocPicker">
+                      <option value="">全部类型</option>
+                      <option value="TDS">技术数据表（TDS）</option>
+                      <option value="SDS">安全数据表（SDS）</option>
+                      <option value="Brochure">产品手册</option>
+                      <option value="Formula">配方资料</option>
+                      <option value="Publication">出版物</option>
+                      <option value="Magazine">杂志</option>
+                      <option value="Other">其他</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary" @click="loadPharmaDocPicker">搜索</button>
+                    <span style="font-size:12px;color:var(--text-secondary);">已选 {{ pharmaDocPicker.selected.length }} 项</span>
+                    <button class="btn btn-sm btn-outline" style="margin-left:auto;" @click="pharmaDocPicker.show=false">关闭</button>
+                  </div>
+                  <div style="max-height:300px;overflow:auto;border-top:1px solid var(--border-light, #eef0f2);" data-page-node-id="PharmaRelDocsPickerList01">
+                    <label v-for="d in pharmaDocPicker.list" :key="d.id" style="display:flex;gap:10px;align-items:center;padding:7px 4px;border-bottom:1px solid var(--border-light, #eef0f2);font-size:13px;cursor:pointer;margin:0;">
+                      <input type="checkbox" :value="d.id" v-model="pharmaDocPicker.selected" :disabled="isPharmaDocLinked(d.id)" style="flex:0 0 auto;">
+                      <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ d.title }}</span>
+                      <span class="tag" :class="d.type==='TDS'||d.type==='SDS'?'tag-blue':(d.type==='Publication'?'tag-amber':(d.type==='Magazine'?'tag-green':'tag-slate'))">{{ docLabel(d.type) }}</span>
+                      <span class="tag" :class="d.isPublic ? 'tag-green' : 'tag-slate'">{{ d.isPublic ? '公开' : '需登录' }}</span>
+                      <span v-if="isPharmaDocLinked(d.id)" style="flex:0 0 auto;font-size:12px;color:var(--text-muted);">已关联</span>
+                    </label>
+                    <div v-if="!pharmaDocPicker.list.length" style="padding:18px;text-align:center;color:var(--text-muted);font-size:13px;">没有匹配的文档</div>
+                  </div>
+                  <div style="display:flex;gap:8px;margin-top:10px;" data-page-node-id="PharmaRelDocsPickerAct01">
+                    <button class="btn btn-sm btn-primary" :disabled="!pharmaDocPicker.selected.length || pharmaDocSaving" @click="linkPharmaDocs">关联选中（{{ pharmaDocPicker.selected.length }}）</button>
+                    <button class="btn btn-sm btn-outline" @click="pharmaDocPicker.selected=[]">清空选择</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- 保存按钮 -->
           <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;" data-page-node-id="F9Xkg94wY1QddeJeVcS7Zt">
             <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;user-select:none;" data-page-node-id="KzOIjnFHSvyjklIPpcqbX4">
@@ -2604,7 +2675,7 @@ const QUILL_TOOLBAR = [
         <!-- ==================== 文档列表 ==================== -->
         <div v-if="currentPage === 'doc-list'" data-page-node-id="DVCVxK2L9PAW5SZtEzlhIZ">
           <h1 class="page-title" data-page-node-id="aWgk99HKAAuUBKrIWemeB1">文档资源</h1>
-          <p class="page-subtitle" data-page-node-id="jEzPO2b3BF35ivqNxmTkC7">全局文件库，产品可在详情页通过「文件下载」区块引用</p>
+          <p class="page-subtitle" data-page-node-id="jEzPO2b3BF35ivqNxmTkC7">全局文件库。个人护理产品在详情页通过「文件下载」区块引用；药用辅料在编辑页「详情页内容 → 相关资料」里关联。</p>
           <div class="card" data-page-node-id="fjwUqlhV800ZQDY4eVccXI">
             <div class="card-header" data-page-node-id="iXJDYmmAOpKRSTkjIbVvC0">
               <div style="width:100%;" data-page-node-id="MgDocHdrWrap01">
@@ -5533,6 +5604,11 @@ createApp({
       learnMoreCollapsed: false,
       pcEditTab: 'basic',
       pharmaEditTab: 'basic',
+      // 药用辅料「相关资料」（doc_products 关联）
+      pharmaDocs: [],
+      pharmaDocPicker: { show: false, keyword: '', type: '', list: [], selected: [] },
+      pharmaDocSaving: false,
+      pharmaDocSaved: false,
       formulaEditTab: 'basic',
       globalSearch: '',
       // Stats
@@ -7615,6 +7691,9 @@ createApp({
     },
     resetPharmaEdit() {
       this.pharmaEditTab = 'basic';
+      this.pharmaDocs = [];
+      this.pharmaDocPicker = { show: false, keyword: '', type: '', list: [], selected: [] };
+      this.pharmaDocSaved = false;
       this.editingPharma = { name: '', slug: '', inciName: '', description: '', imageUrl: '', detailImageUrl: '', tagline: '', intlUrl: '', compositionHtml: '', applicationHtml: '', regulatoryHtml: '', marketTag: [], routeTag: [], functionalityTag: [], dosageFormTag: [], isPublished: false, id: null, blocks: [] };
     },
     editPharma(item) {
@@ -7626,6 +7705,7 @@ createApp({
         dosageFormTag: [...(item.dosageFormTag||[])], isPublished: item.isPublished, blocks: [],
       };
       this.loadPharmaBlocks(item.id);
+      this.loadPharmaDocs(item.id);
       this.goPage('pharma-edit');
     },
     togglePharmaTag(field, value) {
@@ -7679,6 +7759,65 @@ createApp({
           await this.loadPharmaList();
           this.refreshPharmaStats();
         } catch (e) { console.error('批量删除异常:', e); this.showAlert('批量删除失败：' + e.message); }
+      });
+    },
+    // ============ 相关资料（doc_products 关联，前台详情页底部区块） ============
+    loadPharmaDocs(productId) {
+      var self = this;
+      this.pharmaDocs = [];
+      this.api('/pharma-products/' + productId + '/documents').then(function(list) {
+        self.pharmaDocs = Array.isArray(list) ? list : [];
+      }).catch(function(e) { console.error('加载相关资料失败:', e); });
+    },
+    isPharmaDocLinked(docId) {
+      return this.pharmaDocs.some(function(d) { return d.id === docId; });
+    },
+    openPharmaDocPicker() {
+      if (!this.pharmaDocPicker.list.length) this.loadPharmaDocPicker();
+      this.pharmaDocPicker.selected = [];
+      this.pharmaDocPicker.show = true;
+    },
+    loadPharmaDocPicker() {
+      var self = this;
+      var params = '?limit=100';
+      if (this.pharmaDocPicker.keyword) params += '&keyword=' + encodeURIComponent(this.pharmaDocPicker.keyword);
+      if (this.pharmaDocPicker.type) params += '&type=' + encodeURIComponent(this.pharmaDocPicker.type);
+      this.api('/documents' + params).then(function(data) {
+        self.pharmaDocPicker.list = (data && data.list) || [];
+      }).catch(function(e) { self.showAlert('加载文档库失败：' + e.message); });
+    },
+    async linkPharmaDocs() {
+      var ids = this.pharmaDocPicker.selected.slice();
+      if (!ids.length) return;
+      var self = this;
+      this.pharmaDocSaving = true;
+      this.pharmaDocSaved = false;
+      try {
+        for (var i = 0; i < ids.length; i++) {
+          await this.api('/documents/' + ids[i] + '/link-product', {
+            method: 'POST',
+            body: JSON.stringify({ productId: this.editingPharma.id, productType: 'pharma' }),
+          });
+        }
+        this.pharmaDocPicker.selected = [];
+        this.pharmaDocPicker.show = false;
+        await this.loadPharmaDocs(this.editingPharma.id);
+        this.pharmaDocSaved = true;
+        setTimeout(function() { self.pharmaDocSaved = false; }, 2400);
+      } catch (e) {
+        this.showAlert('关联失败：' + e.message);
+      } finally {
+        this.pharmaDocSaving = false;
+      }
+    },
+    unlinkPharmaDoc(doc) {
+      var self = this;
+      if (!doc.linkId) { this.showAlert('缺少关联ID，请刷新页面后重试'); return; }
+      this.showConfirm('移除资料', '确认把「' + doc.title + '」从本产品移除？文档本身不会被删除。', async function() {
+        try {
+          await self.api('/documents/' + doc.id + '/link-product/' + doc.linkId, { method: 'DELETE' });
+          await self.loadPharmaDocs(self.editingPharma.id);
+        } catch (e) { self.showAlert('移除失败：' + e.message); }
       });
     },
     // Pharma Block CRUD

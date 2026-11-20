@@ -3728,6 +3728,59 @@
  {
   "id": 10913,
   "name": "Transcutol® V",
-  "groups": []
+  "groups": [
+   {
+    "title": "技术文件",
+    "docs": [
+     {
+      "title": "RDS Pharma TRANSCUTOL V (En)",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "TDS_TRANSCUTOL_V.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     },
+     {
+      "title": "SDS EU_EN_TRANSCUTOL V_3391_1.4.pdf",
+      "locked": true,
+      "file": "",
+      "size": 0
+     }
+    ]
+   },
+   {
+    "title": "产品手册",
+    "docs": [
+     {
+      "title": "Gattefosse brochure Selecting the best excipients to optimize drug delivery",
+      "locked": false,
+      "file": "999_gattefosse_brochure_selecting_the_best_excipients_to_optimize_drug_delivery_6q.pdf",
+      "size": 7760440
+     },
+     {
+      "title": "Gattefosse brochure veterinary medicines 2024",
+      "locked": false,
+      "file": "2840_gattefosse_brochure_veterinary_medicines_2024_2l_1.pdf",
+      "size": 8357561
+     },
+     {
+      "title": "Poster EUFEPS 2026 - Transdermal ointment in cats - a promising strategy for improved compliance",
+      "locked": false,
+      "file": "3605_poster_eufeps_2026_transdermal_ointment_in_cats.pdf",
+      "size": 550575
+     },
+     {
+      "title": "Poster ABCF 2026 - Ear cleanser and fluid bigel as complementary formulations of an otic care platform for pets",
+      "locked": false,
+      "file": "3962_poster_abcf_2026_ear_cleanser_fluid_bigel.pdf",
+      "size": 501897
+     }
+    ]
+   }
+  ]
  }
 ]
